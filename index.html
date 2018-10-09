@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap Traefik Theme CSS -->
-    <link rel='stylesheet' href='https://d33wubrfki0l68.cloudfront.net/css/2e8c851921c757c94835b7b132445bb810a8ac91/css/traefik.min.css'/>
+    <!-- Bootstrap xcp-ng Theme CSS -->
+    <link rel='stylesheet' href='assets/css/xcp-ng.css'/>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:light&v1' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-9ralMzdK1QYsk4yBY680hmsb4/hJ98xK3w0TIaJ3ll4POWpWUYaA2bRjGGujGT8w" crossorigin="anonymous">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -27,11 +27,37 @@
     Commercial Support <a href="https://xcp-ng.com">Now Available!</a>
 </div>
 
-<div class="traefik-content">
-    <nav id="traefik-navbar" class="navbar navbar-expand-sm fixed-top bg-light">
-        <div id="traefik-menu" class="container-fluid">
+<div class="xcp-ng-content">
+    <script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/unique-methods/embed.js" data-dojo-config="usePlainJson: true, isDebug: false"></script><script type="text/javascript">window.dojoRequire(["mojo/signup-forms/Loader"], function(L) { L.start({"baseUrl":"mc.us13.list-manage.com","uuid":"f1ab72021fb8816f4d5e72773","lid":"4d17393549","uniqueMethods":true}) })</script>
+    <!-- Matomo -->
+    <script type="text/javascript">
+        var _paq = _paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+        var u="//piwik.vates.fr/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', '11']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
+    <!-- End Matomo Code -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112481698-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-112481698-1');
+    </script>
+
+    <nav id="xcp-ng-navbar" class="navbar navbar-expand-sm fixed-top bg-light">
+        <div id="xcp-ng-menu" class="container-fluid">
             <a class="navbar-brand mx-0 my-auto" href="/">
-                <b>XCP-ng</b>
+                <img id="logo" src="assets/img/smalllogo.png">
             </a>
 
             <button class="navbar-toggler"
@@ -76,7 +102,7 @@
         </div>
     </nav>
 
-    <section class="traefik-header container-fluid">
+    <section class="xcp-ng-header container-fluid">
         <div class="row d-flex d-block d-sm-none justify-content-center text-center">
             <div class="col col-4">
                 <img src="assets/img/mainlogo.png" class="img-fluid" />
@@ -89,24 +115,23 @@
             <div class="col-12 col-sm-8 text-sm-left text-center">
                 <h1>Turnkey Open Source Hypervisor</h1>
                 <p>Based on XenServer, XCP-ng is the result of massive cooperation between individuals and companies, to deliver a product without limits.
-                    No restrictions on features, Xen Storage Motion, Intel/AMD vGPU, you name it.
-                    Every bit available on GitHub: you can add features, or report any issues.
+                    No restrictions on features and every bit available on GitHub!
                 </p>
                 <a class="btn btn-primary" href="#easy-to-install" role="button">Download</a>
-                <a class="btn btn-secondary" href="https://docs.traefik.io/" role="button">Get Started</a>
+                <a class="btn btn-secondary" href="https://docs.xcp-ng.io/" role="button">Get Started</a>
             </div>
         </div>
     </section>
 
-    <section class="traefik-numbers container-fluid">
+    <section class="xcp-ng-numbers container-fluid">
         <div class="row d-flex justify-content-center justify-content-md-between">
             <div class="number-box p-1">
                 <div class="row number align-middle">
                     <div class="col p-0">
-                        <img src="https://d33wubrfki0l68.cloudfront.net/01a005bd65804a3c5dd747060a200cb89c7dc8c6/42eb5/assets/img/downloads@3x.svg"/>
+                        <i class="fal fa-cloud-download"></i>
                     </div>
                     <div class="col">
-                        <span id="traefik-download-count" class="count">6000</span>+
+                        <span id="xcp-ng-download-count" class="count">6000</span>+
                     </div>
                 </div>
                 <div class="row number-legend">
@@ -119,10 +144,10 @@
             <div class="number-box p-1">
                 <div class="row number align-middle">
                     <div class="col p-0">
-                        <img src="https://d33wubrfki0l68.cloudfront.net/c35af54ba1ca45881cc7d174a54acb01bea59b12/5d4f9/assets/img/github_white@3x.svg"/>
+                        <i class="fab fa-stack-overflow"></i>
                     </div>
                     <div class="col">
-                        <span id="traefik-stars-on-github" class="count">4000</span>+
+                        <span id="xcp-ng-stars-on-github" class="count">4000</span>+
                     </div>
                 </div>
                 <div class="row number-legend">
@@ -135,10 +160,10 @@
             <div class="number-box p-1">
                 <div class="row number">
                     <div class="col p-0">
-                        <img src="https://d33wubrfki0l68.cloudfront.net/4853bda2dbe1027a52bdcdd235f310f5712a0bbd/69741/assets/img/community@3x.svg"/>
+                        <i class="fal fa-users"></i>
                     </div>
                     <div class="col">
-                        <span id="traefik-contributors-on-github" class="count">800</span>+
+                        <span id="xcp-ng-contributors-on-github" class="count">800</span>+
                     </div>
                 </div>
                 <div class="row number-legend">
@@ -150,132 +175,125 @@
         </div>
     </section>
 
-    <section class="traefik-features container-fluid">
+    <section class="xcp-ng-features container-fluid">
         <div class="row text-center justify-content-center">
             <h2><a name="features"></a>Turnkey Server Virtualization</h2>
         </div>
 
         <div class="row text-center">
             <div class="col my-auto">
-                <img src="https://d33wubrfki0l68.cloudfront.net/3d5a358cda5925865834c3ab48c0dfeb2ae9db4b/43e53/assets/img/auto_discovery@3x.svg"/>
+                    <i class="fal fa-browser fa-3x"></i>
             </div>
             <div class="col my-auto">
-                <img src="https://d33wubrfki0l68.cloudfront.net/d79d4fd7192ff53392ab5cf88fd7dc425ea8d8e1/35948/assets/img/tracing@3x.svg"/>
+                    <i class="fal fa-share-square fa-3x"></i>
             </div>
             <div class="col my-auto">
-                <img src="https://d33wubrfki0l68.cloudfront.net/e0c66b2a30df1a57f4796c490d947e585390c8b8/735ff/assets/img/metrics@3x.svg"/>
+                    <i class="fal fa-chart-line fa-3x"></i>
             </div>
             <div class="col my-auto">
-                <img src="https://d33wubrfki0l68.cloudfront.net/7e3dd2179ffef616c7317d788051f315e5dc1b76/89924/assets/img/https@3x.svg"/>
+                    <i class="fal fa-lock-alt fa-3x"></i>
             </div>
         </div>
 
         <div class="row text-center">
             <div class="col">
-                <h3>Auto Discovery</h3>
+                <h3>Modern Web UI</h3>
             </div>
             <div class="col">
-                <h3>Tracing</h3>
+                <h3>Live migration</h3>
             </div>
             <div class="col">
-                <h3>Metrics</h3>
+                <h3>Scale</h3>
             </div>
             <div class="col">
-                <h3>HTTPS</h3>
+                <h3>Secure</h3>
             </div>
         </div>
 
         <div class="row text-center">
             <div class="col legend d-none d-sm-block">
-                <p>Kubernetes, Mesos, Docker Swarm, Marathon, Rancher, ...</p>
+                <p>Use web based Xen Orchestra to manage your hosts</p>
             </div>
             <div class="col legend d-none d-sm-block">
-                <p>Open Tracing, Jaeger & Zipkin</p>
+                <p>Live migrate your VMs all around the world, without interruption</p>
             </div>
             <div class="col legend d-none d-sm-block">
-                <p>Prometheus, Data Dog, StatsD, InfluxDB, ...</p>
+                <p>Grow your own Cloud with more hosts when needed</p>
             </div>
             <div class="col legend d-none d-sm-block">
-                <p>Let's Encrypt, ACME, custom certificates, ...</p>
+                <p>Control your VMs on your own baremetal, no neighbors</p>
             </div>
         </div>
     </section>
 
-    <section class="traefik-screenshots">
+    <section class="xcp-ng-screenshots">
         <div class="row justify-content-center">
             <div class="col-10">
-                <div id="carouselTraefikScreenshots" class="carousel slide" data-ride="carousel">
+                <div id="carouselxcp-ngScreenshots" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
-                        <li data-target="#carouselTraefikScreenshots" data-slide-to="0" class="active"></li>
-                        <li data-target="#carouselTraefikScreenshots" data-slide-to="1"></li>
+                        <li data-target="#carouselxcp-ngScreenshots" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselxcp-ngScreenshots" data-slide-to="1"></li>
                     </ol>
 
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="https://d33wubrfki0l68.cloudfront.net/6841fffe04fe83390c6dc168b1e29f576d7a9ae6/2d945/assets/img/web.frontend.png" class="img-fluid">
+                            <img src="assets/img/xodashboard.png" alt="" class="img-fluid">
                             <div class="carousel-caption d-none d-md-block">
-                                <h5>The Web UI</h5>
-                                <p>Shows configured frontend, backends, servers, options ...</p>
+                                <h5>With Xen Orchestra Web UI</h5>
+                                <p>A glance on your whole XCP-ng infrastructure on a dashboard page!</p>
                             </div>
                         </div>
 
                         <div class="carousel-item">
-                            <img src="https://d33wubrfki0l68.cloudfront.net/b852fca2cc81a8a475946b2f120e6c12d93c3d2d/927a2/assets/img/traefik-health.png" alt="" class="img-fluid">
+                            <img src="assets/img/xolist.png" alt="" class="img-fluid">
                             <div class="carousel-caption d-none d-md-block">
-                                <h5>The Web UI</h5>
-                                <p>Shows configured frontend, backends, servers, options ...</p>
+                                <h5>With Xen Orchestra Web UI</h5>
+                                <p>List your VMs with statistics, IP addresses, CPU/RAM count…</p>
                             </div>
                         </div>
                     </div>
 
-                    <a class="carousel-control-prev" href="#carouselTraefikScreenshots" role="button" data-slide="prev">
+                    <a class="carousel-control-prev" href="#carouselxcp-ngScreenshots" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="sr-only">Previous</span>
                     </a>
 
-                    <a class="carousel-control-next" href="#carouselTraefikScreenshots" role="button" data-slide="next">
+                    <a class="carousel-control-next" href="#carouselxcp-ngScreenshots" role="button" data-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
             </div>
         </div>
-
-        <div class="row justify-content-center pt-5 mt-md-5">
-            <div class="col mt-5">
-                <img src="https://d33wubrfki0l68.cloudfront.net/7c5fd7d38c371e23cdff059e6cebb10292cd441c/7d420/assets/img/traefik-architecture.svg"/>
-            </div>
-        </div>
-
     </section>
 
-    <section class="traefik-community">
+    <section class="xcp-ng-community">
         <div class="row justify-content-center">
             <h2><a name="community"></a>We Are Thousands</h2>
         </div>
 
         <div class="row text-center justify-content-center">
             <div class="col-5 col-sm-3 p-3 p-sm-1">
-                <a href="https://twitter.com/xcpng"><span class="fa fa-twitter"></span><br/>@xcpng</a>
+                <a href="https://twitter.com/xcpng"><i class="fab fa-twitter fa-3x"></i><br/>@xcpng</a>
             </div>
             <div class="col-5 col-sm-3 p-3 p-sm-1">
-                <a href="https://github.com/containous/traefik"><span class="fa fa-github"></span><br/>xcpng/xcp</a>
+                <a href="https://github.com/containous/xcp-ng"><i class="fab fa-github fa-3x"></i><br/>xcpng/xcp</a>
             </div>
             <div class="col-5 col-sm-3 p-3 p-sm-1">
-                <a href="https://webchat.freenode.net/"><span class="fa fa-slack"></span><br/>#xcp-ng on Freenode</a>
+                <a href="https://webchat.freenode.net/"><i class="fab fa-slack-hash fa-3x"></i><br/>#xcp-ng on Freenode</a>
             </div>
             <div class="col-5 col-sm-3 p-3 p-sm-1">
-                <a href="https://xcp-ng.org/forum"><span class="fa fa-stack-overflow"></span><br/>Forum</a>
+                <a href="https://xcp-ng.org/forum"><i class="fab fa-stack-overflow fa-3x"></i><br/>Forum</a>
             </div>
         </div>
 
         <div class="row text-center">
             <div class="col d-none d-md-block">
-                <p>Don't miss any announcement and follow XCP-ng on Twitter!</p>
+                <p>Don't miss anything and follow XCP-ng on Twitter!</p>
             </div>
             <div class="col d-none d-md-block">
-                <p>Fork the project, ask for new features, report issues, and better:
-                    contribute to the project!</p>
+                <p>Ask for new features, report issues, and better:
+                    contribute to the project! Check our GitHub now :)</p>
             </div>
             <div class="col d-none d-md-block">
                 <p>Users and maintainers are connected all day long.
@@ -288,7 +306,7 @@
         </div>
     </section>
 
-    <section class="traefik-easy-install container-fluid">
+    <section class="xcp-ng-easy-install container-fluid">
         <div class="row justify-content-center">
             <h2><a name="easy-to-install"></a>Easy To Install</h2>
         </div>
@@ -297,57 +315,77 @@
                 <a class="nav-link active" id="v-pills-download-tab" data-toggle="pill" href="#v-pills-download"
                    role="tab" aria-controls="v-pills-download" aria-selected="true">Download</a>
                 <a class="nav-link" id="v-pills-docker-image-tab" data-toggle="pill" href="#v-pills-docker-image"
-                   role="tab" aria-controls="v-pills-docker-image" aria-selected="false">Docker Image</a>
+                   role="tab" aria-controls="v-pills-docker-image" aria-selected="false">Net install</a>
                    <a class="nav-link" id="v-pills-helm-tab" data-toggle="pill" href="#v-pills-helm"
-                      role="tab" aria-controls="v-pills-helm" aria-selected="false">Helm</a>
+                      role="tab" aria-controls="v-pills-helm" aria-selected="false">Upgrade from XenServer</a>
                 <a class="nav-link" id="v-pills-from-sources-tab" data-toggle="pill" href="#v-pills-from-sources"
-                   role="tab" aria-controls="v-pills-from-sources" aria-selected="false">From Source</a>
+                   role="tab" aria-controls="v-pills-from-sources" aria-selected="false">Web UI</a>
             </div>
 
             <div class="col-8 tab-content" id="v-pills-tabContent">
                 <div class="tab-pane fade show active" id="v-pills-download" role="tabpanel"
                      aria-labelledby="v-pills-download-tab">
                     <p>
-                        The simple way: grab the latest binary from the <a href="https://github.com/containous/traefik/releases">releases page</a> and just run it with
-                        <a href="https://raw.githubusercontent.com/containous/traefik/master/traefik.sample.toml">
-                            the sample configuration file
-                        </a>:
+                        Grab the <a href="https://xcp-ng.org/7.5/xcp-ng-7.5.0-2.iso">latest ISO here</a>, create your bootable USB key with:
                     </p>
                     <div class="code p-1 m-1 p-sm-3 m-sm-3">
-                        ./traefik --configFile=&#8203;traefik.toml
+                        dd if=xcp-ng-7.5.0-2.iso of=/dev/sdX bs=8M status=progress oflag=direct
                     </div>
+                    <p>Then just boot on it!</p>
+                    <p>On Windows, you can use <a href="https://rufus.akeo.ie/">Rufus</a> to create the bootable USB stick.</p>
+                    <pre>MD5: 3723d059649baf7e94824da2da2c1bbc</pre>
+                    <pre>SHA256: f45388c8835fbb75141df004112e20861b4828872811b40ba815c506f724a798</pre>
                 </div>
                 <div class="tab-pane fade" id="v-pills-docker-image" role="tabpanel"
                      aria-labelledby="v-pills-docker-image-tab">
-                    <p>Using the <a href="https://hub.docker.com/r/_/traefik/">official docker image</a>:</p>
+                    <p>Using the <a href="https://xcp-ng.org/7.5/xcp-ng-7.5.0-2-netinstall.iso">Net install ISO</a> (only 100MiB!), create your bootable USB key:</p>
                     <div class="code p-1 m-1 p-sm-3 m-sm-3">
-                        docker run -d -p 8080:8080 -p 80:80 -v $PWD/&#8203;traefik.toml:&#8203;/etc/&#8203;traefik/&#8203;traefik.toml traefik
+                            dd if=xcp-ng-7.5.0-2-netinstall.iso of=/dev/sdX bs=8M status=progress oflag=direct
+                        </div>
+                        <p>Then just boot on it!</p>
+                        <p>On Windows, you can use <a href="https://rufus.akeo.ie/">Rufus</a> to create the bootable USB stick.</p>
+                        <pre>MD5: 438f4f74380c24b4b5d13b514014e9f0</pre>
+                        <pre>SHA256: a0b946330467d3bf5e685f67ee65fe80a9e1b4a83f51c3226c3e618d9f7115c4</pre>
                     </div>
-                </div>
                 <div class="tab-pane fade" id="v-pills-helm" role="tabpanel"
                      aria-labelledby="v-pills-helm-tab">
-                    <p>Install using <a href="https://helm.sh/">Helm</a>:</p>
+                    <p>Just insert the ISO and follow instructions. You'll have an <b>upgrade panel</b>, just select it and that's it!</p>
+                    <p>After a reboot, you'll be on XCP-ng while keeping all your previous settings (Storage, VMs…)</p>
+                    <img src="assets/img/upgradexs.png"><br/><br/>
+                    <h4>No physical access to the XenServer host?</h4>
+                    <p>If you do not have access to your server or remote KVM in order to upgrade using the interactive ISO installer, you can initiate an automatic reboot and upgrade process using the following procedure:</p>
+                    <p>Unpack/extract the XCP-ng ISO to a folder on a webserver. Then get the UUID of your host by running the below command:</p>
                     <div class="code p-1 m-1 p-sm-3 m-sm-3">
-                        helm install stable/traefik
+                        xe host-list
                     </div>
+                    <p>Using that host UUID, as well as the URL to the folder hosting the unpacked XCP-ng ISO, run the following command to test access:</p>
+                    <div class="code p-1 m-1 p-sm-3 m-sm-3">
+                        xe host-call-plugin plugin=prepare_host_upgrade.py host-uuid=750d9176-6468-4a08-8647-77a64c09093e fn=testUrl args:url=http://<ip-address>/xcp-ng/unpackedexample/
+                    </div>
+                    <p>The returned output must be true to continue.
+                    Now tell the host to automatically boot to the ISO and upgrade itself on next reboot (using the UUID and URL from before):</p>
+                    <div class="code p-1 m-1 p-sm-3 m-sm-3">
+                        xe host-call-plugin plugin=prepare_host_upgrade.py host-uuid=750d9176-6468-4a08-8647-77a64c09093e fn=main args:url=http://<ip-address>/xcp-ng/unpackedexample/
+                    </div>
+                    <p>The output should also be true. It has created a temporary entry in the grub bootloader which will automatically load the upgrade ISO on the next boot.</p>
+                    <p>It then automatically runs the XCP-ng upgrade with no user intervention required. It will also backup your existing XenServer dom0 install to the secondary backup partition, just like the normal upgrade.</p>
+                    <p>To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it’s available, but if not, it should proceed fine and boot into upgraded XCP-ng in 10 to 20 minutes.</p>
                 </div>
                 <div class="tab-pane fade" id="v-pills-from-sources" role="tabpanel"
                      aria-labelledby="v-pills-from-sources-tab">
-                    <p>Clone the official repository from github:</p>
+                    <p>Just type this into your XCP-ng console:</p>
                     <div class="code p-1 m-1 p-sm-3 m-sm-3">
-                        git clone git@github.com:&#8203;containous/&#8203;traefik.git
+                        bash -c "$(curl -s http://xoa.io/deploy)"
                     </div>
-                    <p>And then follow the
-                        <a href="https://github.com/containous/traefik/blob/master/CONTRIBUTING.md#build-tr%C3%A6fik">
-                            how to compile instructions
-                        </a>from the contributing documentation.
+                    <p>This will deploy a small VM doing all the management and backup for your XCP-ng. Follow instructions given on the screen, and you're up and running!</p>
+                    <p>If you want to learn more about Xen Orchestra, please <a href="https://xen-orchestra.com">visit the official website.</a></p>
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="traefik-commercial-support">
+    <section class="xcp-ng-commercial-support">
         <div class="row justify-content-center">
             <div class="col-10 text-center">
                 <h2>Commercial Support</h2>
@@ -355,15 +393,15 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-4 d-none d-md-block text-center">
-                <a href="https://containo.us/">
-                    <img src="https://d33wubrfki0l68.cloudfront.net/7c7e7c98fdee988065585d30401dca91692f3405/25409/assets/img/containous_logo@2x.png" class="img-fluid" width="60%"/>
+                <a href="https://xcp-ng.com/">
+                    <img src="assets/img/vateslogo.png" class="img-fluid" width="60%"/>
                 </a>
             </div>
 
             <div class="col-10 col-md-6 text-md-left text-center">
-                <p>Containous is the company that supports the development of Traefik. They provide professionnal
+                <p><i>Vates</i> is the main company that supports the development of XCP-ng. They provide professional
                     service to assure business they get the most out of the solution.</p>
-                <a class="btn btn-primary" href="https://containo.us/services" role="button">Learn More</a>
+                <a class="btn btn-primary" href="https://xcp-ng.com" role="button">Learn More</a>
             </div>
         </div>
     </section>
@@ -371,50 +409,55 @@
     <section class="they-trust-containous container-fluid text-center bg-light">
         <div class="row">
             <div class="col wow fadeInDown" data-wow-delay="1s">
-                <h1>They Trust Træfik for Their Infrastructure</h1>
+                <h1>Our Platinum Sponsors</h1>
             </div>
         </div>
         <div class="row d-flex justify-content-center justify-content-sm-between">
             <div class="col-6 col-sm-3 my-auto px-4 py-2">
-                <a href="https://newrelic.com">
-                    <img class="img-fluid" src="https://d33wubrfki0l68.cloudfront.net/e2f31f7189ac592f3a2cae72ac2f23598ed95e28/ce798/assets/img/partners/new-relic.png" alt="New Relic" />
-                </a>
-            </div>
-            <div class="col-6 col-sm-3 my-auto  py-2">
-                <a href="https://www.mozilla.org">
-                    <img class="img-fluid" src="https://d33wubrfki0l68.cloudfront.net/9b0a0d7d896f3b8b28655974a0c42a4ea89bb68b/b0fcb/assets/img/partners/mozilla.svg" alt="Mozilla" />
+                <a href="https://www.axians.de/">
+                    <img class="img-fluid" src="assets/img/sponsors/axians-logo.png" alt="Axians" />
                 </a>
             </div>
             <div class="col-6 col-sm-3 my-auto px-4  py-2">
-                <a href="https://rocket.chat">
-                    <img class="img-fluid" src="https://d33wubrfki0l68.cloudfront.net/61ec17ae02debdca85bc845d8b97e36f8ee060d2/a6593/assets/img/partners/rocket-chat.png" alt="Rocket Chat" />
+                <a href="https://www.one-in.com.pe/">
+                    <img class="img-fluid" src="assets/img/sponsors/one-in-com.png" alt="One In Com" />
                 </a>
             </div>
             <div class="col-6 col-sm-3 my-auto py-2">
-                <a href="https://www.holidaycheck.de">
-                    <img class="img-fluid" src="https://d33wubrfki0l68.cloudfront.net/35ff56b8978aac59f622b2caf88e23e21ed546e1/45566/assets/img/partners/holiday-check.png" alt="Holiday Check" />
+                <a href="https://www.hostnet.de/start.html">
+                    <img class="img-fluid" src="assets/img/sponsors/hostnet.png" alt="Hostnet" />
                 </a>
+            </div>
+            <div class="col-6 col-sm-3 my-auto py-2">
+                <a href="https://www.oxeva.fr/">
+                    <img class="img-fluid" src="assets/img/sponsors/Logo-Oxeva.png" alt="Oxeva" />
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col wow fadeInDown text-center" data-wow-delay="1s">
+                <a class="btn btn-primary" href="#" role="button">Discover all our sponsors</a>
             </div>
         </div>
     </section>
 
 
-    <section class="traefik-footer container-fluid">
+    <section class="xcp-ng-footer container-fluid">
         <div class="d-flex row">
             <div class="mr-auto order-10 order-sm-0">
-                Containous • Copyright © 2016-2018
+                Vates • Copyright © 2012-2018
             </div>
             <div class="order-1">
-                <a href="https://github.com/containous/traefik/">Github</a>
+                <a href="https://github.com/xcp-ng">Github</a>
             </div>
             <div class="order-2">
-                <a href="https://docs.traefik.io">Documentation</a>
+                <a href="https://github.com/xcp-ng/xcp/wiki">Documentation</a>
             </div>
             <div class="order-3">
                 <a href="#community">Community</a>
             </div>
             <div class="order-4">
-                <a href="https://containo.us">Containous</a>
+                <a href="https://vates.fr">Vates</a>
             </div>
         </div>
     </section>
@@ -431,7 +474,7 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script src='js/xcp-ng.min.js'></script>
-<script type='text/javascript' src='https://d33wubrfki0l68.cloudfront.net/js/3420d874277d78ec07e30e531387236d40d497e1/js/popper.min.js'></script>
+<script type='text/javascript' src='js/popper.min.js'></script>
 </body>
 
 </html>
