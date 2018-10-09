@@ -314,12 +314,12 @@
             <div class="col col-sm-3 nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-download-tab" data-toggle="pill" href="#v-pills-download"
                    role="tab" aria-controls="v-pills-download" aria-selected="true">Download</a>
-                <a class="nav-link" id="v-pills-docker-image-tab" data-toggle="pill" href="#v-pills-docker-image"
-                   role="tab" aria-controls="v-pills-docker-image" aria-selected="false">Net install</a>
-                   <a class="nav-link" id="v-pills-helm-tab" data-toggle="pill" href="#v-pills-helm"
-                      role="tab" aria-controls="v-pills-helm" aria-selected="false">Upgrade from XenServer</a>
-                <a class="nav-link" id="v-pills-from-sources-tab" data-toggle="pill" href="#v-pills-from-sources"
-                   role="tab" aria-controls="v-pills-from-sources" aria-selected="false">Web UI</a>
+                <a class="nav-link" id="v-pills-net-install-tab" data-toggle="pill" href="#v-pills-net-install"
+                   role="tab" aria-controls="v-pills-net-install" aria-selected="false">Net install</a>
+                   <a class="nav-link" id="v-pills-upgrade-tab" data-toggle="pill" href="#v-pills-upgrade"
+                      role="tab" aria-controls="v-pills-upgrade" aria-selected="false">Upgrade from XenServer</a>
+                <a class="nav-link" id="v-pills-from-xo-tab" data-toggle="pill" href="#v-pills-from-xo"
+                   role="tab" aria-controls="v-pills-from-xo" aria-selected="false">Web UI</a>
             </div>
 
             <div class="col-8 tab-content" id="v-pills-tabContent">
@@ -336,8 +336,8 @@
                     <pre>MD5: 3723d059649baf7e94824da2da2c1bbc</pre>
                     <pre>SHA256: f45388c8835fbb75141df004112e20861b4828872811b40ba815c506f724a798</pre>
                 </div>
-                <div class="tab-pane fade" id="v-pills-docker-image" role="tabpanel"
-                     aria-labelledby="v-pills-docker-image-tab">
+                <div class="tab-pane fade" id="v-pills-net-install" role="tabpanel"
+                     aria-labelledby="v-pills-net-install-tab">
                     <p>Using the <a href="https://xcp-ng.org/7.5/xcp-ng-7.5.0-2-netinstall.iso">Net install ISO</a> (only 100MiB!), create your bootable USB key:</p>
                     <div class="code p-1 m-1 p-sm-3 m-sm-3">
                             dd if=xcp-ng-7.5.0-2-netinstall.iso of=/dev/sdX bs=8M status=progress oflag=direct
@@ -347,8 +347,8 @@
                         <pre>MD5: 438f4f74380c24b4b5d13b514014e9f0</pre>
                         <pre>SHA256: a0b946330467d3bf5e685f67ee65fe80a9e1b4a83f51c3226c3e618d9f7115c4</pre>
                     </div>
-                <div class="tab-pane fade" id="v-pills-helm" role="tabpanel"
-                     aria-labelledby="v-pills-helm-tab">
+                <div class="tab-pane fade" id="v-pills-upgrade" role="tabpanel"
+                     aria-labelledby="v-pills-upgrade-tab">
                     <p>Just insert the ISO and follow instructions. You'll have an <b>upgrade panel</b>, just select it and that's it!</p>
                     <p>After a reboot, you'll be on XCP-ng while keeping all your previous settings (Storage, VMs…)</p>
                     <img src="assets/img/upgradexs.png"><br/><br/>
@@ -371,8 +371,8 @@
                     <p>It then automatically runs the XCP-ng upgrade with no user intervention required. It will also backup your existing XenServer dom0 install to the secondary backup partition, just like the normal upgrade.</p>
                     <p>To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it’s available, but if not, it should proceed fine and boot into upgraded XCP-ng in 10 to 20 minutes.</p>
                 </div>
-                <div class="tab-pane fade" id="v-pills-from-sources" role="tabpanel"
-                     aria-labelledby="v-pills-from-sources-tab">
+                <div class="tab-pane fade" id="v-pills-from-xo" role="tabpanel"
+                     aria-labelledby="v-pills-from-xo-tab">
                     <p>Just type this into your XCP-ng console:</p>
                     <div class="code p-1 m-1 p-sm-3 m-sm-3">
                         bash -c "$(curl -s http://xoa.io/deploy)"
