@@ -183,7 +183,7 @@ a {
 }
 
 a:hover {
-    color: #27788c;
+    color: #cc584c;
     text-decoration: underline
 }
 
@@ -5830,7 +5830,7 @@ a.bg-info:focus,
 a.bg-info:hover,
 button.bg-info:focus,
 button.bg-info:hover {
-    background-color: #117a8b!important
+    background-color: #cc584c!important
 }
 
 .bg-warning {
@@ -5863,18 +5863,18 @@ a.bg-light:focus,
 a.bg-light:hover,
 button.bg-light:focus,
 button.bg-light:hover {
-    background-color: #e6e6e6!important
+    background-color: #cc584c!important
 }
 
 .bg-dark {
-    background-color: #343a40!important
+    background-color: #cc584c!important
 }
 
 a.bg-dark:focus,
 a.bg-dark:hover,
 button.bg-dark:focus,
 button.bg-dark:hover {
-    background-color: #1d2124!important
+    background-color: #cc584c!important
 }
 
 .bg-gradient-primary {
@@ -8390,7 +8390,7 @@ a.text-light:hover {
 
 a.text-dark:focus,
 a.text-dark:hover {
-    color: #1d2124!important
+    color: #cc584c!important
 }
 
 .text-muted {
@@ -8875,7 +8875,7 @@ nav a {
 
 .xcp-ng-easy-install {
     background-color: #fff;
-    //height: 26em
+    height: 30em
 }
 
 @media (max-width:575.9px) {

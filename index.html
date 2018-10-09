@@ -35,6 +35,8 @@
         /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
         _paq.push(['trackPageView']);
         _paq.push(['enableLinkTracking']);
+        _paq.push(['addDownloadExtensions', "iso"]);
+        _paq.push(['trackPageView']);
         (function() {
         var u="//piwik.vates.fr/";
         _paq.push(['setTrackerUrl', u+'piwik.php']);
@@ -212,7 +214,7 @@
 
         <div class="row text-center">
             <div class="col legend d-none d-sm-block">
-                <p>Use web based Xen Orchestra to manage your hosts</p>
+                <p>Use the powerful web based <a href="https://xen-orchestra.com">Xen Orchestra</a> to manage your hosts</p>
             </div>
             <div class="col legend d-none d-sm-block">
                 <p>Live migrate your VMs all around the world, without interruption</p>
@@ -269,7 +271,7 @@
 
     <section class="xcp-ng-community">
         <div class="row justify-content-center">
-            <h2><a name="community"></a>We Are Thousands</h2>
+            <h2><a name="community"></a>Join our fast growing community</h2>
         </div>
 
         <div class="row text-center justify-content-center">
@@ -292,16 +294,13 @@
                 <p>Don't miss anything and follow XCP-ng on Twitter!</p>
             </div>
             <div class="col d-none d-md-block">
-                <p>Ask for new features, report issues, and better:
-                    contribute to the project! Check our GitHub now :)</p>
+                <p>GitHub is the place to report issues and contribute to the project!</p>
             </div>
             <div class="col d-none d-md-block">
-                <p>Users and maintainers are connected all day long.
-                    You have a question? You'll find an answer there.</p>
+                <p>Chat with other XCP-ng users and even core contributors. You have a question? You'll find an answer there.</p>
             </div>
             <div class="col d-none d-md-block">
-                <p>Users and maintainers are connected all day long.
-                    You have a question? You'll find an answer there.</p>
+                <p>This is where the community is the most active. Tons of good advices, use cases and developers to assist there.</p>
             </div>
         </div>
     </section>
@@ -326,7 +325,7 @@
                 <div class="tab-pane fade show active" id="v-pills-download" role="tabpanel"
                      aria-labelledby="v-pills-download-tab">
                     <p>
-                        Grab the <a href="https://xcp-ng.org/7.5/xcp-ng-7.5.0-2.iso">latest ISO here</a>, create your bootable USB key with:
+                        Grab the <a href="https://xcp-ng.org/7.5/xcp-ng-7.5.0-2.iso" onclick="_paq.push(['trackEvent', 'Download', 'full']);">latest ISO here</a>, create your bootable USB key with:
                     </p>
                     <div class="code p-1 m-1 p-sm-3 m-sm-3">
                         dd if=xcp-ng-7.5.0-2.iso of=/dev/sdX bs=8M status=progress oflag=direct
@@ -338,7 +337,7 @@
                 </div>
                 <div class="tab-pane fade" id="v-pills-net-install" role="tabpanel"
                      aria-labelledby="v-pills-net-install-tab">
-                    <p>Using the <a href="https://xcp-ng.org/7.5/xcp-ng-7.5.0-2-netinstall.iso">Net install ISO</a> (only 100MiB!), create your bootable USB key:</p>
+                    <p>Using the <a href="https://xcp-ng.org/7.5/xcp-ng-7.5.0-2-netinstall.iso" onclick="_paq.push(['trackEvent', 'Download', 'netinstall']);">Net install ISO</a> (only 100MiB!), create your bootable USB key:</p>
                     <div class="code p-1 m-1 p-sm-3 m-sm-3">
                             dd if=xcp-ng-7.5.0-2-netinstall.iso of=/dev/sdX bs=8M status=progress oflag=direct
                         </div>
