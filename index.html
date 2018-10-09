@@ -353,23 +353,7 @@
                     <p>After a reboot, you'll be on XCP-ng while keeping all your previous settings (Storage, VMs…)</p>
                     <img src="assets/img/upgradexs.png"><br/><br/>
                     <h4>No physical access to the XenServer host?</h4>
-                    <p>If you do not have access to your server or remote KVM in order to upgrade using the interactive ISO installer, you can initiate an automatic reboot and upgrade process using the following procedure:</p>
-                    <p>Unpack/extract the XCP-ng ISO to a folder on a webserver. Then get the UUID of your host by running the below command:</p>
-                    <div class="code p-1 m-1 p-sm-3 m-sm-3">
-                        xe host-list
-                    </div>
-                    <p>Using that host UUID, as well as the URL to the folder hosting the unpacked XCP-ng ISO, run the following command to test access:</p>
-                    <div class="code p-1 m-1 p-sm-3 m-sm-3">
-                        xe host-call-plugin plugin=prepare_host_upgrade.py host-uuid=750d9176-6468-4a08-8647-77a64c09093e fn=testUrl args:url=http://<ip-address>/xcp-ng/unpackedexample/
-                    </div>
-                    <p>The returned output must be true to continue.
-                    Now tell the host to automatically boot to the ISO and upgrade itself on next reboot (using the UUID and URL from before):</p>
-                    <div class="code p-1 m-1 p-sm-3 m-sm-3">
-                        xe host-call-plugin plugin=prepare_host_upgrade.py host-uuid=750d9176-6468-4a08-8647-77a64c09093e fn=main args:url=http://<ip-address>/xcp-ng/unpackedexample/
-                    </div>
-                    <p>The output should also be true. It has created a temporary entry in the grub bootloader which will automatically load the upgrade ISO on the next boot.</p>
-                    <p>It then automatically runs the XCP-ng upgrade with no user intervention required. It will also backup your existing XenServer dom0 install to the secondary backup partition, just like the normal upgrade.</p>
-                    <p>To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it’s available, but if not, it should proceed fine and boot into upgraded XCP-ng in 10 to 20 minutes.</p>
+                    <p>Please <a href="https://github.com/xcp-ng/xcp/wiki/Upgrade-Howto#upgrade-from-xenserver">check our documentation</a> for advanced upgrade cases.</p>
                 </div>
                 <div class="tab-pane fade" id="v-pills-from-xo" role="tabpanel"
                      aria-labelledby="v-pills-from-xo-tab">
