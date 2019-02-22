@@ -10,6 +10,7 @@
     <link rel='stylesheet' href='assets/css/xcp-ng.css'/>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:light&v1' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-9ralMzdK1QYsk4yBY680hmsb4/hJ98xK3w0TIaJ3ll4POWpWUYaA2bRjGGujGT8w" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.0.0/magnific-popup.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="/favicon.png">
     <meta name="theme-color" content="#ffffff">
 
@@ -170,6 +171,24 @@
                 </div>
             </div>
         </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <h1 class="text-center display-4 mt-5">
+              Solodev Web Design & Content Management Software
+            </h1>
+            <p class="text-center mt-5">
+              <a href="#headerPopup" id="headerVideoLink" target="_blank" class="btn btn-outline-danger popup-modal">See Why Solodev WXP</a>
+            </p>
+            <div id="headerPopup" class="mfp-hide embed-responsive embed-responsive-21by9">
+              <iframe width="854" height="480" src="https://www.youtube.com/embed/4HVg15YWhXg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="xcp-ng-features container-fluid">
@@ -472,9 +491,17 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.0.0/jquery.magnific-popup.min.js"></script>
 <script src='js/xcp-ng.min.js'></script>
 <script type='text/javascript' src='js/popper.min.js'></script>
+<script>
+$(document).ready(function() {
+  $('#headerVideoLink').magnificPopup({
+    type:'inline',
+    midClick: true // Allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source in href.
+  });
+});
+</script>
 </body>
 
 </html>
-
