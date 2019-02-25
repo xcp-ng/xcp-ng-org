@@ -10,6 +10,7 @@
     <link rel='stylesheet' href='assets/css/xcp-ng.css'/>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:light&v1' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-9ralMzdK1QYsk4yBY680hmsb4/hJ98xK3w0TIaJ3ll4POWpWUYaA2bRjGGujGT8w" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.0.0/magnific-popup.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="/favicon.png">
     <meta name="theme-color" content="#ffffff">
 
@@ -382,6 +383,31 @@
                 </div>
             </div>
         </div>
+
+    </section>
+
+    <section class="xcp-ng-easy-install container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-10 text-center">
+                <h2>Success Story - From Kickstarter to Datacenter</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+
+            <div class="col-10 col-md-6 text-md-left text-center">
+                <p>Initially a fork of XenServer, XCP-ng made something some people thought would be impossible: gathering a large community around a new virtualization platform in those modern days.</p>
+                <p>
+                  <a class="btn btn-primary" href="#headerPopup" id="headerVideoLink" target="_blank" class="button">See the video</a>
+                </p>
+                <div id="headerPopup" class="mfp-hide embed-responsive embed-responsive-21by9">
+                  <iframe width="854" height="480" src="https://www.youtube.com/embed/VpGC5zuLjSs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="col-4 d-none d-md-block text-center">
+              <img src="assets/img/logoyt.png" class="img-fluid" width="80%"/>
+            </div>
+
+        </div>
     </section>
 
     <section class="xcp-ng-commercial-support">
@@ -472,9 +498,17 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.0.0/jquery.magnific-popup.min.js"></script>
 <script src='js/xcp-ng.min.js'></script>
 <script type='text/javascript' src='js/popper.min.js'></script>
+<script>
+$(document).ready(function() {
+  $('#headerVideoLink').magnificPopup({
+    type:'inline',
+    midClick: true // Allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source in href.
+  });
+});
+</script>
 </body>
 
 </html>
-
