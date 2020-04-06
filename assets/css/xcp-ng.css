@@ -207,7 +207,7 @@ kbd,
 pre,
 samp {
     font-family: monospace, monospace;
-    font-size: 1em
+    font-size: 0.85em !important;
 }
 
 pre {
@@ -8899,9 +8899,10 @@ nav a {
     border-radius: 4px;
     background-color: #263740;
     color: #fff;
-    font-family: Courier;
-    font-size: 1em;
-    font-weight: 400
+    font-family: "Lucida Console", Courier, monospace;;
+    font-size: 0.85rem;
+    font-weight: 400;
+    padding-bottom: 0.65rem !important;
 }
 
 .xcp-ng-commercial-support {
