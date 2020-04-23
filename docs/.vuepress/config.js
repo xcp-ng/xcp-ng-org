@@ -1,5 +1,6 @@
 module.exports = {
   themeConfig: {
+    base: '/docs/',
     smoothScroll: true,
     logo: 'https://xcp-ng.org/assets/img/smalllogo.png',
     lastUpdated: 'Last Updated', // add latest Git commit modification for each file
