@@ -3,7 +3,7 @@ module.exports = {
     smoothScroll: true,
     logo: 'https://xcp-ng.org/assets/img/smalllogo.png',
     lastUpdated: 'Last Updated', // add latest Git commit modification for each file
-    repo: 'xcp-ng/xcp', // point to the GH repo
+    repo: 'xcp-ng/xcp-ng-org', // point to the GH repo
     editLinks: true, // display link for people to edit a page
     editLinkText: 'Help us to improve this page!', // link text
     docsDir: 'docs',
