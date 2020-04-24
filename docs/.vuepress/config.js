@@ -46,6 +46,7 @@ module.exports = {
           ['/backup', 'Backup'],
           ['/cloud', 'Cloud'],
           ['/hosting', 'Hosting'],
+          ['/migratetoxcpng.md', 'Migrate to XCP-ng'],
         ]
       },
       {

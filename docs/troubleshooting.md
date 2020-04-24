@@ -8,7 +8,7 @@ If you have a problem on XCP-ng, there's 2 options:
 ## The 3-Step-Guide
 Here is our handy **3-Step-Guide**:
 
-1. Check the [Logfiles](https://github.com/xcp-ng/xcp/wiki/Logfiles). Check your settings. [Read below](#topics)... if you already did, proceed to Step 2.
+1. Check the [Logfiles](troubleshooting.md#logfiles). Check your settings. [Read below](troubleshooting.md#common-problems)... if you already did, proceed to Step 2.
 2. Get help at our [Forum](https://xcp-ng.org/forum) or get help at IRC _#xcp-ng_ on [Freenode](https://webchat.freenode.net) and provide as much information as you can:
     * ☑️ What did you **exactly** do to expose the bug?
     * :rocket: XCP-ng Version
@@ -20,11 +20,72 @@ Here is our handy **3-Step-Guide**:
 3. Share your solution ([forum](https://xcp-ng.org/forum), [wiki](https://github.com/xcp-ng/xcp/wiki)) - others can benefit from your experience.
     * And we are therefore officially proud of you! :heart: 
 
-## The 1-Step-Guide
+## Pro Support
 
 If you have subscribed to [Pro support](https://xcp-ng.com/), well, don't hesitate to use it!
 
+## Log files 
 
+Like in other linux/unix systems the logfiles are located in `/var/log`
+
+### General log
+
+`/var/log/daemon.log` 
+
+Output of various running daemons involved in XCP-ng's tasks. Examples: output of `xenopsd` which handles the communication with the VMs, of executables involved in live migration and storage motion, and more...
+
+### XAPI's log
+
+`/var/log/xensource.log`
+
+Contains the output of the XAPI toolstack.
+
+### Storage related (eg. coalescing snapshots)
+
+`/var/log/SMlog`
+
+### Kernel messages
+
+`/var/log/kern.log`
+
+All kernel logs since last boot: type `dmesg`.
+
+### Installation logs and debug information
+
+`/var/log/installer/`
+
+The main log file is `/var/log/installer/install-log`
+
+### Kernel crash logs
+
+In case of a host crash, if it is kernel-related, you should find logs in `/var/crash`
+
+### Produce a status report
+
+To help someone else identify an issue or reproduce a bug, you can generate a full status report containing all log files, details about your configuration and more.
+
+```
+xen-bugtool --yestoall
+```
+
+Then upload the resulting archive somewhere. It may contain sensitive information about your setup, so it may be better to upload it to a private area and give the link only to those you trust to analyze it.
+
+### During installation
+
+You can reach a shell with ALT+F2 (or ALT+RIGHT) and a logs console with ALT+F3 (or ALT+RIGHT twice).
+
+Full installation log can be read with `view /tmp/install-log`.
+
+### XCP-ng Center
+
+You can display the logfiles via menu `Help` -> `View XCP-ng Center Log Files`.
+
+The logfiles are located in `C:\Users\<user>\AppData\Roaming\XCP-ng\XCP-ng Center\logs`.
+
+### Windows VM
+
+#### (PV-)Driver install log
+`C:\Windows\INF\setupapi.dev.log`
 
 ## Common Problems
 
