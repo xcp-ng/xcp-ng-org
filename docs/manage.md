@@ -12,6 +12,8 @@ All XCP-ng clients are communicating with the pool master, through the Xen API (
 
 Some clients are stateless (only running when you open or use them) and others are statefull (running in a daemon, often in a dedicated VM). For very basic management tasks, stateless clients are fine. However, for more advanced features, you need stateful clients.
 
+![](https://xcp-ng.org/assets/img/xapiclients.png)
+
 ## Web UI, CLI, heavy clients?
 
 You have multiple solutions to manage your hosts, see the dedicated [Management](management.md) section.

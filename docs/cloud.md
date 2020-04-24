@@ -7,9 +7,19 @@ You have multiple possibilities:
 
 ## Xen Orchestra
 
-:::tip
-TODO
-:::
+Some interesting "cloud-like" features are available in Xen Orchestra : ACLs and Self-service
+
+### ACLs
+
+ACLs can be used to allow some XO users to only see some resoruces. See more about ACLs [on the official documentation](https://xen-orchestra.com/docs/acls.html).
+
+![](https://xen-orchestra.com/docs/assets/acllist.png)
+
+### Self-service
+
+The self-service feature allows users to create new VMs within a **limited amount of resources** (quotas). This is different from delegating existing resources (VM's) to them, and it leads to a lot of possibilities. [Read XO official doc on it](https://xen-orchestra.com/docs/self_service.html) to know more.
+
+![](https://xen-orchestra.com/docs/assets/selfservice_recap_quotas.png)
 
 ## CloudStack
 

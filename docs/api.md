@@ -2,13 +2,21 @@
 
 XCP-ng is using XAPI as main API. This API is used by all clients. For more details go to [XAPI website](https://xapi-project.github.io/).
 
-![](https://xapi-project.github.io/xen-api/classes.png)
-
 :::tip
 If you want to build an application on top of XCP-ng, we strongly suggest to use Xen Orchestra API instead of XCP-ng API. Indeed, XO provides an abstraction layer that's really easier to use, and also acts as a central point for your whole infrastructure.
 :::
 
 ## Architecture
+
+### General design
+
+![](https://xapi-project.github.io/xapi/xapi.png)
+
+### Objects
+
+![](https://xapi-project.github.io/xen-api/classes.png)
+
+### Pool design
 
 ![](https://xapi-project.github.io/getting-started/pool.png)
 
