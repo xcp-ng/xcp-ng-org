@@ -26,9 +26,124 @@ Start the host and boot on the USB media.
 
 ### Follow instructions
 
-:::tip
-This section is still a work in progress. Thanks for your patience!
+
+#### 1. UEFI vs BIOS
+
+Boot screens are just slightly different on start between BIOS and UEFI mode:
+
+BIOS splash screen:
+
+![](https://xcp-ng.org/assets/img/screenshots/install1bis.png)
+
+UEFI splash screen:
+
+![](https://xcp-ng.org/assets/img/screenshots/install1.png)
+
+:::warning
+NEVER switch from UEFI to BIOS (or vice-versa) **after** you installed XCP-ng. Stick to a mode you choose during the install.
 :::
+
+#### 2. Language selection
+
+![](https://xcp-ng.org/assets/img/screenshots/install2.png)
+
+#### 3. Welcome
+
+![](https://xcp-ng.org/assets/img/screenshots/install3.png)
+
+#### 4. EULA/license
+
+![](https://xcp-ng.org/assets/img/screenshots/install4.png)
+
+#### 5. Disk selection
+
+This is the screen where you'll select where XCP-ng system will be installed. **XCP-ng is an specilized Linux**, so you need to dedicated a physical disk to it. Partitioning is done automatically.
+
+![](https://xcp-ng.org/assets/img/screenshots/install5.png)
+
+Alternatively, if you have two identical disks, you can use Software RAID (`mdadm`) :
+
+![](https://xcp-ng.org/assets/img/screenshots/install6.png)
+
+#### 6. VM storage selection
+
+This is the place where your VM disks will be stored. It's called a **Storage Repository** (SR). It can use the same disk where you installed the system, it will automatically use the free space after system partitions.
+
+![](https://xcp-ng.org/assets/img/screenshots/install7.png)
+
+
+:::tip
+EXT instead of LVM? We advise to use EXT!
+:::
+
+#### 7. Installation source
+
+If you use the default ISO, just select "Local media":
+
+![](https://xcp-ng.org/assets/img/screenshots/install9.png)
+
+Then, you can verify your media or not:
+
+![](https://xcp-ng.org/assets/img/screenshots/install10.png)
+
+#### 8. Host password
+
+This will be the **root** password, both used for SSH to the host or by XAPI clients to connect to it.
+
+![](https://xcp-ng.org/assets/img/screenshots/install11.png)
+
+#### 9. Networking
+
+Here you can select between DHCP and static network, even using a VLAN:
+
+![](https://xcp-ng.org/assets/img/screenshots/install12.png)
+
+#### 10. Hostname and DNS
+
+![](https://xcp-ng.org/assets/img/screenshots/install13.png)
+
+#### 11. Timezone and time
+
+:::warning
+ALWAYS use a NTP server. It's a critical component to manage your host(s). If you don't know any NTP server, you can use `ntp.pool.org`.
+:::
+
+![](https://xcp-ng.org/assets/img/screenshots/install14.png)
+
+![](https://xcp-ng.org/assets/img/screenshots/install15.png)
+
+![](https://xcp-ng.org/assets/img/screenshots/install16.png)
+
+#### 12. Installation
+
+After this step, data will be written on the disk!
+
+![](https://xcp-ng.org/assets/img/screenshots/install17.png)
+
+![](https://xcp-ng.org/assets/img/screenshots/install19.png)
+
+#### 13. Supplemental packs and end of install
+
+Not relevent in almost all cases. Skip it:
+
+![](https://xcp-ng.org/assets/img/screenshots/install20.png)
+
+![](https://xcp-ng.org/assets/img/screenshots/install21.png)
+
+:::tip
+"Completing installation" is in fact building all kernel modules and initramfs. It can takes time.
+:::
+
+![](https://xcp-ng.org/assets/img/screenshots/install22.png)
+
+#### 14. Reboot
+
+After a reboot, you should see the Grub menu:
+
+![](https://xcp-ng.org/assets/img/screenshots/install23.png)
+
+It means the system is correctly installed! Enjoy XCP-ng 🚀
+
 
 ## Automated install
 
