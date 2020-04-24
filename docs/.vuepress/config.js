@@ -27,11 +27,12 @@ module.exports = {
           ['/install', 'Installation'],
           ['/upgrade', 'Upgrade'],
           ['/updates', 'Updates'],
-          ['/additionalpackages', 'Extra packages'],
           ['/storage', 'Storage'],
           ['/networking', 'Networking'],
           ['/compute', 'Compute'],
           ['/api', 'API'],
+          ['/guests','Guests tools'],
+          ['/additionalpackages', 'Extra packages'],
           ['/troubleshooting', 'Troubleshooting'],
         ]
       },
