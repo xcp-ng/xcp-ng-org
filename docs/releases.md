@@ -106,6 +106,146 @@ However we have updated the [documentation about the guest tools](https://github
 
 * Fixed netxtreme drivers (`bnx2x` module) that crashed with some models.
 
+## Alternate kernel
+
+We provide an "alternate Linux kernel" on XCP-ng 8.0 and above, named `kernel-alt`. It is kernel 4.19, as the main kernel, but with all updates from the linux 4.19 branch applied. By construction, it should thus be stable. However it **receives less testing** so we cannot fully guarantee against regressions (any detected regression we'd work on a fix quickly, of course). We also backport security fixes from the main kernel to the alternate kernel when needed.
+
+This kernel is mainly targeted at:
+* Testing whether kernel.org fixes situations where the main kernel and drivers have issues on specific hardware.
+* Allowing a system to work temporarily when the main kernel has an issue regarding your specific hardware, until we can fix the main kernel. **For this to happen, you need to tell us if you are in a situation where the main kernel doesn't work whereas the alternate kernel does!**
+
+Report issues [here](https://github.com/xcp-ng/xcp/issues).
+
+### In XCP-ng 8.1
+
+#### During system installation
+* In BIOS mode, press F2 at early boot stage when offered the choice then type `install-alt`.
+* In UEFI mode, select the boot option mentioning the alternate kernel from the grub menu.
+
+This will boot the installer with the alternate kernel and also install the alternate kernel on the system in addition to the main one (but will not make the alternate kernel the default boot option for the installed system).
+
+#### Installation on an existing system
+You can install it using
+
+```
+yum install kernel-alt
+```
+
+This will install the kernel and add a grub boot menu entry to boot from it. It will **not** default to it unless you change the default in `grub.cfg` (/boot/grub/grub.cfg` or `/boot/efi/EFI/xenserver/grub.cfg` depending on whether you are in BIOS mode or UEFI mode).
+
+There may also be a newer release of kernel-alt in testing:
+
+```
+yum install kernel-alt --enablerepo=xcp-ng-testing
+```
+
+#### Uninstall
+Boot the main kernel, then:
+```
+yum remove kernel-alt
+```
+
+This will remove the added grub entry automatically too and set default boot to main kernel if needed.
+
+
+### In XCP-ng 8.0
+
+Things are a bit more manual.
+
+#### Install
+
+```
+yum install kernel-alt --enablerepo=xcp-ng-testing
+```
+
+#### Configure boot
+Create grub entry at 0 (`/boot/grub/grub.cfg` or `/boot/efi/EFI/xenserver/grub.cfg`) and adapt the values to your system:
+
+```
+menuentry 'XCP-ng alt' {
+        search --label --set root root-bdtixc
+        multiboot2 /boot/xen.gz com1=115200,8n1 dom0_mem=1232M,max:1232M watchdog ucode=scan dom0_max_vcpus=1-4 crashkernel=256M,below=4G console=com1,vga vga=mode-0x0311 nmi=ignore
+        module2 /boot/vmlinuz-4.19.68-xen root=LABEL=root-bdtixc ro nolvm hpet=disable xencons=hvc console=hvc0 console=tty0 vga=785 plymouth.ignore-serial-consoles nmi=ignore
+        module2 /boot/initrd-4.19.68-xen.img
+}
+```
+
+Pay special attention to "--set root **root-bdtixc**" and "root=LABEL=**root-bdtixc**" to match it with your root label.
+
+Reboot and you are set!
+
+#### Uninstall
+
+Remove the grub entry:
+
+```
+menuentry 'XCP-ng alt' {
+        search --label --set root root-bdtixc
+        multiboot2 /boot/xen.gz com1=115200,8n1 dom0_mem=1232M,max:1232M watchdog ucode=scan dom0_max_vcpus=1-4 crashkernel=256M,below=4G console=com1,vga vga=mode-0x0311 nmi=ignore
+        module2 /boot/vmlinuz-4.19.68-xen root=LABEL=root-bdtixc ro nolvm hpet=disable xencons=hvc console=hvc0 console=tty0 vga=785 plymouth.ignore-serial-consoles nmi=ignore
+        module2 /boot/initrd-4.19.68-xen.img
+}
+```
+
+Then reboot. If you want to remove it completely:
+
+```
+yum remove kernel-alt
+```
+
+## Alternate drivers
+
+XCP-ng occasionnally provides alternate drivers for users who have issues with the main drivers installed with XCP-ng.
+
+Those driver packages can be installed alongside the main packages and will take precedence gracefully.
+
+Note: there is another way, albeit more experimental, to use alternate drivers: [[use our experimental alternate kernel|Alternate Kernel]].
+
+In this section we provide instructions that are common to all the provided drivers. 
+
+Just replace `package-name` with the actual package name.
+
+### Installation
+```
+yum install package-name
+```
+
+### Activation
+
+The simplest way is to `reboot`.
+
+Else, if you know the module name, you can unload it from the kernel and reload it.
+```
+modprobe -r module-name
+modprobe -v module-name
+```
+
+### Uninstallation
+
+If the driver does not work as intended, just remove the package from the system and follow the "Activation" steps above.
+```
+yum remove package-name
+```
+
+### Updates
+
+The alternate drivers may get updated to newer versions when the system is updated or upgraded. If that causes regressions, please open a bug report.
+
+### System Upgrades
+
+Upgrades **using the installation ISO** will not retain the alternate driver package, so remember to re-install it after the upgrade if it's still needed (the main driver may have been updated too and make the alternate driver useless in your case).
+
+Upgrades **using the `yum` method** will retain the alternate driver package, unless we stop providing it (usually, because the main driver will have been updated too). If the alternate driver is retained, it may have changed versions, so you may still need to consider going back to the main driver. If after an upgrade no driver works correctly for your system anymore, open a bug report.
+
+### Network drivers
+
+This list is maintained for the latest release of XCP-ng. Those packages may be or not be available for older releases.
+
+Packages: 
+* `bnxt_en` driver: `broadcom-bnxt-en-alt`
+
+Update: in 8.1 more are available. List to be updated.
+
 ## Misc
 
 ### Announcement about our former experimental ext4 SR driver
