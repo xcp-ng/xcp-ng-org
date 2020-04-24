@@ -4,9 +4,11 @@ This guide will help you to set up XCP-ng.
 
 ## ISO installation
 
+If you want to use the netinstall ISO, see the [Netinstall section](install.md#netinstall).
+
 ### Download and create media
 
-You can download the 8.1 ISO here: [https://updates.xcp-ng.org/isos/8.1](https://updates.xcp-ng.org/isos/8.1). Then, create the install media (eg USB key):
+You can download the 8.1 ISO here: [https://updates.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso](https://updates.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso). Then, create the install media (eg USB key):
 
 ```
 dd if=xcp-ng-8.1.0-2.iso of=/dev/sdX bs=8M oflag=direct
@@ -23,7 +25,6 @@ On Windows, you can use Rufus to create the bootable USB stick.
 Start the host and boot on the USB media.
 
 ### Follow instructions
-
 
 #### 1. UEFI vs BIOS
 
@@ -142,6 +143,19 @@ After a reboot, you should see the Grub menu:
 
 It means the system is correctly installed! Enjoy XCP-ng 🚀
 
+## Netinstall
+
+A netinstall is a lightweight ISO (around 150MiB) that will only contains the installer, but no actual RPM packages. Sometimes, it's more convenient/faster when your ISO is on a slow connection (eg a virtual media using a server IPMI).
+
+You can download it on this URL: [https://updates.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2-netinstall.iso](https://updates.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2-netinstall.iso).
+
+As for the regular ISO, write in on an USB media:
+
+```
+dd if=xcp-ng-8.1.0-2-netinstall.iso of=/dev/sdX bs=8M oflag=direct
+```
+
+Everything else is like the [regular install](install.md#start-the-host).
 
 ## Automated install
 
