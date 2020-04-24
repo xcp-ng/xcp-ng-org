@@ -1,4 +1,7 @@
 module.exports = {
+  head: [
+    ['link', { rel: "shortcut icon", href: "https://xcp-ng.org/favicon.png"}],
+  ],
   base: '/docs/',
   themeConfig: {
     smoothScroll: true,
