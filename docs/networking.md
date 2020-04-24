@@ -33,9 +33,42 @@ See [https://github.com/xcp-ng/xcp/issues/138](https://github.com/xcp-ng/xcp/iss
 
 ## SDN controller
 
+An SDN controller is provided by a [Xen Orchestra](management.md#xen-orchestra) plugin. Thanks to that, you can enjoy advanced network features.
+
 ### GRE/VxLAN tunnels
 
+Private network (using tunnels) are very handy when you want to access resources in a secure manner, that are not in the same physical network.
+
+So we want a network that is:
+- reachable by all the hosts in a pool or **even between different pools!**
+- unreachable by anything outside the network
+- reactive when the pool changes (new host, host ejected, `PIF` unplugged etc):
+
+That's exactly what you can have thanks to XO SDN controller (here via GRE tunnels):
+
+![](https://xen-orchestra.com/blog/content/images/2019/06/sdn-controller-1.png)
+
+To create a private network, go in Xen Orchestra, New/Network and select "Private Network":
+
+![](https://xen-orchestra.com/docs/assets/sdn-controller.png)
+
+#### Encryption
+
+To be able to encrypt the networks, `openvswitch-ipsec` package must be installed on all the hosts:
+
+* `yum install openvswitch-ipsec --enablerepo=xcp-ng-testing`
+* `systemctl enable ipsec`
+* `systemctl enable openvswitch-ipsec`
+* `systemctl start ipsec`
+* `systemctl start openvswitch-ipsec`
+
+More information available on [XO official documentation for SDN controller](https://xen-orchestra.com/docs/sdn_controller.html).
+
 ### OpenFlow rules
+
+:::tip
+This feature is coming very soon!
+:::
 
 ## Static routes
 
