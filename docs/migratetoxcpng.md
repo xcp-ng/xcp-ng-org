@@ -4,7 +4,7 @@ If you are using another virtualization platform (VMware, KVM, etc.), this part 
 
 ## From Virtualbox
 
-Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](migrationtoxcpng.md#vmware) section.
+Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](migrationtoxcpng.md#fromvmware) section.
 
 ## From VMware
 
@@ -38,7 +38,9 @@ The fix for this is installing some xen drivers *before* exporting the VM from V
 * Install Xenserver Tools.
 * If everything work well move virtual disk using XCP-ng center from temporary storage to dedicated storage on the fly, VM can be turned on and disk can be online.
 
-NOTE: If You lost ability to extend migrated volume (opening journal failed: -2) You need to move disk to another storage, VM should be ON during moving process. This issue can occur when vhd files was directly copied to storage folder.
+:::tip
+If You lost ability to extend migrated volume (opening journal failed: -2) You need to move disk to another storage, VM should be ON during moving process. This issue can occur when vhd files was directly copied to storage folder.
+:::
 
 ## From KVM (Libvirt)
 
