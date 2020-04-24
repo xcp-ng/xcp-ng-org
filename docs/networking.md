@@ -18,6 +18,19 @@ This section is still under construction
 
 ## Bonds
 
+### Disabling FCoE
+
+If you are using bonds on FCoE capable devices, it's preferable to disable it entirely:
+
+```
+systemctl stop fcoe
+systemctl stop xs-fcoe
+systemctl disable fcoe
+systemctl disable xs-fcoe
+```
+
+See [https://github.com/xcp-ng/xcp/issues/138](https://github.com/xcp-ng/xcp/issues/138).
+
 ## SDN controller
 
 ### GRE/VxLAN tunnels

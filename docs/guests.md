@@ -8,7 +8,7 @@ The tools are made of two main components:
 * kernel drivers for the OS
 * a management agent
 
-## Linux Guest Tools
+## Linux
 
 Xen guest drivers have been built-in in the linux kernel for many years. All currently supported linux distributions include them.
 
@@ -43,18 +43,52 @@ bash /mnt/Linux/install.sh -d rhel -m 7
 
 The likeliness for the installation to work correctly will depend on how much those distros differ from their "parent".
 
-## FreeBSD / OpenBSD guest tools
+## FreeBSD/OpenBSD
 
-On FreeBSD / OpenBSD, the xen drivers are also already part of the kernel.
+On FreeBSD/OpenBSD, the xen drivers are also already part of the kernel.
 
 The `install.sh` script doesn't support those systems, but there are ways to install the management agent anyway.
 
-* For FreeNAS: see [[Installing the xe guest utilities in FreeNAS]]
-* For others: search [the forum](https://xcp-ng.org/forum). See for example [this thread](https://xcp-ng.org/forum/topic/2582/guest-tools-for-openbsd). 
+:::tip
+For others: search [the forum](https://xcp-ng.org/forum). See for example [this thread](https://xcp-ng.org/forum/topic/2582/guest-tools-for-openbsd). 
+:::
 
-## Windows guest tools
+## FreeNAS/TrueNAS
 
-**(Do not modify this title: it is used in the guest tools ISO's README)**
+FreeNAS is a locked-down version of FreeBSD, with many packages disabled to ensure a more stable environment for the fileserver. `xe-guest-utilities` is part of the packages that are **not** available in FreeNAS. But because it's based on FreeBSD, the packages from that OS can be installed, at your own risk. This is not a big issue for this particular package, because it's a _leaf_ in the chain of dependencies - nothing in FreeNAS depends on it.
+
+To install it, you just have to enable the FreeBSD repo first:
+
+```bash
+# sed 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/FreeBSD.conf
+# pkg install xe-guest-utilities
+```
+
+If you are using FreeNAS v11.2, you also have to disable the local package repository [to avoid an issue in that particular release](https://www.justinsilver.com/random/fix-pkg-on-freenas-11-2/) before running `pkg install`:
+
+```bash
+# sed 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/local.conf
+```
+
+After the install, revert to the previous settings to avoid surprises down the road:
+```bash
+# sed 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/FreeBSD.conf
+# sed 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/local.conf
+```
+
+Once the package is installed, you need to tell FreeNAS to start the `xe-daemon` process when starting:
+1. Go to _Tasks -> Init/Shutdown Script_
+2. Create a new task with the following settings:
+  * Type: _Command_
+  * Command: `/usr/local/sbin/xe-daemon -p /var/run/xe-daemon.pid &`
+  * When: _Pre Init_
+  * Enabled: Checked
+
+After you've rebooted your FreeNAS VM, or started the daemon manually, you'll see a FreeBSD icon in your VM list on Xen Orchestra, and you can restart/shutdown the VM properly from the Web UI.
+
+Thanks to @etomm in [this issue](https://github.com/xcp-ng/xcp/issues/172#issuecomment-548181589) for the idea.
+
+## Windows
 
 Windows guests need both the device drivers and the management agent. 
 * The **device drivers** bring optimized I/O performances.

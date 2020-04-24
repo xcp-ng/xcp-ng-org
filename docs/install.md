@@ -237,9 +237,9 @@ echo 0 > /proc/sys/dev/raid/speed_limit_min
 
 Upon server reboot, normal md resync will take place.
 
-### Misc
+## Misc
 
-## Install on an USB stick
+#### Install on an USB stick
 
 ::: danger
 We **strongly** advise against doing that. XCP-ng writes a lot into local files and this writing will wear out your USB-Stick in a short amount of time:
