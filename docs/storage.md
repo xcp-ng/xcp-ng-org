@@ -79,7 +79,7 @@ The concept is simple: tell XCP-ng on the disk or partition you want to use, and
 
 In [Xen Orchestra](management.md#xen-orchestra):
 
-![](https://xcp-ng.org/assets/img/createSRlocal.png)
+![](https://xcp-ng.org/assets/img/screenshots/createSRlocal.png)
 
 Via `xe` CLI for a local EXT SR (where `sdaX` is a partition, but it can be the entire device eg `sdc`):
 
@@ -121,7 +121,7 @@ XOSANv2 is coming soon in XCP-ng. Hang on!
 
 You might wonder: how to upload an ISO? Unlike other solutions, you need to create a dedicated "space" for those, a specific ISO SR. To create one, it's pretty easy: in Xen Orchestra, go into "New/Storage" and select "ISO SR":
 
-![](https://xcp-ng.org/assets/img/createSRISO.png)
+![](https://xcp-ng.org/assets/img/screenshots/createSRISO.png)
 
 Usually, you can use a NFS or SMB share. But if you don't have any of those, you can rely on a local ISO SR that you create yourself:
 
