@@ -6,9 +6,7 @@ This guide will help you to set up XCP-ng.
 
 ### Download and create media
 
-You can download the ISO here: https://updates.xcp-ng.org/isos/8.1
-
-Then, create the install media (eg USB key):
+You can download the 8.1 ISO here: [https://updates.xcp-ng.org/isos/8.1](https://updates.xcp-ng.org/isos/8.1). Then, create the install media (eg USB key):
 
 ```
 dd if=xcp-ng-8.1.0-2.iso of=/dev/sdX bs=8M oflag=direct
@@ -238,3 +236,14 @@ echo 0 > /proc/sys/dev/raid/speed_limit_min
 ```
 
 Upon server reboot, normal md resync will take place.
+
+### Misc
+
+## Install on an USB stick
+
+::: danger
+We **strongly** advise against doing that. XCP-ng writes a lot into local files and this writing will wear out your USB-Stick in a short amount of time:
+* XAPI: the XenServer API database is changing a lot. Hence writing a lot, and believe me, USB sticks aren't really happy with that on the long run. Note: XAPI DB is what keep tracks on all XCP-ng's "state", and it's replicated on each host (from the slave).
+* Logs: XCP-ng is keep a LOT of debug into into logs. For this part however, there is a workaround: use a remote syslog.
+:::
+
