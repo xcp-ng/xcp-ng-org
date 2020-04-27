@@ -208,4 +208,4 @@ Luckily, Xen Orchestra is able to detect an uncoalesced chain. It means it won't
 
 But more than that, Xen Orchestra is also able to show you uncoalesced disk in the SR view, in the Advanced tab.
 
-More about this exclusive feature on [https://xen-orchestra.com/blog/xenserver-coalesce-detection-in-xen-orchestra/](https://xen-orchestra.com/blog/xenserver-coalesce-detection-in-xen-orchestra/).
+More about this exclusive feature on <https://xen-orchestra.com/blog/xenserver-coalesce-detection-in-xen-orchestra/>

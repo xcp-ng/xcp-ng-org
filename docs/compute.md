@@ -322,6 +322,6 @@ xl vcpu-list
 xenpm get-cpu-topology
 ```
 References:
-* [https://xcp-ng.org/forum/topic/2265/using-numa-split-on-xcp-ng](https://xcp-ng.org/forum/topic/2265/using-numa-split-on-xcp-ng)
-* [https://wiki.xen.org/wiki/Xen_on_NUMA_Machines](https://wiki.xen.org/wiki/Xen_on_NUMA_Machines)
-* [https://wiki.xenproject.org/wiki/Tuning_Xen_for_Performance](https://wiki.xenproject.org/wiki/Tuning_Xen_for_Performance)
+* <https://xcp-ng.org/forum/topic/2265/using-numa-split-on-xcp-ng>
+* <https://wiki.xen.org/wiki/Xen_on_NUMA_Machines>
+* <https://wiki.xenproject.org/wiki/Tuning_Xen_for_Performance>

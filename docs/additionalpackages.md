@@ -8,7 +8,7 @@ It may be useful to add more packages to it, with precaution. The XCP-ng project
 
 ### 1. Never enable additional repositories
 
-The [update process](https://github.com/xcp-ng/xcp/wiki/Updates-Howto) for XCP-ng assumes that **only XCP-ng repositories are enabled**. If you enable more repositories, updates may get pulled from there and overwrite XCP-ng packages and thus **break your system**.
+The [update process](updates.md) for XCP-ng assumes that **only XCP-ng repositories are enabled**. If you enable more repositories, updates may get pulled from there and overwrite XCP-ng packages and thus **break your system**.
 
 **Warning**: some third party repositories are auto-enabled when installed. This is the case of EPEL, for example. Installing `epel-release` (the common way to enable it on CentOS) will automatically enable it. To solve this, EPEL repositories are added at system installation since XCP-ng 8.0, but they are *disabled*.
 
@@ -22,9 +22,9 @@ To disable a repository, edit `/etc/yum.repos.d/name_of_repo.repo` and set `enab
 
 ### 2. Prefer additional packages from XCP-ng's own repositories
 
-We offer a number of additional packages ranging from [ZFS support](https://github.com/xcp-ng/xcp/wiki/ZFS-on-XCP-ng), [newer drivers](https://github.com/xcp-ng/xcp/wiki/Kernel-modules-policy#how-to-use-alternate-or-additional-modules) or [newer kernel](https://github.com/xcp-ng/xcp/wiki/Alternate-kernel), to small utilities such as `vim`, `joe`, `iperf`, `mc`, etc.
+We offer a number of additional packages ranging from [ZFS support](https://github.com/xcp-ng/xcp/wiki/ZFS-on-XCP-ng), [newer drivers](hardware.md#alternate-drivers) or [newer kernel](hardware.md#alternate-kernel), to small utilities such as `vim`, `joe`, `iperf`, `mc`, etc.).
 
-A list of such utilities is available at https://github.com/xcp-ng/xcp/issues/56#issuecomment-480337976. It is a wishlist from the community. The "action" column will tell you if the utility is available in XCP-ng repositories.
+A list of such utilities is available at <https://github.com/xcp-ng/xcp/issues/56#issuecomment-480337976>. It is a wishlist from the community. The "action" column will tell you if the utility is available in XCP-ng repositories.
 
 Packages installed from our repositories are:
 * tested

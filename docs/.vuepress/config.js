@@ -24,9 +24,10 @@ module.exports = {
         collapsable: false, // optional, defaults to true
         sidebarDepth: 1,    // optional, defaults to 1
         children: [
-          ['/releases', 'Releases'],
+          ['/latestrelease', 'Latest release'],
+          ['/previousreleases', 'Previous releases'],
           ['/requirements', 'Requirements'],
-          ['/hcl', 'Hardware compatibility list'],
+          ['/hardware', 'Hardware support'],
           ['/install', 'Installation'],
           ['/upgrade', 'Upgrade'],
           ['/updates', 'Updates'],
@@ -35,7 +36,7 @@ module.exports = {
           ['/compute', 'Compute & GPU'],
           ['/api', 'API'],
           ['/guests','Guests tools'],
-          ['/additionalpackages', 'Extra packages'],
+          ['/additionalpackages', 'Additional packages'],
           ['/troubleshooting', 'Troubleshooting'],
         ]
       },

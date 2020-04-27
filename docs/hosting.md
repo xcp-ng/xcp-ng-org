@@ -12,7 +12,7 @@ You can decide to host XCP-ng "outside" your wall for various reasons:
 
 The main contributor to XCP-ng, [Vates](https://vates.fr) is not just offering Pro Support for your XCP-ng hosts running on-premises: there's also hosting possibilities, on fully dedicated hardware.
 
-See [https://xcp-ng.com/cloud/](https://xcp-ng.com/cloud/) for more details.
+See <https://xcp-ng.com/cloud/> for more details.
 
 ## Alternatives
 
@@ -22,16 +22,16 @@ XCP-ng Cloud is the only 100% validated hosting solution (hardware compatiblitiy
 
 OVH is supporting XenServer, so you can decide to deploy a host on XenServer, then to upgrade to XCP-ng.
 
-[https://www.ovh.com/world/dedicated-servers/](https://www.ovh.com/world/dedicated-servers/)
+<https://www.ovh.com/world/dedicated-servers/>
 
 ### Scaleway
 
 Their hosts can be used with XCP-ng, via their IPMI to use any ISO to install XCP-ng. Tested and working.
 
-[https://www.scaleway.com/en/dedibox/](https://www.scaleway.com/en/dedibox/)
+<https://www.scaleway.com/en/dedibox/>
 
 ### Hetzner
 
 Same as Scaleway, however their IPMI are a bit "weird". You can ask support to plug an USB key for OS install and use the IPMI to continue the installation.
 
-[https://www.hetzner.com/](https://www.hetzner.com/)
+<https://www.hetzner.com/>

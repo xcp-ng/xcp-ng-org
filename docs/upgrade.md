@@ -13,20 +13,20 @@ There is 3 upgrade methods, detailed below:
 
 ## Release Notes & Known Issues
 
-Read the [release notes](releases.md) and [known issues](releases.md#known-issues) for every version that is higher than your current version. They may provide additional instructions for specific situations. Also **please read the following warnings below**:
+Read the [release notes](latestrelease.md) and [known issues](latestrelease.md#known-issues) for every version that is higher than your current version. They may provide additional instructions for specific situations. Also **please read the following warnings below**:
 
 :::warning
 * Always upgrade and reboot the pool master **FIRST**
 * DON'T use the `Maintenance Mode` in XCP-ng Center. It moves the pool master to another host, which has to be avoided in the upgrading procedure.
 * If HA (High Availability) is enabled, disable it before upgrading.
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`.
-* [[Update your pool with the latest updates|Updates Howto]] **before** upgrading, and reboot or restart the toolstack, depending on the nature of the installed updates.
-* [[Install the latest updates|Updates Howto]] **after** upgrading.
+* [Update your pool with the latest updates](updates.md) **before** upgrading, and reboot or restart the toolstack, depending on the nature of the installed updates.
+* [Install the latest updates](updates.md) **after** upgrading.
 :::
 
 :::warning
 * When upgrading from *XCP-ng 7.5 or lower* or from *XenServer*, **it is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
-* If you are upgrading to XCP-ng 7.6 using the installation ISO, make sure to [[update|Updates Howto]] each host just after the upgrade and then reboot again to get the latest fixes. This will fix an issue with **live migration** that has been fixed **after** the release of XCP-ng 7.6: [see this issue for more details](https://github.com/xcp-ng/xcp/issues/72).
+* If you are upgrading to XCP-ng 7.6 using the installation ISO, make sure to [update](updates.md) each host just after the upgrade and then reboot again to get the latest fixes. This will fix an issue with **live migration** that has been fixed **after** the release of XCP-ng 7.6: [see this issue for more details](https://github.com/xcp-ng/xcp/issues/72).
 * XenServer (and XCP-ng) 7.6 has a regression that makes live migration with storage motion crash guests that are based on the "Other installation media" template when the source host has a version lower than 7.6 ([reported here to Citrix](https://bugs.xenserver.org/browse/XSO-924)). **This bug has been fixed in latest XCP-ng 7.6 updates**.
 :::
 
@@ -40,11 +40,11 @@ It will backup your system to the backup partition and reinstall the system from
 
 Steps:
 1. Download an installation ISO from the [download page](https://xcp-ng.org/download/). Choose either the standard installer or the network installer.
-2. [[Check the authenticity and the integrity of the downloaded ISO|How-to-check-the-authenticity-of-files-downloaded-from-XCP-mirrors#check-an-iso-image]].
+2. [Check the authenticity and the integrity of the downloaded ISO](mirrors.md#check-an-iso-image).
 3. Follow the installation procedure on the [download page](https://xcp-ng.org/download/).
 4. When offered the choice, choose to upgrade your existing XCP-ng installation.
 5. After the upgrade completed, reboot your host.
-6. Then [[install the updates|Updates Howto]] that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
+6. Then [install the updates](updates.md) that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
 
 Once installed, **keep the system regularly updated** (see [updates section](updates.md)).
 
@@ -72,11 +72,11 @@ If you do not have access to your server or remote KVM in order to upgrade using
   ```
   The output should also be true. It has created a temporary entry in the grub bootloader which will automatically load the upgrade ISO on the next boot. It then automatically runs the XCP-ng upgrade with no user intervention required. It will also backup your existing XenServer dom0 install to the secondary backup partition, just like the normal upgrade.
 * To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it's available, but if not, it should proceed fine and boot into upgraded XCP-ng in 10 to 20 minutes.
-* Then [[install the updates|Updates Howto]] that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
+* Then [install the updates](updates.md) that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
 
 Note: it has been brought to our attention that [a DHCP server may be necessary during the upgrade](https://xcp-ng.org/forum/topic/2480/unattended-upgrade-requires-dhcp).
 
-Once upgraded, **keep the system regularly updated** (see [[Updates Howto]]).
+Once upgraded, **keep the system regularly updated** (see [Updates Howto](updates.md)).
 
 ## From command line
 
@@ -91,7 +91,7 @@ Though it's been successfully tested by numerous people, this method is still co
 
 On the plus side, it's a lot *faster* provided you have a decent internet connection or a local mirror, and changes you have made to the host are retained.
 
-Once upgraded, **keep your system regularly updated** (see [[Updates Howto]]) until the next upgrade.
+Once upgraded, **keep your system regularly updated** (see [Updates Howto](updates.md)) until the next upgrade.
 
 ### Prerequisites
 
@@ -110,17 +110,17 @@ In any case, installing extra packages from outside the XCP-ng repositories can 
 * check the dependencies pulled by such packages: they must not overwrite existing packages in XCP-ng;
 * know that you are doing it at your own risk and be prepared to fix any issues that would arise, especially unforeseen upgrade issues (we can't test upgrade scenarios where unknown packages are installed on the system).
 
-More at [[Additional packages]].
+More at [Additional packages](additionalpackages.md).
 
 #### Precautions
 
-The [precautions that apply to regular updates](https://github.com/xcp-ng/xcp/wiki/Updates-Howto#precautions) also apply to the upgrade process.
+The [precautions that apply to regular updates](updates.md#precautions) also apply to the upgrade process.
 
 Check them carefully.
 
 #### Upgrade instructions
 
-If for some reason you want to upgrade to XCP-ng 7.6 from an earlier release although 8.0 or more is available, see [[Yum Upgrade towards XCP ng 7.6]].
+If for some reason you want to upgrade to XCP-ng 7.6 from an earlier release although 8.0 or more is available, see [Yum Upgrade towards XCP ng 7.6](https://github.com/xcp-ng/xcp/wiki/Yum-Upgrade-towards-XCP-ng-7.6).
 
 :warning: **Proceed one host at a time. Do not `yum update` all hosts at once to "save time".** :warning:
 
@@ -153,12 +153,12 @@ In the commands below your shell will automatically replace `$VER` with the valu
   wget https://updates.xcp-ng.org/8/SHA256SUMS -O SHA256SUMS
   wget https://updates.xcp-ng.org/8/SHA256SUMS.asc -O SHA256SUMS.asc
   ```
-* Follow the steps at [[How-to-check-the-authenticity-of-files-downloaded-from-XCP-mirrors#check-a-repository-repo-file]] (optional)
+* Follow the steps to [check the integrity and origin of the repository file](mirrors.md#check-a-downloaded-file) (optional)
 * Install the verified repository file so that yum uses it.
   ```
   cp xcp-ng-$VER.repo /etc/yum.repos.d/xcp-ng.repo
   # help yum taking the change into account immediately
-  yum clean metadata 
+  yum clean metadata
   ```
 
 #### 2. Upgrade the system's packages

@@ -8,51 +8,40 @@ There are two ways of contributing:
 
 You don't have to be a programmer/IT-nerd to help at this project. Just ask or offer your help:
 
-* Forum: https://xcp-ng.org/forum
+* Forum: <https://xcp-ng.org/forum>
 * IRC: #xcp-ng and #xcp-ng-dev on irc.freenode.net
 
 We are happy about every helping hand!
 
 ## Documentation
 
-Our [Wiki](https://github.com/xcp-ng/xcp/wiki) needs love ❤️  and care ✍️ . Many pages are non existent or not fully filled.
-
-Just start writing things down or add things to existing pages!
-
-Anyone with a github account can edit the wiki.
+Contribute to our documentation with pull requests modifying the files at <https://github.com/xcp-ng/xcp-ng-org/tree/master/docs>
 
 ## Developing
 
 You are a developer and want to code with us? Cool!
 
-* connect to us via
+* Connect to us via
     * IRC: #xcp-ng and #xcp-ng-dev on irc.freenode.net
-    * Forum -> Development Corner: https://xcp-ng.org/forum/category/7/development
-* scroll through our [Issues](https://github.com/xcp-ng/xcp/issues) to find your first project 🔨
+    * Forum -> Development Corner: <https://xcp-ng.org/forum/category/7/development>
+* Scroll through our open [Issues](https://github.com/xcp-ng/xcp/issues) to find your first project 🔨
 
 ## Testing
 
 It's important to test XCP-ng on many different platforms and devices. You have gear laying around or access to some special devices? -> be a tester and test all the features of XCP-ng 🚀 
 
-Your results are very welcome in our [[Hardware Compatibility List (HCL)]]!
+Your results are very welcome in our [Hardware Compatibility List (HCL)](hardware.md)!
 
 It's also important to test Operating Systems on XCP-ng. You have fun to install different Operating Systems? -> great! Test them all on XCP-ng!
 
-Your results are very welcome in our [List of supported Guest Systems](https://github.com/xcp-ng/xcp/wiki/Guest-System-Support)!
 
-## What does it mean to be a packager?
+## RPM Packaging
 
-TODO
+See [Development process tour](develprocess.md) for an introduction about the packaging process and Koji.
 
-## How to become a packager in the XCP-ng project
+### Koji initial setup
 
-TODO
-
-## Koji initial setup
-
-See [[Development process tour]] for an introduction about the packaging process and Koji.
-
-### Certificates
+#### Certificates
 Once accepted as a proven packager or as an apprentice, you will receive your connection certificate as well as the server's CA public certificate:
 ```
 client.crt # your certificate
@@ -67,12 +56,12 @@ You may also receive a browser certificate for the connection to Koji's web inte
 ```
 {login}_browser_certificate.p12
 ```
-You need to import it into your web browser's certificate store and then use it when you log in to https://koji.xcp-ng.org/
+You need to import it into your web browser's certificate store and then use it when you log in to <https://koji.xcp-ng.org/>
 
-### Installing koji
-If your linux distribution provides `koji` in its repositories (e.g. Fedora, CentOS or Mageia), simply install it from there. Else you can either run it from a container, or clone it from https://pagure.io/koji, then run it from there with something like `PYTHONPATH=$(realpath .):/usr/lib/python3.5/site-packages/ cli/koji help`. If it fails, you probably need to install additional python dependencies.
+#### Installing koji
+If your linux distribution provides `koji` in its repositories (e.g. Fedora, CentOS or Mageia), simply install it from there. Else you can either run it from a container, or clone it from <https://pagure.io/koji>, then run it from there with something like `PYTHONPATH=$(realpath .):/usr/lib/python3.5/site-packages/ cli/koji help`. If it fails, you probably need to install additional python dependencies.
 
-### Configuring koji
+#### Configuring koji
 Put this in `~/.koji/config`:
 ```
 [koji]
@@ -103,12 +92,12 @@ serverca = ~/.koji/serverca.crt
 
 In some cases, we've found that the configuration file in ~/.koji was not used. Solution: `cp ~/.koji /etc/koji.conf`.
 
-### Test your connection
+#### Test your connection
 `koji moshimoshi`. If it replies to you (in any language), then your connection to the server works.
 
-### Useful commands
+#### Useful commands
 
-Just a quick list. Make sure to have read and understood [[Development process tour]] and [[RPM Packaging guidelines]]. 
+Just a quick list. Make sure to have read and understood [Development process tour](develprocess.md).
 
 * Get help about the commands: `koji help` or `koji {command name} --help`.
 * Start a build: `koji build [--scratch] {target} {SCM URL}`

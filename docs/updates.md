@@ -12,9 +12,7 @@ We maintain two releases in parallel:
 * The latest release (currently `8.1`).
 * The previous release, on a best-effort basis (currently `8.0`).
 
-If your version is lower than `8.0`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [[upgrade|Upgrade Howto]].
-
-See also: [Releases](releases.md)
+If your version is lower than `8.0`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [upgrade](upgrade.md).
 
 ## Prerequisites
 
@@ -33,7 +31,7 @@ In any case, installing extra packages from outside the XCP-ng repositories can 
 * check the dependencies pulled by such packages: they must not overwrite existing packages in XCP-ng;
 * know that you are doing it at your own risk and be prepared to fix any issues that would arise, especially unforeseen upgrade issues (we can't test upgrade scenarios where unknown packages are installed on the system).
 
-More at [[Additional packages]].
+More at [Additional packages](additionalpackages.md).
 
 ## Get information about the updates
 
@@ -115,7 +113,7 @@ Else base your decision on an educated guess. Look at the list of the updated pa
 * Other low-level packages may require a reboot too, for example `glibc`.
 * If you don't reboot, check that no task is currently running and restart the XAPI toolstack (`xe-toolstack-restart`).
 
-All updates are announced on https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing along with information about what steps are required after installing the update (reboot, toolstack restart, service restart...).
+All updates are announced on <https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing> along with information about what steps are required after installing the update (reboot, toolstack restart, service restart...).
 
 ## XCP-ng 7.5/7.6 and live migrations
 

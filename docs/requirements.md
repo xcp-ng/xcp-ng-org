@@ -1,4 +1,4 @@
- XCP-ng computer is dedicated entirely to the task of running XCP-ng and hosting VMs, and is not used for other applications.
+An XCP-ng computer is dedicated entirely to the task of running XCP-ng and hosting VMs, and is not used for other applications.
 
 ::: warning
 Installing third-party software directly in the control domain of XCP-ng is not supported. The exception is for software supplied in the current repositories. If want to add an extra package inside XCP-ng please [ask here](https://github.com/xcp-ng/xcp/issues/56).
@@ -6,7 +6,7 @@ Installing third-party software directly in the control domain of XCP-ng is not 
 
 ## XCP-ng system requirements
 
-Although XCP-ng is usually deployed on server-class hardware, XCP-ng is also compatible with many models of workstations and laptops. For more information, see the [Hardware Compatibility List (HCL)](hcl.md).
+Although XCP-ng is usually deployed on server-class hardware, XCP-ng is also compatible with many models of workstations and laptops. For more information, see the [Hardware Compatibility List (HCL)](hardware.md).
 
 The following section describes the recommended XCP-ng hardware specifications.
 
@@ -19,7 +19,7 @@ XCP-ng can use:
 * Up to 288 logical processors per host.
 
 > Note
-The maximum number of logical processors supported differs by CPU. For more information, see the [Hardware Compatibility List (HCL)](hcl.md).
+The maximum number of logical processors supported differs by CPU. For more information, see the [Hardware Compatibility List (HCL)](hardware.md).
 
 
 The system requirements for XCP-ng are:
@@ -36,7 +36,9 @@ To support VMs running supported paravirtualized Linux, you require a standard 6
 
 ## RAM
 
-2 GB minimum, 4 GB or more recommended
+2 GB minimum, 4 GB or more recommended.
+
+A fixed amount of RAM is allocated to the control domain (dom0). The optimal amount of RAM for the control domain depends on the workload.
 
 ## Disk space
 
@@ -44,8 +46,9 @@ To support VMs running supported paravirtualized Linux, you require a standard 6
 * SAN via HBA (not through software) when installing with multipath boot from SAN.
 
 
-For a detailed list of compatible storage solutions, see the [Hardware Compatibility List (HCL)](hcl.md).
-Network
+For a detailed list of compatible storage solutions, see the [Hardware Compatibility List (HCL)](hardware.md).
+
+## Network
 
 100 Mbit/s or faster NIC. One or more Gb, or 10 Gb NICs is recommended for faster P2V and export/import data transfers and VM live migration.
 
@@ -53,12 +56,13 @@ We recommend that you use multiple NICs for redundancy. The configuration of NIC
 
 XCP-ng requires an IPv4 network for management and storage traffic.
 
-> Notes: Ensure that the time setting in the BIOS of your server is set to the current time in UTC. In some support cases, serial console access is required for debug purposes. When setting up XCP-ng configuration, we recommend that you configure serial console access. For hosts that do not have physical serial port or where suitable physical infrastructure is not available, investigate whether you can configure an embedded management device. For example, Dell DRAC or HP iLO. For more information about setting up serial console access, see CTX228930 - How to Configure Serial Console Access on XenServer and later.
+> Notes: Ensure that the time setting in the BIOS of your server is set to the current time in UTC. In some support cases, serial console access is required for debug purposes. When setting up XCP-ng configuration, we recommend that you configure serial console access. For hosts that do not have physical serial port or where suitable physical infrastructure is not available, investigate whether you can configure an embedded management device. For example, Dell DRAC or HP iLO. For more information about setting up serial console access, see [CTX228930 - How to Configure Serial Console Access on XenServer 7.0 and later](https://support.citrix.com/article/CTX228930).
 
 ## Supported guest OS
 
-For a list of supported VM operating systems, see Guest operating system support.
-Pool requirements
+TODO.
+
+## Pool requirements
 
 A resource pool is a homogeneous or heterogeneous aggregate of one or more servers, up to a maximum of 64. Before you create a pool or join a server to an existing pool, ensure that all servers in the pool meet the following requirements.
 Hardware requirements
@@ -82,7 +86,7 @@ In addition to the hardware prerequisites identified previously, there are some 
 * It must be configured with the same supplemental packs as the servers already in the pool. Supplemental packs are used to install add-on software into XCP-ng control domain, dom0. To prevent an inconsistent user experience across a pool, all servers in the pool must have the same supplemental packs at the same revision installed.
 * It must have the same XCP-ng license as the servers already in the pool. You can change the license of any pool members after joining the pool. The server with the lowest license determines the features available to all members in the pool.
 
-XCP-ngs in resource pools can contain different numbers of physical network interfaces and have local storage repositories of varying size. In practice, it is often difficult to obtain multiple servers with the exact same CPUs, and so minor variations are permitted. If you want your environment to have hosts with varying CPUs in the same resource pool, you can force join a pool together using the CLI. For information about forcing the joining operation, see Hosts and resource pools.
+XCP-ng hosts in resource pools can contain different numbers of physical network interfaces and have local storage repositories of varying size. In practice, it is often difficult to obtain multiple servers with the exact same CPUs, and so minor variations are permitted. If you want your environment to have hosts with varying CPUs in the same resource pool, you can force join a pool together using the CLI. For information about forcing the joining operation, see Hosts and resource pools.
 
 > Note: Servers providing shared NFS or iSCSI storage for the pool must have a static IP address or be DNS addressable.
 

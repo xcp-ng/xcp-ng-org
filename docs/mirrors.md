@@ -15,7 +15,7 @@ Previous versions of XCP-ng downloaded files directly from `https://updates.xcp-
 You can check our live list of mirror at this URL: [http://mirrors.xcp-ng.org/?mirrorstats](http://mirrors.xcp-ng.org/?mirrorstats)
 
 :::tip
-If loading this page fails due to too many redirections, just go to https://xcp-ng.org once, then try again)
+If loading this page fails due to too many redirections, just go to <https://xcp-ng.org> once, then try again)
 :::
 
 ## Add your mirror
@@ -88,7 +88,7 @@ This is a valid concern: maybe you are downloading from a mirror whose owner you
 
 Since XCP-ng 7.6, we use [GPG](https://gnupg.org/) to sign:
 * SHA256 sums for installation ISOs
-* SHA256 sums for repository configuration files (`xcp-ng-X.Y.repo`, downloaded as part of the [[upgrade process|Upgrade Howto]] if you choose to use `yum` to upgrade)
+* SHA256 sums for repository configuration files (`xcp-ng-X.Y.repo`, downloaded as part of the [upgrade process](upgrade.md) if you choose to use `yum` to upgrade)
 * Every RPM package. They are automatically checked by `rpm` on an installed XCP-ng.
 * Repository metadata. They are automatically checked by `yum` on an installed XCP-ng.
 
@@ -127,7 +127,7 @@ sub   rsa2048 2018-10-03 [E]
 
 Note: if you fear that someone altered this document as part of a sophisticated attack,
 you can also check that the fingerprint stored in our github repository is the same:
-https://github.com/xcp-ng/xcp-ng-release/blob/master/RPM-GPG-KEY-xcpng-info.txt
+<https://github.com/xcp-ng/xcp-ng-release/blob/master/RPM-GPG-KEY-xcpng-info.txt>
 (and in case you think someone might have altered the above link, check that the repository does actually belong to the XCP-ng project).
 
 Now import the key with `gpg`:
@@ -152,7 +152,7 @@ Expected output:
 Only the date should change depending on the date of signature. **`Good Signature`** is what tells us that the verification is successful. The warning is also expected because the signing key itself is not signed and we've not setup a list of trusted sources on the computer, so there's no way for gpg to tell if the key is to be trusted or not.
 
 #### Check an ISO image
-In this example we will first check the authenticity of the SHA256SUMS file, then use it to check the integrity of the ISO image. We'll download `xcp-ng-7.6.0.iso`, `SHA256SUMS` and `SHA256SUMS.asc` from https://updates.xcp-ng.org/isos/7.6/ but you can transpose those steps to a newer ISO.
+In this example we will first check the authenticity of the SHA256SUMS file, then use it to check the integrity of the ISO image. We'll download `xcp-ng-7.6.0.iso`, `SHA256SUMS` and `SHA256SUMS.asc` from <https://updates.xcp-ng.org/isos/7.6/> but you can transpose those steps to a newer ISO.
 
 First: import the GPG key if not done already (see above).
 

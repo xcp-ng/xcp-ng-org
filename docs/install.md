@@ -8,7 +8,12 @@ If you want to use the netinstall ISO, see the [Netinstall section](install.md#n
 
 ### Download and create media
 
-You can download the 8.1 ISO here: [https://updates.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso](https://updates.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso). Then, create the install media (eg USB key):
+You can download the 8.1 ISO here: <http://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso>.
+
+SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
+
+
+Then, create the install media (eg USB key):
 
 ```
 dd if=xcp-ng-8.1.0-2.iso of=/dev/sdX bs=8M oflag=direct
@@ -123,14 +128,14 @@ After this step, data will be written on the disk!
 
 #### 13. Supplemental packs and end of install
 
-Not relevent in almost all cases. Skip it:
+Not relevant in almost all cases. Skip it:
 
 ![](https://xcp-ng.org/assets/img/screenshots/install20.png)
 
 ![](https://xcp-ng.org/assets/img/screenshots/install21.png)
 
 :::tip
-"Completing installation" is in fact building all kernel modules and initramfs. It can takes time.
+"Completing installation" is in fact installing the bootloader and building the initramfs. It can take time.
 :::
 
 ![](https://xcp-ng.org/assets/img/screenshots/install22.png)
@@ -145,17 +150,17 @@ It means the system is correctly installed! Enjoy XCP-ng 🚀
 
 ## Netinstall
 
-A netinstall is a lightweight ISO (around 150MiB) that will only contains the installer, but no actual RPM packages. Sometimes, it's more convenient/faster when your ISO is on a slow connection (eg a virtual media using a server IPMI).
+A netinstall is a lightweight ISO (around 150MiB) that will only contain the installer, but no actual RPM packages. Sometimes, it's more convenient/faster when your ISO is on a slow connection (eg a virtual media using a server IPMI).
 
-You can download it on this URL: [https://updates.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2-netinstall.iso](https://updates.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2-netinstall.iso).
+You can download it on this URL: <http://mirror.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2-netinstall.iso>.
 
-As for the regular ISO, write in on an USB media:
+As with the regular installation ISO, write it on an USB media:
 
 ```
 dd if=xcp-ng-8.1.0-2-netinstall.iso of=/dev/sdX bs=8M oflag=direct
 ```
 
-Everything else is like the [regular install](install.md#start-the-host).
+Everything else is like the [regular install](install.md#start-the-host), except that it will not offer to install from local media, only from distant ones.
 
 ## Automated install
 

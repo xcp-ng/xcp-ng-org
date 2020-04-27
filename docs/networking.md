@@ -29,7 +29,7 @@ systemctl disable fcoe
 systemctl disable xs-fcoe
 ```
 
-See [https://github.com/xcp-ng/xcp/issues/138](https://github.com/xcp-ng/xcp/issues/138).
+See <https://github.com/xcp-ng/xcp/issues/138>.
 
 ## SDN controller
 
@@ -184,5 +184,5 @@ This setup will save you costs of 2 network switches you would otherwise have to
 
 #### References
 
-* Forum post: [https://xcp-ng.org/forum/topic/1897/mesh-network](https://xcp-ng.org/forum/topic/1897/mesh-network)
-* Proxmox wiki: [https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server](https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server)
+* Forum post: <https://xcp-ng.org/forum/topic/1897/mesh-network>
+* Proxmox wiki: <https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server>

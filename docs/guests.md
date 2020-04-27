@@ -116,9 +116,9 @@ It's now up to you to choose.
 ### XCP-ng Windows Guest Tools
 Drivers built by the XCP-ng community.
 
-**Download**: https://github.com/xcp-ng/win-pv-drivers/releases
+**Download**: <https://github.com/xcp-ng/win-pv-drivers/releases>
 
-Stability and testing status: [[Windows guest tools community testing]].
+Stability and testing status: [Windows guest tools community testing](https://github.com/xcp-ng/xcp/wiki/Windows-guest-tools-community-testing).
 
 #### How to know if tools are already installed and working
 
@@ -126,7 +126,7 @@ The VM needs to be running for this test.
 
 ##### From Xen Orchestra
 * Management agent + device drivers: XO displays "Hardware virtualization with paravirtualization drivers enabled (PVHVM)"
-* Device drivers alone: Xen Orchestra is currently (2020-03-30) unable to detect if the device drivers are installed if the management agent is not installed either. See https://github.com/vatesfr/xen-orchestra/issues/4783. If it displays "No tools detected", it is still possible that the device drivers are present.
+* Device drivers alone: Xen Orchestra is currently (2020-03-30) unable to detect if the device drivers are installed if the management agent is not installed either. See <https://github.com/vatesfr/xen-orchestra/issues/4783>. If it displays "No tools detected", it is still possible that the device drivers are present.
 
 ##### From XCP-ng Center
 * Device drivers: the mention "I/O optimized" will be visible in VM details
@@ -174,7 +174,7 @@ Our installer is not able currently to cleanly uninstall Citrix tools. Citrix to
 
 So we need to perform a complete manual clean-up of the tools:
 * either entirely manually
-* or using the experimental PowerShell script contributed by one of our users at https://github.com/siodor/win-tools-cleanup
+* or using the experimental PowerShell script contributed by one of our users at <https://github.com/siodor/win-tools-cleanup>
 
 :warning: In any case, first disable "Windows Update tools" for the VM (Xen Orchestra, advanced tab) and reboot it. 
 
@@ -208,7 +208,7 @@ You can try a simple process first with some chances of success.
 If the *confident option* above didn't yield the expected results, then we switch to a more aggressive attitude towards the old tools.
 
 * Follow the steps 0 to 4 of the "confident option" above if not done yet.
-* Follow this (ignore steps 6 and 7, do not try to install the tools yet) https://support.citrix.com/article/CTX215427
+* Follow this (ignore steps 6 and 7, do not try to install the tools yet) <https://support.citrix.com/article/CTX215427>
 * Now open regedit and go to HKLM\SYSTEM\CurrentControlSet\Services and delete entries for all xen* services.
 * In regedit, also go to HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DIFx\DriverStore and remove ONLY xennet* xenvif*
 * Go to C:\Windows\System32 and remove: (you may not have all these)
@@ -220,7 +220,7 @@ If the *confident option* above didn't yield the expected results, then we switc
 * Open the Device Manager and Click View --> Show Hidden Devices. Select Other Devices and Right click on XENBUS VIF and select uninstall. If it asks to delete the driver, check yes. Do this for any xen related thing you see in device manager. Also do the same for any unknown devices.
 * Lastly, reboot the VM. You should now hopefully be able to install xen tools regularly.
 
-**Note**: Also have a look at our [Troubleshooting Guide - Windows PV-Tools](https://github.com/xcp-ng/xcp/wiki/Troubleshooting#windows-management-agent--windows-pv-tools)!
+**Note**: Also have a look at our [Troubleshooting Guide - Windows PV-Tools](troubleshooting.html#windows-agent-pv-tools).
 
 ### Using the Windows guest tools from Citrix
 
