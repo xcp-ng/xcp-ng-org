@@ -4,7 +4,7 @@ Devices listed on [Citrix Hypervisor's Hardware Compatibility List](http://hcl.x
 
 For other hardware, see "Hardware outside the official HCL" below.
 
-## Hardware outside the official HCL
+## Unlisted hardware
 
 Many devices outside the HCL in fact work very well with XCP-ng. Being outside the HCL means that there have been not tests to ensure that they work. Most of the hardware support depends on the linux kernel and thus support for hardware outside the HCL depends on on how well the drivers are supported by the linux kernel included in XCP-ng.
 

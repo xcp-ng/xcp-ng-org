@@ -4,8 +4,6 @@ XCP-ng 8.1 is the latest release of XCP-ng. [Download the installation ISO](http
 
 SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
-For previous releases, please check the [Previous Releases](previousreleases.md) section.
-
 ## Release information
 
 * Released on 2020-03-31.

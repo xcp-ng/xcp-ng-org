@@ -13,7 +13,7 @@ There is 3 upgrade methods, detailed below:
 
 ## Release Notes & Known Issues
 
-Read the [release notes](latestrelease.md) and [known issues](latestrelease.md#known-issues) for every version that is higher than your current version. They may provide additional instructions for specific situations. Also **please read the following warnings below**:
+Read the [release notes](currentrelease.md) and [known issues](currentrelease.md#known-issues) for every version that is higher than your current version. They may provide additional instructions for specific situations. Also **please read the following warnings below**:
 
 :::warning
 * Always upgrade and reboot the pool master **FIRST**

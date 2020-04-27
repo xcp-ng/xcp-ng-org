@@ -56,7 +56,9 @@ We recommend that you use multiple NICs for redundancy. The configuration of NIC
 
 XCP-ng requires an IPv4 network for management and storage traffic.
 
-> Notes: Ensure that the time setting in the BIOS of your server is set to the current time in UTC. In some support cases, serial console access is required for debug purposes. When setting up XCP-ng configuration, we recommend that you configure serial console access. For hosts that do not have physical serial port or where suitable physical infrastructure is not available, investigate whether you can configure an embedded management device. For example, Dell DRAC or HP iLO. For more information about setting up serial console access, see [CTX228930 - How to Configure Serial Console Access on XenServer 7.0 and later](https://support.citrix.com/article/CTX228930).
+:::tip
+Ensure that the time setting in the BIOS of your server is set to the current time in UTC. In some support cases, serial console access is required for debug purposes. When setting up XCP-ng configuration, we recommend that you configure serial console access. For hosts that do not have physical serial port or where suitable physical infrastructure is not available, investigate whether you can configure an embedded management device. For example, Dell DRAC or HP iLO. For more information about setting up serial console access, see [CTX228930 - How to Configure Serial Console Access on XenServer 7.0 and later](https://support.citrix.com/article/CTX228930).
+:::
 
 ## Supported guest OS
 
