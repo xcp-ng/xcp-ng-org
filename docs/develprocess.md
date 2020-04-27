@@ -16,7 +16,7 @@ As usual in the Free Software world, we stand *on the shoulders of giants*:
 Let's first discuss the RPM repository structure and define stable and development releases. Then we'll see development and packaging aspects.
 
 ### XCP-ng's RPM repositories
-*A new repository structure has been introduced with XCP-ng 8.0, which is what this section will cover. For the structure used in XCP-ng 7.5 and 7.6, see https://xcp-ng.org/forum/topic/185/structure-of-the-rpm-repositories.*
+*A new repository structure has been introduced with XCP-ng 8.0, which is what this section will cover. For the structure used in XCP-ng 7.5 and 7.6, see <https://xcp-ng.org/forum/topic/185/structure-of-the-rpm-repositories>.*
 
 First, the *goals* behind the RPM repository structure are:
 * Allow fast release of fixes to the maintained stable releases.
@@ -24,7 +24,7 @@ First, the *goals* behind the RPM repository structure are:
 * Allow users to upgrade from an older XCP-ng to the latest release with a simple yum update (as long as we don't cross major release borders. 7.4 to 7.6 is supported. 7.6 to 8.0 isn't).
 * Have a place where additional packages from XCP-ng's core team or from the community can be made available even after the release.
 
-You can browse the repository structure at https://updates.xcp-ng.org/
+You can browse the repository structure at <https://updates.xcp-ng.org/>
 
 Here's a tree that represents the structure:
 ```
@@ -59,7 +59,7 @@ Here's a tree that represents the structure:
 * any additional build dependency we had to add to build the above RPMs.
 
 `updates` is enabled by default. It contains:
-* bugfix or security updates (see [[Updates Howto]]),
+* bugfix or security updates (see [Updates Howto](updates.md)),
 * occasionnally, updates that bring enhancements without changing the behaviour you know and without regressions,
 * any optional extra RPMs provided by XCP-ng's packagers *after the release*,
 * any additional build dependency we had to add to build the above RPMs.
@@ -69,7 +69,7 @@ Note that having lots of additional packages in `base` and `updates` does not me
 * or when pulled as a dependency of another update (in which case we do want that).
 
 ### Stable release vs development release
-This is very common: released stable versions only get non-disruptive updates during their support lifetime: bug fixes and security fixes. Those are first published to the `testing` RPM repository and then moved to the `updates` RPM repository so that it is offered to all users (see [[Updates Howto]]). We also allow ourselves to add features to an existing stable version as optional packages, or as updates to existing packages provided that we can do it without creating risks of regression. Example: we added support for `zstd` compression for VM exports to an already released XCP-ng 7.6.
+This is very common: released stable versions only get non-disruptive updates during their support lifetime: bug fixes and security fixes. Those are first published to the `testing` RPM repository and then moved to the `updates` RPM repository so that it is offered to all users (see [Updates Howto](updates.md)). We also allow ourselves to add features to an existing stable version as optional packages, or as updates to existing packages provided that we can do it without creating risks of regression. Example: we added support for `zstd` compression for VM exports to an already released XCP-ng 7.6.
 
 On the contrary, the development version (aka the next stable release) can get any kind of breaking change until the day of release. Packages are then usually directly pushed to the `base` repository.
 
@@ -77,9 +77,9 @@ On the contrary, the development version (aka the next stable release) can get a
 There are two sides of the coin: **development** and **RPM packaging**. For a given RPM package that does not come from CentOS or EPEL, we always provide packaging work. We can also provide development work, depending on the package, either as contributors to an upstream project, or as our own upstream.
 
 Here are the usual steps. We will expand on them afterwards:
-* **Develop**: happens on a software git repository as in any software project. Example: https://github.com/xcp-ng/xcp-emu-manager. Skip if we are not the upstream developer for that software and are not contributing to it yet.
-* **Release**: decide that your software is good to be released as part of XCP-ng, either as an update to an existing release of XCP-ng or in the next release. Create a tag in the git repository. Example: https://github.com/xcp-ng/xcp-emu-manager/releases/tag/v0.0.9. Skip if we are not the upstream developer for that software.
-* **Create or update RPM specs** and commit them to the appropriate repository at https://github.com/xcp-ng-rpms/
+* **Develop**: happens on a software git repository as in any software project. Example: <https://github.com/xcp-ng/xcp-emu-manager>. Skip if we are not the upstream developer for that software and are not contributing to it yet.
+* **Release**: decide that your software is good to be released as part of XCP-ng, either as an update to an existing release of XCP-ng or in the next release. Create a tag in the git repository. Example: <https://github.com/xcp-ng/xcp-emu-manager/releases/tag/v0.0.9>. Skip if we are not the upstream developer for that software.
+* **Create or update RPM specs** and commit them to the appropriate repository at <https://github.com/xcp-ng-rpms/>
 * **Add or update patches** to be applied above the upstream source tarball to that same repository.
 * **Submit build** to the build system (koji).
 * **Publish the build** to the appropriate RPM repository (`testing` for stable releases, `base` for developement release of XCP-ng)
@@ -87,7 +87,7 @@ Here are the usual steps. We will expand on them afterwards:
 
 ### Where discussion happens
 Usually discussion will happen:
-* On [github issues]( (https://github.com/xcp-ng/xcp/issues)).
+* On [github issues](https://github.com/xcp-ng/xcp/issues).
 * In [the forum](https://xcp-ng.org/forum/).
 * Over IRC: `#xcp-ng` and `#xcp-ng-devel` on irc.freenode.net.
 
@@ -96,17 +96,17 @@ Then depending on the package, we'll bring the discussion to upstream channels w
 ## Development
 
 ### Contribution to upstream projects
-Development (as in "write code") in XCP-ng project is mostly made of contributions to upstream projects such as https://github.com/xapi-project/, https://wiki.xenproject.org/wiki/Submitting_Xen_Project_Patches or https://github.com/xenserver/. 
+Development (as in "write code") in XCP-ng project is mostly made of contributions to upstream projects such as <https://github.com/xapi-project/>, <https://wiki.xenproject.org/wiki/Submitting_Xen_Project_Patches> or <https://github.com/xenserver/>.
 
-For some pieces of upstream software, we have github "forks" at https://github.com/xcp-ng/xcp. For others we contribute directly without a "fork" and apply the patches directly on the RPMs at https://github.com/xcp-ng-rpms/.
+For some pieces of upstream software, we have github "forks" at <https://github.com/xcp-ng>. For others we contribute directly without a github fork and apply the patches directly on the RPMs at <https://github.com/xcp-ng-rpms/>.
 
 ### Components we **are** the upstream for
 Our policy is to upstream everything if possible. However, there are some exceptions:
-* Components that have no "upstream" open source equivalent. `xcp-emu-manager` (https://github.com/xcp-ng/xcp-emu-manager) is such a component that we had to write from scratch because the corresponding component in XenServer, `emu-manager`, is closed-source.
-* Bits specific to the act of building XCP-ng (various scripts, branding stuff...). The main example is https://github.com/xcp-ng/xcp.
+* Components that have no "upstream" open source equivalent. `xcp-emu-manager` (<https://github.com/xcp-ng/xcp-emu-manager>) is such a component that we had to write from scratch because the corresponding component in XenServer, `emu-manager`, is closed-source.
+* Bits specific to the act of building XCP-ng (various scripts, branding stuff...). The main example is <https://github.com/xcp-ng/xcp>.
 
 ### How to help at development
-It all depends on your skills and areas of interest so it's hard to tell specifically in advance. Having a look at the open github issues and pick one (https://github.com/xcp-ng/xcp/issues) could definitely help. Else, maybe there's a specific topic that you would want to help improve. Even if you don't know where to start, just come and talk with us (see "Where discussion happens" above).
+It all depends on your skills and areas of interest so it's hard to tell specifically in advance. Having a look at the open github issues and pick one (<https://github.com/xcp-ng/xcp/issues>) could definitely help. Else, maybe there's a specific topic that you would want to help improve. Even if you don't know where to start, just come and talk with us (see "Where discussion happens" above).
 
 ## RPM packaging
 
@@ -122,22 +122,22 @@ A RPM is built from a source RPM (SRPM), which is usually made of:
 
 A given source RPM can be built in various environments (distribution, arches), so the build environment is also something that defines a RPM. The best build environment is one that matches your target. Linux distributions always start with a clean minimal build root in which dependencies declared by the SRPM are installed before starting the build. We do exactly the same.
 
-One source RPM can produce several RPMs, named differently from the source RPM itself. Example available at https://koji.xcp-ng.org/buildinfo?buildID=663 (see the 'RPMs' section).
+One source RPM can produce several RPMs, named differently from the source RPM itself. Example available at <https://koji.xcp-ng.org/buildinfo?buildID=663> (see the 'RPMs' section).
 
 More about RPM:
-* https://en.wikipedia.org/wiki/RPM_Package_Manager
-* https://rpm.org/documentation.html
+* <https://en.wikipedia.org/wiki/RPM_Package_Manager>
+* <https://rpm.org/documentation.html>
 
 ### Where to find our source RPMs
 Two places.
 
-1. As SRPM files (`.src.rpm`), they are all available in our RPM repositories at https://updates.xcp-ng.org/. Example: https://updates.xcp-ng.org/7/7.6/base/Source/SPackages/.
+1. As SRPM files (`.src.rpm`), they are all available in our RPM repositories at <https://updates.xcp-ng.org/>. Example: <https://updates.xcp-ng.org/7/7.6/base/Source/SPackages/>.
 
-2. All RPMs built by us have been built from a git repository at https://github.com/xcp-ng-rpms/ containing the spec file and sources. The name of the repository matches that of the source package. `git-lfs` is required for cloning and committing, because we use it to store the source tarballs.
+2. All RPMs built by us have been built from a git repository at <https://github.com/xcp-ng-rpms/> containing the spec file and sources. The name of the repository matches that of the source package. `git-lfs` is required for cloning and committing, because we use it to store the source tarballs.
 
 ### Packaging guidelines
 
-See [[RPM Packaging guidelines]].
+See [RPM Packaging guidelines](https://github.com/xcp-ng/xcp/wiki/RPM-Packaging-guidelines).
 
 ## Build system
 
@@ -157,7 +157,7 @@ And with a bit of scripting:
 * Creation of RPM repositories.
 
 ### Koji's concepts
-(see also https://pagure.io/docs/koji/ though its howto is very Fedora-centric)
+(see also <https://pagure.io/docs/koji/> though its howto is very Fedora-centric)
 
 In order to understand how Koji works, one needs to explain a few concepts: packages, builds, RPMs and tags.
 
@@ -167,7 +167,7 @@ In order to understand how Koji works, one needs to explain a few concepts: pack
 * **Build**: that RPM belongs to a **build**, which groups a SRPM with all the RPMs it produced, and is identified by the name of the SRPM, without the `.src.rpm` part: `xenopsd-0.66.0-1.1.xcpng`.
 * **Package**: the build belongs to a **package**: `xenopsd`.
 
-This can be seen in this build information page: https://koji.xcp-ng.org/buildinfo?buildID=663. The package is visible as "Package Name" (you can click on it to see the package view) and the RPMs (SRPM and regular RPMs) are visible under the "RPMs" section.
+This can be seen in this build information page: <https://koji.xcp-ng.org/buildinfo?buildID=663>. The package is visible as "Package Name" (you can click on it to see the package view) and the RPMs (SRPM and regular RPMs) are visible under the "RPMs" section.
 
 Take the time to assimilate this, because it will be used in the rest of this document.
 
@@ -196,7 +196,7 @@ V8.x (packages)
 #### Build targets
 When you ask Koji to start a build, you **must** specify a build target.
 
-Actually, in the examples above `xenopsd-0.66.0-1.1.xcpng` was automatically tagged `v7.6-testing` by koji when it was built because of another concept of Koji: **build targets**. That was not a manual operation. From XCP-ng 8.0 onwards, the only builds that we tag manually are packages imported from CentOS or EPEL. Everything that is built by Koji gets a tag depending on the *build target*'s destination tag.
+Actually, in the examples above, `xenopsd-0.66.0-1.1.xcpng` was automatically tagged `v7.6-testing` by koji when it was built because of another concept of Koji: **build targets**. That was not a manual operation. From XCP-ng 8.0 onwards, the only builds that we tag manually are packages imported from CentOS or EPEL. Everything that is built by Koji gets a tag depending on the *build target*'s destination tag.
 
 A build target is defined by:
 * a name
@@ -218,17 +218,17 @@ Another (fictitious) example:
 Here build tag and destination tag are different. Possible cause: we don't want packages built by other people in the sandbox to influence our own builds to it. This is a fictitious situation just to explain the concepts of build tag and destination tag.
 
 ### Build and release process
-Here's how to update a package in XCP-ng, step by step. This process requires writing rights on the git repository corresponding to the package at https://github.com/xcp-ng-rpms/ and submit rights in Koji. Others are invited to fork one the repositories at https://github.com/xcp-ng-rpms/, test their builds with https://github.com/xcp-ng/xcp-ng-build-env and then create pull requests. Reading the steps below will still be useful to you to help make appropriate changes.
+Here's how to update a package in XCP-ng, step by step. This process requires writing rights on the git repository corresponding to the package at <https://github.com/xcp-ng-rpms/> and submit rights in Koji. Others are invited to fork one the repositories at <https://github.com/xcp-ng-rpms/>, test their builds with <https://github.com/xcp-ng/xcp-ng-build-env> and then create pull requests. Reading the steps below will still be useful to you to help make appropriate changes.
 
 This applies only to packages that we build in Koji. Most packages from CentOS, for example, are not built in Koji: SRPMs and RPMs are imported directly from CentOS into our Koji instance.
 
 Let's go:
 #### 1. Package
 * Make sure `git-lfs` is installed.
-* Clone or update your local copy of the relevant repository at https://github.com/xcp-ng-rpms/ (one per package).
+* Clone or update your local copy of the relevant repository at <https://github.com/xcp-ng-rpms/> (one per package).
 * Switch to the branch that corresponds to the release of XCP-ng you target, e.g. `git checkout 7.6` for XCP-ng 7.6. If you target several releases of XCP-ng, you'll have to make your changes to several branches and start several builds.
 * Create a temporary work branch from that branch.
-* Make your changes to the `.spec` file, sources and/or patches. Follow the [[RPM Packaging Guidelines]].
+* Make your changes to the `.spec` file, sources and/or patches. Follow the [RPM Packaging Guidelines](https://github.com/xcp-ng/xcp/wiki/RPM-Packaging-guidelines).
 * Commit and push
 
 #### 2. Test build
@@ -248,7 +248,7 @@ Let's go:
 #### 4. Official build
 * The official maintainer for the package has the responsibility to start an official build in koji (once without `--scratch`), because the result will be pushed to public RPM repositories as testing RPMs.
 * Check that the build was successful
-* Wait a few minutes for the RPMs to reach the RPM repositories at https://updates.xcp-ng.org/
+* Wait a few minutes for the RPMs to reach the RPM repositories at <https://updates.xcp-ng.org/>
 
 #### 5. Post-build tasks
 * Test that you can update a host from the repositories: look at the list of built RPMs, identify those that are updates to RPMs on the system, and update them with `yum update {PACKAGE1} {PACKAGE2} {...} --enablerepo='xcp-ng-testing'` (or `--enablerepo='xcp-ng-updates_testing'` for XCP-ng <= 7.6).
@@ -257,24 +257,24 @@ Let's go:
 Then, if it is an **update candidate** for an existing package:
 * If the update targets several releases (for example `8.x` and `8.x+1`), test for each release.
 * Announce the update candidate and ask for testers:
-  * Message to https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing
+  * Message to <https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing>
     * Why the update
     * List of updated RPMs
     * Command to install them.
     * Command to downgrade in case of issues.
     * What to test.
     * Is a reboot required...
-  * For better visibility of the update candidate, also create a github issue, such as https://github.com/xcp-ng/xcp/issues/154. Add it to the [team board](https://github.com/orgs/xcp-ng/projects/2) in column "Update candidate".
+  * For better visibility of the update candidate, also create a github issue, such as <https://github.com/xcp-ng/xcp/issues/154>. Add it to the [team board](https://github.com/orgs/xcp-ng/projects/2) in column "Update candidate".
 
 ### Special case: new packages
-Importing new packages requires extra steps, described at [[How to add new packages to XCP-ng]].
+Importing new packages requires extra steps, described at [How to add new packages to XCP-ng](https://github.com/xcp-ng/xcp/wiki/How-to-add-new-packages-to-XCP-ng).
 
 ### Special case: packages not built by us
 Most packages imported from CentOS or EPEL are not built by our Koji instance. We import the source RPM and the built RPMs directly.
 
 **TODO**
 
-Bits of information can be inferred from [[Import-RPM-build-dependencies-from-CentOS-and-EPEL]]
+Bits of information can be inferred from [Import-RPM-build-dependencies-from-CentOS-and-EPEL](https://github.com/xcp-ng/xcp/wiki/Import-RPM-build-dependencies-from-CentOS-and-EPEL)
 
 ### Other tags
 In a previous section, I've tried to explain what tags are used for in Koji. We use them also for something else. We probably even mis-use them.
@@ -289,17 +289,17 @@ In addition to this, when we import RPMs from CentOS or EPEL we tag their *build
 * `centos-{VERSION}`, for example `centos-7.5`.
 * `epel-{MAJOR_VERSION}-{DATE}`, for example `epel-7-2019-01-30`
 
-Example: https://koji.xcp-ng.org/buildinfo?buildID=655
+Example: <https://koji.xcp-ng.org/buildinfo?buildID=655>
 
 All those tags have no purpose in Koji's workflow. They are just useful pieces of information for us.
 
 ### RPM signing
 We automatically sign the RPMs built by or imported to Koji before exporting them towards the RPM repositories.
 
-[More information about RPM signing](https://github.com/xcp-ng/xcp/wiki/How-to-check-the-authenticity-of-files-downloaded-from-XCP-mirrors).
+[More information about RPM signing](mirrors.md#security).
 
 ### Repository generation
-Handled by a cron job on koji's server. Then the repository is synchronised to https://updates.xcp-ng.org/.
+Handled by a cron job on koji's server. Then the repository is synchronised to <https://updates.xcp-ng.org/>.
 
 ## Build env
 
@@ -332,10 +332,10 @@ Here are the steps:
 
 ## Kernel module policy
 
-In XCP-ng, there is only one version of the kernel that is supported at a given time, and possible experimental [[alternate kernels|Alternate kernel]] provided. The policy differs whether the kernel modules are for XCP-ng's supported kernel or for an alternate kernel.
+In XCP-ng, there is only one version of the kernel that is supported at a given time. There's also an [alternate kernel](hardware#alternate-kernel) available for troubleshooting. The policy differs whether the kernel modules are for XCP-ng's supported kernel or for an alternate kernel.
 
 ### What are kernel modules?
-See https://en.wikipedia.org/wiki/Loadable_kernel_module
+See <https://en.wikipedia.org/wiki/Loadable_kernel_module>
 
 They can be loaded (or unloaded) dynamically into the kernel to provide more functionality: device drivers, filesystem drivers, etc.
 
@@ -352,7 +352,7 @@ Through our RPM repositories (configured by default on the hosts for `yum` to in
 
 ### Module Updates
 
-This section discusses the kind of updates kernel modules can receive during the maintenance cycle of a given release of XCP-ng (e.g. XCP-ng 7.6). For information about the general update process, see [[Updates Howto]].
+This section discusses the kind of updates kernel modules can receive during the maintenance cycle of a given release of XCP-ng (e.g. XCP-ng 7.6). For information about the general update process, see [Updates Howto](updates.md).
 
 Updates for *supported modules* are offered automatically when one updates their host. In order to avoid risks of regression, they are usually only updated if there's an important bug to fix, or a security issue with them... Until the next upgrade of XCP-ng.
 
@@ -441,29 +441,7 @@ We can have up to three versions of the same module on the system, one from the 
 
 With `depmod`'s default configuration, the `/usr/lib/modules/{kernel_version}/override/` directory is not taken into account. We need to modify its configuration so that modules we install in the `override` directory are preferred.
 
-**Process for XCP-ng 7.6**
-
-In order to avoid a system-wide configuration change in XCP-ng 7.6 after the initial release, each alternate module needs to modify `depmod`'s configuration relative to this module so that a version in the `override` directory is preferred:
-* name of the file: `/etc/depmod.d/{module_name}-{kernel_version_stripped}.conf`
-  * `module_name` is the module name without its `.ko` extension
-  * `kernel_version_stripped` is the kernel version as reported by `uname -r`, but anything after and including a `+` sign is removed. So `4.4.0+10` becomes `4.4.0`.  
-  Example from the `broadcom-bnxt-en-alt` package for kernel 4.4.0+10: `/etc/depmod.d/bnxt_en-4.4.0.conf`
-* contents: 
-  ```
-  override {module_name} {kernel_version_stripped} override
-  ```
-  It means that for the module {module} in the kernel {kernel_version_stripped}, any version of the module found in `/lib/modules/{kernel_version}/override` will get the priority. See `man depmod.d`.
-
-  Example from the `broadcom-bnxt-en-alt` package for kernel 4.4.0+10:
-  ```
-  override bnxt_en 4.4.0 override
-  ```
-
-See an example spec file: https://github.com/xcp-ng-rpms/broadcom-bnxt-en-alt/blob/7.6/SPECS/broadcom-bnxt-en-alt.spec
-
-**Intended process for XCP-ng 8.0**
-
-In XCP-ng 8.0, we will simplify all this and change the main `depmod` configuration in `/etc/depmod.d/dist.conf`.
+**Since XCP-ng 8.0**, this is done automatically at installation time, by modifying `/etc/depmod.d/dist.conf`.
 
 The default configuration is:
 ```
@@ -477,7 +455,7 @@ And becomes:
 search override updates extra built-in weak-updates
 ```
 
-This will make `depmod` search in the `override` module directory before trying other module directories, for all modules.
+This makes `depmod` search in the `override` module directory before trying other module directories, for all modules.
 
 ### How to use alternate or additional modules
 
@@ -554,7 +532,7 @@ In the case of an additional module, uninstalling the RPM will simply leave your
 
 ### Kernel modules for alternate kernels
 
-The policy for [[alternate kernels|Alternate Kernel]] is simpler, because there are no alternate modules (with the meaning of *alternate modules* as described earlier). There's just the kernel's built-in modules and possibly additional or updated modules in `/lib/modules/{kernel_version}/updates`. This means that when an alternate kernel is updated, people who have installed it will get the update through the standard updates process. There's no support for cherry-picking specific versions of previous packages we may have released in the past. If there's a bug, please open a bug report. To avoid bugs, please take part in the testing phase.
+The policy for [alternate kernels](hardware.md#alternate-kernel) is simpler, because there are no alternate modules (with the meaning of *alternate modules* as described earlier). There's just the kernel's built-in modules and possibly additional or updated modules in `/lib/modules/{kernel_version}/updates`. This means that when an alternate kernel is updated, people who have installed it will get the update through the standard updates process. There's no support for cherry-picking specific versions of previous packages we may have released in the past. If there's a bug, please open a bug report. To avoid bugs, please take part in the testing phase.
 
 RPMs that provide modules for an alternate kernel must follow these conventions:
 * The name must always end with `-kernel{MAJOR.MINOR}` (we don't include the patch version because we won't provide two competing kernel packages for the same MAJOR + MINOR versions). 
@@ -648,7 +626,7 @@ rpm -ql host-installer
 ```
 Most of them are in `/opt/xensource/installer/`
 
-Our git repository for the installer is: https://github.com/xcp-ng/host-installer. Feel free to create pull requests for your enhancements or bug fixes.
+Our git repository for the installer is: <https://github.com/xcp-ng/host-installer>. Feel free to create pull requests for your enhancements or bug fixes.
 
 ### Build a new `install.img` with your changes
 
@@ -668,7 +646,7 @@ You may want the installer to install more packages, or updated packages.
 Read [the usual warnings about the installation of third party RPMs on XCP-ng.](https://github.com/xcp-ng/xcp/wiki/Updates-Howto#be-cautious-with-third-party-repositories-and-packages)
 
 To achieve this:
-* Change the RPMs in the `Packages/` directory. If you add new packages, be careful about dependencies, else they'll fail to install and the whole installation process will fail. 
+* Change the RPMs in the `Packages/` directory. If you add new packages, be careful about dependencies, else they'll fail to install and the whole installation process will fail.
 * Copy the file called `repodata/{varying_checksum_here}-groups.xml to a temporary location such as `/tmp/groups.xml`
 * Modify it to add or remove RPMs from the groups. There are two groups and both will be installed, so it's not very important if you don't know which one to modify. Just pick one. You don't need to add all the dependencies: they will be pulled automatically if you made them available in `Packages/`.
 * Update `repodata/`

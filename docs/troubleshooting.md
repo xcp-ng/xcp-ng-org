@@ -105,7 +105,7 @@ please try to:
 
 #### Solution (draft! has to be tested/validated)
 
-* Blacklisting (Source: https://xcp-ng.org/forum/post/1707)
+* Blacklisting (Source: <https://xcp-ng.org/forum/post/1707>)
 > Usually, when you install a recent distro in PVHVM (using other media) and you get a blank screen, try blacklisting > by adding the following in your grub command at the end
 >
 > modprobe.blacklist=bochs_drm  
@@ -252,7 +252,7 @@ There was an issue with the installing of the drivers certificate, so the driver
 * Clean your system from `Citrix Client Tools` _AND_ `XCP-ng Client Tools` to create a clean state.
 * Then install the Client Tools from scratch.
 
-[This Guide](https://github.com/xcp-ng/xcp/wiki/Guest-Tools#upgrade-from-citrix-registered-xenserver-registered-client-tools) may help you through the process.
+[This Guide](guests.md#upgrade-from-citrix-xenserver-client-tools) may help you through the process.
 
 
 ## After Upgrade
@@ -267,7 +267,7 @@ There was an issue with the installing of the drivers certificate, so the driver
 * A Storage Repository (SR) could not be attached.
     * Check the corresponding disk(s), network(s) and setting(s). Follow the [3-Step-Guide](#general).
 * There is a serious problem.
-    * Follow the [3-Step-Guide](#general). 
+    * Follow the 3-Step-Guide.
 
 ***
 
@@ -308,7 +308,7 @@ To access the backup (with all your tools and modifications) just mount the back
     * update raid controller / HBA firmware
     * update system firmware
 * Maybe we (or upstream Citrix XenServer) removed/updated something.
-    * Please check our [[HCL|Hardware-Compatibility-List-(HCL)]].
+    * Please check our [Hardware Compatibility List (HCL)](hardware.md).
     * Follow the [3-Step-Guide](#general).
 
 ## iSCSI Troubleshooting

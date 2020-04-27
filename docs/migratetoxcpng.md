@@ -44,7 +44,7 @@ If You lost ability to extend migrated volume (opening journal failed: -2) You n
 
 ## From KVM (Libvirt)
 
-Related forum thread: https://xcp-ng.org/forum/topic/1465/migrating-from-kvm-to-xcp-ng
+Related forum thread: <https://xcp-ng.org/forum/topic/1465/migrating-from-kvm-to-xcp-ng>
 
 _Due the fact I have only server here, I have setup a "buffer" machine on my desktop to backup and convert the VM image file._
 
