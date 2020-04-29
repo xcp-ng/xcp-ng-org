@@ -14,11 +14,11 @@ Using OVA export from VMware and then OVA import into Xen Orchestra is the prefe
 Collect info about network cards used in windows VM (ipconfig /all) use same mac address(es) when creating interfaces in xcp-ng this step will help You skip windows activation if system was activated already.
 :::
 
-Importing a VMware linux VM, you may encounter an error similar to this on boot:  
+Importing a VMware linux VM, you may encounter an error similar to this on boot:
 
-`dracut-initqueue[227]: Warning: /dev/mapper/ol-root does not exist`  
+`dracut-initqueue[227]: Warning: /dev/mapper/ol-root does not exist`
 
-The fix for this is installing some xen drivers *before* exporting the VM from VMware:  
+The fix for this is installing some xen drivers *before* exporting the VM from VMware:
 
 `dracut --add-drivers "xen-blkfront xen-netfront" --force`
 
@@ -32,7 +32,7 @@ The fix for this is installing some xen drivers *before* exporting the VM from V
 * Mount the NFS share as a Storage Repository in XenCenter or XOA.
 * Make sure the hyper-v virtual disk is not fixed type, use hyper-v mgmt to convert to dynamic vhd if needed.
 * Copy the VHD file you want to import to the NFS share.
-   -use **uuidgen -r** to generate uuid and use it to rename vhd file. 
+   -use **uuidgen -r** to generate uuid and use it to rename vhd file.
 * Create a new VM in xcp-ng with no disks.
 * Attach the VHD from the NFS share to your new VM.
 * Install Xenserver Tools.
@@ -52,11 +52,11 @@ _Due the fact I have only server here, I have setup a "buffer" machine on my des
 
   `dracut --add-drivers xen-blkfront -f /boot/initramfs-$(uname -r).img $(uname -r)`
 
-  If your VMs are in BIOS mode : 
+  If your VMs are in BIOS mode :
 
   `dracut --regenerate-all -f && grub2-mkconfig -o /boot/grub2/grub.cfg`
 
-  If your VMs are in UEFI mode (OVMF Tianocore) : 
+  If your VMs are in UEFI mode (OVMF Tianocore) :
 
   `dracut --regenerate-all -f && grub2-mkconfig -o /boot/efi/EFI/<your distribution>/grub.cfg`
 
@@ -64,13 +64,13 @@ _Due the fact I have only server here, I have setup a "buffer" machine on my des
 
 * Use rsync to copy VM files to the "buffer" machine using `--sparse` flag.
 
-* Convert the QCOW2 to VHD using QEMU-IMG : 
+* Convert the QCOW2 to VHD using QEMU-IMG :
 
   `qemu-img convert -O vpc myvm.qcow2 myvm.vhd`
 
 * Use rsync to copy the converted files (VHD) to your XCP-ng host.
 
-* After the rsync operation, the VHD are not valid for the XAPI, so repair them : 
+* After the rsync operation, the VHD are not valid for the XAPI, so repair them :
 
    `vhd-util repair -n myvm.vhd`
 
@@ -78,7 +78,7 @@ _Due the fact I have only server here, I have setup a "buffer" machine on my des
 
 * For each VM, create a VDI on Xen Orchestra with the virtual size of your VHD + 1GB (i.e the virtual size of myvm is 21GB, so I create a VDI with a size of 22GB).
 
-* Get the UUID of the VDI (on Xen Orchestra or CLI) and use the CLI on the XCP-ng host to import the VHD content into the VDI : 
+* Get the UUID of the VDI (on Xen Orchestra or CLI) and use the CLI on the XCP-ng host to import the VHD content into the VDI :
 
   `xe vdi-import filename=myvm.vhd format=vhd --progress uuid=<VDI UUID>`
 

@@ -50,7 +50,7 @@ On FreeBSD/OpenBSD, the xen drivers are also already part of the kernel.
 The `install.sh` script doesn't support those systems, but there are ways to install the management agent anyway.
 
 :::tip
-For others: search [the forum](https://xcp-ng.org/forum). See for example [this thread](https://xcp-ng.org/forum/topic/2582/guest-tools-for-openbsd). 
+For others: search [the forum](https://xcp-ng.org/forum). See for example [this thread](https://xcp-ng.org/forum/topic/2582/guest-tools-for-openbsd).
 :::
 
 ## FreeNAS/TrueNAS
@@ -90,7 +90,7 @@ Thanks to @etomm in [this issue](https://github.com/xcp-ng/xcp/issues/172#issuec
 
 ## Windows
 
-Windows guests need both the device drivers and the management agent. 
+Windows guests need both the device drivers and the management agent.
 * The **device drivers** bring optimized I/O performances.
 * The **management agent** brings more manageability of the VM from XCP-ng, and guest metrics reporting to the host.
 
@@ -170,13 +170,13 @@ xe vm-param-get param-name=has-vendor-device uuid={VM-UUID}
 
 #### Upgrade from Citrix :registered: XenServer :registered: client tools
 
-Our installer is not able currently to cleanly uninstall Citrix tools. Citrix tools' uninstaller itself isn't either: it leaves various things behind. 
+Our installer is not able currently to cleanly uninstall Citrix tools. Citrix tools' uninstaller itself isn't either: it leaves various things behind.
 
 So we need to perform a complete manual clean-up of the tools:
 * either entirely manually
 * or using the experimental PowerShell script contributed by one of our users at <https://github.com/siodor/win-tools-cleanup>
 
-:warning: In any case, first disable "Windows Update tools" for the VM (Xen Orchestra, advanced tab) and reboot it. 
+:warning: In any case, first disable "Windows Update tools" for the VM (Xen Orchestra, advanced tab) and reboot it.
 
 Following is the manual process.
 

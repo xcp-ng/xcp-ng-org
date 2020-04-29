@@ -18,19 +18,19 @@ Here is our handy **3-Step-Guide**:
     * :tv: Screenshots
     * :stop_sign: Error messages
 3. Share your solution ([forum](https://xcp-ng.org/forum), [wiki](https://github.com/xcp-ng/xcp/wiki)) - others can benefit from your experience.
-    * And we are therefore officially proud of you! :heart: 
+    * And we are therefore officially proud of you! :heart:
 
 ## Pro Support
 
 If you have subscribed to [Pro support](https://xcp-ng.com/), well, don't hesitate to use it!
 
-## Log files 
+## Log files
 
 Like in other linux/unix systems the logfiles are located in `/var/log`
 
 ### General log
 
-`/var/log/daemon.log` 
+`/var/log/daemon.log`
 
 Output of various running daemons involved in XCP-ng's tasks. Examples: output of `xenopsd` which handles the communication with the VMs, of executables involved in live migration and storage motion, and more...
 
@@ -108,7 +108,7 @@ please try to:
 * Blacklisting (Source: <https://xcp-ng.org/forum/post/1707>)
 > Usually, when you install a recent distro in PVHVM (using other media) and you get a blank screen, try blacklisting > by adding the following in your grub command at the end
 >
-> modprobe.blacklist=bochs_drm  
+> modprobe.blacklist=bochs_drm
 
 
 
@@ -160,14 +160,14 @@ This symptom can be caused by a variety of issues including Raid degradation, ag
 1. Begin by unplugging any external USB hubs, hard drives, and USBs.
 2. Run a command such as starting a VM to see if the issue remains.
 3. If the command still hangs, physically check to see if your HDDs/SSDs are all functioning normally and any raid arrays you are using are in a clean non-degraded state.
-4. If these measures fail, login to your host and run `cat /var/log/kern.log | grep hung`. If this returns `"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.` your lvm layer may be hanging during storage scans. This could be caused by a drive that is starting to fail but has not hard failed yet. 
-5. If all these measures fail, collect the logs and make your way to the forum for help. 
+4. If these measures fail, login to your host and run `cat /var/log/kern.log | grep hung`. If this returns `"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.` your lvm layer may be hanging during storage scans. This could be caused by a drive that is starting to fail but has not hard failed yet.
+5. If all these measures fail, collect the logs and make your way to the forum for help.
 
 ----
 
 ## Network Performance
 
-### TCP Offload checksum errors 
+### TCP Offload checksum errors
 
 #### Cause
 
@@ -231,9 +231,9 @@ Resolved with version 8.2.2.200-RC1 and newer.
 
 ### Upgrading from XenTools 6.x to XCP-ng-Client-Tools-for-Windows-8.2.1-beta1 and get the error message "Windows Management Agent failed to install" directly after installing it
 
-#### Cause and solution: 
+#### Cause and solution:
 
-There was an issue with the installing of the drivers certificate, so the drivers did not load silently. 
+There was an issue with the installing of the drivers certificate, so the drivers did not load silently.
 
 Resolved with version 8.2.2.200-RC1 and newer.
 
@@ -243,7 +243,7 @@ Resolved with version 8.2.2.200-RC1 and newer.
 
 ##### Cause
 
-There was an issue with the installing of the drivers certificate, so the drivers did not load silently. 
+There was an issue with the installing of the drivers certificate, so the drivers did not load silently.
 
 #### Possible Solutions
 
@@ -348,7 +348,7 @@ The trick is to extend the Lio iSCSI lun configuration in pacemaker with a hard 
 
 ```
 primitive p_iscsi_lun_1 iSCSILogicalUnit \
-        params target_iqn="iqn.2019-01.com.example.server:example" implementation=lio-t lun=0 path="/dev/drbd0" \ 
+        params target_iqn="iqn.2019-01.com.example.server:example" implementation=lio-t lun=0 path="/dev/drbd0" \
         scsi_sn=d27dab3f-c8bf-4385-8f7e-a4772673939d lio_iblock=0 \
         op start timeout=20 interval=0 \
         op stop timeout=20 interval=0 \
@@ -360,7 +360,7 @@ primitive p_iscsi_lun_1 iSCSILogicalUnit \
 
 ## Reset root password
 
-Hi, this is a small trick I had to use once [(original article)](https://linuxconfig.org/how-to-reset-an-administrative-root-password-on-xenserver-7-linux) 
+Hi, this is a small trick I had to use once [(original article)](https://linuxconfig.org/how-to-reset-an-administrative-root-password-on-xenserver-7-linux)
 
 * Reboot your XenServer into Grub boot menu.
 * Use arrows keys to locate an appropriate XenServer boot menu entry and press **e** key to edit boot options.

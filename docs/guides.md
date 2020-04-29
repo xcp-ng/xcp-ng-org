@@ -4,7 +4,7 @@ This section is grouping various guides regarding XCP-ng use cases.
 
 ## pfSense VM
 
-pfSense works great in a VM, but there are a few extra steps that need to be taken first.  
+pfSense works great in a VM, but there are a few extra steps that need to be taken first.
 
 ### 1. Create VM as normal.
 
@@ -22,15 +22,15 @@ ln -s /usr/local/etc/rc.d/xenguest /usr/local/etc/rc.d/xenguest.sh
 service xenguest start
 ```
 
-Guest Tools are now installed and running, and will automatically run on every boot of the VM. 
+Guest Tools are now installed and running, and will automatically run on every boot of the VM.
 
 ### 3. Disable TX Checksum Offload
 
-Now is the most important step: we must disable tx checksum offload on the virtual xen interfaces of the VM. This is because network traffic between VMs in a hypervisor is not populated with a typical ethernet checksum, since they only traverse server memory and never leave over a physical cable. The majority of operating systems know to expect this when virtualized and handle ethernet frames with empty checksums without issue. However `pf` in FreeBSD does not handle them correctly and will drop them, leading to broken performance. 
+Now is the most important step: we must disable tx checksum offload on the virtual xen interfaces of the VM. This is because network traffic between VMs in a hypervisor is not populated with a typical ethernet checksum, since they only traverse server memory and never leave over a physical cable. The majority of operating systems know to expect this when virtualized and handle ethernet frames with empty checksums without issue. However `pf` in FreeBSD does not handle them correctly and will drop them, leading to broken performance.
 
 **NOTE:** Disabling checksum offloading is only necessary for virtual interfaces. When using [PCI Passtrough](https://github.com/xcp-ng/xcp/wiki/PCI-Passtrough) to provide a VM with direct access to physical or virtual (using [SR-IOV](https://en.wikipedia.org/wiki/Single-root_input/output_virtualization)) devices it is unnecessary to disable tx checksum offloading on any interfaces on those devices.
 
-The solution is to simply turn off checksum-offload on the virtual xen interfaces for pfSense in the TX direction only (TX towards the VM itself). Then the packets will be checksummed like normal and `pf` will no longer complain. SSH to dom0 on your XCP-NG hypervisor and run the following:  
+The solution is to simply turn off checksum-offload on the virtual xen interfaces for pfSense in the TX direction only (TX towards the VM itself). Then the packets will be checksummed like normal and `pf` will no longer complain. SSH to dom0 on your XCP-NG hypervisor and run the following:
 
 First get the UUID of your pfSense VM:
 
@@ -43,7 +43,7 @@ Find your pfsense VM in the list, and copy the UUID. Now stick the UUID in the f
 xe vif-list vm-uuid=08fcfc01-bda4-21b5-2262-741da6f5bfb0
 ```
 
-This will list all the virtual interfaces assigned to the VM: 
+This will list all the virtual interfaces assigned to the VM:
 
 ```
 uuid ( RO)            : 789358b4-54c8-87d3-bfb3-0b7721e4661b
@@ -77,7 +77,7 @@ This page details how to install XCP-ng under the differents market hypervisors,
 This practice is not recommended for production, nested virtualization has only tests/labs purpose.
 :::
 
-Here is the list of hypervisors on which you can try XCP-ng : 
+Here is the list of hypervisors on which you can try XCP-ng :
 
 * [XCP-ng](https://github.com/xcp-ng/xcp/wiki/Testing-XCP-ng-in-Virtual-Machine-%28Nested-Virtualization%29/#nested-xcp-ng-using-xcp-ng)
 * [VMware ESXi & Workstation](https://github.com/xcp-ng/xcp/wiki/Testing-XCP-ng-in-Virtual-Machine-(Nested-Virtualization)#nested-xcp-ng-using-vmware-esxi-and-workstation)
@@ -98,23 +98,23 @@ Here is the list of hypervisors on which you can try XCP-ng :
 _The following steps can be performed under VMware Workstation Pro, the settings will remain the same but the configuration will be slightly different. We will discuss this point at the end of this section about VMware._
 
 #### Networking settings
-    
+
 The first step, and without a doubt the most important step, will be to modify the virtual network configuration of our ESXi host. Without this configuration, the network will not work for your virtual machines running on your nested XCP-ng.
 
    * Start by going to the network settings of your ESXi host.
 
      ![ESXi Networking Panel](https://image.noelshack.com/fichiers/2018/36/3/1536147884-1.png)
-   
-   * Then select the **port group** on which your XCP-ng virtual machine will be connected. By default, this concerns the 
-     vSwitch0 and the '**VM Network**' group port.
-     
-     Click on the "Edit Settings" button to edit the parameters of this port group. 
 
-     **Here is the default settings** : 
+   * Then select the **port group** on which your XCP-ng virtual machine will be connected. By default, this concerns the
+     vSwitch0 and the '**VM Network**' group port.
+
+     Click on the "Edit Settings" button to edit the parameters of this port group.
+
+     **Here is the default settings** :
 
      ![ESXi Port Group Settings](https://image.noelshack.com/fichiers/2018/36/3/1536148176-2.png)
 
-   * Click on the **Accept** checkbox for Promiscuous mode. 
+   * Click on the **Accept** checkbox for Promiscuous mode.
    * Save this settings by using the Save button at the bottom of the window.
 
    A little explanation from the VMware documentation website : [Promiscuous mode under VMware ESXi](https://docs.vmware.com/en/VMware-vSphere/6.0/com.vmware.vsphere.security.doc/GUID-92F3AB1F-B4C5-4F25-A010-8820D7250350.html)
@@ -126,27 +126,27 @@ The first step, and without a doubt the most important step, will be to modify t
 
 Once your host's network is set up, we'll look at configuring the XCP-ng virtual machine.
 
-   * Create a virtual machine and move to the "Customize settings" section. Here a possible virtual machine configuration : 
+   * Create a virtual machine and move to the "Customize settings" section. Here a possible virtual machine configuration :
 
-     ![XCP-ng VM settings](https://image.noelshack.com/fichiers/2018/36/3/1536149747-4.png) 
+     ![XCP-ng VM settings](https://image.noelshack.com/fichiers/2018/36/3/1536149747-4.png)
 
-   * Then edit the CPU settings and check the "**Expose hardware assisted virtualization to the guest OS**" box in the 
-     "**Hardware Virtualization**" line. 
-     
+   * Then edit the CPU settings and check the "**Expose hardware assisted virtualization to the guest OS**" box in the
+     "**Hardware Virtualization**" line.
+
      ![CPU Advanced settings - XCP-ng VM](https://image.noelshack.com/fichiers/2018/36/3/1536150139-5.png)
 
      _Enable virtualized CPU performance counters can be checked if necessary_ : [VMware CPU Performance Counters ](https://kb.vmware.com/s/article/2030221)
 
    * For the other virtual machine settings, some explanations :
-     * Dual CPU sockets for improving vCPU performance. 
+     * Dual CPU sockets for improving vCPU performance.
      * **The virtual disk must be at least 60 GB in size to install XCP-ng !**
-     * **LSI Logic SAS** controller is choosen to maximize at possible the compatibility and the performance. vNVMe 
-       controller works too, it can reduce CPU overhead and latency. **PVSCSI controller won't work**. 
-     * **Unlike the PVSCSI controller, the VMXNET3 controller works with XCP-ng**. It will be useful if heavy network 
+     * **LSI Logic SAS** controller is choosen to maximize at possible the compatibility and the performance. vNVMe
+       controller works too, it can reduce CPU overhead and latency. **PVSCSI controller won't work**.
+     * **Unlike the PVSCSI controller, the VMXNET3 controller works with XCP-ng**. It will be useful if heavy network
        loads are planned between different XCP-ng virtual machines (XOSAN)
 
-   * Finally, install XCP-ng as usual, everything should work as expected. After installation, your XCP-ng virtual machine 
-     is manageable from XCP-ng Center or Xen Orchestra. 
+   * Finally, install XCP-ng as usual, everything should work as expected. After installation, your XCP-ng virtual machine
+     is manageable from XCP-ng Center or Xen Orchestra.
 
      ![XCP-ng Center Final](https://image.noelshack.com/fichiers/2018/36/3/1536152208-6.png)
 
@@ -159,7 +159,7 @@ Once your host's network is set up, we'll look at configuring the XCP-ng virtual
 
      ![Workstation Pro CPU Settings](https://image.noelshack.com/fichiers/2018/36/3/1536153480-8-1.png)
 
-   * An additional option is to be added to the virtual machine's .vmx file. You will also add the option to enable 
+   * An additional option is to be added to the virtual machine's .vmx file. You will also add the option to enable
      promiscuous mode for the virtual machine.
 
      **hypervisor.cpuid.v0 = "FALSE"** : Addition to the checked CPU option on Workstation
@@ -188,20 +188,20 @@ Unlike VMware, you must first create the virtual machine to configure nested vir
 
 The configuration of the virtual machine uses legacy components. Indeed XenServer / XCP-ng does not have the necessary drivers to work on a "modern" Hyper-V virtual hardware . **The consequences are that the performance of this XCP-ng virtual machine will be poor.**
 
-The VM settings : 
+The VM settings :
 * **VM Generation** : 1 (even if the latest versions of CentOS work in Gen 2)
-* **Memory** : 4GB minimum 
-* **Disk Controller** : IDE 
+* **Memory** : 4GB minimum
+* **Disk Controller** : IDE
 * **Dynamic Memory** : Disabled (even if activated, the hypervisor will disable it in case of nested virtualization)
 * **Network Controller** : Legacy Network Card
 
 #### CPU and Network settings
- 
-* Once the virtual machine is created, it is possible to enable nested virtualization for this virtual machine. Open a PowerShell Administrator prompt : 
+
+* Once the virtual machine is created, it is possible to enable nested virtualization for this virtual machine. Open a PowerShell Administrator prompt :
 
    `Set-VMProcessor -VMName <Your XCP-ng VM name> -ExposeVirtualizationExtensions $true`
 
-* Then, it will be about configuring the network to allow guest virtual machines to access to the outside network. 
+* Then, it will be about configuring the network to allow guest virtual machines to access to the outside network.
 
     `Get-VMNetworkAdapter -VMName <Your XCP-ng VM name> | Set-VMNetworkAdapter -MacAddressSpoofing On`
 
@@ -211,30 +211,30 @@ The VM settings :
 
 ![Windows Server on XCP-ng under Hyper-V](http://image.noelshack.com/fichiers/2018/39/5/1538145459-2.png)
 
-### Nested XCP-ng using QEMU/KVM 
+### Nested XCP-ng using QEMU/KVM
 
 _The following steps can be performed using QEMU/KVM on a Linux host, Proxmox or oVirt._
 
-Like VMware, you must first enable the nested virtualization feature on your host before creating your XCP-ng virtual machine. 
+Like VMware, you must first enable the nested virtualization feature on your host before creating your XCP-ng virtual machine.
 
 #### Configure KVM nested virtualization (Intel)
 
 * Check if your CPU support virtualization and EPT (Intel)
 
-   On most Linux distributions : 
+   On most Linux distributions :
 
     `egrep -wo 'vmx|ept' /proc/cpuinfo `
 
    EPT is required to run nested XS/XCP-ng : <https://xcp-ng.org/forum/topic/550/shadow-paging-disable>
 
-* If everything is OK, you can check if the nested virtualization is already activated. 
+* If everything is OK, you can check if the nested virtualization is already activated.
 
-     `$ cat /sys/module/kvm_intel/parameters/nested` 
+     `$ cat /sys/module/kvm_intel/parameters/nested`
 
   If the command returns "Y", nested virtualization is activated, if not, you should activate it (next steps).
 
 * Firstly, check if you don't have any virtual machine running. Then, unload the KVM module using root user or sudo :
-    
+
     `# modprobe -r kvm_intel`
 
 * Activate nested virtualization feature :
@@ -335,13 +335,13 @@ function is_jumbo_capable($iface) {
         if (substr($iface, 0, 4) == "lagg") {
                 return true;
         }
-   
+
         // hack for Xen xn interfaces
         if (substr($iface, 0, 2) == "xn")
                 return true;
-   
+
         return false;
-}  
+}
 ```
 :::tip
 This modification is based on pfSense 2.4.4p1, ymmv.  However, I copied this mod from [here](https://eliasmoraispereira.wordpress.com/2016/10/05/pfsense-virtualizacao-com-xenserver-criando-vlans/), which was based on pfSense 2.3.x, so this code doesn't change often.

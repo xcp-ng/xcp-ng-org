@@ -54,7 +54,7 @@ This is an alternate method if you can't boot from the installation ISO.
 
 If you do not have access to your server or remote KVM in order to upgrade using the interactive ISO installer, you can initiate an automatic reboot and upgrade process using the following procedure:
 
-* Unpack/extract the XCP-ng ISO to a folder on an HTTP server. Make sure not to miss the hidden .treeinfo file (common mistake if you `cp` the files with `*`). 
+* Unpack/extract the XCP-ng ISO to a folder on an HTTP server. Make sure not to miss the hidden .treeinfo file (common mistake if you `cp` the files with `*`).
 * Get the UUID of your host by running the below command:
   ```
   xe host-list
@@ -80,7 +80,7 @@ Once upgraded, **keep the system regularly updated** (see [Updates Howto](update
 
 A.k.a. yum-style upgrade.
 
-:warning: **Supported across minor releases (e.g. from 7.4 to 7.6), but not supported across major releases (e.g. from 7.6 to 8.0).** :warning: 
+:warning: **Supported across minor releases (e.g. from 7.4 to 7.6), but not supported across major releases (e.g. from 7.6 to 8.0).** :warning:
 
 Though it's been successfully tested by numerous people, this method is still considered *riskier* than using the installation ISO:
 - this upgrade method **does not create a backup of your system**, unlike an upgrade via the installation ISO, so there's no possible return to the previous version (unless reinstalling it from scratch and reconfiguring it).
@@ -99,7 +99,7 @@ Your dom0 system must either have access to updates.xcp-ng.org, or to a local mi
 
 #### Be cautious with third party repositories and packages
 
-If you have enabled third party repositories (CentOS, EPEL...) in the past, make sure to **disable** them before updating. Otherwise, core packages from your dom0 system can be overwritten with versions of packages that have not been tested in the context of XCP-ng, or lack specific patches. 
+If you have enabled third party repositories (CentOS, EPEL...) in the past, make sure to **disable** them before updating. Otherwise, core packages from your dom0 system can be overwritten with versions of packages that have not been tested in the context of XCP-ng, or lack specific patches.
 
 Set `enabled=0` in the relevant files in `/etc/yum.repos.d/`. Warning: when added, the EPEL repository is automatically enabled. Make sure to disable it right away and use this syntax instead to install anything from it: `yum install packagename --enablerepo='epel'`.
 
@@ -135,12 +135,12 @@ We will download the repository file that will tell yum where to download the pa
   ```
   export VER=X.Y
   ```
-  
+
   Example:
   ```
   export VER=8.1
   ```
-  
+
 In the commands below your shell will automatically replace `$VER` with the value that you defined.
 
 * Download the files
@@ -171,7 +171,7 @@ When `rpm` needs to update configuration files that you had modified previously,
 * or overwrite your file with the new one and save it as `yourfile.rpmsave`.
 For a given configuration file, only one of those can be created, depending on whether the RPM defines that it's more important to keep the user configuration or to put the new configuration in place. If you haven't made any change to the configuration file or the RPM does not bring any change during the update, then neither will be created.
 
-So, after an upgrade using `yum`, you need to look for `.rpmnew` and `.rpmsave` files, update the related configuration files accordingly if needed, and delete those `.rpmnew` and `.rpmsave` files in order to keep things clean for when you will need to do this again after the next upgrade. 
+So, after an upgrade using `yum`, you need to look for `.rpmnew` and `.rpmsave` files, update the related configuration files accordingly if needed, and delete those `.rpmnew` and `.rpmsave` files in order to keep things clean for when you will need to do this again after the next upgrade.
 If you haven't modified configuration files that `rpm` wants to update, there will be nothing to do.
 
 /!\ There is an exception: always ignore the `/etc/cron.d/logrotate.cron.rpmsave` file. Citrix team named that file this way so that it is ignored by cron. It is used only with legacy partitioning, where no `/var/log` partition exists, and triggers a very aggressive log rotation. Leave it alone.

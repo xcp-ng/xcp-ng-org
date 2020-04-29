@@ -22,7 +22,7 @@ Your dom0 system must either have access to the internet, or to a local mirror. 
 
 ### Be cautious with third party repositories and packages
 
-If you have enabled third party repositories (CentOS, EPEL...) in the past, make sure to **disable** them before updating. Otherwise, core packages from your dom0 system can be overwritten with versions of packages that have not been tested in the context of XCP-ng, or lack specific patches. 
+If you have enabled third party repositories (CentOS, EPEL...) in the past, make sure to **disable** them before updating. Otherwise, core packages from your dom0 system can be overwritten with versions of packages that have not been tested in the context of XCP-ng, or lack specific patches.
 
 Set `enabled=0` in the relevant files in `/etc/yum.repos.d/`. Warning: when added manually, the EPEL repository is automatically enabled. Make sure to disable it right away and then use this syntax to install packages from it: `yum install packagename --enablerepo='epel'`.
 

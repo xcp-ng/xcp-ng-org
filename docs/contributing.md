@@ -28,7 +28,7 @@ You are a developer and want to code with us? Cool!
 
 ## Testing
 
-It's important to test XCP-ng on many different platforms and devices. You have gear laying around or access to some special devices? -> be a tester and test all the features of XCP-ng 🚀 
+It's important to test XCP-ng on many different platforms and devices. You have gear laying around or access to some special devices? -> be a tester and test all the features of XCP-ng 🚀
 
 Your results are very welcome in our [Hardware Compatibility List (HCL)](hardware.md)!
 
@@ -47,7 +47,7 @@ Once accepted as a proven packager or as an apprentice, you will receive your co
 client.crt # your certificate
 serverca.crt
 clientca.crt
-``` 
+```
 
 Copy them to `~/.koji/` (create it if it doesn't exist yet).
 Make sure not to lose them and to not let anyone put their hands on them.

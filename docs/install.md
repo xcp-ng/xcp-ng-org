@@ -175,11 +175,11 @@ To test the PXE in a VirtualBox environment you'll need to populate the [PXE spe
 ├── menu.c32               <- from /boot/pxelinux
 ├── pxelinux.cfg           <- mandatory name
 │   └── default            <- config file
-├── test.pxe               <- this is pxelinux.0 (from /boot/pxelinux) renamed to vmname.pxe 
+├── test.pxe               <- this is pxelinux.0 (from /boot/pxelinux) renamed to vmname.pxe
 └── xcp-ng                 <- most of it comes from /boot
     ├── efiboot.img
     ├── gcdx64.efi
-    ├── grubx64.efi        
+    ├── grubx64.efi
     ├── install.img        <- this is /install.img from the .iso
     ├── isolinux
     │   ├── boot.cat
@@ -199,8 +199,8 @@ The configuration file pxelinux.cfg/default is as follow:
 ```
 default xenserver
 label xenserver
-kernel mboot.c32 
-append xcp-ng/xen.gz dom0_max_vcpus=1-2 dom0_mem=1024M,max:1024M com1=115200,8n1 console=com1,vga --- xcp-ng/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=https://gist.githubusercontent.com/nraynaud/4cca5205c805394a34fc4170b3903113/raw/ install --- xcp-ng/install.img 
+kernel mboot.c32
+append xcp-ng/xen.gz dom0_max_vcpus=1-2 dom0_mem=1024M,max:1024M com1=115200,8n1 console=com1,vga --- xcp-ng/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=https://gist.githubusercontent.com/nraynaud/4cca5205c805394a34fc4170b3903113/raw/ install --- xcp-ng/install.img
 ```
 
 Here is the beginning of an answer file:

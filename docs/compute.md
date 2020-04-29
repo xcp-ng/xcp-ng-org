@@ -4,7 +4,7 @@ This section is dedicated to compute related things, from Xen to GPU/vGPU or PCI
 
 ## PCI Passthrough
 
-### 0. Prerequisites 
+### 0. Prerequisites
 
 :::warning
 Ensure VT-d/IOMMU Support Is Enabled
@@ -49,7 +49,7 @@ Add the **`xen-pciback.hide`** parameter to the kernel boot parameters:
 /opt/xensource/libexec/xen-cmdline --set-dom0 "xen-pciback.hide=(04:01.0)"
 ```
 > You can hide multiple devices. If you wanted to add another device at `00:19.0` just append it to the parameter.
-> 
+>
 > `/opt/xensource/libexec/xen-cmdline --set-dom0 "xen-pciback.hide=(04:01.0)(00:19.0)"`
 
 To remove any passthrough devices from dom0:
@@ -73,7 +73,7 @@ To remove any passthrough devices from dom0:
 `[root@xen ~]# xe vm-param-set`**`other-config:pci=0/0000:04:01.0`**`uuid=<vm uuid>`
 
 > You can also passtrough multiple devices. If you wanted to passtrough another device at `00:19.0` just append it to the parameter.
-> 
+>
 > `[root@xen ~]# xe vm-param-set`**` other-config:pci=0/0000:04:01.0,0/0000:00:19.0 `**`uuid=<vm uuid>`
 
 ### 6. Start your VM and be happy :-)

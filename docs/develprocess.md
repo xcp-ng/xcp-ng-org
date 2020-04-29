@@ -110,7 +110,7 @@ It all depends on your skills and areas of interest so it's hard to tell specifi
 
 ## RPM packaging
 
-Creating packages that can be installed on the user's system is called **packaging**. 
+Creating packages that can be installed on the user's system is called **packaging**.
 
 ### Introduction to RPM
 RPM is the package format used by Fedora, Red Hat, CentOS, Mageia, OpenSUSE and other linux distributions. It is also what we use in XCP-ng. A RPM package contains the files to be installed, metadata such as version and dependencies, and various scripts executed during installation, upgrade, uninstallation or other events.
@@ -181,7 +181,7 @@ I'll try to explain.
 
 *Builds* (as defined above) can be associated with tags too, and that is much more useful. However you cannot tag a build if the package the build belongs to is not tagged itself with that tag, so we need to tag packages first. Or with a tag that is a parent of the latter. Oh yeah, did I mention that tags can inherit other tags? An example will help: tag `v7.6-testing` inherits its ancestor tag `V7.6`. Since `xenopsd` belongs to `V7.6`, we can tag the `xenopsd-0.66.0-1.1.xcpng` build with tag `v7.6-testing`.
 
-In our Koji, here's the inheritance chain of tags for a fictitious 8.x release: 
+In our Koji, here's the inheritance chain of tags for a fictitious 8.x release:
 ```
 V8.x (packages)
   v8.x-base (builds)
@@ -203,15 +203,15 @@ A build target is defined by:
 * a build tag
 * a destination tag
 
-Example: 
-* build target name: `v8.x-testing` 
+Example:
+* build target name: `v8.x-testing`
 * build tag: `v8.x-testing`
 * destination tag: `v8.x-testing`
 
 (Yeah, sorry, I named the target the same as the tags it relies on, I hope it will not confuse you). So, this build target will pull dependencies from an internal RPM repository that contains all the RPMs from builds that belong to the `v8.x-testing` tag (including those inherited from `v8.x-base` and `v8.x-updates`). Then once a build task finishes, it will tag the resulting build with the destination tag, here `v8.x-testing`. Here build tag and destination tag are the same, so this means that any build with the `v8.x-testing` target will be itself added to the `v8.x-testing` tag immediately after the build, so the next builds with the same target will be able to use it as a dependency (chained builds).
 
-Another (fictitious) example: 
-* build target name: `v8.x-sandbox` 
+Another (fictitious) example:
+* build target name: `v8.x-sandbox`
 * build tag: `v8.x-testing`
 * destination tag: `v8.x-sandbox`
 
@@ -400,7 +400,7 @@ Alternate module packages that override a built-in kernel module will follow the
 
 Alternate module packages that override a supported or additional module are named after the package whose module they override, with a `-alt` suffix:
 
-`{original-name}-alt`. 
+`{original-name}-alt`.
 
 Examples:
 * `broadcom-bnxt-en-alt`
@@ -427,7 +427,7 @@ Kernel modules can be present in several places. In XCP-ng, we use the following
 * `/lib/modules/{kernel_version}/updates` is reserved for:
   * driver RPM packages inherited from XenServer (e.g. `broadcom-bnxt-en`)
   * official updates of kernel built-in modules if those updates are provided as separate RPMs instead of a kernel update.
-* additional modules are installed in `/lib/modules/{kernel_version}/extra` 
+* additional modules are installed in `/lib/modules/{kernel_version}/extra`
 * alternate optional versions of the default modules are installed in `/lib/modules/{kernel_version}/override`. This is not a standard directory for modules, so we alter the configuration of `depmod` to give the priority to modules in this directory. See "`depmod` configuration for alternate modules" below.
 
 We can have up to three versions of the same module on the system, one from the kernel, one from XCP-ng's set of supported or additional modules, and one alternate modules that overrides both:
@@ -449,7 +449,7 @@ The default configuration is:
 search updates extra built-in weak-updates
 ```
 
-And becomes: 
+And becomes:
 ```
 # override default search ordering for kmod packaging
 search override updates extra built-in weak-updates
@@ -504,7 +504,7 @@ If the module is expected to be loaded automatically at boot, **reboot** to chec
 
 #### How to load the new module without a reboot
 
-As we said, if the module is expected to load at boot, we advise to reboot ultimately. However, you may want to test the driver before rebooting. Or maybe it's a driver that is not supposed to be loaded manually. 
+As we said, if the module is expected to load at boot, we advise to reboot ultimately. However, you may want to test the driver before rebooting. Or maybe it's a driver that is not supposed to be loaded manually.
 
 **Unload the running module if there's one**
 
@@ -535,7 +535,7 @@ In the case of an additional module, uninstalling the RPM will simply leave your
 The policy for [alternate kernels](hardware.md#alternate-kernel) is simpler, because there are no alternate modules (with the meaning of *alternate modules* as described earlier). There's just the kernel's built-in modules and possibly additional or updated modules in `/lib/modules/{kernel_version}/updates`. This means that when an alternate kernel is updated, people who have installed it will get the update through the standard updates process. There's no support for cherry-picking specific versions of previous packages we may have released in the past. If there's a bug, please open a bug report. To avoid bugs, please take part in the testing phase.
 
 RPMs that provide modules for an alternate kernel must follow these conventions:
-* The name must always end with `-kernel{MAJOR.MINOR}` (we don't include the patch version because we won't provide two competing kernel packages for the same MAJOR + MINOR versions). 
+* The name must always end with `-kernel{MAJOR.MINOR}` (we don't include the patch version because we won't provide two competing kernel packages for the same MAJOR + MINOR versions).
 * The remaining part of the naming convention is the same as that of packages that provide modules for the main supported kernel:
   * `{inherited-name-from-XS}-kernel{MAJOR.MINOR}`
   * `{name}-module-kernel{MAJOR.MINOR}`
@@ -662,7 +662,7 @@ From the `iso/` directory:
 OUTPUT=/path/to/destination/iso/file # change me
 VERSION=7.6 # change me
 genisoimage -o $OUTPUT -v -r -J --joliet-long -V "XCP-ng $VERSION" -c boot/isolinux/boot.cat -b boot/isolinux/isolinux.bin \
-            -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/efiboot.img -no-emul-boot .         
+            -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/efiboot.img -no-emul-boot .
 isohybrid --uefi $OUTPUT
 ```
 
