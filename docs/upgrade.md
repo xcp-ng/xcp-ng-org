@@ -20,6 +20,7 @@ Read the [release notes](currentrelease.md) and [known issues](currentrelease.md
 * DON'T use the `Maintenance Mode` in XCP-ng Center. It moves the pool master to another host, which has to be avoided in the upgrading procedure.
 * If HA (High Availability) is enabled, disable it before upgrading.
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`.
+* Read [Handling alternate drivers or kernel](upgrade.md#handling-alternate-drivers-or-kernel) if your host depends on them.
 * [Update your pool with the latest updates](updates.md) **before** upgrading, and reboot or restart the toolstack, depending on the nature of the installed updates.
 * [Install the latest updates](updates.md) **after** upgrading.
 :::
@@ -192,7 +193,7 @@ See the [dedicated Wiki section](https://github.com/xcp-ng/xcp/wiki/Upgrade-from
 
 ### Live migration
 
-Live migration **should work** from any older XenServer/XCP-ng toward the latest release. However, there's some cases where it doesn't. For example, XenServer (and XCP-ng) 7.6 has a regression that makes live migration with storage motion crash guests that are based on the "Other installation media" template when the source host has a version lower than 7.6 ([reported here to Citrix](https://bugs.xenserver.org/browse/XSO-924)). But **this bug has been fixed in latest XCP-ng 7.6 updates**.
+Live migration **should work** from any older XenServer/XCP-ng toward the latest release. However, there are some cases where it doesn't. For example, XenServer (and XCP-ng) 7.6 has a regression that makes live migration with storage motion crash guests that are based on the "Other installation media" template when the source host has a version lower than 7.6 ([reported here to Citrix](https://bugs.xenserver.org/browse/XSO-924)). But **this bug has been fixed in latest XCP-ng 7.6 updates**.
 
 ### Alternative VM migration solutions
 
@@ -201,3 +202,14 @@ Live migration **should work** from any older XenServer/XCP-ng toward the latest
 * an hybrid solution is to use Xen Orchestra continous replication to avoid downtime
 * restore Xen Orchestra backup on latest XCP-ng version will also work
 
+## Handling alternate drivers or kernel
+
+If - before the upgrade - your host depends on [alternate drivers](hardware.md#alternate-drivers) or on the [alternate kernel](hardware.md#alternate-kernel) to function, then it is possible that the upgraded system doesn't need such alternatives anymore. It is also possible that it still needs them.
+
+When upgrading using the upgrade ISO:
+* Alternate drivers will not be installed automatically: install them from the repositories after the first reboot.
+* The alternate kernel will not be installed automatically, unless you tell the installer to so (see [Alternate kernel](hardware.md#alternate-kernel)).
+
+When upgrading using `yum`:
+* Alternate drivers will usually be kept and upgraded if a newer version is provided, but that is not a general rule: we handle it on a case by case basis. Sometimes a newer "default" driver will obsolete an older alternate driver.
+* The alternate kernel will be retained and upgraded to the latest version available in the new release. If the alternate kernel was your default boot option, it will remain such.
