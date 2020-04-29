@@ -5,9 +5,9 @@ This page details how to upgrade to the latest version of XCP-ng from a previous
 For updates that don't change the version numbers (bugfixes, security fixes), see [updates section](updates.md).
 
 :::tip
-There is 3 upgrade methods, detailed below:
+There are 3 upgrade methods, detailed below:
 * Using the installation ISO (recommended).
-* Using the installation when you can't boot from it: remote upgrade.
+* Using the installation ISO when you can't boot from it: remote upgrade.
 * From command line a.k.a. yum-style upgrade. Only for point version upgrades.
 :::
 
@@ -26,8 +26,6 @@ Read the [release notes](currentrelease.md) and [known issues](currentrelease.md
 
 :::warning
 * When upgrading from *XCP-ng 7.5 or lower* or from *XenServer*, **it is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
-* If you are upgrading to XCP-ng 7.6 using the installation ISO, make sure to [update](updates.md) each host just after the upgrade and then reboot again to get the latest fixes. This will fix an issue with **live migration** that has been fixed **after** the release of XCP-ng 7.6: [see this issue for more details](https://github.com/xcp-ng/xcp/issues/72).
-* XenServer (and XCP-ng) 7.6 has a regression that makes live migration with storage motion crash guests that are based on the "Other installation media" template when the source host has a version lower than 7.6 ([reported here to Citrix](https://bugs.xenserver.org/browse/XSO-924)). **This bug has been fixed in latest XCP-ng 7.6 updates**.
 :::
 
 ## Upgrade via installation ISO (recommended)
@@ -120,7 +118,7 @@ Check them carefully.
 
 #### Upgrade instructions
 
-If for some reason you want to upgrade to XCP-ng 7.6 from an earlier release although 8.0 or more is available, see [Yum Upgrade towards XCP ng 7.6](https://github.com/xcp-ng/xcp/wiki/Yum-Upgrade-towards-XCP-ng-7.6).
+If for some reason you want to upgrade to the unsupported XCP-ng 7.6 from an earlier release, see [Yum Upgrade towards XCP ng 7.6](https://github.com/xcp-ng/xcp/wiki/Yum-Upgrade-towards-XCP-ng-7.6).
 
 :warning: **Proceed one host at a time. Do not `yum update` all hosts at once to "save time".** :warning:
 
