@@ -184,10 +184,105 @@ find /etc \( -name "*.rpmnew" -or -name "*.rpmsave" ! -name "logrotate.cron.rpms
 
 #### 4. Reboot the host
 
-
 ## Upgrade from XenServer
 
-See the [dedicated Wiki section](https://github.com/xcp-ng/xcp/wiki/Upgrade-from-XenServer).
+This article describes how to proceed in order to convert your Citrix XenServer infrastructure into a XCP-ng infrastructure. This is also the same thing for any Citrix Hypervisor version.
+
+:::tip
+**Yes** you can do that without losing ANY settings (SR, VMs, networks) from your existing Citrix Hypervisor/XenServer infrastructure!
+:::
+
+:::warning
+* Always upgrade and reboot the pool master **FIRST**
+* If HA (High Availability) is enabled, disable it before upgrading
+* Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`
+* If upgrading from *XCP-ng 7.5 or lower* or from *XenServer*, **it is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
+:::
+
+### Before you start
+
+* Please re-read carefully all the previous warnings
+* Need a tool to manage your XCP-ng hosts? We strongly suggest that you use [Xen Orchestra](https://xcp-ng.org/#easy-to-install), the web UI for XCP-ng. Alternatively, you can use `xe` CLI or XCP-ng Center.
+
+### Migration process
+
+XCP-NG installation follows roughly the same workflow than a XenServer installation. Therefore, the migration procedure will be very similar to an upgrade procedure in XenServer.
+
+* Download the XCP-ng ISO [from this XCP-ng website](https://xcp-ng.org/#easy-to-install)
+* Follow the [website instructions](https://xcp-ng.org/#easy-to-install) to put the ISO into an USB key or a CD
+
+Then boot on the ISO!
+
+![](https://xcp-ng.org/wp-content/uploads/2018/03/install1.png)
+
+Eventually, you will reach a screen proposing you to upgrade your XenServer 7.X to XCP-ng:
+
+![](https://xcp-ng.org/wp-content/uploads/2018/03/install4.png)
+
+Once the installation process is complete, reboot your host:
+
+![](https://xcp-ng.org/wp-content/uploads/2018/03/install8.png)
+
+Then you'll boot on XCP-ng, with **all your previous settings, VMs, storage and network ready!**
+
+> Note: if you have a pool, after you did that with the master, you can continue with the slaves, in the order you like.
+
+### Migration from XenServer 6.X
+
+XenServer 7 introduced a new (and better) partition scheme. Therefore, if you want to migrate from a XenServer 6 version you have two possibilities.
+
+* You can keep the old partition model (partitions are too small, it's NOT recommended!)
+* You can "upgrade" it to the new scheme
+
+:::tip
+As it's (obvioulsy) a better partition scheme, we strongly recommend you to upgrade to this scheme and not to keep the old one, but it's your call.
+:::
+
+:::warning
+Using the new partition scheme will REMOVE the content of your local SR.
+:::
+
+#### Using the new partitions
+
+In order to migrate using the new partition scheme, you need to run this command on your host before launching the migration process.
+
+`$ touch /var/preserve/safe2upgrade`
+
+> Check that you are using GPT partitioning and not MBR and doublecheck that you don't have any VDI attach to your local SR. Any remaining VDI will be removed.
+
+Then, you can follow the standard migration procedure describe before.
+
+### Migrating your XenServer Pool to XCP-ng without downtime
+
+Here is how to proceed in order to migrate without having downtime in your infrastructure:
+
+1. Live migrate your VMs from the pool master to other hosts
+2. Upgrade your pool master
+3. Live migrate VMs from another host to your pool master
+4. Upgrade the host
+5. Repeat until all hosts are migrated
+
+### Alternate method: remote upgrade
+
+If you do not have access to your server or remote KVM in order to upgrade using the interactive ISO installer, you can initiate an automatic reboot and upgrade process using the following procedure:
+
+Unpack/extract the XCP-NG ISO to a folder on a webserver. Then get the UUID of your host by running the below command:
+
+`xe host-list`
+
+Using that host UUID, as well as the URL to the folder hosting the unpacked XCP-NG ISO, run the following command to test access:
+
+`xe host-call-plugin plugin=prepare_host_upgrade.py host-uuid=750d9176-6468-4a08-8647-77a64c09093e fn=testUrl args:url=http://<ip-address>/xcp-ng/unpackedexample/`
+
+The returned output must be true to continue.
+
+Now tell the host to automatically boot to the ISO and upgrade itself on next reboot (using the UUID and URL from before):
+
+`xe host-call-plugin plugin=prepare_host_upgrade.py host-uuid=750d9176-6468-4a08-8647-77a64c09093e fn=main args:url=http://<ip-address>/xcp-ng/unpackedexample/`
+
+The output should also be true. It has created a temporary entry in the grub bootloader which will automatically load the upgrade ISO on the next boot. It then automatically runs the XCP-NG upgrade with no user intervention required. It will also backup your existing XenServer dom0 install to the secondary backup partition, just like the normal upgrade.
+
+To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it's available, but if not, it should proceed fine and boot into upgraded XCP-NG in 10 to 20 minutes.
 
 ## Migrate VMs from older XenServer/XCP-ng
 
