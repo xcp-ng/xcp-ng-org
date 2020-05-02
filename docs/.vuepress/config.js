@@ -1,11 +1,13 @@
 module.exports = {
+  title: 'XCP-ng documentation',
+  description: 'Official XCP-ng documentation',
   head: [
     ['link', { rel: "shortcut icon", href: "https://xcp-ng.org/favicon.png"}],
   ],
   base: '/docs/',
   themeConfig: {
     smoothScroll: true,
-    logo: 'https://xcp-ng.org/assets/img/smalllogo.png',
+    logo: 'https://xcp-ng.org/assets/img/smalllogo_notext.png',
     lastUpdated: 'Last Updated', // add latest Git commit modification for each file
     repo: 'xcp-ng/xcp-ng-org', // point to the GH repo
     editLinks: true, // display link for people to edit a page
@@ -19,7 +21,7 @@ module.exports = {
     ],
     sidebar: [
       {
-        title: 'XCP-ng Documentation',   // required
+        title: 'XCP-ng',   // required
         path: '/',      // optional, link of the title, which should be an absolute path and must exist
         collapsable: false, // optional, defaults to true
         sidebarDepth: 1,    // optional, defaults to 1
