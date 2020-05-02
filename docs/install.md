@@ -152,7 +152,7 @@ It means the system is correctly installed! Enjoy XCP-ng 🚀
 
 A netinstall is a lightweight ISO (around 150MiB) that will only contain the installer, but no actual RPM packages. Sometimes, it's more convenient/faster when your ISO is on a slow connection (eg a virtual media using a server IPMI).
 
-You can download it on this URL: <http://mirror.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2-netinstall.iso>.
+You can download it on this URL: <http://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2-netinstall.iso>.
 
 As with the regular installation ISO, write it on an USB media:
 
