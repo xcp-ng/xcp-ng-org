@@ -16,7 +16,25 @@ This section is still under construction
 
 ## VLANs
 
+To use VLANs for your network logical isolation, it's really easy. You'll create a new network with a VLAN ID, and all virtual interfaces created on this network will transparently have traffic tagged in this VLAN. No need to configure anything inside your VM.
+
+Frst step, go in Xen Orchestra menu, "New" then "Network":
+
+![](https://xcp-ng.org/assets/img/screenshots/newnetwork.png)
+
+Then, select a pool where you want to create this network, and fill what's required, like physical interface selection, name and description and also VLAN number:
+
+![](https://xcp-ng.org/assets/img/screenshots/newnetwork1.png)
+
+Finally, click on "Create network":
+
+![](https://xcp-ng.org/assets/img/screenshots/newnetwork3.png)
+
+That's it!
+
 ## Bonds
+
+It's same as previous section, just check the "Bonded Network" and select multiple PIFs in the Interface selector. You can either use VLANs or not, it doesn't matter!
 
 ### Disabling FCoE
 
@@ -50,7 +68,7 @@ That's exactly what you can have thanks to XO SDN controller (here via GRE tunne
 
 To create a private network, go in Xen Orchestra, New/Network and select "Private Network":
 
-![](https://xen-orchestra.com/docs/assets/sdn-controller.png)
+![](https://xcp-ng.org/assets/img/screenshots/sdn-controller.png)
 
 #### Encryption
 
