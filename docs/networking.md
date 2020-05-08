@@ -20,11 +20,11 @@ To use VLANs for your network logical isolation, it's really easy. You'll create
 
 Frst step, go in Xen Orchestra menu, "New" then "Network":
 
-![](https://xcp-ng.org/assets/img/screenshots/newnetwork.png)
+![](https://xcp-ng.org/assets/img/screenshots/newnetwork1.png)
 
 Then, select a pool where you want to create this network, and fill what's required, like physical interface selection, name and description and also VLAN number:
 
-![](https://xcp-ng.org/assets/img/screenshots/newnetwork1.png)
+![](https://xcp-ng.org/assets/img/screenshots/newnetwork2.png)
 
 Finally, click on "Create network":
 
