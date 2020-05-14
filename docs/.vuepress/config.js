@@ -68,6 +68,7 @@ module.exports = {
           ['/mirrors', 'Mirrors'],
           ['/roadmap', 'Roadmap'],
           ['/glossary', 'Glossary'],
+          ['/cli_reference.md', 'CLI reference'],
         ]
       },
     ]
