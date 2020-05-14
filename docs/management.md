@@ -10,32 +10,18 @@ You have multiple ways to manage your hosts and your pool: all of those are call
 * [XO Lite](management.md#xo-lite) (future embeded lightweight client)
 
 :::tip
-As soon you start to work with multiple pools, or if you want to have advanced features, you'll need more advanced clients. For example, `xe`, XO Lite and *XCP-ng Center* are considered "basic", and Xen Orchestra is so far the only one considered "advanced".
+As soon you start to work with multiple pools, or if you want to have advanced features, you'll need more advanced clients. For example, `xe`, XO Lite and *XCP-ng Center* are considered "basic", and Xen Orchestra web UI, CLI or API is so far the only one considered "advanced".
 :::
 
 ## xe
 
 The `xe` command line interface is installed by default on all XCP-ng hosts. A stand-alone remote CLI is also available for Linux.
 
+Please read the [xe dedicated section here](./cli_reference.md).
+
 :::tip
-`xe` does support autocompletion. This is a GREAT feature that you'll love!
+`xe` however, works within a pool. If you want a cross-pool CLI (ie your whole infrastructure), please take a look at [Xen Orchestra CLI!](https://xen-orchestra.com/docs/xo-cli.html)
 :::
-
-Basic help is available for CLI commands on-host by typing:
-
-```
-xe help command
-```
-
-Most useful commands are available via:
-
-```
-xe help
-```
-
-### Syntax
-
-As we use the exact same `xe` than Citrix Hypervisor, feel free to [read their documentation](https://docs.citrix.com/en-us/citrix-hypervisor/command-line-interface.html#command-types).
 
 ## XCP-ng Center
 
