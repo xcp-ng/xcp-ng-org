@@ -31,15 +31,19 @@ Those changes aren't officially supported, and will be also wiped after an ISO u
 
 Edit the `/etc/xapi.conf` file, and uncomment/change that line:
 
-```
+```ini
 # pending_task_timeout = 86400 # 1 day in seconds
 ```
 
 To:
 
 
-```
-pending_task_timeout = 172800 # 2 days in seconds
+```ini
+pending_task_timeout = 172800
 ```
 
-Don't forget to restart the toolstack after that with a `xe-toolstack-restart`.
+:::tip
+In this example, `172800` seconds means two days.
+
+Also don't forget to restart the toolstack after that with a `xe-toolstack-restart`.
+:::
