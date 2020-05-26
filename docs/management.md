@@ -53,7 +53,7 @@ Take a look at [the official doc](https://xen-orchestra.com/docs/) to take a tou
 
 Xen Orchestra is fully Open Source, and it comes in 2 "flavors":
 
-1. the turnkey/preinstalled virtual appliance, called **XOA** that you can [deploy in a minute]((https://xen-orchestra.com/#!/xoa))
+1. the turnkey/preinstalled virtual appliance, called **XOA** that you can [deploy in a minute](https://xen-orchestra.com/#!/xoa)
 2. manual install from GitHub ([documentation](https://xen-orchestra.com/docs/from_the_sources.html))
 
 :::tip
