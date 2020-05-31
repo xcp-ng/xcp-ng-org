@@ -109,7 +109,7 @@ Here you can select between DHCP and static network, even using a VLAN:
 #### 11. Timezone and time
 
 :::warning
-ALWAYS use a NTP server. It's a critical component to manage your host(s). If you don't know any NTP server, you can use `ntp.pool.org`.
+ALWAYS use a NTP server. It's a critical component to manage your host(s). If you don't know any NTP server, you can use `pool.ntp.org`.
 :::
 
 ![](https://xcp-ng.org/assets/img/screenshots/install14.png)
