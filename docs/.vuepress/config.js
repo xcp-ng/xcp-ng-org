@@ -61,6 +61,7 @@ module.exports = {
         collapsable: false, // optional, defaults to true
         sidebarDepth: 1,    // optional, defaults to 1
         children: [
+          ['/ecosystem', 'Ecosystem'],
           ['/contributing', 'Contributing'],
           ['/develprocess.md', 'Developement Process'],
           ['/licenses', 'Licenses'],

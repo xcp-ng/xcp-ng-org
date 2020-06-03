@@ -26,22 +26,4 @@ You can also find a video describing various backup options here:
 
 ## Other solutions
 
-Here is 3rd party solutions that are officially compatible with XCP-ng.
-
-### Storware vProtect
-
-It's agentless but closed source. However, it supports a large variety of virtualization platforms, including [XCP-ng](https://storware.eu/storware-and-xcp-ng-technology-alliance/)!
-
-* Website: [https://storware.eu/](https://storware.eu/)
-* Documentation [is available here](https://storware.gitbook.io/storware-vprotect/)
-* Agentless: yes
-* Open Source: no
-
-### VinChin backup
-
-Another solution, which isn't agentless (you need to deploy some code in each host). XCP-ng is supported.
-
-* Website: [https://www.vinchin.com/en/](https://www.vinchin.com/en/)
-* Documentation: [available in PDF](https://www.vinchin.com/en/res/pdf/Vinchin_Product_Manual_2020.pdf)
-* Agentless: no
-* Open Source: no
+There's other solutions officially compatible with XCP-ng to make VM backups. Please check our [ecosystem](./ecosystem.md#vm-backup) page on the backup section!
