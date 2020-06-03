@@ -46,11 +46,11 @@ _This method works best for finding the device ID by class. The example below th
 
 Add the **`xen-pciback.hide`** parameter to the kernel boot parameters:
 ```bash
-/opt/xensource/libexec/xen-cmdline --set-dom0 "xen-pciback.hide=(04:01.0)"
+/opt/xensource/libexec/xen-cmdline --set-dom0 "xen-pciback.hide=(0000:04:01.0)"
 ```
 > You can hide multiple devices. If you wanted to add another device at `00:19.0` just append it to the parameter.
 >
-> `/opt/xensource/libexec/xen-cmdline --set-dom0 "xen-pciback.hide=(04:01.0)(00:19.0)"`
+> `/opt/xensource/libexec/xen-cmdline --set-dom0 "xen-pciback.hide=(0000:04:01.0)(00:19.0)"`
 
 To remove any passthrough devices from dom0:
 ```bash
