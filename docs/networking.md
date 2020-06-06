@@ -282,3 +282,17 @@ If the pool master requires a network reset, reset the network on the pool maste
 #### Verifying the network reset
 
 After you specify the configuration mode to be used after the network reset, xsconsole and the CLI display settings that will be applied after host reboot. It is a final chance to modify before applying the emergency network reset command. After restart, the new network configuration can be verified in Xen Orchestra and xsconsole. In Xen Orchestra, with the host selected, select the Networking tab to see the new network configuration. The Network and Management Interface section in xsconsole display this information.
+
+### Intel i218/i219 slow speed
+
+With kernel version 4.15 a fix in the e1000e driver [has been introduced](https://github.com/torvalds/linux/commit/b10effb92e272051dd1ec0d7be56bf9ca85ab927). However, this fix slighly slows down DMA access times to prevent the NIC to hang up on heavy UDP traffic. This impacts the TCP performance. A workaround to regain full transfer speeds, you can turn off TCP segmentation offloading via the following command:
+
+```
+ethtool -K <interface> tso off gso off
+```
+
+There is currently no fix available / announced that allows offloading TCP segmentation to the NIC without sacrificing performance.
+
+:::tip
+The following error message can be ignored: `Cannot get device udp-fragmentation-offload settings: Operation not supported`
+:::
