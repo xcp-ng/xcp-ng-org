@@ -52,6 +52,7 @@ A comprehensive list of updates is available on our build system's web interface
 
 ## Precautions
 
+* Disable HA during the whole update process to avoid accidental fencing.
 * Avoid applying updates while XAPI tasks are running (`xe task-list`).
 * Some updates may probe SCSI devices. If your devices are sensitive to that kind of thing, plug them off before updating (see [this unfortunate story](https://github.com/xcp-ng/xcp/issues/232) of dead tape robots).
 * As a precaution, it may be a good idea to disconnect passed-through devices before applying the update.
