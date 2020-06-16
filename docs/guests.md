@@ -207,6 +207,15 @@ You can try a simple process first with some chances of success.
 
 If the *confident option* above didn't yield the expected results, then we switch to a more aggressive attitude towards the old tools.
 
+:::tip
+What follows works in many cases, but some users occasionnally still meet the following issues: XCP-ng tools not installing (but Citrix tools install well, so that is a solution to have working tools), and occasionnal BSODs in some cases or versions of Windows.
+
+Through many tests, a user came up with a similar yet slightly different procedure that allowed them to avoid Blue Screens Of Death in their situation: https://xcp-ng.org/forum/post/27602.
+
+Help is welcome to help us reconcile both procedures into one.
+:::
+
+```
 * Follow the steps 0 to 4 of the "confident option" above if not done yet.
 * Follow this (ignore steps 6 and 7, do not try to install the tools yet) <https://support.citrix.com/article/CTX215427>
 * Now open regedit and go to HKLM\SYSTEM\CurrentControlSet\Services and delete entries for all xen* services.
