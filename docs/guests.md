@@ -216,7 +216,6 @@ Help is welcome to help us reconcile both procedures into one.
 :::
 
 ```
-
 * Follow the steps 0 to 4 of the "confident option" above if not done yet.
 * Follow this (ignore steps 6 and 7, do not try to install the tools yet) <https://support.citrix.com/article/CTX215427>
 * Now open regedit and go to HKLM\SYSTEM\CurrentControlSet\Services and delete entries for all xen* services.
