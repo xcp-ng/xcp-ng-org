@@ -51,9 +51,9 @@ To communicate with the hypervisor, you need to install two [ports](https://www.
 * [sysutils/xe-guest-utilities](https://www.freshports.org/sysutils/xe-guest-utilities/) 
 * [sysutils/xen-guest-tools](https://www.freshports.org/sysutils/xen-guest-tools/) 
 
-The `install.sh` script on the guest tools ISO supports FreeBSD, and it will install those as binary packages, if they are not already installed.
+The `install.sh` script on the guest tools ISO does not yet support FreeBSD, so there is no point in mounting the guest tools ISO on a FreeBSD VM.
 
-To manually [install them from a package](https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/pkgng-intro.html) you can run:
+To manually [install xe-guest-utilities from a package](https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/pkgng-intro.html) you can run:
 ```
 pkg install xen-guest-tools xe-guest-utilities
 service xenguest start
