@@ -43,14 +43,32 @@ bash /mnt/Linux/install.sh -d rhel -m 7
 
 The likeliness for the installation to work correctly will depend on how much those distros differ from their "parent".
 
-## FreeBSD/OpenBSD
+## FreeBSD
 
-On FreeBSD/OpenBSD, the xen drivers are also already part of the kernel.
+FreeBSD is a 30-year-old operating system used widely to run all sorts of systems and has served as the basis for a number of operating systems, including MacOS, pfSense, and FreeNAS. The Xen kernel modules are built and distributed in the GENERIC kernel, so if you haven't customised or recompiled your kernel, the drivers will be present.
 
-The `install.sh` script doesn't support those systems, but there are ways to install the management agent anyway.
+To communicate with the hypervisor, you need to install two [ports](https://www.freebsd.org/ports/):
+* [sysutils/xe-guest-utilities](https://www.freshports.org/sysutils/xe-guest-utilities/) 
+* [sysutils/xen-guest-tools](https://www.freshports.org/sysutils/xen-guest-tools/) 
+
+The `install.sh` script on the guest tools ISO does not yet support FreeBSD, so there is no point in mounting the guest tools ISO on a FreeBSD VM.
+
+To manually [install xe-guest-utilities from a package](https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/pkgng-intro.html) you can run:
+```
+pkg install xen-guest-tools xe-guest-utilities
+service xenguest start
+```
+
+By default the `xe-daemon` will run if FreeBSD detects the Xen hypervisor at boot. If that autodetection fails for some reason, you can force it to try by putting `xenguest_enable=YES` in your `rc.conf` file: `sysrc xenguest_enable=YES`.
+
+Run `service xenguest [stop|start|restart]` to respectively stop, start, or restart the `xe-daemon`.
+
+## OpenBSD
+
+On OpenBSD, the xen drivers are also already part of the kernel. The `install.sh` script doesn't support OpenBSD, but there are ways to install the management agent anyway.
 
 :::tip
-For others: search [the forum](https://xcp-ng.org/forum). See for example [this thread](https://xcp-ng.org/forum/topic/2582/guest-tools-for-openbsd).
+For OpenBSD search [the forum](https://xcp-ng.org/forum). See for example [this thread](https://xcp-ng.org/forum/topic/2582/guest-tools-for-openbsd).
 :::
 
 ## FreeNAS/TrueNAS
