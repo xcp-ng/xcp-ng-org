@@ -12,12 +12,47 @@ The tools are made of two main components:
 
 Xen guest drivers have been built-in in the linux kernel for many years. All currently supported linux distributions include them.
 
-So all we need is to install the management agent.
+So all we need is to install the management agent, which comes either as a systemd or as a sysvinit service, depending on the linux distribution. The service is usually named `xe-linux-distribution`.
 
-### Install the Linux Guest Tools on a supported distro
+Those guest tools can be installed:
+* from the target distribution's online repositories if available
+* from the Guest Tools ISO image that can be attached to any VM in XCP-ng
 
-Here's the procedure for supported distros (Debian, Ubuntu, CentOS, RHEL, SLES...).
+### Install from the distro's online repositories
 
+Distros often have policies that forbid enabling new services by default, so most of the time the steps are:
+* enable the appropriate repository
+* install the package from it
+* enable the service
+
+#### CentOS and Fedora
+Enable the EPEL repository in the VM, then:
+```
+yum install xe-guest-utilities-latest
+```
+The service is not enabled by default, so enable it and start it:
+```
+systemctl enable xe-linux-distribution
+systemctl start xe-linux-distribution
+```
+
+#### Alpine
+Enable the `community` repository in `/etc/apk/repositories`, then:
+```
+apk add xe-guest-utilities
+```
+The service is not enabled by default, so enable it and start it:
+```
+rc-update add xe-guest-utilities
+rc-service xe-guest-utilities start
+```
+
+*Feel free to add other distros to the above list if they provide the tools in their repositories*
+
+### Install from the guest tools ISO
+
+#### "Supported" linux distributions
+For distros that are supported by the `install.sh` script (Debian, CentOS, RHEL, SLES, Ubuntu...), the process is:
 * Attach the guest tools ISO to the guest from Xen Orchestra, XCP-ng Center or using `xe`.
 * Then inside the VM, as root:
 ```
@@ -25,23 +60,33 @@ mount /dev/cdrom /mnt
 bash /mnt/Linux/install.sh
 umount /dev/cdrom
 ```
+* No need to reboot the VM even if the script asks to. That's an old message from back when it was needed to install a kernel module in addition to the management agent. We'll get rid of it at some point.
 * Eject the guest tools ISO
 
-If a message asks you to reboot the VM, ignore it. That's an old message from back when it was needed to install a kernel module in addition to the management agent. We'll get rid of it at some point.
-
-### Install the Linux Guest Tools on an "unsupported" distro
-
-If you have an "unsupported" distro based on Debian or Ubuntu (like TurnKey Linux for example) the install script will fail to detect it and refuse to install. On these "unsupported" .deb based distros you can override the detection and force the tools to install by using:
+#### Derived linux distributions
+If your linux distribution is not recognized by the installation script but derives from one that is supported by the script, you can override the detection and force the tools to install by using:
 ```
-bash /mnt/Linux/install.sh -d debian -m 9
+bash /mnt/Linux/install.sh -d $DISTRO -m $MAJOR_VERSION
 ```
-
-If you have an "unsupported" distro based on Fedora or RHEL/CentOS (like FreePBX for example) the install script will fail to detect it and refuse to install. On .rpm based distros you can override the detection and force the tools to install by using:
+Examples:
 ```
-bash /mnt/Linux/install.sh -d rhel -m 7
+# derived from debian 10
+bash /mnt/Linux/install.sh -d debian -m 10
+# derived from RHEL or CentOS 8
+bash /mnt/Linux/install.sh -d rhel -m 8
 ```
 
 The likeliness for the installation to work correctly will depend on how much those distros differ from their "parent".
+
+#### Other linux distributions
+For the remaining linux distributions, mount the guest tools ISO as described above, then look for the `xe-guest-utilities_*_all.tgz` archive. Copy its contents on the system in `/etc` and `/usr`. It contains a System V init script by default but there's also a systemd unit file available on the ISO (`xe-linux-distribution.service`).
+
+See also [Contributing](guests.html#contributing) below.
+
+### Update the guest tools
+It's a good habit, and may be even required in some cases (that would then be described in the [Release Notes]), to update the guest tools to their latest version when your XCP-ng hosts are updated.
+
+Depending on the situation, just update from your distribution's online repositories, or follow the above installation process again.
 
 ## FreeBSD
 
@@ -233,7 +278,6 @@ Through many tests, a user came up with a similar yet slightly different procedu
 Help is welcome to help us reconcile both procedures into one.
 :::
 
-```
 * Follow the steps 0 to 4 of the "confident option" above if not done yet.
 * Follow this (ignore steps 6 and 7, do not try to install the tools yet) <https://support.citrix.com/article/CTX215427>
 * Now open regedit and go to HKLM\SYSTEM\CurrentControlSet\Services and delete entries for all xen* services.
@@ -269,3 +313,10 @@ If you are using Xen Orchestra, you can switch the "Windows Update tools" advanc
 
 #### Switching from XCP-ng tools to Citrix tools
 If your VM already has XCP-ng tools and you wish to switch to Citrix tools, then you need to do the same kind of clean-up as described higher in this document for the opposite situation.
+
+### Contributing
+#### Linux / xBSD
+If you would like to contribute improvements to the `install.sh` script so that it supports your distro, create a pull request against: https://github.com/xcp-ng/xe-guest-utilities/tree/master/mk. Relevant files are usually `xe-linux-distribution` and `install.sh`.
+
+#### Windows
+The XCP-ng team is looking for help in improving the guest tools installer, build process, and clean-up tools.
