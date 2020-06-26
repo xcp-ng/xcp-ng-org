@@ -13,6 +13,10 @@ module.exports = {
     editLinks: true, // display link for people to edit a page
     editLinkText: 'Help us to improve this page!', // link text
     docsDir: 'docs',
+    algolia: {
+      apiKey: '9247f863f432d8ed6e58f97cb5dde6e4',
+      indexName: 'xcp-ng'
+    },
     nav: [
       { text: 'Home', link: 'https://xcp-ng.org' },
       { text: 'News', link: 'https://xcp-ng.org/news' },
