@@ -20,7 +20,7 @@ The `xe` command line interface is installed by default on all XCP-ng hosts. A s
 Please read the [xe dedicated section here](./cli_reference.md).
 
 :::tip
-`xe` however, works within a pool. If you want a cross-pool CLI (ie your whole infrastructure), please take a look at [Xen Orchestra CLI!](https://xen-orchestra.com/docs/xo-cli.html)
+`xe` however, works within a pool. If you want a cross-pool CLI (ie your whole infrastructure), please take a look at [Xen Orchestra CLI!](https://xen-orchestra.com/docs/architecture.html#xo-cli-cli)
 :::
 
 ## XCP-ng Center

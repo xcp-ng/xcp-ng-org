@@ -1,6 +1,6 @@
 # xe CLI reference
 
-The xe CLI can be used locally on any XCP-ng host, it's installed along with it. However, it's poolwide only. If you want a CLI or an API to control multiple pools at once, we strongly advise to use [Xen Orchestra CLI](https://xen-orchestra.com/docs/xo-cli.html).
+The xe CLI can be used locally on any XCP-ng host, it's installed along with it. However, it's poolwide only. If you want a CLI or an API to control multiple pools at once, we strongly advise to use [Xen Orchestra CLI](https://xen-orchestra.com/docs/architecture.html#xo-cli-cli).
 
 
 ## Getting help with xe commands
