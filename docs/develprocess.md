@@ -108,6 +108,61 @@ Our policy is to upstream everything if possible. However, there are some except
 ### How to help at development
 It all depends on your skills and areas of interest so it's hard to tell specifically in advance. Having a look at the open github issues and pick one (<https://github.com/xcp-ng/xcp/issues>) could definitely help. Else, maybe there's a specific topic that you would want to help improve. Even if you don't know where to start, just come and talk with us (see "Where discussion happens" above).
 
+## Tags, maintenance branches in our code repositories
+
+Objectives of the branch and tag naming conventions:
+* always know how to name tags and maintenance branches depending on the situation
+* easily identify maintenance branches for a given release of XCP-ng, based on their name
+* know what branch to develop the next version on
+* for our tags and branches that have been developed from upstream branches or tags, document the upstream branch names through our branch and tag naming
+
+First question to ask ourselves: **who is the upstream for the software**?
+
+### 1. We are upstream
+
+Example: `xcp-emu-manager`
+* Tags: `vMAJOR.MINOR.PATCH` (`v1.1.2`, `v1.2.0`...)
+* Maintenance branch if needed: `VERSION-XCPNGVERSION`.
+  * We don't need to create the maintenance branch in advance. Not all software gets hotfixes.
+  * `VERSION` is the version we branched from:
+    * If possible `MAJOR.MINOR` (`1.1`, `1.2`)
+    * ... Unless we tagged the project in a way that would make this ambiguous. In that case, `MAJOR.MINOR.PATCH` (`1.1.1`, `1.1.2`...).
+  * `XCPNGVERSION` is the two-digit version of XCP-ng: `8.1`, `8.2`...
+  * Examples: `1.1.2-8.0`, `1.2-8.2`... 
+* Next release developed on: `master`
+
+* Tag: `v1.2.0`
+* Maintenance branch: `1.2-8.2`
+
+If for any reason we decide to release a newer version of the software as a maintenance update, then:
+* We stop updating the existing maintenance branch
+* Further hotfixes would come from a new maintenance branch created from the appropriate tag.
+
+Special case: VERSION and XCPNGVERSION are always the same (example: `xcp-ng-release`). Then:
+* Tags: `vXCPNGVERSIONFULL` (`v8.2.0`)
+* Maintenance branch if needed: `XCPNGVERSION` (`8.2`)
+
+### 2. We are downstream
+
+Examples: `host-installer`, `sm`...
+* Tags:
+ * We tag when we release a new version of XCP-ng: `vUPSTREAMVERSION-XCPNGVERSIONFULL` (`v1.29.0-8.2.0`)
+ * Then we use the maintenance branch but don't tag anymore (each build pushed to koji already acts as a sort of tag). If we *really* wanted to tag for patch updates from the maintenance branch, we could increment neither `UPSTREAMVERSION` nor `XCPNGVERSIONFULL` so we'd have to add yet another suffix. Eg. `v1.29.0-8.2.0-3.1` where `3.1` would be the `Release` tag from the hotfix RPM.
+* Maintenance branch: `UPSTREAMVERSION-XCPNGVERSION` (`1.29.0-8.2`)
+  * When we are downstream we always create a maintenance branch for a given XCP-ng release
+* Next release developed on: next maintenance branch directly (`1.29.0-8.2`)
+
+If for any reason we decide to release a newer version of the software as a maintenance update, then we'd create new tag and a new maintenance branch that match `UPSTREAMVERSION` (that changes) and `XCPNGVERSIONFULL` (that doesn't change)
+
+Special case: the upstream version and the XCP-ng version are always the same (example: `host-installer`). Then:
+* Tags: `vXCPNGVERSIONFULL` (`v8.2.0`)
+* Maintenance branch: `XCPNGVERSION` (`8.2`)
+
+#### About upstream branches
+
+* If we get the sources from XS SRPMs, then we import them to a branch named `XS` and tag `XS-XSVERSIONFULL` (`XS-8.2.0`). Example: `host-installer`.
+* If we forked a git repository, we don't need to push the upstream branches or tags to our own fork. However it could be a good habit to track maintenance or hotfix branches for changes.
+
 ## RPM packaging
 
 Creating packages that can be installed on the user's system is called **packaging**.
