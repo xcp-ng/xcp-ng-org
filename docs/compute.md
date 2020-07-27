@@ -163,13 +163,15 @@ AMD GPU are trivial using industry standard.
 
 1. Enable SR-IOV in the server's BIOS
 2. Install XCP-ng
-3. Download Citrix XenServer from AMD's Drivers & Support page. (Currently version 1.0.5 for XenServer 7.4)
-4. Copy the `mxgpu-1.0.5.amd.iso` to the host
+3. Download Citrix XenServer from AMD's Drivers & Support page. (Currently version 1.0.5 for XenServer 7.4 and version 2.0 for XenServer 8.1)
+4. Copy the `mxgpu-X.X.X.amd.iso` to the host
 5. Install the supplemental pack:
 
 `cd /tmp`
 
 `xe-install-supplemental-pack mxgpu-1.0.5.amd.iso`
+or
+`xe-install-supplemental-pack mxgpu-2.0.0.amd.iso`
 
 6. Reboot the XCP-ng
 7. Assign an MxGPU to the VM from the VM properties page.  Go to the GPU section.  From the Drop down choose how big of a slice of the GPU you want on the VM and click OK
