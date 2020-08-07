@@ -200,7 +200,7 @@ The configuration file pxelinux.cfg/default is as follow:
 default xenserver
 label xenserver
 kernel mboot.c32
-append xcp-ng/xen.gz dom0_max_vcpus=1-2 dom0_mem=1024M,max:1024M com1=115200,8n1 console=com1,vga --- xcp-ng/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=https://gist.githubusercontent.com/nraynaud/4cca5205c805394a34fc4170b3903113/raw/ install --- xcp-ng/install.img
+append xcp-ng/xen.gz dom0_max_vcpus=1-2 dom0_mem=max:2048M com1=115200,8n1 console=com1,vga --- xcp-ng/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=https://gist.githubusercontent.com/nraynaud/4cca5205c805394a34fc4170b3903113/raw/ install --- xcp-ng/install.img
 ```
 
 Here is the beginning of an answer file:
