@@ -375,3 +375,15 @@ Hi, this is a small trick I had to use once [(original article)](https://linuxco
 See the [Xen doc](https://wiki.xenproject.org/wiki/Debugging_Xen#Debugging_Xenstore_Problems).
 
 The `XENSTORED_TRACE` being enabled might give useful information.
+
+## Ubuntu 18.04 boot issue
+
+Some versions of Ubuntu 18.04 might fail to boot, due to a Xorg bug affecting GDM and causing a crash of it (if you use Ubuntu HWE stack).
+
+The solution is to use `vga=normal fb=false` on Grub boot kernel to overcome this. You can add those into ` /etc/default/grub`, for the `GRUB_CMDLINE_LINUX_DEFAULT` variable. Then, a simple `sudo update-grub` will provide the fix forever.
+
+You can also remove the `hwe` kernel and use the `generic` one: this way, the problem won't occur at all.
+
+:::tip
+Alternatively, in a fresh Ubuntu 18.04 install, you can switch to UEFI and you won't have this issue.
+:::
