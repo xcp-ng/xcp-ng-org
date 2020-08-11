@@ -29,6 +29,14 @@ We have carefully tested UDS deployment in an XCP-ng environment and UDS Enterpr
 
 ## Network
 
+Everything related to network specialists in XCP-ng and Xen Orchestra ecosystem.
+
+:::tip
+If you want SDN capabilities for XCP-ng, take a look at [Xen Orchestra SDN controller](https://xen-orchestra.com/docs/sdn_controller.html) documentation!
+:::
+
+### VyOS
+
 VyOS is an open source network OS that provides flexible network features such as traffic filtering, flow analysis, HA topologies, IPsec, OpenVPN, and NAT.Routing
 Key points of using VyOS:
 
@@ -50,6 +58,9 @@ More to come soon on this side!
 ## Storage
 
 In order to build the best platform with multiple storage options, we are also working with companies being expert in storage solutions.
+
+:::tip
+We are integrating storage solution available directly from Xen Orchestra (XOSAN and XOSTOR). Don't forget to take a look at [XO website](https://xen-orchestra.com) to learn more!
 
 ### LINBIT
 
@@ -98,6 +109,28 @@ Another solution, which isn't agentless (you need to deploy some code in each ho
 * Open Source: no
 
 ![](../assets/img/partners/vinchin-logo-1.png)
+
+## Edge Computing
+
+Edge Computing is, in short, bringing compute power outside the datacenter. And the combo XCP-ng/Xen Orchestra is great for that! Take a look on our intro on "[What's Edge Computing](https://xcp-ng.org/blog/2020/07/31/edge-case-0/)".
+
+Here is a list of hardware XCP-ng team tested and validated directly!
+
+### Protectli
+
+The **Protectli Vault** helps thousands of network professionals and self-professed geeks like us to keep our networks safe. It runs on advanced firmware. [Read more here](https://protectli.com).
+
+![](../assets/img/partners/logoprtectli.jpg)
+
+#### Protectli Vault – 6 Port
+
+XCP-ng is validated on this appliance: it just works out of the box. Completely fanless, idle at less than 10W, and enough firepower for almost all compute tasks.
+
+![](../assets/img/partners/protectli.png)
+
+### More hardware partners to come!
+
+Stay tuned :)
 
 
 ## Join the XCP-ng ecosystem
