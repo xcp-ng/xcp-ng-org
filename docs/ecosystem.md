@@ -27,6 +27,26 @@ Learn more about UDS Enterprise [on their website](https://www.udsenterprise.com
 
 We have carefully tested UDS deployment in an XCP-ng environment and UDS Enterprise is the first solution to join the XCP-ng ecosystem with an official Seal of Approval.
 
+## Network
+
+VyOS is an open source network OS that provides flexible network features such as traffic filtering, flow analysis, HA topologies, IPsec, OpenVPN, and NAT.Routing
+Key points of using VyOS:
+
+* Basic network resources for virtual machines (DNS, DHCP, NTP);
+* Wide range of VPN technologies (OpenVPN, IPSec, L2TP);
+* Secure connectivity: Built-in firewall to separate virtual machines, restrict access from outside, and protect workloads;
+* High availability features provide active/backup redundancy for routers to avoid disruption of critical operations;
+* No limits or requirements for license purchases.
+
+![](../assets/img/partners/vyospartner.png)
+
+VyOS is now fully compatible with XCP-ng and comes with paravirtual drivers dedicated included in the image for best performances.
+
+
+:::tip
+More to come soon on this side!
+:::
+
 ## Storage
 
 In order to build the best platform with multiple storage options, we are also working with companies being expert in storage solutions.
