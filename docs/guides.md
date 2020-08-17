@@ -93,6 +93,40 @@ Here is the list of hypervisors on which you can try XCP-ng :
 * default NIC type of realtek may create stability issue for nested XCP-NG, change it to intel e1000 : `xe vm-param-set uuid=<UUID> platform:nic_type="e1000"`
 * install/use it like normal :-)
 
+### Nested XCP-ng using Xen
+
+It's a pretty standard HVM, but you need to use a `vif` of `ioemu` type. Check this configuration example:
+
+```
+builder='hvm'
+memory = 4096
+name = 'xcp-ng'
+vcpus=6
+pae=1
+acpi=1
+apic=1
+vif = [ 'mac=xx:xx:xx:xx:xx:xx,type=ioemu,bridge=virbr0' ]
+disk = [ 'file:/foo/bar/xcp-ng.img,hdc,w', 'file:/foo/bar/xcp-ng/xcp-ng-8.1.0-2.iso,hdb:cdrom,r' ]
+boot='dc'
+vnc=1
+serial='pty'
+tsc_mode='default'
+viridian=0
+usb=1
+usbdevice='tablet'
+gfx_passthru=0
+localtime=1
+xen_platform_pci=1
+pci_power_mgmt=1
+stdvga = 0
+serial = 'pty'
+hap=1
+nestedhvm=1
+on_poweroff = 'destroy'
+on_reboot   = 'destroy'
+on_crash    = 'destroy'
+```
+
 ### Nested XCP-ng using VMware (ESXi and Workstation)
 
 _The following steps can be performed under VMware Workstation Pro, the settings will remain the same but the configuration will be slightly different. We will discuss this point at the end of this section about VMware._
