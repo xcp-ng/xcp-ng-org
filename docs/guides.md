@@ -390,3 +390,28 @@ That's it, you're good to go!  Go to your interfaces > assignments in pfSense, s
 * [Forums: My initial question and discussion about vlan trunk support](https://xcp-ng.org/forum/topic/729/how-to-connect-vlan-trunk-to-vm)
 * [pfSense interface does not support VLANs](https://forum.netgate.com/topic/112359/xenserver-vlan-doesn-t-supporting-eth-device-for-vlan)
 * [pfSense: Adding VLAN support for Xen xn interfaces](https://eliasmoraispereira.wordpress.com/2016/10/05/pfsense-virtualizacao-com-xenserver-criando-vlans/)
+
+## TLS certificate for XCP-ng
+
+After installing XCP-ng, access to xapi via XCP-ng center or XenOrchestra is protected by TLS with a [self-signed certificate](https://en.wikipedia.org/wiki/Self-signed_certificate) : this means that you have to either verify the certificate signature before allowing the connection (comparing against signature shown on the console of the server), either work on trust-on-first-use basis (i.e. assume that the first time you connect to the server, nobody is tampering with the connection).
+
+If you would like to replace this certificate by a valid one, either from an internal Certificate Authority or from a public one, you'll find here some indications on how to do that.
+
+Note that if you use an non-public certificate authority and XenOrchestra, you have [additional configuration to specify on XenOrchestra side](https://xen-orchestra.com/docs/configuration.html#custom-certificate-authority)
+
+### Generate certificate signing request
+
+You can use the auto-generated key to create a certificate signing request :
+
+```
+openssl req -new -key /etc/xensource/xapi-ssl.pem -subj '/CN=XCP-ng hypervisor/' -out xcp-ng.csr
+```
+
+### Install the certificate chain
+
+The certificate, intermediate certificates (if needed), certificate authority and private key are stored in `/etc/xensource/xapi-ssl.pem`, in that order. You have to replace all lines before `-----BEGIN RSA PRIVATE KEY-----̀` with the certificate and the chain you got from your provider, using your favorite editor (`nano` is present on XCP-ng by default).
+
+Then, you have to restart xapi :
+```
+systemctl restart xapi
+```
