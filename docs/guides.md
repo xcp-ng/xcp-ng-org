@@ -399,6 +399,10 @@ If you would like to replace this certificate by a valid one, either from an int
 
 Note that if you use an non-public certificate authority and XenOrchestra, you have [additional configuration to specify on XenOrchestra side](https://xen-orchestra.com/docs/configuration.html#custom-certificate-authority)
 
+:::warning
+This indication is valid for XCP-ng up to v8.1. Version 8.2 is expected to improve deployment of new certificates, like [Citrix did for XenServer 8.2](https://docs.citrix.com/en-us/citrix-hypervisor/hosts-pools.html#install-a-tls-certificate-on-your-server).
+:::
+
 ### Generate certificate signing request
 
 You can use the auto-generated key to create a certificate signing request :
