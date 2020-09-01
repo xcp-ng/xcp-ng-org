@@ -388,8 +388,14 @@ You can also remove the `hwe` kernel and use the `generic` one: this way, the pr
 Alternatively, in a fresh Ubuntu 18.04 install, you can switch to UEFI and you won't have this issue.
 :::
 
-## Extended characters are not supported in SMB paths, user names, and passwords.    
+## Extended characters issue.
+When adding new storage you can get error:
 
-Bug actual for adding new ISO library (SMB/CIFS and NFS).
+```
+Creating SR
+Extended characters are not supported in SMB paths, user names, and passwords
+Check your setting and try again.
+````
 
-Solution: check for special characters in path, user names, password, and also ISO filenames.
+Solution: check for special characters in path, user names, password, and also ISO filenames.    
+Bug tested and actual for adding new ISO library (SMB/CIFS and NFS), but may be actual for other storage pathways.
