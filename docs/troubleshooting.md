@@ -387,3 +387,9 @@ You can also remove the `hwe` kernel and use the `generic` one: this way, the pr
 :::tip
 Alternatively, in a fresh Ubuntu 18.04 install, you can switch to UEFI and you won't have this issue.
 :::
+
+## Extended characters are not supported in SMB paths, user names, and passwords.    
+
+Bug actual for adding new ISO library (SMB/CIFS and NFS).
+
+Solution: check for special characters in path, user names, password, and also ISO filenames.
