@@ -139,7 +139,7 @@ HPE is selling a [complete range](https://buy.hpe.com/us/en/servers/edgeline-sys
 
 We validated the **EL300** on XCP-ng, thanks to HPE letting us test the hardware.
 
-![](../assets/img/partners/hpe_el300.png)
+![](../assets/img/partners/hpe_el300.jpg)
 
 You can read more on our tests inside the blog post [Edge Case #1 - HPE Edgeline server](https://xcp-ng.org/blog/2020/08/31/edge-case-1-xcp-ng/).
 
