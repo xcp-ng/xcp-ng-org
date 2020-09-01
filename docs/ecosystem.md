@@ -129,6 +129,21 @@ XCP-ng is validated on this appliance: it just works out of the box. Completely 
 
 ![](../assets/img/partners/protectli.png)
 
+### HPE Edgeline
+
+![](../assets/img/partners/hpelogo.png)
+
+HPE is selling a [complete range](https://buy.hpe.com/us/en/servers/edgeline-systems/edgeline-systems/edgeline-converged-edge-systems/hpe-edgeline-el4000-converged-edge-system/p/1008670180) of systems built directly for Edge Computing, called **EdgeLine**.
+
+#### HPE EdgeLine EL300
+
+We validated the **EL300** on XCP-ng, thanks to HPE letting us test the hardware.
+
+![](../assets/img/partners/hpe_el300.png)
+
+You can read more on our tests inside the blog post [Edge Case #1 - HPE Edgeline server](https://xcp-ng.org/blog/2020/08/31/edge-case-1-xcp-ng/).
+
+
 ### More hardware partners to come!
 
 Stay tuned :)
