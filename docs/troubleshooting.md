@@ -411,4 +411,13 @@ Some NVMe drives do not handle Automatic Power State Transition (APST) well on c
 [65061.030575] nvme nvme0: failed to set APST feature (-19)
 ```
 
-APST can be disabled by adding `nvme_core.default_ps_max_latency_us=0` to your kernel boot parameters.
+APST can be disabled by adding `nvme_core.default_ps_max_latency_us=0` to your kernel boot parameters.  For example, in xcp-ng 8.1, edit `/boot/grub/grub.cfg` to include a new parameter on the first `module2` line.
+
+```
+menuentry 'XCP-ng' {
+	search --label --set root root-jnugiq
+	multiboot2 /boot/xen.gz dom0_mem=7584M,max:7584M watchdog ucode=scan dom0_max_vcpus=1-16 crashkernel=256M,below=4G console=vga vga=mode-0x0311
+	module2 /boot/vmlinuz-4.19-xen root=LABEL=root-jnugiq ro nolvm hpet=disable console=hvc0 console=tty0 quiet vga=785 splash plymouth.ignore-serial-consoles nvme_core.default_ps_max_latency_us=0
+	module2 /boot/initrd-4.19-xen.img
+}
+```
