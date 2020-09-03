@@ -20,6 +20,25 @@ If you attempt to perform PCI passthrough on a system which does not have VT-d/I
 Internal error: xenopsd internal error: Device.PCI.Cannot_add(_, _)
 ```
 
+:::warning
+You may not be able to passthrough USB controllers
+:::
+
+When attempting to enable PCI passthrough on USB controllers, you may see an error when starting the VM in your logs similar to
+
+```
+Internal error: xenopsd internal error: Cannot_add(0000:00:1d.0, Xenctrlext.Unix_error(30, "1: Operation not permitted"))
+```
+
+and an error in `/var/log/xen/hypervisor.log`
+
+```
+[2020-08-22 10:09:03] (XEN) [  297.542134] [VT-D] It's disallowed to assign 0000:08:00.0 with shared RMRR at 7ba77000 for Dom32753.
+[2020-08-22 10:09:03] (XEN) [  297.542136] d[IO]: assign (0000:08:00.0) failed (-1)
+```
+
+This indicates that your device is using [RMRR](https://access.redhat.com/sites/default/files/attachments/rmrr-wp1.pdf).  Intel [IOMMU does not allow DMA to these devices](https://www.kernel.org/doc/Documentation/Intel-IOMMU.txt) and therefore PCI passthrough is not supported.
+
 ### 1. Find your devices ID ([B/D/F](https://en.wikipedia.org/wiki/PCI_configuration_space#BDF)) on the PCI bus using one of the following methods:
 
 **Method 1: List PCI Devices with `lspci`**
