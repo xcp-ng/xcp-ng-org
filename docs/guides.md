@@ -13,6 +13,7 @@ pfSense works great in a VM, but there are a few extra steps that need to be tak
 
 ### 2. Install Guest Utilities
 
+There are 2 options. Option 1 via console/ssh:  
 Now that you have a pfSense VM running, we need to install guest utilities and tell them to run on boot. SSH (or other CLI method) to the pfSense VM and perform the following:
 
 ```
@@ -21,6 +22,11 @@ echo 'xenguest_enable="YES"' >> /etc/rc.conf.local
 ln -s /usr/local/etc/rc.d/xenguest /usr/local/etc/rc.d/xenguest.sh
 service xenguest start
 ```
+Option 2 is via webgui:  
+Open management page under http(s)://your-configured-ip and go to:  
+*System -> Firmware -> Plugins*
+Scroll down to **os-xen** and let the gui do the steps needed. Next: Reboot the system to have the guest started (installer doesn't do that):  
+*Power -> Reboot*
 
 Guest Tools are now installed and running, and will automatically run on every boot of the VM.
 
