@@ -50,7 +50,7 @@ There's 2 types of storage:
   <tr>
     <td>ZFS</td>
     <td>X</td>
-    <td>X</td>
+    <td></td>
   </tr>
   <tr>
     <td rowspan="3">block based</td>
@@ -72,11 +72,6 @@ There's 2 types of storage:
 
 :::warning
 Cost of thick provisioned is relatively high when you do snapshots (used for backup). If you can use ext or NFS instead, you'll save a LOT of space.
-:::
-
-:::tip
-ZFS provides thick provisioning using the quota properties and thin provisioning using reserved space:
-https://docs.oracle.com/cd/E23823_01/html/819-5461/gazvb.html
 :::
 
 ### Local
