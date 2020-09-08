@@ -27,7 +27,7 @@ There's 2 types of storage:
     <th>Thick Provisioned</th>
   </tr>
   <tr>
-    <td rowspan="4">file based</td>
+    <td rowspan="5">file based</td>
     <td>local Ext3/4</td>
     <td>X</td>
     <td></td>
@@ -44,6 +44,11 @@ There's 2 types of storage:
   </tr>
   <tr>
     <td>XOSAN</td>
+    <td>X</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>ZFS</td>
     <td>X</td>
     <td></td>
   </tr>
