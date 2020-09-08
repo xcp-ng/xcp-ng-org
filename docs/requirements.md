@@ -1,7 +1,7 @@
 An XCP-ng computer is dedicated entirely to the task of running XCP-ng and hosting VMs, and is not used for other applications.
 
 ::: warning
-Installing third-party software directly in the control domain of XCP-ng is not supported. The exception is for software supplied in the current repositories. If want to add an extra package inside XCP-ng please [ask here](https://github.com/xcp-ng/xcp/issues/56).
+Installing third-party software directly in the control domain of XCP-ng is not supported. The exception is for software supplied in the current repositories. If you want to add an extra package inside XCP-ng please [ask here](https://github.com/xcp-ng/xcp/issues/56).
 :::
 
 ## XCP-ng system requirements
