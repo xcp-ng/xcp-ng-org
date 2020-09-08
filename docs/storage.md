@@ -92,21 +92,57 @@ Via `xe` CLI for a local EXT SR (where `sdaX` is a partition, but it can be the 
 xe sr-create host-uuid=<host UUID> type=ext content-type=user name-label="Local Ext" device-config:device=/dev/sdaX
 ```
 
+### ZFS
+
+ZFS is also local, but you'll need to create your ZFS pool and volumes yourself, eg on partition `sda4`:
+
+```
+zpool create -o ashift=12 -m /mnt/zfs tank /dev/sda4
+```
+
+Now you can create the SR on top of it:
+
+```
+xe sr-create host-uuid=<HOST_UUID> name-label=LocalZFS type=file device-config:location=/mnt/zfs/
+```
+
+For better performances, you can disable sync with `zfs set sync=disabled tank`.
+
+:::tip
+Please report any problem (performances or whatever) you might encounter in ZFS. [Our forum](https://xcp-ng.org/forum) is here for that!
+:::
+
 ### NFS
+
+In Xen Orchestra, go in the "New" menu entry, then Storage, and select NFS. Follow instructions from there.
 
 ### iSCSI
 
+In Xen Orchestra, go in the "New" menu entry, then Storage, and select iSCSI. Follow instructions from there.
+
 ### HBA
 
-:::tip
-This section needs your help!
-:::
+You can add an HBA storage with `xe`:
+
+```
+xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage device-config:SCSIid=<the SCSI id>
+```
+
+If you have a problem with the SCSIid, you can use this alternative, carefuly selecting the right drive, and checking it's visible on all hosts with the same name:
+
+```
+xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage device-config:device=/dev/<HBA drive>
+```
 
 ### Glusterfs
 
-:::tip
-Bundled driver for Gluster is coming very soon!
-:::
+You can use this driver to connect to an existing Gluster storage, and configure it as a shared SR for all your hosts in the pool. For example, a Gluster storage with 3 nodes (`192.168.1.11`, `192.168.1.12` and `192.168.1.13`) and a volume name called `glustervolume`:
+
+```
+xe sr-create content-type=user type=glusterfs name-label=GlusterSharedStorage shared=true device-config:server=192.168.1.11:/glustervolume device-config:backupservers=192.168.1.12:192.168.1.13
+```
+
+It will be thin provisioned!
 
 ### Ceph
 
