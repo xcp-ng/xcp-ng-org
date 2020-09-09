@@ -159,7 +159,7 @@ Due to a proprietary piece of code in XenServer, XCP-ng doesn't have (yet) suppo
 
 ### MxGPU (AMD vGPU)
 
-AMD GPU are trivial using industry standard.
+AMD GPU are trivial using industry standard.  
 Version 2.0 of the mxgpu iso should work on any 8.X version of XCP-ng
 
 1. Enable SR-IOV in the server's BIOS
