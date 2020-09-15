@@ -28,9 +28,26 @@ Guest Tools are now installed and running, and will automatically run on every b
 
 Now is the most important step: we must disable tx checksum offload on the virtual xen interfaces of the VM. This is because network traffic between VMs in a hypervisor is not populated with a typical ethernet checksum, since they only traverse server memory and never leave over a physical cable. The majority of operating systems know to expect this when virtualized and handle ethernet frames with empty checksums without issue. However `pf` in FreeBSD does not handle them correctly and will drop them, leading to broken performance.
 
-**NOTE:** Disabling checksum offloading is only necessary for virtual interfaces. When using [PCI Passtrough](https://github.com/xcp-ng/xcp/wiki/PCI-Passtrough) to provide a VM with direct access to physical or virtual (using [SR-IOV](https://en.wikipedia.org/wiki/Single-root_input/output_virtualization)) devices it is unnecessary to disable tx checksum offloading on any interfaces on those devices.
+The solution is to simply turn off checksum-offload on the virtual xen interfaces for pfSense in the TX direction only (TX towards the VM itself). Then the packets will be checksummed like normal and `pf` will no longer complain.
 
-The solution is to simply turn off checksum-offload on the virtual xen interfaces for pfSense in the TX direction only (TX towards the VM itself). Then the packets will be checksummed like normal and `pf` will no longer complain. SSH to dom0 on your XCP-NG hypervisor and run the following:
+:::tip
+Disabling checksum offloading is only necessary for virtual interfaces. When using [PCI Passtrough](https://github.com/xcp-ng/xcp/wiki/PCI-Passtrough) to provide a VM with direct access to physical or virtual (using [SR-IOV](https://en.wikipedia.org/wiki/Single-root_input/output_virtualization)) devices it is unnecessary to disable tx checksum offloading on any interfaces on those devices.
+:::
+
+:::warning
+Many guides on the internet for pfSense in Xen VMs will tell you to uncheck checksum options in the pfSense web UI, or to also disable RX offload on the Xen side. These are not only unnecessary, but some of them will make performance worse.
+ :::
+
+#### Using XenOrchestra
+
+- Head to the "Network" tab of your VM : in the advanced settings, you can enable TX checksumming.
+- Restart the VM.
+
+That's it !
+
+#### Using CLI
+
+SSH to dom0 on your XCP-NG hypervisor and run the following:
 
 First get the UUID of your pfSense VM:
 
@@ -65,9 +82,11 @@ xe vif-param-set uuid=789358b4-54c8-87d3-bfb3-0b7721e4661b other-config:ethtool-
 xe vif-param-set uuid=a9380705-8da2-4bf7-bbb0-f167d8f0d645 other-config:ethtool-tx="off"
 ```
 
-That's it! For this to take effect you need to fully shut down the VM then power it back on. Then you are good to go! **Do not forget:** If you ever add more virtual NICs to your pfSense VM, you will need to go back and run the above command for them as well.
+That's it! For this to take effect you need to fully shut down the VM then power it back on. Then you are good to go!
 
-**NOTE:** Many guides on the internet for pfSense in Xen VMs will tell you to uncheck checksum options in the pfSense web UI, or to also disable RX offload on the Xen side. These are not only unnecessary, but some of them will make performance worse. The above is all that's required.
+:::tip
+If you ever add more virtual NICs to your pfSense VM, you will need to go back and do the same steps for these interfaces as well.
+:::
 
 ## Test XCP-ng in a VM
 
