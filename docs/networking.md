@@ -1,6 +1,6 @@
 # Networking
 
-XCP-ng is using OpenVswitch as its core, and supports various features from it.
+XCP-ng is using Open vSwitch as its core, and supports various features from it.
 
 :::tip
 If one NIC can be enough for your host, having a dedicated NIC for storage will be really important to get consistent performances (if you use shared storage (iSCSI or NFS).
@@ -45,7 +45,7 @@ XCP-ng VLANs are represented by additional PIF objects representing VLAN interfa
 
 To use VLANs for your network logical isolation, it's really easy. You'll create a new network with a VLAN ID, and all virtual interfaces created on this network will transparently have traffic tagged in this VLAN. No need to configure anything inside your VM.
 
-Frst step, go in Xen Orchestra menu, "New" then "Network":
+First step, go in Xen Orchestra menu, "New" then "Network":
 
 ![](https://xcp-ng.org/assets/img/screenshots/newnetwork1.png)
 
@@ -77,7 +77,7 @@ Before removing it, just be sure to remove its associated networks, so it won't 
 
 An SDN controller is provided by a [Xen Orchestra](management.md#xen-orchestra) plugin. Thanks to that, you can enjoy advanced network features.
 
-### GRE/VxLAN tunnels
+### GRE/VXLAN tunnels
 
 Private network (using tunnels) are very handy when you want to access resources in a secure manner, that are not in the same physical network.
 
@@ -144,7 +144,7 @@ XAPI might not remove the already-installed route until the host is rebooted. If
 
 ## Full mesh network
 
-This page describes how to configure a three node meshed network ([see Wikipedia](https://en.wikipedia.org/wiki/Mesh_networking)) which is a very cheap approach to create a 3 node HA cluster, that can be used to host CEPH cluster, or similar clustered solutions that require 3 nodes in order to operate in fully HA mode.
+This page describes how to configure a three node meshed network ([see Wikipedia](https://en.wikipedia.org/wiki/Mesh_networking)) which is a very cheap approach to create a 3 node HA cluster, that can be used to host a Ceph cluster, or similar clustered solutions that require 3 nodes in order to operate with full high-availability.
 
 Meshed network requires no physical network switches, the 3 physical nodes are interlinked with each other using multiple network interfaces.
 
@@ -153,13 +153,13 @@ Example with 3 nodes that each has 3 NIC, 1 is for WAN connection and 2 are used
 ![Meshed network example](https://petr.insw.cz/mesh.png)
 
 :::warning
-Right now only known-to-work option is to use bridge network backend, but hopefuly in future it should be possible to setup meshed network using Open vSwitch as well (should you know how, please update this wiki)
+Right now only known-to-work option is to use bridge network backend, but hopefully in future it should be possible to setup meshed network using Open vSwitch as well (should you know how, please update this wiki)
 :::
 
 ### Using bridge backend
 
 :::warning
-These steps will require reboot of all 3 nodes multiple times. They will also require you to use bridge network backend instead of open vswitch, which will result in loss of some functionality and is not commercially supported
+These steps will require reboot of all 3 nodes multiple times. They will also require you to use bridge network backend instead of Open vSwitch, which will result in loss of some functionality and is not commercially supported
 :::
 
 #### Switch to bridge mode on all nodes
@@ -226,7 +226,7 @@ On each node respectively
 Netmask: 255.255.255.0
 Gateway: leave empty
 
-Now SSH to each dom0 and try if you can ping all 3 IP addresses. If you can, you successfuly created a meshed network. This network is going to provide interconnection between all 3 nodes and even if some node die, connectivity between remaining 2 nodes will remain operational.
+Now SSH to each dom0 and try if you can ping all 3 IP addresses. If you can, you successfully created a meshed network. This network is going to provide interconnection between all 3 nodes and even if some node die, connectivity between remaining 2 nodes will remain operational.
 
 This setup will save you costs of 2 network switches you would otherwise have to purchase and use instead to achieve HA connectivity.
 
@@ -285,7 +285,7 @@ After you specify the configuration mode to be used after the network reset, xsc
 
 ### Intel i218/i219 slow speed
 
-With kernel version 4.15 a fix in the e1000e driver [has been introduced](https://github.com/torvalds/linux/commit/b10effb92e272051dd1ec0d7be56bf9ca85ab927). However, this fix slighly slows down DMA access times to prevent the NIC to hang up on heavy UDP traffic. This impacts the TCP performance. A workaround to regain full transfer speeds, you can turn off TCP segmentation offloading via the following command:
+With kernel version 4.15 a fix in the e1000e driver [has been introduced](https://github.com/torvalds/linux/commit/b10effb92e272051dd1ec0d7be56bf9ca85ab927). However, this fix slightly slows down DMA access times to prevent the NIC to hang up on heavy UDP traffic. This impacts the TCP performance. A workaround to regain full transfer speeds, you can turn off TCP segmentation offloading via the following command:
 
 ```
 ethtool -K <interface> tso off gso off

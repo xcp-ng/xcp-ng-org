@@ -7,7 +7,7 @@ You have multiple ways to manage your hosts and your pool: all of those are call
 * [Xen Orchestra web UI](management.md#xen-orchestra) (need an XO virtual appliance running)
 * [Xen Orchestra CLI](management.md#xo-cli) (`xo-cli`, same requirement)
 * [Xen Orchestra API](management.md#xo-api) (same requirement)
-* [XO Lite](management.md#xo-lite) (future embeded lightweight client)
+* [XO Lite](management.md#xo-lite) (future embedded lightweight client)
 
 :::tip
 As soon you start to work with multiple pools, or if you want to have advanced features, you'll need more advanced clients. For example, `xe`, XO Lite and *XCP-ng Center* are considered "basic", and Xen Orchestra web UI, CLI or API is so far the only one considered "advanced".
@@ -20,7 +20,7 @@ The `xe` command line interface is installed by default on all XCP-ng hosts. A s
 Please read the [xe dedicated section here](./cli_reference.md).
 
 :::tip
-`xe` however, works within a pool. If you want a cross-pool CLI (ie your whole infrastructure), please take a look at [Xen Orchestra CLI!](https://xen-orchestra.com/docs/architecture.html#xo-cli-cli)
+`xe` however, works within a pool. If you want a cross-pool CLI (i.e. your whole infrastructure), please take a look at [Xen Orchestra CLI!](https://xen-orchestra.com/docs/architecture.html#xo-cli-cli)
 :::
 
 ## XCP-ng Center
@@ -33,7 +33,7 @@ This is the heavy client working on Windows only. You can [download here](https:
 
 ## Xen Orchestra
 
-Xen Orchestra is the **officially supported client for XCP-ng**. It's currently dev by the same team that's at the origin of XCP-ng project ([Vates](https://vates.fr)).
+Xen Orchestra is the **officially supported client for XCP-ng**. It's currently developed by the same team as the XCP-ng project ([Vates](https://vates.fr)).
 
 ![](https://xen-orchestra.com/assets/featuresadmin.png)
 
@@ -111,7 +111,7 @@ Usage:
 Check [XO CLI documentation](https://xen-orchestra.com/docs/xo-cli.html) for more details.
 
 :::tip
-Unlike `xe` which is only connected to one pool, `xo-cli` has access to all pools connected via Xen Orchestra. This is the prefered way to manage your infrastructure, using XO as a central point.
+Unlike `xe` which is only connected to one pool, `xo-cli` has access to all pools connected via Xen Orchestra. This is the preferred way to manage your infrastructure, using XO as a central point.
 :::
 
 ### XO API

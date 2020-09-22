@@ -17,7 +17,7 @@ UDS Enterprise is a top performance multiplatform connection broker to deploy an
 * Multiple hypervisors, authenticators and connection protocols running simultaneously
 * Open Source core: platform customization
 * Unlimited flexibility and scalability
-* SSL secured WAN Access & splitted authentication system
+* SSL secured WAN Access & split authentication system
 * User access management to IT resources in Data Center or Cloud
 *  Inverse costs scaling: the more users, the more the platform cost decreases
 
@@ -79,7 +79,7 @@ Making XCP-ng compatible with LINBIT's solutions will allow us to provide new so
 
 There is still a lot of work to do in order to package DRBD in the XCP-ng kernel, make LINBIT's solutions compatible with XCP-ng, and finally provide an easy way to stay up-to-date.
 
-We will work on all these goals in collaboration with LINBIT's teams this year and you will be informed through a series of blogposts regarding our progress.
+We will work on all these goals in collaboration with LINBIT's teams this year and you will be informed through a series of blog posts regarding our progress.
 
 The ecosystem around XCP-ng is getting bigger and bigger and we are really proud to associate our effort to provide the best Open Source virtualization platform with another leading Open Source project like LINBIT.
 

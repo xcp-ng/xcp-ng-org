@@ -67,7 +67,7 @@ module.exports = {
         children: [
           ['/ecosystem', 'Ecosystem'],
           ['/contributing', 'Contributing'],
-          ['/develprocess.md', 'Developement Process'],
+          ['/develprocess.md', 'Development Process'],
           ['/licenses', 'Licenses'],
           ['/gitrepo', 'Git Repositories'],
           ['/mirrors', 'Mirrors'],

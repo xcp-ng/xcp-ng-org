@@ -98,6 +98,6 @@ A homogeneous resource pool is an aggregate of servers with identical CPUs. CPUs
 
 ### Heterogeneous pools
 
-Heterogeneous pool creation is made possible by using technologies in Intel (FlexMigration) and AMD (Extended Migration) CPUs that provide CPU masking or leveling. These features allow a CPU to be configured to appear as providing a different make, model, or feature set than it actually does. These capabilities enable you to create pools of hosts with different CPUs but still safely support live migrations.
+Heterogeneous pool creation is made possible by using technologies in Intel (FlexMigration) and AMD (Extended Migration) CPUs that provide CPU masking or levelling. These features allow a CPU to be configured to appear as providing a different make, model, or feature set than it actually does. These capabilities enable you to create pools of hosts with different CPUs but still safely support live migrations.
 
 For information about creating heterogeneous pools, see Hosts and resource pools.

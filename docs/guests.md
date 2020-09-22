@@ -10,9 +10,9 @@ The tools are made of two main components:
 
 ## Linux
 
-Xen guest drivers have been built-in in the linux kernel for many years. All currently supported linux distributions include them.
+Xen guest drivers have been built-in in the Linux kernel for many years. All currently supported Linux distributions include them.
 
-So all we need is to install the management agent, which comes either as a systemd or as a sysvinit service, depending on the linux distribution. The service is usually named `xe-linux-distribution`.
+So all we need is to install the management agent, which comes either as a systemd or as a sysvinit service, depending on the Linux distribution. The service is usually named `xe-linux-distribution`.
 
 Those guest tools can be installed:
 * from the target distribution's online repositories if available
@@ -47,11 +47,17 @@ rc-update add xe-guest-utilities
 rc-service xe-guest-utilities start
 ```
 
-*Feel free to add other distros to the above list if they provide the tools in their repositories*
+#### Ubuntu
+
+```
+apt install xe-guest-utilities
+```
+
+*Feel free to add other distros to the above list if they provide the tools in their repositories.*
 
 ### Install from the guest tools ISO
 
-#### "Supported" linux distributions
+#### "Supported" Linux distributions
 For distros that are supported by the `install.sh` script (Debian, CentOS, RHEL, SLES, Ubuntu...), the process is:
 * Attach the guest tools ISO to the guest from Xen Orchestra, XCP-ng Center or using `xe`.
 * Then inside the VM, as root:
@@ -63,8 +69,8 @@ umount /dev/cdrom
 * No need to reboot the VM even if the script asks to. That's an old message from back when it was needed to install a kernel module in addition to the management agent. We'll get rid of it at some point.
 * Eject the guest tools ISO
 
-#### Derived linux distributions
-If your linux distribution is not recognized by the installation script but derives from one that is supported by the script, you can override the detection and force the tools to install by using:
+#### Derived Linux distributions
+If your Linux distribution is not recognized by the installation script but derives from one that is supported by the script, you can override the detection and force the tools to install by using:
 ```
 bash /mnt/Linux/install.sh -d $DISTRO -m $MAJOR_VERSION
 ```
@@ -78,8 +84,8 @@ bash /mnt/Linux/install.sh -d rhel -m 8
 
 The likeliness for the installation to work correctly will depend on how much those distros differ from their "parent".
 
-#### Other linux distributions
-For the remaining linux distributions, mount the guest tools ISO as described above, then look for the `xe-guest-utilities_*_all.tgz` archive. Copy its contents on the system in `/etc` and `/usr`. It contains a System V init script by default but there's also a systemd unit file available on the ISO (`xe-linux-distribution.service`).
+#### Other Linux distributions
+For the remaining Linux distributions, mount the guest tools ISO as described above, then look for the `xe-guest-utilities_*_all.tgz` archive. Copy its contents on the system in `/etc` and `/usr`. It contains a System V init script by default but there's also a systemd unit file available on the ISO (`xe-linux-distribution.service`).
 
 See also [Contributing](guests.html#contributing) below.
 
@@ -170,7 +176,7 @@ XCP-ng tools:
 * :heavy_plus_sign: Fully open-source.
 * :heavy_plus_sign: Maintained by the XCP-ng project.
 * :heavy_plus_sign: :heavy_minus_sign: The sources for the drivers are from the Xen project directly, without additional Citrix patches. This is good, but it may be that in some specific situations Citrix drivers behave better (None known at the moment).
-* :heavy_minus_sign: The sources for the management agent are older than that of Citrix (they have stopped updating github a while ago).
+* :heavy_minus_sign: The sources for the management agent are older than that of Citrix (they have stopped updating GitHub a while ago).
 * :heavy_minus_sign: Maintained by one overloaded community member until Vates finds a developer to hire or contract with in order to maintain them more efficiently.
 * :heavy_minus_sign: Won't transparently replace existing Citrix tools. You need to remove Citrix tools first if they are present, in order to install XCP-ng tools.
 
@@ -202,7 +208,7 @@ The VM needs to be running for this test.
 #### Installing on fresh installed Windows
 
 ##### Prerequisite: Disable "Windows Update tools"
-The first step, before the VM creation and first start, is to make sure than Windows Update is not going to install Citrix tools automatically at first boot. This behaviour is governed by the "Windows Update tools" parameter in a VM's advanced view. It must be off.
+The first step, before the VM creation and first start, is to make sure than Windows Update is not going to install Citrix tools automatically at first boot. This behaviour is governed by the "Windows Update tools" parameter in a VMs advanced view. It must be off.
 
 Before creating the VM:
 * Make sure you are not creating it from a custom template than has the "Windows Update tools enabled.
@@ -271,7 +277,7 @@ You can try a simple process first with some chances of success.
 If the *confident option* above didn't yield the expected results, then we switch to a more aggressive attitude towards the old tools.
 
 :::tip
-What follows works in many cases, but some users occasionnally still meet the following issues: XCP-ng tools not installing (but Citrix tools install well, so that is a solution to have working tools), and occasionnal BSODs in some cases or versions of Windows.
+What follows works in many cases, but some users occasionally still meet the following issues: XCP-ng tools not installing (but Citrix tools install well, so that is a solution to have working tools), and occasional BSODs in some cases or versions of Windows.
 
 Through many tests, a user came up with a similar yet slightly different procedure that allowed them to avoid Blue Screens Of Death in their situation: https://xcp-ng.org/forum/post/27602.
 

@@ -10,7 +10,7 @@ Xen Orchestra is the only professionally supported and maintained solution to ma
 
 All XCP-ng clients are communicating with the pool master, through the Xen API ([XAPI](api.md)). You only need to open a connection to the master, even if there's multiple hosts.
 
-Some clients are stateless (only running when you open or use them) and others are statefull (running in a daemon, often in a dedicated VM). For very basic management tasks, stateless clients are fine. However, for more advanced features, you need stateful clients.
+Some clients are stateless (only running when you open or use them) and others are stateful (running in a daemon, often in a dedicated VM). For very basic management tasks, stateless clients are fine. However, for more advanced features, you need stateful clients.
 
 ![](https://xcp-ng.org/assets/img/xapiclients.png)
 
