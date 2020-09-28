@@ -293,6 +293,19 @@ Help is welcome to help us reconcile both procedures into one.
 
 **Note**: Also have a look at our [Troubleshooting Guide - Windows PV-Tools](troubleshooting.html#windows-agent-pv-tools).
 
+### VMs with INACCESSIBLE_BOOT_DEVICE error
+
+You can try to manually inject the missing drivers in recovery mode.
+
+* Get the "Drivers" folder from the XCP Tools installation path (C:\PROGRAM FILES...) - from another VM or install the tools somewhere else to get it.
+* Create an ISO-Image containing the "Drivers" folder (see <http://imgburn.com>) and mount that ISO-Image to your VM
+* Boot to recovery mode and use the command line and the tool "dism" (see [Microsoft Docs](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/add-and-remove-drivers-to-an-offline-windows-image)) to inject the drivers (specifically the xenbus and xenvbd drivers) - watch out for the drive letter of the Windows installation and the CD-Drive ('D' and 'E' in the following example):
+
+````
+dism /image:d:\ /add-driver /driver:e:\Drivers\xenbus\x64\xenbus.inf
+dism /image:d:\ /add-driver /driver:e:\Drivers\xenvbd\x64\xenvbd.inf
+````
+
 ### Using the Windows guest tools from Citrix
 
 Tools from Citrix are not included in the guest tools ISO distributed with XCP-ng for legal reasons.
