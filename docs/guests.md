@@ -301,10 +301,10 @@ You can try to manually inject the missing drivers in recovery mode.
 * Create an ISO-Image containing the "Drivers" folder (see <http://imgburn.com>) and mount that ISO-Image to your VM
 * Boot to recovery mode and use the command line and the tool "dism" (see [Microsoft Docs](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/add-and-remove-drivers-to-an-offline-windows-image)) to inject the drivers (specifically the xenbus and xenvbd drivers) - watch out for the drive letter of the Windows installation and the CD-Drive ('D' and 'E' in the following example):
 
-```
-    dism /image:d:\ /add-driver /driver:e:\Drivers\xenbus\x64\xenbus.inf
-    dism /image:d:\ /add-driver /driver:e:\Drivers\xenvbd\x64\xenvbd.inf
-```
+````
+dism /image:d:\ /add-driver /driver:e:\Drivers\xenbus\x64\xenbus.inf
+dism /image:d:\ /add-driver /driver:e:\Drivers\xenvbd\x64\xenvbd.inf
+````
 
 ### Using the Windows guest tools from Citrix
 
