@@ -28,7 +28,7 @@ There's 2 types of storage:
   </tr>
   <tr>
     <td rowspan="6">file based</td>
-    <td>local Ext3/4</td>
+    <td>local Ext</td>
     <td>X</td>
     <td></td>
   </tr>
@@ -84,7 +84,7 @@ Cost of thick provisioned is relatively high when you do snapshots (used for bac
 Local SR is using a disk or a partition of your local disk, to create a space for your VM disks. Local LVM will use logical volumes, whereas Local ext will create an `ext4` filesystem and put `.vhd` files in it.
 
 :::tip
-The concept is simple: tell XCP-ng on the disk or partition you want to use, and it will do everything for you! Don't do anything yourself (no need to create a logicial volume or a filesystem)
+The concept is simple: tell XCP-ng on the disk or partition you want to use, and it will do everything for you! Don't do anything yourself (no need to create a logical volume or a filesystem)
 :::
 
 In [Xen Orchestra](management.md#xen-orchestra):
@@ -108,7 +108,7 @@ zpool create -o ashift=12 -m /mnt/zfs tank /dev/sda4
 Now you can create the SR on top of it:
 
 ```
-xe sr-create host-uuid=<HOST_UUID> name-label=LocalZFS type=file device-config:location=/mnt/zfs/
+xe sr-create host-uuid=<HOST_UUID> type=zfs content-type=user name-label=LocalZFS device-config:location=/mnt/zfs/
 ```
 
 For better performances, you can disable sync with `zfs set sync=disabled tank`.
