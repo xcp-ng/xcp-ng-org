@@ -91,7 +91,7 @@ In [Xen Orchestra](management.md#xen-orchestra):
 
 ![](https://xcp-ng.org/assets/img/screenshots/createSRlocal.png)
 
-Via `xe` CLI for a local EXT SR (where `sdaX` is a partition, but it can be the entire device eg `sdc`):
+Via `xe` CLI for a local EXT SR (where `sdaX` is a partition, but it can be the entire device e.g. `sdc`):
 
 ```
 xe sr-create host-uuid=<host UUID> type=ext content-type=user name-label="Local Ext" device-config:device=/dev/sdaX
@@ -99,7 +99,7 @@ xe sr-create host-uuid=<host UUID> type=ext content-type=user name-label="Local 
 
 ### ZFS
 
-ZFS is also local, but you'll need to create your ZFS pool and volumes yourself, eg on partition `sda4`:
+ZFS is also local, but you'll need to create your ZFS pool and volumes yourself, e.g. on partition `sda4`:
 
 ```
 zpool create -o ashift=12 -m /mnt/zfs tank /dev/sda4
@@ -133,7 +133,7 @@ You can add an HBA storage with `xe`:
 xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage device-config:SCSIid=<the SCSI id>
 ```
 
-If you have a problem with the SCSIid, you can use this alternative, carefuly selecting the right drive, and checking it's visible on all hosts with the same name:
+If you have a problem with the SCSIid, you can use this alternative, carefully selecting the right drive, and checking it's visible on all hosts with the same name:
 
 ```
 xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage device-config:device=/dev/<HBA drive>

@@ -26,7 +26,7 @@ If you have subscribed to [Pro support](https://xcp-ng.com/), well, don't hesita
 
 ## Log files
 
-Like in other linux/unix systems the logfiles are located in `/var/log`
+Like in other Linux/UNIX systems the log files are located in `/var/log`
 
 ### General log
 
@@ -78,9 +78,9 @@ Full installation log can be read with `view /tmp/install-log`.
 
 ### XCP-ng Center
 
-You can display the logfiles via menu `Help` -> `View XCP-ng Center Log Files`.
+You can display the log files via menu `Help` -> `View XCP-ng Center Log Files`.
 
-The logfiles are located in `C:\Users\<user>\AppData\Roaming\XCP-ng\XCP-ng Center\logs`.
+The log files are located in `C:\Users\<user>\AppData\Roaming\XCP-ng\XCP-ng Center\logs`.
 
 ### Windows VM
 
@@ -89,7 +89,7 @@ The logfiles are located in `C:\Users\<user>\AppData\Roaming\XCP-ng\XCP-ng Cente
 
 ## Common Problems
 
-### Blank screen (on a linux VM)
+### Blank screen (on a Linux VM)
 
 #### Cause
 
@@ -115,7 +115,7 @@ please try to:
 ### VM not in expected power state
 
 #### Cause
-The XAPI database think's that the VM is On / Off. But this are fake news ;-)
+The XAPI database thinks that the VM is On / Off. But this is fake news ;-)
 
 #### Solution
 Restart toolstack on CLI with the command `xe-toolstack-restart`. This just restarts the management services, all running VMs are untouched.
@@ -154,12 +154,12 @@ echo "xen" > /sys/devices/system/clocksource/clocksource0/current_clocksource
 ### Async Tasks/Commands Hang or Execute Extremely Slowly
 
 #### Cause
-This symptom can be caused by a variety of issues including Raid degradation, aging HDD's, slow network storage, and external hard drives/usbs. While extremely unintuitive, even a single slow storage device physically connected (attached or unattached to a VM) can cause your entire host to hang during operation.
+This symptom can be caused by a variety of issues including RAID degradation, ageing HDDs, slow network storage, and external hard drives/usbs. While extremely unintuitive, even a single slow storage device physically connected (attached or unattached to a VM) can cause your entire host to hang during operation.
 
 #### Solution
 1. Begin by unplugging any external USB hubs, hard drives, and USBs.
 2. Run a command such as starting a VM to see if the issue remains.
-3. If the command still hangs, physically check to see if your HDDs/SSDs are all functioning normally and any raid arrays you are using are in a clean non-degraded state.
+3. If the command still hangs, physically check to see if your HDDs/SSDs are all functioning normally and any RAID arrays you are using are in a clean non-degraded state.
 4. If these measures fail, login to your host and run `cat /var/log/kern.log | grep hung`. If this returns `"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.` your lvm layer may be hanging during storage scans. This could be caused by a drive that is starting to fail but has not hard failed yet.
 5. If all these measures fail, collect the logs and make your way to the forum for help.
 
@@ -274,17 +274,17 @@ There was an issue with the installing of the drivers certificate, so the driver
 ### Some of my VMs do not start. Error: "This operation cannot be performed because the specified virtual disk could not be found."
 
 #### Cause
-It's mostly related to an inserted iso that is no longer accessible.
+It's mostly related to an inserted ISO that is no longer accessible.
 
 #### Solution
-Eject the iso on those VM's.
+Eject the ISO on those VMs.
 
 ***
 
 ### I had some scripts/tools installed and after the upgrade all is gone! Help!
 
 #### Cause
-XCP-ng iso upgrade is a reinstall that saves only your XAPI database (Settings/VM Metadata).
+XCP-ng ISO upgrade is a reinstall that saves only your XAPI database (Settings/VM Metadata).
 But it also creates a full backup of your previous XCP-ng/XenServer installation on a second partition, in most cases it's /dev/sda2.
 
 #### Solution
@@ -305,7 +305,7 @@ To access the backup (with all your tools and modifications) just mount the back
 * Maybe your firmware got an issue
     * update BIOS
     * update network card firmware
-    * update raid controller / HBA firmware
+    * update RAID controller / HBA firmware
     * update system firmware
 * Maybe we (or upstream Citrix XenServer) removed/updated something.
     * Please check our [Hardware Compatibility List (HCL)](hardware.md).
@@ -317,7 +317,7 @@ To access the backup (with all your tools and modifications) just mount the back
 
 ##### iSCSI reconnect after reboot fails permanently ( Unsupported SCSI Opcode )
 
-The problem is that in a storage-cluster environment everytime the node changes or pacemaker start /stop /restart iSCSI resources the "iSCSI SN" for a lun are new generated and differs from that before.
+The problem is that in a storage-cluster environment every time the node changes or pacemaker start /stop /restart iSCSI resources the "iSCSI SN" for a lun are new generated and differs from that before.
 Xen uses the "iSCSI SN" as an identifier, so you have to ensure that "iSCSI SN" is the same on all cluster nodes.
 You can read more about it [here](https://smcleod.net/tech/2015/12/14/iscsi-scsiid-persistence.html).
 
@@ -390,7 +390,7 @@ Alternatively, in a fresh Ubuntu 18.04 install, you can switch to UEFI and you w
 
 ## Disappearing NVMe drives
 
-Some NVMe drives do not handle Automatic Power State Transition (APST) well on certain motherboards or adapters and will disappear from the system when attempting to lower their power state.  You may see logs in dmesg that indicate this is happeneing.
+Some NVMe drives do not handle Automatic Power State Transition (APST) well on certain motherboards or adapters and will disappear from the system when attempting to lower their power state.  You may see logs in dmesg that indicate this is happening.
 
 ```
 [65056.815294] nvme nvme0: controller is down; will reset: CSTS=0xffffffff, PCI_STATUS=0xffff

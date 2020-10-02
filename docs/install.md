@@ -13,7 +13,7 @@ You can download the 8.1 ISO here: <http://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.
 SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
 
-Then, create the install media (eg USB key):
+Then, create the install media (e.g. USB key):
 
 ```
 dd if=xcp-ng-8.1.0-2.iso of=/dev/sdX bs=8M oflag=direct
@@ -44,7 +44,7 @@ UEFI splash screen:
 ![](https://xcp-ng.org/assets/img/screenshots/install1.png)
 
 :::warning
-NEVER switch from UEFI to BIOS (or vice-versa) **after** you installed XCP-ng. Stick to a mode you choose during the install.
+NEVER switch from UEFI to BIOS (or vice-versa) **after** you installed XCP-ng. Stick to the mode that you chose during the install.
 :::
 
 #### 2. Language selection
@@ -61,7 +61,7 @@ NEVER switch from UEFI to BIOS (or vice-versa) **after** you installed XCP-ng. S
 
 #### 5. Disk selection
 
-This is the screen where you'll select where XCP-ng system will be installed. **XCP-ng is an specilized Linux**, so you need to dedicated a physical disk to it. Partitioning is done automatically.
+This is the screen where you'll select where XCP-ng system will be installed. **XCP-ng is a specialized Linux distribution**, so you need to dedicated a physical disk to it. Partitioning is done automatically.
 
 ![](https://xcp-ng.org/assets/img/screenshots/install5.png)
 
@@ -71,7 +71,7 @@ Alternatively, if you have two identical disks, you can use Software RAID (`mdad
 
 #### 6. VM storage selection
 
-This is the place where your VM disks will be stored. It's called a **Storage Repository** (SR). It can use the same disk where you installed the system, it will automatically use the free space after system partitions.
+This is the place where your VM disks will be stored. It's called a **Storage Repository** (SR). It can use the same disk where you installed the system. It will automatically use the free space after system partitions.
 
 ![](https://xcp-ng.org/assets/img/screenshots/install7.png)
 
@@ -92,7 +92,7 @@ Then, you can verify your media or not:
 
 #### 8. Host password
 
-This will be the **root** password, both used for SSH to the host or by XAPI clients to connect to it.
+This will be the **root** password, used to connect to the host with SSH and XAPI.
 
 ![](https://xcp-ng.org/assets/img/screenshots/install11.png)
 
@@ -103,6 +103,8 @@ Here you can select between DHCP and static network, even using a VLAN:
 ![](https://xcp-ng.org/assets/img/screenshots/install12.png)
 
 #### 10. Hostname and DNS
+
+Configure the hostname of your server and the DNS resolvers.
 
 ![](https://xcp-ng.org/assets/img/screenshots/install13.png)
 
@@ -120,7 +122,9 @@ ALWAYS use a NTP server. It's a critical component to manage your host(s). If yo
 
 #### 12. Installation
 
+:::warning
 After this step, data will be written on the disk!
+:::
 
 ![](https://xcp-ng.org/assets/img/screenshots/install17.png)
 
@@ -142,7 +146,7 @@ Not relevant in almost all cases. Skip it:
 
 #### 14. Reboot
 
-After a reboot, you should see the Grub menu:
+After a reboot, you should see the GRUB menu:
 
 ![](https://xcp-ng.org/assets/img/screenshots/install23.png)
 
@@ -150,7 +154,7 @@ It means the system is correctly installed! Enjoy XCP-ng 🚀
 
 ## Netinstall
 
-A netinstall is a lightweight ISO (around 150MiB) that will only contain the installer, but no actual RPM packages. Sometimes, it's more convenient/faster when your ISO is on a slow connection (eg a virtual media using a server IPMI).
+A netinstall is a lightweight ISO (around 150MiB) that will only contain the installer, but no actual RPM packages. Sometimes, it's more convenient/faster when your ISO is on a slow connection (e.g. a virtual media using a server IPMI).
 
 You can download it on this URL: <http://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2-netinstall.iso>.
 
@@ -168,7 +172,7 @@ Everything else is like the [regular install](install.md#start-the-host), except
 
 This is just an example with VirtualBox.
 
-To test the PXE in a VirtualBox environment you'll need to populate the [PXE special folder](https://www.virtualbox.org/manual/ch06.html#nat-tftp). Most of the content comes from the iso image.
+To test the PXE in a VirtualBox environment you'll need to populate the [PXE special folder](https://www.virtualbox.org/manual/ch06.html#nat-tftp). Most of the content comes from the ISO image.
 ```
 /Users/nraynaud/Library/Virtualbox/TFTP
 ├── mboot.c32              <- from /boot/pxelinux
@@ -218,7 +222,7 @@ Here is the beginning of an answer file:
 ```
 There is some more [documentation](https://docs.citrix.com/en-us/citrix-hypervisor/install/network-boot.html#create-an-answer-file-for-unattended-pxe-and-uefi-installation) on Citrix's website.
 The answer file, sadly, can't be transmitted by TFTP (its protocol can only be ftp, http, https or file), so I used gist.
-The installation files can come form the iso disk, but don't forget to alter the boot order such that the network is first.
+The installation files can come from the ISO disk, but don't forget to alter the boot order such that the network is first.
 
 #### Software RAID
 
@@ -240,13 +244,13 @@ For an automated install using an answer file (PXE or similar required), softwar
 </installation>
 ```
 
-As an improvement and to delay the md resync (increasing install speed by about 500% on certain drives), we can use the following in the answer file
+As an improvement and to delay the `md` resync (increasing install speed by about 500% on certain drives), we can use the following in the answer file:
 
 ```
 <script stage="installation-start" type="url">http://your-server/noresync.sh</script>
 ```
 
-The no_resync script would do something like this
+The `noresync.sh` script would do something like this:
 
 ```
 #!/bin/sh
@@ -254,15 +258,15 @@ echo 0 > /proc/sys/dev/raid/speed_limit_max
 echo 0 > /proc/sys/dev/raid/speed_limit_min
 ```
 
-Upon server reboot, normal md resync will take place.
+Upon server reboot, normal `md` resync will take place.
 
 ## Misc
 
-#### Install on an USB stick
+#### Install on a USB stick
 
 ::: danger
-We **strongly** advise against doing that. XCP-ng writes a lot into local files and this writing will wear out your USB-Stick in a short amount of time:
+We **strongly** advise against installing on USB stick. XCP-ng writes a lot into local files and this writing will wear out your USB-Stick in a short amount of time:
 * XAPI: the XenServer API database is changing a lot. Hence writing a lot, and believe me, USB sticks aren't really happy with that on the long run. Note: XAPI DB is what keep tracks on all XCP-ng's "state", and it's replicated on each host (from the slave).
-* Logs: XCP-ng is keep a LOT of debug into into logs. For this part however, there is a workaround: use a remote syslog.
+* Logs: XCP-ng keeps a LOT of debug logs. However, there is a workaround: use a remote syslog.
 :::
 

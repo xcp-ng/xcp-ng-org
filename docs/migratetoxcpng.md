@@ -1,10 +1,10 @@
-# Migration to XCP-ng
+# Migrate to XCP-ng
 
 If you are using another virtualization platform (VMware, KVM, etc.), this part of the documentation will help you to migrate to XCP-ng.
 
 ## From Virtualbox
 
-Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](migrationtoxcpng.md#fromvmware) section.
+Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](migratetoxcpng.md#fromvmware) section.
 
 ## From VMware
 
@@ -14,7 +14,7 @@ Using OVA export from VMware and then OVA import into Xen Orchestra is the prefe
 Collect info about network cards used in windows VM (ipconfig /all) use same mac address(es) when creating interfaces in xcp-ng this step will help You skip windows activation if system was activated already.
 :::
 
-Importing a VMware linux VM, you may encounter an error similar to this on boot:
+Importing a VMware Linux VM, you may encounter an error similar to this on boot:
 
 `dracut-initqueue[227]: Warning: /dev/mapper/ol-root does not exist`
 
@@ -26,7 +26,7 @@ The fix for this is installing some xen drivers *before* exporting the VM from V
 
 ## From Hyper-V
 
-* Remove HyperV tools from every VM if installed.
+* Remove Hyper-V tools from every VM if installed.
 * Install an NFS Server somewhere. (You can also use Win-scp directly from Hyper-V and copy "$uuidger -r".vhd directly to storage and rescan after that)
 * Create an NFS share on that server.
 * Mount the NFS share as a Storage Repository in XenCenter or XOA.
@@ -84,12 +84,12 @@ _Due the fact I have only server here, I have setup a "buffer" machine on my des
 
 * Once the import is done, create a virtual machine using XO or XCP-ng Center, delete the VM disk that has been created and attach your newly created VDI to the VM. Don't forget to set the VM boot mode to UEFI if your VMs was in UEFI mode.
 
-* Boot the VM and find a way to enter in the virtual UEFI of the VM. Here, I type the Echap and F9,F10,F11,F12 keys like crazy. Select Boot Manager, you should see this window :
+* Boot the VM and find a way to enter in the virtual UEFI of the VM. Here, I type the Escape and F9,F10,F11,F12 keys like crazy. Select Boot Manager, you should see this window :
 
 ![](https://xcp-ng.org/forum/assets/uploads/files/1567269672854-f2fffe78-22bf-4f2f-b72a-3a142868535a-image.png)
 
 * Select `UEFI QEMU HARDDISK`, the screen should be black for seconds and you should see the GRUB. Let the machine worked for minutes and you should see the prompt finally 👍
 
-* Install Guest Tools and reboot. The reboot shouldn't take long, you don't have te redoing the step 13, the OS seems to have repair the boot sequence by itself.
+* Install Guest Tools and reboot. The reboot shouldn't take long, you don't have to redo step 13, the OS seems to have repair the boot sequence by itself.
 
 Done !

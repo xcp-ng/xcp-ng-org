@@ -6,7 +6,7 @@ For other hardware, see "Hardware outside the official HCL" below.
 
 ## Unlisted hardware
 
-Many devices outside the HCL in fact work very well with XCP-ng. Being outside the HCL means that there have been not tests to ensure that they work. Most of the hardware support depends on the linux kernel and thus support for hardware outside the HCL depends on on how well the drivers are supported by the linux kernel included in XCP-ng.
+Many devices outside the HCL in fact work very well with XCP-ng. Being outside the HCL means that there have been not tests to ensure that they work. Most of the hardware support depends on the Linux kernel and thus support for hardware outside the HCL depends on on how well the drivers are supported by the Linux kernel included in XCP-ng.
 
 This section is a community-enriched list of pieces of hardware that do not belong to the HCL, along with information about how well they work (or not), workarounds, etc.
 
@@ -62,7 +62,7 @@ Fixed drivers have been released as official [updates](updates.md).
 
 ## Alternate drivers
 
-XCP-ng occasionnally provides alternate drivers for users who have issues with the main drivers installed with XCP-ng.
+XCP-ng occasionally provides alternate drivers for users who have issues with the main drivers installed with XCP-ng.
 
 Those driver packages can be installed alongside the main packages and will take precedence gracefully.
 
@@ -117,7 +117,7 @@ Update: in 8.1 more are available. List to be updated.
 
 ## Alternate kernel
 
-We provide an "alternate Linux kernel" on XCP-ng 8.0 and above, named `kernel-alt`. It is kernel 4.19, as the main kernel, but with all updates from the linux 4.19 branch applied. By construction, it should thus be stable. However it **receives less testing** so we cannot fully guarantee against regressions (any detected regression we'd work on a fix quickly, of course). We also backport security fixes from the main kernel to the alternate kernel when needed.
+We provide an "alternate Linux kernel" on XCP-ng 8.0 and above, named `kernel-alt`. It is kernel 4.19, as the main kernel, but with all updates from the Linux 4.19 branch applied. By construction, it should thus be stable. However it **receives less testing** so we cannot fully guarantee against regressions (any detected regression we'd work on a fix quickly, of course). We also backport security fixes from the main kernel to the alternate kernel when needed.
 
 This kernel is mainly targeted at:
 * Testing whether kernel.org fixes situations where the main kernel and drivers have issues on specific hardware.

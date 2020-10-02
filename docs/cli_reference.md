@@ -174,9 +174,9 @@ allowed-operations (SRO): pause; clean_shutdown; clean_reboot; \
 hard_shutdown; hard_reboot; suspend
 ```
 
-The platform parameter has a list of items that represent key/value pairs. The key names are followed by a colon character (:). Each key/value pair is separated from the next by a semicolon character (;). The M preceding the RW indicates that this parameter is a map parameter and is readable and writable. The allowed-operations parameter has a list that makes up a set of items. The S preceding the RO indicates that this is a set parameter and is readable but not writable.
+The platform parameter has a list of items that represent key/value pairs. The key names are followed by a colon character (`:`). Each key/value pair is separated from the next by a semicolon character (`;`). The `M` preceding the `RW` indicates that this parameter is a map parameter and is readable and writable. The allowed-operations parameter has a list that makes up a set of items. The `S` preceding the `RO` indicates that this is a set parameter and is readable but not writable.
 
-To filter on a map parameter or set a map parameter, use a colon (:) to separate the map parameter name and the key/value pair. For example, to set the value of the foo key of the other-config parameter of a VM to baa, the command would be
+To filter on a map parameter or set a map parameter, use a colon (`:`) to separate the map parameter name and the key/value pair. For example, to set the value of the `foo` key of the other-config parameter of a VM to `baa`, the command would be
 
 ```
 xe vm-param-set uuid=VM uuid other-config:foo=baa
@@ -467,7 +467,7 @@ CDs have the following parameters:
 |`virtual-size`|Size of the CD as it appears to VMs (in bytes)|Read only|
 |`physical-utilisation`|Amount of physical space that the CD image takes up on the SR (in bytes)|Read only|
 |`type`|Set to User for CDs|Read only|
-|`sharable`|Whether or not the CD drive is sharable. Default is `false`.|Read only|
+|`sharable`|Whether or not the CD drive is shareable. Default is `false`.|Read only|
 |`read-only`|Whether the CD is read-only, if `false`, the device is writable. Always true for CDs.|Read only|
 |`storage-lock`|Value is `true` if this disk is locked at the storage level.|Read only|
 |`parent`|Reference to the parent disk, if this CD is part of a chain.|Read only|
@@ -2335,7 +2335,7 @@ Sets the pool optimization criteria for the Workload Balancing server.
 pool-sync-database
 ```
 
-Force the pool database to be synchronized across all hosts in the resource pool. This command is not necessary in normal operation since the database is regularly automatically replicated. Howe3ver, the command can be useful for ensuring changes are rapidly replicated after performing a significant set of CLI operations.
+Force the pool database to be synchronized across all hosts in the resource pool. This command is not necessary in normal operation since the database is regularly automatically replicated. However, the command can be useful for ensuring changes are rapidly replicated after performing a significant set of CLI operations.
 
 ### Set pool `igmp-snooping`
 
@@ -2761,7 +2761,7 @@ Tasks have the following parameters:
 |`resident-on`|The unique identifier/object reference of the host on which the task is running|Read only|
 |`status`|Status of the Task|Read only|
 |`progress`|If the Task is still pending, this field contains the estimated percentage complete, from 0 to 1. If the Task has completed, successfully or unsuccessfully, the value is 1.|Read only|
-|`type`|If the Task has successfully completed, this parameter contains the type of the encoded result. THe type is the name of the class whose reference is in the result field. Otherwise, this parameter’s value is undefined|Read only|
+|`type`|If the Task has successfully completed, this parameter contains the type of the encoded result. The type is the name of the class whose reference is in the result field. Otherwise, this parameter’s value is undefined|Read only|
 |`result`|If the Task has completed successfully, this field contains the result value, either Void or an object reference; otherwise, this parameter’s value is undefined|Read only|
 |`error_info`|If the Task has failed, this parameter contains the set of associated error strings. Otherwise, this parameter’s value is undefined|Read only|
 |`allowed_operations`|List of the operations allowed in this state|Read only|
@@ -3292,7 +3292,7 @@ Change the size of the VDI specified by UUID.
 vdi-snapshot uuid=uuid_of_the_vdi [driver-params=params]
 ```
 
-Produces a read-write version of a VDI that can be used as a reference for backup or template creation purposes or both. Use the snapshot to performa a backup rather than installing and running backup software inside the VM. The VM continues running while external backup software streams the contents of the snapshot to the backup media. Similarly, a snapshot can be used as a "gold image" on which to base a template. A template can be made using any VDIs.
+Produces a read-write version of a VDI that can be used as a reference for backup or template creation purposes or both. Use the snapshot to perform a backup rather than installing and running backup software inside the VM. The VM continues running while external backup software streams the contents of the snapshot to the backup media. Similarly, a snapshot can be used as a "gold image" on which to base a template. A template can be made using any VDIs.
 
 Use the optional `driver-params` map parameter to pass extra vendor-specific configuration information to the back-end storage driver that the VDI is based on. For more information, see the storage vendor driver documentation.
 
@@ -3359,7 +3359,7 @@ xe vif-param-set uuid=<vif_uuid> other-config:mtu=9000
 - `locking_mode` (read/write) Affects the VIFs ability to filter traffic to/from a list of MAC and IP addresses. Requires extra parameters.
 - `locking_mode:default` (read/write) Varies according to the default locking mode for the VIF network.
 
-If the default-locking-mode is set to `disabled`, XCP-ng applies a filtering rule so that the VIF cannot send or receive traffic. If the default-lockingmode is set to `unlocked`, XCP-ng removes all the filtering rules associated with the VIF. For more information, see [Network Commands](#network-commands).
+If the default-locking-mode is set to `disabled`, XCP-ng applies a filtering rule so that the VIF cannot send or receive traffic. If the default-locking-mode is set to `unlocked`, XCP-ng removes all the filtering rules associated with the VIF. For more information, see [Network Commands](#network-commands).
 
 - `locking_mode:locked` (read/write) Only traffic sent to or sent from the specified MAC and IP addresses is allowed on the VIF. If no IP addresses are specified, no traffic is allowed.
 - `locking_mode:unlocked` (read/write) No filters are applied to any traffic going to or from the VIF.
@@ -4152,7 +4152,7 @@ The VM or VMs on which this operation is performed are selected using the standa
 We advise to use Xen Orchestra instead of this method. See [Xen Orchestra rolling snapshots](https://xen-orchestra.com/docs/rolling_snapshots.html).
 :::
 
-Commands for controlling VM shceduled snapshots and their attributes.
+Commands for controlling VM scheduled snapshots and their attributes.
 
 The vmss objects can be listed with the standard object listing command (`xe vmss-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
 

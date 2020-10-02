@@ -56,7 +56,7 @@ A comprehensive list of updates is available on our build system's web interface
 * Avoid applying updates while XAPI tasks are running (`xe task-list`).
 * Some updates may probe SCSI devices. If your devices are sensitive to that kind of thing, plug them off before updating (see [this unfortunate story](https://github.com/xcp-ng/xcp/issues/232) of dead tape robots).
 * As a precaution, it may be a good idea to disconnect passed-through devices before applying the update.
-* If a reboot is required and you want to avoid downtime, you will probably move your VMs from host to host. One common mistake (favoured by the default values in some VM templates) is to give a VM a very low dynamic minimum RAM value. XCP-ng will reduce the VM's total RAM to that dynamic minimum during the live migration. If the limit is too low, this may lead to killed processes or even a crashed system inside the VM due to the memory pressure, thus requiring a reboot of the VM.
+* If a reboot is required and you want to avoid downtime, you will probably move your VMs from host to host. One common mistake (favoured by the default values in some VM templates) is to give a VM a very low dynamic minimum RAM value. XCP-ng will reduce the VMs total RAM to that dynamic minimum during the live migration. If the limit is too low, this may lead to killed processes or even a crashed system inside the VM due to the memory pressure, thus requiring a reboot of the VM.
 * If among the to-be-updated packages you see `xcp-ng-pv-tools`, make sure to unmount the guest tools ISO from all running VMs before the update (it is done automatically during the update for VMs that are turned off). If the guest tools are still mounted at the time of the update, the VDI will point at a non-existing ISO image after the update. The VMs that have that VDI mounted will then fail to migrate or restart due to the missing VDI.
 *Some people systematically run `xe vm-cd-eject --multiple` to eject all virtual CDs/DVDs from the VMs before updating and/or migrating.*
 * Do not update from an interactive shell that was directly started from the XCP-ng console (`xsconsole`), nor from the host's remote console that is available through the VNC protocol in Xen Orchestra or XCP-ng Center. The update process may restart those, kill the current shell and thus kill the update process which would leave the system in an unclean state (duplicate RPMs).
@@ -106,7 +106,7 @@ As a precaution, Xen Orchestra will always tell you that a reboot is required af
 
 There is currently no way for XCP-ng to automatically tell you if a reboot is required.
 
-The safest way is to reboot everytime an update is installed (*pool master* **first**).
+The safest way is to reboot every time an update is installed (*pool master* **first**).
 
 Else base your decision on an educated guess. Look at the list of the updated packages (`yum update` always tells you. If you missed it, see `/var/log/yum.log`) and then decide:
 * Was there a kernel update? Reboot. Those are usually security fixes that require a reboot.

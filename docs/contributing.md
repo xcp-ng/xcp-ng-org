@@ -1,7 +1,7 @@
 # Contributing
 
 There are two ways of contributing:
-* by giving some of your time to work on the project (support, documentation, developement...)
+* by giving some of your time to work on the project (support, documentation, development...)
 * with money, by subscribing to [Pro Support](https://xcp-ng.com/), which funds further developments.
 
 ## Helping others
@@ -52,14 +52,14 @@ clientca.crt
 Copy them to `~/.koji/` (create it if it doesn't exist yet).
 Make sure not to lose them and to not let anyone put their hands on them.
 
-You may also receive a browser certificate for the connection to Koji's web interface. It has little use, though. Unless you have admin rights, the only actions available are canceling and resubmitting builds, which you can already do with the `koji` CLI tool.
+You may also receive a browser certificate for the connection to Koji's web interface. It has little use, though. Unless you have admin rights, the only actions available are cancelling and resubmitting builds, which you can already do with the `koji` CLI tool.
 ```
 {login}_browser_certificate.p12
 ```
 You need to import it into your web browser's certificate store and then use it when you log in to <https://koji.xcp-ng.org/>
 
 #### Installing koji
-If your linux distribution provides `koji` in its repositories (e.g. Fedora, CentOS or Mageia), simply install it from there. Else you can either run it from a container, or clone it from <https://pagure.io/koji>, then run it from there with something like `PYTHONPATH=$(realpath .):/usr/lib/python3.5/site-packages/ cli/koji help`. If it fails, you probably need to install additional python dependencies.
+If your Linux distribution provides `koji` in its repositories (e.g. Fedora, CentOS or Mageia), simply install it from there. Else you can either run it from a container, or clone it from <https://pagure.io/koji>, then run it from there with something like `PYTHONPATH=$(realpath .):/usr/lib/python3.5/site-packages/ cli/koji help`. If it fails, you probably need to install additional python dependencies.
 
 #### Configuring koji
 Put this in `~/.koji/config`:

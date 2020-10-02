@@ -6,7 +6,7 @@ You can decide to host XCP-ng "outside" your wall for various reasons:
 
 * Get rid of your own hardware
 * Disaster recovery
-* Hyprid solution (both on-prem and hosted)
+* Hybrid solution (both on-prem and hosted)
 
 ## XCP-ng Cloud
 
@@ -16,11 +16,11 @@ See <https://xcp-ng.com/cloud/> for more details.
 
 ## Alternatives
 
-XCP-ng Cloud is the only 100% validated hosting solution (hardware compatiblitiy and tested with XCP-ng). However, other well known players will work with XCP-ng.
+XCP-ng Cloud is the only 100% validated hosting solution (hardware compatibility and tested with XCP-ng). However, other well known players will work with XCP-ng.
 
 ### OVH
 
-OVH is supporting XenServer, so you can decide to deploy a host on XenServer, then to upgrade to XCP-ng.
+OVH supports XenServer, so you can decide to deploy a host on XenServer, then to upgrade to XCP-ng.
 
 <https://www.ovh.com/world/dedicated-servers/>
 

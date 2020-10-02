@@ -91,7 +91,7 @@ To remove any passthrough devices from dom0:
 
 `[root@xen ~]# xe vm-param-set`**`other-config:pci=0/0000:04:01.0`**`uuid=<vm uuid>`
 
-> You can also passtrough multiple devices. If you wanted to passtrough another device at `00:19.0` just append it to the parameter.
+> You can also pass through multiple devices. If you wanted to pass through another device at `00:19.0` just append it to the parameter.
 >
 > `[root@xen ~]# xe vm-param-set`**` other-config:pci=0/0000:04:01.0,0/0000:00:19.0 `**`uuid=<vm uuid>`
 
@@ -103,7 +103,7 @@ To remove any passthrough devices from dom0:
 ## GPU Passthrough
 
 :::warning
-nVIDIA consumer grade GPUs won't work due to a driver limitation (on purpose). AMD chips will work perfectly.
+NVIDIA consumer grade GPUs won't work due to a driver limitation (on purpose). AMD chips will work perfectly.
 :::
 
 ## USB Passthrough
@@ -170,10 +170,10 @@ Finally, start the target guest VM:
 
 ## vGPU
 
-### nVIDIA vGPU
+### NVIDIA vGPU
 
 :::warning
-Due to a proprietary piece of code in XenServer, XCP-ng doesn't have (yet) support for nVIDIA vGPUs.
+Due to a proprietary piece of code in XenServer, XCP-ng doesn't have (yet) support for NVIDIA vGPUs.
 :::
 
 ### MxGPU (AMD vGPU)
@@ -301,7 +301,7 @@ Let's check the new CPU load on *lab2*:
 
 ### Conclusion
 
-With this simple but first initial algorithm, we managed to mitigate automatically an issue of VM resource usage. Of course, it works also in cases when you have to really spread the load on all your servers (ie when the sum of all VM usage is higher than the threshold): that's the exact same principle.
+With this simple but first initial algorithm, we managed to mitigate automatically an issue of VM resource usage. Of course, it works also in cases when you have to really spread the load on all your servers (i.e. when the sum of all VM usage is higher than the threshold): that's the exact same principle.
 
 You have more than 2 hosts? Again, same idea, it will also work.
 
@@ -336,7 +336,7 @@ In order to reset the config, just remove the attribute (VM reboot required):
 xe vm-param-remove uuid=[VM-UUID] param-name=VCPUs-params param-key=mask`
 ```
 
-Other useful commands for listing the VM core affinity and cores per numa node(s):
+Other useful commands for listing the VM core affinity and cores per NUMA node(s):
 ```
 xl vcpu-list
 xenpm get-cpu-topology

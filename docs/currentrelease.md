@@ -40,14 +40,14 @@ Citrix announces:
 * Support for **AMD EPYC 7xx2(P)** added
 
 Other changes:
-* Windows drivers delivered through Windows Update should now work well with non-english locales. Source: [XSO-951](https://bugs.xenserver.org/browse/XSO-951).
+* Windows drivers delivered through Windows Update should now work well with non-English locales. Source: [XSO-951](https://bugs.xenserver.org/browse/XSO-951).
 * `chrony` replaces `ntp` for time synchronisation
 * **PV guests are not supported anymore**
   * Templates for creating PV guests have been removed
   * Existing guests will still run... For now...
   * It is advised to convert them to HVM guests
   * A compatibility layer should be provided in the future for PV guests that really can't be converted. But really anyone who can convert to HVM, should
-  * Due to how 32-bit PV guests work, keeping them functioning on newer hardware with newer features comes with an increasing performance cost, and the linux kernel is also about to drop support for 32-bit PV guests
+  * Due to how 32-bit PV guests work, keeping them functioning on newer hardware with newer features comes with an increasing performance cost, and the Linux kernel is also about to drop support for 32-bit PV guests
   * **Security issues related to PV guests may be or not be fixed. There is no guarantee about fixes.**
 * Dynamic Memory Control (DMC) is deprecated and will be removed in the future.
 * VSS and quiesced snapshots support is removed, because it never worked correctly and caused more harm than good. Note that Windows guest tools version 9 (the default for recent versions of Windows if you install Citrix drivers) already removed VSS support, even for older versions of CH / XCP-ng
@@ -67,7 +67,7 @@ In short, you are now able to backup and restore a VM, with its context, the who
 
 You can restore it anytime later on another host, and resume it as if nothing happened. From the VM perspective, its uptime will be kept. Combined with Xen Orchestra Continuous Replication, you can also send your VM data and memory every XX hours to another XCP-ng host or pool, and resume it as soon you need it.
 
-For more information and use cases, you can check [this Devblog]([https://xen-orchestra.com/blog/devblog-6-backup-ram/) written by our developer Benjamin.
+For more information and use cases, you can check [this Devblog](https://xen-orchestra.com/blog/devblog-6-backup-ram/) written by our developer Benjamin.
 
 #### Installer improvements in 8.1
 
@@ -79,7 +79,7 @@ Our installer now offers two new installation options. In legacy boot mode, acce
 
 We have backported patches from `sm`'s master branch, that implement a new, smarter, logic for leaf coalescing.
 
-Those interested in the patches, see [this commit]([https://github.com/xcp-ng-rpms/sm/commit/ed1a55d727846cf5777c8258e6a8f3b068e8a35b) (python code).
+Those interested in the patches, see [this commit](https://github.com/xcp-ng-rpms/sm/commit/ed1a55d727846cf5777c8258e6a8f3b068e8a35b) (python code).
 
 #### Changes regarding our specific packages
 
@@ -152,15 +152,15 @@ See "Destroy and re-create a local SR" below.
 
 ## Known issues
 
-### Host unreachable - nVIDIA GPU
+### Host unreachable - NVIDIA GPU
 
-After an upgrade or fresh installation on hosts having an nVIDIA GPU.
+After an upgrade or fresh installation on hosts having an NVIDIA GPU.
 
-*TL;DR: the startup process for hosts that have a nVIDIA GPU stalls and the host is unusable. No data lost. Update available for affected users. Updated installation ISOs and online repositories avoid the issue for anyone downloading after 2020-04-06.*
+*TL;DR: the startup process for hosts that have a NVIDIA GPU stalls and the host is unusable. No data lost. Update available for affected users. Updated installation ISOs and online repositories avoid the issue for anyone downloading after 2020-04-06.*
 
 Despite active `beta` and `RC` phases, it's only after the official release that several users have started reporting cases of hosts that were unreachable from management clients (Xen Orchestra, XCP-ng Center) and couldn't start any VMs.
 
-It turns out that the XAPI (a core component of XCP-ng) needs `gpumon`, a binary that can only be built using a proprietary (from what I remember. One would need to check the license) nVIDIA developement toolkit. XAPI's start process stalls without an error message if there's an nVIDIA GPU.
+It turns out that the XAPI (a core component of XCP-ng) needs `gpumon`, a binary that can only be built using a proprietary (from what I remember. One would need to check the license) NVIDIA development toolkit. XAPI's start process stalls without an error message if there's an NVIDIA GPU.
 
 We have reported the issue to its developers at Citrix because it seems to us that an open source piece of software, part of a Linux Foundation project, should not have runtime requirements on closed-source software.
 
@@ -171,7 +171,7 @@ We want to thank our community of users who was very helpful in helping us ident
 **If you are affected:**
 * Did you upgrade using the installation ISO? If yes, the safest is to rollback to the on-disk backup using the installation ISO then download a new, fixed, ISO (`xcp-ng-8.1.0-2`) from [xcp-ng.org]([https://xcp-ng.org) and upgrade again.
 * Else, or if reverting to the backup would make you lose important changes to your setup:
-  * [Update your hosts](update.md) and reboot.
+  * [Update your hosts](updates.md) and reboot.
   * There may be consequences of the failed first boot after an upgrade:
     * Network issues requiring an emergency network reset
     * Disconnected Storage Repositories needing manual reconnection

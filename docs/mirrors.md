@@ -31,10 +31,10 @@ In order to guarantee the quality of the mirrors offered to our users, there a s
 * Offer read-only `rsync`. Two reasons:
   * Mirrorbits needs this to regularly check the state of the mirror and automatically disable outdated or broken mirrors.
   * This will allow nearby mirrors to sync from yours in the future, if needed.
-* Sync from a quickly updated mirror (the first mirrors will sync from our main mirror) at least twice an hour, preferrably four times an hour.
+* Sync from a quickly updated mirror (the first mirrors will sync from our main mirror) at least twice an hour, preferably four times an hour.
 * Sync the whole mirror tree (we'll reconsider this prerequisite when the mirror grows). Current size (XCP-ng 7.4 to 8.0) is approximately 30 GiB.
 * Provision enough disk space for future growth, and monitor available space to avoid sync failures.
-* Minimum bandwidth: 100 Mbit/s. Preferrably 1 Gbit/s. At some point, we may refuse applications that offer only 100 Mbit/s in areas with already enough quicker mirrors available.
+* Minimum bandwidth: 100 Mbit/s. Preferably 1 Gbit/s. At some point, we may refuse applications that offer only 100 Mbit/s in areas with already enough quicker mirrors available.
 * Up 24/24.
 
 If one of those prerequisites is causing an issue to you as a mirror provider, tell us.
@@ -126,7 +126,7 @@ sub   rsa2048 2018-10-03 [E]
 ```
 
 Note: if you fear that someone altered this document as part of a sophisticated attack,
-you can also check that the fingerprint stored in our github repository is the same:
+you can also check that the fingerprint stored in our GitHub repository is the same:
 <https://github.com/xcp-ng/xcp-ng-release/blob/master/RPM-GPG-KEY-xcpng-info.txt>
 (and in case you think someone might have altered the above link, check that the repository does actually belong to the XCP-ng project).
 

@@ -1,6 +1,6 @@
 # Upgrade
 
-This page details how to upgrade to the latest version of XCP-ng from a previous release. Eg. 7.4 to 7.6 or 8.0 to 8.1.
+This page details how to upgrade to the latest version of XCP-ng from a previous release, e.g. 7.4 to 7.6 or 8.0 to 8.1.
 
 For updates that don't change the version numbers (bugfixes, security fixes), see [updates section](updates.md).
 
@@ -31,7 +31,7 @@ Read the [release notes](currentrelease.md) and [known issues](currentrelease.md
 
 ## Upgrade via installation ISO (recommended)
 
-This is the standard XCP-ng way. With this method, note that you can upgrade by "jumping" versions if you want (eg from 7.5 to 8.0 directly) without needing intermediate upgrade.
+This is the standard XCP-ng way. With this method, note that you can upgrade by "jumping" versions if you want (e.g. from 7.5 to 8.0 directly) without needing intermediate upgrade.
 
 It will backup your system to the backup partition and reinstall the system from scratch on the system partition. Your XCP-ng configuration (VMs, storage repositories and so on) is retained.
 
@@ -235,7 +235,7 @@ XenServer 7 introduced a new (and better) partition scheme. Therefore, if you wa
 * You can "upgrade" it to the new scheme
 
 :::tip
-As it's (obvioulsy) a better partition scheme, we strongly recommend you to upgrade to this scheme and not to keep the old one, but it's your call.
+As it's (obviously) a better partition scheme, we strongly recommend you to upgrade to this scheme and not to keep the old one, but it's your call.
 :::
 
 :::warning
@@ -248,7 +248,7 @@ In order to migrate using the new partition scheme, you need to run this command
 
 `$ touch /var/preserve/safe2upgrade`
 
-> Check that you are using GPT partitioning and not MBR and doublecheck that you don't have any VDI attach to your local SR. Any remaining VDI will be removed.
+> Check that you are using GPT partitioning and not MBR and double check that you don't have any VDI attach to your local SR. Any remaining VDI will be removed.
 
 Then, you can follow the standard migration procedure describe before.
 
@@ -292,9 +292,9 @@ Live migration **should work** from any older XenServer/XCP-ng toward the latest
 
 ### Alternative VM migration solutions
 
-* clone/copy your VM before trying to live migrate. In case it fails, you won't have any surprise
+* clone/copy your VM before trying to live migrate. In case it fails, you won't have any surprises
 * offline migration is the safest if you can afford VM downtime
-* an hybrid solution is to use Xen Orchestra continous replication to avoid downtime
+* a hybrid solution is to use Xen Orchestra continuous replication to avoid downtime
 * restore Xen Orchestra backup on latest XCP-ng version will also work
 
 ## Handling alternate drivers or kernel

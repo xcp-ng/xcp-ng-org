@@ -7,9 +7,9 @@ In this document, we will try to give you an overview of the development process
 XCP-ng is a collection of components, that put together create a complete turnkey virtualization solution that you can install to bare-metal servers. Those components are packaged in the [RPM](http://rpm.org) format.
 
 As usual in the Free Software world, we stand *on the shoulders of giants*:
-* **CentOS**: many RPM packages come from the [CentOS](https://www.centos.org/) linux distribution, which in turn is based on Red Hat's [RHEL](https://en.wikipedia.org/wiki/Red_Hat_Enterprise_Linux), mostly based itself on the work of the [Fedora](https://getfedora.org/) project, all based on the work of all the developers who wrote the [FLOSS](https://en.wikipedia.org/wiki/Free/Libre_Open_Source_Software) software that is packaged in those linux distributions. Examples: glibc, GNU coreutils, openssh, crontabs, iptables, openssl and many, many more.
+* **CentOS**: many RPM packages come from the [CentOS](https://www.centos.org/) Linux distribution, which in turn is based on Red Hat's [RHEL](https://en.wikipedia.org/wiki/Red_Hat_Enterprise_Linux), mostly based itself on the work of the [Fedora](https://getfedora.org/) project, all based on the work of all the developers who wrote the [FLOSS](https://en.wikipedia.org/wiki/Free/Libre_Open_Source_Software) software that is packaged in those Linux distributions. Examples: glibc, GNU coreutils, openssh, crontabs, iptables, openssl and many, many more.
 * **EPEL**: a few packages come from [EPEL](https://fedoraproject.org/wiki/EPEL).
-* **XenServer**: most packages that make XCP-ng what it is have been rebuilt from source RPMs released by the [XenServer](https://xenserver.org/) project, with or without modifications. This includes xen, a patched linux kernel, the Xen API, and many others. This also includes redistributable drivers or tools from third party vendors.
+* **XenServer**: most packages that make XCP-ng what it is have been rebuilt from source RPMs released by the [XenServer](https://xenserver.org/) project, with or without modifications. This includes xen, a patched Linux kernel, the Xen API, and many others. This also includes redistributable drivers or tools from third party vendors.
 * **XCP-ng**: the remaining packages are additions (or replacements of closed-source components) to the original XenServer distribution.
 
 ## Release process overview
@@ -60,7 +60,7 @@ Here's a tree that represents the structure:
 
 `updates` is enabled by default. It contains:
 * bugfix or security updates (see [Updates Howto](updates.md)),
-* occasionnally, updates that bring enhancements without changing the behaviour you know and without regressions,
+* occasionally, updates that bring enhancements without changing the behaviour you know and without regressions,
 * any optional extra RPMs provided by XCP-ng's packagers *after the release*,
 * any additional build dependency we had to add to build the above RPMs.
 
@@ -82,12 +82,12 @@ Here are the usual steps. We will expand on them afterwards:
 * **Create or update RPM specs** and commit them to the appropriate repository at <https://github.com/xcp-ng-rpms/>
 * **Add or update patches** to be applied above the upstream source tarball to that same repository.
 * **Submit build** to the build system (koji).
-* **Publish the build** to the appropriate RPM repository (`testing` for stable releases, `base` for developement release of XCP-ng)
-* In the case of a developement release of XCP-ng, when all the above has been done for all the RPMs, generate an ISO image with the installer and the required RPMs.
+* **Publish the build** to the appropriate RPM repository (`testing` for stable releases, `base` for development release of XCP-ng)
+* In the case of a development release of XCP-ng, when all the above has been done for all the RPMs, generate an ISO image with the installer and the required RPMs.
 
 ### Where discussion happens
 Usually discussion will happen:
-* On [github issues](https://github.com/xcp-ng/xcp/issues).
+* On [GitHub issues](https://github.com/xcp-ng/xcp/issues).
 * In [the forum](https://xcp-ng.org/forum/).
 * Over IRC: `#xcp-ng` and `#xcp-ng-devel` on irc.freenode.net.
 
@@ -98,7 +98,7 @@ Then depending on the package, we'll bring the discussion to upstream channels w
 ### Contribution to upstream projects
 Development (as in "write code") in XCP-ng project is mostly made of contributions to upstream projects such as <https://github.com/xapi-project/>, <https://wiki.xenproject.org/wiki/Submitting_Xen_Project_Patches> or <https://github.com/xenserver/>.
 
-For some pieces of upstream software, we have github "forks" at <https://github.com/xcp-ng>. For others we contribute directly without a github fork and apply the patches directly on the RPMs at <https://github.com/xcp-ng-rpms/>.
+For some pieces of upstream software, we have GitHub "forks" at <https://github.com/xcp-ng>. For others we contribute directly without a GitHub fork and apply the patches directly on the RPMs at <https://github.com/xcp-ng-rpms/>.
 
 ### Components we **are** the upstream for
 Our policy is to upstream everything if possible. However, there are some exceptions:
@@ -106,7 +106,7 @@ Our policy is to upstream everything if possible. However, there are some except
 * Bits specific to the act of building XCP-ng (various scripts, branding stuff...). The main example is <https://github.com/xcp-ng/xcp>.
 
 ### How to help at development
-It all depends on your skills and areas of interest so it's hard to tell specifically in advance. Having a look at the open github issues and pick one (<https://github.com/xcp-ng/xcp/issues>) could definitely help. Else, maybe there's a specific topic that you would want to help improve. Even if you don't know where to start, just come and talk with us (see "Where discussion happens" above).
+It all depends on your skills and areas of interest so it's hard to tell specifically in advance. Having a look at the open GitHub issues and pick one (<https://github.com/xcp-ng/xcp/issues>) could definitely help. Else, maybe there's a specific topic that you would want to help improve. Even if you don't know where to start, just come and talk with us (see "Where discussion happens" above).
 
 ## Tags, maintenance branches in our code repositories
 
@@ -147,7 +147,7 @@ Special case: VERSION and XCPNGVERSION are always the same (example: `xcp-ng-rel
 Examples: `host-installer`, `sm`...
 * Tags:
  * We tag when we release a new version of XCP-ng: `vUPSTREAMVERSION-XCPNGVERSIONFULL` (`v1.29.0-8.2.0`)
- * Then we use the maintenance branch but don't tag anymore (each build pushed to koji already acts as a sort of tag). If we *really* wanted to tag for patch updates from the maintenance branch, we could increment neither `UPSTREAMVERSION` nor `XCPNGVERSIONFULL` so we'd have to add yet another suffix. Eg. `v1.29.0-8.2.0-3.1` where `3.1` would be the `Release` tag from the hotfix RPM.
+ * Then we use the maintenance branch but don't tag anymore (each build pushed to koji already acts as a sort of tag). If we *really* wanted to tag for patch updates from the maintenance branch, we could increment neither `UPSTREAMVERSION` nor `XCPNGVERSIONFULL` so we'd have to add yet another suffix, e.g. `v1.29.0-8.2.0-3.1` where `3.1` would be the `Release` tag from the hotfix RPM.
 * Maintenance branch: `UPSTREAMVERSION-XCPNGVERSION` (`1.29.0-8.2`)
   * When we are downstream we always create a maintenance branch for a given XCP-ng release
 * Next release developed on: next maintenance branch directly (`1.29.0-8.2`)
@@ -168,7 +168,7 @@ Special case: the upstream version and the XCP-ng version are always the same (e
 Creating packages that can be installed on the user's system is called **packaging**.
 
 ### Introduction to RPM
-RPM is the package format used by Fedora, Red Hat, CentOS, Mageia, OpenSUSE and other linux distributions. It is also what we use in XCP-ng. A RPM package contains the files to be installed, metadata such as version and dependencies, and various scripts executed during installation, upgrade, uninstallation or other events.
+RPM is the package format used by Fedora, Red Hat, CentOS, Mageia, OpenSUSE and other Linux distributions. It is also what we use in XCP-ng. A RPM package contains the files to be installed, metadata such as version and dependencies, and various scripts executed during installation, upgrade, uninstallation or other events.
 
 A RPM is built from a source RPM (SRPM), which is usually made of:
 * A specification file ("spec file") that defines everything about the build: build dependencies, version, release, changelog, build commands, installation, what sources to use, patches to apply, run-time dependencies, scripts (post-install, pre-install, etc.) and more.
@@ -319,7 +319,7 @@ Then, if it is an **update candidate** for an existing package:
     * Command to downgrade in case of issues.
     * What to test.
     * Is a reboot required...
-  * For better visibility of the update candidate, also create a github issue, such as <https://github.com/xcp-ng/xcp/issues/154>. Add it to the [team board](https://github.com/orgs/xcp-ng/projects/2) in column "Update candidate".
+  * For better visibility of the update candidate, also create a GitHub issue, such as <https://github.com/xcp-ng/xcp/issues/154>. Add it to the [team board](https://github.com/orgs/xcp-ng/projects/2) in column "Update candidate".
 
 ### Special case: new packages
 Importing new packages requires extra steps, described at [How to add new packages to XCP-ng](https://github.com/xcp-ng/xcp/wiki/How-to-add-new-packages-to-XCP-ng).
@@ -332,7 +332,7 @@ Most packages imported from CentOS or EPEL are not built by our Koji instance. W
 Bits of information can be inferred from [Import-RPM-build-dependencies-from-CentOS-and-EPEL](https://github.com/xcp-ng/xcp/wiki/Import-RPM-build-dependencies-from-CentOS-and-EPEL)
 
 ### Other tags
-In a previous section, I've tried to explain what tags are used for in Koji. We use them also for something else. We probably even mis-use them.
+In a previous section, I've tried to explain what tags are used for in Koji. We use them also for something else. We probably even misuse them.
 
 Once a day, we run a job that makes sure every *build* in our Koji instance is tagged with one of the following tags:
 * `built-by-xcp`: RPMs built by our build system.
@@ -381,13 +381,13 @@ Here are the steps:
 
 - Build the XAPI:
     - Go to the dir where your `xen-api` code base is.
-    - Run `opam install . --deps-only -t`, this installs the dependecies the build needs.
+    - Run `opam install . --deps-only -t`, this installs the dependencies the build needs.
     - Run `./configure`
     - Now you can run `make`, `make install` or `make test`
 
 ## Kernel module policy
 
-In XCP-ng, there is only one version of the kernel that is supported at a given time. There's also an [alternate kernel](hardware#alternate-kernel) available for troubleshooting. The policy differs whether the kernel modules are for XCP-ng's supported kernel or for an alternate kernel.
+In XCP-ng, there is only one version of the kernel that is supported at a given time. There's also an [alternate kernel](hardware.md#alternate-kernel) available for troubleshooting. The policy differs whether the kernel modules are for XCP-ng's supported kernel or for an alternate kernel.
 
 ### What are kernel modules?
 See <https://en.wikipedia.org/wiki/Loadable_kernel_module>
@@ -397,7 +397,7 @@ They can be loaded (or unloaded) dynamically into the kernel to provide more fun
 ### Definitions: supported modules, alternate modules, additional modules
 
 A base installation of XCP-ng comes with:
-* a linux kernel (the `kernel` RPM), including lots of modules already,
+* a Linux kernel (the `kernel` RPM), including lots of modules already,
 * several kernel modules packaged as separate RPMs (example: `broadcom-bnxt-en` for the `bnxt_en` kernel module). Most of those are drivers for hardware devices. Those RPMs either provide drivers that are not included in the base kernel, or updated versions. They are pulled as dependencies of the `vendor-drivers` RPM. Those packages that are installed by default will be designated as **supported modules** in what follows.
 
 Through our RPM repositories (configured by default on the hosts for `yum` to install from them), we may also provide:
@@ -626,17 +626,17 @@ We'll only list the files that are used during an installation or upgrade. The o
 
 * `boot/`: stage 1 of the installer: initial boot then loads the second stage
 * `EFI/`: used to boot on UEFI
-* `install.img`: stage 2 of the installer. This file actually contains a complete linux filesystem. In that filesystem, the installer comes from the `host-installer` RPM package. More about that below.
+* `install.img`: stage 2 of the installer. This file actually contains a complete Linux filesystem. In that filesystem, the installer comes from the `host-installer` RPM package. More about that below.
 * `Packages/`: all the RPMs that will be installed on the system
-* `repodata/`: yum medata about the RPMs
-* `.treeinfo`: often forgotten when one copies the contents of the ISO for network installation, this hidden file contains necesseray metadata about XCP-ng and its version
+* `repodata/`: yum metadata about the RPMs
+* `.treeinfo`: often forgotten when one copies the contents of the ISO for network installation, this hidden file contains necessary metadata about XCP-ng and its version
 
 ### Modify the installer itself
 
 The steps to modify the installer are:
 * (extract the ISO image, see above)
 * extract install.img
-* modify the files it contains (a whole linux filesystem)
+* modify the files it contains (a whole Linux filesystem)
 * rebuild install.img
 * (rebuild the ISO image, see below)
 
@@ -765,8 +765,8 @@ Live migration needs to be tested, with or without storage motion (ie. moving th
 **TODO: create (and link to) a page dedicated to live migration and known issues, gotchas or incompatibilities, especially across different releases and/or during pool upgrade.**
 
 Mixed combinations of:
-* (PV-)HVM linux
-* PV linux
+* (PV-)HVM Linux
+* PV Linux
 * (PV-)HVM Windows
 * ...
 
@@ -783,7 +783,7 @@ and
 
 and
 
-* VMs with high CPU / memory / I/O usage (can be done on linux using various options of the `stress` command). Example to be adapted and modified: `stress --io 4 --hdd 2 --vm 6 --vm-keep --vm-bytes 1000M`
+* VMs with high CPU / memory / I/O usage (can be done on Linux using various options of the `stress` command). Example to be adapted and modified: `stress --io 4 --hdd 2 --vm 6 --vm-keep --vm-bytes 1000M`
 
 and
 
@@ -823,8 +823,8 @@ We try to overcome these whenever possible, but bugs that require patching the o
 Live migration is important, but let's not forget to test "cold" migration (migration of shutdown VMs).
 
 Mixed combinations of:
-* (PV-)HVM linux
-* PV linux
+* (PV-)HVM Linux
+* PV Linux
 * (PV-)HVM Windows
 * ...
 

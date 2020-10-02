@@ -1,6 +1,6 @@
 # Additional packages
 
-The controller domain (dom0) is a privileged linux VM, based on CentOS.
+The controller domain (dom0) is a privileged Linux VM, based on CentOS.
 
 It may be useful to add more packages to it, with precaution. The XCP-ng project offers some in its repositories, and other packages can be installed from CentOS, EPEL, or even third party repositories.
 
@@ -40,8 +40,8 @@ Some repositories contain packages that have a higher version number than ours. 
 
 ### 4. Keep your dom0 minimal
 
-The controller domain is not an all-purpose linux system. It must remain minimal to do what it is meant to do efficiently.
-* Avoid bloat (do not attempt to transform it into a linux workstation. Use a VM instead.)
+The controller domain is not an all-purpose Linux system. It must remain minimal to do what it is meant to do efficiently.
+* Avoid bloat (do not attempt to transform it into a Linux workstation. Use a VM instead.)
 * Avoid CPU or RAM-intensive programs
 * Avoid software that pulls in many dependencies
 * Avoid any software that may interfere with the existing
