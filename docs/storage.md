@@ -27,8 +27,8 @@ There's 2 types of storage:
     <th>Thick Provisioned</th>
   </tr>
   <tr>
-    <td rowspan="5">file based</td>
-    <td>local Ext3/4</td>
+    <td rowspan="6">file based</td>
+    <td>local Ext</td>
     <td>X</td>
     <td></td>
   </tr>
@@ -49,6 +49,11 @@ There's 2 types of storage:
   </tr>
   <tr>
     <td>ZFS</td>
+    <td>X</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>CephFS</td>
     <td>X</td>
     <td></td>
   </tr>
@@ -103,7 +108,7 @@ zpool create -o ashift=12 -m /mnt/zfs tank /dev/sda4
 Now you can create the SR on top of it:
 
 ```
-xe sr-create host-uuid=<HOST_UUID> name-label=LocalZFS type=file device-config:location=/mnt/zfs/
+xe sr-create host-uuid=<HOST_UUID> type=zfs content-type=user name-label=LocalZFS device-config:location=/mnt/zfs/
 ```
 
 For better performances, you can disable sync with `zfs set sync=disabled tank`.
@@ -144,10 +149,34 @@ xe sr-create content-type=user type=glusterfs name-label=GlusterSharedStorage sh
 
 It will be thin provisioned!
 
-### Ceph
+### CephFS
+
+You can use this driver to connect to an existing Ceph storage filesystem, and configure it as a shared SR for all your hosts in the pool. This driver uses `mount.ceph` from `ceph-common` package of `centos-release-ceph-jewel` repo. So user needs to install it before creating the SR. Without it, the SR creation would fail with an error like below
+```
+Error code: SR_BACKEND_FAILURE_47
+Error parameters: , The SR is not available [opterr=ceph is not installed],
+```
+
+Installation steps
+```
+# yum install centos-release-ceph-jewel --enablerepo=extras
+# yum install ceph-common --enablerepo=base
+```
+
+Create `/etc/ceph/admin.secret` with your access secret for CephFS.
+```
+# cat /etc/ceph/admin.secret
+AQBX21dfVMJtBhAA2qthmLyp7Wxz+T5YgoxzeQ==
+```
+
+Now you can create the SR where `server` is your mon ip.
+```
+# xe sr-create type=cephfs name-label=ceph device-config:server=172.16.10.10 device-config:serverpath=/xcpsr device-config:options=name=admin,secretfile=/etc/ceph/admin.secret
+```
 
 :::tip
-Bundled driver for Ceph is coming very soon!
+* For `serverpath` it would be good idea to use an empty folder from the CephFS instead of `/`.
+* You may specify `serverport` option if you are using any other port than 6789.
 :::
 
 ### XOSANv2

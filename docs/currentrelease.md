@@ -248,7 +248,7 @@ Forum thread: <https://xcp-ng.org/forum/topic/2849/post-8-1-upgrade-boot-fails-a
 
 In general, issues inherited from Citrix Hypervisor and already described in their documentation are not repeated in ours, unless we need to increase the visibility of said issues.
 
-See [Citrix Hypervisor's known issues](<https://docs.citrix.com/en-us/citrix-hypervisor/whats-new/known-issues.html) (link only valid for the latest release of Citrix Hypervisor). Most apply to XCP-ng.
+See [Citrix Hypervisor's known issues](https://docs.citrix.com/en-us/citrix-hypervisor/whats-new/known-issues.html) (link only valid for the latest release of Citrix Hypervisor). Most apply to XCP-ng.
 
 Some exceptions to those CH 8.1 known issues:
 * The errors due to to `xapi-wait-init-complete.service` not being enabled were already fixed during XCP-ng 8.1's beta phase.
