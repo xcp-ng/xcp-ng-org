@@ -129,20 +129,20 @@ FreeNAS is a locked-down version of FreeBSD, with many packages disabled to ensu
 To install it, you just have to enable the FreeBSD repo first:
 
 ```bash
-# sed -i 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/FreeBSD.conf
+# sed -i '' 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/FreeBSD.conf
 # pkg install xe-guest-utilities
 ```
 
 If you are using FreeNAS v11.2, you also have to disable the local package repository [to avoid an issue in that particular release](https://www.justinsilver.com/random/fix-pkg-on-freenas-11-2/) before running `pkg install`:
 
 ```bash
-# sed -i 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/local.conf
+# sed -i '' 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/local.conf
 ```
 
 After the install, revert to the previous settings to avoid surprises down the road:
 ```bash
-# sed -i 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/FreeBSD.conf
-# sed -i 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/local.conf
+# sed -i '' 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/FreeBSD.conf
+# sed -i '' 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/local.conf
 ```
 
 Once the package is installed, you need to tell FreeNAS to start the `xe-daemon` process when starting:
