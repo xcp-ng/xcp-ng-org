@@ -186,7 +186,9 @@ find /etc \( -name "*.rpmnew" -or -name "*.rpmsave" ! -name "logrotate.cron.rpms
 
 ## Upgrade from XenServer
 
-This article describes how to proceed in order to convert your Citrix XenServer infrastructure into a XCP-ng infrastructure. This is also the same thing for any Citrix Hypervisor version.
+This article describes how to proceed in order to convert your Citrix XenServer infrastructure into a XCP-ng infrastructure.
+
+**This is exactly the same thing for any Citrix Hypervisor version**.
 
 :::tip
 **Yes** you can do that without losing ANY settings (SR, VMs, networks) from your existing Citrix Hypervisor/XenServer infrastructure!
