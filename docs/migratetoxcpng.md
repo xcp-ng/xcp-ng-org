@@ -2,6 +2,14 @@
 
 If you are using another virtualization platform (VMware, KVM, etc.), this part of the documentation will help you to migrate to XCP-ng.
 
+## From XenServer
+
+We got a dedicated section on [how to migrate from XenServer to XCP-ng](upgrade.md#upgrade-from-xenserver).
+
+## From Citrix Hypervisor
+
+We got a dedicated section on [how to migrate from Citrix Hypervisor to XCP-ng](upgrade.md#upgrade-from-xenserver).
+
 ## From Virtualbox
 
 Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](migratetoxcpng.md#fromvmware) section.
