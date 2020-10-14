@@ -197,6 +197,7 @@ Usually, you can use a NFS or SMB share. But if you don't have any of those, you
 
 1. Select "Local" instead of NFS/SMB
 2. Enter a path that already exists on your physical host
+3. Upload ISO on your host to the same path
 
 That's it!
 
