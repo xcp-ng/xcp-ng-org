@@ -2,6 +2,10 @@
 
 If you are using another virtualization platform (VMware, KVM, etc.), this part of the documentation will help you to migrate to XCP-ng.
 
+:::warning
+OVA import will miss the information if the VM is running BIOS or UEFI mode. Double check your settings on your original system, and then enable (or not) UEFI on XCP-ng side for the destination VM. You can do so in VM advanced tab in Xen Orchestra.
+:::
+
 ## From XenServer
 
 We got a dedicated section on [how to migrate from XenServer to XCP-ng](upgrade.md#upgrade-from-xenserver).
