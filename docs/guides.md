@@ -38,7 +38,7 @@ Disabling checksum offloading is only necessary for virtual interfaces. When usi
 Many guides on the internet for pfSense in Xen VMs will tell you to uncheck checksum options in the pfSense web UI, or to also disable RX offload on the Xen side. These are not only unnecessary, but some of them will make performance worse.
  :::
 
-#### Using XenOrchestra
+#### Using Xen Orchestra
 
 - Head to the "Network" tab of your VM : in the advanced settings, you can enable TX checksumming.
 - Restart the VM.
@@ -88,7 +88,7 @@ That's it! For this to take effect you need to fully shut down the VM then power
 If you ever add more virtual NICs to your pfSense VM, you will need to go back and do the same steps for these interfaces as well.
 :::
 
-## Test XCP-ng in a VM
+## XCP-ng in a VM
 
 This page details how to install XCP-ng as a guest VM inside different hypervisors to test the solution before a bare-metal installation.
 
@@ -438,3 +438,39 @@ Then, you have to restart xapi :
 ```
 systemctl restart xapi
 ```
+
+## Dom0 memory
+
+:::tip
+Dom0 is another word to talk about the *privileged domain*, also known as the *Control Domain*.
+:::
+
+Issues can arise when the control domain is lacking memory, that's why we advise to be generous with it whenever possible. Default values from the installer may be too low for your setup. In general it depends on the amount of VM's and their workload. If constraints do not allow you to follow the advice below, you can try to set lower values.
+
+In any case:
+* monitor RAM usage in the control domain
+* if issues arise (failed live migration for example), [[look at the logs](troubleshooting.md#log-files) for messages related to lack of memory
+
+### Recommended values
+
+* we advise to give at least 2GiB of RAM for Dom0. Below that your XCP-ng may experience performance issues or other weird errors.
+* up to 64GiB RAM on your machine, at least 4GiB RAM for Dom0
+* an host with 128GiB or more should use 8GiB RAM for Dom0
+
+:::warning
+Note: If you use ZFS, assign at least 16GB RAM to avoid swapping. ZFS (in standard configuration) uses half the Dom0 RAM as cache!
+:::
+
+### Current RAM usage
+
+You can use `htop` to see how much RAM is currently used in the dom0. Alternatively, you can have Netdata to show you past values.
+
+### Change dom0 memory
+
+Example with 4 GiB:
+
+`/opt/xensource/libexec/xen-cmdline --set-xen dom0_mem=4096M,max:4096M`
+
+Do not mess the units and make sure to set the same value as base value and as max value.
+
+Reboot to apply.
