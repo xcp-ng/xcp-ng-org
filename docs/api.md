@@ -6,7 +6,15 @@ XCP-ng uses **XAPI** as main API. This API is used by all clients. For more deta
 If you want to build an application on top of XCP-ng, we strongly suggest the Xen Orchestra API instead of XAPI. Xen Orchestrator provides an abstraction layer that's easier to use, and also acts as a central point for your whole infrastructure.
 :::
 
-## Architecture
+## XAPI architecture
+
+XAPI is a toolstack split in two parts: `xenopsd` and XAPI itself (see the diagram below):
+
+![](https://xcp-ng.org/assets/img/Xenstack.png)
+
+:::warning
+XCP-ng is meant to use XAPI. Don't use it with `xl` or anything else!
+:::
 
 ### General design
 
