@@ -1,8 +1,19 @@
-# XCP-ng 8.1
+# Current Release (CR)
 
-XCP-ng 8.1 is the latest release of XCP-ng. [Download the installation ISO](http://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso).
+**XCP-ng 8.1** is the current and latest release of XCP-ng. [Download the installation ISO](http://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso).
 
 SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
+
+## CR objectives
+
+Using the CR version is relevant if:
+
+* you want to enjoy the most recent features and enhancements
+* you want to have the latest hardware support
+* you want to enjoy more performances
+* it's not a problem to do an upgrade twice a year or so
+
+If you prefer to be more conservative, go for our [LTS release](lts.md).
 
 ## Release information
 

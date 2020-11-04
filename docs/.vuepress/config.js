@@ -30,7 +30,8 @@ module.exports = {
         collapsable: false, // optional, defaults to true
         sidebarDepth: 1,    // optional, defaults to 1
         children: [
-          ['/currentrelease', 'Current release'],
+          ['/currentrelease', 'CR (Current Release)'],
+          ['/lts', 'LTSR (Long Term Support Release)'],
           ['/requirements', 'Requirements'],
           ['/hardware', 'Hardware support'],
           ['/install', 'Installation'],
