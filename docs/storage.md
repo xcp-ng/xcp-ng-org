@@ -58,7 +58,7 @@ There's 2 types of storage:
     <td></td>
   </tr>
   <tr>
-    <td rowspan="3">block based</td>
+    <td rowspan="5">block based</td>
     <td>local LVM</td>
     <td></td>
     <td>X</td>
@@ -70,6 +70,16 @@ There's 2 types of storage:
   </tr>
   <tr>
     <td>HBA</td>
+    <td></td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>Ceph iSCSI gateway</td>
+    <td></td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>CephRBD</td>
     <td></td>
     <td>X</td>
   </tr>
@@ -151,6 +161,10 @@ It will be thin provisioned!
 
 ### CephFS
 
+:::warning
+This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](additionalpackages.md)). You will also need to be careful about system updates and upgrades.
+:::
+
 You can use this driver to connect to an existing Ceph storage filesystem, and configure it as a shared SR for all your hosts in the pool. This driver uses `mount.ceph` from `ceph-common` package of `centos-release-ceph-jewel` repo. So user needs to install it before creating the SR. Without it, the SR creation would fail with an error like below
 ```
 Error code: SR_BACKEND_FAILURE_47
@@ -178,6 +192,74 @@ Now you can create the SR where `server` is your mon ip.
 * For `serverpath` it would be good idea to use an empty folder from the CephFS instead of `/`.
 * You may specify `serverport` option if you are using any other port than 6789.
 :::
+
+### Ceph iSCSI gateway
+
+:::warning
+Experimental, this needs reliable testing to ensure no block corruption happens in regular use.
+:::
+
+This is at this moment the only way to connect to Ceph with no modifications of dom0, it's possible to create multiple Ceph iSCSI gateways following this: https://docs.ceph.com/docs/master/rbd/iscsi-target-cli/
+
+Ceph iSCSI gateway node(s) sits outside dom0, probably another Virtual or Physical machine. The packages referred in the URL are to be installed on iSCSI gateway node(s). For XCP-ng dom0, no modifications are needed as it would use LVMoISCSISR (lvmoiscsi) driver to access the iSCSI LUN presented by these gateways.
+
+For some reason the chap authentication between gwcli and XCP-ng doesn't seem to be working, so it's recommended to disable it (in case you use no authentication a dedicated network for storage should be used to ensure some security).
+
+IMPORTANT: User had many weird glitches with iSCSI connection via ceph gateway in lab setup (3 gateways and 3 paths on each host) after several days of using it. So please keep in mind that this setup is experimental and unstable. This would have to be retested on recent XCP-ng.
+
+### Ceph RBD
+
+:::warning
+This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](additionalpackages.md)). You will also need to be careful about system updates and upgrades.
+:::
+
+You can use this to connect to an existing Ceph storage over RBD, and configure it as a shared SR for all your hosts in the pool. This driver uses LVM (lvm) as generic driver and expects that the Ceph RBD volume is already connected to one or more hosts.
+
+Known issue: this SR is not allowed to be used for HA state metadata due to LVM backend restrictions within XAPI drivers, so if you want to use HA, you will need to create another type of storage for HA metadata
+
+Installation steps
+
+```
+# yum install centos-release-ceph-jewel --enablerepo=extras
+# yum install ceph-common --enablerepo=base
+```
+
+Create `/etc/ceph/keyring` with your access secret for Ceph.
+
+```
+# cat /etc/ceph/keyring 
+[client.admin]
+key = AQBX21dfVMJtJhAA2qthmLyp7Wxz+T5YgoxzeQ==
+```
+
+Create `/etc/ceph/ceph.conf` as your matching setup.
+
+```
+# cat /etc/ceph/ceph.conf 
+[global]
+mon_host = 10.10.10.10:6789
+
+[client.admin]
+keyring = /etc/ceph/keyring
+```
+
+```
+rbd create --size 300G --image-feature layering pool/xen1
+
+# Map it to all xen hosts in your pool
+rbd map pool/xen1
+
+# edit /etc/lvm/lvm.conf and /etc/lvm/master/lvm.conf on all nodes and add this option
+# otherwise LVM will ignore the rbd block device
+types = [ "rbd", 1024 ]
+
+# create a shared LVM
+xe sr-create name-label='CEPH' shared=true device-config:device=/dev/rbd/rbd/xen1 type=lvm content-type=user
+```
+
+You will probably want to configure ceph further so that the block device is mapped on reboot.
+
+For the full discussion about Ceph in XCP-ng, see this forum thread: https://xcp-ng.org/forum/topic/4/ceph-on-xcp-ng
 
 ### XOSANv2
 
