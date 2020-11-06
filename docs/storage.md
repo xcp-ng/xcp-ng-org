@@ -278,7 +278,7 @@ Shared, thin-provisioned storage. Available since XCP-ng 8.2.
 This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](additionalpackages.md)). You will also need to be careful about system updates and upgrades.
 :::
 
-You can use this driver to connect to an existing Ceph storage filesystem, and configure it as a shared SR for all your hosts in the pool. This driver uses `mount.ceph` from `ceph-common` package of `centos-release-ceph-jewel` repo. So user needs to install it before creating the SR. Without it, the SR creation would fail with an error like below
+You can use this driver to connect to an existing Ceph storage filesystem, and configure it as a shared SR for all your hosts in the pool. This driver uses `mount.ceph` from `ceph-common` package of `centos-release-ceph-nautilus` repo. So user needs to install it before creating the SR. Without it, the SR creation would fail with an error like below
 ```
 Error code: SR_BACKEND_FAILURE_47
 Error parameters: , The SR is not available [opterr=ceph is not installed],
@@ -286,7 +286,7 @@ Error parameters: , The SR is not available [opterr=ceph is not installed],
 
 Installation steps
 ```
-# yum install centos-release-ceph-jewel --enablerepo=extras
+# yum install centos-release-ceph-nautilus --enablerepo=extras
 # yum install ceph-common --enablerepo=base
 ```
 
@@ -304,6 +304,7 @@ Now you can create the SR where `server` is your mon ip.
 :::tip
 * For `serverpath` it would be good idea to use an empty folder from the CephFS instead of `/`.
 * You may specify `serverport` option if you are using any other port than 6789.
+* Do not use admin keyring for production, but make a separate key with only necessary privileges https://docs.ceph.com/en/latest/rados/operations/user-management/
 :::
 
 ### iSCSI
@@ -357,7 +358,7 @@ Known issue: this SR is not allowed to be used for HA state metadata due to LVM 
 Installation steps
 
 ```
-# yum install centos-release-ceph-jewel --enablerepo=extras
+# yum install centos-release-ceph-nautilus --enablerepo=extras
 # yum install ceph-common --enablerepo=base
 ```
 
@@ -397,6 +398,10 @@ xe sr-create name-label='CEPH' shared=true device-config:device=/dev/rbd/rbd/xen
 You will probably want to configure ceph further so that the block device is mapped on reboot.
 
 For the full discussion about Ceph in XCP-ng, see this forum thread: <https://xcp-ng.org/forum/topic/4/ceph-on-xcp-ng>
+
+:::tip
+* Do not use admin keyring for production, but make a separate key with only necessary privileges <https://docs.ceph.com/en/latest/rados/operations/user-management/>
+:::
 
 ## ISO SR
 
