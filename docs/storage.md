@@ -152,7 +152,7 @@ xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage 
 ### Glusterfs
 
 :::tip
-Requires XCP-ng 8.2
+Available since: XCP-ng 8.2
 :::
 
 You can use this driver to connect to an existing Gluster storage, and configure it as a shared SR for all your hosts in the pool. For example, a Gluster storage with 3 nodes (`192.168.1.11`, `192.168.1.12` and `192.168.1.13`) and a volume name called `glustervolume`:
@@ -170,7 +170,7 @@ This way of using Ceph requires installing `ceph-common` inside dom0 from outsid
 :::
 
 :::tip
-Requires XCP-ng 8.2
+Available since: XCP-ng 8.2
 :::
 
 You can use this driver to connect to an existing Ceph storage filesystem, and configure it as a shared SR for all your hosts in the pool. This driver uses `mount.ceph` from `ceph-common` package of `centos-release-ceph-nautilus` repo. So user needs to install it before creating the SR. Without it, the SR creation would fail with an error like below
@@ -199,7 +199,7 @@ Now you can create the SR where `server` is your mon ip.
 :::tip
 * For `serverpath` it would be good idea to use an empty folder from the CephFS instead of `/`.
 * You may specify `serverport` option if you are using any other port than 6789.
-* Do not use admin keyring for production, but make a seperate key with only necessary privileges https://docs.ceph.com/en/latest/rados/operations/user-management/
+* Do not use admin keyring for production, but make a separate key with only necessary privileges https://docs.ceph.com/en/latest/rados/operations/user-management/
 :::
 
 ### Ceph iSCSI gateway
@@ -271,7 +271,7 @@ You will probably want to configure ceph further so that the block device is map
 For the full discussion about Ceph in XCP-ng, see this forum thread: https://xcp-ng.org/forum/topic/4/ceph-on-xcp-ng
 
 :::tip
-* Do not use admin keyring for production, but make a seperate key with only necessary privileges https://docs.ceph.com/en/latest/rados/operations/user-management/
+* Do not use admin keyring for production, but make a separate key with only necessary privileges https://docs.ceph.com/en/latest/rados/operations/user-management/
 :::
 
 ### XOSANv2
