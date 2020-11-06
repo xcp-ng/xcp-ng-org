@@ -165,7 +165,7 @@ It will be thin provisioned!
 This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](additionalpackages.md)). You will also need to be careful about system updates and upgrades.
 :::
 
-You can use this driver to connect to an existing Ceph storage filesystem, and configure it as a shared SR for all your hosts in the pool. This driver uses `mount.ceph` from `ceph-common` package of `centos-release-ceph-jewel` repo. So user needs to install it before creating the SR. Without it, the SR creation would fail with an error like below
+You can use this driver to connect to an existing Ceph storage filesystem, and configure it as a shared SR for all your hosts in the pool. This driver uses `mount.ceph` from `ceph-common` package of `centos-release-ceph-nautilus` repo. So user needs to install it before creating the SR. Without it, the SR creation would fail with an error like below
 ```
 Error code: SR_BACKEND_FAILURE_47
 Error parameters: , The SR is not available [opterr=ceph is not installed],
@@ -173,7 +173,7 @@ Error parameters: , The SR is not available [opterr=ceph is not installed],
 
 Installation steps
 ```
-# yum install centos-release-ceph-jewel --enablerepo=extras
+# yum install centos-release-ceph-nautilus --enablerepo=extras
 # yum install ceph-common --enablerepo=base
 ```
 
@@ -220,7 +220,7 @@ Known issue: this SR is not allowed to be used for HA state metadata due to LVM 
 Installation steps
 
 ```
-# yum install centos-release-ceph-jewel --enablerepo=extras
+# yum install centos-release-ceph-nautilus --enablerepo=extras
 # yum install ceph-common --enablerepo=base
 ```
 
