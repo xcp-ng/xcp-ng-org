@@ -40,7 +40,7 @@ Many guides on the internet for pfSense in Xen VMs will tell you to uncheck chec
 
 #### Using Xen Orchestra
 
-- Head to the "Network" tab of your VM : in the advanced settings, you can enable TX checksumming.
+- Head to the "Network" tab of your VM : in the advanced settings (click the blue gear icon) for each adapter, disable TX checksumming.
 - Restart the VM.
 
 That's it !
