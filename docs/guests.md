@@ -122,9 +122,55 @@ On OpenBSD, the xen drivers are also already part of the kernel. The `install.sh
 For OpenBSD search [the forum](https://xcp-ng.org/forum). See for example [this thread](https://xcp-ng.org/forum/topic/2582/guest-tools-for-openbsd).
 :::
 
-## FreeNAS/TrueNAS
+## TrueNAS 12.0-Release
+TrueNAS 12.0-Release does not have `xe-guest-utilities` installed. But the forthcoming TrueNAS 12.0-U1 and later should have them installed by default and should not require any user action. 
 
-FreeNAS is a locked-down version of FreeBSD, with many packages disabled to ensure a more stable environment for the fileserver. `xe-guest-utilities` is part of the packages that are **not** available in FreeNAS. But because it's based on FreeBSD, the packages from that OS can be installed, at your own risk. This is not a big issue for this particular package, because it's a _leaf_ in the chain of dependencies - nothing in FreeNAS depends on it.
+Meanwhile, if you are on TrueNAS 12.0-Release here are the installation instructions for `xe-guest-utilities`:
+
+To install it, you just have to enable the FreeBSD repo first:
+
+```bash
+# nano /usr/local/etc/pkg/repos/local.conf
+```
+
+Change enabled to `no`
+
+press cntrl-X and save the modification.
+
+```bash
+# nano /usr/local/etc/pkg/repos/FreeBSD.conf
+```
+
+Change enabled to `yes`
+
+press cntrl-X and save the modification.
+
+Then run the following commands:
+```bash
+# mkdir /tmp/repo
+# cd /tmp/repo
+# pkg fetch -o /tmp/repo/ xen-guest-tools
+# pkg add -M All/xen-guest-tools-4.14.0.txz
+# pkg fetch -o /tmp/repo/ xe-guest-utilities
+# pkg add -M All/xe-guest-utilities-6.2.0_3.txz
+```
+Once the package is installed, you need to tell TrueNAS to start the `xe-daemon` process when starting:
+1. Go to _Tasks -> Init/Shutdown Script_
+2. Create a new task with the following settings:
+  * Type: _Command_
+  * Command: `/usr/local/sbin/xe-daemon -p /var/run/xe-daemon.pid &`
+  * When: _Pre Init_
+  * Enabled: Checked
+
+After you've rebooted your TrueNAS VM, or started the daemon manually, you'll see a FreeBSD icon in your VM list on Xen Orchestra, and you can restart/shutdown the VM properly from the Web UI. You will also see 'management agent 6.2 detected' in XOA under your TrueNAS VM > General tab.
+
+There is no need to revert the repositories to enabled yes/no if you rebooted because that action reset them to their default settings.
+
+Thanks to @etomm in [this issue](https://github.com/xcp-ng/xcp/issues/446) for finding a solution.
+
+## FreeNAS
+
+FreeNAS is a locked-down version of FreeBSD, with many packages disabled to ensure a more stable environment for the fileserver. `xe-guest-utilities` is part of the packages that are **not** available in FreeNAS. But because it's based on FreeBSD, the packages from that OS can be installed, at your own risk. This is not a big issue for this particular package in older versions of FreeNAS, because it's a _leaf_ in the chain of dependencies - nothing in FreeNAS depends on it. However, in TrueNAS 12.0 requires a modified installation procedure (see above).
 
 To install it, you just have to enable the FreeBSD repo first:
 
