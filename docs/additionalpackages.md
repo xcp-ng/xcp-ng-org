@@ -22,7 +22,7 @@ To disable a repository, edit `/etc/yum.repos.d/name_of_repo.repo` and set `enab
 
 ### 2. Prefer additional packages from XCP-ng's own repositories
 
-We offer a number of additional packages ranging from [ZFS support](https://github.com/xcp-ng/xcp/wiki/ZFS-on-XCP-ng), [newer drivers](hardware.md#alternate-drivers) or [newer kernel](hardware.md#alternate-kernel), to small utilities such as `vim`, `joe`, `iperf`, `mc`, etc.).
+We offer a number of additional packages ranging from ZFS support, [newer drivers](hardware.md#alternate-drivers) or [newer kernel](hardware.md#alternate-kernel), to small utilities such as `vim`, `joe`, `iperf`, `mc`, etc.).
 
 A list of such utilities is available at <https://github.com/xcp-ng/xcp/issues/56#issuecomment-480337976>. It is a wishlist from the community. The "action" column will tell you if the utility is available in XCP-ng repositories.
 

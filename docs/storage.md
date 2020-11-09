@@ -127,6 +127,55 @@ For better performances, you can disable sync with `zfs set sync=disabled tank`.
 Please report any problem (performances or whatever) you might encounter in ZFS. [Our forum](https://xcp-ng.org/forum) is here for that!
 :::
 
+:::warning
+Note: If you use ZFS, assign at least 16GB RAM to avoid swapping. ZFS (in standard configuration) uses half the Dom0 RAM as cache!
+:::
+
+#### ZFS Knowledge & status
+
+Do no hesitate to take a look at these links for more advanced explanations:
+
+* Wikipedia: <https://en.wikipedia.org/wiki/ZFS>
+* OpenZFS Basics: <https://www.youtube.com/watch?v=MsY-BafQgj4>
+* Blog full of useful information: <http://www.zfsbuild.com>
+
+You can monitor your ZFS pool using:
+
+```
+# Get the global status.
+zpool status
+
+# More info concerning the performance.
+zpool iostat -v 1
+```
+
+#### ZFS module parameters
+
+To get the list of supported parameters, you can execute:
+
+```
+man zfs-module-parameters
+```
+
+It's possible to write/read parameters on the fly. For example:
+
+```
+# Read zfs_txg_timeout param.
+cat /sys/module/zfs/parameters/zfs_txg_timeout
+5
+# Write zfs_txg_timeout param.
+echo 10 > /sys/module/zfs/parameters/zfs_txg_timeout
+```
+
+#### Better performance (advanced options)
+
+There are many options to increase the performance of ZFS SRs:
+
+* Modify the module parameter `zfs_txg_timeout`: Flush dirty data to disk at least every N seconds (maximum txg duration). By default 5.
+* Disable sync to disk: `zfs set sync=disabled tank/zfssr`
+* Turn on compression (it's cheap but effective): `zfs set compress=lz4 tank/zfssr`
+* Disable accesstime log: `zfs set atime=off tank/zfssr`
+
 ### NFS
 
 In Xen Orchestra, go in the "New" menu entry, then Storage, and select NFS. Follow instructions from there.
