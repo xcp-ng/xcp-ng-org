@@ -126,36 +126,54 @@ For OpenBSD search [the forum](https://xcp-ng.org/forum). See for example [this 
 
 FreeNAS is a locked-down version of FreeBSD, with many packages disabled to ensure a more stable environment for the fileserver. `xe-guest-utilities` is part of the packages that are **not** available in FreeNAS. But because it's based on FreeBSD, the packages from that OS can be installed, at your own risk. This is not a big issue for this particular package, because it's a _leaf_ in the chain of dependencies - nothing in FreeNAS depends on it.
 
-To install it, you just have to enable the FreeBSD repo first:
+To install it on versions 11 or higher, until version 12.0-U1 of TrueNAS that includes it as default, follow these steps.
 
-```bash
-# sed -i '' 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/FreeBSD.conf
-# pkg install xe-guest-utilities
-```
+1. Enable the FreeBSD repo first:
+   ```bash
+   # sed -i '' 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/FreeBSD.conf
+   ```
+   If you are using FreeNAS v11.2 or higher, you also have to disable the local package repository [to avoid an issue in that particular release and that may affect later versions](https://www.justinsilver.com/random/fix-pkg-on-freenas-11-2/) before running `pkg install`:
+   ```bash
+   # sed -i '' 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/local.conf
+   ```
+   
+2. Create a temporary directory and move into it:
+   ```bash
+   # mkdir /tmp/repo
+   # cd /tmp/repo
+   ```
+   
+3. Fetch the required packages. A directory **All** will be created and you will find the packages with their current versions under there:
+   ```bash   
+   # pkg fetch -o /tmp/repo/ xen-guest-tools
+   # pkg fetch -o /tmp/repo/ xe-guest-utilities
+   ```
+   
+4. Add the downloaded packages, without their dependencies:   
+   ```bash
+   # pkg add -M All/xen-guest-tools-4.14.0.txz
+   # pkg add -M All/xe-guest-utilities-6.2.0_3.txz
+   ```
+   The versions reported here are just the current version and they maybe different in your installation.
+   
+5. Revert the repos to their original settings to avoid surprises down the road. The second command should be run just if you disabled the local repo in step 1:
+   ```bash
+   # sed -i '' 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/FreeBSD.conf
+   # sed -i '' 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/local.conf
+   ```
+   A restart of the VM will perform a reset of these files to their original settings too.
+   
+6. Once the package is installed, you need to tell FreeNAS to start the `xe-daemon` process when starting:
+   1. Go to _Tasks -> Init/Shutdown Script_
+   2. Create a new task with the following settings:
+      * Type: _Command_
+      * Command: `/usr/local/sbin/xe-daemon -p /var/run/xe-daemon.pid &`
+      * When: _Pre Init_
+      * Enabled: Checked
 
-If you are using FreeNAS v11.2, you also have to disable the local package repository [to avoid an issue in that particular release](https://www.justinsilver.com/random/fix-pkg-on-freenas-11-2/) before running `pkg install`:
+7. Reboot. If you do not plan to reboot the VM, you can start the deamon manually running the command `/usr/local/sbin/xe-daemon -p /var/run/xe-daemon.pid &`. After you'll see a FreeBSD icon in your VM list on Xen Orchestra, and you can restart/shutdown the VM properly from the Web UI.
 
-```bash
-# sed -i '' 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/local.conf
-```
-
-After the install, revert to the previous settings to avoid surprises down the road:
-```bash
-# sed -i '' 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/FreeBSD.conf
-# sed -i '' 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/local.conf
-```
-
-Once the package is installed, you need to tell FreeNAS to start the `xe-daemon` process when starting:
-1. Go to _Tasks -> Init/Shutdown Script_
-2. Create a new task with the following settings:
-  * Type: _Command_
-  * Command: `/usr/local/sbin/xe-daemon -p /var/run/xe-daemon.pid &`
-  * When: _Pre Init_
-  * Enabled: Checked
-
-After you've rebooted your FreeNAS VM, or started the daemon manually, you'll see a FreeBSD icon in your VM list on Xen Orchestra, and you can restart/shutdown the VM properly from the Web UI.
-
-Thanks to @etomm in [this issue](https://github.com/xcp-ng/xcp/issues/172#issuecomment-548181589) for the idea.
+More insights and options are available in [this issue](https://github.com/xcp-ng/xcp/issues/172#issuecomment-548181589) or [this issue](https://github.com/xcp-ng/xcp/issues/446).
 
 ## Windows
 
