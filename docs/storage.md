@@ -199,7 +199,7 @@ Now you can create the SR where `server` is your mon ip.
 Experimental, this needs reliable testing to ensure no block corruption happens in regular use.
 :::
 
-This is at this moment the only way to connect to Ceph with no modifications of dom0, it's possible to create multiple Ceph iSCSI gateways following this: https://docs.ceph.com/docs/master/rbd/iscsi-target-cli/
+This is at this moment the only way to connect to Ceph with no modifications of dom0, it's possible to create multiple Ceph iSCSI gateways following this: <https://docs.ceph.com/docs/master/rbd/iscsi-target-cli/>
 
 Ceph iSCSI gateway node(s) sits outside dom0, probably another Virtual or Physical machine. The packages referred in the URL are to be installed on iSCSI gateway node(s). For XCP-ng dom0, no modifications are needed as it would use LVMoISCSISR (lvmoiscsi) driver to access the iSCSI LUN presented by these gateways.
 
@@ -259,7 +259,7 @@ xe sr-create name-label='CEPH' shared=true device-config:device=/dev/rbd/rbd/xen
 
 You will probably want to configure ceph further so that the block device is mapped on reboot.
 
-For the full discussion about Ceph in XCP-ng, see this forum thread: https://xcp-ng.org/forum/topic/4/ceph-on-xcp-ng
+For the full discussion about Ceph in XCP-ng, see this forum thread: <https://xcp-ng.org/forum/topic/4/ceph-on-xcp-ng>
 
 ### XOSANv2
 
