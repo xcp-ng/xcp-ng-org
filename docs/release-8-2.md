@@ -1,4 +1,4 @@
-# Long Term Support Release (LTSR)
+# XCP-ng 8.2 (LTSR)
 
 :::warning
 Current LTSR status is NOT yet released, it's still a Release Candidate! See [our XCP-ng 8.2 LTS RC blog post](https://xcp-ng.org/blog/2020/10/30/xcp-ng-8-2-release-candidate/) for more details.
@@ -12,18 +12,7 @@ SHA256 checksums, GPG signatures and net-install ISO are available [here](https:
 LTS means **Long Term Support**: this version is supported for 5 years, and even more for specific Extended Lifetime Support.
 :::
 
-## LTSR objectives
-
-Using the LTSR version is relevant if:
-
-* you want to be sure the system will stay stable
-* you want to have all security fixes without doing major upgrades every year
-* you want a predictable migration path on a longer timeframe
-* you don't care about new features coming for the next years
-
-![](../assets/img/lts.png)
-
-If you prefer to get latest improvements, go for our [current release](currentrelease.md).
+[[toc]]
 
 ## Release information
 
@@ -34,6 +23,7 @@ If you prefer to get latest improvements, go for our [current release](currentre
 * Kernel 4.19, with patches. Latest kernel hotfix from CH 8.2 at the date of release included in the release
 
 ## Install
+
 See [Installation](install.md).
 
 ## Upgrade from previous releases

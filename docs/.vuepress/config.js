@@ -6,7 +6,7 @@ module.exports = {
   ],
   base: '/docs/',
   themeConfig: {
-    smoothScroll: true,
+    smoothScroll: false,
     logo: 'https://xcp-ng.org/assets/img/smalllogo_notext.png',
     lastUpdated: 'Last Updated', // add latest Git commit modification for each file
     repo: 'xcp-ng/xcp-ng-org', // point to the GH repo
@@ -30,8 +30,7 @@ module.exports = {
         collapsable: false, // optional, defaults to true
         sidebarDepth: 1,    // optional, defaults to 1
         children: [
-          ['/currentrelease', 'CR (Current Release)'],
-          ['/lts', 'LTSR (Long Term Support Release)'],
+          ['/releases', 'Releases'],
           ['/requirements', 'Requirements'],
           ['/hardware', 'Hardware support'],
           ['/install', 'Installation'],
