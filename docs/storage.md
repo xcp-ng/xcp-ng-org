@@ -121,10 +121,10 @@ Now you can create the SR on top of it:
 xe sr-create host-uuid=<HOST_UUID> type=zfs content-type=user name-label=LocalZFS device-config:location=/mnt/zfs/
 ```
 
-For better performances, you can disable sync with `zfs set sync=disabled tank`.
+For better performance, you can disable sync with `zfs set sync=disabled tank`.
 
 :::tip
-Please report any problem (performances or whatever) you might encounter in ZFS. [Our forum](https://xcp-ng.org/forum) is here for that!
+Please report any problems (performance or otherwise) you might encounter with ZFS. [Our forum](https://xcp-ng.org/forum) is here for that!
 :::
 
 :::warning
@@ -133,7 +133,7 @@ Note: If you use ZFS, assign at least 16GB RAM to avoid swapping. ZFS (in standa
 
 #### ZFS Knowledge & status
 
-Do no hesitate to take a look at these links for more advanced explanations:
+Do not hesitate to take a look at these links for more advanced explanations:
 
 * Wikipedia: <https://en.wikipedia.org/wiki/ZFS>
 * OpenZFS Basics: <https://www.youtube.com/watch?v=MsY-BafQgj4>
@@ -186,11 +186,13 @@ In Xen Orchestra, go in the "New" menu entry, then Storage, and select iSCSI. Fo
 
 ### HBA
 
-You can add an HBA storage with `xe`:
+You can add a Host Bus Adapter (HBA) storage device with `xe`:
 
 ```
 xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage device-config:SCSIid=<the SCSI id>
 ```
+
+This is great for passing through full hardware disks, such as an entire hard disk.
 
 If you have a problem with the SCSIid, you can use this alternative, carefully selecting the right drive, and checking it's visible on all hosts with the same name:
 
@@ -200,13 +202,11 @@ xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage 
 
 ### Glusterfs
 
-You can use this driver to connect to an existing Gluster storage, and configure it as a shared SR for all your hosts in the pool. For example, a Gluster storage with 3 nodes (`192.168.1.11`, `192.168.1.12` and `192.168.1.13`) and a volume name called `glustervolume`:
+You can use this driver to connect to an existing [Gluster storage](https://docs.gluster.org/en/latest/) volume and configure it as a shared SR for all your hosts in the pool. For example, a Gluster storage with 3 nodes (`192.168.1.11`, `192.168.1.12` and `192.168.1.13`) and a volume name called `glustervolume` will be thin provisioned with the command:
 
 ```
 xe sr-create content-type=user type=glusterfs name-label=GlusterSharedStorage shared=true device-config:server=192.168.1.11:/glustervolume device-config:backupservers=192.168.1.12:192.168.1.13
 ```
-
-It will be thin provisioned!
 
 ### CephFS
 
@@ -333,16 +333,16 @@ Usually, you can use a NFS or SMB share. But if you don't have any of those, you
 That's it!
 
 :::tip
-Don't forget to rescan your SR after adding ISO files. Rescan is done automatically every 10 minutes otherwise
+Don't forget to rescan your SR after adding ISO files. Rescan is done automatically every 10 minutes otherwise.
 :::
 
 ## Storage API
 
-Current storage stack on XCP-ng is called `SMAPIv1`. VHD format is used, which has a limitation to 2TiB max. So it means that your VM disk can't be larger than 2TiB, using this format.
+Current storage stack on XCP-ng is called `SMAPIv1`. The VHD format is used, which has a maximum file size limitation of 2TiB. This means that when using this format your VM disk can't be larger than 2TiB.
 
-### Why using VHD format?
+### Why use VHD format?
 
-For historical reasons. When it was decided, it was the only acceptable format being able to deal with copy on write, delta capabilities and merge possibilities. Thanks to VHD format, you have:
+Mostly for historical reasons. When standardization on [VHD](https://en.wikipedia.org/wiki/VHD_(file_format)) was decided, it was the only acceptable format that supported [copy on write](https://en.wikipedia.org/wiki/Copy-on-write), delta capabilities, and merge possibilities. Thanks to VHD format, you have:
 
 * snapshot support
 * delta backup
@@ -366,12 +366,12 @@ On a block based storage, it's a bit more complicated:
 3. Rescan SR
 
 :::warning
-You won't be able to live storage migrate this disk or snapshot it anymore. Outside this, it will work very well
+You won't be able to live migrate storage on this disk or snapshot it anymore. Outside of this, it will work very well.
 :::
 
 ### SMAPIv3: the future
 
-`SMAPIv1` is the historical storage interface, and now a big spaghetti monster. That's why Citrix decided to create a new one, called `SMAPIv3`: it's far more flexible, and also support (partially) the `qcow2` format. This format got the same concepts as VHD, but without its limitations.
+`SMAPIv1` is the historical storage interface, and now a big spaghetti monster. That's why Citrix decided to create a new one, called `SMAPIv3`: it's far more flexible, and also support (partially) the `qcow2` format. This format has the same concepts as VHD, but without its limitations.
 
 Also, the storage API is far more agnostic and the code is better. So what's the catch? Problem is there's no Open Source implementation of `SMAPIv3`, also the current API state isn't really complete (doesn't support a lot of features). However, XCP-ng team is working on it too, because it's clearly the future!
 
@@ -401,7 +401,7 @@ This process will take some time to finish (especially if you VM stays up and wo
 
 You will hit a wall, 2 options here:
 
-* if your VM disks are small enough, you could reach the max chain length (30)
+* if your VM disks are small enough, you could reach the max chain length (30).
 * if your VM disks are big, you'll hit the SR space limit before.
 
 ### Xen Orchestra protection
