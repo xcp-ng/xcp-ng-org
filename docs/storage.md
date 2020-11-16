@@ -14,52 +14,77 @@ We encourage people to use file based SR (local ext, NFS, XOSAN…) because it's
 
 ## Storage types
 
-There's 2 types of storage:
+There are two types of storage:
 
 * Thin Provisioned: you only use the space your VM has filled with data
 * Thick Provisioned: you use the space of your VMs disk(s) size.
+
+In addition to this, storage can be either local or shared between hosts of a pool.
+
+There are storage types that are officially supported, and others that are provided as-is, in the hope that they are useful to you. Actually, we do maintain them too, but they receive less testing than the officially supported ones.
+
 
 <table>
   <tr>
     <th>Type of Storage Repository</th>
     <th>Name</th>
     <th>Thin Provisioned</th>
-    <th>Thick Provisioned</th>
+    <th>Shared Storage</th>
+    <th>Officially Supported</th>
   </tr>
   <tr>
-    <td rowspan="6">file based</td>
-    <td>local Ext</td>
+    <td rowspan="8">file based</td>
+    <td>Local EXT</td>
     <td>X</td>
     <td></td>
+    <td>X</td>
   </tr>
   <tr>
     <td>NFS</td>
     <td>X</td>
-    <td></td>
+    <td>X</td>
+    <td>X</td>
   </tr>
   <tr>
     <td>File</td>
     <td>X</td>
     <td></td>
+    <td>X (use with caution)</td>
   </tr>
   <tr>
-    <td>XOSAN</td>
+    <td>XOSAN v2</td>
     <td>X</td>
-    <td></td>
+    <td>X</td>
+    <td>Soon</td>
   </tr>
   <tr>
     <td>ZFS</td>
+    <td>X</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>XFS</td>
+    <td>X</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>GlusterFS</td>
+    <td>X</td>
     <td>X</td>
     <td></td>
   </tr>
   <tr>
     <td>CephFS</td>
     <td>X</td>
+    <td>X</td>
     <td></td>
   </tr>
   <tr>
     <td rowspan="5">block based</td>
-    <td>local LVM</td>
+    <td>Local LVM</td>
+    <td></td>
     <td></td>
     <td>X</td>
   </tr>
@@ -67,34 +92,38 @@ There's 2 types of storage:
     <td>iSCSI</td>
     <td></td>
     <td>X</td>
+    <td>X</td>
   </tr>
   <tr>
     <td>HBA</td>
     <td></td>
+    <td>X</td>
     <td>X</td>
   </tr>
   <tr>
     <td>Ceph iSCSI gateway</td>
     <td></td>
     <td>X</td>
+    <td></td>
   </tr>
   <tr>
     <td>CephRBD</td>
     <td></td>
     <td>X</td>
+    <td></td>
   </tr>
 </table>
 
 :::warning
-Cost of thick provisioned is relatively high when you do snapshots (used for backup). If you can use ext or NFS instead, you'll save a LOT of space.
+Cost of thick provisioning is relatively high when you do snapshots (used for backup). If you can use a thin provisioned storage instead, such as Local EXT or NFS, you'll save a LOT of space.
 :::
 
 ### Local
 
-Local SR is using a disk or a partition of your local disk, to create a space for your VM disks. Local LVM will use logical volumes, whereas Local ext will create an `ext4` filesystem and put `.vhd` files in it.
+A local SR is using a disk or a partition of your local disk, to create a space for your VM disks. Local LVM will use logical volumes, whereas Local EXT will create an `ext4` filesystem and put `.vhd` files in it.
 
 :::tip
-The concept is simple: tell XCP-ng on the disk or partition you want to use, and it will do everything for you! Don't do anything yourself (no need to create a logical volume or a filesystem)
+The concept is simple: tell XCP-ng which disk or partition you want to use, and it will do everything for you! Don't do anything yourself (no need to create a logical volume or a filesystem)
 :::
 
 In [Xen Orchestra](management.md#xen-orchestra):
@@ -107,9 +136,42 @@ Via `xe` CLI for a local EXT SR (where `sdaX` is a partition, but it can be the 
 xe sr-create host-uuid=<host UUID> type=ext content-type=user name-label="Local Ext" device-config:device=/dev/sdaX
 ```
 
+In addition to the two main, rock-solid, local storages (EXT and LVM), XCP-ng offers storage drivers for other types of local storage (ZFS, XFS, etc.).
+
+### NFS
+
+Shared, thin-provisioned storage. Efficient, recommended for ease of maintenance and space savings.
+
+In Xen Orchestra, go in the "New" menu entry, then Storage, and select NFS. Follow instructions from there.
+
+### File
+
+Local, thin-provisioned. Not recommended.
+
+The `file` storage driver allows you to use any local directory as storage. 
+
+Example:
+```
+xe sr-create host-uuid=<host UUID> type=file content-type=user name-label="Local File SR" device-config:location=/path/to/storage
+```
+
+Avoid using it with mountpoints for remote storage: if for some reason the filesystem is not mounted when the SR is scanned for virtual disks, the `file` driver will believe that the SR is empty and drop all VDI metadata for that storage.
+
+### XOSANv2
+
+Shared, thin-provisioned storage.
+
+XOSANv2 is an hyperconvergence solution. In short, your local storage are combined into a big shared storage.
+
+:::tip
+XOSANv2 is coming soon in XCP-ng. Hang on!
+:::
+
 ### ZFS
 
-ZFS is also local, but you'll need to create your ZFS pool and volumes yourself, e.g. on partition `sda4`:
+Local, thin-provisioned. Available since XCP-ng 8.2.
+
+Due to the variety of parameters of ZFS, the SR driver does not automate everything. You need to create your ZFS pool and volumes yourself, e.g. on partition `sda4`:
 
 ```
 zpool create -o ashift=12 -m /mnt/zfs tank /dev/sda4
@@ -176,31 +238,31 @@ There are many options to increase the performance of ZFS SRs:
 * Turn on compression (it's cheap but effective): `zfs set compress=lz4 tank/zfssr`
 * Disable accesstime log: `zfs set atime=off tank/zfssr`
 
-### NFS
+### XFS
 
-In Xen Orchestra, go in the "New" menu entry, then Storage, and select NFS. Follow instructions from there.
+Local, thin-provisioned storage.
 
-### iSCSI
+:::tip
+[Additional package](additionalpackages.md) required and available in our repositories: `xfsprogs`.
 
-In Xen Orchestra, go in the "New" menu entry, then Storage, and select iSCSI. Follow instructions from there.
+On XCP-ng before 8.2, you also need `sm-additional-drivers`.
+:::
 
-### HBA
+Works in the same way as the Local EXT storage driver: you hand it a device and it will format it and prepare it for your VMs automatically.
 
-You can add a Host Bus Adapter (HBA) storage device with `xe`:
-
-```
-xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage device-config:SCSIid=<the SCSI id>
-```
-
-This is great for passing through full hardware disks, such as an entire hard disk.
-
-If you have a problem with the SCSIid, you can use this alternative, carefully selecting the right drive, and checking it's visible on all hosts with the same name:
+Via `xe` CLI for a local XFS SR (where `sdaX` is a partition, but it can be the entire device e.g. `sdc`):
 
 ```
-xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage device-config:device=/dev/<HBA drive>
+xe sr-create host-uuid=<host UUID> type=xfs content-type=user name-label="Local XFS" device-config:device=/dev/sdaX
 ```
 
 ### Glusterfs
+
+Shared, thin-provisioned storage. Available since XCP-ng 8.2.
+
+:::tip
+[Additional package](additionalpackages.md) required and available in our repositories: `glusterfs-server`.
+:::
 
 You can use this driver to connect to an existing [Gluster storage](https://docs.gluster.org/en/latest/) volume and configure it as a shared SR for all your hosts in the pool. For example, a Gluster storage with 3 nodes (`192.168.1.11`, `192.168.1.12` and `192.168.1.13`) and a volume name called `glustervolume` will be thin provisioned with the command:
 
@@ -210,11 +272,13 @@ xe sr-create content-type=user type=glusterfs name-label=GlusterSharedStorage sh
 
 ### CephFS
 
+Shared, thin-provisioned storage. Available since XCP-ng 8.2.
+
 :::warning
 This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](additionalpackages.md)). You will also need to be careful about system updates and upgrades.
 :::
 
-You can use this driver to connect to an existing Ceph storage filesystem, and configure it as a shared SR for all your hosts in the pool. This driver uses `mount.ceph` from `ceph-common` package of `centos-release-ceph-jewel` repo. So user needs to install it before creating the SR. Without it, the SR creation would fail with an error like below
+You can use this driver to connect to an existing Ceph storage filesystem, and configure it as a shared SR for all your hosts in the pool. This driver uses `mount.ceph` from `ceph-common` package of `centos-release-ceph-nautilus` repo. So user needs to install it before creating the SR. Without it, the SR creation would fail with an error like below
 ```
 Error code: SR_BACKEND_FAILURE_47
 Error parameters: , The SR is not available [opterr=ceph is not installed],
@@ -222,7 +286,7 @@ Error parameters: , The SR is not available [opterr=ceph is not installed],
 
 Installation steps
 ```
-# yum install centos-release-ceph-jewel --enablerepo=extras
+# yum install centos-release-ceph-nautilus --enablerepo=extras
 # yum install ceph-common --enablerepo=base
 ```
 
@@ -240,7 +304,32 @@ Now you can create the SR where `server` is your mon ip.
 :::tip
 * For `serverpath` it would be good idea to use an empty folder from the CephFS instead of `/`.
 * You may specify `serverport` option if you are using any other port than 6789.
+* Do not use admin keyring for production, but make a separate key with only necessary privileges https://docs.ceph.com/en/latest/rados/operations/user-management/
 :::
+
+### iSCSI
+
+Shared, thick-provisioned storage.
+
+In Xen Orchestra, go in the "New" menu entry, then Storage, and select iSCSI. Follow instructions from there.
+
+### HBA
+
+Shared, thick-provisioned storage.
+
+You can add a Host Bus Adapter (HBA) storage device with `xe`:
+
+```
+xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage device-config:SCSIid=<the SCSI id>
+```
+
+This is great for passing through full hardware disks, such as an entire hard disk.
+
+If you have a problem with the SCSIid, you can use this alternative, carefully selecting the right drive, and checking it's visible on all hosts with the same name:
+
+```
+xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage device-config:device=/dev/<HBA drive>
+```
 
 ### Ceph iSCSI gateway
 
@@ -269,7 +358,7 @@ Known issue: this SR is not allowed to be used for HA state metadata due to LVM 
 Installation steps
 
 ```
-# yum install centos-release-ceph-jewel --enablerepo=extras
+# yum install centos-release-ceph-nautilus --enablerepo=extras
 # yum install ceph-common --enablerepo=base
 ```
 
@@ -310,12 +399,8 @@ You will probably want to configure ceph further so that the block device is map
 
 For the full discussion about Ceph in XCP-ng, see this forum thread: <https://xcp-ng.org/forum/topic/4/ceph-on-xcp-ng>
 
-### XOSANv2
-
-XOSANv2 is an hyperconvergence solution. In short, your local storage are combined into a big shared storage.
-
 :::tip
-XOSANv2 is coming soon in XCP-ng. Hang on!
+* Do not use admin keyring for production, but make a separate key with only necessary privileges <https://docs.ceph.com/en/latest/rados/operations/user-management/>
 :::
 
 ## ISO SR
