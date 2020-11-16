@@ -2,7 +2,7 @@
 
 **XCP-ng 8.1** is the current and latest release of XCP-ng. [Download the installation ISO](http://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso).
 
-SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
+SHA256 checksums, GPG signatures and net-install ISO are available [here](http://mirrors.xcp-ng.org/isos/8.1/).
 
 [[toc]]
 
@@ -24,8 +24,6 @@ Since XCP-ng 8.1.0 is a minor release, both upgrade methods are supported:
 * From command line using `yum` (**from XCP-ng 8.0 only!**)
 
 Refer to the [Upgrade Howto](upgrade.md).
-
-Note for testers: to upgrade from XCP-ng 8.1 beta or RC, just use `yum update` or Xen Orchestra as if you were [installing updates to a stable release](updates.md).
 
 ## What changed since 8.0
 
@@ -59,9 +57,9 @@ Other changes:
   * Instructions for transitioning written in a specific section below.
   * Our `sm-additional-drivers` package updated to refuse to create new experimental `ext4` SRs since ext4 is already the default with the `ext` driver.
 
-### XCP-ng specific changes
+**The rest, below, is about changes specific to XCP-ng.**
 
-#### Backups with RAM
+### Backups with RAM
 
 XCP-ng 8.1 embeds the XAPI (XenServer/XCP-ng API) modification required to support VM backups with their RAM. This new feature is at the same time available directly in Xen Orchestra.
 
@@ -71,19 +69,19 @@ You can restore it anytime later on another host, and resume it as if nothing ha
 
 For more information and use cases, you can check [this Devblog](https://xen-orchestra.com/blog/devblog-6-backup-ram/) written by our developer Benjamin.
 
-#### Installer improvements in 8.1
+### Installer improvements in 8.1
 
 Our installer now offers two new installation options. In legacy boot mode, access them with F2 when offered the choice. In UEFI mode, see the added boot menu entries.
 * First new option: boot the installer with a 2G RAM limit instead of the 8G default. This is a workaround for installation issues on hardware with Ryzen CPUs. Though those are Desktop-class CPUs and not supported officially in the HCL, we tried to make it easier to workaround the infamous "installer crashes on Ryzen" issue.
 * Second new option: boot the installer with our [alternate kernel](hardware.md#alternate-kernel) (kernel-alt). That kernel, built and maintained by @r1 for the team, is based on the main kernel, with all upstream kernel.org patches from the LTS 4.19 branch applied.It should be very stable by construction **but it receives less testing**. That option is there for cases when the main kernel and drivers have issues, so that you can quickly test if kernel.org patches have fixed it already. It will also install the alternate kernel in addition to the main kernel as a convenience. **If kernel-alt fixes issues for you, the most important thing to do is to tell us so that we may fix the main kernel!**
 
-#### New leaf coalesce logic with dynamic limits
+### New leaf coalesce logic with dynamic limits
 
 We have backported patches from `sm`'s master branch, that implement a new, smarter, logic for leaf coalescing.
 
 Those interested in the patches, see [this commit](https://github.com/xcp-ng-rpms/sm/commit/ed1a55d727846cf5777c8258e6a8f3b068e8a35b) (python code).
 
-#### Changes regarding our specific packages
+### Changes regarding our specific packages
 
 * ZFS updated to 0.8.3.
 * [Alternate kernel](hardware.md#alternate-kernel) updated to version 4.19.108. Installing it now automatically adds a new boot entry in grub's configuration, to make testing easier. Default entry remains that of the main kernel.
@@ -93,17 +91,15 @@ Those interested in the patches, see [this commit](https://github.com/xcp-ng-rpm
 * `zstd` updated to 1.4.4.
 * Experimental support for XFS in local storage repository still available through the `sm-additional-drivers` package.
 
-#### Status of Windows guest tools
+### Status of Windows guest tools
 
 Plans are laid out for simpler installation and maintenance of Windows guest tools. Unfortunately, we haven't found resources yet to implement them so the current state remains that of 8.0. ***If you're a developer on the Windows platforms, we're hiring! (full time or part time, contracts or hires) - Contact us.***
 
 However we have updated the [documentation about the guest tools](guests.md), which is hopefully clearer now!
 
-#### Other changes
+### Other changes
 
 * Fixed netxtreme drivers (`bnx2x` module) that crashed with some models.
-
-
 
 ## Misc
 
@@ -246,7 +242,7 @@ swaplabel -L swap-abcdef /dev/sda6
 
 Forum thread: <https://xcp-ng.org/forum/topic/2849/post-8-1-upgrade-boot-fails-and-restore-fails>
 
-## Citrix Hypervisor's known issues
+### Citrix Hypervisor's known issues
 
 In general, issues inherited from Citrix Hypervisor and already described in their documentation are not repeated in ours, unless we need to increase the visibility of said issues.
 
@@ -257,13 +253,13 @@ Some exceptions to those CH 8.1 known issues:
 * Issues related to Citrix-specific things like licenses or GFS2 do not apply to XCP-ng.
 * Though not mentioned yet in their known issues (as of 2020-03-30), an update of CH 8.0 to CH 8.1 using the update ISO fails at enabling the `chronyd` service. In XCP-ng 8.1, updated from 8.0 using `yum`, we fixed that issue before the release.
 
-## Older known issues to sort
+### Older known issues
 
 As every hand-updated list, this list below can quickly become obsolete or incomplete, so also check this: <https://github.com/xcp-ng/xcp/issues>
 
 Some hardware-related issues are also described in [this page](hardware.md).
 
-### Cross-pool live migration from XenServer < 7.1
+#### Cross-pool live migration from XenServer < 7.1
 
 Live migrating a VM from an old XenServer can sometimes end with an error, with the following consequences:
 * The VM reboots
@@ -273,21 +269,21 @@ Would require a hotfix to the old XenServer, but since those versions are not su
 
 Reference: [XSO-938](https://bugs.xenserver.org/browse/XSO-938)
 
-### Dell servers do not get the best partitioning
+#### Dell servers do not get the best partitioning
 
 Due to the presence of the diagnostic partition on Dell servers, the installer does not create all partitions, so for example there's no dedicated /var/log partition (side-effect: log rotation switches to aggressive mode, so old logs are deleted quickly, sometimes even the same day!).
 
 Reference: <https://github.com/xcp-ng/xcp/issues/149>
 
-### Installation on software RAID may fail on previously used disks
+#### Installation on software RAID may fail on previously used disks
 
 Sometimes the presence of old `mdadm` metadata on the disks cause the installer to fail creating the software RAID. Zeroing the disks fixes it.
 
 Reference: <https://github.com/xcp-ng/xcp/issues/107>
 
-### Installer crashes on some hardware with AMD Ryzen APUs
+#### Installer crashes on some hardware with AMD Ryzen APUs
 
-The installer for XCP-ng 8.0 gives an error on some hardware. Reducing the maximum amount of memory allocated to the installer workarounds it.
+The installer gives an error on some hardware. Reducing the maximum amount of memory allocated to the installer workarounds it.
 The installer offers extra options to boot with only 2 G of RAM (usually solves the issue) or using an alternate kernel.
 
 Reference: <https://github.com/xcp-ng/xcp/issues/206>

@@ -159,7 +159,7 @@ In general, issues inherited from Citrix Hypervisor and already described in the
 
 See [Citrix Hypervisor's known issues](https://docs.citrix.com/en-us/citrix-hypervisor/whats-new/known-issues.html) (link only valid for the latest release of Citrix Hypervisor). Most apply to XCP-ng.
 
-Some exceptions to those CH 8.1 known issues:
+Some exceptions to those Citrix Hypervisor known issues:
 * Issues related to Citrix-specific things like licenses or GFS2 do not apply to XCP-ng.
 
 ### Older known issues
@@ -192,7 +192,7 @@ Reference: <https://github.com/xcp-ng/xcp/issues/107>
 
 #### Installer crashes on some hardware with AMD Ryzen APUs
 
-The installer for XCP-ng 8.0 gives an error on some hardware. Reducing the maximum amount of memory allocated to the installer workarounds it.
+The installer gives an error on some hardware. Reducing the maximum amount of memory allocated to the installer workarounds it.
 The installer offers extra options to boot with only 2 G of RAM (usually solves the issue) or using an alternate kernel.
 
 Reference: <https://github.com/xcp-ng/xcp/issues/206>
