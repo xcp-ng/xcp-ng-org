@@ -42,6 +42,7 @@ module.exports = {
           ['/guests','Guests tools'],
           ['/additionalpackages', 'Additional packages'],
           ['/troubleshooting', 'Troubleshooting'],
+          ['/architecture', 'Architecture']
         ]
       },
       {
