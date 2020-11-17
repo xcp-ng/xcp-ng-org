@@ -1,6 +1,6 @@
-# XCP-ng 8.2 (LTSR)
+# XCP-ng 8.2 LTS
 
-XCP-ng 8.2 is a LTS Release (LTSR). [Download the installation ISO](http://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.0.iso).
+XCP-ng 8.2 is a [LTS Release](releases.md#lts-releases). [Download the installation ISO](http://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.0.iso).
 
 SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
