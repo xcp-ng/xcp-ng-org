@@ -90,7 +90,7 @@ For the remaining Linux distributions, mount the guest tools ISO as described ab
 See also [Contributing](guests.html#contributing) below.
 
 ### Update the guest tools
-It's a good habit, and may be even required in some cases (that would then be described in the [Release Notes](https://xcp-ng.org/docs/currentrelease.html)), to update the guest tools to their latest version when your XCP-ng hosts are updated.
+It's a good habit, and may be even required in some cases (that would then be described in the [Release Notes](releases.md#all-releases), to update the guest tools to their latest version when your XCP-ng hosts are updated.
 
 Depending on the situation, just update from your distribution's online repositories, or follow the above installation process again.
 

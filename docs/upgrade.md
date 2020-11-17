@@ -1,8 +1,8 @@
 # Upgrade
 
-This page details how to upgrade to the latest version of XCP-ng from a previous release, e.g. 7.4 to 7.6 or 8.0 to 8.1.
+This page details how to upgrade to the latest version of XCP-ng from a previous release, e.g. 7.4 to 7.6 or 8.0 to 8.2.
 
-For updates that don't change the version numbers (bugfixes, security fixes), see [updates section](updates.md).
+For updates that don't change the version numbers (bugfixes, security fixes), see [the updates section](updates.md).
 
 :::tip
 There are 3 upgrade methods, detailed below:
@@ -13,7 +13,7 @@ There are 3 upgrade methods, detailed below:
 
 ## Release Notes & Known Issues
 
-Read the [release notes](currentrelease.md) and [known issues](currentrelease.md#known-issues) for every version that is higher than your current version. They may provide additional instructions for specific situations. Also **please read the following warnings below**:
+Read the [Release Notes and Known Issues](releases.md#all-releases) for every release that is higher than your current release. They may provide additional instructions for specific situations. Also **please read the following warnings**:
 
 :::warning
 * Always upgrade and reboot the pool master **FIRST**
@@ -45,7 +45,7 @@ Steps:
 5. After the upgrade completed, reboot your host.
 6. Then [install the updates](updates.md) that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
 
-Once installed, **keep the system regularly updated** (see [updates section](updates.md)).
+Once installed, **keep the system regularly updated** (see [the updates section](updates.md)).
 
 If you can't boot from the ISO, see the next section.
 
