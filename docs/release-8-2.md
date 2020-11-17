@@ -153,6 +153,14 @@ Avoid running `yum update` in the host's remote console. Prefer ssh. If you real
 
 See [this forum thread](https://xcp-ng.org/forum/topic/2822/xcp-ng-8-0-upgrade-to-8-1-via-yum-warning).
 
+### UEFI Windows compatibility
+
+Overall testing and user feedback regarding UEFI Windows compatibility was good.
+
+However, there remain specific situations where some Windows VM have trouble starting. This has been observed on some VMs after a backup restore or a VM copy.
+
+Reference: https://github.com/xcp-ng/xcp/issues/454
+
 ### Citrix Hypervisor's known issues
 
 In general, issues inherited from Citrix Hypervisor and already described in their documentation are not repeated in ours, unless we need to increase the visibility of said issues.
