@@ -139,7 +139,7 @@ We will download the repository file that will tell yum where to download the pa
 
   Example:
   ```
-  export VER=8.1
+  export VER=8.2
   ```
 
 In the commands below your shell will automatically replace `$VER` with the value that you defined.
@@ -167,6 +167,7 @@ yum update
 ```
 
 #### 3. Check the configuration files
+
 When `rpm` needs to update configuration files that you had modified previously, there's a conflict of changes. There exists two strategies:
 * either keep your file and write the new configuration file as `yourfile.rpmnew`.
 * or overwrite your file with the new one and save it as `yourfile.rpmsave`.

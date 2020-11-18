@@ -45,12 +45,19 @@ Important updates - especially security updates - are announced [on the blog](ht
 
 A comprehensive list of updates is available on our build system's web interface. Click the package names for details:
 
+#### Updates for XCP-ng 8.2
+
+* [List of official **updates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=42&order=-build_id&latest=1)
+* [List of **update candidates** and other **testing** packages](https://koji.xcp-ng.org/builds?inherited=0&tagID=43&order=-build_id&latest=1)
+
+
 #### Updates for XCP-ng 8.1
 
 * [List of official **updates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=36&order=-build_id&latest=1)
 * [List of **update candidates** and other **testing** packages](https://koji.xcp-ng.org/builds?inherited=0&tagID=37&order=-build_id&latest=1)
 
 #### Updates for XCP-ng 8.0
+
 * [List of official **updates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=27&order=-build_id&latest=1)
 * [List of **update candidates** and other **testing** packages](https://koji.xcp-ng.org/builds?inherited=0&tagID=28&order=-build_id&latest=1)
 
