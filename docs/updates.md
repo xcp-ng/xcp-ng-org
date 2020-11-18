@@ -9,10 +9,14 @@ If you are running XCP-ng 7.5 or 7.6, please read the last section carefully.
 ## Support cycle
 
 We maintain two releases in parallel:
-* The latest release (currently `8.1`).
-* The previous release, on a best-effort basis (currently `8.0`).
+* The LTS Release (currently `8.2`).
+* The Standard release, on a best-effort basis (currently also `8.2`, until a future `8.3` release).
 
-If your version is lower than `8.0`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [upgrade](upgrade.md).
+If your version is lower than `8.2`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [upgrade](upgrade.md).
+
+:::tip
+Exceptionally, XCP-ng 8.1 will continue to receive support until XCP-ng 8.3 is available. The general rule is to offer a transition time from support after each new Standard release, few months in general.
+:::
 
 ## Prerequisites
 
