@@ -110,7 +110,21 @@ please try to:
 >
 > modprobe.blacklist=bochs_drm
 
+### Initrd is missing
 
+#### Cause
+
+Can be a `yum` update process interrupted while building the `initrd`.
+
+#### Solution
+
+1. Boot on the fallback kernel
+2. Use `dracut -f /boot/initrd-<exact-kernel-version>.img <exact-kernel-version`
+3. Reboot on the latest kernel, it works!
+
+:::tip
+Here is an example of `dracut` command on a 8.1 host: `dracut -f /boot/initrd-4.19.0+1.img 4.19.0+1`
+:::
 
 ### VM not in expected power state
 
