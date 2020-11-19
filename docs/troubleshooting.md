@@ -110,16 +110,20 @@ please try to:
 >
 > modprobe.blacklist=bochs_drm
 
-### Initrd is missing
+### Initrd is missing after an update
+
+#### Symptom
+
+After an update, XCP-ng won't boot and file `/boot/initrd-4.19.0+1.img` is missing.
 
 #### Cause
 
-Can be a `yum` update process interrupted while building the `initrd`.
+Can be a `yum` update process interrupted while rebuilding the `initrd`, such as a manual reboot of the host before the post-install scriplets have finished executing.
 
 #### Solution
 
-1. Boot on the fallback kernel
-2. Use `dracut -f /boot/initrd-<exact-kernel-version>.img <exact-kernel-version`
+1. Boot on the fallback kernel (last entry in grub menu)
+2. Rebuild the initrd with `dracut -f /boot/initrd-<exact-kernel-version>.img <exact-kernel-version>`
 3. Reboot on the latest kernel, it works!
 
 :::tip
