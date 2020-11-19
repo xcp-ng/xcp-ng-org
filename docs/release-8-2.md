@@ -119,6 +119,16 @@ Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 
 
 ### Misc
 
+#### Status of XCP-ng Center
+
+The community-maintained XCP-ng Center client could not be updated by the community in time for the XCP-ng 8.2 release.
+
+The officially supported clients - all fully Open Source - are [documented on this page](management.md).
+
+:::tip
+Although we host XCP-ng Center on our GitHub organisation and authorized its contributors to use the XCP-ng logo, we remind our users that - as documented [in the official docs](management.md#xcp-ng-center) and on its [download page](https://github.com/xcp-ng/xenadmin/releases) - **XCP-ng Center is not officially supported by the XCP-ng project**.
+:::
+
 #### Transition to the new ZFS SR driver
 
 If you created a storage repository before upgrading to XCP-ng 8.2, be it manually or using Xen Orchestra's SR creation form, its type will be `file`. As explained [above](#zfs), this leaves you at risk of losing your VM metadata, so we strongly advise to transition to the new `zfs` SR driver.
