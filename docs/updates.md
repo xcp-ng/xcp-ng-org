@@ -2,10 +2,6 @@
 
 This page details how to keep your XCP-ng system updated (bug fixes and security fixes) between [upgrades](upgrade.md).
 
-:::warning
-If you are running XCP-ng 7.5 or 7.6, please read the last section carefully.
-:::
-
 ## Support cycle
 
 We maintain two releases in parallel:
@@ -15,7 +11,7 @@ We maintain two releases in parallel:
 If your version is lower than `8.2`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [upgrade](upgrade.md).
 
 :::tip
-Exceptionally, XCP-ng 8.1 will continue to receive support until XCP-ng 8.3 is available. The general rule is to offer a transition time from support after each new Standard release, few months in general.
+Exceptionally, XCP-ng 8.1 will continue to receive support until XCP-ng 8.3 is available. The general rule is to offer a transition period for you to upgrade after each new Standard release, a few months in general.
 :::
 
 ## Prerequisites
@@ -49,7 +45,6 @@ A comprehensive list of updates is available on our build system's web interface
 
 * [List of official **updates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=42&order=-build_id&latest=1)
 * [List of **update candidates** and other **testing** packages](https://koji.xcp-ng.org/builds?inherited=0&tagID=43&order=-build_id&latest=1)
-
 
 #### Updates for XCP-ng 8.1
 
