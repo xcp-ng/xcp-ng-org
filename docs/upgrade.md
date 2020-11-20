@@ -26,16 +26,16 @@ Read the [Release Notes and Known Issues](releases.md#all-releases) for every re
 :::
 
 :::warning
-* When upgrading from *XCP-ng 7.5 or lower* or from *XenServer*, **it is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
+* When upgrading from *XCP-ng 7.5 or lower* or from *XenServer* or *Citrix Hypervisor*, **it is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
 :::
 
 ## Upgrade via installation ISO (recommended)
 
-This is the standard XCP-ng way. With this method, note that you can upgrade by "jumping" versions if you want (e.g. from 7.5 to 8.0 directly) without needing intermediate upgrade.
+This is the standard XCP-ng way. With this method, note that you can skip any intermediate release (e.g. from 7.5 to 8.2 directly) without needing intermediate upgrade.
 
 It will backup your system to the backup partition and reinstall the system from scratch on the system partition. Your XCP-ng configuration (VMs, storage repositories and so on) is retained.
 
-**Any additional changes made by you to the system will be lost, so you will have to make them again. Including: changes to `/etc`, additional users created and their homes, local ISO SRs...**
+**Any additional changes made by you to the system will be lost, so you will have to make them again. Including: changes to `/etc`, additional users created and their homes, local ISO SRs, [additional packages](additionalpackages.md)...**
 
 Steps:
 1. Download an installation ISO from the [download page](https://xcp-ng.org/download/). Choose either the standard installer or the network installer.
@@ -45,7 +45,7 @@ Steps:
 5. After the upgrade completed, reboot your host.
 6. Then [install the updates](updates.md) that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
 
-Once installed, **keep the system regularly updated** (see [the updates section](updates.md)).
+Once upgraded, **keep the system regularly updated** (see [the updates section](updates.md)).
 
 If you can't boot from the ISO, see the next section.
 
@@ -81,7 +81,7 @@ Once upgraded, **keep the system regularly updated** (see [Updates Howto](update
 
 A.k.a. yum-style upgrade.
 
-:warning: **Supported across minor releases (e.g. from 7.4 to 7.6), but not supported across major releases (e.g. from 7.6 to 8.0).** :warning:
+:warning: **Supported across minor releases (e.g. from 8.0 to 8.2), but not supported across major releases (e.g. from 7.6 to 8.0).** :warning:
 
 Though it's been successfully tested by numerous people, this method is still considered *riskier* than using the installation ISO:
 - this upgrade method **does not create a backup of your system**, unlike an upgrade via the installation ISO, so there's no possible return to the previous version (unless reinstalling it from scratch and reconfiguring it).
@@ -197,19 +197,20 @@ This article describes how to proceed in order to convert your Citrix XenServer 
 
 :::warning
 * Always upgrade and reboot the pool master **FIRST**
+* DON'T use the `Maintenance Mode` in XCP-ng Center. It moves the pool master to another host, which has to be avoided in the upgrading procedure.
 * If HA (High Availability) is enabled, disable it before upgrading
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`
-* If upgrading from *XCP-ng 7.5 or lower* or from *XenServer*, **it is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
+* **It is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
 :::
 
 ### Before you start
 
 * Please re-read carefully all the previous warnings
-* Need a tool to manage your XCP-ng hosts? We strongly suggest that you use [Xen Orchestra](https://xen-orchestra.com), the web UI for XCP-ng. Alternatively, you can use `xe` CLI or XCP-ng Center.
+* Need a tool to [manage your XCP-ng hosts](management.md)? We strongly suggest that you use [Xen Orchestra](https://xen-orchestra.com), the web UI for XCP-ng. Alternatively, you can use `xe` CLI or XCP-ng Center.
 
 ### Migration process
 
-XCP-NG installation follows roughly the same workflow than a XenServer installation. Therefore, the migration procedure will be very similar to an upgrade procedure in XenServer.
+XCP-NG installation follows roughly the same workflow as a XenServer installation. Therefore, the migration procedure will be very similar to an upgrade procedure in XenServer.
 
 * Download the XCP-ng ISO [from this XCP-ng website](https://xcp-ng.org/#easy-to-install)
 * Follow the [website instructions](https://xcp-ng.org/#easy-to-install) to put the ISO into an USB key or a CD
@@ -218,7 +219,7 @@ Then boot on the ISO!
 
 ![](https://xcp-ng.org/wp-content/uploads/2018/03/install1.png)
 
-Eventually, you will reach a screen proposing you to upgrade your XenServer 7.X to XCP-ng:
+Eventually, you will reach a screen offering to upgrade your XenServer 7.X to XCP-ng:
 
 ![](https://xcp-ng.org/wp-content/uploads/2018/03/install4.png)
 
@@ -251,9 +252,9 @@ In order to migrate using the new partition scheme, you need to run this command
 
 `$ touch /var/preserve/safe2upgrade`
 
-> Check that you are using GPT partitioning and not MBR and double check that you don't have any VDI attach to your local SR. Any remaining VDI will be removed.
+> Check that you are using GPT partitioning and not MBR and double check that you don't have any VDI attached to your local SR. Any remaining VDI will be removed.
 
-Then, you can follow the standard migration procedure describe before.
+Then, you can follow the standard migration procedure describe above.
 
 ### Migrating your XenServer Pool to XCP-ng without downtime
 

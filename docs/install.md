@@ -8,7 +8,7 @@ If you want to use the netinstall ISO, see the [Netinstall section](install.md#n
 
 ### Download and create media
 
-You can download the 8.1 ISO here: <http://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso>.
+You can download the 8.2 ISO here: <http://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.0.iso>.
 
 SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
@@ -16,7 +16,7 @@ SHA256 checksums, GPG signatures and net-install ISO are available [here](https:
 Then, create the install media (e.g. USB key):
 
 ```
-dd if=xcp-ng-8.1.0-2.iso of=/dev/sdX bs=8M oflag=direct
+dd if=xcp-ng-8.2.0.iso of=/dev/sdX bs=8M oflag=direct
 ```
 
 Finally, boot on that media and go to the next section.
@@ -61,7 +61,7 @@ NEVER switch from UEFI to BIOS (or vice-versa) **after** you installed XCP-ng. S
 
 #### 5. Disk selection
 
-This is the screen where you'll select where XCP-ng system will be installed. **XCP-ng is a specialized Linux distribution**, so you need to dedicated a physical disk to it. Partitioning is done automatically.
+This is the screen where you'll select where XCP-ng system will be installed. **XCP-ng is a specialized Linux distribution**, so you need to dedicate a physical disk to it. Partitioning is done automatically.
 
 ![](https://xcp-ng.org/assets/img/screenshots/install5.png)
 
@@ -69,15 +69,23 @@ Alternatively, if you have two identical disks, you can use Software RAID (`mdad
 
 ![](https://xcp-ng.org/assets/img/screenshots/install6.png)
 
+:::tip
+If only one disk is found suitable for the installation, this step is skipped. The name of the device will be displayed to you [in the "Confirm Installation" step, later in the process](#_12-installation).
+:::
+
 #### 6. VM storage selection
 
-This is the place where your VM disks will be stored. It's called a **Storage Repository** (SR). It can use the same disk where you installed the system. It will automatically use the free space after system partitions.
+This is the place where your VM disks will be stored. It's called a **Storage Repository** (SR). It can use the same disk you installed the system on. It will automatically use the free space after system partitions.
 
 ![](https://xcp-ng.org/assets/img/screenshots/install7.png)
 
 
 :::tip
-EXT instead of LVM? We advise to use EXT!
+EXT instead of LVM? We advise to use EXT to benefit from thin provisioning!
+:::
+
+:::warning
+When the installer skips [step 5](#_5-disk-selection) automatically, users sometimes mistake this step with the selection of the system disk.
 :::
 
 #### 7. Installation source
@@ -123,7 +131,7 @@ ALWAYS use a NTP server. It's a critical component to manage your host(s). If yo
 #### 12. Installation
 
 :::warning
-After this step, data will be written on the disk!
+After this step, data will be written on the disk(s)! Check the listed device(s) one last time.
 :::
 
 ![](https://xcp-ng.org/assets/img/screenshots/install17.png)
@@ -154,14 +162,14 @@ It means the system is correctly installed! Enjoy XCP-ng 🚀
 
 ## Netinstall
 
-A netinstall is a lightweight ISO (around 150MiB) that will only contain the installer, but no actual RPM packages. Sometimes, it's more convenient/faster when your ISO is on a slow connection (e.g. a virtual media using a server IPMI).
+The netinstall image is a lightweight ISO (around 150MiB) that will only contain the installer, but no actual RPM packages. Sometimes, it's more convenient/faster when your ISO is on a slow connection (e.g. a virtual media using a server IPMI).
 
-You can download it on this URL: <http://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2-netinstall.iso>.
+You can download it on this URL: <http://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.0-netinstall.iso>.
 
 As with the regular installation ISO, write it on an USB media:
 
 ```
-dd if=xcp-ng-8.1.0-2-netinstall.iso of=/dev/sdX bs=8M oflag=direct
+dd if=xcp-ng-8.2.0-netinstall.iso of=/dev/sdX bs=8M oflag=direct
 ```
 
 Everything else is like the [regular install](install.md#start-the-host), except that it will not offer to install from local media, only from distant ones.

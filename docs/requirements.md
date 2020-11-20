@@ -84,9 +84,7 @@ In addition to the hardware prerequisites identified previously, there are some 
 * It cannot have any running or suspended VMs or any active operations in progress on its VMs, such as shutting down or exporting. Shut down all VMs on the server before adding it to a pool.
 * It cannot have any shared storage already configured.
 * It cannot have a bonded management interface. Reconfigure the management interface and move it on to a physical NIC before adding the server to the pool. After the server has joined the pool, you can reconfigure the management interface again.
-* It must be running the same version of XCP-ng, at the same patch level, as servers already in the pool.
-* It must be configured with the same supplemental packs as the servers already in the pool. Supplemental packs are used to install add-on software into XCP-ng control domain, dom0. To prevent an inconsistent user experience across a pool, all servers in the pool must have the same supplemental packs at the same revision installed.
-* It must have the same XCP-ng license as the servers already in the pool. You can change the license of any pool members after joining the pool. The server with the lowest license determines the features available to all members in the pool.
+* It must be running the same version of XCP-ng, at the same update level, as servers already in the pool.
 
 XCP-ng hosts in resource pools can contain different numbers of physical network interfaces and have local storage repositories of varying size. In practice, it is often difficult to obtain multiple servers with the exact same CPUs, and so minor variations are permitted. If you want your environment to have hosts with varying CPUs in the same resource pool, you can force join a pool together using the CLI. For information about forcing the joining operation, see Hosts and resource pools.
 
