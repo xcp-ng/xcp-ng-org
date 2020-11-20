@@ -2,9 +2,9 @@
 
 Devices listed on [Citrix Hypervisor's Hardware Compatibility List](http://hcl.xenserver.org/) are supported.
 
-For other hardware, see "Hardware outside the official HCL" below.
+For other hardware, see [Unlisted Hardware](#unlisted-hardware).
 
-## Unlisted hardware
+## Unlisted Hardware
 
 Many devices outside the HCL in fact work very well with XCP-ng. Being outside the HCL means that there have been not tests to ensure that they work. Most of the hardware support depends on the Linux kernel and thus support for hardware outside the HCL depends on on how well the drivers are supported by the Linux kernel included in XCP-ng.
 
@@ -104,15 +104,18 @@ Upgrades **using the installation ISO** will not retain the alternate driver pac
 
 Upgrades **using the `yum` method** will retain the alternate driver package, unless we stop providing it (usually, because the main driver will have been updated too). If the alternate driver is retained, it may have changed versions, so you may still need to consider going back to the main driver. If after an upgrade no driver works correctly for your system anymore, open a bug report.
 
-### Network drivers
+### Network drivers list
 
-This list is maintained for the latest release of XCP-ng. Those packages may be or not be available for older releases.
+A list is maintained at <https://github.com/xcp-ng/xcp/wiki/Drivers>
 
-Packages:
-* `bnxt_en` driver: `broadcom-bnxt-en-alt`
+Check the "XCP-ng X.Y alternate driver" column, which provides packages names and versions for every available alternate driver.
 
-Update: in 8.1 more are available. List to be updated.
 
+## Additional kernel modules
+
+Additional kernel modules are a lot like [alternate drivers](#alternate-drivers) (most of the above section applies to them) except that they don't replace an existing driver from the system. They add a new one that didn't exist at all.
+
+Their list is maintained at <https://github.com/xcp-ng/xcp/wiki/Drivers>, in a table named "Other kernel modules available in XCP-ng X.Y".
 
 
 ## Alternate kernel
@@ -125,15 +128,13 @@ This kernel is mainly targeted at:
 
 Report issues [here](https://github.com/xcp-ng/xcp/issues).
 
-### In XCP-ng 8.1
-
-#### During system installation
+### During system installation
 * In BIOS mode, press F2 at early boot stage when offered the choice then type `install-alt`.
 * In UEFI mode, select the boot option mentioning the alternate kernel from the grub menu.
 
 This will boot the installer with the alternate kernel and also install the alternate kernel on the system in addition to the main one (but will not make the alternate kernel the default boot option for the installed system).
 
-#### Installation on an existing system
+### Installation on an existing system
 You can install it using
 
 ```
@@ -142,63 +143,16 @@ yum install kernel-alt
 
 This will install the kernel and add a grub boot menu entry to boot from it. It will **not** default to it unless you change the default in `grub.cfg` (/boot/grub/grub.cfg` or `/boot/efi/EFI/xenserver/grub.cfg` depending on whether you are in BIOS mode or UEFI mode).
 
-There may also be a newer release of kernel-alt in testing:
+There may also be a newer release of kernel-alt in testing repositories:
 
 ```
 yum install kernel-alt --enablerepo=xcp-ng-testing
 ```
 
-#### Uninstall
+### Uninstall
 Boot the main kernel, then:
 ```
 yum remove kernel-alt
 ```
 
 This will remove the added grub entry automatically too and set default boot to main kernel if needed.
-
-
-### In XCP-ng 8.0
-
-Things are a bit more manual.
-
-#### Install
-
-```
-yum install kernel-alt --enablerepo=xcp-ng-testing
-```
-
-#### Configure boot
-Create grub entry at 0 (`/boot/grub/grub.cfg` or `/boot/efi/EFI/xenserver/grub.cfg`) and adapt the values to your system:
-
-```
-menuentry 'XCP-ng alt' {
-        search --label --set root root-bdtixc
-        multiboot2 /boot/xen.gz com1=115200,8n1 dom0_mem=1232M,max:1232M watchdog ucode=scan dom0_max_vcpus=1-4 crashkernel=256M,below=4G console=com1,vga vga=mode-0x0311 nmi=ignore
-        module2 /boot/vmlinuz-4.19.68-xen root=LABEL=root-bdtixc ro nolvm hpet=disable xencons=hvc console=hvc0 console=tty0 vga=785 plymouth.ignore-serial-consoles nmi=ignore
-        module2 /boot/initrd-4.19.68-xen.img
-}
-```
-
-Pay special attention to "--set root **root-bdtixc**" and "root=LABEL=**root-bdtixc**" to match it with your root label.
-
-Reboot and you are set!
-
-#### Uninstall
-
-Remove the grub entry:
-
-```
-menuentry 'XCP-ng alt' {
-        search --label --set root root-bdtixc
-        multiboot2 /boot/xen.gz com1=115200,8n1 dom0_mem=1232M,max:1232M watchdog ucode=scan dom0_max_vcpus=1-4 crashkernel=256M,below=4G console=com1,vga vga=mode-0x0311 nmi=ignore
-        module2 /boot/vmlinuz-4.19.68-xen root=LABEL=root-bdtixc ro nolvm hpet=disable xencons=hvc console=hvc0 console=tty0 vga=785 plymouth.ignore-serial-consoles nmi=ignore
-        module2 /boot/initrd-4.19.68-xen.img
-}
-```
-
-Then reboot. If you want to remove it completely:
-
-```
-yum remove kernel-alt
-```
-
