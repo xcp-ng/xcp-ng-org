@@ -171,7 +171,21 @@ Overall testing and user feedback regarding UEFI Windows compatibility was good.
 
 However, there remain specific situations where some Windows VM have trouble starting. This has been observed on some VMs after a backup restore or a VM copy.
 
-Reference: https://github.com/xcp-ng/xcp/issues/454
+A fix has been found and will be released shortly.
+
+Reference: <https://github.com/xcp-ng/xcp/issues/454>
+
+### Missing files in `/etc/modprobe.d` after an upgrade
+
+When a host is upgraded to XCP-ng 8.2 using the installation ISO, two files are missing in the resulting system:
+* `/etc/modprobe.d/blacklist-bridge.conf`
+* `/etc/modprobe.d/disable-ipv6.conf`
+
+We reported the issue to Citrix: <https://bugs.xenserver.org/browse/XSO-991>
+
+The possible consequences of having those files missing are being investigated.
+
+Reference: <https://github.com/xcp-ng/xcp/issues/457>
 
 ### Citrix Hypervisor's known issues
 
