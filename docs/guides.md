@@ -2,19 +2,21 @@
 
 This section is grouping various guides regarding XCP-ng use cases.
 
-## pfSense VM
+## pfSense / OPNsense VM
 
-pfSense works great in a VM, but there are a few extra steps that need to be taken first.
+pfSense and OPNsense do work great in a VM, but there are a few extra steps that need to be taken first.
 
 ### 1. Create VM as normal.
 
 * When creating the VM, choose the `other install media` VM template
-* Continue through the pfSense installer like normal
+* Continue through the installer like normal
 
 ### 2. Install Guest Utilities
 
-There are 2 options. Option 1 via console/ssh:  
-Now that you have a pfSense VM running, we need to install guest utilities and tell them to run on boot. SSH (or other CLI method) to the pfSense VM and perform the following:
+There are 2 ways of doing that, either using the CLI (pfSense or OPNsense) or the Web UI (pfSense).
+
+Option 1 via console/ssh:  
+Now that you have the VM running, we need to install guest utilities and tell them to run on boot. SSH (or other CLI method) to the VM and perform the following:
 
 ```
 pkg install xe-guest-utilities
@@ -22,7 +24,8 @@ echo 'xenguest_enable="YES"' >> /etc/rc.conf.local
 ln -s /usr/local/etc/rc.d/xenguest /usr/local/etc/rc.d/xenguest.sh
 service xenguest start
 ```
-Option 2 is via webgui:  
+
+Option 2 is via webgui (only for pfSense):
 Open management page under http(s)://your-configured-ip and go to:  
 *System -> Firmware -> Plugins*  
 Scroll down to **os-xen** and let the gui do the steps needed. Next: Reboot the system to have the guest started (installer doesn't do that):  
@@ -55,12 +58,12 @@ That's it !
 
 SSH to dom0 on your XCP-NG hypervisor and run the following:
 
-First get the UUID of your pfSense VM:
+First get the UUID of the VM to modify:
 
 ```
 xe vm-list
 ```
-Find your pfsense VM in the list, and copy the UUID. Now stick the UUID in the following command:
+Find your pfSense / OPNsense VM in the list, and copy the UUID. Now stick the UUID in the following command:
 
 ```
 xe vif-list vm-uuid=08fcfc01-bda4-21b5-2262-741da6f5bfb0
@@ -91,7 +94,7 @@ xe vif-param-set uuid=a9380705-8da2-4bf7-bbb0-f167d8f0d645 other-config:ethtool-
 That's it! For this to take effect you need to fully shut down the VM then power it back on. Then you are good to go!
 
 :::tip
-If you ever add more virtual NICs to your pfSense VM, you will need to go back and do the same steps for these interfaces as well.
+If you ever add more virtual NICs to your VM, you will need to go back and do the same steps for these interfaces as well.
 :::
 
 ## XCP-ng in a VM
