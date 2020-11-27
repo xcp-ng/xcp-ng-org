@@ -76,6 +76,10 @@ To remove any passthrough devices from dom0:
 /opt/xensource/libexec/xen-cmdline --delete-dom0 xen-pciback.hide
 ```
 
+:::tip
+This kernel parameter is not retained when you upgrade an XCP-ng host [using the installation ISO](upgrade.md#upgrade-via-installation-iso-recommended). Remember to re-do this step after the upgrade.
+:::
+
 ### 3. Reboot the XCP-ng host
 
 `[root@xen ~]# reboot`
