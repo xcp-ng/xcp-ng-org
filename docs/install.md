@@ -268,6 +268,10 @@ echo 0 > /proc/sys/dev/raid/speed_limit_min
 
 Upon server reboot, normal `md` resync will take place.
 
+## Troubleshooting
+
+See [the Troubleshooting page](troubleshooting.md#installation-and-upgrade).
+
 ## Misc
 
 #### Install on a USB stick

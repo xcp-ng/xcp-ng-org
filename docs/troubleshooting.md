@@ -8,13 +8,13 @@ If you have a problem on XCP-ng, there's 2 options:
 ## The 3-Step-Guide
 Here is our handy **3-Step-Guide**:
 
-1. Check the [Logfiles](troubleshooting.md#logfiles). Check your settings. [Read below](troubleshooting.md#common-problems)... if you already did, proceed to Step 2.
+1. Check the [logs](troubleshooting.md#log-files). Check your settings. [Read below](troubleshooting.md#common-problems)... if you already did, proceed to Step 2.
 2. Get help at our [Forum](https://xcp-ng.org/forum) or get help at IRC _#xcp-ng_ on [Freenode](https://webchat.freenode.net) and provide as much information as you can:
     * ☑️ What did you **exactly** do to expose the bug?
     * :rocket: XCP-ng Version
     * :desktop_computer: Hardware
     * :factory: Infrastructure
-    * :newspaper_roll: Logfiles
+    * :newspaper_roll: Logs
     * :tv: Screenshots
     * :stop_sign: Error messages
 3. Share your solution ([forum](https://xcp-ng.org/forum), [wiki](https://github.com/xcp-ng/xcp/wiki)) - others can benefit from your experience.
@@ -24,9 +24,33 @@ Here is our handy **3-Step-Guide**:
 
 If you have subscribed to [Pro support](https://xcp-ng.com/), well, don't hesitate to use it!
 
+## Installation and upgrade
+
+(Where "upgrade" here designates an upgrade using the installation ISO)
+
+### During installation or upgrade
+
+You can reach a shell with ALT+F2 (or ALT+RIGHT) and a logs console with ALT+F3 (or ALT+RIGHT twice).
+
+Full installation log are populated in real time in `/tmp/install-log`. They can be read with `view /tmp/install-log`.
+
+When asking for help about installation errors, providing this file increases your chances of getting precise answers.
+
+The target installation partition is mounted in `/tmp/root`.
+
+### Installation logs
+
+The installer writes in `/var/log/installer/`.
+
+The main log file is `/var/log/installer/install-log`.
+
+### Debugging the installer
+
+You can [build your own installer](develprocess.md#iso-modification).
+
 ## Log files
 
-Like in other Linux/UNIX systems the log files are located in `/var/log`
+On a XCP-ng host, like in most Linux/UNIX systems, the logs are located in `/var/log`. XCP-ng does not use `journald` for logs, so everything is in `/var/log` directly.
 
 ### General log
 
@@ -44,17 +68,15 @@ Contains the output of the XAPI toolstack.
 
 `/var/log/SMlog`
 
+Contains the output of the storage manager.
+
 ### Kernel messages
+
+For hardware related issues or system crashes.
 
 `/var/log/kern.log`
 
 All kernel logs since last boot: type `dmesg`.
-
-### Installation logs and debug information
-
-`/var/log/installer/`
-
-The main log file is `/var/log/installer/install-log`
 
 ### Kernel crash logs
 
@@ -70,11 +92,6 @@ xen-bugtool --yestoall
 
 Then upload the resulting archive somewhere. It may contain sensitive information about your setup, so it may be better to upload it to a private area and give the link only to those you trust to analyze it.
 
-### During installation
-
-You can reach a shell with ALT+F2 (or ALT+RIGHT) and a logs console with ALT+F3 (or ALT+RIGHT twice).
-
-Full installation log can be read with `view /tmp/install-log`.
 
 ### XCP-ng Center
 
@@ -106,7 +123,7 @@ please try to:
 #### Solution (draft! has to be tested/validated)
 
 * Blacklisting (Source: <https://xcp-ng.org/forum/post/1707>)
-> Usually, when you install a recent distro in PVHVM (using other media) and you get a blank screen, try blacklisting > by adding the following in your grub command at the end
+> Usually, when you install a recent distro in PVHVM (using other media) and you get a blank screen, try blacklisting by adding the following in your grub command at the end
 >
 > modprobe.blacklist=bochs_drm
 
@@ -127,7 +144,7 @@ Can be a `yum` update process interrupted while rebuilding the `initrd`, such as
 3. Reboot on the latest kernel, it works!
 
 :::tip
-Here is an example of `dracut` command on a 8.1 host: `dracut -f /boot/initrd-4.19.0+1.img 4.19.0+1`
+Here is an example of `dracut` command on a 8.2 host: `dracut -f /boot/initrd-4.19.0+1.img 4.19.0+1`
 :::
 
 ### VM not in expected power state
