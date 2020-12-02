@@ -49,6 +49,10 @@ Once upgraded, **keep the system regularly updated** (see [the updates section](
 
 If you can't boot from the ISO, see the next section.
 
+### Troubleshooting ISO upgrades
+
+See [the Troubleshooting page](troubleshooting.md#installation-and-upgrade).
+
 ### Using the installation when you can't boot from it: remote upgrade
 
 This is an alternate method if you can't boot from the installation ISO.
@@ -265,6 +269,10 @@ Here is how to proceed in order to migrate without having downtime in your infra
 3. Live migrate VMs from another host to your pool master
 4. Upgrade the host
 5. Repeat until all hosts are migrated
+
+### Troubleshooting migration from XenServer
+
+See [the Troubleshooting page](troubleshooting.md#installation-and-upgrade).
 
 ### Alternate method: remote upgrade
 
