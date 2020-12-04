@@ -59,7 +59,7 @@ apt install xe-guest-utilities
 
 #### "Supported" Linux distributions
 For distros that are supported by the `install.sh` script (Debian, CentOS, RHEL, SLES, Ubuntu...), the process is:
-* Attach the guest tools ISO to the guest from Xen Orchestra, XCP-ng Center or using `xe`.
+* Attach the guest tools ISO to the guest from Xen Orchestra or using `xe`.
 * Then inside the VM, as root:
 ```
 mount /dev/cdrom /mnt
@@ -214,10 +214,6 @@ The VM needs to be running for this test.
 ##### From Xen Orchestra
 * Management agent + device drivers: XO displays "Hardware virtualization with paravirtualization drivers enabled (PVHVM)"
 * Device drivers alone: Xen Orchestra is currently (2020-03-30) unable to detect if the device drivers are installed if the management agent is not installed either. See <https://github.com/vatesfr/xen-orchestra/issues/4783>. If it displays "No tools detected", it is still possible that the device drivers are present.
-
-##### From XCP-ng Center
-* Device drivers: the mention "I/O optimized" will be visible in VM details
-* Management agent: the mention "Management Agent" will be visible in VM details.
 
 ##### From command line
 * Device drivers: `xe vm-param-get param-name=PV-drivers-detected uuid={VM-UUID}`
