@@ -290,6 +290,19 @@ There was an issue with the installing of the drivers certificate, so the driver
 [This Guide](guests.md#upgrade-from-citrix-xenserver-client-tools) may help you through the process.
 
 
+### My Windows VM can't connect to a secure internet after installing PV-tools/drivers (E.G SSL errors when trying to access websites, copying files from a pc to the VM ETC.)
+
+#### Cause
+TCP offloading is enabled for Citrix PV drivers in windows, This can cause TSL/SSL problems.
+
+#### Symptoms
+* Remote desktop gives you an error when trying to access the windows VM
+* Accessing websites gives TSL/SSL errors.
+* Copying files from 'pc1' to the windows VM gets stuck (and might even crash your explorer.exe)
+
+#### Solution
+Disable TCP-offloading. To do this: Go to your Control Panel >> Network and Internet >> Network and Sharing >> Change Adapter Settings >> Right click your PV adapter >> properties. From there you want to go to: Configure >> Advanced, and disable every offloading option.
+
 ## After Upgrade
 
 ### The Server stays in Maintenance Mode
