@@ -68,6 +68,11 @@ It's same as previous section, just check the "Bonded Network" and select multip
 ### Add a new NIC
 
 After physically installing a new NIC, you'll need to run a `xe pif-scan` command on the host to get this NIC added as an available PIF.
+`xe pif-scan host-uuid=<HOST UUID>`
+Check new NIC by UUID:
+`xe pif-list`
+Plug new NIC:
+`xe pif-plug uuid=<NIC UUID>`
 
 ## Remove a physical NIC
 
