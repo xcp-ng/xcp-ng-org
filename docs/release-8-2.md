@@ -121,9 +121,7 @@ Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 
 
 #### Status of XCP-ng Center
 
-The community-maintained XCP-ng Center client could not be updated by the community in time for the XCP-ng 8.2 release.
-
-The officially supported clients - all fully Open Source - are [documented on this page](management.md).
+The community-maintained XCP-ng Center client is [now available for download](https://github.com/xcp-ng/xenadmin/releases/tag/v20.04.01.33). However, it is not a recommended client to use because it was modified for 8.2 support without any specific QA or validation. Keep in mind that the officially supported clients - all fully Open Source - are [documented on this page](management.md).
 
 :::tip
 Although we host XCP-ng Center on our GitHub organisation and authorized its contributors to use the XCP-ng logo, we remind our users that - as documented [in the official docs](management.md#xcp-ng-center) and on its [download page](https://github.com/xcp-ng/xenadmin/releases) - **XCP-ng Center is not officially supported by the XCP-ng project**.
