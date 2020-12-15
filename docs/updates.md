@@ -11,7 +11,7 @@ We maintain two releases in parallel:
 If your version is lower than `8.2`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [upgrade](upgrade.md).
 
 :::tip
-Exceptionally, XCP-ng 8.1 will continue to receive support until XCP-ng 8.3 is available. The general rule is to offer a transition period for you to upgrade after each new Standard release, a few months in general.
+Exceptionally, XCP-ng 8.1 will continue to receive support until either XCP-ng 8.3 is available or until March 31 2021, whichever comes first. The general rule is to offer a transition period for you to upgrade after each new Standard release, a few months in general.
 :::
 
 ## Prerequisites

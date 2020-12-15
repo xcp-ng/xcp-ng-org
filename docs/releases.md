@@ -43,7 +43,7 @@ If you prefer to get the latest improvements, go for our [latest standard releas
 | Version                   | Released   | Status               | Support until                                | Release notes                        |
 | ---                       | ---        | ---                  | ---                                          | ---                                  |
 | [8.2 LTS](release-8-2.md) | 2020-11-18 | Full support, LTS    | 2025-06-25                                   | [8.2 Release notes](release-8-2.md)  |
-| [8.1](release-8-1.md)     | 2020-03-31 | Full support         | Until the release of XCP-ng 8.3 (~Q1 2021)   | [8.1 Release notes](release-8-1.md)  |
+| [8.1](release-8-1.md)     | 2020-03-31 | Full support         | 2021-03-31 or release of XCP-ng 8.3, whichever comes first | [8.1 Release notes](release-8-1.md)  |
 | 8.0                       | 2019-07-25 | EOL                  | 2020-11-13                                   |                                      |
 | 7.6                       | 2018-10-31 | EOL                  | 2020-03-30                                   |                                      |
 | 7.5                       | 2018-08-10 | EOL                  | 2019-07-25                                   |                                      |
