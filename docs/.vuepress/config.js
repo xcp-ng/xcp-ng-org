@@ -39,11 +39,9 @@ module.exports = {
           ['/storage', 'Storage'],
           ['/networking', 'Networking'],
           ['/compute', 'Compute & GPU'],
-          ['/api', 'API'],
           ['/guests','Guests tools'],
           ['/additionalpackages', 'Additional packages'],
           ['/troubleshooting', 'Troubleshooting'],
-          ['/architecture', 'Architecture']
         ]
       },
       {
@@ -67,7 +65,9 @@ module.exports = {
         sidebarDepth: 1,    // optional, defaults to 1
         children: [
           ['/ecosystem', 'Ecosystem'],
+          ['/security', 'Security'],
           ['/contributing', 'Contributing'],
+          ['/architecture', 'Architecture'],
           ['/develprocess.md', 'Development Process'],
           ['/licenses', 'Licenses'],
           ['/gitrepo', 'Git Repositories'],
