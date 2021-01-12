@@ -456,3 +456,11 @@ menuentry 'XCP-ng' {
 	module2 /boot/initrd-4.19-xen.img
 }
 ```
+## Missing templates when creating a new VM
+
+If you attempt to create a new VM, and you notice that you only have a handful of templates available, you can try fixing this from the console. Simply go to the console of your XCP-NG host and enter the following command:
+```
+/usr/bin/create-guest-templates
+```
+
+This should recreate all the templates.
