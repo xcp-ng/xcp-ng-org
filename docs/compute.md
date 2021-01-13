@@ -344,7 +344,28 @@ Other useful commands for listing the VM core affinity and cores per NUMA node(s
 ```
 xl vcpu-list
 xenpm get-cpu-topology
+xl info --numa
 ```
+
+Other ways control the vCPUs placement, using the `xl` CLI:
+```
+xl vcpu-pin <Domain> <vcpu id> <cpu id>
+xl vcpu-pin "Domain 0" all 2-5
+```
+You can use the domain name or the domain ID you can obtain from the `xl list` command.
+
+Or using the CPUPool functionality:
+```
+xl cpupool-numa-split # Will create a cpupool by NUMA node
+xl cpupool-migrate <VM> <Pool> # Will migrate a VM to the given pool
+```
+
+:::warning
+Be careful, the changes done using `xl` only affect vCPU at the moment, the memory of the VM will not be moved between node nor the pinning stay after a reboot. You need to use `xe` for it to be taken into account at the VM startup.
+:::
+
+You can see the current memory scheme of the VM using the `debug-key` interface with the `u` key. e.g. `xl debug-key u; xl dmesg`.
+
 References:
 * <https://xcp-ng.org/forum/topic/2265/using-numa-split-on-xcp-ng>
 * <https://wiki.xen.org/wiki/Xen_on_NUMA_Machines>
