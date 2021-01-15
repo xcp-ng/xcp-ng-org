@@ -2165,7 +2165,7 @@ Enable local storage caching across the pool.
 #### `pool-enable-redo-log`
 
 ```
-pool-ensable-redo-log sr-uuid=sr_uuid
+pool-enable-redo-log sr-uuid=sr_uuid
 ```
 
 Enable the redo log on the given SR if in use, unless HA is enabled.
