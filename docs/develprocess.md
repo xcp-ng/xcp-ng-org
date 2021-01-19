@@ -675,8 +675,10 @@ Exit chroot with `exit` or Ctrl + D.
 
 Using chroot as explained above, you can easily remove, add or update RPMs in the installer's filesystem.
 
-:::warning This modifies the installer filesystem, not the host!
+:::warning
+This modifies the installer filesystem, not the host!
 To modify the installed RPMs on a host see [change the list of installed RPMs](change-the-list-of-installed-rpms).
+:::
 
 Example use cases:
 * Update drivers: replace an existing driver module (*.ko) with yours, or, if you have built a RPM with that driver, install it. For example, you could rebuild a patched `qlogic-qla2xxx` RPM package and install it instead of the one that is included by default. Note that this will *not* install the newer driver on the final installed XCP-ng. We're only in the context of the system that runs during the installation phase, here.
