@@ -640,7 +640,7 @@ The steps to modify the installer are:
 * rebuild install.img
 * (rebuild the ISO image, see below)
 
-### Extract install.img
+#### Extract install.img
 
 ```
 cd iso/
@@ -650,11 +650,17 @@ bunzip2 < ../install.img | cpio -idm
 cd ..
 ```
 
-### Navigate in the installer's filesystem
+#### Navigate in the installer's filesystem
 
 If you want to use commands in the installer's filesystem context, as root:
 ```
 chroot install/
+```
+To use `yum` or `rpm`, you'll also need to mount `urandom` in your chrooted dir.
+From outside the chroot run:
+```
+touch install/dev/urandom
+mount /dev/urandom install/dev/urandom # As root!
 ```
 Then useful commands will be available to you in the context of that filesystem, such as `rpm`, `yum`, etc.
 
@@ -665,15 +671,20 @@ rpm -qa | sort
 
 Exit chroot with `exit` or Ctrl + D.
 
-### Alter the filesystem
+#### Alter the filesystem
 
 Using chroot as explained above, you can easily remove, add or update RPMs in the installer's filesystem.
+
+:::warning
+This modifies the installer filesystem, not the host!
+To modify the installed RPMs on a host see [change the list of installed RPMs](change-the-list-of-installed-rpms).
+:::
 
 Example use cases:
 * Update drivers: replace an existing driver module (*.ko) with yours, or, if you have built a RPM with that driver, install it. For example, you could rebuild a patched `qlogic-qla2xxx` RPM package and install it instead of the one that is included by default. Note that this will *not* install the newer driver on the final installed XCP-ng. We're only in the context of the system that runs during the installation phase, here.
 * Modify the installer itself to fix a bug or add new features (see below)
 
-### Modify the installer code itself
+#### Modify the installer code itself
 
 The installer is a `python` program that comes from the `host-installer`. In chroot, you can easily locate its files with:
 ```
@@ -683,7 +694,7 @@ Most of them are in `/opt/xensource/installer/`
 
 Our git repository for the installer is: <https://github.com/xcp-ng/host-installer>. Feel free to create pull requests for your enhancements or bug fixes.
 
-### Build a new `install.img` with your changes
+#### Build a new `install.img` with your changes
 
 From the `iso/` directory
 ```
@@ -702,12 +713,11 @@ Read [the usual warnings about the installation of third party RPMs on XCP-ng.](
 
 To achieve this:
 * Change the RPMs in the `Packages/` directory. If you add new packages, be careful about dependencies, else they'll fail to install and the whole installation process will fail.
-* Copy the file called `repodata/{varying_checksum_here}-groups.xml to a temporary location such as `/tmp/groups.xml`
-* Modify it to add or remove RPMs from the groups. There are two groups and both will be installed, so it's not very important if you don't know which one to modify. Just pick one. You don't need to add all the dependencies: they will be pulled automatically if you made them available in `Packages/`.
+* If you need to add new RPMs not just replace existing ones, they need to be pulled by another existing RPM as dependencies. If there's none suitable, you can add the dependency to the [xcp-ng-deps RPM](https://github.com/xcp-ng-rpms/xcp-ng-deps).
 * Update `repodata/`
   ```
   rm repodata/ -rf
-  createrepo_c . -o . -g /tmp/groups.xml
+  createrepo_c . -o .
   ```
 
 ### Build a new ISO image with your changes
