@@ -711,7 +711,7 @@ Read [the usual warnings about the installation of third party RPMs on XCP-ng.](
 
 To achieve this:
 * Change the RPMs in the `Packages/` directory. If you add new packages, be careful about dependencies, else they'll fail to install and the whole installation process will fail.
-* If you need to add new RPMs not just replace existing ones, they need to be pulled by another existing RPM as dependencies. If there's none suitable, you can add the dependency to the xcp-ng-deps RPM (link to the git repo).
+* If you need to add new RPMs not just replace existing ones, they need to be pulled by another existing RPM as dependencies. If there's none suitable, you can add the dependency to the [xcp-ng-deps RPM](https://github.com/xcp-ng-rpms/xcp-ng-deps).
 * Update `repodata/`
   ```
   rm repodata/ -rf
