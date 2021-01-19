@@ -656,7 +656,8 @@ If you want to use commands in the installer's filesystem context, as root:
 ```
 chroot install/
 ```
-You'll also need to mount `urandom` in your chrooted dir:
+To use `yum` or `rpm`, you'll also need to mount `urandom` in your chrooted dir.
+From outside the chroot run:
 ```
 touch install/dev/urandom
 mount /dev/urandom install/dev/urandom # As root!
@@ -674,8 +675,8 @@ Exit chroot with `exit` or Ctrl + D.
 
 Using chroot as explained above, you can easily remove, add or update RPMs in the installer's filesystem.
 
-> This modifies the installer filesystem, not the host!
-> To modify the installed RPMs on a host see [change the list of installed RPMs](change-the-list-of-installed-rpms).
+:::warning This modifies the installer filesystem, not the host!
+To modify the installed RPMs on a host see [change the list of installed RPMs](change-the-list-of-installed-rpms).
 
 Example use cases:
 * Update drivers: replace an existing driver module (*.ko) with yours, or, if you have built a RPM with that driver, install it. For example, you could rebuild a patched `qlogic-qla2xxx` RPM package and install it instead of the one that is included by default. Note that this will *not* install the newer driver on the final installed XCP-ng. We're only in the context of the system that runs during the installation phase, here.
@@ -710,7 +711,7 @@ Read [the usual warnings about the installation of third party RPMs on XCP-ng.](
 
 To achieve this:
 * Change the RPMs in the `Packages/` directory. If you add new packages, be careful about dependencies, else they'll fail to install and the whole installation process will fail.
-* Modify it to add or remove RPMs from the groups. There are two groups and both will be installed, so it's not very important if you don't know which one to modify. Just pick one. You don't need to add all the dependencies: they will be pulled automatically if you made them available in `Packages/`.
+* If you need to add new RPMs not just replace existing ones, they need to be pulled by another existing RPM as dependencies. If there's none suitable, you can add the dependency to the xcp-ng-deps RPM (link to the git repo).
 * Update `repodata/`
   ```
   rm repodata/ -rf
