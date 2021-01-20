@@ -12,7 +12,7 @@ Previous versions of XCP-ng downloaded files directly from `https://updates.xcp-
 
 ## List of mirrors
 
-You can check our live list of mirror at this URL: [http://mirrors.xcp-ng.org/?mirrorstats](http://mirrors.xcp-ng.org/?mirrorstats)
+You can check our live list of mirrors at this URL: [https://mirrors.xcp-ng.org/?mirrorstats](https://mirrors.xcp-ng.org/?mirrorstats)
 
 :::tip
 If loading this page fails due to too many redirections, just go to <https://xcp-ng.org> once, then try again)
@@ -26,8 +26,9 @@ Anyone or any entity can submit a mirror to our approval so that we add it to th
 
 In order to guarantee the quality of the mirrors offered to our users, there a some prerequisites:
 * Offer HTTP (more convenient than anonymous FTP for mirrors nowadays), or HTTPS.
-  * Note: HTTPS does not add much value because ISO image checksums, repository data and all RPMs are signed. HTTP is OK.
+  * Note: HTTPS is required for downloads of installation ISO images, because recent browsers tend to refuse any HTTPS to HTTP downgrade. If you mirror only provides HTTP, it can still be used for downloading RPMs from XCP-ng hosts, since every RPM is GPG-signed. HTTPS may become a requirement for this too in the future.
   * If you offer HTTPS, you need a valid certificate and must renew it in time to avoid downtime.
+  * If you already provided a mirror but are unsure if we added it as an HTTP or HTTPS mirror, check http://mirrors.xcp-ng.org/README.txt?mirrorlist&https=1, which selects HTTPS mirrors and lists the others in an "Excluded Mirrors" section.
 * Offer read-only `rsync`. Two reasons:
   * Mirrorbits needs this to regularly check the state of the mirror and automatically disable outdated or broken mirrors.
   * This will allow nearby mirrors to sync from yours in the future, if needed.

@@ -8,7 +8,7 @@ If you want to use the netinstall ISO, see the [Netinstall section](install.md#n
 
 ### Download and create media
 
-You can download the 8.2 ISO here: <http://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.0.iso>.
+You can download the 8.2 ISO here: <https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.0.iso?https=1>.
 
 SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
@@ -164,7 +164,7 @@ It means the system is correctly installed! Enjoy XCP-ng 🚀
 
 The netinstall image is a lightweight ISO (around 150MiB) that will only contain the installer, but no actual RPM packages. Sometimes, it's more convenient/faster when your ISO is on a slow connection (e.g. a virtual media using a server IPMI).
 
-You can download it on this URL: <http://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.0-netinstall.iso>.
+You can download it on this URL: <https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.0-netinstall.iso?https=1>.
 
 As with the regular installation ISO, write it on an USB media:
 
