@@ -286,7 +286,7 @@ You can try a simple process first with some chances of success.
 
 **Note**: Restart can take a while if your windows is currently updating. Restart only occurs after windows has the updates finished.
 
-### The nuclear option
+##### The nuclear option
 
 If the *confident option* above didn't yield the expected results, then we switch to a more aggressive attitude towards the old tools.
 
@@ -313,7 +313,7 @@ Help is welcome to help us reconcile both procedures into one.
 
 **Note**: Also have a look at our [Troubleshooting Guide - Windows PV-Tools](troubleshooting.html#windows-agent-pv-tools).
 
-### VMs with INACCESSIBLE_BOOT_DEVICE error
+#### VMs with INACCESSIBLE_BOOT_DEVICE error
 
 You can try to manually inject the missing drivers in recovery mode.
 
@@ -337,7 +337,7 @@ As written above:
 > * The **management agent** brings more manageability of the VM from XCP-ng, and guest metrics reporting to the host.
 
 #### Management agent + device drivers
-The only way to get the management agent is from Citrix. It is present on Citrix Hypervisor's installation ISO, which can be freely downloaded provided you create an account on their site. You will find it in the `client_install` directory. The installer will install both the management agent and the device drivers.
+The only way to get the management agent is from Citrix. It can be freely downloaded from [the Citrix Hypervisor download page](https://www.citrix.com/downloads/citrix-hypervisor/), provided you create an account on their site. Name of the item: "Citrix VM Tools for Windows". The installer will install both the management agent and the device drivers.
 
 #### Automated installation via Windows Update: device drivers alone
 If you are using Xen Orchestra, you can switch the "Windows Update tools" advanced parameter on from the "Advanced" tab of the VM view. This will install the device drivers automatically at next reboot :warning: **but not the management agent** which still needs to be installed from Citrix tools' installer.
