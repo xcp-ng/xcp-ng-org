@@ -514,4 +514,4 @@ Now we enable autostart at the virtual machine level, for which:
 #### Xen Orchestra
 
 In Xen Orchestra we can just enable a toggle in VM view. VM toggle in XO is automatically setting the pool.
-![](./assets/autopoweron1.png.png)
+![](./assets/autopoweron1.png)
