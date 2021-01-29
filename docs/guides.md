@@ -486,7 +486,7 @@ Reboot to apply.
 
 ### Autostart pool and virtual machines without HA
 
-We have two ways to sovle problem: CLI and Xen Orchestra.
+We have two ways to solve problem: CLI and Xen Orchestra.
 
 #### CLI:
 1. Determine the UUID of the pool for which we want to enable Auto Start. To do this, run the console command on the server:
