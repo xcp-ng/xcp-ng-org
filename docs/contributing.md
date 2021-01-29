@@ -83,9 +83,6 @@ topdir = /mnt/koji
 ;client certificate
 cert = ~/.koji/client.crt
 
-;certificate of the CA that issued the client certificate
-ca = ~/.koji/clientca.crt
-
 ;certificate of the CA that issued the HTTP server certificate
 serverca = ~/.koji/serverca.crt
 ```
