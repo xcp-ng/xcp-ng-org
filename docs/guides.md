@@ -492,7 +492,7 @@ We have two ways to configure it: using Xen Orchestra or via the CLI.
 
 In Xen Orchestra we can just enable a toggle in VM view. Everything will be set accordingly.
 
-![](./assets/img/autopoweron1.png)
+![](../assets/img/autopoweron1.png)
 
 
 #### With the CLI
