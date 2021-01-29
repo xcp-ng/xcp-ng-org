@@ -486,6 +486,9 @@ Reboot to apply.
 
 ### Autostart pool and virtual machines without HA
 
+We have two ways to sovle problem: CLI and Xen Orchestra.
+
+#### CLI:
 1. Determine the UUID of the pool for which we want to enable Auto Start. To do this, run the console command on the server:
 ```
 # xe pool-list
@@ -507,3 +510,8 @@ Now we enable autostart at the virtual machine level, for which:
 
 5. Checking the output 
 `# xe vm-param-list uuid=021fe476-dc06-23a7-b60e-092a3c286f70 | grep other-config`
+
+#### Xen Orchestra
+
+In Xen Orchestra we can just enable a toggle in VM view. VM toggle in XO is automatically setting the pool.
+![](https://github.com/the29a/xcp-ng-org/blob/master/assets/img/screenshots/autopoweron1.png)
