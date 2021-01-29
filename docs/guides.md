@@ -484,34 +484,42 @@ Do not mess the units and make sure to set the same value as base value and as m
 
 Reboot to apply.
 
-### Autostart pool and virtual machines without HA
+### Autostart VMs on boot
 
-We have two ways to solve problem: CLI and Xen Orchestra.
+We have two ways to configure it: using Xen Orchestra or via the CLI.
 
-#### CLI:
+#### With Xen Orchestra
+
+In Xen Orchestra we can just enable a toggle in VM view. Everything will be set accordingly.
+
+![](./assets/autopoweron1.png)
+
+
+#### With the CLI
+
 1. Determine the UUID of the pool for which we want to enable Auto Start. To do this, run the console command on the server:
+
 ```
 # xe pool-list
 uuid ( RO) : 8a3b99c9-c4e9-802c-1298-794d939fb999
 ```
+
 2. Allow autostart of virtual machines at the pool level with the found UUID command:
 `# xe pool-param-set uuid=8a3b99c9-c4e9-802c-1298-794d939fb999 other-config:auto_poweron=true`
 
-Now we enable autostart at the virtual machine level, for which: 
+Now we enable autostart at the virtual machine level.
 3. Execute the command to get the UUID of the virtual machine:
+
 ```
 # xe vm-list
     uuid ( RO)           : 021fe476-dc06-23a7-b60e-092a3c286f70
     name-label ( RW): VM
     power-state ( RO): running
 ```
+
 4. Enable autostart for each virtual machine with the UUID found: 
 `# xe vm-param-set uuid=021fe476-dc06-23a7-b60e-092a3c286f70 other-config:auto_poweron=true`
 
 5. Checking the output 
 `# xe vm-param-list uuid=021fe476-dc06-23a7-b60e-092a3c286f70 | grep other-config`
 
-#### Xen Orchestra
-
-In Xen Orchestra we can just enable a toggle in VM view. VM toggle in XO is automatically setting the pool.
-![](./assets/autopoweron1.png)
