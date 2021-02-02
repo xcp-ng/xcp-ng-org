@@ -163,15 +163,21 @@ Avoid running `yum update` in the host's remote console. Prefer ssh. If you real
 
 See [this forum thread](https://xcp-ng.org/forum/topic/2822/xcp-ng-8-0-upgrade-to-8-1-via-yum-warning).
 
-### UEFI Windows compatibility
+### Network performance of FreeBSD VMs
 
-Overall testing and user feedback regarding UEFI Windows compatibility was good.
+A security patch from the Xen project (patch 12 from [XSA-332](https://xenbits.xen.org/xsa/advisory-332.html)) has caused the speed of network traffic originating in FreeBSD VMs - such as pfSense - to drop dramatically (by factor ~5 in our tests).
 
-However, there remain specific situations where some Windows VM have trouble starting. This has been observed on some VMs after a backup restore or a VM copy.
+After debugging it with the help of users on our forum, we have [reported it to the Xen project](https://lists.xen.org/archives/html/xen-devel/2021-01/msg01122.html).
 
-A fix has been found and will be released shortly.
+There also have been reports of that performance drop affecting other VMs than just FreeBSD, but this hasn't been reproduced reliably while we are writing these lines.
 
-Reference: <https://github.com/xcp-ng/xcp/issues/454>
+The main discussing happens [on our forum](https://xcp-ng.org/forum/topic/3774/poor-pfsense-wan-speeds-after-xcp-ng-updates).
+
+A workaround is available, consisting in rebuilding a kernel while disabling [the problematic patch](https://github.com/xcp-ng-rpms/kernel/blob/8.2/SOURCES/xsa332-linux-11.patch). We provide such a rebuilt kernel for XCP-ng 8.2. Check the forum thread for the updated instructions to install it.
+
+:::warning
+Use at your own risk: this kernel won't protect you against [XSA-332](https://xenbits.xen.org/xsa/advisory-332.html).
+:::
 
 ### Missing files in `/etc/modprobe.d` after an upgrade
 
@@ -181,9 +187,21 @@ When a host is upgraded to XCP-ng 8.2 using the installation ISO, two files are 
 
 We reported the issue to Citrix: <https://bugs.xenserver.org/browse/XSO-991>
 
-The possible consequences of having those files missing are being investigated.
+There are no known consequences of having those files missing, except possible slightly increased memory usage.
 
 Reference: <https://github.com/xcp-ng/xcp/issues/457>
+
+### UEFI Windows compatibility
+
+**Solved.**
+
+Overall testing and user feedback regarding UEFI Windows compatibility during the pre-release testing phases was good.
+
+However, there remained specific situations where some Windows VMs had trouble starting. This had been observed on some VMs after a backup restore or a VM copy.
+
+A fix was found and released as an official update to XCP-ng 8.2.
+
+Reference: <https://github.com/xcp-ng/xcp/issues/454>
 
 ### Citrix Hypervisor's known issues
 
