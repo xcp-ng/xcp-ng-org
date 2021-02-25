@@ -40,9 +40,9 @@ module.exports = {
           ['/networking', 'Networking'],
           ['/compute', 'Compute & GPU'],
           ['/guests','Guests tools'],
+          ['/api', 'API'],
           ['/additionalpackages', 'Additional packages'],
           ['/troubleshooting', 'Troubleshooting'],
-          ['/architecture', 'Architecture']
         ]
       },
       {
@@ -56,6 +56,7 @@ module.exports = {
           ['/cloud', 'Cloud'],
           ['/hosting', 'Hosting'],
           ['/migratetoxcpng.md', 'Migrate to XCP-ng'],
+          ['/ha.md', 'High Availability'],
           ['/guides.md', 'Guides'],
         ]
       },
