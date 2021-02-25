@@ -141,7 +141,7 @@ You can install it using
 yum install kernel-alt
 ```
 
-This will install the kernel and add a grub boot menu entry to boot from it. It will **not** default to it unless you change the default in `grub.cfg` (/boot/grub/grub.cfg` or `/boot/efi/EFI/xenserver/grub.cfg` depending on whether you are in BIOS mode or UEFI mode).
+This will install the kernel and add a grub boot menu entry to boot from it. It will **not** default to it unless you change the default in `grub.cfg` (`/boot/grub/grub.cfg` or `/boot/efi/EFI/xenserver/grub.cfg` depending on whether you are in BIOS mode or UEFI mode).
 
 There may also be a newer release of kernel-alt in testing repositories:
 
