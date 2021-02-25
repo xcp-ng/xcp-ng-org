@@ -288,6 +288,49 @@ If the pool master requires a network reset, reset the network on the pool maste
 
 After you specify the configuration mode to be used after the network reset, xsconsole and the CLI display settings that will be applied after host reboot. It is a final chance to modify before applying the emergency network reset command. After restart, the new network configuration can be verified in Xen Orchestra and xsconsole. In Xen Orchestra, with the host selected, select the Networking tab to see the new network configuration. The Network and Management Interface section in xsconsole display this information.
 
+### SR-IOV
+
+TO have SR-IOV enabled, you need:
+
+* SR-IOV / ASPM compatible mainboard
+* SR-IOV compatible CPU
+* SR-IOV compatible network card
+* SR-IOV compatible drivers for XCP-ng
+
+:::warning
+You can't live migrate a VM with SR-IOV enabled. Use it only if you really need it!
+:::
+
+#### Setup
+
+* enable SR-IOV in your BIOS
+* enable ASPM (seem to be needed acording to https://www.juniper.net/documentation/en_US/contrail3.1/topics/concept/sriov-with-vrouter-vnc.html and https://www.supermicro.com/support/faqs/faq.cfm?faq=26448)
+* enable SR-IOV in your network card firmware
+
+Then, you can enable and configure it with `xe` CLI:
+
+```
+xe network-create name-label=SRIOV
+xe network-sriov-create network-uuid=<network_uuid> pif-uuid=<physical_pif_uuid>
+xe network-sriov-param-list uuid=<SR-IOV Network_uuid>
+```
+
+The last command will tell you if you need to reboot or not.
+
+Assign the SR-IOV network to your VM:
+```
+xe vif-create device=<device index> mac=<vf_mac_address> network-uuid=<sriov_network> vm-uuid=<vm_uuid>
+```
+
+If you want to disable it:
+```
+xe network-sriov-destroy uuid=<network_sriov_uuid>
+```
+
+:::tip
+You can read a Citrix guide here: <https://support.citrix.com/article/CTX235044>
+:::
+
 ### Intel i218/i219 slow speed
 
 With kernel version 4.15 a fix in the e1000e driver [has been introduced](https://github.com/torvalds/linux/commit/b10effb92e272051dd1ec0d7be56bf9ca85ab927). However, this fix slightly slows down DMA access times to prevent the NIC to hang up on heavy UDP traffic. This impacts the TCP performance. A workaround to regain full transfer speeds, you can turn off TCP segmentation offloading via the following command:
