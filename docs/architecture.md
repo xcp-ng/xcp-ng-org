@@ -432,30 +432,3 @@ XCP-ng is meant to use XAPI. Don't use it with `xl` or anything else!
 #### Pool design
 
 ![](https://xapi-project.github.io/getting-started/pool.png)
-
-
-### Modifications
-
-:::warning
-Those changes aren't officially supported, and will be also wiped after an ISO upgrade.
-:::
-
-#### 24h task timeout
-
-Edit the `/etc/xapi.conf` file, and uncomment/change `pending_task_timeout` from:
-
-```ini
-# pending_task_timeout = 86400 # 1 day in seconds
-```
-
-To:
-
-```ini
-pending_task_timeout = 172800
-```
-
-:::tip
-In this example, `172800` seconds means two days.
-
-After changing the configuration, don't forget to restart the toolstack with `xe-toolstack-restart`.
-:::
