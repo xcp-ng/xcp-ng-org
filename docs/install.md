@@ -226,16 +226,6 @@ If you want to make an installation in UEFI mode, you need to have a slightly di
     module2 /EFI/xcp-ng/install.img
  }
 ```
-
-If you want an automated install in UEFI, Grub will look like this:
-```
-menuentry "XCP-ng Install (serial)" {
-    multiboot2 /EFI/xcp-ng/xen.gz dom0_mem=2048M,max:2048M watchdog \
-    dom0_max_vcpus=4 com1=115200,8n1 console=com1,vga
-    module2 /EFI/xcp-ng/vmlinuz console=hvc0 console=tty0 answerfile_device=eth0 answerfile=http://pxehost.example.com/answerfile install
-    module2 /EFI/xcp-ng/install.img
- }
-```
 4. Copy this `grub.cfg` file to `EFI/xcp-ng` folder on the TFTP server
 5. Get the following files from XCP-ng ISO: `grubx64.efi`, `install.img` (from the root directory), `vmlinuz`, and `xen.gz` (from the /boot directory) to the new EFI/xcp-ng directory on the TFTP server.
 
@@ -275,6 +265,17 @@ Any SYSLINUX configuration style file will be valid. [Find more on the syslinux 
 :::
 
 #### With UEFI
+
+To have an automated install with UEFI, you need the following Grub configuration:
+
+```
+menuentry "XCP-ng Install (serial)" {
+    multiboot2 /EFI/xcp-ng/xen.gz dom0_mem=2048M,max:2048M watchdog \
+    dom0_max_vcpus=4 com1=115200,8n1 console=com1,vga
+    module2 /EFI/xcp-ng/vmlinuz console=hvc0 console=tty0 answerfile_device=eth0 answerfile=http://pxehost.example.com/answerfile install
+    module2 /EFI/xcp-ng/install.img
+ }
+```
 
 Your XML answer file can look like this:
 
