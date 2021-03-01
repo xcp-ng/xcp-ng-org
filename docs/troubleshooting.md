@@ -481,3 +481,16 @@ If you attempt to create a new VM, and you notice that you only have a handful o
 ```
 
 This should recreate all the templates.
+
+
+## The updater plugin is busy
+
+The message `The updater plugin is busy (current operation: check_update)` means that the plugin crashed will doing an update. The lock was then active, and it was left that way. You can probably see that by doing:
+
+```
+cat /var/lib/xcp-ng-xapi-plugins/updater.py.lock
+```
+
+It should be empty, but if you have the bug, you got `check_update`.
+
+Remove `/var/lib/xcp-ng-xapi-plugins/updater.py.lock` and that should fix it.
