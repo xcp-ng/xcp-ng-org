@@ -205,7 +205,7 @@ default xcp-ng
 label xcp-ng
     kernel mboot.c32
     append xcp-ng/xen.gz dom0_max_vcpus=2
-        dom0_mem=1024M,max:1024M com1=115200,8n1
+        dom0_mem=2048M,max:2048M com1=115200,8n1
     console=com1,vga ---  xcp-ng/vmlinuz
     xencons=hvc console=hvc0 console=tty0
     ---  xcp-ng/install.img
@@ -220,7 +220,7 @@ If you want to make an installation in UEFI mode, you need to have a slightly di
 3. Create a `grub.cfg` as follow:
 ```
  menuentry "XCP-ng Install (serial)" {
-    multiboot2 /EFI/xcp-ng/xen.gz dom0_mem=1024M,max:1024M watchdog \
+    multiboot2 /EFI/xcp-ng/xen.gz dom0_mem=2048M,max:2048M watchdog \
     dom0_max_vcpus=4 com1=115200,8n1 console=com1,vga
     module2 /EFI/xcp-ng/vmlinuz console=hvc0
     module2 /EFI/xcp-ng/install.img
@@ -230,7 +230,7 @@ If you want to make an installation in UEFI mode, you need to have a slightly di
 If you want an automated install in UEFI, Grub will look like this:
 ```
 menuentry "XCP-ng Install (serial)" {
-    multiboot2 /EFI/xcp-ng/xen.gz dom0_mem=1024M,max:1024M watchdog \
+    multiboot2 /EFI/xcp-ng/xen.gz dom0_mem=2048M,max:2048M watchdog \
     dom0_max_vcpus=4 com1=115200,8n1 console=com1,vga
     module2 /EFI/xcp-ng/vmlinuz console=hvc0 console=tty0 answerfile_device=eth0 answerfile=http://pxehost.example.com/answerfile install
     module2 /EFI/xcp-ng/install.img
@@ -263,7 +263,7 @@ default xcp-ng-auto
 label xcp-ng-auto
     kernel mboot.c32
     append xcp-ng/xen.gz dom0_max_vcpus=2
-        dom0_mem=1024M,max:1024M com1=115200,8n1
+        dom0_mem=2048M,max:2048M com1=115200,8n1
         console=com1,vga ---  xcp-ng/vmlinuz
         xencons=hvc console=hvc0 console=tty0
         answerfile=http://pxehost.example.com/answerfile
