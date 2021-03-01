@@ -174,15 +174,129 @@ dd if=xcp-ng-8.2.0-netinstall.iso of=/dev/sdX bs=8M oflag=direct
 
 Everything else is like the [regular install](install.md#start-the-host), except that it will not offer to install from local media, only from distant ones.
 
+## Network boot (PXE)
+
+### Requirements
+
+To get XCP-ng installed from PXE, you need:
+
+* DHCP and TFTP configured servers
+* Any NFS, FTP or HTTP server (your choice) to host XCP-ng installation files
+* A PXE-boot compatible network card on your host
+
+:::tip
+PXE boot doesn't support tagged VLAN networks! Be sure to boot on a untagged network!
+:::
+
+### TFTP server configuration
+
+1. In your TFTP root directory (eg `/tftp`), create a folder named `xcp-ng`.
+2. Copy the `mboot.c32` and `pxelinux.0` files from the installation media to the TFTP root directory.
+3. From the XCP-ng installation media, copy the files `install.img` (from the root directory), `vmlinuz`, and `xen.gz` (from the /boot directory) to the new `xcp-ng` directory on the TFTP server.
+4. In the TFTP root directory, create a folder called `pxelinux.cfg`
+5. In the pxelinux.cfg directory, create your configuration file called `default`.
+
+The file itself will contain the way to install XCP-ng: manually (with answer to provide on the host console/screen) or fully automated (see [Automated install](install.md#automatedinstall) below).
+
+Here is an example of a manual installation:
+
+```
+default xcp-ng
+label xcp-ng
+    kernel mboot.c32
+    append xcp-ng/xen.gz dom0_max_vcpus=2 dom0_mem=2048M,max:2048M com1=115200,8n1 console=com1,vga --- xcp-ng/vmlinuz xencons=hvc console=hvc0 console=tty0 --- xcp-ng/install.img
+```
+
+### UEFI boot
+
+If you want to make an installation in UEFI mode, you need to have a slightly different TFTP server configuration:
+
+1. In your TFTP root folder, create a directory called `EFI/xcp-ng`
+2. Configure your DHCP serveur to provide `/EFI/xcp-ng/grubx64.efi` as the boot file
+3. Create a `grub.cfg` as follow:
+```
+ menuentry "XCP-ng Install (serial)" {
+    multiboot2 /EFI/xcp-ng/xen.gz dom0_mem=2048M,max:2048M watchdog \
+    dom0_max_vcpus=4 com1=115200,8n1 console=com1,vga
+    module2 /EFI/xcp-ng/vmlinuz console=hvc0
+    module2 /EFI/xcp-ng/install.img
+ }
+```
+4. Copy this `grub.cfg` file to `EFI/xcp-ng` folder on the TFTP server
+5. Get the following files from XCP-ng ISO: `grubx64.efi`, `install.img` (from the root directory), `vmlinuz`, and `xen.gz` (from the /boot directory) to the new EFI/xcp-ng directory on the TFTP server.
+
+On the FTP, NFS or HTTP serveur, get all the installation media content in there.
+
+:::tip
+When you do copy the installation files, **DO NOT FORGET** the `.treeinfo` file. Double check your webserver isn't blocking it (like Microsoft IIS does).
+:::
+
+#### On the host
+
+1. Start your host
+2. Enter the boot menu (usually F12)
+3. Select boot from the Ethernet card
+4. You should see the PXE menu you created before!
+
 ## Automated install
 
-### PXE
+### Via PXE
 
-This is just an example with VirtualBox.
+Follow the previous section on Network boot (PXE) and get a configuration file that will fetch an answer file:
 
-To test the PXE in a VirtualBox environment you'll need to populate the [PXE special folder](https://www.virtualbox.org/manual/ch06.html#nat-tftp). Most of the content comes from the ISO image.
 ```
-/Users/nraynaud/Library/Virtualbox/TFTP
+default xcp-ng-auto
+label xcp-ng-auto
+    kernel mboot.c32
+    append xcp-ng/xen.gz dom0_max_vcpus=2 dom0_mem=2048M,max:2048M com1=115200,8n1 console=com1,vga --- xcp-ng/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=http://pxehost.example.com/answerfile install --- xcp-ng/install.img
+```
+
+:::tip
+Any SYSLINUX configuration style file will be valid. [Find more on the syslinux website](https://wiki.syslinux.org/wiki/index.php?title=PXELINUX).
+:::
+
+### With UEFI
+
+To have an automated install with UEFI, you need the following Grub configuration:
+
+```
+menuentry "XCP-ng Install (serial)" {
+    multiboot2 /EFI/xcp-ng/xen.gz dom0_mem=2048M,max:2048M watchdog \
+    dom0_max_vcpus=4 com1=115200,8n1 console=com1,vga
+    module2 /EFI/xcp-ng/vmlinuz console=hvc0 console=tty0 answerfile_device=eth0 answerfile=http://pxehost.example.com/answerfile install
+    module2 /EFI/xcp-ng/install.img
+ }
+```
+
+Your XML answer file can look like this:
+
+```
+<?xml version="1.0"?>
+    <installation srtype="ext">
+        <primary-disk>sda</primary-disk>
+        <guest-disk>sdb</guest-disk>
+        <guest-disk>sdc</guest-disk>
+        <keymap>us</keymap>
+        <root-password>mypassword</root-password>
+        <source type="url">http://pxehost.example.com/xcp-ng/</source>
+        <post-install-script type="url">
+            http://pxehost.example.com/myscripts/post-install-script
+        </post-install-script>
+        <admin-interface name="eth0" proto="dhcp" />
+        <timezone>Europe/Paris</timezone>
+    </installation>
+```
+
+:::tip
+The full answerfile schema [is available here](https://raw.githubusercontent.com/xcp-ng/host-installer/master/doc/answerfile.txt).
+:::
+
+#### Example with VirtualBox
+
+To test the PXE in a VirtualBox environment you'll need to populate the [PXE special folder](https://www.virtualbox.org/manual/ch06.html#nat-tftp). Most of the content comes from the ISO image:
+
+```
+/Users/me/Library/Virtualbox/TFTP
 ├── mboot.c32              <- from /boot/pxelinux
 ├── menu.c32               <- from /boot/pxelinux
 ├── pxelinux.cfg           <- mandatory name
@@ -209,28 +323,13 @@ To test the PXE in a VirtualBox environment you'll need to populate the [PXE spe
 
 The configuration file pxelinux.cfg/default is as follow:
 ```
-default xenserver
-label xenserver
+default xcp-ng
+label xcp-ng
 kernel mboot.c32
 append xcp-ng/xen.gz dom0_max_vcpus=1-2 dom0_mem=max:2048M com1=115200,8n1 console=com1,vga --- xcp-ng/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=https://gist.githubusercontent.com/nraynaud/4cca5205c805394a34fc4170b3903113/raw/ install --- xcp-ng/install.img
 ```
 
-Here is the beginning of an answer file:
-```
-<?xml version="1.0"?>
-<installation>
-    <keymap>fr</keymap>
-    <primary-disk>sda</primary-disk>
-    <guest-disk>sda</guest-disk>
-    <root-password>tototo2</root-password>
-    <source type="local"></source>
-    <admin-interface name="eth0" proto="dhcp" />
-    <timezone>America/Phoenix</timezone>
-</installation>
-```
-There is some more [documentation](https://docs.citrix.com/en-us/citrix-hypervisor/install/network-boot.html#create-an-answer-file-for-unattended-pxe-and-uefi-installation) on Citrix's website.
-The answer file, sadly, can't be transmitted by TFTP (its protocol can only be ftp, http, https or file), so I used gist.
-The installation files can come from the ISO disk, but don't forget to alter the boot order such that the network is first.
+The rest is the same as the normal PXE configuration.
 
 #### Software RAID
 
