@@ -204,11 +204,7 @@ Here is an example of a manual installation:
 default xcp-ng
 label xcp-ng
     kernel mboot.c32
-    append xcp-ng/xen.gz dom0_max_vcpus=2
-        dom0_mem=2048M,max:2048M com1=115200,8n1
-    console=com1,vga ---  xcp-ng/vmlinuz
-    xencons=hvc console=hvc0 console=tty0
-    ---  xcp-ng/install.img
+    append xcp-ng/xen.gz dom0_max_vcpus=2 dom0_mem=2048M,max:2048M com1=115200,8n1 console=com1,vga --- xcp-ng/vmlinuz xencons=hvc console=hvc0 console=tty0 --- xcp-ng/install.img
 ```
 
 ### UEFI boot
@@ -252,19 +248,14 @@ Follow the previous section on Network boot (PXE) and get a configuration file t
 default xcp-ng-auto
 label xcp-ng-auto
     kernel mboot.c32
-    append xcp-ng/xen.gz dom0_max_vcpus=2
-        dom0_mem=2048M,max:2048M com1=115200,8n1
-        console=com1,vga ---  xcp-ng/vmlinuz
-        xencons=hvc console=hvc0 console=tty0
-        answerfile=http://pxehost.example.com/answerfile
-        install ---  xcp-ng/install.img
+    append xcp-ng/xen.gz dom0_max_vcpus=2 dom0_mem=2048M,max:2048M com1=115200,8n1 console=com1,vga --- xcp-ng/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=http://pxehost.example.com/answerfile install --- xcp-ng/install.img
 ```
 
 :::tip
 Any SYSLINUX configuration style file will be valid. [Find more on the syslinux website](https://wiki.syslinux.org/wiki/index.php?title=PXELINUX).
 :::
 
-#### With UEFI
+### With UEFI
 
 To have an automated install with UEFI, you need the following Grub configuration:
 
