@@ -270,7 +270,7 @@ menuentry "XCP-ng Install (serial)" {
 
 Your XML answer file can look like this:
 
-```
+```xml
 <?xml version="1.0"?>
     <installation srtype="ext">
         <primary-disk>sda</primary-disk>
@@ -288,8 +288,10 @@ Your XML answer file can look like this:
 ```
 
 :::tip
-The full answerfile schema [is available here](https://raw.githubusercontent.com/xcp-ng/host-installer/master/doc/answerfile.txt).
+The full answerfile schema [is available in our Annex](answerfile.md).
 :::
+
+
 
 #### Example with VirtualBox
 
