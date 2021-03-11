@@ -174,7 +174,7 @@ dd if=xcp-ng-8.2.0-netinstall.iso of=/dev/sdX bs=8M oflag=direct
 
 Everything else is like the [regular install](install.md#start-the-host), except that it will not offer to install from local media, only from distant ones.
 
-## Network boot (PXE)
+## PXE boot install
 
 ### Requirements
 
@@ -238,7 +238,9 @@ When you do copy the installation files, **DO NOT FORGET** the `.treeinfo` file.
 3. Select boot from the Ethernet card
 4. You should see the PXE menu you created before!
 
-## Network boot (UEFI / iPXE over HTTP)
+## iPXE over HTTP install
+
+This guide is for UEFI boot, using iPXE over an HTTP server to server files needed for installation.
 
 ### Requirements
 
@@ -251,16 +253,18 @@ To get XCP-ng installed from iPXE over HTTP, you need:
 
    The top-level should look like this:
 
-        tree -L 1 /path/to/http-directory/
-        .
-        ├── EFI
-        ├── EULA
-        ├── LICENSES
-        ├── RPM-GPG-KEY-CH-8
-        ├── RPM-GPG-KEY-CH-8-LCM
-        ├── RPM-GPG-KEY-Platform-V1
-        ├── boot
-        └── install.img
+```
+tree -L 1 /path/to/http-directory/
+.
+├── EFI
+├── EULA
+├── LICENSES
+├── RPM-GPG-KEY-CH-8
+├── RPM-GPG-KEY-CH-8-LCM
+├── RPM-GPG-KEY-Platform-V1
+├── boot
+└── install.img
+```
 
 3. Boot the target machine.
 4. Press Ctrl-B to catch the iPXE menu.  Use the chainload command to load grub.
@@ -275,21 +279,23 @@ Grub".  This can be fixed by compiling a new version of Grub wit
 
 5. Once the grub prompt loads, set the root to http and load the config file.
 
-        # Replace with your server's  ip
-        set root=(http,SERVER_IP)
-        configfile /EFI/xenserver/grub.cfg
+```
+# Replace with your server's ip
+set root=(http,SERVER_IP)
+configfile /EFI/xenserver/grub.cfg
+```
 
 6. Select the "install" menu entry.
 7. Wait for grub to load the necessary binaries.  This may take a minute.  If
    you look at your http server log you should see something like:
 
-        ```
-        (from python3 -m http.server path-to-directory 80)
+```
+(from python3 -m http.server path-to-directory 80)
 
-        192.168.0.10 - - [11/Mar/2021 03:25:58] "GET /boot/xen.gz HTTP/1.1" 200 -
-        192.168.0.10 - - [11/Mar/2021 03:25:58] "GET /boot/vmlinuz HTTP/1.1" 200 -
-        192.168.0.10 - - [11/Mar/2021 03:26:03] "GET /install.img HTTP/1.1" 200 -
-        ```
+192.168.0.10 - - [11/Mar/2021 03:25:58] "GET /boot/xen.gz HTTP/1.1" 200 -
+192.168.0.10 - - [11/Mar/2021 03:25:58] "GET /boot/vmlinuz HTTP/1.1" 200 -
+192.168.0.10 - - [11/Mar/2021 03:26:03] "GET /install.img HTTP/1.1" 200 -
+```
 8. Continue with installation as normal.
 
 
