@@ -240,7 +240,7 @@ When you do copy the installation files, **DO NOT FORGET** the `.treeinfo` file.
 
 ## iPXE over HTTP install
 
-This guide is for UEFI boot, using iPXE over an HTTP server to server files needed for installation.
+This guide is for UEFI boot, using iPXE over an HTTP server to serve files needed for installation.
 
 ### Requirements
 
@@ -269,7 +269,9 @@ tree -L 1 /path/to/http-directory/
 3. Boot the target machine.
 4. Press Ctrl-B to catch the iPXE menu.  Use the chainload command to load grub.
 
-        chain http://SERVER_IP/EFI/xenserver/grubx64.efi
+```
+chain http://SERVER_IP/EFI/xenserver/grubx64.efi
+```
 
 :::tip
 Sometimes grub takes a very long time to load after displaying "Welcome to
