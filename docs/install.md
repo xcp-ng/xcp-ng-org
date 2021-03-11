@@ -251,7 +251,7 @@ To get XCP-ng installed from iPXE over HTTP, you need:
 
 1. In your HTTP root directory copy the contents of the net install ISO.
 
-   The top-level should look like this:
+The top-level should look like this:
 
 ```
 tree -L 1 /path/to/http-directory/
@@ -266,20 +266,18 @@ tree -L 1 /path/to/http-directory/
 └── install.img
 ```
 
-3. Boot the target machine.
-4. Press Ctrl-B to catch the iPXE menu.  Use the chainload command to load grub.
+2. Boot the target machine.
+3. Press Ctrl-B to catch the iPXE menu.  Use the chainload command to load grub.
 
 ```
 chain http://SERVER_IP/EFI/xenserver/grubx64.efi
 ```
 
 :::tip
-Sometimes grub takes a very long time to load after displaying "Welcome to
-Grub".  This can be fixed by compiling a new version of Grub wit
-`grub-mkstandalone`.
+Sometimes grub takes a very long time to load after displaying "Welcome to Grub".  This can be fixed by compiling a new version of Grub with `grub-mkstandalone`.
 :::
 
-5. Once the grub prompt loads, set the root to http and load the config file.
+4. Once the grub prompt loads, set the root to http and load the config file.
 
 ```
 # Replace with your server's ip
@@ -287,18 +285,17 @@ set root=(http,SERVER_IP)
 configfile /EFI/xenserver/grub.cfg
 ```
 
-6. Select the "install" menu entry.
-7. Wait for grub to load the necessary binaries.  This may take a minute.  If
-   you look at your http server log you should see something like:
+5. Select the "install" menu entry.
+6. Wait for grub to load the necessary binaries.  This may take a minute.  If you look at your http server log you should see something like:
 
 ```
-(from python3 -m http.server path-to-directory 80)
+# (from python3 -m http.server path-to-directory 80)
 
 192.168.0.10 - - [11/Mar/2021 03:25:58] "GET /boot/xen.gz HTTP/1.1" 200 -
 192.168.0.10 - - [11/Mar/2021 03:25:58] "GET /boot/vmlinuz HTTP/1.1" 200 -
 192.168.0.10 - - [11/Mar/2021 03:26:03] "GET /install.img HTTP/1.1" 200 -
 ```
-8. Continue with installation as normal.
+7. Continue with installation as normal.
 
 
 ## Automated install
