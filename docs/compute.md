@@ -113,7 +113,7 @@ NVIDIA consumer grade GPUs won't work due to a driver limitation (on purpose). A
 ## USB Passthrough
 
 :::tip
-No need to tinker any file manually
+No need to tinker with any file manually
 :::
 
 It's fairly easy using `xe` CLI:
