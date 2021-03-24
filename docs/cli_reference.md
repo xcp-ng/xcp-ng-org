@@ -4090,6 +4090,8 @@ The VM or VMs on which this operation is performed are selected using the standa
 
 Use the `force` argument to cause an ungraceful shutdown, similar to pulling the plug on a physical server.
 
+An HVM mode VM requires `force=true` to be shutdown, unless [Guest Tools](guests.md#guest-tools) have been installed.
+
 #### `vm-snapshot`
 
 ```
