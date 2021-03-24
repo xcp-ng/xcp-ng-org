@@ -523,3 +523,73 @@ Now we enable autostart at the virtual machine level.
 5. Checking the output 
 `# xe vm-param-list uuid=<VM_UUID> | grep other-config`
 
+## Guest UEFI Secure Boot
+
+Enabling UEFI Secure Boot for guests ensures that XCP-ng will ensure that guest VMs only execute trusted binaries.  In practice, these are the binaries released by the operating system (OS) team for the OS in running in the VM (Microsoft Windows, Debian, Alpine, etc.).
+
+### Requirements
+
+* A UEFI guest VM.
+
+### Windows
+
+The steps in this guide are all that are necessary to enable secure boot.  Just follow the instructions provided here.
+
+### Linux
+
+It is required to follow the Linux distribution's instructions for enabling UEFI Secure Boot by installing shim and the distribution's signed binaries.  First follow the instructions from the distribution, then follow the instructions provided here.
+
+### Configure the Host
+
+Before enabling UEFI Secure Boot for guest VMs, first execute the `secureboot-certs` script.  This tool downloads, formats, and installs the publically available certificates from Microsoft.
+
+From the XCP-ng CLI:
+
+```
+# Download and install MS certificates
+secureboot-certs
+```
+
+:::tip
+Running `secureboot-certs` only needs to be done once per host, not per VM.
+:::
+
+### Configure the Guest VM
+
+First, shutdown the VM using the [shutdown](cli_reference.md#vm-shutdown) command.
+
+All UEFI VMs are HVMs, so if guest tools are not installed then [xe vm-shutdown](cli_reference.md#vm-shutdown) will require `force=true`.  To avoid this, install [Guest Tools](guests.md#guest-tools).
+
+Next, setup the VM secure boot state:
+
+```
+varstore-sb-state <vm-uuid> setup
+```
+
+Finally, enable secure boot:
+
+```
+# Enable secure boot for a UEFI VM
+xe vm-param-set uuid=<vm-uuid> platform:secureboot=true
+```
+
+After booting the VM, UEFI Secure Boot will be
+enabled.
+
+### Disable Guest Secure Boot
+
+```
+# Disable secure boot for a UEFI VM
+xe vm-param-set uuid=VM platform:secureboot=false
+```
+
+After rebooting the VM, UEFI Secure Boot will be
+disabled.
+
+### Other Helpful Commands
+
+You may check that the VM runs on UEFI firmware using the following command:
+
+```
+xe vm-param-get uuid=VM param-name=HVM-boot-params param-key=firmware
+```
