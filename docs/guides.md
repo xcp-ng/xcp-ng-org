@@ -591,6 +591,13 @@ xe vm-param-set uuid=<vm-uuid> platform:secureboot=false
 After rebooting the VM, UEFI Secure Boot will be
 disabled.
 
+### Installing the Revocation List
+
+Download the revocation list file found [here](https://uefi.org/revocationlistfile)
+and copy it to `/var/lib/uefistored/dbx.auth`.
+
+Without the revocation list known vulnerable binaries will still be allowed to execute.
+
 ### Other Helpful Commands
 
 You may check that the VM runs on UEFI firmware using the following command:
