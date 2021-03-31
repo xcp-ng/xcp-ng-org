@@ -585,7 +585,7 @@ enabled.
 
 ```
 # Disable secure boot for a UEFI VM
-xe vm-param-set uuid=VM platform:secureboot=false
+xe vm-param-set uuid=<vm-uuid> platform:secureboot=false
 ```
 
 After rebooting the VM, UEFI Secure Boot will be
