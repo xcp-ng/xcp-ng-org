@@ -96,7 +96,7 @@ interface-rename --list
 ```
 will display the current assignments
 
-The most common use will be an update statment like the following one:
+The most common use will be an update statement like the following one:
 ```
 interface-rename --update eth4=00:24:81:80:19:63 eth8=00:24:81:7f:cf:8b
 ```
