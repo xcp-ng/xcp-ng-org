@@ -573,6 +573,11 @@ Finally, enable secure boot:
 xe vm-param-set uuid=<vm-uuid> platform:secureboot=true
 ```
 
+:::tip
+Optionally, the secure boot mode may be toggled in the
+VM/Advanced tab in Xen Orchestra.
+:::
+
 After booting the VM, UEFI Secure Boot will be
 enabled.
 
@@ -593,3 +598,7 @@ You may check that the VM runs on UEFI firmware using the following command:
 ```
 xe vm-param-get uuid=VM param-name=HVM-boot-params param-key=firmware
 ```
+
+:::tip
+Optionally, the firmware may be checked in the VM/advanced tab of Xen Orchestra.
+:::
