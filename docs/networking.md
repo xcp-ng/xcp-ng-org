@@ -74,6 +74,39 @@ Check new NIC by UUID:
 Plug new NIC:
 `xe pif-plug uuid=<NIC UUID>`
 
+### Renaming NIC
+
+
+
+In a pool, all NICs across your hosts should match up exactly. So if your management is NIC 0 and your 10Gbit Storage interface is NIC 4 on host 1, it should be the same on host 2.
+
+If for some reason, the order of 2 hosts doesn't match up, you can fix it with the interface-rename command.
+
+:::tip
+These commands are meant to be done on non-active interface. Typically this will be done directly after install, before even joining a pool.
+:::
+
+```
+interface-rename --help
+```
+will display all available options
+
+```
+interface-rename --list
+```
+will display the current assignments
+
+The most common use will be an update statement like the following one:
+```
+interface-rename --update eth4=00:24:81:80:19:63 eth8=00:24:81:7f:cf:8b
+```
+This example will set the mac-addresses for eth4 & eth8 switching them in the process.
+
+Reboot the host to apply these settings.
+
+By renaming/updating interfaces like this, you can assure all your hosts have the same interface order.
+
+
 ## Remove a physical NIC
 
 Before removing it, just be sure to remove its associated networks, so it won't cause trouble. Then, shutdown, remove the NIC and finally boot. After the boot, do a `xe pif-forget uuid=<OLD PIF UUID>` to get rid of the object record.
