@@ -40,6 +40,7 @@ module.exports = {
           ['/networking', 'Networking'],
           ['/compute', 'Compute & GPU'],
           ['/guests','Guests tools'],
+          ['/api', 'API'],
           ['/additionalpackages', 'Additional packages'],
           ['/troubleshooting', 'Troubleshooting'],
         ]
@@ -54,8 +55,9 @@ module.exports = {
           ['/backup', 'Backup'],
           ['/cloud', 'Cloud'],
           ['/hosting', 'Hosting'],
-          ['/migratetoxcpng.md', 'Migrate to XCP-ng'],
-          ['/guides.md', 'Guides'],
+          ['/migratetoxcpng', 'Migrate to XCP-ng'],
+          ['/ha', 'High Availability'],
+          ['/guides', 'Guides'],
         ]
       },
       {
@@ -68,13 +70,21 @@ module.exports = {
           ['/security', 'Security'],
           ['/contributing', 'Contributing'],
           ['/architecture', 'Architecture'],
-          ['/develprocess.md', 'Development Process'],
+          ['/develprocess', 'Development Process'],
           ['/licenses', 'Licenses'],
           ['/gitrepo', 'Git Repositories'],
           ['/mirrors', 'Mirrors'],
           ['/roadmap', 'Roadmap'],
+        ]
+      },
+      {
+        title: 'Annexes',   // required
+        collapsable: false, // optional, defaults to true
+        sidebarDepth: 1,    // optional, defaults to 1
+        children: [
           ['/glossary', 'Glossary'],
-          ['/cli_reference.md', 'CLI reference'],
+          ['/cli_reference', 'CLI reference'],
+          ['/answerfile', 'Answer file'],
         ]
       },
     ]

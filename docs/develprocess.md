@@ -77,13 +77,15 @@ On the contrary, the development version (aka the next stable release) can get a
 There are two sides of the coin: **development** and **RPM packaging**. For a given RPM package that does not come from CentOS or EPEL, we always provide packaging work. We can also provide development work, depending on the package, either as contributors to an upstream project, or as our own upstream.
 
 Here are the usual steps. We will expand on them afterwards:
-* **Develop**: happens on a software git repository as in any software project. Example: <https://github.com/xcp-ng/xcp-emu-manager>. Skip if we are not the upstream developer for that software and are not contributing to it yet.
-* **Release**: decide that your software is good to be released as part of XCP-ng, either as an update to an existing release of XCP-ng or in the next release. Create a tag in the git repository. Example: <https://github.com/xcp-ng/xcp-emu-manager/releases/tag/v0.0.9>. Skip if we are not the upstream developer for that software.
-* **Create or update RPM specs** and commit them to the appropriate repository at <https://github.com/xcp-ng-rpms/>
-* **Add or update patches** to be applied above the upstream source tarball to that same repository.
-* **Submit build** to the build system (koji).
-* **Publish the build** to the appropriate RPM repository (`testing` for stable releases, `base` for development release of XCP-ng)
-* In the case of a development release of XCP-ng, when all the above has been done for all the RPMs, generate an ISO image with the installer and the required RPMs.
+* **Development**
+  * **Develop**: happens on a software git repository as in any software project. Example: <https://github.com/xcp-ng/xcp-emu-manager>. Skip if we are not the upstream developer for that software and are not contributing to it yet.
+  * **Release**: decide that your software is good to be released as part of XCP-ng, either as an update to an existing release of XCP-ng or in the next release. Create a tag in the git repository. Example: <https://github.com/xcp-ng/xcp-emu-manager/releases/tag/v0.0.9>. Skip if we are not the upstream developer for that software.
+* **Packaging**
+  * **Create or update RPM specs** and commit them to appropriate repository in the ['xcp-ng-rpms' github organization](https://github.com/xcp-ng-rpms/). Example: <https://github.com/xcp-ng-rpms/xcp-emu-manager>.
+  * **Add or update patches** to be applied above the upstream source tarball to that same repository.
+  * **Submit build** to the build system ([koji](https://koji.xcp-ng.org/)).
+  * **Publish the build** to the appropriate RPM repository (`testing` for stable releases, `base` for development release of XCP-ng)
+* **Installer ISO image generation**: in the case of a development release of XCP-ng, when all the above has been done for all the RPMs, generate an ISO image with the installer and the required RPMs.
 
 ### Where discussion happens
 Usually discussion will happen:
@@ -95,30 +97,38 @@ Then depending on the package, we'll bring the discussion to upstream channels w
 
 ## Development
 
+Development in the context of the XCP-ng project means either to contribute to existing upstream projects, such as the Xen API ([XAPI](https://github.com/xapi-project/xen-api/), the [Xen project](https://xenproject.org/) and many other components of XCP-ng, or to develop new software specifically for the XCP-ng project.
+
 ### Contribution to upstream projects
 Development (as in "write code") in XCP-ng project is mostly made of contributions to upstream projects such as <https://github.com/xapi-project/>, <https://wiki.xenproject.org/wiki/Submitting_Xen_Project_Patches> or <https://github.com/xenserver/>.
 
 For some pieces of upstream software, we have GitHub "forks" at <https://github.com/xcp-ng>. For others we contribute directly without a GitHub fork and apply the patches directly on the RPMs at <https://github.com/xcp-ng-rpms/>.
 
 ### Components we **are** the upstream for
+Components for which we are the main developers.
+
 Our policy is to upstream everything if possible. However, there are some exceptions:
 * Components that have no "upstream" open source equivalent. `xcp-emu-manager` (<https://github.com/xcp-ng/xcp-emu-manager>) is such a component that we had to write from scratch because the corresponding component in XenServer, `emu-manager`, is closed-source.
 * Bits specific to the act of building XCP-ng (various scripts, branding stuff...). The main example is <https://github.com/xcp-ng/xcp>.
 
 ### How to help at development
-It all depends on your skills and areas of interest so it's hard to tell specifically in advance. Having a look at the open GitHub issues and pick one (<https://github.com/xcp-ng/xcp/issues>) could definitely help. Else, maybe there's a specific topic that you would want to help improve. Even if you don't know where to start, just come and talk with us (see "Where discussion happens" above).
+It all depends on your skills and areas of interest so it's hard to tell specifically in advance. It usually starts with a feature that you want, or a bug that is annoying you. Alternatively, having a look at the open GitHub issues and picking one (<https://github.com/xcp-ng/xcp/issues>) can be a way to get started. Even if you don't know where to start, just come and talk with us (see [Where discussion happens](#where-discussion-happens) above).
 
 ## Tags, maintenance branches in our code repositories
 
-Objectives of the branch and tag naming conventions:
-* always know how to name tags and maintenance branches depending on the situation
+We need a few conventions to work together. The following describes the naming conventions for branches and tags in our code repositories, that is repositories located at <https://github.com/xcp-ng>. Repositories used for RPM packaging, at <https://github.com/xcp-ng-rpms/>, use different conventions not discussed here.
+
+The objectives of the branch and tag naming conventions are:
+* always being able to know how to name tags and maintenance branches, depending on the situation
 * easily identify maintenance branches for a given release of XCP-ng, based on their name
 * know what branch to develop the next version on
 * for our tags and branches that have been developed from upstream branches or tags, document the upstream branch names through our branch and tag naming
 
-First question to ask ourselves: **who is the upstream for the software**?
+The first question to ask ourselves is: **who is the upstream for the software**?
 
 ### 1. We are upstream
+
+We decide when to release a new version, and we decide the versioning.
 
 Example: `xcp-emu-manager`
 * Tags: `vMAJOR.MINOR.PATCH` (`v1.1.2`, `v1.2.0`...)
@@ -143,6 +153,8 @@ Special case: VERSION and XCPNGVERSION are always the same (example: `xcp-ng-rel
 * Maintenance branch if needed: `XCPNGVERSION` (`8.2`)
 
 ### 2. We are downstream
+
+We do not decide how and when new versions and released, and how they are numbered. So we need to somewhat mix the upstream versioning with our own branch names and versioning. For maintenance branches and tags related to an XCP-ng release, notably.
 
 Examples: `host-installer`, `sm`...
 * Tags:
@@ -171,11 +183,11 @@ Creating packages that can be installed on the user's system is called **packagi
 RPM is the package format used by Fedora, Red Hat, CentOS, Mageia, OpenSUSE and other Linux distributions. It is also what we use in XCP-ng. A RPM package contains the files to be installed, metadata such as version and dependencies, and various scripts executed during installation, upgrade, uninstallation or other events.
 
 A RPM is built from a source RPM (SRPM), which is usually made of:
-* A specification file ("spec file") that defines everything about the build: build dependencies, version, release, changelog, build commands, installation, what sources to use, patches to apply, run-time dependencies, scripts (post-install, pre-install, etc.) and more.
-* Upstream sources (usually a single `.tar.gz` file), unmodified unless there's a very good reason (such as stripping out non-free components).
+* A specification file ("spec file", extension `.spec`) that defines everything about the build: build dependencies, version, release, changelog, build commands, installation, what sources to use, patches to apply, run-time dependencies, scripts (post-install, pre-install, etc.) and more.
+* Upstream sources (usually a single `.tar.gz` file), unmodified from the upstream release unless there's a very good reason (such as stripping out non-free components).
 * Patches to be applied to the upstream sources.
 
-A given source RPM can be built in various environments (distribution, arches), so the build environment is also something that defines a RPM. The best build environment is one that matches your target. Linux distributions always start with a clean minimal build root in which dependencies declared by the SRPM are installed before starting the build. We do exactly the same.
+A given source RPM can be built in various environments (distributions, arches), so the **build environment** is also something that defines a RPM. The best build environment is one that matches your target. Linux distributions always start with a clean minimal build root in which build dependencies declared by the SRPM are installed before starting the build. We do exactly the same.
 
 One source RPM can produce several RPMs, named differently from the source RPM itself. Example available at <https://koji.xcp-ng.org/buildinfo?buildID=663> (see the 'RPMs' section).
 
@@ -188,13 +200,20 @@ Two places.
 
 1. As SRPM files (`.src.rpm`), they are all available in our RPM repositories at <https://updates.xcp-ng.org/>. Example: <https://updates.xcp-ng.org/7/7.6/base/Source/SPackages/>.
 
-2. All RPMs built by us have been built from a git repository at <https://github.com/xcp-ng-rpms/> containing the spec file and sources. The name of the repository matches that of the source package. `git-lfs` is required for cloning and committing, because we use it to store the source tarballs.
+2. All RPMs built by us have been built from one of the git repositories at <https://github.com/xcp-ng-rpms/>, containing the spec file and sources. The name of the repository matches that of the source package. `git-lfs` is required for cloning from and committing to them, because we use it to store the source tarballs.
 
 ### Packaging guidelines
 
 See [RPM Packaging guidelines](https://github.com/xcp-ng/xcp/wiki/RPM-Packaging-guidelines).
 
 ## Build system
+Sources and spec files for RPMs is one thing, but one needs a build environment to turn them into installable RPMs.
+
+:::tip
+What follows is important if you want to understand how our official RPMs are built, or intend to contribute to the packaging.
+
+However, for local builds meant for testing your changes (e.g. add a few patches to see how the component behaves with them), check the [Local RPM build](#local-rpm-build) section.
+:::
 
 ### Enter Koji
 When building RPMs, many things can and must be automated. This is what a build system is for. Ours is [Koji](https://koji.xcp-ng.org/), which [comes from the Fedora project](https://pagure.io/koji).
@@ -207,7 +226,7 @@ Features:
 * Portable command line client written in python.
 * User authentication and credentials.
 
-And with a bit of scripting:
+And with a bit of scripting or additional components:
 * GPG signing of RPMs.
 * Creation of RPM repositories.
 
@@ -322,7 +341,9 @@ Then, if it is an **update candidate** for an existing package:
   * For better visibility of the update candidate, also create a GitHub issue, such as <https://github.com/xcp-ng/xcp/issues/154>. Add it to the [team board](https://github.com/orgs/xcp-ng/projects/2) in column "Update candidate".
 
 ### Special case: new packages
-Importing new packages requires extra steps, described at [How to add new packages to XCP-ng](https://github.com/xcp-ng/xcp/wiki/How-to-add-new-packages-to-XCP-ng).
+Importing new packages requires extra steps.
+
+**TODO**
 
 ### Special case: packages not built by us
 Most packages imported from CentOS or EPEL are not built by our Koji instance. We import the source RPM and the built RPMs directly.
@@ -356,13 +377,73 @@ We automatically sign the RPMs built by or imported to Koji before exporting the
 ### Repository generation
 Handled by a cron job on koji's server. Then the repository is synchronised to <https://updates.xcp-ng.org/>.
 
-## Build env
+## Local RPM build
+Koji, the build system, is used only for official builds or update candidates. For daily development or community builds, we provide a simpler build environment using docker.
 
-A tool for easy local builds: `xcp-ng-build-env`
+### `xcp-ng-build-env`
+We provide a build environment that can run locally on your computer: <https://github.com/xcp-ng/xcp-ng-build-env>. It revolves around docker containers and a few convenience scripts. This is what we use for development, before we send the actual changes to our official build system, `koji`.
+
+### Guide to local RPM rebuild
+With some prior knowledge about development and RPM packaging, the documentation of <https://github.com/xcp-ng/xcp-ng-build-env> should be enough to get you started. However, in what follows, we provide a step by step guide for anyone to become accustomed to the process.
+
+#### Requirements
+
+* Docker. There are plenty of guides on the internet for your specific OS, so we won't cover this part here.
+* A local clone of <https://github.com/xcp-ng/xcp-ng-build-env>.
+* Container images built using its `build.sh` script. One per XCP-ng release. Example: `./build.sh 8.2` if your target is XCP-ng 8.2.
+* [git-lfs](https://git-lfs.github.com/). It is required to be able to fetch the RPM sources from our repositories at <https://github.com/xcp-ng-rpms/>.
+
+#### Get the sources for the RPM
+
+Every RPM built by us has its sources located in a repository at <https://github.com/xcp-ng-rpms/>.
+
+Example: <https://github.com/xcp-ng-rpms/xen>.
+
+* After double-checking that you have installed `git-lfs`, locally clone the repository you want to work on.
+* Checkout the branch that corresponds to your target. For XCP-ng 8.2, select the `8.2` branch.
+
+#### Build the RPM
+
+You probably want to bring modifications to the RPM definitions before you rebuild it, but let's first focus on getting a successful build. Then we'll allow ourselves to do modifications.
+
+* Start the container. We use the `/path/to/xcp-ng-build-env/run.py` script for that.
+  * Check the supported options with `/path/to/xcp-ng-build-env/run.py --help`
+  * We'll want the following options:
+    * `--branch` (`-b`): this selects the target. Example: `--branch 8.2` for XCP-ng 8.2. The corresponding container image must have been built before you can use it.
+    * `--volume` (`-v`): we need to 'mount' your working directory into the container using this option. Else the container won't have access to any persistent data. Example: `-v ~/workdir:/data` will make your local `~/workdir` directory available to the container under the local `/data` path.
+    * `--rm`: destroy the running container when exited. Can save disk space because you won't have to remember to clean up old containers manually.
+* From within the container:
+  * Enter the directory containing the sources for the RPM you had cloned earlier from <https://github.com/xcp-ng-rpms/>. Example: `cd /data/git/xen`.
+  * Install the build dependencies in the container: `sudo yum-builddep SPECS/*.spec -y`.
+  * Build the RPM: `rpmbuild -ba SPECS/*.spec --define "_topdir $(pwd)"`. This `_topdir` strange thing is necessary to make rpmbuild accept to work in the current directory rather than in its default working directory, `~/rpmbuild`.
+* When the build completes, new directories are created: `RPMS/` and `SRPMS/`, that contain the build results. In a container started with the appropriate `-v` switch, the build results will be instantly available outside the container too.
 
 :::tip
-TODO
+**The handy `--local` option**: it is a convenience parameter for `run.py` that automates most of the above. From the directory containing the local clone (on your local system, outside the container), simply run: `/path/to/xcp-ng-build-env/run.py -b X.Y --local . --rm -n` and it will automatically download the build dependencies and build the package.
+
+The additional `-n` switch means "don't exit when finished", which will let you use the initialized container (with all the build dependencies already installed) without having to restart from scratch. The local directory is mounted in the container at `~/rpmbuild/`.
 :::
+
+#### Modify the RPM
+
+Now that we know that we are able to build it, let's modify it. Here, you need basic knowledge about [RPM packaging](https://rpm-packaging-guide.github.io/). Check also our [Packaging Guidelines](#packaging-guidelines).
+
+Basically, all the sources and patches are in the `SOURCES/` directory, and the definitions and rules are in the spec file located in `SPECS/`.
+
+We can't cover every situation here, so we will address a simple case: add patches to a package.
+
+* Add the patches in the `SOURCES/` directory
+* Modify the spec file (`SPECS/name_of_package.spec`):
+  * Add `PatchX` tags that reference the patches (where X is the number of the patch). If there already are patches, you'll usually choose a higher number. Example: `Patch1: packagename-2.1-fix-some-stuff.backport.patch`.
+  * Update the `Release` tag. To clearly identify your build as a custom build, do not increase the release, but rather add a suffix to it. Example: `1%{?dist}` would become `1.0.fixstuff.1%{?dist}`. The first `0` is a way to make sure your build always has a lower release than any subsequent official update to the RPM. Then a short string that identifies your custom build (`fixstuff`). Then a digit, starting at 1, that you are free to increment at each iteration, if you do several successive builds.
+  * A new changelog entry in the spec file. Not strictly necessary for the build, but it's always a good habit to update it with details about the changes, especially if you are likely to forget why you had installed it in the first place, or if you share your build RPMs with other users.
+
+Then follow the same steps as before to build the RPM.
+
+### An XCP-ng host as a build environment
+You can also turn any XCP-ng host (preferrably installed in a VM. Don't sacrifice a physical host for that) into a build environment: all the tools and build dependencies are available from the default RPM repositories for XCP-ng, or from CentOS and EPEL repositories.
+
+You won't benefit from the convenience scripts from [xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env) though.
 
 ## Local XAPI build
 

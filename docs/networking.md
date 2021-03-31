@@ -74,6 +74,39 @@ Check new NIC by UUID:
 Plug new NIC:
 `xe pif-plug uuid=<NIC UUID>`
 
+### Renaming NIC
+
+
+
+In a pool, all NICs across your hosts should match up exactly. So if your management is NIC 0 and your 10Gbit Storage interface is NIC 4 on host 1, it should be the same on host 2.
+
+If for some reason, the order of 2 hosts doesn't match up, you can fix it with the interface-rename command.
+
+:::tip
+These commands are meant to be done on non-active interface. Typically this will be done directly after install, before even joining a pool.
+:::
+
+```
+interface-rename --help
+```
+will display all available options
+
+```
+interface-rename --list
+```
+will display the current assignments
+
+The most common use will be an update statement like the following one:
+```
+interface-rename --update eth4=00:24:81:80:19:63 eth8=00:24:81:7f:cf:8b
+```
+This example will set the mac-addresses for eth4 & eth8 switching them in the process.
+
+Reboot the host to apply these settings.
+
+By renaming/updating interfaces like this, you can assure all your hosts have the same interface order.
+
+
 ## Remove a physical NIC
 
 Before removing it, just be sure to remove its associated networks, so it won't cause trouble. Then, shutdown, remove the NIC and finally boot. After the boot, do a `xe pif-forget uuid=<OLD PIF UUID>` to get rid of the object record.
@@ -287,6 +320,49 @@ If the pool master requires a network reset, reset the network on the pool maste
 #### Verifying the network reset
 
 After you specify the configuration mode to be used after the network reset, xsconsole and the CLI display settings that will be applied after host reboot. It is a final chance to modify before applying the emergency network reset command. After restart, the new network configuration can be verified in Xen Orchestra and xsconsole. In Xen Orchestra, with the host selected, select the Networking tab to see the new network configuration. The Network and Management Interface section in xsconsole display this information.
+
+### SR-IOV
+
+TO have SR-IOV enabled, you need:
+
+* SR-IOV / ASPM compatible mainboard
+* SR-IOV compatible CPU
+* SR-IOV compatible network card
+* SR-IOV compatible drivers for XCP-ng
+
+:::warning
+You can't live migrate a VM with SR-IOV enabled. Use it only if you really need it!
+:::
+
+#### Setup
+
+* enable SR-IOV in your BIOS
+* enable ASPM (seem to be needed acording to https://www.juniper.net/documentation/en_US/contrail3.1/topics/concept/sriov-with-vrouter-vnc.html and https://www.supermicro.com/support/faqs/faq.cfm?faq=26448)
+* enable SR-IOV in your network card firmware
+
+Then, you can enable and configure it with `xe` CLI:
+
+```
+xe network-create name-label=SRIOV
+xe network-sriov-create network-uuid=<network_uuid> pif-uuid=<physical_pif_uuid>
+xe network-sriov-param-list uuid=<SR-IOV Network_uuid>
+```
+
+The last command will tell you if you need to reboot or not.
+
+Assign the SR-IOV network to your VM:
+```
+xe vif-create device=<device index> mac=<vf_mac_address> network-uuid=<sriov_network> vm-uuid=<vm_uuid>
+```
+
+If you want to disable it:
+```
+xe network-sriov-destroy uuid=<network_sriov_uuid>
+```
+
+:::tip
+You can read a Citrix guide here: <https://support.citrix.com/article/CTX235044>
+:::
 
 ### Intel i218/i219 slow speed
 
