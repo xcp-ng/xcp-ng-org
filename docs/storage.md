@@ -421,8 +421,7 @@ Usually, you can use a NFS or SMB share. But if you don't have any of those, you
 That's it!
 
 :::tip
-Don't forget to rescan your SR after adding, changing, or deleting ISO files. Rescan is done automatically every 10 minutes otherwise.
-:::
+Don't forget to rescan your SR after adding, changing, or deleting ISO files. Rescan is done automatically every 10 minutes otherwise.:::
 
 ```
 xe sr-rescan uuid=<UUID>
