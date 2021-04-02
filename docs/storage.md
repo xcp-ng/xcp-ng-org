@@ -8,9 +8,8 @@ Storage in XCP-ng is a quite large topic. This section is dedicated to it. Keywo
 
 Please take in consideration that Xen API (XAPI) via their storage module (`SMAPI`) is doing all the heavy lifting on your storage. **You don't need to format drives manually**.
 
-:::tip
-We encourage people to use file based SR (local ext, NFS, XOSAN…) because it's easier to deal with. If you want to know more, read the rest.
-:::
+::: tip
+We encourage people to use file based SR (local ext, NFS, XOSAN…) because it's easier to deal with. If you want to know more, read the rest. :::
 
 ## Storage types
 
