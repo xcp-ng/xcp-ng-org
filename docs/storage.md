@@ -422,8 +422,30 @@ Usually, you can use a NFS or SMB share. But if you don't have any of those, you
 That's it!
 
 :::tip
-Don't forget to rescan your SR after adding ISO files. Rescan is done automatically every 10 minutes otherwise.
+Don't forget to rescan your SR after adding, changing, or deleting ISO files. Rescan is done automatically every 10 minutes otherwise.
 :::
+
+```
+xe sr-rescan uuid=<UUID>
+```
+
+
+It's almost as easy from the CLI.  To create the ISO SR yourself:
+1. Create a directory on the local filesystem to storage your ISOs
+2. Copy/move ISOs to this new location
+3. Create the ISO SR using xe sr-create
+4. You can add or update ISOs later by placing them into the directory you created in step #1
+5. Rescan the SR if you change the files stored in the ISO directory
+
+Here's an example creating a Shared ISO SR named "ISO Repository" that will be stored in /opt/var/iso_repository:
+```
+# mkdir /opt/var/iso_repository
+
+# xe sr-create name-label="ISO Repository" type=iso device-config:location=/opt/var/iso_repository device-config:legacy_mode=true content-type=iso
+a6732eb5-9129-27a7-5e4a-8784ac45df27
+
+xe sr-rescan uuid=a6732eb5-9129-27a7-5e4a-8784ac45df27
+```
 
 ## Storage API
 
