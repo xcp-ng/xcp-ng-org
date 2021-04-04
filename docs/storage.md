@@ -442,7 +442,8 @@ xe sr-rescan uuid=a6732eb5-9129-27a7-5e4a-8784ac45df27
 ```
 
 :::tip
-Don't forget to rescan your SR after adding, changing, or deleting ISO files. Rescan is done automatically every 10 minutes otherwise.:::
+Don't forget to rescan your SR after adding, changing, or deleting ISO files. Rescan is done automatically every 10 minutes otherwise.
+:::
 
 ## Storage API
 
