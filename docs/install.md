@@ -13,7 +13,7 @@ You can download the 8.2 ISO here: <https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8
 SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
 
-Then, create the install media (e.g. USB key):
+Then, create the install media (e.g. a USB key 1GB or larger should work):
 
 ```
 dd if=xcp-ng-8.2.0.iso of=/dev/sdX bs=8M oflag=direct
