@@ -605,16 +605,6 @@ to enable Secure Boot.
 
 ![](../assets/img/screenshots/xo_uefi_sb_post_install_option.png)
 
-##### Enable Secure Boot for an Existing UEFI VM in XCP-ng Center
-
-1. Shutdown the VM using the [shutdown](cli_reference.md#vm-shutdown) command if it is not already shut down.
-
-2. Change the firmware to *UEFI with SecureBoot*.
-
-:::warning
-It is only recommend to interchange the firmware between *UEFI* and *UEFI with SecureBoot*, **not** *BIOS*.
-:::
-
 ##### Enable Secure Boot for an Existing UEFI VM using `xe`
 
 1. Shutdown the VM using the [shutdown](cli_reference.md#vm-shutdown) command if it is not already shut down.
@@ -652,10 +642,6 @@ Unlike Windows, Linux is not signed by Microsoft. Therefore it is required to ei
 #### Disable Secure Boot for a Guest VM using XO
 
 Navigate to the *Advanced* tab and use the **Secure boot** toggle to disable Secure Boot. Reboot the VM and Secure Boot will be disabled.
-
-#### Disable Secure Boot for a Guest VM using XCP-ng Center
-
-Got to the firmware options for the VM and select *UEFI with SecureBoot*.  Reboot the VM and Secure Boot will be disabled.
 
 #### Disable Secure Boot for a Guest VM using `xe`
 
