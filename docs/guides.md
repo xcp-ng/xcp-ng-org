@@ -544,7 +544,7 @@ secureboot-certs
 ```
 
 :::tip
-Running `secureboot-certs` only needs to be done once per host, not per VM. It is not pool-wide. It must also be called after ISO upgrades once per upgraded host.
+Running `secureboot-certs` only needs to be done once per host, not per VM. It must be called for every host in the pool. It must also be called after ISO upgrades once per upgraded host.
 :::
 
 ### Enable Secure Boot for a Guest VM
