@@ -626,6 +626,14 @@ It is only recommend to interchange the firmware between *UEFI* and *UEFI with S
 xe vm-param-set uuid=<vm-uuid> platform:secureboot=true
 ```
 
+#### Setup for Windows VMs
+
+Windows VMs do not require extra installation packages because the Windows Loader and kernel are signed by the keys already installed by the `secureboot-certs` script.  Enabling Secure Boot for the VM in XCP-ng enables Secure Boot in the VM UEFI firmware.
+
+:::warning
+If your VMs have any unsigned drivers, they will fail to load after enabling Secure Boot.
+:::
+
 #### Setup for Linux VMs
 
 Some Linux distributions may require special packages for Secure Boot to function.  Please follow the distribution's documentation to install any required Secure Boot software (e.g., shim) *before* enabling Secure Boot for the VM in XCP-ng.
@@ -633,14 +641,6 @@ Some Linux distributions may require special packages for Secure Boot to functio
 
 :::warning
 If the VM has any unsigned kernel modules, they will fail to load after enabling Secure Boot.  Furthermore, the distribution will likely restrict other kernel features that are seen as loop holes in Secure Boot (kexec, /dev/mem, etc...).  Please read the Secure Boot documentation from the distribution.
-:::
-
-#### Setup for Windows VMs
-
-Windows VMs do not require extra installation packages because the Windows Loader and kernel are signed by the keys already installed by the `secureboot-certs` script.  Enabling Secure Boot for the VM in XCP-ng enables Secure Boot in the VM UEFI firmware.
-
-:::warning
-If your VMs have any unsigned drivers, they will fail to load after enabling Secure Boot.
 :::
 
 :::tip
