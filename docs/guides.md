@@ -549,7 +549,7 @@ Running `secureboot-certs` only needs to be done once per host, not per VM. It m
 
 ### Enable Secure Boot for a Guest VM
 
-#### Creating a new Secure Boot VM
+#### Create a new Secure Boot VM
 
 This section describes how to create a new Secure Boot VM using the various XCP-ng interfaces.
 
@@ -583,7 +583,7 @@ xe vm-param-set uuid=<vm-uuid> HVM-boot-params:firmware=uefi
 xe vm-param-set uuid=<vm-uuid> platform:secureboot=true
 ```
 
-#### Enabling Secure Boot for an Existing UEFI VM
+#### Enable Secure Boot for an Existing UEFI VM
 
 :::warning
 If the VM is running Linux, ensure that the distribution supports Secure Boot before enabling it for the VM in XCP-ng.  Furthermore, the distribution may require the installation of further packages to enable Secure Boot in the VM.
@@ -616,7 +616,7 @@ varstore-sb-state <vm-uuid> setup
 `varstore-sb-state <vm-uuid> setup` wipes previously installed Secure Boot certificates (if there were any). Upon boot, they will be replaced by the Microsoft certificates installed by the `secureboot-certs` script.
 :::
 
-##### Enabling Secure Boot for an Existing UEFI VM in XO
+##### Enable Secure Boot for an Existing UEFI VM in XO
 
 1. Shutdown the VM if it is not already shutdown.
 
@@ -625,7 +625,7 @@ to enable Secure Boot.
 
 ![](../assets/img/screenshots/xo_uefi_sb_post_install_option.png)
 
-##### Enabling Secure Boot for an Existing UEFI VM in XCP-ng Center
+##### Enable Secure Boot for an Existing UEFI VM in XCP-ng Center
 
 1. Shutdown the VM using the [shutdown](cli_reference.md#vm-shutdown) command if it is not already shut down.
 
@@ -635,7 +635,7 @@ to enable Secure Boot.
 It is only recommend to interchange the firmware between *UEFI* and *UEFI with SecureBoot*, **not** *BIOS*.
 :::
 
-##### Enabling Secure Boot for an Existing UEFI VM using `xe`
+##### Enable Secure Boot for an Existing UEFI VM using `xe`
 
 1. Shutdown the VM using the [shutdown](cli_reference.md#vm-shutdown) command if it is not already shut down.
 
