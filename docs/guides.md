@@ -563,26 +563,6 @@ During VM creation in XO, go to the *Advanced* section and select **uefi** as th
 
 ![](../assets/img/screenshots/xo_uefi_sb_create_option.png)
 
-##### Create a Secure Boot VM using XCP-ng Center
-
-When creating a VM in XCP-ng Center, select the firmware option  *UEFI with SecureBoot* to enable Secure Boot.
-
-##### Create a Secure Boot VM using `xe`
-
-If creating a VM using `xe`, select UEFI firmware using the command:
-
-```
-# Set the VM to use UEFI firmware
-xe vm-param-set uuid=<vm-uuid> HVM-boot-params:firmware=uefi
-```
-
-... and then enable Secure Boot using the command:
-
-```
-# Enable Secure Boot for the VM
-xe vm-param-set uuid=<vm-uuid> platform:secureboot=true
-```
-
 #### Enable Secure Boot for an Existing UEFI VM
 
 :::warning
