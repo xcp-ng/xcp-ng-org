@@ -660,7 +660,7 @@ Disabling **and** enabling Secure Boot from the UEFI firmware menu inside the gu
 
 Changes to the UEFI secure boot state in the UEFI menu will be ignored in favor of the host administrator's configuration. For example, deselecting **Attempt Secure Boot** will not disable Secure Boot on the next boot.
 
-If disabling Secure Boot by removing keys via Custom Mode is attempted in the UEFI firmware menu, an error will display saying **Only Phyisical Presence User could delete NAME_OF_KEY in custom mode! **.  For example, if attempting to remove the **PK**:
+If disabling Secure Boot by removing keys via Custom Mode is attempted in the UEFI firmware menu, an error will display stating **Only Physical Presence User could delete NAME_OF_KEY in custom mode! **.  For example, if attempting to remove the **PK**:
 
 ![](../assets/img/screenshots/guest_sb_only_physically_present_user.png)
 
