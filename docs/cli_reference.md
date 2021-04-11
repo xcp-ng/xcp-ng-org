@@ -5,7 +5,7 @@ The xe CLI can be used locally on any XCP-ng host, it's installed along with it.
 
 ## Getting help with xe commands
 
-Basic help is available for CLI commands on-host by typing the following. This 
+Basic help is available for CLI commands on-host by typing the following:
 
 ```
 xe help
