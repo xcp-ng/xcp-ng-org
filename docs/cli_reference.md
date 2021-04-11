@@ -5,16 +5,26 @@ The xe CLI can be used locally on any XCP-ng host, it's installed along with it.
 
 ## Getting help with xe commands
 
-Basic help is available for CLI commands on-host by typing:
-
-```
-xe help command
-```
-
-A list of the most commonly used xe commands is displayed if you type:
+Basic help is available for CLI commands on-host by typing the following:
 
 ```
 xe help
+```
+
+Help for individual commands is available by typing:
+
+```
+xe help <command>
+```
+
+For example:
+
+```
+[ ~]# xe help host-cpu-info
+command name            : host-cpu-info
+        reqd params     : 
+        optional params : uuid
+        description     : Lists information about the host's physical CPUs.
 ```
 
 Or a list of all xe commands is displayed if you type:
@@ -28,10 +38,16 @@ xe help --all
 The basic syntax of all XCP-ng xe CLI commands is:
 
 ```
-xe command-name argument=value argument=value
+xe <command> <argument>=value <argument>=value
 ```
 
 Each specific command contains its own set of arguments that are of the form `argument=value`. Some commands have required arguments, and most have some set of optional arguments. Typically a command assumes default values for some of the optional arguments when invoked without them.
+
+For example, adding a bootable ISO image as a mounted CD-Rom to a VM can be done with the following command:
+
+```
+xe vm-cd-add uuid=679c70cb-b358-00e1-72c0-819e8f74f00c cd-name=ubuntu-20.04.2-live-server-amd64.iso device=1
+```
 
 If the xe command is executed remotely, extra arguments are used to connect and authenticate. These arguments also take the form argument=argument_value.
 
