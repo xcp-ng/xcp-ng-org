@@ -525,7 +525,7 @@ Now we enable autostart at the virtual machine level.
 
 ## Guest UEFI Secure Boot
 
-Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute trusted binaries.  In practice, these are the binaries released by the operating system (OS) team for the OS in running in the VM (Microsoft Windows, Debian, Alpine, etc.).
+Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute trusted binaries. In practice, these are the binaries released by the operating system (OS) team for the OS running in the VM (Microsoft Windows, Debian, Alpine, etc.).
 
 ### Requirements
 
@@ -534,7 +534,7 @@ Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute t
 
 ### Configure the Host
 
-Before enabling UEFI Secure Boot for guest VMs, first execute the `secureboot-certs` script.  This tool downloads, formats, and installs the publically available `db` and `KEK` certificates from Microsoft.  Note that it does *NOT* install the [dbx revocation list](#installing-the-revocation-list).
+Before enabling UEFI Secure Boot for guest VMs, first execute the `secureboot-certs` script. This tool downloads, formats, and installs the publically available `db` and `KEK` certificates from Microsoft. Note that it does *NOT* install the [dbx revocation list](#installing-the-revocation-list).
 
 From the XCP-ng CLI:
 
@@ -554,26 +554,26 @@ Running `secureboot-certs` only needs to be done once per host, not per VM. It m
 This section describes how to create a new Secure Boot VM using the various XCP-ng interfaces.
 
 :::warning
-If the VM will be running Linux, ensure that the distribution supports installation with Secure Boot enabled prior to enabling Secure Boot for the VM on XCP-ng.  If the distribution does not support installation with Secure Boot enabled, then first create the VM with Secure Boot disabled and enable it *only after following the distribution's instructions for enabling Secure Boot*.
+If the VM will be running Linux, ensure that the distribution supports installation with Secure Boot enabled prior to enabling Secure Boot for the VM on XCP-ng. If the distribution does not support installation with Secure Boot enabled, then first create the VM with Secure Boot disabled and enable it *only after following the distribution's instructions for enabling Secure Boot*.
 :::
 
 ##### Create a Secure Boot VM using XO
 
-During VM creation in XO, go to the *Advanced* section and select **uefi** as the **Boot firmware**.  This will display a **Secure boot** toggle that can be clicked to enable Secure Boot.
+During VM creation in XO, go to the *Advanced* section and select **uefi** as the **Boot firmware**. This will display a **Secure boot** toggle that can be clicked to enable Secure Boot.
 
 ![](../assets/img/screenshots/xo_uefi_sb_create_option.png)
 
 #### Enable Secure Boot for an Existing UEFI VM
 
 :::warning
-If the VM is running Linux, ensure that the distribution supports Secure Boot before enabling it for the VM in XCP-ng.  Furthermore, the distribution may require the installation of further packages to enable Secure Boot in the VM.
+If the VM is running Linux, ensure that the distribution supports Secure Boot before enabling it for the VM in XCP-ng. Furthermore, the distribution may require the installation of further packages to enable Secure Boot in the VM.
 :::
 
 :::warning
-It is not recommended to change an existing's VM firmware type from BIOS to UEFI if it has already been booted.
+It is not recommended to change an existing VM's firmware type from BIOS to UEFI if it has already been booted.
 :::
 
-If the VM has been booted before, check if the Secure Boot variables `db`, `dbx`, or `KEK` have already been set for it by running the command on the XCP-ng CLI:
+If the VM has been booted before, check if the Secure Boot variables `db`, `dbx`, or `KEK` have already been set for it by running this command on the XCP-ng CLI:
 
 ```
 # Look for db, dbx, or KEK
@@ -618,7 +618,7 @@ xe vm-param-set uuid=<vm-uuid> platform:secureboot=true
 
 #### Setup for Windows VMs
 
-Windows VMs do not require extra installation packages because the Windows Loader and kernel are signed by the keys already installed by the `secureboot-certs` script.  Enabling Secure Boot for the VM in XCP-ng enables Secure Boot in the VM UEFI firmware.
+Windows VMs do not require extra installation packages because the Windows Loader and kernel are signed by the keys already installed by the `secureboot-certs` script. Enabling Secure Boot for the VM in XCP-ng enables Secure Boot in the VM UEFI firmware.
 
 :::warning
 If your VMs have any unsigned drivers, they will fail to load after enabling Secure Boot.
@@ -626,15 +626,15 @@ If your VMs have any unsigned drivers, they will fail to load after enabling Sec
 
 #### Setup for Linux VMs
 
-Some Linux distributions may require special packages for Secure Boot to function.  Please follow the distribution's documentation to install any required Secure Boot software (e.g., shim) *before* enabling Secure Boot for the VM in XCP-ng.
+Some Linux distributions may require special packages for Secure Boot to function. Please follow the distribution's documentation to install any required Secure Boot software (e.g., shim) *before* enabling Secure Boot for the VM in XCP-ng.
 
 
 :::warning
-If the VM has any unsigned kernel modules, they will fail to load after enabling Secure Boot.  Furthermore, the distribution will likely restrict other kernel features that are seen as loop holes in Secure Boot (kexec, /dev/mem, etc...).  Please read the Secure Boot documentation from the distribution.
+If the VM has any unsigned kernel modules, they will fail to load after enabling Secure Boot. Furthermore, the distribution will likely restrict other kernel features that are seen as loop holes in Secure Boot (kexec, /dev/mem, etc...). Please read the Secure Boot documentation from the distribution.
 :::
 
 :::tip
-Unlike Windows, Linux is not signed by Microsoft. Therefore it is required to either install, or use a distribution that comes by default with an intermediary boot loader that *is* signed by Microsoft, if booting Linux with Secure Boot.  This boot loader is typically `shim`.
+Unlike Windows, Linux is not signed by Microsoft. Therefore it is required to either install, or use a distribution that comes by default with an intermediary boot loader that *is* signed by Microsoft, if booting Linux with Secure Boot. This boot loader is typically `shim`.
 :::
 
 ### Disable Secure Boot for a Guest VM
@@ -656,11 +656,11 @@ Reboot the VM and Secure Boot will be disabled.
 
 ### Secure Boot and the UEFI Firmware Menu in the Guest
 
-Disabling **and** enabling Secure Boot from the UEFI firmware menu inside the guest VM is explicitly disallowed on XCP-ng so as to ensure that guest users can not tamper with the Secure Boot policy set by the host administrator.  This differs from enabling Secure Boot on physical hardware because that is typically done through the UEFI menu.  On XCP-ng, instead, that privilege is given only to host administrators through the `uefistored` daemon and `varstored-tools` package.
+Disabling *and* enabling Secure Boot from the UEFI firmware menu inside the guest VM is explicitly disallowed on XCP-ng so as to ensure that guest users can not tamper with the Secure Boot policy set by the host administrator. This differs from enabling Secure Boot on physical hardware because that is typically done through the UEFI menu. On XCP-ng, instead, that privilege is given only to host administrators through the `uefistored` daemon and `varstored-tools` package.
 
 Changes to the UEFI secure boot state in the UEFI menu will be ignored in favor of the host administrator's configuration. For example, deselecting **Attempt Secure Boot** will not disable Secure Boot on the next boot, although it would do so in physical hardware.
 
-If disabling Secure Boot by removing keys via Custom Mode is attempted in the UEFI firmware menu, an error will display stating **Only Physical Presence User could delete NAME_OF_KEY in custom mode! **.  For example, if attempting to remove the **PK**:
+If disabling Secure Boot by removing keys via Custom Mode is attempted in the UEFI firmware menu, an error will display stating **Only Physical Presence User could delete NAME_OF_KEY in custom mode!**. For example, if attempting to remove the **PK**:
 
 ![](../assets/img/screenshots/guest_sb_only_physically_present_user.png)
 
