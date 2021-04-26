@@ -1443,10 +1443,10 @@ Send specified hypervisor debug keys to specified host.
 #### `host-set-hostname-live`
 
 ```
-host-set-hostname host-uuid=uuid_of_host hostname=new_hostname
+host-set-hostname-live host-uuid=uuid_of_host host-name=new_hostname
 ```
 
-Change the host name of the XCP-ng server specified by `host-uuid`. This command persistently sets both the host name in the control domain database and the actual Linux host name of the XCP-ng server. The value of `hostname` is *not* the same as the value of the `name_label` field.
+Change the host name of the XCP-ng server specified by `host-uuid`. This command persistently sets both the host name in the control domain database and the actual Linux host name of the XCP-ng server. The value of `host-name` is *not* the same as the value of the `name_label` field.
 
 #### `host-set-power-on-mode`
 
