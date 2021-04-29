@@ -525,7 +525,7 @@ Now we enable autostart at the virtual machine level.
 
 ## Guest UEFI Secure Boot
 
-Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute trusted binaries. In practice, these are the binaries released by the operating system (OS) team for the OS running in the VM (Microsoft Windows, Debian, Alpine, etc.).
+Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute trusted binaries. In practice, these are the binaries released by the operating system (OS) team for the OS running in the VM (Microsoft Windows, Debian, CentOS, etc.).
 
 ### Requirements
 
