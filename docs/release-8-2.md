@@ -165,19 +165,11 @@ See [this forum thread](https://xcp-ng.org/forum/topic/2822/xcp-ng-8-0-upgrade-t
 
 ### Network performance of FreeBSD VMs
 
-A security patch from the Xen project (patch 12 from [XSA-332](https://xenbits.xen.org/xsa/advisory-332.html)) has caused the speed of network traffic originating in FreeBSD VMs - such as pfSense - to drop dramatically (by factor ~5 in our tests).
+A security patch from the Xen project has caused the speed of network traffic originating in FreeBSD VMs - such as pfSense - to drop dramatically (by a factor of ~5 in our tests).
 
-After debugging it with the help of users on our forum, we have [reported it to the Xen project](https://lists.xen.org/archives/html/xen-devel/2021-01/msg01122.html).
+After debugging it [with the help of users on our forum](https://xcp-ng.org/forum/topic/3774/poor-pfsense-wan-speeds-after-xcp-ng-updates), we have [reported it to the Xen project](https://lists.xen.org/archives/html/xen-devel/2021-01/msg01122.html) then helped Xen developers find the exact cause of the regression, which was fixed, and [we released an update with the fix](https://xcp-ng.org/blog/2021/02/26/february-2021-security-updates/).
 
-There also have been reports of that performance drop affecting other VMs than just FreeBSD, but this hasn't been reproduced reliably while we are writing these lines.
-
-The main discussing happens [on our forum](https://xcp-ng.org/forum/topic/3774/poor-pfsense-wan-speeds-after-xcp-ng-updates).
-
-A workaround is available, consisting in rebuilding a kernel while disabling [the problematic patch](https://github.com/xcp-ng-rpms/kernel/blob/8.2/SOURCES/xsa332-linux-11.patch). We provide such a rebuilt kernel for XCP-ng 8.2. Check the forum thread for the updated instructions to install it.
-
-:::warning
-Use at your own risk: this kernel won't protect you against [XSA-332](https://xenbits.xen.org/xsa/advisory-332.html).
-:::
+An up to date XCP-ng 8.2 will not be affected anymore.
 
 ### Missing files in `/etc/modprobe.d` after an upgrade
 
