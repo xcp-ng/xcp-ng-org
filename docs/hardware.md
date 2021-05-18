@@ -49,6 +49,7 @@ Known Issues (with old firmware; also on XenServer 7.2 with current firmware)
         * Mid Term: Upgrade Firmware to match XCP-ng Driver version (for XCP-ng 7.5 -> 11.2.XXXXX)
         * Long Term: Avoid Emulex cards!
 
+
 #### Broadcom Netxtreme II BCM57711E
 
 (or BCM5709 or ...)
@@ -58,6 +59,29 @@ On XCP-ng <= 8.0, using default `bnx2x` driver triggers a kernel Oops on XCP-ng 
 ![](https://i.imgur.com/0FB7qVp.png)
 
 Fixed drivers have been released as official [updates](updates.md).
+
+
+#### Marvell/Aquantia AQC111U
+
+There are several USB 5Gbps NICs based on this chipset available on the market. A [dedicated kernel module driver](https://github.com/xcp-ng-rpms/aqc111u-module) is available to add support to XCP-ng for _(supposedly)_ all NICs based on Marvell _(originally Aquantia)_ AQC111U over USB3. The driver should not be confused with the generic AQC111 that supports the whole family of NICs based on the AQC111 chipset, but NOT the ones connected over USB3. The kernel module provides support only for AQC111U-based NICs.
+
+The kernel module is just a repackage for XCP-ng of [the AQC111U drivers avaialble for Linux Kernel 3.10 on the Marvell website](https://www.marvell.com/support/downloads.html).
+
+The kernel module has been tested in a homelab environment with XCP-ng version `8.2`.
+
+To install the driver follow the instructions provided in the [**Alternate drivers** section below](#alternate-drivers) and use `aqc111u-module` as `package-name` _(`module-name` would be `aqc111u`)_.
+
+Known compatible NICs are<sup id="nt1">[1](#fnt1)</sup>:
+
+| Brand    | Model      | Tested             |
+|----------|:----------:|:------------------:|
+| QNAP     | QNA-UC5G1T | :white_check_mark: |
+| Sabrent  | NT-SS5G    | :white_check_mark: |
+| StarTech | US5GA30    |                    |
+| StarTech | US5GC30    |                    |
+| Trendnet | TUC-ET5G   |                    |
+
+Despite the AQC111U-based adapters support the IEEE 802.3bz standard _(AKA 5BASE-T)_ and will correctly negotiate with compatible peripherals the communication at 5Gbps, the actual bandwidth will not exceed 3.5Gbps due to the overhead of the incapsulation of the ethernet protocol over the 5Gbps connection via USB 3.0 _(AKA USB 3.1 Gen 1)_.
 
 
 ## Alternate drivers
@@ -156,3 +180,8 @@ yum remove kernel-alt
 ```
 
 This will remove the added grub entry automatically too and set default boot to main kernel if needed.
+
+---
+Notes:
+
+<b id="fnt1">1:</b> There might be other NICs compatible as long as they are based on the Marvell AQC111U chip. [↩](#nt1)
