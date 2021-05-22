@@ -175,6 +175,11 @@ XOSANv2 is coming soon in XCP-ng. Hang on!
 
 Local, thin-provisioned. Available since XCP-ng 8.2.
 
+:::tip
+[Additional package](additionalpackages.md) required and available in our repositories: `zfs`.
+Then either reboot or run `modprobe -v zfs` to load the kernel module.
+:::
+
 Due to the variety of parameters of ZFS, the SR driver does not automate everything. You need to create your ZFS pool and volumes yourself, e.g. on partition `sda4`:
 
 ```
