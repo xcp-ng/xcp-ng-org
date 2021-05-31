@@ -212,8 +212,11 @@ Stability and testing status: [Windows guest tools community testing](https://gi
 The VM needs to be running for this test.
 
 ##### From Xen Orchestra
-* Management agent + device drivers: XO displays "Hardware virtualization with paravirtualization drivers enabled (PVHVM)"
-* Device drivers alone: Xen Orchestra is currently (2020-03-30) unable to detect if the device drivers are installed if the management agent is not installed either. See <https://github.com/vatesfr/xen-orchestra/issues/4783>. If it displays "No tools detected", it is still possible that the device drivers are present.
+You can see this information in the General tab of the VM view.
+* Device drivers: XO displays "Hardware virtualization with paravirtualization drivers enabled (PVHVM)" on the General tab
+* Management agent: XO displays "Management agent detected" or "Management agent version {version} detected"
+
+More detailed information can also be found in the Advanced tab.
 
 ##### From command line
 * Device drivers: `xe vm-param-get param-name=PV-drivers-detected uuid={VM-UUID}`
