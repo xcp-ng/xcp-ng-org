@@ -150,6 +150,20 @@ More information available on [XO official documentation for SDN controller](htt
 This feature is coming very soon!
 :::
 
+### Common errors
+
+#### TLS connection issue
+
+The error would look like this:
+> Client network socket disconnected before secure TLS connection was established
+
+It means the TLS certificate, used to identify a SDN controller, on the host doesn't match the one of the plugin, to solve it:
+- unload the SDN Controller plugin
+- in plugin config, set `override-certs` option to on (it will allow the plugin to uninstall the existing certificate before installing its own)
+- load the plugin
+
+The issue should be fixed.
+
 ## Static routes
 
 Sometimes you need to add extra routes to an XCP-ng host. It can be done manually with an `ip route add 10.88.0.0/14 via 10.88.113.193` (for example). But it won't persist after a reboot.
