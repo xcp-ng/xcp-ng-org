@@ -1,12 +1,12 @@
 # Storage in XCP-ng
 
-Storage in XCP-ng is a quite large topic. This section is dedicated to it. Keywords are:
+Storage in XCP-ng is quite a large topic. This section is dedicated to it. Keywords are:
 
 * SR: Storage Repository, the place for your VM disks (VDI SR)
 * VDI: a virtual disk
 * ISO SR: special SR only for ISO files (in read only)
 
-Please take in consideration that Xen API (XAPI) via their storage module (`SMAPI`) is doing all the heavy lifting on your storage. **You don't need to format drives manually**.
+Please take into consideration, that Xen API (XAPI) via their storage module (`SMAPI`) is doing all the heavy lifting on your storage. **You don't need to format drives manually**.
 
 :::tip
 We encourage people to use file based SR (local ext, NFS, XOSAN…) because it's easier to deal with. If you want to know more, read the rest.
@@ -16,7 +16,7 @@ We encourage people to use file based SR (local ext, NFS, XOSAN…) because it's
 
 There are two types of storage:
 
-* Thin Provisioned: you only use the space your VM has filled with data
+* Thin Provisioned: you only use the space your VM has filled with data.
 * Thick Provisioned: you use the space of your VMs disk(s) size.
 
 In addition to this, storage can be either local or shared between hosts of a pool.
@@ -33,7 +33,7 @@ There are storage types that are officially supported, and others that are provi
     <th>Officially Supported</th>
   </tr>
   <tr>
-    <td rowspan="8">file based</td>
+    <td rowspan="9">file based</td>
     <td>Local EXT</td>
     <td>X</td>
     <td></td>
@@ -77,6 +77,12 @@ There are storage types that are officially supported, and others that are provi
   </tr>
   <tr>
     <td>CephFS</td>
+    <td>X</td>
+    <td>X</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>MooseFS</td>
     <td>X</td>
     <td>X</td>
     <td></td>
@@ -315,6 +321,40 @@ Now you can create the SR where `server` is your mon ip.
 * You may specify `serverport` option if you are using any other port than 6789.
 * Do not use admin keyring for production, but make a separate key with only necessary privileges https://docs.ceph.com/en/latest/rados/operations/user-management/
 :::
+
+### MooseFS
+
+Shared, thin-provisioned storage. Available since XCP-ng 8.2.
+
+MooseFS is a fault-tolerant, highly available, highly performing, scaling-out, network distributed file system.  It is POSIX compliant and acts like any other Unix-like file system.
+SR driver was contributed directly by MooseFS Development Team.
+
+:::warning
+- The MooseFS client is not included with XCP-ng, so it must be installed on dom0 from the official MooseFS repository.
+- By default, the MooseFS repository will be set as enabled. This means that any system update will also update the MooseFS client. Please, consider disabling the repository after installation.
+:::
+
+Installation steps
+```
+curl "https://ppa.moosefs.com/RPM-GPG-KEY-MooseFS" > /etc/pki/rpm-gpg/RPM-GPG-KEY-MooseFS
+curl "http://ppa.moosefs.com/MooseFS-3-el7.repo" > /etc/yum.repos.d/MooseFS.repo
+yum install moosefs-client
+```
+:::tip
+- By default, moosefs plugin is not enabled on the whitelist of SM plugins in /etc/xapi.conf so we have to add it to `sm-plugins` section.
+:::
+
+Now when the MooseFS client is installed you can connect to an existing [MooseFS cluster](https://moosefs.com/support/#documentation) and create a shared SR for all hosts in the pool.
+```
+
+# xe sr-create type=moosefs name-label=MooseFS-SR content-type=user shared=True device-config:masterhost=mfsmaster.host.name device-config:masterport=9421 device-config:rootpath=/xcp-ng
+```
+
+Basically, to connect the driver to our cluster we have to know two parameters:
+- masterhost - MooseFS master host name or IP, default mfsmaster
+- masterport - MooseFS master port, default 9421
+
+We also suggest to use a folder on the MooseFS cluster as a root path rather than using the direct path of the cluster.
 
 ### iSCSI
 
