@@ -53,6 +53,26 @@ rc-service xe-guest-utilities start
 apt install xe-guest-utilities
 ```
 
+#### openSUSE Leap 15.2 with transactional-updates
+```
+sudo transactional-updates shell
+
+```
+inside the chroot enviroment
+
+```
+mount /dev/cdrom /mnt
+bash /mnt/Linux/install.sh -d sles -m 15
+umount /dev/cdrom
+```
+then kill the xe-daemon (important), exit the chroot and reboot.
+After the reboot:
+```
+systemctl enable xe-linux-distribution.service
+systemctl start xe-linux-distribution.service
+```
+For the enable to work insserv has to be installed.
+
 *Feel free to add other distros to the above list if they provide the tools in their repositories.*
 
 ### Install from the guest tools ISO
