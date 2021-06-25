@@ -89,6 +89,35 @@ For the remaining Linux distributions, mount the guest tools ISO as described ab
 
 See also [Contributing](guests.html#contributing) below.
 
+#### Specific cases
+
+##### openSUSE Leap 15.2 with transactional-updates
+For the xe-daemon to start it is necessary that insserv is installed on the system. To make sure that is the case run
+```
+sudo transactional-uptdates pkg install insserv-compat
+```
+and as good measure reboot if they weren't already installed.
+
+To install the guest tools open up the chroot environment with
+```
+sudo transactional-updates shell
+```
+and mount the ISO like with every other derived distro
+```
+mount /dev/cdrom /mnt
+bash /mnt/Linux/install.sh -d sles -m 15
+umount /dev/cdrom
+```
+To exit the chroot cleanly you have to kill the `xe-daemon` process that may have been automatically started. Otherwise you end up with a corrupted snapshot and transactional-updates will fail.
+
+And again reboot the system to go to your newest snapshot.
+
+After the reboot enable the service and start it with
+```
+systemctl enable xe-linux-distribution.service
+systemctl start xe-linux-distribution.service
+```
+
 ### Update the guest tools
 It's a good habit, and may be even required in some cases (that would then be described in the [Release Notes](releases.md#all-releases), to update the guest tools to their latest version when your XCP-ng hosts are updated.
 
