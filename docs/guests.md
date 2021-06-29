@@ -80,6 +80,7 @@ bash /mnt/Linux/install.sh -d debian -m 10
 # derived from RHEL or CentOS 8
 bash /mnt/Linux/install.sh -d rhel -m 8
 ```
+The likeliness for the installation to work correctly will depend on how much those distros differ from their "parent".
 
 ##### openSUSE Leap 15.2 with transactional-updates
 For the xe-daemon to start it is neccesary that insserv is installed on the system to make sure that is the case run
@@ -108,7 +109,6 @@ After the reboot you have to enable the service and start it with
 systemctl enable xe-linux-distribution.service
 systemctl start xe-linux-distribution.service
 ```
-The likeliness for the installation to work correctly will depend on how much those distros differ from their "parent".
 
 #### Other Linux distributions
 For the remaining Linux distributions, mount the guest tools ISO as described above, then look for the `xe-guest-utilities_*_all.tgz` archive. Copy its contents on the system in `/etc` and `/usr`. It contains a System V init script by default but there's also a systemd unit file available on the ISO (`xe-linux-distribution.service`).
