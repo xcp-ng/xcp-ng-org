@@ -52,28 +52,6 @@ rc-service xe-guest-utilities start
 ```
 apt install xe-guest-utilities
 ```
-
-#### openSUSE Leap 15.2 with transactional-updates
-```
-sudo transactional-updates shell
-
-```
-inside the chroot enviroment
-
-```
-mount /dev/cdrom /mnt
-bash /mnt/Linux/install.sh -d sles -m 15
-umount /dev/cdrom
-```
-then kill the xe-daemon (important), exit the chroot and reboot.
-After the reboot:
-```
-systemctl enable xe-linux-distribution.service
-systemctl start xe-linux-distribution.service
-```
-For the enable to work insserv has to be installed.
-
-
 *Feel free to add other distros to the above list if they provide the tools in their repositories.*
 
 ### Install from the guest tools ISO
@@ -103,6 +81,33 @@ bash /mnt/Linux/install.sh -d debian -m 10
 bash /mnt/Linux/install.sh -d rhel -m 8
 ```
 
+##### openSUSE Leap 15.2 with transactional-updates
+For the xe-daemon to start it is neccesary that insserv is installed on the system to make sure that is the case run
+```
+sudo transactional-uptdates pkg install insserv-compat
+```
+and as good measure reboot if they weren't allredy installed.
+
+To install the guest tools open up the chroot enviroment with 
+
+```
+sudo transactional-updates shell
+```
+and mount the ISO like with every other derived distro
+```
+mount /dev/cdrom /mnt
+bash /mnt/Linux/install.sh -d sles -m 15
+umount /dev/cdrom
+```
+To exit the chroot cleanly you have to kill the xe-daemon. Otherwise you end up with a corupted snapshot and transactional-updates will fail.
+
+And again reboot the system to go to your newest snapshot.
+
+After the reboot you have to enable the service and start it with
+```
+systemctl enable xe-linux-distribution.service
+systemctl start xe-linux-distribution.service
+```
 The likeliness for the installation to work correctly will depend on how much those distros differ from their "parent".
 
 #### Other Linux distributions
