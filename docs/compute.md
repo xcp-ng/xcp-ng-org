@@ -309,6 +309,10 @@ With this simple but first initial algorithm, we managed to mitigate automatical
 
 You have more than 2 hosts? Again, same idea, it will also work.
 
+## VM anti-affinity
+
+VM anti-affinity is a feature that prevents VMs with the same user tags to run on the same host. To use this functionality, feel free to read the Xen Orchestra documentation: [Xen Orchestra VM anti-affinity](https://xen-orchestra.com/docs/load_balancing.html#vm-anti-affinity).
+
 ## Advanced Xen
 
 ### NUMA affinity
