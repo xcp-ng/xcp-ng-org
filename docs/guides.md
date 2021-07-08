@@ -523,3 +523,175 @@ Now we enable autostart at the virtual machine level.
 5. Checking the output 
 `# xe vm-param-list uuid=<VM_UUID> | grep other-config`
 
+## Guest UEFI Secure Boot
+
+Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute trusted binaries. In practice, these are the binaries released by the operating system (OS) team for the OS running in the VM (Microsoft Windows, Debian, CentOS, etc.).
+
+### Requirements
+
+* A UEFI guest VM.
+* For Windows, ensure the VM has 2 vCPUs
+
+### Configure the Host
+
+#### Install the Secure Boot Certificates (Required)
+
+Before enabling UEFI Secure Boot for guest VMs, first execute the `secureboot-certs` script. This tool downloads, formats, and installs the publically available `db` and `KEK` certificates from Microsoft. Note that it does *NOT* install the [dbx revocation list](#installing-the-revocation-list).
+
+From the XCP-ng CLI:
+
+```
+# Download and install db/KEK certificates
+secureboot-certs
+```
+
+:::tip
+Running `secureboot-certs` only needs to be done once per host, not per VM. It must be called for every host in the pool. It must also be called after ISO upgrades once per upgraded host.
+:::
+
+Although unsigned binaries will be properly rejected after executing `secureboot-certs`, blacklisting executables that were previously signed (i.e., revoked) requires that you install a [dbx revocation list](#install-update-the-revocation-list-optional-but-strongly-recommended).
+
+#### Install / Update the Revocation List (Recommended)
+
+To install the most recent revocation list, download the revocation list file found [here](https://uefi.org/revocationlistfile) and copy it to `/var/lib/uefistored/dbx.auth`.
+
+If `varstore-ls <vm-uuid>` shows that there already exists a `dbx` variable for the VM, it is recommended to shutdown the VM and then run `varstore-sb-state <vm-uuid> setup`.
+
+Upon rebooting the VM, the `dbx` will be active.
+
+:::warning
+As of the time of writing this guide (April 2020) not all distributions have updated their signed binaries, so using the most recent revocation list may revoke these distributions.  To avoid this, install an older revocation list.  Be sure to install the correct revocation list for the distribution versions that your system is meant to allow.
+:::
+
+:::warning
+`varstore-sb-state <vm-uuid> setup` wipes previously installed Secure Boot certificates (if there were any). Upon boot, they will be replaced by the Microsoft certificates installed by the `secureboot-certs` script.  Also note that all varstore-{set,sb-state} commands that modify the variable storage for the VM must be called when the VM is shutdown.
+:::
+
+### Enable Secure Boot for a Guest VM
+
+#### Create a new Secure Boot VM
+
+This section describes how to create a new Secure Boot VM using the various XCP-ng interfaces.
+
+:::warning
+If the VM will be running Linux, ensure that the distribution supports installation with Secure Boot enabled prior to enabling Secure Boot for the VM on XCP-ng. If the distribution does not support installation with Secure Boot enabled, then first create the VM with Secure Boot disabled and enable it *only after following the distribution's instructions for enabling Secure Boot*.
+:::
+
+##### Create a Secure Boot VM using XO
+
+During VM creation in XO, go to the *Advanced* section and select **uefi** as the **Boot firmware**. This will display a **Secure boot** toggle that can be clicked to enable Secure Boot.
+
+![](../assets/img/screenshots/xo_uefi_sb_create_option.png)
+
+#### Enable Secure Boot for an Existing UEFI VM
+
+:::warning
+If the VM is running Linux, ensure that the distribution supports Secure Boot before enabling it for the VM in XCP-ng. Furthermore, the distribution may require the installation of further packages to enable Secure Boot in the VM.
+:::
+
+:::warning
+It is not recommended to change an existing VM's firmware type from BIOS to UEFI if it has already been booted.
+:::
+
+If the VM has been booted before, check if the Secure Boot variables `db`, `dbx`, or `KEK` have already been set for it by running this command on the XCP-ng CLI:
+
+```
+# Look for db, dbx, or KEK
+varstore-ls <vm-uuid>
+```
+
+If the output of `varstore-ls <vm-uuid>` includes `db`, `dbx`, or `KEK`, then the Secure Boot variables in the NVRAM of the VM has previously been modified and it is recommended to clear the Secure Boot state of the VM before enabling Secure Boot.
+
+To clear the Secure Boot state:
+
+1. Shutdown the VM if it is not already shut down.
+
+2. From the XCP-ng CLI, invoke the command:
+
+```
+varstore-sb-state <vm-uuid> setup
+```
+
+:::warning
+`varstore-sb-state <vm-uuid> setup` wipes previously installed Secure Boot certificates (if there were any). Upon boot, they will be replaced by the Microsoft certificates installed by the `secureboot-certs` script.
+:::
+
+##### Enable Secure Boot for an Existing UEFI VM in XO
+
+1. Shutdown the VM if it is not already shutdown.
+
+2. Go to the *Advanced* tab of the VM and click the **Secure boot** toggle
+to enable Secure Boot.
+
+![](../assets/img/screenshots/xo_uefi_sb_post_install_option.png)
+
+##### Enable Secure Boot for an Existing UEFI VM using `xe`
+
+1. Shutdown the VM using the [shutdown](cli_reference.md#vm-shutdown) command if it is not already shut down.
+
+2. In the XCP-ng CLI, set the platform Secure Boot mode to `true`:
+
+```
+# Enable Secure Boot for the VM
+xe vm-param-set uuid=<vm-uuid> platform:secureboot=true
+```
+
+#### Setup for Windows VMs
+
+Windows VMs do not require extra installation packages because the Windows Loader and kernel are signed by the keys already installed by the `secureboot-certs` script. Enabling Secure Boot for the VM in XCP-ng enables Secure Boot in the VM UEFI firmware.
+
+:::warning
+If your VMs have any unsigned drivers, they will fail to load after enabling Secure Boot.
+:::
+
+#### Setup for Linux VMs
+
+Some Linux distributions may require special packages for Secure Boot to function. Please follow the distribution's documentation to install any required Secure Boot software (e.g., shim) *before* enabling Secure Boot for the VM in XCP-ng.
+
+
+:::warning
+If the VM has any unsigned kernel modules, they will fail to load after enabling Secure Boot. Furthermore, the distribution will likely restrict other kernel features that are seen as loop holes in Secure Boot (kexec, /dev/mem, etc...). Please read the Secure Boot documentation from the distribution.
+:::
+
+:::tip
+Unlike Windows, Linux is not signed by Microsoft. Therefore it is required to either install, or use a distribution that comes by default with an intermediary boot loader that *is* signed by Microsoft, if booting Linux with Secure Boot. This boot loader is typically `shim`.
+:::
+
+### Disable Secure Boot for a Guest VM
+
+#### Disable Secure Boot for a Guest VM using XO
+
+Navigate to the *Advanced* tab and use the **Secure boot** toggle to disable Secure Boot. Reboot the VM and Secure Boot will be disabled.
+
+#### Disable Secure Boot for a Guest VM using `xe`
+
+In the XCP-ng CLI:
+
+```
+# Disable Secure Boot for the VM
+xe vm-param-set uuid=<vm-uuid> platform:secureboot=false
+```
+
+Reboot the VM and Secure Boot will be disabled.
+
+### Secure Boot and the UEFI Firmware Menu in the Guest
+
+Disabling *and* enabling Secure Boot from the UEFI firmware menu inside the guest VM is explicitly disallowed on XCP-ng so as to ensure that guest users can not tamper with the Secure Boot policy set by the host administrator. This differs from enabling Secure Boot on physical hardware because that is typically done through the UEFI menu. On XCP-ng, instead, that privilege is given only to host administrators through the `uefistored` daemon and `varstored-tools` package.
+
+Changes to the UEFI secure boot state in the UEFI menu will be ignored in favor of the host administrator's configuration. For example, deselecting **Attempt Secure Boot** will not disable Secure Boot on the next boot, although it would do so on a physical platform.
+
+If disabling Secure Boot by removing keys via Custom Mode is attempted in the UEFI firmware menu, an error will display stating **Only Physical Presence User could delete NAME_OF_KEY in custom mode!**. For example, if attempting to remove the **PK**:
+
+![](../assets/img/screenshots/guest_sb_only_physically_present_user.png)
+
+### Other Helpful Commands
+
+You may check that the VM runs on UEFI firmware using the following command:
+
+```
+xe vm-param-get uuid=<vm-uuid> param-name=HVM-boot-params param-key=firmware
+```
+
+:::tip
+Optionally, the firmware may be checked in the VM/advanced tab of Xen Orchestra.
+:::
