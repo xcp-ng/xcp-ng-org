@@ -807,7 +807,7 @@ To do this, we get the sizes of the disks in the system by examining the /proc/p
 
 This should leave you with drives that each have a single partition and all of the partitions are the same size even though the drives are not.
 
-When creating the RAID array and the mdadm.conf file, use the name of the disk partition instead of the name of the disk.  In our example system, we would create the array using /dev/sdc1, /dev/sdd1, and /dev/sde1 instead of /dev/sdc, /dev/sdd, and /dev/sde and also make the same substitutions on DEVICE lines in the mdadm.conf file.
+When creating the RAID array and the `mdadm.conf` file, use the name of the disk partition instead of the name of the disk.  In our example system, we would create the array using `/dev/sdc1`, `/dev/sdd1`, and `/dev/sde1` instead of `/dev/sdc`, `/dev/sdd`, and `/dev/sde` and also make the same substitutions on `DEVICE` lines in the `mdadm.conf` file.
 
 It should also be possible to create the partitions on the drives outside of the XCP-ng system using a bootable utility disk that contains partitioning utilities such as gparted.
 
