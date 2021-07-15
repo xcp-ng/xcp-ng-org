@@ -815,7 +815,7 @@ It should also be possible to create the partitions on the drives outside of the
 
 We might want to create more than one extra RAID array and storage repository.  This is also easy to accomodate in a similar way to using a different number of drives in the array.  We can easily create another RAID array and another storage repository onto a different set of drives by changing the parameters of the `mdadm --create` command line and `xe sr-create` command line.
 
-As an example assume that we have 3 more drives /dev/sdf, /dev/sdg, and /dev/sdh and want to create a second RAID 5 array and another storage repository.  We create another RAID 5 array, this time md1 like this:
+As an example assume that we have 3 more drives `/dev/sdf`, `/dev/sdg`, and `/dev/sdh` and want to create a second RAID 5 array and another storage repository.  We create another RAID 5 array, this time `md1` like this:
 
 ```
 [16:45 XCP-ng ~]# mdadm --create /dev/md1 --run --level=5 --bitmap=internal --assume-clean --raid-devices=3 --metadata=1.2 /dev/sdf /dev/sdg /dev/sdh
