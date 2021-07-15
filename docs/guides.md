@@ -650,7 +650,7 @@ So what can we do about this?  Fortunately, we can give the system more informat
 
 The first thing we need to do is give the system more information on what RAID arrays exist and how they're put together.  The way to do this is by creating a raid configuration file `/etc/mdadm.conf`.
 
-The mdadm.conf file created for this system is here:
+The `mdadm.conf` file created for this system is here:
 
 ```
 [13:02 XCP-ng ~]# cat /etc/mdadm.conf
