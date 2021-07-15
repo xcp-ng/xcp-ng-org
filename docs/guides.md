@@ -691,7 +691,7 @@ The other thing we need to do is give the system some idea of what to do with th
 
 We can specify additional command line parameters to the dracut command which creates the initrd file to ensure that kernel RAID modules are loaded, the mdadm.conf file is used and so on but there are a lot of them.  A better way to do it is to create a list of parameters that will be used automatically by dracut every time it is run to create a new initrd file.
 
-The place to create the file is in the folder /etc/dracut.conf.d.  Any file with commands in that folder will be read and used by dracut when creating a new initrd file.  We create a file dracut_mdraid.conf in that folder that looks like this:
+The place to create the file is in the folder  `/etc/dracut.conf.d/`.  Any file with commands in that folder will be read and used by `dracut` when creating a new initrd file.  We create a file `dracut_mdraid.conf` in that folder that looks like this:
 
 ```
 [14:11 XCP-ng ~]# cat /etc/dracut.conf.d/dracut_mdraid.conf
