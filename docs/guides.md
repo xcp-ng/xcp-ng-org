@@ -571,7 +571,7 @@ The 5 drives are in place as `sda` through `sde` and as can be seen from the lis
 
 ### Building the Second RAID
 
-We have 3 remaining identical drives, sdc, sdd, and sde and we're going to create a RAID 5 array using them in order to maximize the amount of space.  We'll create this using the mdadm command like this:
+We have 3 remaining identical drives,  `sdc`, `sdd`, and `sde` and we're going to create a RAID 5 array using them in order to maximize the amount of space.  We'll create this using the mdadm command like this:
 
 ```
 [10:02 XCP-ng ~]# mdadm --create /dev/md0 --run --level=5 --bitmap=internal --assume-clean --raid-devices=3 --metadata=1.2 /dev/sdc /dev/sdd /dev/sde
