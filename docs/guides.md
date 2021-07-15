@@ -752,7 +752,7 @@ One common cause of problems is using the wrong type of drives.  Just like when 
 
 The second is that the drives were not empty before including them into the system.  If there are any traces of RAID configuration or file systems on the drives, we could have problems with interference between those and the new configurations we're creating on the drives when creating the RAID array or the EXT filesystem (or LVM if you use that for the storage array).
 
-The way to avoid this problem is to make sure the drives are thoroughly wiped before starting the process.  This can be done from the command line with the dd command like this:
+The way to avoid this problem is to make sure the drives are thoroughly wiped before starting the process.  This can be done from the command line with the `dd` command like this:
 
 ```
 dd if=/dev/zero of=/dev/sde bs=1M
