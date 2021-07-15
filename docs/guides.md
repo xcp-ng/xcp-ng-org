@@ -687,7 +687,7 @@ This file gives the system a description of what arrays are configured in the sy
 
 ### Stabilizing the RAID Boot Configuation: The initrd Configuration
 
-The other thing we need to do is give the system some idea of what to do with the RAID arrays at boot time.  The way to do this is by adding instructions for the dracut program creating the initrd file to enable all RAID support, use the mdadm.conf file we created, and to start the arrays at boot time.
+The other thing we need to do is give the system some idea of what to do with the RAID arrays at boot time.  The way to do this is by adding instructions for the `dracut` program creating the initrd file to enable all RAID support, use the `mdadm.conf` file we created, and to start the arrays at boot time.
 
 We can specify additional command line parameters to the dracut command which creates the initrd file to ensure that kernel RAID modules are loaded, the `mdadm.conf` file is used and so on but there are a lot of them.  A better way to do it is to create a list of parameters that will be used automatically by dracut every time it is run to create a new initrd file.
 
