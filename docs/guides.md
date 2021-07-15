@@ -724,7 +724,7 @@ Now that we have all of this extra configuration, we need to get the system to i
 dracut --force -M /boot/initrd-$(uname -r).img $(uname -r)
 ```
 
-This creates a new initrd file with the correct name matching the name of the Linux kernel and prints a list of modules included in the initrd file.  Printing the list isn't necessary but is handy to see that dracut is making progress as it runs.
+This creates a new initrd file with the correct name matching the name of the Linux kernel and prints a list of modules included in the initrd file.  Printing the list isn't necessary but is handy to see that `dracut` is making progress as it runs.
 
 When the system returns to the command line, it's time to test.  We'll reboot the system from the console or from within Xen Orchestra or XCP-ng Center.  If all goes well, the system should boot normally and correctly find and mount all 5 drives into the two RAID arrays.  The easiest way to tell that is looking at the /proc/mdstat file.
 
