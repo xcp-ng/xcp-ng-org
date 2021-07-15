@@ -718,7 +718,7 @@ Something to note when creating the file is to allow extra space between command
 
 ### Building and Testing the New intrd File
 
-Now that we have all of this extra configuration, we need to get the system to include it for use at boot.  To do that we use the dracut command to create a new initrd file like this:
+Now that we have all of this extra configuration, we need to get the system to include it for use at boot.  To do that we use the `dracut` command to create a new initrd file like this:
 
 ```
 dracut --force -M /boot/initrd-$(uname -r).img $(uname -r)
