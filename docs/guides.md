@@ -822,7 +822,7 @@ As an example assume that we have 3 more drives `/dev/sdf`, `/dev/sdg`, and `/de
 mdadm: array /dev/md1 started.
 ```
 
-We then create another storage repository as we did previously making sure to give it a different name and use /dev/md1 instead of /dev/md0 in the command line.
+We then create another storage repository as we did previously making sure to give it a different name and use `/dev/md1` instead of `/dev/md0` in the command line.
 
 We also need to make sure that the mdadm.conf file has DEVICE lines containing the three drives /dev/sdf, /dev/sdg, and /dev/sdh and an ARRAY line containing /dev/md1 and its UUID in addition to the other drives and arrays md127 and md0.  We also need to make sure that the dracut_mdraid.conf file contains a kernel_cmdline+= line specifying the rd.md.uuid= with the UUID of the md1 array that matches what is in the mdadm.conf file in addition to the other two similar lines in that file.
 
