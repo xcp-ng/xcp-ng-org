@@ -803,7 +803,7 @@ We might need to create a RAID array where our drives are not identical and each
 
 The easiest solution to creating a working RAID array in this situation is to partition the drives and create a RAID array using the partitions instead of using the entire drive.
 
-To do this, we get the sizes of the disks in the system by examining the /proc/partitions file.  Starting with the smallest of the disks to be used in the array, use gdisk or sgdisk to create a single partition of type fd00 (Linux RAID) using the maximum space available.  Examine and record the size of the partition created and save the changes.  Repeat the process with the remaining drives to be used except use the size of the partition created on the first drive instead of the maximum space available.
+To do this, we get the sizes of the disks in the system by examining the `/proc/partitions` file.  Starting with the smallest of the disks to be used in the array, use `gdisk` or `sgdisk` to create a single partition of type `fd00` (Linux RAID) using the maximum space available.  Examine and record the size of the partition created and save the changes.  Repeat the process with the remaining drives to be used except use the size of the partition created on the first drive instead of the maximum space available.
 
 This should leave you with drives that each have a single partition and all of the partitions are the same size even though the drives are not.
 
