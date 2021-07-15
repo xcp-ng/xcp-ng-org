@@ -634,7 +634,7 @@ Unfortunately, we'd be wrong.
 
 ### Unstable RAID Arrays When Booting
 
-What really happens when XCP-ng boots with a software RAID is that code in the Linux kernel and in the initrd file will attempt to find and automatically assemble any RAID arrays in the system.  When there is just the single md127 RAID 1 array, the process works pretty well.  Unfortunately, the system seems to break down where there are more drives, more arrays, and more complex arrays.
+What really happens when XCP-ng boots with a software RAID is that code in the Linux kernel and in the initrd file will attempt to find and automatically assemble any RAID arrays in the system.  When there is just the single `md127` RAID 1 array, the process works pretty well.  Unfortunately, the system seems to occasionnally break down where there are more drives, more arrays, and more complex arrays.
 
 This causes several problems in the system, mainly due to the system not correctly finding and adding all component drives to each array or not starting arrays which do not have all components added but could otherwise start successfully.
 
