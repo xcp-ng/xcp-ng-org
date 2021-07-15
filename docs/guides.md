@@ -567,7 +567,7 @@ md127 : active raid1 sdb[1] sda[0]
 unused devices: <none>
 ```
 
-The 5 drives are in place as sda through sde and as can be seen from the list are exactly the same size.  The RAID 1 drive pair is set up as the XCP-ng default of a partitioned RAID 1 array md127 using drives sda and sdb and is in a healthy state.
+The 5 drives are in place as `sda` through `sde` and as can be seen from the list are exactly the same size.  The RAID 1 drive pair is set up as the XCP-ng default of a partitioned RAID 1 array `md127` using drives `sda` and `sdb` and is in a healthy state.
 
 ### Building the Second RAID
 
