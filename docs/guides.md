@@ -710,7 +710,7 @@ kernel_cmdline+=" rd.md.uuid=09871a29:26fa7ce1:0c9b040a:60f5cabf "
 
 This file contains two sets of instructions for dracut, some that affect how the initrd file is built and what is done at boot and the rest which are passed to the Linux kernel at boot.  
 
-The first set instructs dracut to consider the mdadm.conf file we created earlier and also to include a copy of it in the initrd file, add dracut support for mdraid, include the kernel modules for mdraid support, and specificlly support the two RAID devices by name.
+The first set instructs `dracut` to consider the `mdadm.conf` file we created earlier and also to include a copy of it in the initrd file, add `dracut` support for mdraid, include the kernel modules for mdraid support, and specifically support the two RAID devices by name.
 
 The second set instructs the booting Linux kernel to support automaic RAID assembly, support mdraid and the mdraid configuration and also to search for and start the two RAID arrays via their UUID identifiers.  These are the same UUID identifiers that we included in the `mdadm.conf` file and, like the UUID identifiers there, are specific to each array and system. 
 
