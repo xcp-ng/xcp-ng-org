@@ -742,7 +742,7 @@ md0 : active raid5 sdc[0] sde[2] sdd[1]
 unused devices: <none>
 ```
 
-We can see that both arrays are active and healthy with all drives accounted for.  Examining the storage repositories using Xen Orchestra, XCP-ng, or xe commands shows that both the Local storage and RAID storage repositories are available.
+We can see that both arrays are active and healthy with all drives accounted for.  Examining the storage repositories using Xen Orchestra, XCP-ng, or `xe` commands shows that both the Local storage and RAID storage repositories are available.
 
 ### Troubleshooting
 
