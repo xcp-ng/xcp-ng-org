@@ -777,7 +777,7 @@ dd if=/dev/zero of=/dev/md0 bs=1M
 
 After the probably very lengthy process of zeroing out the array, it should be possible to try again to create a storage repository on the RAID array.
 
-Another common cause for problems is a problem with either the mdadm.conf or dracut_mdraid.conf files.  Often when there is a problem with one of those files, the system will boot but fail to assemble or start the RAID arrays.  The boot RAID array will usually be found and assembled automatically but other RAID arrays may not.
+Another common cause for problems is a problem with either the `mdadm.conf` or `dracut_mdraid.conf` files.  Often when there is a problem with one of those files, the system will boot but fail to assemble or start the RAID arrays.  The boot RAID array will usually be found and assembled automatically but other RAID arrays may not.
 
 The best thing to do in this case is to check over the contents of the `mdadm.conf` and `dracut_mdraid.conf` files.  Look for mistyped or missing quotes in the `dracut_mdraid.conf` or missing spaces inside the quotes for those lines that have them.  Look for incorrect or mistyped UUID identifiers for the RAID arrays in both files.  The UUID identifiers should match the identifiers you get using the mdadm --examine --scan command and also match between the `mdadm.conf` file and the `dracut_mdraid.conf` file.  If any errors are found and corrected, rebuild the initrd file using the `dracut` command.
 
