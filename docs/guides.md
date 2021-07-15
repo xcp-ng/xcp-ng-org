@@ -661,7 +661,7 @@ ARRAY /dev/md0  metadata=1.2 UUID=53461f34:2414371e:820f9514:008b6458
 ARRAY /dev/md127  metadata=1.0 UUID=09871a29:26fa7ce1:0c9b040a:60f5cabf
 ```
 
-Each system and array will have different UUID identifiers so the numbers we have here are specific to this exmple.  The UUID identifiers here will not work for another system.  For each system, we'll need a way to get them to include in the mdadm.conf file.  The best way is using the mdadm command itself while the arrays are running like this: 
+Each system and array will have different UUID identifiers so the numbers we have here are specific to this example.  The UUID identifiers here will not work for another system.  For each system, we'll need a way to get them to include in the `mdadm.conf` file.  The best way is using the `mdadm` command itself while the arrays are running like this: 
 
 ```
 [13:06 XCP-ng ~]# mdadm --examine --scan
