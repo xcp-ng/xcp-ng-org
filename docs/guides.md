@@ -783,7 +783,7 @@ The best thing to do in this case is to check over the contents of the mdadm.con
 
 In an extreme case, it should even be possible to delete and re-create those files using the normal instructions and rebuild the initrd file again.  It should also be possible but slightly more risky to remove the files and re-create the initrd file then reboot and attempt to re-create the files and initrd again after rebooting.
 
-Another possible but rare problem is caused by drives that shift their identifications from one system boot to the next.  A drive that has one name such as sdf on one boot might be different such as sdc on a different boot.  This is usually due to problems with the system BIOS or drivers and can also be caused by some hardware problems such as a drive taking wildly different amounts of time to start up from one boot to the next.  It it also more common with some types of storage such as NVMe storage.
+Another possible but rare problem is caused by drives that shift their identifications from one system boot to the next.  A drive that has one name such as `sdf` on one boot might be different such as `sdc` on a different boot.  This is usually due to problems with the system BIOS or drivers and can also be caused by some hardware problems such as a drive taking wildly different amounts of time to start up from one boot to the next.  It it also more common with some types of storage such as NVMe storage.
 
 This type of problem is very difficult to diagnose and correct.  It may be possible to resolve it using different BIOS or setup configurations in the host system or by updating BIOS or controller firmware.
 
