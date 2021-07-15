@@ -679,7 +679,7 @@ echo 'MAILADDR root' >> /etc/mdadm.conf
 echo 'DEVICE /dev/sda /dev/sdb /dev/sdc /dev/sdd /dev/sde' >> /etc/mdadm.conf
 mdadm --examine --scan >> /etc/mdadm.conf
 ```
-And then edit the file to change the format of the array names from /dev/md/0 to /dev/md0 and remove the name= parameters from each line.  This isn't strictly necessary but keeps the array names in the file consistent with what is reported in /proc/mdstat and /proc/partitions and avoids giving each array another name (in our case those names would be localhost:127 and XCP-ng:0).
+And then edit the file to change the format of the array names from `/dev/md/0` to `/dev/md0` and remove the `name=` parameters from each line.  This isn't strictly necessary but keeps the array names in the file consistent with what is reported in `/proc/mdstat` and `/proc/partitions` and avoids giving each array another name (in our case those names would be `localhost:127` and `XCP-ng:0`).
 
 So what do these lines do?  The first line instructs the system to allow or attempt automatic assembly for all arrays defined in the file.  The second specifies to report errors in the system by email to the root user.  The third is a list of all drives in the system participating in RAID arrays.  Not all drives need to be specified on a single DEVICE line.  Drives can be split among multiple lines and we could even have one DEVICE line for each drive.  The last two are descriptions of each array in the system.
 
