@@ -669,7 +669,7 @@ ARRAY /dev/md/0  metadata=1.2 UUID=53461f34:2414371e:820f9514:008b6458 name=XCP-
 ARRAY /dev/md/127  metadata=1.0 UUID=09871a29:26fa7ce1:0c9b040a:60f5cabf name=localhost:127
 ```
 
-Notice that this is output in almost exactly the same format as shown in the mdadm.conf file above.  The UUID numbers are important and we'll need them again later.
+Notice that this is output in almost exactly the same format as shown in the `mdadm.conf` file above.  The UUID numbers are important and we'll need them again later.
 
 If we don't want to type in the entire file, we can create the file like this.
 
