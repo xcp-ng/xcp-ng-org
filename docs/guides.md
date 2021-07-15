@@ -580,7 +580,7 @@ mdadm: array /dev/md0 started.
 
 Here, we've made sure to use the assume-clean and metadata=1.2 options.  The assume-clean option prevents the RAID assembly process from initializing the content of the parity blocks on the drives which saves a lot of time when assembling the RAID for the first time.
 
-The metadata=1.2 option forces the RAID array metadata to a position close to the beginning of each drive in the array.  This is most important for RAID 1 arrays but useful for others and prevents the component drives of the RAID array from being confused for separate individual drives by any process that tries to examine the drives for automatic mounting or other use.
+The  `metadata=1.2` option forces the RAID array metadata to a position close to the beginning of each drive in the array.  This is most important for RAID 1 arrays but useful for others and prevents the component drives of the RAID array from being confused for separate individual drives by any process that tries to examine the drives for automatic mounting or other use.
 
 Checking the status of the drives in the system should show the newly added RAID array.
 
