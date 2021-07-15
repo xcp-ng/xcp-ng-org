@@ -615,7 +615,7 @@ md127 : active raid1 sdb[1] sda[0]
 unused devices: <none>
 ```
 
-Here we can see that the new RAID 5 array is in place as array md0, is using drives sdc, sdd, and sde and is healthy.  As expected for a 3 drive RAID 5 array, it is providing about twice as much available space as a single drive.
+Here we can see that the new RAID 5 array is in place as array `md0`, is using drives `sdc`, `sdd`, and `sde` and is healthy.  As expected for a 3 drive RAID 5 array, it is providing about twice as much available space as a single drive.
 
 ### Building the Storage Repository
 
