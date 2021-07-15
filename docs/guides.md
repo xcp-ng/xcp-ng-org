@@ -712,7 +712,7 @@ This file contains two sets of instructions for dracut, some that affect how the
 
 The first set instructs dracut to consider the mdadm.conf file we created earlier and also to include a copy of it in the initrd file, add dracut support for mdraid, include the kernel modules for mdraid support, and specificlly support the two RAID devices by name.
 
-The second set instucts the booting Linux kernel to support automaic RAID assembly, support mdraid and the mdraid configuration and also to search for and start the two RAID arrays via their UUID identifiers.  These are the same UUID identifiers that we included in the mdadm.conf file and, like the UUID identifiers there, are specific to each array and system. 
+The second set instructs the booting Linux kernel to support automaic RAID assembly, support mdraid and the mdraid configuration and also to search for and start the two RAID arrays via their UUID identifiers.  These are the same UUID identifiers that we included in the `mdadm.conf` file and, like the UUID identifiers there, are specific to each array and system. 
 
 Something to note when creating the file is to allow extra space between command line parameters.  That is why most of the lines have extra space before and after parameters within the quotes.
 
