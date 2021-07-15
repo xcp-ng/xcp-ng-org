@@ -759,7 +759,7 @@ dd if=/dev/zero of=/dev/sde bs=1M
 ```
 This writes zeroes to every block on the drive and will wipe any traces of previous filesystems or RAID configurations.
 
-Sometimes only one drive has a problem when assembling the RAID and we'll see a working RAID with one drive missing.  We'll assume that our md0 RAID was assembled correctly except that it is missing drive /dev/sde.  In that case, it should be possible to add the missing drive into the array like this:
+Sometimes only one drive has a problem when assembling the RAID and we'll see a working RAID with one drive missing.  We'll assume that our md0 RAID was assembled correctly except that it is missing drive `/dev/sde`.  In that case, it should be possible to add the missing drive into the array like this:
 
 ```
 mdadm --add /dev/md0 /dev/sde
