@@ -683,7 +683,7 @@ And then edit the file to change the format of the array names from /dev/md/0 to
 
 So what do these lines do?  The first line instructs the system to allow or attempt automatic assembly for all arrays defined in the file.  The second specifies to report errors in the system by email to the root user.  The third is a list of all drives in the system participating in RAID arrays.  Not all drives need to be specified on a single DEVICE line.  Drives can be split among multiple lines and we could even have one DEVICE line for each drive.  The last two are descriptions of each array in the system.
 
-This file gives the system a description of what arrays are configured in the system and what drives are used to create them but doesn't specify what to do with them.  The system should be able to use this information at boot for automatic assembly of the arrays.  Booting with the mdadm.conf file in place is more reliable but still runs into same problems as before.
+This file gives the system a description of what arrays are configured in the system and what drives are used to create them but doesn't specify what to do with them.  The system should be able to use this information at boot for automatic assembly of the arrays.  Booting with the `mdadm.conf` file in place is more reliable but still runs into same problems as before.
 
 ### Stabilizing the RAID Boot Configuation: The initrd Configuration
 
