@@ -765,7 +765,7 @@ Sometimes only one drive has a problem when assembling the RAID and we'll see a 
 mdadm --add /dev/md0 /dev/sde
 ```
 
-If the drive is added to the RAID array correctly, we should start to see a lot of disk activity and we should be able to monitor the progress of it by looking at the /proc/mdstat file.
+If the drive is added to the RAID array correctly, we should start to see a lot of disk activity and we should be able to monitor the progress of it by looking at the `/proc/mdstat` file.
 
 If the drive will not add to the array due to something left over on the drive, we should get an error from `mdadm` indicating the problem.  In that case we should be able to use the dd command to wipe out the one drive as above and then attempt to add it into the array.
 
