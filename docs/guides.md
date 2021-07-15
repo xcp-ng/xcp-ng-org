@@ -638,7 +638,7 @@ What really happens when XCP-ng boots with a software RAID is that code in the L
 
 This causes several problems in the system, mainly due to the system not correctly finding and adding all component drives to each array or not starting arrays which do not have all components added but could otherwise start successfully.
 
-A good example here would be the md0 RAID 5 array we just created.  Rebooting the system in the state it is in now will often or even usually work without problems.  The system will find both drives of the md127 RAID 1 boot array and all three drives of the md0 RAID 5 storage array, assemble the arrays and start them running.
+A good example here would be the `md0` RAID 5 array we just created.  Rebooting the system in the state it is in now will often or even usually work without problems.  The system will find both drives of the `md127` RAID 1 boot array and all three drives of the `md0` RAID 5 storage array, assemble the arrays and start them running.
 
 Sometimes what happens is that the system either does not find all of the parts of the RAID or does not assemble them correctly or does not start the array.  When that happens the md0 storage array will not start and looking at the /proc/mdstat array status will show the array as missing one or two of the three drives or will show all three drives but not show them as running.  Another common problem is that the array is assembled with enough drives to run, two out of three drives in our case, but does not start.  This can also happen if the array has a failed drive at boot even if there are enough remaining drives to start and run the array.
 
