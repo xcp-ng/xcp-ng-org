@@ -634,7 +634,7 @@ Unfortunately, we'd be wrong.
 
 ### Unstable RAID Arrays When Booting
 
-What really happens when XCP-ng boots with a software RAID is that code in the Linux kernel and in the initrd file will attempt to find and automatically assemble any RAID arrays in the system. When there is just the single `md127` RAID 1 array, the process works pretty well. Unfortunately, the system seems to occasionnally break down where there are more drives, more arrays, and more complex arrays.
+What really happens when XCP-ng boots with a software RAID is that code in the Linux kernel and in the initrd file will attempt to find and automatically assemble any RAID arrays in the system. When there is just the single `md127` RAID 1 array, the process works pretty well. Unfortunately, the system seems to occasionally break down where there are more drives, more arrays, and more complex arrays.
 
 This causes several problems in the system, mainly due to the system not correctly finding and adding all component drives to each array or not starting arrays which do not have all components added but could otherwise start successfully.
 
@@ -646,7 +646,7 @@ This can also happen to the `md127` boot array where it will show with only one 
 
 So what can we do about this?  Fortunately, we can give the system more information about what RAID arrays are in the system and specify that they should be started up at boot.
 
-### Stabilizing the RAID Boot Configuation: The mdadm.conf File
+### Stabilizing the RAID Boot Configuration: The mdadm.conf File
 
 The first thing we need to do is give the system more information on what RAID arrays exist and how they're put together. The way to do this is by creating a raid configuration file `/etc/mdadm.conf`.
 
@@ -685,7 +685,7 @@ So what do these lines do?  The first line instructs the system to allow or atte
 
 This file gives the system a description of what arrays are configured in the system and what drives are used to create them but doesn't specify what to do with them. The system should be able to use this information at boot for automatic assembly of the arrays. Booting with the `mdadm.conf` file in place is more reliable but still runs into same problems as before.
 
-### Stabilizing the RAID Boot Configuation: The initrd Configuration
+### Stabilizing the RAID Boot Configuration: The initrd Configuration
 
 The other thing we need to do is give the system some idea of what to do with the RAID arrays at boot time. The way to do this is by adding instructions for the `dracut` program creating the initrd file to enable all RAID support, use the `mdadm.conf` file we created, and to start the arrays at boot time.
 
@@ -712,11 +712,11 @@ This file contains two sets of instructions for `dracut`, some that affect how t
 
 The first set instructs `dracut` to consider the `mdadm.conf` file we created earlier and also to include a copy of it in the initrd file, add `dracut` support for mdraid, include the kernel modules for mdraid support, and specifically support the two RAID devices by name.
 
-The second set instructs the booting Linux kernel to support automaic RAID assembly, support mdraid and the mdraid configuration and also to search for and start the two RAID arrays via their UUID identifiers. These are the same UUID identifiers that we included in the `mdadm.conf` file and, like the UUID identifiers there, are specific to each array and system. 
+The second set instructs the booting Linux kernel to support automatic RAID assembly, support mdraid and the mdraid configuration and also to search for and start the two RAID arrays via their UUID identifiers. These are the same UUID identifiers that we included in the `mdadm.conf` file and, like the UUID identifiers there, are specific to each array and system. 
 
 Something to note when creating the file is to allow extra space between command line parameters. That is why most of the lines have extra space before and after parameters within the quotes.
 
-### Building and Testing the New intrd File
+### Building and Testing the New initrd File
 
 Now that we have all of this extra configuration, we need to get the system to include it for use at boot. To do that we use the `dracut` command to create a new initrd file like this:
 
@@ -793,7 +793,7 @@ So what if we don't have or don't want a system that's identical to the one we j
 
 #### Different Sized and Shaped RAID Arrays
 
-We might want to create a RAID array with more or fewer drives or a different RAID level. Common types would be a two drive RAID 1 array or a 4 drive RAID 5, 6 or 10 array. Those cases are very easy to accomodate by changing the parameters when building the RAID array, altering the `level=` or `raid-devices=` parameters and the list of drives on the `mdadm --create` command line. The only other consideration is to make sure the drives used are accounted for in a `DEVICE` line in the `mdadm.conf` file.
+We might want to create a RAID array with more or fewer drives or a different RAID level. Common types would be a two drive RAID 1 array or a 4 drive RAID 5, 6 or 10 array. Those cases are very easy to accommodate by changing the parameters when building the RAID array, altering the `level=` or `raid-devices=` parameters and the list of drives on the `mdadm --create` command line. The only other consideration is to make sure the drives used are accounted for in a `DEVICE` line in the `mdadm.conf` file.
 
 The number of drives in a specific level of RAID array can also affect the performance of the array. A good rule of thumb for RAID 5 or 6 arrays is to have a number of drives that is a power of two (2, 4, 8, etc.) plus the number of extra drives where space is used for parity information, one drive for RAID 5 and two drives for RAID 6. The RAID 5 array we created in the example system meets that recommendation by having 3 drives. A 5 drive RAID5 array, or 4 or 6 drive RAID 6 arrays would as well. A good rule of thumb for RAID 10 arrays is to have an even number of drives. For RAID 10 in Linux an even number of drives is not a requirement as it is on other types of systems. In addition, it may be possible to get better performance by creating a 2 drive RAID 10 array instead of a 2 drive RAID 1 array.
 
@@ -813,7 +813,7 @@ It should also be possible to create the partitions on the drives outside of the
 
 #### More Than One Additional Array
 
-We might want to create more than one extra RAID array and storage repository. This is also easy to accomodate in a similar way to using a different number of drives in the array. We can easily create another RAID array and another storage repository onto a different set of drives by changing the parameters of the `mdadm --create` command line and `xe sr-create` command line.
+We might want to create more than one extra RAID array and storage repository. This is also easy to accommodate in a similar way to using a different number of drives in the array. We can easily create another RAID array and another storage repository onto a different set of drives by changing the parameters of the `mdadm --create` command line and `xe sr-create` command line.
 
 As an example assume that we have 3 more drives `/dev/sdf`, `/dev/sdg`, and `/dev/sdh` and want to create a second RAID 5 array and another storage repository. We create another RAID 5 array, this time `md1` like this:
 
