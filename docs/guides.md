@@ -528,7 +528,11 @@ Now we enable autostart at the virtual machine level.
 
 XCP-ng has support for creating a software RAID for the operating system but it is limited to RAID level 1 (mirrored drives) and by the size of the drives used. It is strictly intended for hardware redundancy and doesn't provide any additional storage beyond what a single drive provides.
 
-These instructions describe how to add more storage to XCP-ng using software RAID and show measures that need to be taken to avoid problems that may happen when booting.
+These instructions describe how to add more storage to XCP-ng using software RAID and show measures that need to be taken to avoid problems that may happen when booting.  You should read through these instructions at least once to become familiar with them before proceeding and to evaluate whether the process fits your needs.  Look at the "Troubleshooting" section of these instructions to get some idea of the kinds of problems that can happen.
+
+An example installation is described below using a newly installed XCP-ng software RAID system.  This covers only one specific possibility for software RAID. See the "More and Different" section of these instructions to see other possibilities.
+
+In addition, the example presented below is a fresh installation and not being installed onto a production system. The changes described in the instructions can be applied to a production system but, as with any system changes, there is always a risk of something going badly and having some data loss. If performing this on a production system, make sure that there are good backups of all VMs and other data on the system that can be restored to this system or even a different one in case of problems.
 
 These instructions assume you are starting with a server already installed with software RAID and have no other storage repositories defined except what may be on the existing RAID.
 
@@ -793,13 +797,31 @@ This type of problem is very difficult to diagnose and correct. It may be possib
 
 ### More and Different
 
-So what if we don't have or don't want a system that's identical to the one we just built in these instructions?  Here are some of the possible and normal variations of software RAID under XCP-ng.
+So what if we don't have or don't want a system that's identical to the example we just built in these instructions?  Here are some of the possible and normal variations of software RAID under XCP-ng.
+
+#### No preexisting XCP-ng RAID 1
+
+We might want to create a RAID storage repository even though XCP-ng was installed without software RAID where the operating system was installed to a single hard drive or some other device.  This needs only minimal changes to the example configuration.  Without a software RAID installed by XCP-ng, there will be no RAID 1 device `md127` holding the operating system.  In this case, we build the storage RAID array normally, still calling it `md0` but omit any lines in the `mdadm.conf` and `dracut_mdraid.conf` which list `md127`.  We would only include the lines in those files mentioning `md0` and its UUID and the devices used to create it.
 
 #### Different Sized and Shaped RAID Arrays
 
 We might want to create a RAID array with more or fewer drives or a different RAID level. Common types would be a two drive RAID 1 array or a 4 drive RAID 5, 6 or 10 array. Those cases are very easy to accommodate by changing the parameters when building the RAID array, altering the `level=` or `raid-devices=` parameters and the list of drives on the `mdadm --create` command line. The only other consideration is to make sure the drives used are accounted for in a `DEVICE` line in the `mdadm.conf` file.
 
 The number of drives in a specific level of RAID array can also affect the performance of the array. A good rule of thumb for RAID 5 or 6 arrays is to have a number of drives that is a power of two (2, 4, 8, etc.) plus the number of extra drives where space is used for parity information, one drive for RAID 5 and two drives for RAID 6. The RAID 5 array we created in the example system meets that recommendation by having 3 drives. A 5 drive RAID5 array, or 4 or 6 drive RAID 6 arrays would as well. A good rule of thumb for RAID 10 arrays is to have an even number of drives. For RAID 10 in Linux an even number of drives is not a requirement as it is on other types of systems. In addition, it may be possible to get better performance by creating a 2 drive RAID 10 array instead of a 2 drive RAID 1 array.
+
+#### Avoiding the RAID 5 and 6 "Write Hole"
+
+RAID 5 and 6 arrays have a problem known as the "write hole" affecting their consistency after a failure during a disk write such as a crash or power failure.  The problem happens when a chunk of RAID protected data known as a stripe is changed on the array.  To make the change, the operating system reads the stripe of data, changes the portion of the data requested, recomputes the disk parity for RAID 5 or RAID 6 then rewrites the data to the disks.  If a crash or power outage interrupts that process some of the data written to disk will reflect the new content of the stripe while some on other disks will reflect the old content of the stripe.  In general the system may be able to detect that there is a problem by rereading the entire stripe and verifying that the parity portion does not match.  The system would have no way to verify which portions of the stripe were written with new data and which contain old data so would not be able to properly reconstruct the stripe after a crash.
+
+This problem can only happen if the system is interrupted during a write to a RAID and tends to be rare.
+
+Generally, the best way to mitigate the problem is by avoiding it.  Use good quality server hardware with known stable hardware drivers to avoid possible sources of crashes.  Having good power protection such as redundant power supplies and battery backup units and using software to automatically shut down in case of a power outage will limit possible power-related problems.
+
+If that is not enough, there are other methods to avoid the write hole by making it possible for the RAID system to recover after a crash while working around the write hole problem.
+
+For RAID 5 systems, one way to do this is using feature known as PPL or partial parity log which changes the way that data is written and recovery is performed on a RAID 5 array. Using this method comes at a cost of as much as a 30 or 40 percent lower RAID write performance. To enable it while building the RAID, substitute `--consistency-policy=ppl` for `--bitmap=internal` when creating the array. It is also possible to change an existing RAID 5 array to use this with the command `mdadm --grow --bitmap=none --consistency-policy=ppl /dev/md0` (assuming the `md0` array created in our example system). It is also possible to change the array back with the command `mdadm --grow --bitmap=internal /dev/md0`.
+
+For RAID 6 systems, something different needs to be done. The way to close the write hole for a RAID 6 is to use a separate device which acts as a combination disk write log or journal and write cache. For best performance the device should be a disk with better write performance than the drives used in the array, preferably a fast SSD with good longevity. Going back to our example system and assuming that there is an additional device `sdf`, we would substitute `--write-journal=/dev/sdf` instead of `--bitmap=internal` when creating the array. To avoid the journal drive becoming a single point of failure, a good practice might be to create a RAID 1 device from the fast drives or SSDs then using that RAID device as a journal device. A write journal device may also be used for RAID 5 arrays.
 
 #### Different Sized Drives
 
