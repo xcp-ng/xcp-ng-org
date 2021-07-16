@@ -528,9 +528,9 @@ Now we enable autostart at the virtual machine level.
 
 XCP-ng has support for creating a software RAID for the operating system but it is limited to RAID level 1 (mirrored drives) and by the size of the drives used. It is strictly intended for hardware redundancy and doesn't provide any additional storage beyond what a single drive provides.
 
-These instructions describe how to add more storage to XCP-ng using software RAID and show measures that need to be taken to avoid problems that may happen when booting.  You should read through these instructions at least once to become familiar with them before proceeding and to evaluate whether the process fits your needs.  Look at the "Troubleshooting" section of these instructions to get some idea of the kinds of problems that can happen.
+These instructions describe how to add more storage to XCP-ng using software RAID and show measures that need to be taken to avoid problems that may happen when booting. You should read through these instructions at least once to become familiar with them before proceeding and to evaluate whether the process fits your needs. Look at the "Troubleshooting" section of these instructions to get some idea of the kinds of problems that can happen.
 
-An example installation is described below using a newly installed XCP-ng software RAID system.  This covers only one specific possibility for software RAID. See the "More and Different" section of these instructions to see other possibilities.
+An example installation is described below using a newly installed XCP-ng software RAID system. This covers only one specific possibility for software RAID. See the "More and Different" section of these instructions to see other possibilities.
 
 In addition, the example presented below is a fresh installation and not being installed onto a production system. The changes described in the instructions can be applied to a production system but, as with any system changes, there is always a risk of something going badly and having some data loss. If performing this on a production system, make sure that there are good backups of all VMs and other data on the system that can be restored to this system or even a different one in case of problems.
 
@@ -801,7 +801,7 @@ So what if we don't have or don't want a system that's identical to the example 
 
 #### No preexisting XCP-ng RAID 1
 
-We might want to create a RAID storage repository even though XCP-ng was installed without software RAID where the operating system was installed to a single hard drive or some other device.  This needs only minimal changes to the example configuration.  Without a software RAID installed by XCP-ng, there will be no RAID 1 device `md127` holding the operating system.  In this case, we build the storage RAID array normally, still calling it `md0` but omit any lines in the `mdadm.conf` and `dracut_mdraid.conf` which list `md127`.  We would only include the lines in those files mentioning `md0` and its UUID and the devices used to create it.
+We might want to create a RAID storage repository even though XCP-ng was installed without software RAID where the operating system was installed to a single hard drive or some other device. This needs only minimal changes to the example configuration. Without a software RAID installed by XCP-ng, there will be no RAID 1 device `md127` holding the operating system. In this case, we build the storage RAID array normally, still calling it `md0` but omit any lines in the `mdadm.conf` and `dracut_mdraid.conf` which list `md127`. We would only include the lines in those files mentioning `md0` and its UUID and the devices used to create it.
 
 #### Different Sized and Shaped RAID Arrays
 
@@ -811,11 +811,11 @@ The number of drives in a specific level of RAID array can also affect the perfo
 
 #### Avoiding the RAID 5 and 6 "Write Hole"
 
-RAID 5 and 6 arrays have a problem known as the "write hole" affecting their consistency after a failure during a disk write such as a crash or power failure.  The problem happens when a chunk of RAID protected data known as a stripe is changed on the array.  To make the change, the operating system reads the stripe of data, changes the portion of the data requested, recomputes the disk parity for RAID 5 or RAID 6 then rewrites the data to the disks.  If a crash or power outage interrupts that process some of the data written to disk will reflect the new content of the stripe while some on other disks will reflect the old content of the stripe.  In general the system may be able to detect that there is a problem by rereading the entire stripe and verifying that the parity portion does not match.  The system would have no way to verify which portions of the stripe were written with new data and which contain old data so would not be able to properly reconstruct the stripe after a crash.
+RAID 5 and 6 arrays have a problem known as the "write hole" affecting their consistency after a failure during a disk write such as a crash or power failure. The problem happens when a chunk of RAID protected data known as a stripe is changed on the array. To make the change, the operating system reads the stripe of data, changes the portion of the data requested, recomputes the disk parity for RAID 5 or RAID 6 then rewrites the data to the disks. If a crash or power outage interrupts that process some of the data written to disk will reflect the new content of the stripe while some on other disks will reflect the old content of the stripe. In general the system may be able to detect that there is a problem by rereading the entire stripe and verifying that the parity portion does not match. The system would have no way to verify which portions of the stripe were written with new data and which contain old data so would not be able to properly reconstruct the stripe after a crash.
 
 This problem can only happen if the system is interrupted during a write to a RAID and tends to be rare.
 
-Generally, the best way to mitigate the problem is by avoiding it.  Use good quality server hardware with known stable hardware drivers to avoid possible sources of crashes.  Having good power protection such as redundant power supplies and battery backup units and using software to automatically shut down in case of a power outage will limit possible power-related problems.
+Generally, the best way to mitigate the problem is by avoiding it. Use good quality server hardware with known stable hardware drivers to avoid possible sources of crashes. Having good power protection such as redundant power supplies and battery backup units and using software to automatically shut down in case of a power outage will limit possible power-related problems.
 
 If that is not enough, there are other methods to avoid the write hole by making it possible for the RAID system to recover after a crash while working around the write hole problem.
 
