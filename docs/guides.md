@@ -700,7 +700,7 @@ The GUID and name for varstore-get are the values returned by
 
 #### How XCP-ng Manages the Certificates
 
-All pools and hosts in the XAPI database on XCP-ng carry a base64 encoded tarball of the certificates enrolled by `secureboot-certs`. When XAPI attempts to launch a VM, it extracts the tarball to `/usr/share/varstored/` (on XCP-ng, this is contains symlinks to `/var/lib/uefistored/` and `/usr/share/uefistored`).  The certs in the tarball will dump to disk every time a VM is launched.  The pool and hosts in the pool always have their certificate tarball in sync.
+All pools and hosts in the XAPI database on XCP-ng carry a base64 encoded tarball of the certificates enrolled by `secureboot-certs`. When XAPI attempts to launch a VM, it extracts the tarball to `/usr/share/varstored/` (on XCP-ng, this is contains symlinks to files in `/var/lib/uefistored/` and `/usr/share/uefistored`).  The certs in the tarball will dump to disk every time a VM is launched.  The pool and hosts in the pool always have their certificate tarball in sync.
 
 ### Enable Secure Boot for a Guest VM
 
