@@ -536,36 +536,71 @@ Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute t
 
 #### Install the Secure Boot Certificates (Required)
 
-Before enabling UEFI Secure Boot for guest VMs, first execute the `secureboot-certs` script. This tool downloads, formats, and installs the publically available `db` and `KEK` certificates from Microsoft. Note that it does *NOT* install the [dbx revocation list](#installing-the-revocation-list).
+Before enabling UEFI Secure Boot for guest VMs, first execute the `secureboot-certs` script. This tool downloads, formats, and installs UEFI certificates for the `PK`, `KEK`, `db`, and `dbx` certificates in the XCP-ng pool.
 
 From the XCP-ng CLI:
 
 ```
-# Download and install db/KEK certificates
-secureboot-certs
+# Download and install PK/KEK/db/dbx certificates
+secureboot-certs install default default default latest
 ```
 
-:::tip
-Running `secureboot-certs` only needs to be done once per host, not per VM. It must be called for every host in the pool. It must also be called after ISO upgrades once per upgraded host.
+If your system supports guest distributions that have not updated their binaries with non-revoked signatures, you may omit the `dbx`. Note that this basically renders secure boot useless from a security perspective. This may be done by using the following command:
+
+```
+# Download and install PK/KEK/db certificates, omit the dbx
+secureboot-certs install default default default none
+```
+
+:::warning
+Installing the latest DBX may reject some binaries that have not been updated with new, non-revoked signatures. It must also be called after ISO upgrades.
 :::
 
-Although unsigned binaries will be properly rejected after executing `secureboot-certs`, blacklisting executables that were previously signed (i.e., revoked) requires that you install a [dbx revocation list](#install-update-the-revocation-list-optional-but-strongly-recommended).
+Although unsigned binaries will be properly rejected after executing `secureboot-certs` with dbx option "none", blacklisting executables that were previously signed (i.e., revoked) requires that you install a dbx revocation list.
 
 #### Install / Update the Revocation List (Recommended)
 
-To install the most recent revocation list, download the revocation list file found [here](https://uefi.org/revocationlistfile) and copy it to `/var/lib/uefistored/dbx.auth`.
+To install the most recent revocation list, supply the "latest" option to the "dbx" argument to `secureboot-certs`.
+
+```
+# Download and install PK/KEK/db/dbx certificates
+secureboot-certs install default default default latest
+```
 
 If `varstore-ls <vm-uuid>` shows that there already exists a `dbx` variable for the VM, it is recommended to shutdown the VM and then run `varstore-sb-state <vm-uuid> setup`.
 
 Upon rebooting the VM, the `dbx` will be active.
 
 :::warning
-As of the time of writing this guide (April 2020) not all distributions have updated their signed binaries, so using the most recent revocation list may revoke these distributions.  To avoid this, install an older revocation list.  Be sure to install the correct revocation list for the distribution versions that your system is meant to allow.
+As of the time of writing this guide (July 2021) not all distributions have updated their signed binaries, so using the most recent revocation list may revoke these distributions.  To avoid this, install an older revocation list.  Be sure to install the correct revocation list for the distribution versions that your system is meant to allow.
 :::
 
 :::warning
-`varstore-sb-state <vm-uuid> setup` wipes previously installed Secure Boot certificates (if there were any). Upon boot, they will be replaced by the Microsoft certificates installed by the `secureboot-certs` script.  Also note that all varstore-{set,sb-state} commands that modify the variable storage for the VM must be called when the VM is shutdown.
+`varstore-sb-state <vm-uuid> setup` wipes previously installed Secure Boot certificates (if there were any). Upon boot, they will be replaced by the default certificates installed by the `secureboot-certs` script.  Also note that all varstore-{set,sb-state} commands that modify the variable storage for the VM must be called when the VM is shutdown.
 :::
+
+#### Viewing Certs Already Installed on System
+
+To view the default certs that are available pool-wide:
+
+```
+secureboot-certs report
+```
+
+To view the certs already installed into a VM's firmware:
+
+```
+varstore-ls <vm-uuid>
+```
+
+and then to see the full cert:
+
+```
+varstore-get <vm-uuid> <guid> <name> | hexdump -Cv
+```
+
+The GUID and name for varstore-get are the values returned by
+`varstore-ls` .
 
 ### Enable Secure Boot for a Guest VM
 
