@@ -638,7 +638,7 @@ secureboot-certs install PK.auth default default latest
 
 The same procedure may be used to install custom KEK, db, or dbx certs.
 
-Note that the virtual firmware (uefistored + OVMF), as is allowed by the specification, does not mandate that these default certificates be signed by their parent (i.e., the KEK doesn't need to be signed by PK) if they're pre-installed. This verification *does* occur, however, when trying to enroll new certificates from inside the guest after boot.  The host adminstrator has full control over the certificates from the control domain.
+Note that the virtual firmware (uefistored + OVMF), as is allowed by the specification, does not mandate that these default certificates be signed by their parent (i.e., the KEK doesn't need to be signed by PK) if they're installed via `secureboot-certs`. This verification *does* occur, however, when trying to enroll new certificates from inside the guest after boot.  This is designed to give the host adminstrator full control over the certificates from the control domain.
 
 #### Install an Archived UEFI DBX
 
@@ -650,6 +650,30 @@ for the `dbx` argument:
 ```
 secureboot-certs install default default default path/to/dbxupdate_x64.bin
 ```
+
+#### Changing the Certificates Already Installed in a Pool
+
+To change the certificates in a pool, simply call `secureboot-certs install` in the same ways as described in [Install the Secure Boot Certificates](#install-the-secure-boot-certificates-required).
+
+If UEFI VMs have already been launched with old certificates installed, they will need to have their certificates changed using the instructions in [Changing the Certificates Already Installed on a VM](#changing-the-certificates-already-installed-on-a-vm).
+
+#### Changing the Certificates Already Installed on a VM
+
+If a VM has already booted it may have its own copy of the UEFI certificates.  To verify this, execute:
+
+```
+varstore-ls <vm-uuid>
+```
+
+If the relevant certs are installed, there names will be in the output (i.e., `PK`, `KEK, `db`, or `dbx`).
+
+If you have installed a new set of certificates on the host *after VMs have been launched with old certificates*, then it is required to reset the certificates specifically for those VMs.
+
+In order to reset the VM's certificates, shutdown the VM and execute `varstore-sb-state <vm-uuid> setup`. When the VM boots, its certificates will be updated to those found in the XCP-ng pool (those installed by `secureboot-certs`).
+
+:::warning
+`varstore-sb-state <vm-uuid> setup` wipes previously installed Secure Boot certificates (if there were any). Upon boot, they will be replaced by the default certificates installed by the `secureboot-certs` script.  Also note that all varstore-{set,sb-state} commands that modify the variable storage for the VM must be called when the VM is shutdown.
+:::
 
 #### Viewing Certs Already Installed on System
 
@@ -673,24 +697,6 @@ varstore-get <vm-uuid> <guid> <name> | hexdump -Cv
 
 The GUID and name for varstore-get are the values returned by
 `varstore-ls` .
-
-#### Changing the Certificates Already Installed on a VM
-
-If a VM has already booted it may have its own copy of the UEFI certificates.  To verify this, execute:
-
-```
-varstore-ls <vm-uuid>
-```
-
-If the relevant certs are installed, there names will be in the output (i.e., `PK`, `KEK, `db`, or `dbx`).
-
-If you have installed a new set of certificates on the host *after VMs have been launched with old certificates*, then it is required to reset the certificates specifically for those VMs.
-
-In order to reset the VM's certificates, shutdown the VM and execute `varstore-sb-state <vm-uuid> setup`. When the VM boots, its certificates will be updated to those found in the XCP-ng pool (those installed by `secureboot-certs`).
-
-:::warning
-`varstore-sb-state <vm-uuid> setup` wipes previously installed Secure Boot certificates (if there were any). Upon boot, they will be replaced by the default certificates installed by the `secureboot-certs` script.  Also note that all varstore-{set,sb-state} commands that modify the variable storage for the VM must be called when the VM is shutdown.
-:::
 
 #### How XCP-ng Manages the Certificates
 
