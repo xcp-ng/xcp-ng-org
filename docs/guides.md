@@ -681,6 +681,28 @@ varstore-get <vm-uuid> <guid> <name> | hexdump -Cv
 The GUID and name for varstore-get are the values returned by
 `varstore-ls` .
 
+#### Remove Certs from the Pool
+
+To remove the installed certs in the pool:
+
+```
+secureboot-certs clear
+```
+
+Note that this does not remove the certs from the VM or from disk.  In order to clear the certs from the VM it is required to use `varstore-rm`.  See [Remove Certs from the VM](#remove-certs-from-the-VM) on each VM and also remove the ".auth" files for the certs you'd like to remove (found in `/var/lib/uefistored/` and `/usr/share/uefistored/`).
+
+#### Remove Certs from the VM
+
+To remove a cert use `varstore-rm`.
+
+For example, to remove the `db` from a VM.
+
+```
+varstore-rm <vm-uuid> d719b2cb-3d3a-4596-a3bc-dad00e67656f db
+```
+
+Note that the GUID may be found by using `varstore-ls <vm-uuid>`.
+
 #### How XCP-ng Manages the Certificates
 
 All pools and hosts in the XAPI database on XCP-ng carry a base64 encoded tarball of the certificates enrolled by `secureboot-certs`. When XAPI attempts to launch a VM, it extracts the tarball to `/usr/share/varstored/` (on XCP-ng, this is contains symlinks to files in `/var/lib/uefistored/` and `/usr/share/uefistored`).  The certs in the tarball will dump to disk every time a VM is launched.  The pool and hosts in the pool always have their certificate tarball in sync.
