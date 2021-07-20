@@ -532,52 +532,120 @@ Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute t
 * A UEFI guest VM.
 * For Windows, ensure the VM has 2 vCPUs
 
-### Configure the Host
+### Configure the Pool
 
 #### Install the Secure Boot Certificates (Required)
 
 Before enabling UEFI Secure Boot for guest VMs, first execute the `secureboot-certs` script. This tool downloads, formats, and installs UEFI certificates for the `PK`, `KEK`, `db`, and `dbx` certificates in the XCP-ng pool.
 
-From the XCP-ng CLI:
+To install certificates in your pool, use `secureboot-certs install`. To install XCP-ng's default certificates, see [Installing the Default UEFI Certificates](#installing-the-default-uefi-certificates).
+
+For custom certificates, see [Installing Custom UEFI Certificates](#installing-custom-uefi-certificates)
+
+For help with the tool's install functionality, call `secureboot-certs install -h`:
+
+```
+usage: secureboot-certs install [-h] PK KEK db dbx
+
+Install UEFI certificates to every host in the pool.
+
+positional arguments:
+  PK          'default' for the default XCP-ng PK or a path to a custom auth
+              file.
+  KEK         'default' for the default Microsoft certs or a path to a custom
+              auth file.
+  db          'default' for the default Microsoft certs or a path to a custom
+              auth file.
+  dbx         'latest' for the most recent UEFI dbx, a path to a custom auth
+              file, or 'none' for no dbx. Choosing 'none' should be completely
+              avoided in production systems hoping to benefit from Secure
+              Boot. It renders Secure Boot practically meaningless because
+              attackers may simply load any number of vulnerable binaries that
+              were previously signed but later revoked, and thereby take
+              control of the system. The 'latest' dbx revokes any software
+              that hasn't implemented the most recent security fixes, which
+              may include some OS distributions (even if they're totally
+              updated, depending how recently the vulnerability was
+              discovered). Because it varies per distribution, check if your
+              guest distributions are updated to pass the most recent UEFI
+              revocation before installing the latest dbx. Microsoft Windows
+              may extend, replace, or modify the dbx for the VM in which it
+              runs if the default KEK is used. For older dbx files, see:
+              https://uefi.org/revocationlistfile/archive. They may be passed
+              to secureboot-certs as custom auth files.
+
+optional arguments:
+  -h, --help  show this help message and exit
+```
+
+##### Installing the Default UEFI Certificates
+
+`secureboot-certs` supports installing a default set of certificates across the pool.
+
+The default certificates are sourced (or generated) as follows:
+
+
+| Certificate |                                                   Source                                                          |  CLI Arg  |
+|-------------|-------------------------------------------------------------------------------------------------------------------|-----------|
+| PK          |  `/usr/share/uefistored/PK.auth`  (generated before RPM distribution)                                             | `default` |
+| KEK         |  [Microsoft Corporation UEFI KEK CA 2011](https://www.microsoft.com/pkiops/certs/MicCorKEKCA2011_2011-06-24.crt)  | `default` |
+| db          |  [Microsoft Corporation UEFI CA 2011](https://www.microsoft.com/pkiops/certs/MicCorUEFCA2011_2011-06-27.crt)      | `default` |
+|             |  [Microsoft Windows Production PCA 2011](https://www.microsoft.com/pkiops/certs/MicWinProPCA2011_2011-10-19.crt)  |           |
+| dbx         |  [UEFI Revocation List](https://uefi.org/sites/default/files/resources/dbxupdate_x64.bin)                         | `latest`  |
+
+
+To install these certificates from the CLI:
 
 ```
 # Download and install PK/KEK/db/dbx certificates
 secureboot-certs install default default default latest
 ```
 
-If your system supports guest distributions that have not updated their binaries with non-revoked signatures, you may omit the `dbx`. Note that this basically renders secure boot useless from a security perspective. This may be done by using the following command:
+:::warning
+Installing the latest DBX may reject some binaries that have not been updated with new, non-revoked signatures. Check that your VM distribution is updated with the most recent UEFI signatures.
+:::
+
+If your system supports guest distributions that have not updated their binaries with non-revoked signatures, we recommend you follow the instructions in [Install an Archived UEFI DBX](#install-an-archived-uefi-dbx).
+
+As a last resort, you may omit the dbx entirely. Note that this basically renders secure boot useless from a security perspective and is not recommended. This may be done by using the following command:
 
 ```
 # Download and install PK/KEK/db certificates, omit the dbx
 secureboot-certs install default default default none
 ```
 
-:::warning
-Installing the latest DBX may reject some binaries that have not been updated with new, non-revoked signatures. It must also be called after ISO upgrades.
-:::
+##### Installing Custom UEFI Certificates
 
-Although unsigned binaries will be properly rejected after executing `secureboot-certs` with dbx option "none", blacklisting executables that were previously signed (i.e., revoked) requires that you install a dbx revocation list.
+`secureboot-certs` also supports installing your own custom certificates. The certs must be in the format of ".auth" files, which may be accomplished using `/opt/xensource/libexec/create-auth`.
 
-#### Install / Update the Revocation List (Recommended)
-
-To install the most recent revocation list, supply the "latest" option to the "dbx" argument to `secureboot-certs`.
+For example, to install a custom PK you may do the following:
 
 ```
-# Download and install PK/KEK/db/dbx certificates
-secureboot-certs install default default default latest
+# Create the key and cert using OpenSSL
+openssl req -newkey rsa:4096 -nodes -new -x509 -sha256 -days 3650 -subj "/CN=My PK/" -keyout pk.key -out pk.cer
+
+
+# Create the .auth file from the DER certificate
+/opt/xensource/libexec/create-auth -k pk.key -c pk.cer PK PK.auth pk.cer
+
+# Enroll it, along with the default certificates, with secureboot-certs
+secureboot-certs install PK.auth default default latest
 ```
 
-If `varstore-ls <vm-uuid>` shows that there already exists a `dbx` variable for the VM, it is recommended to shutdown the VM and then run `varstore-sb-state <vm-uuid> setup`.
+The same procedure may be used to install custom KEK, db, or dbx certs.
 
-Upon rebooting the VM, the `dbx` will be active.
+Note that the virtual firmware (uefistored + OVMF), as is allowed by the specification, does not mandate that these default certificates be signed by their parent (i.e., the KEK doesn't need to be signed by PK) if they're pre-installed. This verification *does* occur, however, when trying to enroll new certificates from inside the guest after boot.  The host adminstrator has full control over the certificates from the control domain.
 
-:::warning
-As of the time of writing this guide (July 2021) not all distributions have updated their signed binaries, so using the most recent revocation list may revoke these distributions.  To avoid this, install an older revocation list.  Be sure to install the correct revocation list for the distribution versions that your system is meant to allow.
-:::
+#### Install an Archived UEFI DBX
 
-:::warning
-`varstore-sb-state <vm-uuid> setup` wipes previously installed Secure Boot certificates (if there were any). Upon boot, they will be replaced by the default certificates installed by the `secureboot-certs` script.  Also note that all varstore-{set,sb-state} commands that modify the variable storage for the VM must be called when the VM is shutdown.
-:::
+The UEFI Forum hosts archived DBX auth files [here](https://uefi.org/revocationlistfile/archive).
+
+Download the x64 archive manually, and then provide the path to the file to `secureboot-certs`
+for the `dbx` argument:
+
+```
+secureboot-certs install default default default path/to/dbxupdate_x64.bin
+```
 
 #### Viewing Certs Already Installed on System
 
@@ -601,6 +669,28 @@ varstore-get <vm-uuid> <guid> <name> | hexdump -Cv
 
 The GUID and name for varstore-get are the values returned by
 `varstore-ls` .
+
+#### Changing the Certificates Already Installed on a VM
+
+If a VM has already booted it may have its own copy of the UEFI certificates.  To verify this, execute:
+
+```
+varstore-ls <vm-uuid>
+```
+
+If the relevant certs are installed, there names will be in the output (i.e., `PK`, `KEK, `db`, or `dbx`).
+
+If you have installed a new set of certificates on the host *after VMs have been launched with old certificates*, then it is required to reset the certificates specifically for those VMs.
+
+In order to reset the VM's certificates, shutdown the VM and execute `varstore-sb-state <vm-uuid> setup`. When the VM boots, its certificates will be updated to those found in the XCP-ng pool (those installed by `secureboot-certs`).
+
+:::warning
+`varstore-sb-state <vm-uuid> setup` wipes previously installed Secure Boot certificates (if there were any). Upon boot, they will be replaced by the default certificates installed by the `secureboot-certs` script.  Also note that all varstore-{set,sb-state} commands that modify the variable storage for the VM must be called when the VM is shutdown.
+:::
+
+#### How XCP-ng Manages the Certificates
+
+All pools and hosts in the XAPI database on XCP-ng carry a base64 encoded tarball of the certificates enrolled by `secureboot-certs`. When XAPI attempts to launch a VM, it extracts the tarball to `/usr/share/varstored/` (on XCP-ng, this is contains symlinks to `/var/lib/uefistored/` and `/usr/share/uefistored`).  The certs in the tarball will dump to disk every time a VM is launched.  The pool and hosts in the pool always have their certificate tarball in sync.
 
 ### Enable Secure Boot for a Guest VM
 
