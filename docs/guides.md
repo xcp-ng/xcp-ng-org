@@ -705,7 +705,13 @@ Note that the GUID may be found by using `varstore-ls <vm-uuid>`.
 
 #### How XCP-ng Manages the Certificates
 
-All pools and hosts in the XAPI database on XCP-ng carry a base64 encoded tarball of the certificates enrolled by `secureboot-certs`. When XAPI attempts to launch a VM, it extracts the tarball to `/usr/share/varstored/` (on XCP-ng, this is contains symlinks to files in `/var/lib/uefistored/` and `/usr/share/uefistored`). The certs in the tarball will dump to disk every time a VM is launched. The pool and hosts in the pool always have their certificate tarball in sync.
+By default, no VMs have any cert except for the `PK` on XCP-ng.
+
+Once `secureboot-certs` is called, the XAPI DB entry for the pool and all the hosts is populated with a base64-encoded tarball of the UEFI certificates.  *The certificates are still not installed on disk, they only exist in the XAPI DB*.
+
+Prior to launching a VM, XAPI extracts the tarball to `/usr/share/varstored/` (on XCP-ng, this contains symlinks to files in `/var/lib/uefistored/` and `/usr/share/uefistored`).  This is when the certificates first make it to disk (except the PK which is distributed with the `uefistored` RPM).
+
+After extracting the certificates to disk, XAPI starts the `uefistored` daemon and starts the VM.  The `uefistored` daemon then reads the certificates from disk and populates the VM's NVRAM store with them, and based on the certificates present and the state of the VM's `platform:secureboot` parameter `uefistored` sets the Secure Boot state.
 
 ### Enable Secure Boot for a Guest VM
 
