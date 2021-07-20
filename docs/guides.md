@@ -665,7 +665,7 @@ If a VM has already booted it may have its own copy of the UEFI certificates.  T
 varstore-ls <vm-uuid>
 ```
 
-If the relevant certs are installed, there names will be in the output (i.e., `PK`, `KEK, `db`, or `dbx`).
+If the relevant certs are installed, there names will be in the output (i.e., `PK`, `KEK`, `db`, or `dbx`).
 
 If you have installed a new set of certificates on the host *after VMs have been launched with old certificates*, then it is required to reset the certificates specifically for those VMs.
 
