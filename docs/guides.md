@@ -538,6 +538,10 @@ Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute t
 
 Before enabling UEFI Secure Boot for guest VMs, first execute the `secureboot-certs` script. This tool downloads, formats, and installs UEFI certificates for the `PK`, `KEK`, `db`, and `dbx` certificates in the XCP-ng pool.
 
+:::tip
+To understand UEFI Secure Boot certs, please read James Bottomley's article [The Meaning of all the UEFI Keys](https://blog.hansenpartnership.com/the-meaning-of-all-the-uefi-keys/).
+:::
+
 To install certificates in your pool, use `secureboot-certs install`. To install XCP-ng's default certificates, see [Installing the Default UEFI Certificates](#installing-the-default-uefi-certificates).
 
 For custom certificates, see [Installing Custom UEFI Certificates](#installing-custom-uefi-certificates)
