@@ -667,7 +667,7 @@ varstore-ls <vm-uuid>
 
 If the relevant certs are installed, there names will be in the output (i.e., `PK`, `KEK`, `db`, or `dbx`).
 
-If you have installed a new set of certificates on the host *after VMs have been launched with old certificates*, then it is required to reset the certificates specifically for those VMs.
+If you have installed a new set of certificates on the pool *after VMs have been launched with old certificates*, then it is required to reset the certificates specifically for those VMs.
 
 In order to reset the VM's certificates, shutdown the VM and execute `varstore-sb-state <vm-uuid> setup`. When the VM boots, its certificates will be updated to those found in the XCP-ng pool (those installed by `secureboot-certs`).
 
