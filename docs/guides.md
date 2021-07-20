@@ -562,24 +562,7 @@ positional arguments:
               auth file.
   dbx         'latest' for the most recent UEFI dbx, a path to a custom auth
               file, or 'none' for no dbx. Choosing 'none' should be completely
-              avoided in production systems hoping to benefit from Secure
-              Boot. It renders Secure Boot practically meaningless because
-              attackers may simply load any number of vulnerable binaries that
-              were previously signed but later revoked, and thereby take
-              control of the system. The 'latest' dbx revokes any software
-              that hasn't implemented the most recent security fixes, which
-              may include some OS distributions (even if they're totally
-              updated, depending how recently the vulnerability was
-              discovered). Because it varies per distribution, check if your
-              guest distributions are updated to pass the most recent UEFI
-              revocation before installing the latest dbx. Microsoft Windows
-              may extend, replace, or modify the dbx for the VM in which it
-              runs if the default KEK is used. For older dbx files, see:
-              https://uefi.org/revocationlistfile/archive. They may be passed
-              to secureboot-certs as custom auth files.
-
-optional arguments:
-  -h, --help  show this help message and exit
+              [...]
 ```
 
 ##### Installing the Default UEFI Certificates
