@@ -672,7 +672,7 @@ If you have installed a new set of certificates on the pool *after VMs have been
 In order to reset the VM's certificates, shutdown the VM and execute `varstore-sb-state <vm-uuid> setup`. When the VM boots, its certificates will be updated to those found in the XCP-ng pool (those installed by `secureboot-certs`).
 
 :::warning
-`varstore-sb-state <vm-uuid> setup` wipes previously installed Secure Boot certificates (if there were any). Upon boot, they will be replaced by the default certificates installed by the `secureboot-certs` script.  Also note that all varstore-{set,sb-state} commands that modify the variable storage for the VM must be called when the VM is shutdown.
+`varstore-sb-state <vm-uuid> setup` wipes previously installed Secure Boot certificates (if there were any) from the VM's private NVRAM storage. Upon boot, they will be replaced by the default certificates installed by the `secureboot-certs` script.  Also note that all varstore-{set,sb-state} commands that modify the variable storage for the VM must be called when the VM is shutdown.
 :::
 
 #### Viewing Certs Already Installed on System
