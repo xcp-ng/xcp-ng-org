@@ -15,7 +15,7 @@ pfSense and OPNsense do work great in a VM, but there are a few extra steps that
 
 There are 2 ways of doing that, either using the CLI (pfSense or OPNsense) or the Web UI (pfSense).
 
-Option 1 via console/ssh:  
+Option 1 via console/ssh:
 Now that you have the VM running, we need to install guest utilities and tell them to run on boot. SSH (or other CLI method) to the VM and perform the following:
 
 ```
@@ -26,9 +26,9 @@ service xenguest start
 ```
 
 Option 2 is via webgui (only for pfSense):
-Open management page under http(s)://your-configured-ip and go to:  
-*System -> Firmware -> Plugins*  
-Scroll down to **os-xen** and let the gui do the steps needed. Next: Reboot the system to have the guest started (installer doesn't do that):  
+Open management page under http(s)://your-configured-ip and go to:
+*System -> Firmware -> Plugins*
+Scroll down to **os-xen** and let the gui do the steps needed. Next: Reboot the system to have the guest started (installer doesn't do that):
 *Power -> Reboot*
 
 Guest Tools are now installed and running, and will automatically run on every boot of the VM.
@@ -517,10 +517,10 @@ Now we enable autostart at the virtual machine level.
     power-state ( RO)    : running
 ```
 
-4. Enable autostart for each virtual machine with the UUID found: 
+4. Enable autostart for each virtual machine with the UUID found:
 `# xe vm-param-set uuid=<VM_UUID> other-config:auto_poweron=true`
 
-5. Checking the output 
+5. Checking the output
 `# xe vm-param-list uuid=<VM_UUID> | grep other-config`
 
 
