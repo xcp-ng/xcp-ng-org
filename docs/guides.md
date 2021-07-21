@@ -35,12 +35,12 @@ Guest Tools are now installed and running, and will automatically run on every b
 
 ### 3. Disable TX Checksum Offload
 
-Now is the most important step: we must disable tx checksum offload on the virtual xen interfaces of the VM. This is because network traffic between VMs in a hypervisor is not populated with a typical ethernet checksum, since they only traverse server memory and never leave over a physical cable. The majority of operating systems know to expect this when virtualized and handle ethernet frames with empty checksums without issue. However `pf` in FreeBSD does not handle them correctly and will drop them, leading to broken performance.
+Now is the most important step: we must disable TX checksum offload on the virtual xen interfaces of the VM. This is because network traffic between VMs in a hypervisor is not populated with a typical ethernet checksum, since they only traverse server memory and never leave over a physical cable. The majority of operating systems know to expect this when virtualized and handle ethernet frames with empty checksums without issue. However `pf` in FreeBSD does not handle them correctly and will drop them, leading to broken performance.
 
 The solution is to simply turn off checksum-offload on the virtual xen interfaces for pfSense in the TX direction only (TX towards the VM itself). Then the packets will be checksummed like normal and `pf` will no longer complain.
 
 :::tip
-Disabling checksum offloading is only necessary for virtual interfaces. When using [PCI Passthrough](https://github.com/xcp-ng/xcp/wiki/PCI-Passtrough) to provide a VM with direct access to physical or virtual (using [SR-IOV](https://en.wikipedia.org/wiki/Single-root_input/output_virtualization)) devices it is unnecessary to disable tx checksum offloading on any interfaces on those devices.
+Disabling checksum offloading is only necessary for virtual interfaces. When using [PCI Passthrough](https://github.com/xcp-ng/xcp/wiki/PCI-Passtrough) to provide a VM with direct access to physical or virtual (using [SR-IOV](https://en.wikipedia.org/wiki/Single-root_input/output_virtualization)) devices it is unnecessary to disable TX checksum offloading on any interfaces on those devices.
 :::
 
 :::warning
@@ -344,7 +344,7 @@ By far, this is the easiest solution and perhaps the "officially supported" appr
 
 The problem with this approach is when you have many vlans you want to configure on your router. If you read through the thread I linked to at the top of this page you'll notice the discussion about where I was unable to attach more than 7 vifs to my pfSense VM. XO nor XCP-ng Center allow you to attach more than seven. This appears to be some kind of limit somewhere in Xen. Other users have been able to attach more than 7 vifs via CLI, however when I tried to do this myself my pfSense VM became unresponsive once I added the 8th vif. More details on that problem are discussed in the thread.
 
-Another problem with this approach, perhaps only specific to pfSense, is that when you attach many vifs, you must disable tx offloading on each and every vif otherwise you'll have all kinds of problems. This was definitely a red flag for me. Initially I'm starting with 7 vlans and 9 networks total with short term requirements for at least another 3 vlans for sure and then who knows how many down the road. In this approach, every time you have to create a new VLAN by adding a vif to the VM, you will have to reboot the VM.
+Another problem with this approach, perhaps only specific to pfSense, is that when you attach many vifs, you must disable TX offloading on each and every vif otherwise you'll have all kinds of problems. This was definitely a red flag for me. Initially I'm starting with 7 vlans and 9 networks total with short term requirements for at least another 3 vlans for sure and then who knows how many down the road. In this approach, every time you have to create a new VLAN by adding a vif to the VM, you will have to reboot the VM.
 
 Having to reboot my network's router every time I need to create a new VLAN is not ideal for the environment I'm working in; especially because in the current production environment running VMware, we do not need to reboot the router VM to create new vlans. (FWIW, I've come to xcp-ng as the IT department has asked me to investigate possibly replacing our VMware env with XCP-ng. I started my adventures with xcp-ng by diving in head first at home and replacing my home environment, previously ESXi, with xcp-ng. Now I'm in the early phases of working with xcp-ng in the test lab at work.)
 
@@ -354,7 +354,7 @@ This document is about the alternative approach, but a quick summary of how this
 * Make sure the pif connected to your xcp-ng server is carrying all the required tagged vlans
 * Within XO or XCP Center, create multiple networks off of the pif, adding the VLAN tag as needed for each VLAN
 * For each VLAN you want your router to route for, add a vif for that specific VLAN to the VM
-* For pfSense, disable tx offloading for each vif added and reboot the VM. This [page](https://github.com/xcp-ng/xcp/wiki/pfSense-in-a-VM) will fully explain all of the config changes required when running pfSense in xcp-ng.
+* For pfSense, disable TX offloading for each vif added and reboot the VM. This [page](https://github.com/xcp-ng/xcp/wiki/pfSense-in-a-VM) will fully explain all of the config changes required when running pfSense in xcp-ng.
 
 ### Adding VLAN Trunk to VM
 
@@ -376,7 +376,7 @@ xe network-param-set uuid=xxx MTU=1504
 3. Reboot your XCP-ng host to apply the MTU change on the physical network cards
 
 
-Once this is done, attach a new vif to your pfSense VM and select `eth1` as the network. This will attach the VLAN trunk to pfSense. Boot up pfSense and disable tx offloading, etc. on the vif, reboot as necessary then login to pfSense.
+Once this is done, attach a new vif to your pfSense VM and select `eth1` as the network. This will attach the VLAN trunk to pfSense. Boot up pfSense and disable TX offloading, etc. on the vif, reboot as necessary then login to pfSense.
 
 Configure the interface within pfSense by also increasing the MTU value to 1504. Again, the xn driver does not support VLAN tagging, so we have to deal with it ourselves. **NOTE:** You only increase the MTU on the **parent interface** only in both xcp-ng **and** pfSense. The MTU for vlans will always be 1500.
 
