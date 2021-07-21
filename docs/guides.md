@@ -25,7 +25,7 @@ ln -s /usr/local/etc/rc.d/xenguest /usr/local/etc/rc.d/xenguest.sh
 service xenguest start
 ```
 
-Option 2 is via webgui (only for pfSense):
+Option 2 is via Web GUI (only for pfSense):
 Open management page under http(s)://your-configured-ip and go to:
 *System -> Firmware -> Plugins*
 Scroll down to **os-xen** and let the gui do the steps needed. Next: Reboot the system to have the guest started (installer doesn't do that):
