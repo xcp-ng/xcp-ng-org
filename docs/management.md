@@ -108,7 +108,7 @@ Usage:
     Executes a command on the current XO instance.
 ```
 
-Check [XO CLI documentation](https://xen-orchestra.com/docs/xo-cli.html) for more details.
+Check [XO CLI documentation](https://xen-orchestra.com/docs/architecture.html#xo-cli-cli) for more details.
 
 :::tip
 Unlike `xe` which is only connected to one pool, `xo-cli` has access to all pools connected via Xen Orchestra. This is the preferred way to manage your infrastructure, using XO as a central point.
