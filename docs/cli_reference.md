@@ -1,6 +1,6 @@
 # xe CLI reference
 
-The xe CLI can be used locally on any XCP-ng host, it's installed along with it. However, it's poolwide only. If you want a CLI or an API to control multiple pools at once, we strongly advise to use [Xen Orchestra CLI](https://xen-orchestra.com/docs/architecture.html#xo-cli-cli).
+The xe CLI can be used locally on any XCP-ng host, it's installed along with it. However, it's pool-wide only. If you want a CLI or an API to control multiple pools at once, we strongly advise to use [Xen Orchestra CLI](https://xen-orchestra.com/docs/architecture.html#xo-cli-cli).
 
 
 ## Getting help with xe commands
@@ -71,11 +71,11 @@ xe vm-list -user username -password password -server hostname
 
 Shorthand syntax is also available for remote connection arguments:
 
-* -u user name
-* -pw password
-* -pwf password file
-* -p port
-* -s server
+* `-u user name`
+* `-pw password`
+* `-pwf password file`
+* `-p port`
+* `-s server`
 
 Example: On a remote XCP-ng server:
 
@@ -113,59 +113,59 @@ The CLI commands can be split in two halves. Low-level commands are concerned wi
 
 The low-level commands are:
 
-* class-list
+* `class-list`
 
-* class-param-get
+* `class-param-get`
 
-* class-param-set
+* `class-param-set`
 
-* class-param-list
+* `class-param-list`
 
-* class-param-add
+* `class-param-add`
 
-* class-param-remove
+* `class-param-remove`
 
-* class-param-clear
+* `class-param-clear`
 
 Where class is one of:
 
-* bond
+* `bond`
 
-* console
+* `console`
 
-* host
+* `host`
 
-* host-crashdump
+* `host-crashdump`
 
-* host-cpu
+* `host-cpu`
 
-* network
+* `network`
 
-* patch
+* `patch`
 
-* pbd
+* `pbd`
 
-* pif
+* `pif`
 
-* pool
+* `pool`
 
-* sm
+* `sm`
 
-* sr
+* `sr`
 
-* task
+* `task`
 
-* template
+* `template`
 
-* vbd
+* `vbd`
 
-* vdi
+* `vdi`
 
-* vif
+* `vif`
 
-* vlan
+* `vlan`
 
-* vm
+* `vm`
 
 Not every value of class has the full set of class-param-action commands. Some values of class have a smaller set of commands.
 
@@ -204,7 +204,7 @@ In previous releases, the hyphen character (-) was used to specify map parameter
 
 ## Low-level parameter commands
 
-There are several commands for operating on parameters of objects: class-param-get, class-param-set, class-param-add, class-param-remove, class-param-clear, and class-param-list. Each of these commands takes a uuid parameter to specify the particular object. Since these commands are considered low-level commands, they must use the `UUID` and not the VM name label.
+There are several commands for operating on parameters of objects: class-param-get, class-param-set, class-param-add, class-param-remove, class-param-clear, and class-param-list. Each of these commands takes a `uuid` parameter to specify the particular object. Since these commands are considered low-level commands, they must use the `UUID` and not the VM name label.
 
 * `class-param-list uuid=uuid`
 
@@ -237,7 +237,7 @@ The class-list command lists the objects of type class. By default, this type of
 * It can filter the objects so that it only outputs a subset
 * The parameters that are printed can be modified.
 
-To change the parameters that are printed, specify the argument params as a comma-separated list of the required parameters. For example:
+To change the parameters that are printed, specify the argument `params` as a comma-separated list of the required parameters. For example:
 
 ```
 xe vm-list params=name-label,other-config
@@ -314,7 +314,7 @@ Appliance commands have the following parameters:
 
 |Parameter Name|Description|Type|
 |:-------------|:----------|:---|
-|`uuid`|The appliance uuid|Required|
+|`uuid`|The appliance UUID|Required|
 |`name-description`|The appliance description|Optional|
 |`paused`| |Optional|
 |`force`|Force shutdown|Optional|
@@ -479,7 +479,7 @@ CDs have the following parameters:
 |`sr-uuid`|The unique identifier/object reference for the SR this CD is part of|Read only|
 |`sr-name-label`|The name for the SR this CD is part of|Read only|
 |`vbd-uuids`|A list of the unique identifiers for the VBDs on VMs that connect to this CD|Read only set parameter|
-|`crashdump-uuids`|Not used on CDs. Because crashdumps cannot be written to CDs|Read only set parameter|
+|`crashdump-uuids`|Not used on CDs. Because crash dumps cannot be written to CDs|Read only set parameter|
 |`virtual-size`|Size of the CD as it appears to VMs (in bytes)|Read only|
 |`physical-utilisation`|Amount of physical space that the CD image takes up on the SR (in bytes)|Read only|
 |`type`|Set to User for CDs|Read only|
@@ -492,7 +492,7 @@ CDs have the following parameters:
 |`location`|The path on which the device is mounted|Read only|
 |`managed`|Value is `true` if the device is managed|Read only|
 |`xenstore-data`|Data to be inserted into the `xenstore` tree|Read only map parameter|
-|`sm-config`|Names and descriptions of storage manager device config keys|Read only map parameter|
+|`sm-config`|Names and descriptions of storage manager device configuration keys|Read only map parameter|
 |`is-a-snapshot`|Value is `true` if this template is a CD snapshot|Read only|
 |`snapshot_of`|The UUID of the CD that this template is a snapshot of|Read only|
 |`snapshots`|The UUIDs of any snapshots that have been taken of this CD|Read only|
@@ -506,7 +506,7 @@ cd-list [params=param1,param2,...] [parameter=parameter_value]
 
 List the CDs and ISOs (CD image files) on the XCP-ng server or pool, filtering on the optional argument `params`.
 
-If the optional argument `params` is used, the value of params is a string containing a list of parameters of this object that you want to display. Alternatively, you can use the keyword `all` to show all parameters. When `params` is not used, the returned list shows a default subset of all available parameters.
+If the optional argument `params` is used, the value of `params` is a string containing a list of parameters of this object that you want to display. Alternatively, you can use the keyword `all` to show all parameters. When `params` is not used, the returned list shows a default subset of all available parameters.
 
 Optional arguments can be any number of the [CD parameters](#cd-parameters) listed at the beginning of this section.
 
@@ -1019,8 +1019,8 @@ Crash dumps on XCP-ng servers have the following parameters:
 
 |Parameter Name|Description|Type|
 |:-------------|:----------|:---|
-|`uuid`|The unique identifier/object reference for the crashdump|Read only|
-|`host`|XCP-ng server the crashdump corresponds to|Read only|
+|`uuid`|The unique identifier/object reference for the crash dump|Read only|
+|`host`|XCP-ng server the crash dump corresponds to|Read only|
 |`timestamp`|Timestamp of the date and time that the crashdump occurred, in the form `yyyymmdd-hhmmss-ABC`, where *ABC* is the timezone indicator, for example, GMT|Read only|
 |`size`|Size of the crashdump, in bytes|Read only|
 
@@ -1120,7 +1120,7 @@ Upload a crashdump to the Support FTP site or other location. If optional parame
 host-declare-dead uuid=host_uuid
 ```
 
-Declare that the the host is dead without contacting it explicitly.
+Declare that the host is dead without contacting it explicitly.
 
 :::warning
 This call is dangerous and can cause data loss if the host is not actually dead.
@@ -1454,7 +1454,7 @@ Change the host name of the XCP-ng server specified by `host-uuid`. This command
 host-set-power-on-mode host=host_uuid power-on-mode={"" | "wake-on-lan" | "iLO" | "DRAC" | "custom"} [ power-on-config:power_on_ip=ip-address power-on-config:power_on_user=user power-on-config:power_on_password_secret=secret-uuid ]
 ```
 
-Use to enable the *Host Power On* function on XCP-ng hosts that are compatible with remote power solutions. When using the `host-set-power-on` command, you must specify the type of power management solution on the host (that is, the power-on-mode). Then specify configuration options using the power-on-config argument and its associated key-value pairs.
+Use to enable the *Host Power On* function on XCP-ng hosts that are compatible with remote power solutions. When using the `host-set-power-on` command, you must specify the type of power management solution on the host (that is, the power-on-mode). Then specify configuration options using the `power-on-config` argument and its associated key-value pairs.
 
 To use the secrets feature to store your password, specify the key `"power_on_password_secret"`. For more information, see [Secrets](#secrets).
 
@@ -1589,7 +1589,7 @@ Reopen all loggers (use this for rotating files).
 log-set-output output=output [key=key] [level=level]
 ```
 
-Set all loggers to the specified output (nil, stderr, string, file:*file name*, syslog:*something*).
+Set all loggers to the specified output (`nil`, `stderr`, `string`, `file:*file name*`, `syslog:*something*`).
 
 ### Message commands
 
@@ -1605,7 +1605,7 @@ The message objects can be listed with the standard object listing command (`xe 
 |`name`|The unique name of the message|Read only|
 |`priority`|The message priority. Higher numbers indicate greater priority|Read only|
 |`class`|The message class, for example VM.|Read only|
-|`obj-uuid`|The uuid of the affected object.|Read only|
+|`obj-uuid`|The UUID of the affected object.|Read only|
 |`timestamp`|The time that the message was generated.|Read only|
 |`body`|The message content.|Read only|
 
@@ -1852,7 +1852,7 @@ pbd-create host-uuid=uuid_of_host sr-uuid=uuid_of_sr [device-config:key=correspo
 
 Create a PBD on your XCP-ng server. The read-only `device-config` parameter can only be set on creation.
 
-To add a mapping from ‘path’ to ‘/tmp’, the command line should contain the argument `device-config:path=/tmp`
+To add a mapping from `path` to `/tmp`, the command line should contain the argument `device-config:path=/tmp`
 
 For a full list of supported device-config key/value pairs on each SR type, see [Storage](./storage.md).
 
@@ -2408,7 +2408,7 @@ Forget a PVS server.
 #### `pvs-server-introduce`
 
 ```
-pvs-server-introduce addresses=adresses first-port=first_port last-port=last_port pvs-site-uuid=pvs_site_uuid
+pvs-server-introduce addresses=addresses first-port=first_port last-port=last_port pvs-site-uuid=pvs_site_uuid
 ```
 
 Introduce new PVS server.
@@ -2510,7 +2510,7 @@ Force the VM power state to halted in the management toolstack database only. Th
 snapshot-revert [uuid=uuid] [snapshot-uuid=snapshot_uuid]
 ```
 
-Revert an existing VM to a previous checkpointed or snapshot state.
+Revert an existing VM to a previous checkpoint or snapshot state.
 
 #### `snapshot-uninstall`
 
@@ -2542,8 +2542,8 @@ SRs have the following parameters:
 |`physical-utilisation`|Physical space currently utilized on this SR, in bytes. For thin provisioned disk formats, physical utilization may be less than virtual allocation|Read only|
 |`physical-size`|Total physical size of the SR, in bytes|Read only|
 |`type`|Type of the SR, used to specify the SR back-end driver to use|Read only|
-|`introduced-by`|The drtask (if any) which introduced the SR|Read only|
-|`content-type`|The type of the SR’s content. Used to distinguish ISO libraries from other SRs. For storage repositories that store a library of ISOs, the content-type must be set to iso. In other cases, we recommend that you set this parameter either to empty, or the string user.|Read only|
+|`introduced-by`|The disaster recovery task (if any) which introduced the SR|Read only|
+|`content-type`|The type of the SR’s content. Used to distinguish ISO libraries from other SRs. For storage repositories that store a library of ISOs, the content-type must be set to ISO. In other cases, we recommend that you set this parameter either to empty, or the string user.|Read only|
 |`shared`|True if this SR can be shared between multiple XCP-ng servers; False otherwise|Read/write|
 |`other-config`|List of key/value pairs that specify extra configuration parameters for the SR|Read/write map parameter|
 |`host`|The storage repository host name|Read only|
@@ -2657,7 +2657,7 @@ The exact `device-config` parameters differ depending on the device `type`. For 
 sr-probe-ext type=type [host-uuid=host_uuid] [device-config:=config] [sm-config:-sm_config]
 ```
 
-Perform a storage probe. The device-config parameters can be specified by for example device-config:devs=/dev/sdb1. Unlike sr-probe, this command returns results in the same human-readable format for every SR type.
+Perform a storage probe. The device-config parameters can be specified by for example `device-config:devs=/dev/sdb1`. Unlike `sr-probe`, this command returns results in the same human-readable format for every SR type.
 
 #### `sr-scan`
 
@@ -2831,7 +2831,7 @@ xe template-param-set uuid=<template_uuid> vCPUs-params:mask=1,2,3
 ```
 
 A VM created from this template run on physical CPUs 1, 2, and 3 only.
-You can also tune the vCPU priority (xen scheduling) with the cap and weight parameters. For example:
+You can also tune the vCPU priority (Xen scheduling) with the cap and weight parameters. For example:
 
 ```
 xe template-param-set uuid=<template_uuid> VCPUs-params:weight=512 xe template-param-set uuid=<template_uuid> VCPUs-params:cap=100
@@ -3148,13 +3148,13 @@ VDIs have the following parameters:
 |`sr-name-label`|Name of the containing storage repository|Read only|
 |`location`|Location information|Read only|
 |`managed`|True if the VDI is managed|Read only|
-|`xenstore-data`|Data to be inserted into the xenstore tree (/local/domain/0/backend/ vbd/*domid*/*device-id*/smdata) after the VDI is attached. The SM back-ends usually set this field on `vdi_attach`.|Read only map parameter|
+|`xenstore-data`|Data to be inserted into the xenstore tree (`/local/domain/0/backend/vbd/*domid*/*device-id*/smdata`) after the VDI is attached. The SM back-ends usually set this field on `vdi_attach`.|Read only map parameter|
 |`sm-config`|SM dependent data|Read only map parameter|
 |`is-a-snapshot`|True if this VDI is a VM storage snapshot|Read only|
 |`snapshot_of`|The UUID of the storage this VDI is a snapshot of|Read only|
 |`snapshots`|The UUIDs of all snapshots of this VDI|Read only|
 |`snapshot_time`|The timestamp of the snapshot operation that created this VDI|Read only|
-|`metadata-of-pool`|The uuid of the pool which created this metadata VDI|Read only|
+|`metadata-of-pool`|The UUID of the pool which created this metadata VDI|Read only|
 |`metadata-latest`|Flag indicating whether the VDI contains the latest known metadata for this pool|Read only|
 |`cbt-enabled`|Flag indicating whether changed block tracking is enabled for the VDI|Read/write|
 
@@ -3499,7 +3499,7 @@ Commands for controlling VMs and their attributes.
 
 #### VM selectors
 
-Several of the commands listed here have a common mechanism for selecting one or more VMs on which to perform the operation. The simplest way is by supplying the argument `vm=name_or_uuid`. An easy way to get the uuid of an actual VM is to, for example, execute `xe vm-list power-state=running`. (Get the full list of fields that can be matched by using the command `xe vm-list params=all`. ) For example, specifying `power-state=halted` selects VMs whose `power-state` parameter is equal to `halted`. Where multiple VMs are matching, specify the option `--multiple` to perform the operation. The full list of parameters that can be matched is described at the beginning of this section.
+Several of the commands listed here have a common mechanism for selecting one or more VMs on which to perform the operation. The simplest way is by supplying the argument `vm=name_or_uuid`. An easy way to get the `uuid` of an actual VM is to, for example, execute `xe vm-list power-state=running`. (Get the full list of fields that can be matched by using the command `xe vm-list params=all`. ) For example, specifying `power-state=halted` selects VMs whose `power-state` parameter is equal to `halted`. Where multiple VMs are matching, specify the option `--multiple` to perform the operation. The full list of parameters that can be matched is described at the beginning of this section.
 
 The VM objects can be listed with the standard object listing command (`xe vm-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
 
@@ -3536,7 +3536,7 @@ You can tune a vCPU’s pinning with
 xe vm-param-set uuid=<vm_uuid> VCPUs-params:mask=1,2,3
 ```
 
-The selected VM then runs on physical CPUs 1, 2, and 3 only. You can also tune the vCPU priority (xen scheduling) with the cap and weight parameters. For example:
+The selected VM then runs on physical CPUs 1, 2, and 3 only. You can also tune the vCPU priority (Xen scheduling) with the cap and weight parameters. For example:
 
 ```
 xe vm-param-set uuid=<vm_uuid> VCPUs-params:weight=512 xe vm-param-set uuid=<vm_uuid> VCPUs-params:cap=100
@@ -3608,7 +3608,7 @@ xe vm-param-get uuid=<vm_uuid> param-name=platform param-key=acpi_laptop_slate
 - `possible-hosts` potential hosts of this VM read only
 - `dom-id` (read only) domain ID (if available, -1 otherwise)
 - `recommendations` (read only) XML specification of recommended values and ranges for properties of this VM
-- `xenstore-data` (read/write map parameter) data to be inserted into the xenstore tree (/local/domain/*domid*/vm-data) after the VM is created
+- `xenstore-data` (read/write map parameter) data to be inserted into the xenstore tree (`/local/domain/*domid*/vm-data`) after the VM is created
 - `is-a-snapshot` (read only) True if this VM is a snapshot
 - `snapshot_of` (read only) the UUID of the VM that this snapshot is of
 - `snapshots` (read only) the UUIDs of all snapshots of this VM
@@ -3635,7 +3635,7 @@ Tests whether storage is available to recover this VM.
 vm-call-plugin vm-uuid=vm_uuid plugin=plugin fn=function [args:key=value]
 ```
 
-Calls the function within the plug-in on the given VM with optional arguments (args:key=value). To pass a "value" string with special characters in it (for example new line), an alternative syntax args:key:file=local\_file can be used in place, where the content of local\_file will be retrieved and assigned to "key" as a whole.
+Calls the function within the plug-in on the given VM with optional arguments (`args:key=value`). To pass a `value` string with special characters in it (for example new line), an alternative syntax `args:key:file=local\_file` can be used in place, where the content of `local\_file` will be retrieved and assigned to `key` as a whole.
 
 #### `vm-cd-add`
 
@@ -3763,7 +3763,7 @@ vm-crashdump-list [vm-selector=vm selector value...]
 
 List crashdumps associated with the specified VMs.
 
-When you use the optional argument `params`, the value of params is a string containing a list of parameters of this object that you want to display. Alternatively, you can use the keyword `all` to show all parameters. If `params` is not used, the returned list shows a default subset of all available parameters.
+When you use the optional argument `params`, the value of `params` is a string containing a list of parameters of this object that you want to display. Alternatively, you can use the keyword `all` to show all parameters. If `params` is not used, the returned list shows a default subset of all available parameters.
 
 The VM or VMs on which this operation is performed are selected using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section.
 
@@ -4170,7 +4170,7 @@ We advise to use Xen Orchestra instead of this method. See [Xen Orchestra rollin
 
 Commands for controlling VM scheduled snapshots and their attributes.
 
-The vmss objects can be listed with the standard object listing command (`xe vmss-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The `vmss` objects can be listed with the standard object listing command (`xe vmss-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
 
 #### `vmss-create`
 
