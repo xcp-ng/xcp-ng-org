@@ -34,7 +34,7 @@ If you have subscribed to [Pro support](https://xcp-ng.com/), well, don't hesita
 * Try the other boot options
   * alternate kernel
   * safe mode
-* Try to boot with the `iommu=0` xen parameter.
+* Try to boot with the `iommu=0` Xen parameter.
 
 :::tip
 **How to add or remove boot parameters from command line.**
@@ -43,7 +43,7 @@ If you have subscribed to [Pro support](https://xcp-ng.com/), well, don't hesita
 * On BIOS mode, you can enter a menu by typing `menu` and then modify the boot entries with the TAB key. Xen parameters are between `/boot/xen.gz` and the next `---`. Kernel parameters are between `/boot/vmlinuz` and the next `---`.
 :::
 
-If any of the above allows to work around your issue, please let us know ([github issues](https://github.com/xcp-ng/xcp/issues)). We can't fix issues we aren't aware of.
+If any of the above allows to work around your issue, please let us know ([GitHub issues](https://github.com/xcp-ng/xcp/issues)). We can't fix issues we aren't aware of.
 
 ### During installation or upgrade
 
@@ -81,7 +81,7 @@ Output of various running daemons involved in XCP-ng's tasks. Examples: output o
 
 Contains the output of the XAPI toolstack.
 
-### Storage related (eg. coalescing snapshots)
+### Storage related (e.g., coalescing snapshots)
 
 `/var/log/SMlog`
 
@@ -142,7 +142,7 @@ please try to:
 * Blacklisting (Source: <https://xcp-ng.org/forum/post/1707>)
 > Usually, when you install a recent distro in PVHVM (using other media) and you get a blank screen, try blacklisting by adding the following in your grub command at the end
 >
-> modprobe.blacklist=bochs_drm
+> `modprobe.blacklist=bochs_drm`
 
 ### Initrd is missing after an update
 
@@ -152,7 +152,7 @@ After an update, XCP-ng won't boot and file `/boot/initrd-4.19.0+1.img` is missi
 
 #### Cause
 
-Can be a `yum` update process interrupted while rebuilding the `initrd`, such as a manual reboot of the host before the post-install scriplets have finished executing.
+Can be a `yum` update process interrupted while rebuilding the `initrd`, such as a manual reboot of the host before the post-install scriptlets have finished executing.
 
 #### Solution
 
@@ -206,13 +206,13 @@ echo "xen" > /sys/devices/system/clocksource/clocksource0/current_clocksource
 ### Async Tasks/Commands Hang or Execute Extremely Slowly
 
 #### Cause
-This symptom can be caused by a variety of issues including RAID degradation, ageing HDDs, slow network storage, and external hard drives/usbs. While extremely unintuitive, even a single slow storage device physically connected (attached or unattached to a VM) can cause your entire host to hang during operation.
+This symptom can be caused by a variety of issues including RAID degradation, ageing HDDs, slow network storage, and external hard drives/USBs. While extremely unintuitive, even a single slow storage device physically connected (attached or unattached to a VM) can cause your entire host to hang during operation.
 
 #### Solution
 1. Begin by unplugging any external USB hubs, hard drives, and USBs.
 2. Run a command such as starting a VM to see if the issue remains.
 3. If the command still hangs, physically check to see if your HDDs/SSDs are all functioning normally and any RAID arrays you are using are in a clean non-degraded state.
-4. If these measures fail, login to your host and run `cat /var/log/kern.log | grep hung`. If this returns `"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.` your lvm layer may be hanging during storage scans. This could be caused by a drive that is starting to fail but has not hard failed yet.
+4. If these measures fail, login to your host and run `cat /var/log/kern.log | grep hung`. If this returns `"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.` your LVM layer may be hanging during storage scans. This could be caused by a drive that is starting to fail but has not hard failed yet.
 5. If all these measures fail, collect the logs and make your way to the forum for help.
 
 ----
@@ -267,11 +267,11 @@ Resolved with version 8.2.2.200-RC1 and newer.
 
 #### Causes and Solutions
 ##### Cause a) There can be leftovers from old Citrix XenServer Client Tools.
-1. remove any xen*.* files from `C:\Windows\system32` like
-    * xenbus_coinst_7_2_0_51.dll
-    * xenvbd_coinst_7_2_0_40.dll
-    * xenbus_monitor_8_2_1_5.exe
-    * and similiar `xen*_coinst` and `xen*_monitor` files
+1. remove any `xen*.*` files from `C:\Windows\system32` like
+    * `xenbus_coinst_7_2_0_51.dll`
+    * `xenvbd_coinst_7_2_0_40.dll`
+    * `xenbus_monitor_8_2_1_5.exe`
+    * and similar `xen*_coinst` and `xen*_monitor` files
 2. remove any leftover `XenServer` devices from device manager, also display hidden `XenServer` devices and remove them!
     * To show hidden devices in Device Manager: `View -> Show Hidden Devices`
 
@@ -337,10 +337,10 @@ Eject the ISO on those VMs.
 
 #### Cause
 XCP-ng ISO upgrade is a reinstall that saves only your XAPI database (Settings/VM Metadata).
-But it also creates a full backup of your previous XCP-ng/XenServer installation on a second partition, in most cases it's /dev/sda2.
+But it also creates a full backup of your previous XCP-ng/XenServer installation on a second partition, in most cases it's `/dev/sda2`.
 
 #### Solution
-To access the backup (with all your tools and modifications) just mount the backup partition (mostly /dev/sda2) and copy your data back.
+To access the backup (with all your tools and modifications) just mount the backup partition (mostly `/dev/sda2`) and copy your data back.
 
 ***
 
@@ -349,7 +349,7 @@ To access the backup (with all your tools and modifications) just mount the back
 #### Causes and Solutions
 
 * Maybe your hardware got an issue
-    * Check caps on your mainboard
+    * Check caps on your motherboard
     * Check power supply
     * Check cables
     * Check drives SMART values with something like `smartctl -A /dev/sda` ([Smartmontools](https://www.smartmontools.org))
@@ -369,11 +369,11 @@ To access the backup (with all your tools and modifications) just mount the back
 
 ##### iSCSI reconnect after reboot fails permanently ( Unsupported SCSI Opcode )
 
-The problem is that in a storage-cluster environment every time the node changes or pacemaker start /stop /restart iSCSI resources the "iSCSI SN" for a lun are new generated and differs from that before.
+The problem is that in a storage-cluster environment every time the node changes or pacemaker start /stop /restart iSCSI resources the "iSCSI SN" for a LUN are new generated and differs from that before.
 Xen uses the "iSCSI SN" as an identifier, so you have to ensure that "iSCSI SN" is the same on all cluster nodes.
 You can read more about it [here](https://smcleod.net/tech/2015/12/14/iscsi-scsiid-persistence.html).
 
-* error message xen orchestra
+* error message Xen Orchestra
 
 ```
 SR_BACKEND_FAILURE_47(, The SR is not available [opterr=Error reporting error, unknown key Device not appeared yet], )
@@ -391,7 +391,7 @@ kernel: [11219.642772] iSCSI/iqn.2018-12.com.example.server:33init: Unsupported 
 
 #### Solution
 
-The trick is to extend the Lio iSCSI lun configuration in pacemaker with a hard coded iscsi_sn (scsi_sn=d27dab3f-c8bf-4385-8f7e-a4772673939d) and `lio_iblock`, so that every node uses the same.
+The trick is to extend the Lio iSCSI LUN configuration in pacemaker with a hard coded `iscsi_sn (scsi_sn=d27dab3f-c8bf-4385-8f7e-a4772673939d)` and `lio_iblock`, so that every node uses the same.
 
 * while pacemaker iscsi resource is running you can get the actual iSCSI_SN:
 `cat /sys/kernel/config/target/core/iblock_0/lun_name/wwn/vpd_unit_serial`
@@ -404,7 +404,7 @@ primitive p_iscsi_lun_1 iSCSILogicalUnit \
         scsi_sn=d27dab3f-c8bf-4385-8f7e-a4772673939d lio_iblock=0 \
         op start timeout=20 interval=0 \
         op stop timeout=20 interval=0 \
-        op monitor interval=20 timout=40
+        op monitor interval=20 timeout=40
 
 ```
 
@@ -416,10 +416,10 @@ Hi, this is a small trick I had to use once [(original article)](https://linuxco
 
 * Reboot your XenServer into Grub boot menu.
 * Use arrows keys to locate an appropriate XenServer boot menu entry and press **e** key to edit boot options.
-* Locate read-only parameter **ro** and replace it with **rw**. Furthermore, locate keyword **splash** and replace it with **init=/bin/bash**.
+* Locate read-only parameter `ro` and replace it with `rw`. Furthermore, locate keyword `splash` and replace it with `init=/bin/bash`.
 * **Hit F10** to boot into single-mode
-* Once in single-mode use **passwd** command to reset your XenServer's root password
-* Reboot xenserver by entering the command **exec /usr/sbin/init**
+* Once in single-mode use `passwd` command to reset your XenServer's root password
+* Reboot XenServer by entering the command `exec /usr/sbin/init`
 * If everything went well you should now be able to login with your new XenServer password.
 
 ## XenStore related issues
@@ -430,7 +430,7 @@ The `XENSTORED_TRACE` being enabled might give useful information.
 
 ## Ubuntu 18.04 boot issue
 
-Some versions of Ubuntu 18.04 might fail to boot, due to a Xorg bug affecting GDM and causing a crash of it (if you use Ubuntu HWE stack).
+Some versions of Ubuntu 18.04 might fail to boot, due to a `Xorg` bug affecting GDM and causing a crash of it (if you use Ubuntu HWE stack).
 
 The solution is to use `vga=normal fb=false` on Grub boot kernel to overcome this. You can add those into ` /etc/default/grub`, for the `GRUB_CMDLINE_LINUX_DEFAULT` variable. Then, a simple `sudo update-grub` will provide the fix forever.
 
@@ -442,7 +442,7 @@ Alternatively, in a fresh Ubuntu 18.04 install, you can switch to UEFI and you w
 
 ## Disappearing NVMe drives
 
-Some NVMe drives do not handle Automatic Power State Transition (APST) well on certain motherboards or adapters and will disappear from the system when attempting to lower their power state.  You may see logs in dmesg that indicate this is happening.
+Some NVMe drives do not handle Automatic Power State Transition (APST) well on certain motherboards or adapters and will disappear from the system when attempting to lower their power state.  You may see logs in `dmesg` that indicate this is happening.
 
 ```
 [65056.815294] nvme nvme0: controller is down; will reset: CSTS=0xffffffff, PCI_STATUS=0xffff
@@ -463,7 +463,7 @@ Some NVMe drives do not handle Automatic Power State Transition (APST) well on c
 [65061.030575] nvme nvme0: failed to set APST feature (-19)
 ```
 
-APST can be disabled by adding `nvme_core.default_ps_max_latency_us=0` to your kernel boot parameters.  For example, in xcp-ng 8.1, edit `/boot/grub/grub.cfg` to include a new parameter on the first `module2` line.
+APST can be disabled by adding `nvme_core.default_ps_max_latency_us=0` to your kernel boot parameters.  For example, in XCP-ng 8.1, edit `/boot/grub/grub.cfg` to include a new parameter on the first `module2` line.
 
 ```
 menuentry 'XCP-ng' {
@@ -475,7 +475,7 @@ menuentry 'XCP-ng' {
 ```
 ## Missing templates when creating a new VM
 
-If you attempt to create a new VM, and you notice that you only have a handful of templates available, you can try fixing this from the console. Simply go to the console of your XCP-NG host and enter the following command:
+If you attempt to create a new VM, and you notice that you only have a handful of templates available, you can try fixing this from the console. Simply go to the console of your XCP-ng host and enter the following command:
 ```
 /usr/bin/create-guest-templates
 ```
