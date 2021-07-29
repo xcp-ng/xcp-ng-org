@@ -128,8 +128,8 @@ Depending on the situation, just update from your distribution's online reposito
 FreeBSD is a 30-year-old operating system used widely to run all sorts of systems and has served as the basis for a number of operating systems, including MacOS, pfSense, and FreeNAS. The Xen kernel modules are built and distributed in the GENERIC kernel, so if you haven't customised or recompiled your kernel, the drivers will be present.
 
 To communicate with the hypervisor, you need to install two [ports](https://www.freebsd.org/ports/):
-* [sysutils/xe-guest-utilities](https://www.freshports.org/sysutils/xe-guest-utilities/) 
-* [sysutils/xen-guest-tools](https://www.freshports.org/sysutils/xen-guest-tools/) 
+* [sysutils/xe-guest-utilities](https://www.freshports.org/sysutils/xe-guest-utilities/)
+* [sysutils/xen-guest-tools](https://www.freshports.org/sysutils/xen-guest-tools/)
 
 The `install.sh` script on the guest tools ISO does not yet support FreeBSD, so there is no point in mounting the guest tools ISO on a FreeBSD VM.
 
@@ -165,33 +165,33 @@ To install it on versions 11 or higher, until version 12.0-U1 of TrueNAS that in
    ```bash
    # sed -i '' 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/local.conf
    ```
-   
+
 2. Create a temporary directory and move into it:
    ```bash
    # mkdir /tmp/repo
    # cd /tmp/repo
    ```
-   
+
 3. Fetch the required packages. A directory **All** will be created and you will find the packages with their current versions under there:
-   ```bash   
+   ```bash
    # pkg fetch -o /tmp/repo/ xen-guest-tools
    # pkg fetch -o /tmp/repo/ xe-guest-utilities
    ```
-   
-4. Add the downloaded packages, without their dependencies:   
+
+4. Add the downloaded packages, without their dependencies:
    ```bash
    # pkg add -M All/xen-guest-tools-4.14.0.txz
    # pkg add -M All/xe-guest-utilities-6.2.0_3.txz
    ```
    The versions reported here are just the current version and they maybe different in your installation.
-   
+
 5. Revert the repos to their original settings to avoid surprises down the road. The second command should be run just if you disabled the local repo in step 1:
    ```bash
    # sed -i '' 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/FreeBSD.conf
    # sed -i '' 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/local.conf
    ```
    A restart of the VM will perform a reset of these files to their original settings too.
-   
+
 6. Once the package is installed, you need to tell FreeNAS to start the `xe-daemon` process when starting:
    1. Go to _Tasks -> Init/Shutdown Script_
    2. Create a new task with the following settings:
