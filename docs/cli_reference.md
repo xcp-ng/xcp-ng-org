@@ -167,7 +167,7 @@ Where class is one of:
 
 * `vm`
 
-Not every value of class has the full set of class-param-action commands. Some values of class have a smaller set of commands.
+Not every value of class has the full set of `class-param-action` commands. Some values of class have a smaller set of commands.
 
 ## Parameter types
 
@@ -204,7 +204,7 @@ In previous releases, the hyphen character (-) was used to specify map parameter
 
 ## Low-level parameter commands
 
-There are several commands for operating on parameters of objects: class-param-get, class-param-set, class-param-add, class-param-remove, class-param-clear, and class-param-list. Each of these commands takes a `uuid` parameter to specify the particular object. Since these commands are considered low-level commands, they must use the `UUID` and not the VM name label.
+There are several commands for operating on parameters of objects: `class-param-get`, `class-param-set`, `class-param-add`, `class-param-remove`, `class-param-clear`, and `class-param-list`. Each of these commands takes a `uuid` parameter to specify the particular object. Since these commands are considered low-level commands, they must use the `UUID` and not the VM name label.
 
 * `class-param-list uuid=uuid`
 
@@ -212,7 +212,7 @@ Lists all of the parameters and their associated values. Unlike the class-list c
 
 * `class-param-get uuid=uuid param-name=parameter param-key=key`
 
-Returns the value of a particular parameter. For a map parameter, specifying the param-key gets the value associated with that key in the map. If param-key is not specified or if the parameter is a set, the command returns a string representation of the set or map.
+Returns the value of a particular parameter. For a map parameter, specifying the `param-key` gets the value associated with that key in the map. If `param-key` is not specified or if the parameter is a set, the command returns a string representation of the set or map.
 
 * `class-param-set uuid=uuid param=value`
 
@@ -220,7 +220,7 @@ Sets the value of one or more parameters.
 
 * `class-param-add uuid=uuid param-name=parameter key=value param-key=key`
 
-Adds to either a map or a set parameter. For a map parameter, add key/value pairs by using the key=value syntax. If the parameter is a set, add keys with the param-key=key syntax.
+Adds to either a map or a set parameter. For a map parameter, add key/value pairs by using the key=value syntax. If the parameter is a set, add keys with the `param-key=key` syntax.
 
 * `class-param-remove uuid=uuid param-name=parameter param-key=key`
 
@@ -255,7 +255,7 @@ The list command doesn’t show some parameters that are expensive to calculate.
 allowed-VBD-devices (SRO): <expensive field>
 ```
 
-To obtain these fields, use either the command class-param-list or class-param-get
+To obtain these fields, use either the command `class-param-list` or `class-param-get`.
 
 To filter the list, the CLI matches parameter values with those values specified on the command-line, only printing objects that match all of the specified constraints. For example:
 
@@ -780,7 +780,7 @@ xe event-wait class=vm uuid=$VM start-time=/=$(xe vm-list uuid=$VM params=start-
 
 Blocks other commands until a VM with UUID *\$VM* reboots. The command uses the value of `start-time` to decide when the VM reboots.
 
-The class name can be any of the [event classes](#event-classes) listed at the beginning of this section. The parameters can be any of the parameters listed in the CLI command *class*-param-list.
+The class name can be any of the [event classes](#event-classes) listed at the beginning of this section. The parameters can be any of the parameters listed in the CLI command `${class}-param-list`.
 
 ### GPU commands
 
@@ -1841,7 +1841,7 @@ PBDs have the following parameters:
 |`device-config`|Extra configuration information that is provided to the SR-backend-driver of a host|Read only map parameter|
 |`currently-attached`|True if the SR is attached on this host, False otherwise|Read only|
 |`host-uuid`|UUID of the physical machine on which the PBD is available|Read only|
-|`host`|The host field is deprecated. Use host\_uuid instead.|Read only|
+|`host`|The host field is deprecated. Use `host\_uuid` instead.|Read only|
 |`other-config`|Extra configuration information.|Read/write map parameter|
 
 #### `pbd-create`
@@ -3148,7 +3148,7 @@ VDIs have the following parameters:
 |`sr-name-label`|Name of the containing storage repository|Read only|
 |`location`|Location information|Read only|
 |`managed`|True if the VDI is managed|Read only|
-|`xenstore-data`|Data to be inserted into the xenstore tree (`/local/domain/0/backend/vbd/*domid*/*device-id*/smdata`) after the VDI is attached. The SM back-ends usually set this field on `vdi_attach`.|Read only map parameter|
+|`xenstore-data`|Data to be inserted into the `xenstore` tree (`/local/domain/0/backend/vbd/*domid*/*device-id*/smdata`) after the VDI is attached. The SM back-ends usually set this field on `vdi_attach`.|Read only map parameter|
 |`sm-config`|SM dependent data|Read only map parameter|
 |`is-a-snapshot`|True if this VDI is a VM storage snapshot|Read only|
 |`snapshot_of`|The UUID of the storage this VDI is a snapshot of|Read only|
@@ -3608,7 +3608,7 @@ xe vm-param-get uuid=<vm_uuid> param-name=platform param-key=acpi_laptop_slate
 - `possible-hosts` potential hosts of this VM read only
 - `dom-id` (read only) domain ID (if available, -1 otherwise)
 - `recommendations` (read only) XML specification of recommended values and ranges for properties of this VM
-- `xenstore-data` (read/write map parameter) data to be inserted into the xenstore tree (`/local/domain/*domid*/vm-data`) after the VM is created
+- `xenstore-data` (read/write map parameter) data to be inserted into the `xenstore` tree (`/local/domain/*domid*/vm-data`) after the VM is created
 - `is-a-snapshot` (read only) True if this VM is a snapshot
 - `snapshot_of` (read only) the UUID of the VM that this snapshot is of
 - `snapshots` (read only) the UUIDs of all snapshots of this VM
