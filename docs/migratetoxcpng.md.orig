@@ -14,6 +14,7 @@ We got a dedicated section on [how to migrate from XenServer to XCP-ng](upgrade.
 
 We got a dedicated section on [how to migrate from Citrix Hypervisor to XCP-ng](upgrade.md#upgrade-from-xenserver).
 
+<<<<<<< HEAD
 ## From Xen on Linux
 
 If you are running Xen on your usual distro (Debian, Ubuntu…), you are using `xl` to manage your VMs, and also plain text configuration files. You can migrate to an existing XCP-ng host thanks to [this Python script](http://www-archive.xenproject.org/files/xva/xva.py).
@@ -31,7 +32,10 @@ If you have an error telling you that you don't have an default SR, please choos
 This script is a bit old and not tested since while. If you have issues, feel free to report that!
 :::
 
+## From Virtualbox
+=======
 ## From VirtualBox
+>>>>>>> 2ad9372 (docs/migratetoxcpng.md: style cleanup)
 
 Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](migratetoxcpng.md#fromvmware) section.
 
