@@ -2,7 +2,7 @@
 
 Like a Linux distribution, XCP-ng's installation images and RPM repositories can be replicated by benevolent mirror providers.
 
-Starting with its 8.0 release, XCP-ng uses [mirrorbits](https://github.com/etix/mirrorbits) to redirect download requests to an appropriate mirror based on their update status and geographical position.
+Starting with its 8.0 release, XCP-ng uses [Mirrorbits](https://github.com/etix/mirrorbits) to redirect download requests to an appropriate mirror based on their update status and geographical position.
 
 ## Original mirror
 
@@ -114,7 +114,7 @@ pub  2048R/3FD3AC9E 2018-10-03 XCP-ng Key (XCP-ng Official Signing Key) <securit
 sub  2048R/2EB0DF19 2018-10-03
 ```
 
-If your version of gpg doesn't display fingerprints anymore, try instead:
+If your version of `gpg` doesn't display fingerprints anymore, try instead:
 ```
 gpg --import --import-options show-only RPM-GPG-KEY-xcpng
 ```
@@ -150,7 +150,7 @@ Expected output:
 # gpg:          There is no indication that the signature belongs to the owner.
 # Primary key fingerprint: 34AC 2EB6 8248 FED6 D076  838A CD75 783A 3FD3 AC9E
 ```
-Only the date should change depending on the date of signature. **`Good Signature`** is what tells us that the verification is successful. The warning is also expected because the signing key itself is not signed and we've not setup a list of trusted sources on the computer, so there's no way for gpg to tell if the key is to be trusted or not.
+Only the date should change depending on the date of signature. **`Good Signature`** is what tells us that the verification is successful. The warning is also expected because the signing key itself is not signed and we've not setup a list of trusted sources on the computer, so there's no way for `gpg` to tell if the key is to be trusted or not.
 
 #### Check an ISO image
 In this example we will first check the authenticity of the SHA256SUMS file, then use it to check the integrity of the ISO image. We'll download `xcp-ng-7.6.0.iso`, `SHA256SUMS` and `SHA256SUMS.asc` from <https://updates.xcp-ng.org/isos/7.6/> but you can transpose those steps to a newer ISO.
