@@ -65,7 +65,7 @@ We are integrating storage solution available directly from Xen Orchestra (XOSAN
 
 ### LINBIT
 
-LINBIT is a software clustering company specialized in data replication – including persistent block storage. The heart of LINBIT’s open-source technology is DRBD®. DRBD allows block storage between  servers to be replicated asynchronously or synchronously without sacrificing performance or reliability. LINBIT has led the way in High Availability since 2001 and developed the solution LINSTOR.
+LINBIT is a software clustering company specialized in data replication – including persistent block storage. The heart of LINBIT’s open-source technology is DRBD®. DRBD allows block storage between servers to be replicated asynchronously or synchronously without sacrificing performance or reliability. LINBIT has led the way in High Availability since 2001 and developed the solution LINSTOR.
 
 ![](../assets/img/partners/linbit.png)
 
@@ -75,7 +75,7 @@ With this alliance, we are aiming to offer DRBD support inside the XCP-ng hyperv
 * LINBIT High Availability
 * LINBIT Disaster Recovery
 
-Making XCP-ng compatible with LINBIT's solutions will allow us to provide new solutions for users that are looking  for performance and reliability with DRBD in their infrastructure.
+Making XCP-ng compatible with LINBIT's solutions will allow us to provide new solutions for users that are looking for performance and reliability with DRBD in their infrastructure.
 
 There is still a lot of work to do in order to package DRBD in the XCP-ng kernel, make LINBIT's solutions compatible with XCP-ng, and finally provide an easy way to stay up-to-date.
 
