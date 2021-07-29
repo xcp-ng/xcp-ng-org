@@ -420,7 +420,7 @@ Hi, this is a small trick I had to use once [(original article)](https://linuxco
 * **Hit F10** to boot into single-mode
 * Once in single-mode use `passwd` command to reset your XenServer's root password
 * Reboot XenServer by entering the command `exec /usr/sbin/init`
-* If everything went well you should now be able to login with your new XenServer password.
+* If everything went well you should now be able to log in with your new XenServer password.
 
 ## XenStore related issues
 
@@ -442,7 +442,7 @@ Alternatively, in a fresh Ubuntu 18.04 install, you can switch to UEFI and you w
 
 ## Disappearing NVMe drives
 
-Some NVMe drives do not handle Automatic Power State Transition (APST) well on certain motherboards or adapters and will disappear from the system when attempting to lower their power state.  You may see logs in `dmesg` that indicate this is happening.
+Some NVMe drives do not handle Automatic Power State Transition (APST) well on certain motherboards or adapters and will disappear from the system when attempting to lower their power state. You may see logs in `dmesg` that indicate this is happening.
 
 ```
 [65056.815294] nvme nvme0: controller is down; will reset: CSTS=0xffffffff, PCI_STATUS=0xffff
@@ -463,7 +463,7 @@ Some NVMe drives do not handle Automatic Power State Transition (APST) well on c
 [65061.030575] nvme nvme0: failed to set APST feature (-19)
 ```
 
-APST can be disabled by adding `nvme_core.default_ps_max_latency_us=0` to your kernel boot parameters.  For example, in XCP-ng 8.1, edit `/boot/grub/grub.cfg` to include a new parameter on the first `module2` line.
+APST can be disabled by adding `nvme_core.default_ps_max_latency_us=0` to your kernel boot parameters. For example, in XCP-ng 8.1, edit `/boot/grub/grub.cfg` to include a new parameter on the first `module2` line.
 
 ```
 menuentry 'XCP-ng' {
