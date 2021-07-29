@@ -142,30 +142,30 @@ Via `xe` CLI for a local EXT SR (where `sdaX` is a partition, but it can be the 
 xe sr-create host-uuid=<host UUID> type=ext content-type=user name-label="Local Ext" device-config:device=/dev/sdaX
 ```
 
-In addition to the two main, rock-solid, local storages (EXT and LVM), XCP-ng offers storage drivers for other types of local storage (ZFS, XFS, etc.).
+In addition to the two main, rock-solid, local storage types (EXT and LVM), XCP-ng offers storage drivers for other types of local storage (ZFS, XFS, etc.).
 
 ### NFS
 
 Shared, thin-provisioned storage. Efficient, recommended for ease of maintenance and space savings.
 
-In Xen Orchestra, go in the "New" menu entry, then Storage, and select NFS. Follow instructions from there.  
+In Xen Orchestra, go in the "New" menu entry, then Storage, and select NFS. Follow instructions from there.
 
 :::tip
-Your host will mount the top-level NFS share you provide initially (example: /share/xen), then create folder(s) inside of that, then mount those directly instead (example: /share/xen/515982ab-476e-17b7-0e61-e68fef8d7d31). This means your NFS server or appliance must be set to allow sub-directory mounts, or adding the SR will fail. In FreeNAS, this checkbox is called "All dirs" in the NFS share properties.
+Your host will mount the top-level NFS share you provide initially (example: `/share/xen`), then create folder(s) inside of that, then mount those directly instead (example: `/share/xen/515982ab-476e-17b7-0e61-e68fef8d7d31`). This means your NFS server or appliance must be set to allow sub-directory mounts, or adding the SR will fail. In FreeNAS, this checkbox is called `All dirs` in the NFS share properties.
 :::
 
 ### File
 
 Local, thin-provisioned. Not recommended.
 
-The `file` storage driver allows you to use any local directory as storage. 
+The `file` storage driver allows you to use any local directory as storage.
 
 Example:
 ```
 xe sr-create host-uuid=<host UUID> type=file content-type=user name-label="Local File SR" device-config:location=/path/to/storage
 ```
 
-Avoid using it with mountpoints for remote storage: if for some reason the filesystem is not mounted when the SR is scanned for virtual disks, the `file` driver will believe that the SR is empty and drop all VDI metadata for that storage.
+Avoid using it with mount points for remote storage: if for some reason the filesystem is not mounted when the SR is scanned for virtual disks, the `file` driver will believe that the SR is empty and drop all VDI metadata for that storage.
 
 ### XOSANv2
 
@@ -248,10 +248,10 @@ echo 10 > /sys/module/zfs/parameters/zfs_txg_timeout
 
 There are many options to increase the performance of ZFS SRs:
 
-* Modify the module parameter `zfs_txg_timeout`: Flush dirty data to disk at least every N seconds (maximum txg duration). By default 5.
+* Modify the module parameter `zfs_txg_timeout`: Flush dirty data to disk at least every N seconds (maximum `txg` duration). By default 5.
 * Disable sync to disk: `zfs set sync=disabled tank/zfssr`
 * Turn on compression (it's cheap but effective): `zfs set compress=lz4 tank/zfssr`
-* Disable accesstime log: `zfs set atime=off tank/zfssr`
+* Disable access time log: `zfs set atime=off tank/zfssr`
 
 ### XFS
 
@@ -271,7 +271,7 @@ Via `xe` CLI for a local XFS SR (where `sdaX` is a partition, but it can be the 
 xe sr-create host-uuid=<host UUID> type=xfs content-type=user name-label="Local XFS" device-config:device=/dev/sdaX
 ```
 
-### Glusterfs
+### GlusterFS
 
 Shared, thin-provisioned storage. Available since XCP-ng 8.2.
 
@@ -311,7 +311,7 @@ Create `/etc/ceph/admin.secret` with your access secret for CephFS.
 AQBX21dfVMJtBhAA2qthmLyp7Wxz+T5YgoxzeQ==
 ```
 
-Now you can create the SR where `server` is your mon ip.
+Now you can create the SR where `server` is your mon IP.
 ```
 # xe sr-create type=cephfs name-label=ceph device-config:server=172.16.10.10 device-config:serverpath=/xcpsr device-config:options=name=admin,secretfile=/etc/ceph/admin.secret
 ```
@@ -388,11 +388,11 @@ Experimental, this needs reliable testing to ensure no block corruption happens 
 
 This is at this moment the only way to connect to Ceph with no modifications of dom0, it's possible to create multiple Ceph iSCSI gateways following this: <https://docs.ceph.com/docs/master/rbd/iscsi-target-cli/>
 
-Ceph iSCSI gateway node(s) sits outside dom0, probably another Virtual or Physical machine. The packages referred in the URL are to be installed on iSCSI gateway node(s). For XCP-ng dom0, no modifications are needed as it would use LVMoISCSISR (lvmoiscsi) driver to access the iSCSI LUN presented by these gateways.
+Ceph iSCSI gateway node(s) sits outside dom0, probably another Virtual or Physical machine. The packages referred in the URL are to be installed on iSCSI gateway node(s). For XCP-ng dom0, no modifications are needed as it would use LVMoISCSISR (`lvmoiscsi`) driver to access the iSCSI LUN presented by these gateways.
 
-For some reason the chap authentication between gwcli and XCP-ng doesn't seem to be working, so it's recommended to disable it (in case you use no authentication a dedicated network for storage should be used to ensure some security).
+For some reason the chap authentication between `gwcli` and XCP-ng doesn't seem to be working, so it's recommended to disable it (in case you use no authentication a dedicated network for storage should be used to ensure some security).
 
-IMPORTANT: User had many weird glitches with iSCSI connection via ceph gateway in lab setup (3 gateways and 3 paths on each host) after several days of using it. So please keep in mind that this setup is experimental and unstable. This would have to be retested on recent XCP-ng.
+IMPORTANT: User had many weird glitches with iSCSI connection via Ceph gateway in lab setup (3 gateways and 3 paths on each host) after several days of using it. So please keep in mind that this setup is experimental and unstable. This would have to be retested on recent XCP-ng.
 
 ### Ceph RBD
 
@@ -400,7 +400,7 @@ IMPORTANT: User had many weird glitches with iSCSI connection via ceph gateway i
 This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](additionalpackages.md)). You will also need to be careful about system updates and upgrades.
 :::
 
-You can use this to connect to an existing Ceph storage over RBD, and configure it as a shared SR for all your hosts in the pool. This driver uses LVM (lvm) as generic driver and expects that the Ceph RBD volume is already connected to one or more hosts.
+You can use this to connect to an existing Ceph storage over RBD, and configure it as a shared SR for all your hosts in the pool. This driver uses LVM (`lvm`) as generic driver and expects that the Ceph RBD volume is already connected to one or more hosts.
 
 Known issue: this SR is not allowed to be used for HA state metadata due to LVM backend restrictions within XAPI drivers, so if you want to use HA, you will need to create another type of storage for HA metadata
 
@@ -414,7 +414,7 @@ Installation steps
 Create `/etc/ceph/keyring` with your access secret for Ceph.
 
 ```
-# cat /etc/ceph/keyring 
+# cat /etc/ceph/keyring
 [client.admin]
 key = AQBX21dfVMJtJhAA2qthmLyp7Wxz+T5YgoxzeQ==
 ```
@@ -422,7 +422,7 @@ key = AQBX21dfVMJtJhAA2qthmLyp7Wxz+T5YgoxzeQ==
 Create `/etc/ceph/ceph.conf` as your matching setup.
 
 ```
-# cat /etc/ceph/ceph.conf 
+# cat /etc/ceph/ceph.conf
 [global]
 mon_host = 10.10.10.10:6789
 
@@ -444,7 +444,7 @@ types = [ "rbd", 1024 ]
 xe sr-create name-label='CEPH' shared=true device-config:device=/dev/rbd/rbd/xen1 type=lvm content-type=user
 ```
 
-You will probably want to configure ceph further so that the block device is mapped on reboot.
+You will probably want to configure Ceph further so that the block device is mapped on reboot.
 
 For the full discussion about Ceph in XCP-ng, see this forum thread: <https://xcp-ng.org/forum/topic/4/ceph-on-xcp-ng>
 
@@ -551,7 +551,7 @@ When you make XO backup on regular basis, old/unused snapshots will be removed a
 
 This process will take some time to finish (especially if you VM stays up and worst if you have a lot of writes on its disks).
 
-**What about creating snapshot (ie call backup jobs) faster than XCP-ng can coalesce?** Well, the chain will continue to grow. And more you have disks to merge, longer it will take.
+**What about creating snapshot (i.e., call backup jobs) faster than XCP-ng can coalesce?** Well, the chain will continue to grow. And more you have disks to merge, longer it will take.
 
 You will hit a wall, 2 options here:
 
