@@ -168,7 +168,7 @@ The issue should be fixed.
 
 Sometimes you need to add extra routes to an XCP-ng host. It can be done manually with an `ip route add 10.88.0.0/14 via 10.88.113.193` (for example). But it won't persist after a reboot.
 
-To properly create persistent static routes, first create your xen network interface as usual. If you already have this network created previously, just get its UUID with an `xe network-list`. You're looking for the interface you have a management IP on typically, something like `xapi0` or `xapi1` for example. If you're not sure which one it is, you can run `ifconfig` and find the interface name that has the IP address this static route traffic will be exiting. Then get that interfaces UUID using the previous `xe network-list` command.
+To properly create persistent static routes, first create your Xen network interface as usual. If you already have this network created previously, just get its UUID with an `xe network-list`. You're looking for the interface you have a management IP on typically, something like `xapi0` or `xapi1` for example. If you're not sure which one it is, you can run `ifconfig` and find the interface name that has the IP address this static route traffic will be exiting. Then get that interfaces UUID using the previous `xe network-list` command.
 
 Now insert the UUID in the below example command. Also change the IPs to what you need, using the following format: `<network>/<netmask>/gateway IP>`. For example, our previous `ip route add 10.88.0.0/14 via 10.88.113.193` will be translated into:
 
@@ -191,7 +191,7 @@ xe network-param-remove uuid=<network UUID> param-key=static-routes param-name=o
 A toolstack restart is needed as before.
 
 :::tip
-XAPI might not remove the already-installed route until the host is rebooted. If you need to remove it ASAP,  you can use `ip route del 10.88.0.0/14 via 10.88.113.193`. Check that it's gone with `route -n`.
+XAPI might not remove the already-installed route until the host is rebooted. If you need to remove it ASAP, you can use `ip route del 10.88.0.0/14 via 10.88.113.193`. Check that it's gone with `route -n`.
 :::
 
 ## Full mesh network
@@ -314,7 +314,7 @@ See <https://github.com/xcp-ng/xcp/issues/138>.
 
 Incorrect networking settings can cause loss of network connectivity. When there is no network connectivity, XCP-ng host can become inaccessible through Xen Orchestra or remote SSH. Emergency Network Reset provides a simple mechanism to recover and reset a host’s networking.
 
-The Emergency network reset feature is available from the CLI using the `xe-reset-networking` command, and within the Network and Management Interface section of xsconsole.
+The Emergency network reset feature is available from the CLI using the `xe-reset-networking` command, and within the Network and Management Interface section of `xsconsole`.
 
 Incorrect settings that cause a loss of network connectivity include renaming network interfaces, creating bonds or VLANs, or mistakes when changing the management interface. For example, typing the wrong IP address. You may also want to run this utility in the following scenarios:
 
@@ -333,13 +333,13 @@ If the pool master requires a network reset, reset the network on the pool maste
 
 #### Verifying the network reset
 
-After you specify the configuration mode to be used after the network reset, xsconsole and the CLI display settings that will be applied after host reboot. It is a final chance to modify before applying the emergency network reset command. After restart, the new network configuration can be verified in Xen Orchestra and xsconsole. In Xen Orchestra, with the host selected, select the Networking tab to see the new network configuration. The Network and Management Interface section in xsconsole display this information.
+After you specify the configuration mode to be used after the network reset, `xsconsole` and the CLI display settings that will be applied after host reboot. It is a final chance to modify before applying the emergency network reset command. After restart, the new network configuration can be verified in Xen Orchestra and `xsconsole`. In Xen Orchestra, with the host selected, select the Networking tab to see the new network configuration. The Network and Management Interface section in `xsconsole` display this information.
 
 ### SR-IOV
 
 TO have SR-IOV enabled, you need:
 
-* SR-IOV / ASPM compatible mainboard
+* SR-IOV / ASPM compatible motherboard
 * SR-IOV compatible CPU
 * SR-IOV compatible network card
 * SR-IOV compatible drivers for XCP-ng
@@ -351,7 +351,7 @@ You can't live migrate a VM with SR-IOV enabled. Use it only if you really need 
 #### Setup
 
 * enable SR-IOV in your BIOS
-* enable ASPM (seem to be needed acording to https://www.juniper.net/documentation/en_US/contrail3.1/topics/concept/sriov-with-vrouter-vnc.html and https://www.supermicro.com/support/faqs/faq.cfm?faq=26448)
+* enable ASPM (seem to be needed according to https://www.juniper.net/documentation/en_US/contrail3.1/topics/concept/sriov-with-vrouter-vnc.html and https://www.supermicro.com/support/faqs/faq.cfm?faq=26448)
 * enable SR-IOV in your network card firmware
 
 Then, you can enable and configure it with `xe` CLI:
