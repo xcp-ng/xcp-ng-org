@@ -32,5 +32,5 @@ About the project itself, please see the [project page](project.md).
 <iframe width="560" height="315" src="https://www.youtube.com/embed/5IinFgGAsRs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 :::tip
-No flamewar! There are no miracle solutions, but only solutions adapted to your usage. We truly respect all other virtualization platforms!
+No flame war! There are no miracle solutions, but only solutions adapted to your usage. We truly respect all other virtualization platforms!
 :::
