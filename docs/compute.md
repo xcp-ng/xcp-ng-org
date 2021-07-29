@@ -37,7 +37,7 @@ and an error in `/var/log/xen/hypervisor.log`
 [2020-08-22 10:09:03] (XEN) [  297.542136] d[IO]: assign (0000:08:00.0) failed (-1)
 ```
 
-This indicates that your device is using [RMRR](https://access.redhat.com/sites/default/files/attachments/rmrr-wp1.pdf).  Intel [IOMMU does not allow DMA to these devices](https://www.kernel.org/doc/Documentation/Intel-IOMMU.txt) and therefore PCI passthrough is not supported.
+This indicates that your device is using [RMRR](https://access.redhat.com/sites/default/files/attachments/rmrr-wp1.pdf). Intel [IOMMU does not allow DMA to these devices](https://www.kernel.org/doc/Documentation/Intel-IOMMU.txt) and therefore PCI passthrough is not supported.
 
 ### 1. Find your devices ID ([B/D/F](https://en.wikipedia.org/wiki/PCI_configuration_space#BDF)) on the PCI bus using one of the following methods:
 
@@ -182,7 +182,7 @@ Due to a proprietary piece of code in XenServer, XCP-ng doesn't have (yet) suppo
 
 ### MxGPU (AMD vGPU)
 
-AMD GPU are trivial using industry standard.  
+AMD GPU are trivial using industry standard.
 Version 2.0 of the mxgpu iso should work on any 8.X version of XCP-ng
 
 1. Enable SR-IOV in the server's BIOS
@@ -196,7 +196,7 @@ Version 2.0 of the mxgpu iso should work on any 8.X version of XCP-ng
 `xe-install-supplemental-pack mxgpu-2.0.0.amd.iso`
 
 6. Reboot the XCP-ng
-7. Assign an MxGPU to the VM from the VM properties page.  Go to the GPU section.  From the Drop down choose how big of a slice of the GPU you want on the VM and click OK
+7. Assign an MxGPU to the VM from the VM properties page. Go to the GPU section. From the Drop down choose how big of a slice of the GPU you want on the VM and click OK
 
 Start the VM and log into the guest OS and load the appropriate guest driver from AMD's Drivers & Support page.
 
