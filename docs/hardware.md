@@ -6,7 +6,7 @@ For other hardware, see [Unlisted Hardware](#unlisted-hardware).
 
 ## Unlisted Hardware
 
-Many devices outside the HCL in fact work very well with XCP-ng. Being outside the HCL means that there have been not tests to ensure that they work. Most of the hardware support depends on the Linux kernel and thus support for hardware outside the HCL depends on on how well the drivers are supported by the Linux kernel included in XCP-ng.
+Many devices outside the HCL in fact work very well with XCP-ng. Being outside the HCL means that there have been not tests to ensure that they work. Most of the hardware support depends on the Linux kernel and thus support for hardware outside the HCL depends on how well the drivers are supported by the Linux kernel included in XCP-ng.
 
 This section is a community-enriched list of pieces of hardware that do not belong to the HCL, along with information about how well they work (or not), workarounds, etc.
 
@@ -49,8 +49,7 @@ Known Issues (with old firmware; also on XenServer 7.2 with current firmware)
         * Mid Term: Upgrade Firmware to match XCP-ng Driver version (for XCP-ng 7.5 -> 11.2.XXXXX)
         * Long Term: Avoid Emulex cards!
 
-
-#### Broadcom Netxtreme II BCM57711E
+#### Broadcom NetXtreme II BCM57711E
 
 (or BCM5709 or ...)
 
