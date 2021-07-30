@@ -326,7 +326,7 @@ Now you can create the SR where `server` is your mon IP.
 
 Shared, thin-provisioned storage. Available since XCP-ng 8.2.
 
-MooseFS is a fault-tolerant, highly available, highly performing, scaling-out, network distributed file system.  It is POSIX compliant and acts like any other Unix-like file system.
+MooseFS is a fault-tolerant, highly available, highly performing, scaling-out, network distributed file system. It is POSIX compliant and acts like any other Unix-like file system.
 SR driver was contributed directly by MooseFS Development Team.
 
 :::warning

@@ -517,11 +517,12 @@ Now we enable autostart at the virtual machine level.
     power-state ( RO)    : running
 ```
 
-4. Enable autostart for each virtual machine with the UUID found: 
+4. Enable autostart for each virtual machine with the UUID found:
 `# xe vm-param-set uuid=<VM_UUID> other-config:auto_poweron=true`
 
-5. Checking the output 
+5. Checking the output
 `# xe vm-param-list uuid=<VM_UUID> | grep other-config`
+<<<<<<< HEAD
 
 
 ## Software RAID Storage Repository
@@ -648,7 +649,7 @@ Sometimes what happens is that the system either does not find all of the parts 
 
 This can also happen to the `md127` boot array where it will show with only one of the two drives in place and running. If it does not start and run at all, we will fail to get a normal boot of the system and likely be tossed into an emergency shell instead of the normal boot process. This is usually not consistent and another reboot will start the system. This can even happen when the boot RAID is the only RAID array in the system but fortunately that rarely happens.
 
-So what can we do about this? Fortunately, we can give the system more information about what RAID arrays are in the system and specify that they should be started up at boot.
+So what can we do about this?  Fortunately, we can give the system more information about what RAID arrays are in the system and specify that they should be started up at boot.
 
 ### Stabilizing the RAID Boot Configuration: The mdadm.conf File
 
@@ -685,7 +686,7 @@ mdadm --examine --scan >> /etc/mdadm.conf
 ```
 And then edit the file to change the format of the array names from `/dev/md/0` to `/dev/md0` and remove the `name=` parameters from each line. This isn't strictly necessary but keeps the array names in the file consistent with what is reported in `/proc/mdstat` and `/proc/partitions` and avoids giving each array another name (in our case those names would be `localhost:127` and `XCP-ng:0`).
 
-So what do these lines do? The first line instructs the system to allow or attempt automatic assembly for all arrays defined in the file. The second specifies to report errors in the system by email to the root user. The third is a list of all drives in the system participating in RAID arrays. Not all drives need to be specified on a single DEVICE line. Drives can be split among multiple lines and we could even have one DEVICE line for each drive. The last two are descriptions of each array in the system.
+So what do these lines do?  The first line instructs the system to allow or attempt automatic assembly for all arrays defined in the file. The second specifies to report errors in the system by email to the root user. The third is a list of all drives in the system participating in RAID arrays. Not all drives need to be specified on a single DEVICE line. Drives can be split among multiple lines and we could even have one DEVICE line for each drive. The last two are descriptions of each array in the system.
 
 This file gives the system a description of what arrays are configured in the system and what drives are used to create them but doesn't specify what to do with them. The system should be able to use this information at boot for automatic assembly of the arrays. Booting with the `mdadm.conf` file in place is more reliable but still runs into same problems as before.
 
@@ -797,7 +798,7 @@ This type of problem is very difficult to diagnose and correct. It may be possib
 
 ### More and Different
 
-So what if we don't have or don't want a system that's identical to the example we just built in these instructions? Here are some of the possible and normal variations of software RAID under XCP-ng.
+So what if we don't have or don't want a system that's identical to the example we just built in these instructions?  Here are some of the possible and normal variations of software RAID under XCP-ng.
 
 #### No preexisting XCP-ng RAID 1
 
@@ -853,3 +854,5 @@ We then create another storage repository as we did previously making sure to gi
 We also need to make sure that the `mdadm.conf` file has `DEVICE` lines containing the three drives `/dev/sdf`, `/dev/sdg`, and `/dev/sdh` and an ARRAY line containing /dev/md1 and its UUID in addition to the other drives and arrays `md127` and `md0`. We also need to make sure that the `dracut_mdraid.conf` file contains a `kernel_cmdline+=` line specifying the `rd.md.uuid=` with the UUID of the `md1` array that matches what is in the `mdadm.conf` file in addition to the other two similar lines in that file.
 
 It is important that each RAID array has a different name as the system will not allow you to create a RAID array with the name of one that already exists. Normally, you would just continue on with different RAID device names such as `md1`, `md2`, `md3`, etc. It is also important to use different names for each storage repository such as "RAID storage", "RAID storage 2" and so on.
+=======
+>>>>>>> 046cf3b (docs/guides.md: remove trailing whitespace)

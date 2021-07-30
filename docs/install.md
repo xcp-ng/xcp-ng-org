@@ -267,14 +267,14 @@ tree -L 1 /path/to/http-directory/
 ```
 
 2. Boot the target machine.
-3. Press Ctrl-B to catch the iPXE menu.  Use the chainload command to load grub.
+3. Press Ctrl-B to catch the iPXE menu. Use the chainload command to load grub.
 
 ```
 chain http://SERVER_IP/EFI/xenserver/grubx64.efi
 ```
 
 :::tip
-Sometimes grub takes a very long time to load after displaying "Welcome to Grub".  This can be fixed by compiling a new version of Grub with `grub-mkstandalone`.
+Sometimes grub takes a very long time to load after displaying "Welcome to Grub". This can be fixed by compiling a new version of Grub with `grub-mkstandalone`.
 :::
 
 4. Once the grub prompt loads, set the root to http and load the config file.
@@ -286,7 +286,7 @@ configfile /EFI/xenserver/grub.cfg
 ```
 
 5. Select the "install" menu entry.
-6. Wait for grub to load the necessary binaries.  This may take a minute.  If you look at your http server log you should see something like:
+6. Wait for grub to load the necessary binaries. This may take a minute. If you look at your http server log you should see something like:
 
 ```
 # (from python3 -m http.server path-to-directory 80)
