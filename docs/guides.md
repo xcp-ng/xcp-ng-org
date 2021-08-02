@@ -202,7 +202,7 @@ Once your host's network is set up, we'll look at configuring the XCP-ng virtual
    * For the other virtual machine settings, some explanations :
      * Dual CPU sockets for improving vCPU performance.
      * **The virtual disk must be at least 60 GB in size to install XCP-ng !**
-     * **LSI Logic SAS** controller is choosen to maximize at possible the compatibility and the performance. vNVMe
+     * **LSI Logic SAS** controller is chosen to maximize at possible the compatibility and the performance. vNVMe
        controller works too, it can reduce CPU overhead and latency. **PVSCSI controller won't work**.
      * **Unlike the PVSCSI controller, the VMXNET3 controller works with XCP-ng**. It will be useful if heavy network
        loads are planned between different XCP-ng virtual machines (XOSAN)
