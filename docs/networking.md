@@ -180,8 +180,10 @@ xe network-param-set uuid=<network UUID> other-config:static-routes=10.88.0.0/14
 You **must** restart the toolstack on the host for the new route to be added!
 :::
 
-You can check the result with a `route -n` afterwards to see if the route is now present.
-
+You can check the result with a `route -n` afterwards to see if the route is now present. If you must add multiple static routes, it must be in one command, and the routes separated by commas. For example, to add both 10.88.0.0/14 via 10.88.113.193 *and* 10.0.0.0/24 via 192.168.1.1, you would use this:
+```
+xe network-param-set uuid=<network UUID> other-config:static-routes=10.88.0.0/14/10.88.113.193,10.0.0.0/24/192.168.1.1
+```
 ### Removing static routes
 
 To **remove** static routes you have added, stick the same network UUID from before in the below command:
