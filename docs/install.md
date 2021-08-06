@@ -190,7 +190,7 @@ PXE boot doesn't support tagged VLAN networks! Be sure to boot on a untagged net
 
 ### TFTP server configuration
 
-1. In your TFTP root directory (eg `/tftp`), create a folder named `xcp-ng`.
+1. In your TFTP root directory (e.g., `/tftp`), create a folder named `xcp-ng`.
 2. Copy the `mboot.c32` and `pxelinux.0` files from the installation media to the TFTP root directory.
 3. From the XCP-ng installation media, copy the files `install.img` (from the root directory), `vmlinuz`, and `xen.gz` (from the /boot directory) to the new `xcp-ng` directory on the TFTP server.
 4. In the TFTP root directory, create a folder called `pxelinux.cfg`
@@ -212,7 +212,7 @@ label xcp-ng
 If you want to make an installation in UEFI mode, you need to have a slightly different TFTP server configuration:
 
 1. In your TFTP root folder, create a directory called `EFI/xcp-ng`
-2. Configure your DHCP serveur to provide `/EFI/xcp-ng/grubx64.efi` as the boot file
+2. Configure your DHCP server to provide `/EFI/xcp-ng/grubx64.efi` as the boot file
 3. Create a `grub.cfg` as follow:
 ```
  menuentry "XCP-ng Install (serial)" {
@@ -225,10 +225,10 @@ If you want to make an installation in UEFI mode, you need to have a slightly di
 4. Copy this `grub.cfg` file to `EFI/xcp-ng` folder on the TFTP server
 5. Get the following files from XCP-ng ISO: `grubx64.efi`, `install.img` (from the root directory), `vmlinuz`, and `xen.gz` (from the /boot directory) to the new EFI/xcp-ng directory on the TFTP server.
 
-On the FTP, NFS or HTTP serveur, get all the installation media content in there.
+On the FTP, NFS or HTTP server, get all the installation media content in there.
 
 :::tip
-When you do copy the installation files, **DO NOT FORGET** the `.treeinfo` file. Double check your webserver isn't blocking it (like Microsoft IIS does).
+When you do copy the installation files, **DO NOT FORGET** the `.treeinfo` file. Double check your web server isn't blocking it (like Microsoft IIS does).
 :::
 
 #### On the host
@@ -267,14 +267,14 @@ tree -L 1 /path/to/http-directory/
 ```
 
 2. Boot the target machine.
-3. Press Ctrl-B to catch the iPXE menu.  Use the chainload command to load grub.
+3. Press Ctrl-B to catch the iPXE menu. Use the chainload command to load grub.
 
 ```
 chain http://SERVER_IP/EFI/xenserver/grubx64.efi
 ```
 
 :::tip
-Sometimes grub takes a very long time to load after displaying "Welcome to Grub".  This can be fixed by compiling a new version of Grub with `grub-mkstandalone`.
+Sometimes grub takes a very long time to load after displaying "Welcome to Grub". This can be fixed by compiling a new version of Grub with `grub-mkstandalone`.
 :::
 
 4. Once the grub prompt loads, set the root to http and load the config file.
@@ -286,7 +286,7 @@ configfile /EFI/xenserver/grub.cfg
 ```
 
 5. Select the "install" menu entry.
-6. Wait for grub to load the necessary binaries.  This may take a minute.  If you look at your http server log you should see something like:
+6. Wait for grub to load the necessary binaries. This may take a minute. If you look at your http server log you should see something like:
 
 ```
 # (from python3 -m http.server path-to-directory 80)
@@ -312,7 +312,7 @@ label xcp-ng-auto
 ```
 
 :::tip
-Any SYSLINUX configuration style file will be valid. [Find more on the syslinux website](https://wiki.syslinux.org/wiki/index.php?title=PXELINUX).
+Any SYSLINUX configuration style file will be valid. [Find more on the Syslinux website](https://wiki.syslinux.org/wiki/index.php?title=PXELINUX).
 :::
 
 ### With UEFI
@@ -442,4 +442,3 @@ We **strongly** advise against installing on USB stick. XCP-ng writes a lot into
 * XAPI: the XenServer API database is changing a lot. Hence writing a lot, and believe me, USB sticks aren't really happy with that on the long run. Note: XAPI DB is what keep tracks on all XCP-ng's "state", and it's replicated on each host (from the slave).
 * Logs: XCP-ng keeps a LOT of debug logs. However, there is a workaround: use a remote syslog.
 :::
-

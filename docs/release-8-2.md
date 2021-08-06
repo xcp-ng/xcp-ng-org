@@ -56,9 +56,9 @@ A complete [reimplementation of the UEFI support in XCP-ng](https://github.com/x
 
 This will also allow us to offer Secure Boot support for VMs in the near future.
 
-### Openflow controller access
+### OpenFlow controller access
 
-We automated the configuration needed by the user to allow communication with the Openflow controller in Xen Orchestra.
+We automated the configuration needed by the user to allow communication with the OpenFlow controller in Xen Orchestra.
 
 Learn more about the VIFs network traffic control in Xen Orchestra in [this dedicated devblog](https://xen-orchestra.com/blog/vms-vif-network-traffic-control/).
 
@@ -66,9 +66,9 @@ We also backported this feature to XCP-ng 8.1 as this improvements was already s
 
 ### Core scheduling (experimental)
 
-As you probably know, Hyper Threading defeats all mitigations of CPU vulnerabilities related to side-channel attacks (as Spectre, Meltdown, Fallout...). That's why it was required to disable it as part of the mitigations. The reason is that with Hyper Threading enabled you can't protect a VM's vCPUs from attacks originating from other VMs that have workloads scheduled on the same physical core.
+As you probably know, Hyper Threading defeats all mitigation of CPU vulnerabilities related to side-channel attacks (as Spectre, Meltdown, Fallout...). That's why it was required to disable it as part of threat mitigation. The reason is that with Hyper Threading enabled you can't protect a VM's vCPUs from attacks originating from other VMs that have workloads scheduled on the same physical core.
 
-With Core Scheduling, you now have another solution: you can choose to leave Hyper Threading enabled and ask the scheduler to always group vCPUs of a given VM together on the same physical core(s). This will remove the vulnerability to a class of attacks from other VMs, but will leave the VM processes vulnerables to attacks from malevolent processes from within itself. To be usedonly with entirely trusted workloads.
+With Core Scheduling, you now have another solution: you can choose to leave Hyper Threading enabled and ask the scheduler to always group vCPUs of a given VM together on the same physical core(s). This will remove the vulnerability to a class of attacks from other VMs, but will leave the VM processes vulnerable to attacks from malevolent processes from within itself. To be used only with entirely trusted workloads.
 
 A new XAPI method allowing you to choose the frequency of the core scheduler was written. You will have the option to select different granularity: CPU, core or socket, depending on the performance/security ratio you are looking for.
 
@@ -78,7 +78,7 @@ We added three new experimental storage drivers: `zfs`, `glusterfs` and `cephfs`
 We also decided to include all SR drivers by default in XCP-ng now, including experimental ones. We do not, however, install all the dependencies on dom0 by default: `xfsprogs`, `gluster-server`, `ceph-common`, `zfs`... They need to be installed using `yum` for you to use the related SR drivers. Check the documentation for each storage driver.
 
 #### `zfs`
-We already provided `zfs` packages in our repositories before, but there was no dedicated SR driver. Users would use the `file` driver, which has a major drawback: if the zpool is not active, that driver may believe that the SR suddenly became empty, and drop all VDI metadata.
+We already provided `zfs` packages in our repositories before, but there was no dedicated SR driver. Users would use the `file` driver, which has a major drawback: if the `zpool` is not active, that driver may believe that the SR suddenly became empty, and drop all VDI metadata.
 
 So we developed a dedicated `zfs` SR driver that checks whether `zfs` is present before drawing such conclusions.
 
@@ -97,11 +97,11 @@ Use this driver to connect to an existing Ceph storage through the CephFS storag
 => [CephFS SR Documentation](storage.md#cephfs)
 
 ### Guest tools ISO
-Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 8.2: they dropped the guest tools ISO, replaced by downloads from their website. We chose to retain the feature and still provide a guest tools ISO that you can mount to your VMs. Many thanks go to the [XAPI](https://github.com/xapi-project/xen-api/) developers who have accepted to keep the related source code in the XAPI project for us to keep using, rather than deleteing it.
+Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 8.2: they dropped the guest tools ISO, replaced by downloads from their website. We chose to retain the feature and still provide a guest tools ISO that you can mount to your VMs. Many thanks go to the [XAPI](https://github.com/xapi-project/xen-api/) developers who have accepted to keep the related source code in the XAPI project for us to keep using, rather than deleting it.
 
 ### Other changes
 
-* We replaced Citrix's `gpumon` package, not built by us, by a mock build of `gpumon` sources, without the proprietary nvidia developer kit. For you as users, this changes nothing. For us, it means getting rid of a package that was not built by the XCP-ng build system.
+* We replaced Citrix's `gpumon` package, not built by us, by a mock build of `gpumon` sources, without the proprietary NVIDIA developer kit. For you as users, this changes nothing. For us, it means getting rid of a package that was not built by the XCP-ng build system.
 * [Alternate kernel](hardware.md#alternate-kernel) updated to version 4.19.142.
 * Intel's `e1000e` driver updated to version 3.8.4 in order to support more devices.
 * Cisco's `enic` and `fnic` drivers updated to offer better device support and compatibility.
@@ -138,9 +138,9 @@ There exists no easy way to convert an existing storage repository from a given 
   * Back-up your VMs from the existing ZFS SR.
   * Move the VMs from that local SR towards another SR, or export them then delete them.
   * Check that the SR is now empty.
-  * Note the *SR uuid* (visible in Xen Orchestra, or in the output of `xe sr-list`).
+  * Note the *SR UUID* (visible in Xen Orchestra, or in the output of `xe sr-list`).
   * Find the associated PBD: `xe pbd-list sr-uuid={SR-UUID}`
-    * Note the *PBD uuid*.
+    * Note the *PBD UUID*.
     * Note the associated location (e.g. `/zfs/vol0`).
   * Unplug the PBD: `xe pbd-unplug uuid={PBD-UUID}`
   * Destroy the SR: `xe sr-destroy uuid={SR-UUID}`
@@ -214,7 +214,7 @@ Some hardware-related issues are also described in [this page](hardware.md).
 
 Live migrating a VM from an old XenServer can sometimes end with an error, with the following consequences:
 * The VM reboots
-* It gets duplicated: the same VM uuid (and usually its VDIs too) is present both on the sender and the receiver host. Remove it from the receiver host.
+* It gets duplicated: the same VM UUID (and usually its VDIs too) is present both on the sender and the receiver host. Remove it from the receiver host.
 
 Would require a hotfix to the old XenServer, but since those versions are not supported anymore, Citrix won't develop one.
 

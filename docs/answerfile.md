@@ -89,7 +89,7 @@ Where type is one of:
 
 `source` defines the location of the installation repository or a Supplemental Pack. There may be multiple 'source' elements.
 
-`driver-source` defines the source of a Supplemental Pack containing device drivers to be loaded by  the installer and included after installation of the main repository. It can be 
+`driver-source` defines the source of a Supplemental Pack containing device drivers to be loaded by the installer and included after installation of the main repository.
 
 Repository formats:
 

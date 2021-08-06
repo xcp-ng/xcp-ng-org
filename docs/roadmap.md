@@ -24,7 +24,7 @@ This is a draft roadmap, things aren't sorted in any way, and there is no ETA fo
 * Netdata dedicated RPM (2019)
 * Citrix DVSC replacement by XO plugin (2019)
 * Full SMAPIv1 SR stack ZFS support, done with ZoL 0.8.1 (2019)
-* Netinstaller checking GPG (2019)
+* Net installer checking GPG (2019)
 * Netdata in XCP-ng with [Xen metrics](https://github.com/netdata/netdata/pull/5660) (2019)
 * `zstd` support for VM export/import (2019)
 * `xfs` local SR support SMAPIv1 (2019)
@@ -32,7 +32,7 @@ This is a draft roadmap, things aren't sorted in any way, and there is no ETA fo
 * Terraform support (2019)
 * More recent (4.9) kernel usage in dom0 (2018)
 * Signed Windows PV tools (2018)
-* Cloudstack compatibility (2018)
+* CloudStack compatibility (2018)
 * Upgrade detection and upgrade with updater plugin (2018)
 * Extra package repo (2018)
 
@@ -54,11 +54,11 @@ This is a draft roadmap, things aren't sorted in any way, and there is no ETA fo
 * VDI export with compression (including `zstd`)
 * SMAPIv3 Ceph support
 * Coalesce process improvement (raw speed, rewrite, multicore?) [#127](https://github.com/xcp-ng/xcp/issues/127)
-* Faster Xen Storage Motion (using on the fly compression for disk content? remove stunnel?)
-* SMAPIv3 full ZFS driver (using pyzfs with it)
-* NVMe driver for near bare metal perfs (specification in progress)
-* smarctl alerts (specification in progress)
-* General storage perf improvement
+* Faster Xen Storage Motion (using on the fly compression for disk content? remove `stunnel`?)
+* SMAPIv3 full ZFS driver (using `pyzfs` with it)
+* NVMe driver for near bare metal performance (specification in progress)
+* `smarctl` alerts (specification in progress)
+* General storage performance improvement
 * Thin pro on block based SR (architectural review needed)
 
 ### Network
@@ -67,7 +67,7 @@ This is a draft roadmap, things aren't sorted in any way, and there is no ETA fo
 
 ### API
 
-* XAPI HTTP lib 1.1 replacement (removing stunnel)
+* XAPI HTTP lib 1.1 replacement (removing `stunnel`)
 * ISO upload in SR ISO
 * JSON-RPC compression support
 

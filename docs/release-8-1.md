@@ -67,13 +67,13 @@ In short, you are now able to backup and restore a VM, with its context, the who
 
 You can restore it anytime later on another host, and resume it as if nothing happened. From the VM perspective, its uptime will be kept. Combined with Xen Orchestra Continuous Replication, you can also send your VM data and memory every XX hours to another XCP-ng host or pool, and resume it as soon you need it.
 
-For more information and use cases, you can check [this Devblog](https://xen-orchestra.com/blog/devblog-6-backup-ram/) written by our developer Benjamin.
+For more information and use cases, you can check [this devblog](https://xen-orchestra.com/blog/devblog-6-backup-ram/) written by our developer Benjamin.
 
 ### Installer improvements in 8.1
 
 Our installer now offers two new installation options. In legacy boot mode, access them with F2 when offered the choice. In UEFI mode, see the added boot menu entries.
 * First new option: boot the installer with a 2G RAM limit instead of the 8G default. This is a workaround for installation issues on hardware with Ryzen CPUs. Though those are Desktop-class CPUs and not supported officially in the HCL, we tried to make it easier to workaround the infamous "installer crashes on Ryzen" issue.
-* Second new option: boot the installer with our [alternate kernel](hardware.md#alternate-kernel) (kernel-alt). That kernel, built and maintained by @r1 for the team, is based on the main kernel, with all upstream kernel.org patches from the LTS 4.19 branch applied.It should be very stable by construction **but it receives less testing**. That option is there for cases when the main kernel and drivers have issues, so that you can quickly test if kernel.org patches have fixed it already. It will also install the alternate kernel in addition to the main kernel as a convenience. **If kernel-alt fixes issues for you, the most important thing to do is to tell us so that we may fix the main kernel!**
+* Second new option: boot the installer with our [alternate kernel](hardware.md#alternate-kernel) (kernel-alt). That kernel, built and maintained by @r1 for the team, is based on the main kernel, with all upstream kernel.org patches from the LTS 4.19 branch applied. It should be very stable by construction **but it receives less testing**. That option is there for cases when the main kernel and drivers have issues, so that you can quickly test if kernel.org patches have fixed it already. It will also install the alternate kernel in addition to the main kernel as a convenience. **If kernel-alt fixes issues for you, the most important thing to do is to tell us so that we may fix the main kernel!**
 
 ### New leaf coalesce logic with dynamic limits
 
@@ -86,8 +86,8 @@ Those interested in the patches, see [this commit](https://github.com/xcp-ng-rpm
 * ZFS updated to 0.8.3.
 * [Alternate kernel](hardware.md#alternate-kernel) updated to version 4.19.108. Installing it now automatically adds a new boot entry in grub's configuration, to make testing easier. Default entry remains that of the main kernel.
 * `netdata-ui` still available from our repositories and also as a feature in Xen Orchestra.
-  * r1 contributed a fix to netdata project to bring support for Xen 4.13
-  * stormi made netdata cache be RAM-only to workaround an upstream bug that could make the disk cache grow forever
+  * r1 contributed a fix to Netdata project to bring support for Xen 4.13
+  * stormi made Netdata cache be RAM-only to workaround an upstream bug that could make the disk cache grow forever
 * `zstd` updated to 1.4.4.
 * Experimental support for XFS in local storage repository still available through the `sm-additional-drivers` package.
 
@@ -99,7 +99,7 @@ However we have updated the [documentation about the guest tools](guests.md), wh
 
 ### Other changes
 
-* Fixed netxtreme drivers (`bnx2x` module) that crashed with some models.
+* Fixed NetXtreme drivers (`bnx2x` module) that crashed with some models.
 
 ## Misc
 
@@ -137,9 +137,9 @@ See "Destroy and re-create a local SR" below.
   * Back-up your VMs.
   * Move the VMs from that local SR towards another SR, or export them then delete them (Note: an export will not retain the snapshots).
   * Check that the SR is now empty.
-  * Note the *SR uuid* (visible in Xen Orchestra, or in the output of `xe sr-list`).
+  * Note the *SR UUID* (visible in Xen Orchestra, or in the output of `xe sr-list`).
   * Find the associated PBD: `xe pbd-list sr-uuid={SR-UUID}`
-    * Note the *PBD uuid*.
+    * Note the *PBD UUID*.
     * Note the associated device (e.g. `/dev/sdb`).
   * Unplug the PBD: `xe pbd-unplug uuid={PBD-UUID}`
   * Destroy the SR: `xe sr-destroy uuid={SR-UUID}`
@@ -176,14 +176,14 @@ We want to thank our community of users who was very helpful in helping us ident
     * Missing removable media from VMs
     * Possibly others that haven't been reported yet
 
-### Longer boot times when the ntp server cannot be reached
-If the ntp server can't be reached, the `chrony-wait` service may stall the boot process for several minutes before it gives up:
+### Longer boot times when the NTP server cannot be reached
+If the NTP server can't be reached, the `chrony-wait` service may stall the boot process for several minutes before it gives up:
 * up to 10 minutes if you installed with `xcp-ng-8.1.0.iso`, or with yum update before 2020-04-03;
 * up to 2 minutes only if you installed with `xcp-ng-8.1.0-2.iso`, with yum update after 2020-04-03, or have updated your host after 2020-04-03.
 
 Reported to Citrix: [XSO-981](https://bugs.xenserver.org/browse/XSO-981)
 
-We must stress that it is important that all your hosts have accurate date and time and so be able to connect an ntp server.
+We must stress that it is important that all your hosts have accurate date and time and so be able to connect an NTP server.
 
 ### `yum update` from 8.0 to 8.1 from within a VNC console
 
@@ -249,7 +249,7 @@ In general, issues inherited from Citrix Hypervisor and already described in the
 See [Citrix Hypervisor's known issues](https://docs.citrix.com/en-us/citrix-hypervisor/whats-new/known-issues.html) (link only valid for the latest release of Citrix Hypervisor). Most apply to XCP-ng.
 
 Some exceptions to those CH 8.1 known issues:
-* The errors due to to `xapi-wait-init-complete.service` not being enabled were already fixed during XCP-ng 8.1's beta phase.
+* The errors due to `xapi-wait-init-complete.service` not being enabled were already fixed during XCP-ng 8.1's beta phase.
 * Issues related to Citrix-specific things like licenses or GFS2 do not apply to XCP-ng.
 * Though not mentioned yet in their known issues (as of 2020-03-30), an update of CH 8.0 to CH 8.1 using the update ISO fails at enabling the `chronyd` service. In XCP-ng 8.1, updated from 8.0 using `yum`, we fixed that issue before the release.
 
@@ -263,7 +263,7 @@ Some hardware-related issues are also described in [this page](hardware.md).
 
 Live migrating a VM from an old XenServer can sometimes end with an error, with the following consequences:
 * The VM reboots
-* It gets duplicated: the same VM uuid (and usually its VDIs too) is present both on the sender and the receiver host. Remove it from the receiver host.
+* It gets duplicated: the same VM UUID (and usually its VDIs too) is present both on the sender and the receiver host. Remove it from the receiver host.
 
 Would require a hotfix to the old XenServer, but since those versions are not supported anymore, Citrix won't develop one.
 

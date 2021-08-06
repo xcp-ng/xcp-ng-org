@@ -108,7 +108,7 @@ After each test, **Minion 1** go back to **lab1** to start in the exact same con
 
 #### Pull the power plug
 
-Now, we will decide to pull the plug for my host **lab1**:  this is exactly where my VM currently runs. After some time (when XAPI detect and report the lost of the host, in general 2 minutes), we can see that **lab1** is reported as Halted. In the same time, the VM **Minion 1** is booted on the other host running, **lab 2**:
+Now, we will decide to pull the plug for my host **lab1**: this is exactly where my VM currently runs. After some time (when XAPI detect and report the lost of the host, in general 2 minutes), we can see that **lab1** is reported as Halted. In the same time, the VM **Minion 1** is booted on the other host running, **lab 2**:
 
 If you decide to re-plug the host **lab1**, the host will be back online, without any VM on it, which is normal.
 
@@ -122,12 +122,12 @@ So? **Minion 1** lost access to its disks ad after some time, **lab1** saw it ca
 The host could not join the liveset because the HA daemon could not access the heartbeat disk.
 ```
 
-Immediatly after fencing, **Minion 1** will be booted on the other host.
+Immediately after fencing, **Minion 1** will be booted on the other host.
 
 :::tip
-**lab1** is not physically halted, you can access it through SSH. But from the XAPI point of view, it's dead. Now, let's try to re-plug the ethernet cable... and just wait! Everything will be back to normal!
+**lab1** is not physically halted, you can access it through SSH. But from the XAPI point of view, it's dead. Now, let's try to re-plug the Ethernet cable... and just wait! Everything will be back to normal!
 :::
 
 #### Pull the network cable
 
-Finally, the worst case: leaving the storage operational but "cut" the (management) network interface. Same procedure: unplug physically the cable, and wait... Because **lab1** can't contact any other host of the pool (in this case, **lab2**), it decides to start the fencing procedure. The result is exaclty the same as the previous test. It's gone for the pool master, displayed as "Halted" until we re-plug the cable.
+Finally, the worst case: leaving the storage operational but "cut" the (management) network interface. Same procedure: unplug physically the cable, and wait... Because **lab1** can't contact any other host of the pool (in this case, **lab2**), it decides to start the fencing procedure. The result is exactly the same as the previous test. It's gone for the pool master, displayed as "Halted" until we re-plug the cable.

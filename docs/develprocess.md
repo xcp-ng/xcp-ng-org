@@ -7,9 +7,9 @@ In this document, we will try to give you an overview of the development process
 XCP-ng is a collection of components, that put together create a complete turnkey virtualization solution that you can install to bare-metal servers. Those components are packaged in the [RPM](http://rpm.org) format.
 
 As usual in the Free Software world, we stand *on the shoulders of giants*:
-* **CentOS**: many RPM packages come from the [CentOS](https://www.centos.org/) Linux distribution, which in turn is based on Red Hat's [RHEL](https://en.wikipedia.org/wiki/Red_Hat_Enterprise_Linux), mostly based itself on the work of the [Fedora](https://getfedora.org/) project, all based on the work of all the developers who wrote the [FLOSS](https://en.wikipedia.org/wiki/Free/Libre_Open_Source_Software) software that is packaged in those Linux distributions. Examples: glibc, GNU coreutils, openssh, crontabs, iptables, openssl and many, many more.
+* **CentOS**: many RPM packages come from the [CentOS](https://www.centos.org/) Linux distribution, which in turn is based on Red Hat's [RHEL](https://en.wikipedia.org/wiki/Red_Hat_Enterprise_Linux), mostly based itself on the work of the [Fedora](https://getfedora.org/) project, all based on the work of all the developers who wrote the [FLOSS](https://en.wikipedia.org/wiki/Free/Libre_Open_Source_Software) software that is packaged in those Linux distributions. Examples: `glibc`, `GNU coreutils`, `openssh`, `crontabs`, `iptables`, `openssl` and many, many more.
 * **EPEL**: a few packages come from [EPEL](https://fedoraproject.org/wiki/EPEL).
-* **XenServer**: most packages that make XCP-ng what it is have been rebuilt from source RPMs released by the [XenServer](https://xenserver.org/) project, with or without modifications. This includes xen, a patched Linux kernel, the Xen API, and many others. This also includes redistributable drivers or tools from third party vendors.
+* **XenServer**: most packages that make XCP-ng what it is have been rebuilt from source RPMs released by the [XenServer](https://xenserver.org/) project, with or without modifications. This includes Xen, a patched Linux kernel, the Xen API, and many others. This also includes redistributable drivers or tools from third party vendors.
 * **XCP-ng**: the remaining packages are additions (or replacements of closed-source components) to the original XenServer distribution.
 
 ## Release process overview
@@ -81,7 +81,7 @@ Here are the usual steps. We will expand on them afterwards:
   * **Develop**: happens on a software git repository as in any software project. Example: <https://github.com/xcp-ng/xcp-emu-manager>. Skip if we are not the upstream developer for that software and are not contributing to it yet.
   * **Release**: decide that your software is good to be released as part of XCP-ng, either as an update to an existing release of XCP-ng or in the next release. Create a tag in the git repository. Example: <https://github.com/xcp-ng/xcp-emu-manager/releases/tag/v0.0.9>. Skip if we are not the upstream developer for that software.
 * **Packaging**
-  * **Create or update RPM specs** and commit them to appropriate repository in the ['xcp-ng-rpms' github organization](https://github.com/xcp-ng-rpms/). Example: <https://github.com/xcp-ng-rpms/xcp-emu-manager>.
+  * **Create or update RPM specs** and commit them to appropriate repository in the [xcp-ng-rpms github organization](https://github.com/xcp-ng-rpms/). Example: <https://github.com/xcp-ng-rpms/xcp-emu-manager>.
   * **Add or update patches** to be applied above the upstream source tarball to that same repository.
   * **Submit build** to the build system ([koji](https://koji.xcp-ng.org/)).
   * **Publish the build** to the appropriate RPM repository (`testing` for stable releases, `base` for development release of XCP-ng)
@@ -262,7 +262,7 @@ V8.x (packages)
     v8.x-updates (builds)
       v8.x-testing (builds)
 ```
-* `V8.x` is associated to all the packages used in XCP-ng 8.x, either as installed packages on servers or as build dependencies in Koji. Notice the capslock V which is a convention I'll try to follow to identify tags that are specifically associated to *packages*, not *builds*.
+* `V8.x` is associated to all the packages used in XCP-ng 8.x, either as installed packages on servers or as build dependencies in Koji. Notice the capitalized "V" which is a convention I'll try to follow to identify tags that are specifically associated to *packages*, not *builds*.
 * `v8.x-base` inherits `V8.x` so we were able to associate it to all the builds in base XCP-ng 8.x. The `base` RPM repository for 8.x is exported from this tag.
 * `v8.x-updates` inherits `v8.x-base` which means it contains all builds from `v8.x-base` plus builds specifically tagged `v8.x-updates`. Those are exported to the `updates` RPM repository for 8.x.
 * `v8.x-testing` inherits `v8.x-updates` so it contains all builds from `v8.x-base`, all builds from `v8.x-updates` and builds specifically tagged `v8.x-testing`. Why? As we will see below with build targets, this allows to make any released update taken into account when pulling dependencies for building packages in `v8.x-testing`. Builds specifically tagged `v8.x-testing` are exported to the `testing` RPM repository for 8.x.
@@ -415,7 +415,7 @@ You probably want to bring modifications to the RPM definitions before you rebui
 * From within the container:
   * Enter the directory containing the sources for the RPM you had cloned earlier from <https://github.com/xcp-ng-rpms/>. Example: `cd /data/git/xen`.
   * Install the build dependencies in the container: `sudo yum-builddep SPECS/*.spec -y`.
-  * Build the RPM: `rpmbuild -ba SPECS/*.spec --define "_topdir $(pwd)"`. This `_topdir` strange thing is necessary to make rpmbuild accept to work in the current directory rather than in its default working directory, `~/rpmbuild`.
+  * Build the RPM: `rpmbuild -ba SPECS/*.spec --define "_topdir $(pwd)"`. This `_topdir` strange thing is necessary to make `rpmbuild` accept to work in the current directory rather than in its default working directory, `~/rpmbuild`.
 * When the build completes, new directories are created: `RPMS/` and `SRPMS/`, that contain the build results. In a container started with the appropriate `-v` switch, the build results will be instantly available outside the container too.
 
 :::tip
@@ -441,7 +441,7 @@ We can't cover every situation here, so we will address a simple case: add patch
 Then follow the same steps as before to build the RPM.
 
 ### An XCP-ng host as a build environment
-You can also turn any XCP-ng host (preferrably installed in a VM. Don't sacrifice a physical host for that) into a build environment: all the tools and build dependencies are available from the default RPM repositories for XCP-ng, or from CentOS and EPEL repositories.
+You can also turn any XCP-ng host (preferably installed in a VM. Don't sacrifice a physical host for that) into a build environment: all the tools and build dependencies are available from the default RPM repositories for XCP-ng, or from CentOS and EPEL repositories.
 
 You won't benefit from the convenience scripts from [xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env) though.
 
@@ -450,15 +450,15 @@ You won't benefit from the convenience scripts from [xcp-ng-build-env](https://g
 This document explains how to locally build the [XAPI](https://github.com/xcp-ng/xen-api).
 
 Here are the steps:
-- First, set up a build env:
+- First, set up a build environment:
     - Install the following packages: `dlm-devel` `gmp` `gmp-devel` `libffi-devel` `openssl-devel` `pciutils-devel` `systemd-devel` `xen-devel` `xxhash-devel`.
-    - Install [`opam`](https://opam.ocaml.org/doc/Install.html) to set up a build env.
+    - Install [`opam`](https://opam.ocaml.org/doc/Install.html) to set up a build environment.
     - Run `opam init`.
-    - Run `opam switch create toolstack 4.08.1`, this sets up an opam `switch` which is a virtual ocaml env.
-    - Run `opam repo add xs-opam https://github.com/xapi-project/xs-opam.git`, this adds the [`xs-opam` repo](https://github.com/xapi-project/xs-opam.git) to your env.
-    - Run `opam repo remove default`, this removes the the default repo from your env as we only want the `xs-opam` one.
+    - Run `opam switch create toolstack 4.08.1`, this sets up an `opam` `switch` which is a virtual OCaml environment.
+    - Run `opam repo add xs-opam https://github.com/xapi-project/xs-opam.git`, this adds the [`xs-opam` repo](https://github.com/xapi-project/xs-opam.git) to your environment.
+    - Run `opam repo remove default`, this removes the default repo from your environment as we only want the `xs-opam` one.
     - Run `opam depext -vv -y xs-toolstack`, this installs the dependency needed to build `xs-toolstack`
-    - Run `opam install xs-toolstack -y`, this installs the toolstack to build the xapi in your env.
+    - Run `opam install xs-toolstack -y`, this installs the toolstack to build XAPI in your environment.
 
 - Build the XAPI:
     - Go to the dir where your `xen-api` code base is.
@@ -516,7 +516,7 @@ Only supported modules are in this case.
 
 The modules whose name does not come from XenServer RPMs follow this base naming scheme:
 
-`{module-name}-module`.  Example: `ceph.ko` => `ceph-module`.
+`{module-name}-module`. Example: `ceph.ko` => `ceph-module`.
 
 If the RPM contains several modules (to be avoided), then find an unambiguous name and add the `modules` suffix:
 
@@ -675,7 +675,7 @@ RPMs that provide modules for an alternate kernel must follow these conventions:
 * The remaining part of the naming convention is the same as that of packages that provide modules for the main supported kernel:
   * `{inherited-name-from-XS}-kernel{MAJOR.MINOR}`
   * `{name}-module-kernel{MAJOR.MINOR}`
-  * "kmod" packages
+  * `kmod` packages
 * Modules are installed in `/lib/modules/{kernel_version}/updates` or `/lib/modules/{kernel_version}/extra` whether they are updates for built-in modules (if that situation happens) or additional packages.
 * `Requires` the appropriate alternate kernel package.
 
@@ -737,7 +737,7 @@ If you want to use commands in the installer's filesystem context, as root:
 ```
 chroot install/
 ```
-To use `yum` or `rpm`, you'll also need to mount `urandom` in your chrooted dir.
+To use `yum` or `rpm`, you'll also need to mount `urandom` in your chroot root.
 From outside the chroot run:
 ```
 touch install/dev/urandom
@@ -750,7 +750,7 @@ For example, you can list all RPMs present in that "system":
 rpm -qa | sort
 ```
 
-Exit chroot with `exit` or Ctrl + D.
+Exit chroot with `exit` or `Ctrl + D`.
 
 #### Alter the filesystem
 
@@ -762,7 +762,7 @@ To modify the installed RPMs on a host see [change the list of installed RPMs](c
 :::
 
 Example use cases:
-* Update drivers: replace an existing driver module (*.ko) with yours, or, if you have built a RPM with that driver, install it. For example, you could rebuild a patched `qlogic-qla2xxx` RPM package and install it instead of the one that is included by default. Note that this will *not* install the newer driver on the final installed XCP-ng. We're only in the context of the system that runs during the installation phase, here.
+* Update drivers: replace an existing driver module (`*.ko`) with yours, or, if you have built a RPM with that driver, install it. For example, you could rebuild a patched `qlogic-qla2xxx` RPM package and install it instead of the one that is included by default. Note that this will *not* install the newer driver on the final installed XCP-ng. We're only in the context of the system that runs during the installation phase, here.
 * Modify the installer itself to fix a bug or add new features (see below)
 
 #### Modify the installer code itself
@@ -794,7 +794,7 @@ Read [the usual warnings about the installation of third party RPMs on XCP-ng.](
 
 To achieve this:
 * Change the RPMs in the `Packages/` directory. If you add new packages, be careful about dependencies, else they'll fail to install and the whole installation process will fail.
-* If you need to add new RPMs not just replace existing ones, they need to be pulled by another existing RPM as dependencies. If there's none suitable, you can add the dependency to the [xcp-ng-deps RPM](https://github.com/xcp-ng-rpms/xcp-ng-deps).
+* If you need to add new RPMs not just replace existing ones, they need to be pulled by another existing RPM as dependencies. If there's none suitable, you can add the dependency to the [`xcp-ng-deps` RPM](https://github.com/xcp-ng-rpms/xcp-ng-deps).
 * Update `repodata/`
   ```
   rm repodata/ -rf
@@ -830,7 +830,7 @@ Give priority to tests on actual hardware, but if you don't have any hardware av
 
 - verify installation
 - verify connectivity with your interfaces
-- verify connectivity to Shared Storages
+- verify connectivity to Shared Storage
 - verify creation of a new Linux VM (install guest tools)
 - verify creation of a new Windows VM (install guest tools)
 - verify basic VM functionality (start, reboot, suspend, shutdown)
@@ -851,7 +851,7 @@ Give priority to tests on actual hardware, but if you don't have any hardware av
 
 ### Live migration tests
 
-Live migration needs to be tested, with or without storage motion (ie. moving the VM disk data to another storage repository). It is both a very important feature and something that can break in subtle ways, especially across different versions of XenServer or XCP-ng.
+Live migration needs to be tested, with or without storage motion (i.e., moving the VM disk data to another storage repository). It is both a very important feature and something that can break in subtle ways, especially across different versions of XenServer or XCP-ng.
 
 **TODO: create (and link to) a page dedicated to live migration and known issues, gotchas or incompatibilities, especially across different releases and/or during pool upgrade.**
 
@@ -948,7 +948,7 @@ and
 - compare speed of interfaces in the old and in the new release
 - (add more here...)
 
-### Example Storage Performance Tests Using fio
+### Example Storage Performance Tests Using `fio`
 
 #### Random write test for IOP/s, i.e. lots of small files
 
@@ -977,10 +977,10 @@ sync;fio --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=test
 
 ### VM Export / Import
 
-* Export using ZSTD compression
-* Import using ZSTD compression
-* Export using gzip compression
-* Import using gzip compression
+* Export using `zstd` compression
+* Import using `zstd` compression
+* Export using `gzip` compression
+* Import using `gzip` compression
 
 ### Guest tools and drivers
 
