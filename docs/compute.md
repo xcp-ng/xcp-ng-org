@@ -103,34 +103,16 @@ This kernel parameter is not retained when you upgrade an XCP-ng host [using the
 
 `[root@xen ~]# xe vm-start uuid=<vm uuid>`
 
-
-## GPU Passthrough
-
-:::warning
-NVIDIA consumer grade GPUs won't work due to a driver limitation (on purpose). AMD chips will work perfectly.
-:::
-
 ## USB Passthrough
 
 :::tip
-No need to tinker any file manually
+There's no need to alter any files manually as some older guides suggest
 :::
 
-It's fairly easy using `xe` CLI:
+It's fairly easy using the `xe` CLI. First use `xe pusb-list` to list all the physical USB devices on your host available for passthrough:
 
 ```
 [root@xenserver ~]# xe pusb-list
-uuid ( RO)            : 9c14c8b3-f30b-b5b8-2b01-201f703d2497
-            path ( RO): 2-1.6
-       vendor-id ( RO): 1f75
-     vendor-desc ( RO): Innostor Technology Corporation
-      product-id ( RO): 0903
-    product-desc ( RO):
-          serial ( RO): 000000000000000244
-         version ( RO): 2.10
-     description ( RO): Innostor Technology Corporation_000000000000000244
-
-
 uuid ( RO)            : 10fbec89-4472-c215-5d55-17969b473ee6
             path ( RO): 2-1.1
        vendor-id ( RO): 0781
@@ -142,35 +124,46 @@ uuid ( RO)            : 10fbec89-4472-c215-5d55-17969b473ee6
      description ( RO): SanDisk Corp._4C530001151223117134
 ```
 
-Find your USB device there, and note the `uuid`. Then enable passthrough:
-
+Find your USB device there, and note the `uuid`. Then use that uuid to enable passthrough for it:
 ```
 [root@xenserver ~]# xe pusb-param-set uuid=10fbec89-4472-c215-5d55-17969b473ee6 passthrough-enabled=true
 ```
-
-Then, shut down the target guest VM that you want to pass the USB device through since hot plug is not supported. Attach the USB device to the VM, run the following command:
-
-```
-[root@xenserver ~]# xe vusb-create usb-group-uuid=<usb_group_uuid> vm-uuid=<vm_uuid>
-```
-
-Check the following as an example, firstly get usb-group uuid from command usb-group-list and then attach the device to target VM through command vusb-create:
-
+This will create a `usb-group` containing this USB device. We need to find the uuid of that group, so we use the `usb-group-list` command, specifying the physical USB uuid we got in step one: 
 ```
 [root@xenserver ~]# xe usb-group-list PUSB-uuids=10fbec89-4472-c215-5d55-17969b473ee6
 uuid ( RO)                : 1f731f6a-6025-8858-904d-c98548f8bb23
 name-label ( RW): Group of 0781 5591 USBs
 name-description ( RW):
-...
-[root@xenserver ~]# xe vusb-create usb-group-uuid=1f731f6a-6025-8858-904d-c98548f8bb23 vm-uuid=4feeb9b2-2176-b69d-b8a8-cf7289780a3f
-aac4a96f-3fd9-0150-7138-fbd5a80e068a
 ```
-
+Note the uuid of this usb-group, then use it in the following command to attach this USB device to your desired VM. Remember to first shut down the target VM as hot-plug for USB passthrough is not supported:
+```
+xe vusb-create usb-group-uuid=<usb_group_uuid> vm-uuid=<vm_uuid>
+```
+So using the examples above, it would look like:
+```
+xe vusb-create usb-group-uuid=1f731f6a-6025-8858-904d-c98548f8bb23 vm-uuid=4feeb9b2-2176-b69d-b8a8-cf7289780a3f
+```
 Finally, start the target guest VM:
-
 ```
 [root@xenserver ~]# xe vm-start uuid=<vm_uuid>
 ```
+
+**Note:** If you get a message containing `internal error` when trying to start the VM after assigning it a USB device, try the following command to ensure its `platform:usb` parameter is set correctly:
+```
+xe vm-param-set uuid=<vm_uuid> platform:usb=True
+```
+In the future if you ever need to unplug the virtual USB device from your VM, or remove and unassign it completely, find the uuid of the virtual USB device by running `xe vusb-list`. Then use the uuid of the virtual USB device in one or both of the following commands:
+```
+xe vusb-unplug uuid=<vusb_uuid>
+xe vusb-destroy uuid=<vusb_uuid>
+```
+
+## GPU Passthrough
+To passthrough a complete graphics card to a VM (not virtualize it into multiple virtual vGPUs, which is different, see the vGPU section below), just follow the regular PCI passthrough instructions, no special steps are needed. Most Nvidia and AMD video cards should work without issue.  
+
+:::tip
+Previously, Nvidia would block the use of gaming/consumer video cards for passthrough (the Nvidia installer would throw an **Error 43** when installing the driver inside your VM). They lifted this restriction in 2021 with driver R465 and above, so be sure to use the latest driver. [Details from Nvidia here.](https://nvidia.custhelp.com/app/answers/detail/a_id/5173/)
+:::
 
 ## vGPU
 
