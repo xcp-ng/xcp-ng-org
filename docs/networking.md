@@ -96,13 +96,41 @@ interface-rename --list
 ```
 This will display the current interface mapping/assignments.
 
+Interfaces you wish to rename need to be downed first:
+```
+ifconfig eth4 down
+ifconfig eth8 down
+```
+
 The most common use will be an update statement like the following:
 ```
 interface-rename --update eth4=00:24:81:80:19:63 eth8=00:24:81:7f:cf:8b
 ```
 This example will set the mac-address for eth4 & eth8, switching them in the process.
 
+The XAPI database needs the old PIFs removed. First list your PIFs for the affected NICs:
+```
+xe pif-list
+xe pif-forget uuid=<uuid of eth4>
+xe pif-forget uuid=<uuid of eth8>
+```
 Reboot the host to apply these settings.
+
+The interfaces by their new names need to be re-enabled:
+```
+ifconfig eth4 up
+ifconfig eth8 up
+```
+
+The new interfaces need to be introduced to the PIF database:
+```
+xe host-list
+```
+Make note of the host uuid. Then introduce the interfaces:
+```
+xe pif-introduce device=eth4 host-uuid=<host uuid> mac=<mac>
+xe pif-introduce device=eth8 host-uuid=<host uuid> mac=<mac>
+```
 
 By renaming/updating interfaces like this, you can assure all your hosts have the same interface order.
 
