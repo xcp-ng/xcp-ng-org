@@ -103,6 +103,44 @@ This kernel parameter is not retained when you upgrade an XCP-ng host [using the
 
 `[root@xen ~]# xe vm-start uuid=<vm uuid>`
 
+## GPU Passthrough
+To passthrough a complete graphics card to a VM (not virtualize it into multiple virtual vGPUs, which is different, see the vGPU section below), just follow the regular PCI passthrough instructions, no special steps are needed. Most Nvidia and AMD video cards should work without issue.  
+
+:::tip
+Previously, Nvidia would block the use of gaming/consumer video cards for passthrough (the Nvidia installer would throw an **Error 43** when installing the driver inside your VM). They lifted this restriction in 2021 with driver R465 and above, so be sure to use the latest driver. [Details from Nvidia here.](https://nvidia.custhelp.com/app/answers/detail/a_id/5173/)
+:::
+
+## vGPU
+
+### NVIDIA vGPU
+
+:::warning
+Due to a proprietary piece of code in XenServer, XCP-ng doesn't have (yet) support for NVIDIA vGPUs.
+:::
+
+### MxGPU (AMD vGPU)
+
+AMD GPU are trivial using industry standard.  
+Version 2.0 of the mxgpu iso should work on any 8.X version of XCP-ng
+
+1. Enable SR-IOV in the server's BIOS
+2. Install XCP-ng
+3. Download Citrix XenServer from AMD's Drivers & Support page. (Currently version 2.0.0 for XenServer 8.1)
+4. Copy the `mxgpu-2.0.0.amd.iso` to the host
+5. Install the supplemental pack:
+
+`cd /tmp`
+
+`xe-install-supplemental-pack mxgpu-2.0.0.amd.iso`
+
+6. Reboot the XCP-ng
+7. Assign an MxGPU to the VM from the VM properties page.  Go to the GPU section.  From the Drop down choose how big of a slice of the GPU you want on the VM and click OK
+
+Start the VM and log into the guest OS and load the appropriate guest driver from AMD's Drivers & Support page.
+
+> Known working cards:
+* S7150x2
+
 ## USB Passthrough
 
 :::tip
@@ -157,45 +195,6 @@ In the future if you ever need to unplug the virtual USB device from your VM, or
 xe vusb-unplug uuid=<vusb_uuid>
 xe vusb-destroy uuid=<vusb_uuid>
 ```
-
-## GPU Passthrough
-To passthrough a complete graphics card to a VM (not virtualize it into multiple virtual vGPUs, which is different, see the vGPU section below), just follow the regular PCI passthrough instructions, no special steps are needed. Most Nvidia and AMD video cards should work without issue.  
-
-:::tip
-Previously, Nvidia would block the use of gaming/consumer video cards for passthrough (the Nvidia installer would throw an **Error 43** when installing the driver inside your VM). They lifted this restriction in 2021 with driver R465 and above, so be sure to use the latest driver. [Details from Nvidia here.](https://nvidia.custhelp.com/app/answers/detail/a_id/5173/)
-:::
-
-## vGPU
-
-### NVIDIA vGPU
-
-:::warning
-Due to a proprietary piece of code in XenServer, XCP-ng doesn't have (yet) support for NVIDIA vGPUs.
-:::
-
-### MxGPU (AMD vGPU)
-
-AMD GPU are trivial using industry standard.  
-Version 2.0 of the mxgpu iso should work on any 8.X version of XCP-ng
-
-1. Enable SR-IOV in the server's BIOS
-2. Install XCP-ng
-3. Download Citrix XenServer from AMD's Drivers & Support page. (Currently version 2.0.0 for XenServer 8.1)
-4. Copy the `mxgpu-2.0.0.amd.iso` to the host
-5. Install the supplemental pack:
-
-`cd /tmp`
-
-`xe-install-supplemental-pack mxgpu-2.0.0.amd.iso`
-
-6. Reboot the XCP-ng
-7. Assign an MxGPU to the VM from the VM properties page.  Go to the GPU section.  From the Drop down choose how big of a slice of the GPU you want on the VM and click OK
-
-Start the VM and log into the guest OS and load the appropriate guest driver from AMD's Drivers & Support page.
-
-
-> Known working cards:
-* S7150x2
 
 ## VM load balancing
 
