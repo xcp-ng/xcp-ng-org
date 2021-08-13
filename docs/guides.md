@@ -685,7 +685,7 @@ mdadm --examine --scan >> /etc/mdadm.conf
 ```
 And then edit the file to change the format of the array names from `/dev/md/0` to `/dev/md0` and remove the `name=` parameters from each line. This isn't strictly necessary but keeps the array names in the file consistent with what is reported in `/proc/mdstat` and `/proc/partitions` and avoids giving each array another name (in our case those names would be `localhost:127` and `XCP-ng:0`).
 
-So what do these lines do?  The first line instructs the system to allow or attempt automatic assembly for all arrays defined in the file. The second specifies to report errors in the system by email to the root user. The third is a list of all drives in the system participating in RAID arrays. Not all drives need to be specified on a single DEVICE line. Drives can be split among multiple lines and we could even have one DEVICE line for each drive. The last two are descriptions of each array in the system.
+So what do these lines do? The first line instructs the system to allow or attempt automatic assembly for all arrays defined in the file. The second specifies to report errors in the system by email to the root user. The third is a list of all drives in the system participating in RAID arrays. Not all drives need to be specified on a single DEVICE line. Drives can be split among multiple lines and we could even have one DEVICE line for each drive. The last two are descriptions of each array in the system.
 
 This file gives the system a description of what arrays are configured in the system and what drives are used to create them but doesn't specify what to do with them. The system should be able to use this information at boot for automatic assembly of the arrays. Booting with the `mdadm.conf` file in place is more reliable but still runs into same problems as before.
 
@@ -795,9 +795,69 @@ Another possible but rare problem is caused by drives that shift their identific
 
 This type of problem is very difficult to diagnose and correct. It may be possible to resolve it using different BIOS or setup configurations in the host system or by updating BIOS or controller firmware.
 
+### Updates and Upgrades
+
+We will eventually need to update or patch the system to fix problems or close security holes as they are discovered.
+
+Updates are patches that are applied to isolated parts of the system and replace or correct just the affected programs or data files. The patches are applied using the `yum` command from the host system's command line or via the Xen Orchestra patches tab for a host or pool. The individual update patches should not affect either the added `mdadm.conf` or `dracut_mdraid.conf` files and any rebuild of the initrd file as part of a Linux kernel update should use the configuration from those files. In general, updates should be safe to apply without risk of affecting software RAID operation.
+
+Upgrades installed by booting from CD or the equivalent via network booting are different from updates. The upgrade process replaces the entire running system by creating a backup copy of the current system into a separate disk partition then performing a full installation from the CD and makes copies of the configuration data and files from the previous system, upgrading them as needed. As part of a full upgrade, it is likely that one or both of the added RAID configuration files will not be copied from the original system to the upgraded system.
+
+Before installing an upgrade via CD, check the running RAID arrays and look for any problems with drives as follows:
+
+```
+[09:46 XCP-ng ~]# mdadm --examine --brief --scan
+ARRAY /dev/md/0  metadata=1.2 UUID=53461f34:2414371e:820f9514:008b6458 name=XCP-ng:0
+ARRAY /dev/md/127  metadata=1.0 UUID=09871a29:26fa7ce1:0c9b040a:60f5cabf name=localhost:127
+
+[09:46 XCP-ng ~]# cat /proc/mdstat
+Personalities : [raid1] [raid6] [raid5] [raid4]
+md0 : active raid5 sde[2] sdc[0] sdd[1]
+      1953260544 blocks super 1.2 level 5, 512k chunk, algorithm 2 [3/3] [UUU]
+      bitmap: 0/8 pages [0KB], 65536KB chunk
+
+md127 : active raid1 sda[0] sdb[1]
+      976762432 blocks super 1.0 [2/2] [UU]
+      bitmap: 1/8 pages [4KB], 65536KB chunk
+
+unused devices: <none>
+```
+This list shows both of the RAID arrays in the example system and shows that both are active and healthy. At this point it should be safe to shut down the host and reboot from CD to install the upgrade.
+
+When installing the upgrade, no differences from a normal upgrade process are needed to account for either the RAID 1 boot array or the RAID 5 storage array. We should only need to ensure that the installer recognizes the previous installation and that we select an upgrade instead of an installation when prompted.
+
+After the upgrade has finished and the host system reboots, there may be problems with recognizing one or both of the RAID arrays. It is very unlikely that there will be a problem with the `md127` RAID 1 boot array with the most likely problem being the array operating with only one drive. Problems with the RAID 5 storage array are more likely but not common with the most likely problems being drives missing from the array or the array failing to activate. 
+
+Once the host system has rebooted, check whether the `mdadm.conf` and `dracut_mdraid.conf` files are still in the correct locations and have the correct contents. It is possible that one or both of the files have been retained; in a test upgrade from XCP-ng version 8.2 to version 8.2 on the example system, the `mdadm.conf` file was preserved as part of the upgrade while the `dracut_mdraid.conf` file was not.
+
+Missing files can be copies from the previous system by mounting the partition containing the saved copy. If not using a software RAID 1 system drive we would need to mount the second partition of the disk used as the system drive, most likely `/dev/sda2`.
+
+```
+[15:06 XCP-ng ~]# mount /dev/md127p2 /mnt
+```
+We then copy one or both files from the original system to the correct locations in the upgraded system using one or both of the commands:
+
+```
+[15:08 XCP-ng ~]# cp /mnt/etc/dracut.conf.d/dracut_mdraid.conf /etc/dracut.conf.d/
+[15:08 XCP-ng ~]# cp /mnt/etc/mdadm.conf /etc/
+```
+
+After copying the files, we unmount the original system then create a new initrd file which will contain the RAID configuration files.
+
+```
+[15:10 XCP-ng ~]# umount /mnt
+[15:10 XCP-ng ~]# dracut --force -M /boot/initrd-$(uname -r).img $(uname -r)
+```
+
+If the `mdadm.conf` or `dracut_mdraid.conf` files are damaged or cannot be copied from the backup copy of the system, it should be possible to create new copies of the files by following the instructions for creating them as part of an installation then using the above `dracut` command to create an updated initrd file.
+
+After the rebuilding of the initrd file has finished, it should be safe to reboot the host system. At this point, the system should start and run normally.
+
+In some cases it is also possible to perform an upgrade using `yum` instead of booting from CD. This type of upgrade does not completely replace the running system and does not create a backup copy. It is really a long series of updates instead of a full replacement. When upgrading a system using `yum`, the `mdadm.conf` and `dracut_mdraid.conf` files should remain in place just as with updates but copies of the files should be saved before the upgrade just in case.
+
 ### More and Different
 
-So what if we don't have or don't want a system that's identical to the example we just built in these instructions?  Here are some of the possible and normal variations of software RAID under XCP-ng.
+So what if we don't have or don't want a system that's identical to the example we just built in these instructions? Here are some of the possible and normal variations of software RAID under XCP-ng.
 
 #### No preexisting XCP-ng RAID 1
 
