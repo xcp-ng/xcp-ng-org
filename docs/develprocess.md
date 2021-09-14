@@ -1,4 +1,4 @@
-# Development process tour
+# Development Process Tour
 
 In this document, we will try to give you an overview of the development process as well as guides or pointers to help take part in it.
 
@@ -46,7 +46,10 @@ Here's a tree that represents the structure:
     │   │       └── repodata
     │   ├── testing
     │   └── updates
-    └── 8.1
+    │
+    ├── 8.1
+    ├── 8.2
+    └── ...
 ```
 `base` is enabled by default. It contains:
 * the RPMs as they were in the installation ISO for XCP-ng 8.0,
@@ -198,7 +201,7 @@ More about RPM:
 ### Where to find our source RPMs
 Two places.
 
-1. As SRPM files (`.src.rpm`), they are all available in our RPM repositories at <https://updates.xcp-ng.org/>. Example: <https://updates.xcp-ng.org/7/7.6/base/Source/SPackages/>.
+1. As SRPM files (`.src.rpm`), they are all available in our RPM repositories at <https://updates.xcp-ng.org/>. Example: <https://updates.xcp-ng.org/8/8.2/base/Source/SPackages/>.
 
 2. All RPMs built by us have been built from one of the git repositories at <https://github.com/xcp-ng-rpms/>, containing the spec file and sources. The name of the repository matches that of the source package. `git-lfs` is required for cloning from and committing to them, because we use it to store the source tarballs.
 
@@ -237,11 +240,28 @@ In order to understand how Koji works, one needs to explain a few concepts: pack
 
 #### Packages, builds and RPMs
 
-* **RPM**: a **RPM** designates a specific RPM file: `xenopsd-0.66.0-1.1.xcpng.x86_64.rpm`.
-* **Build**: that RPM belongs to a **build**, which groups a SRPM with all the RPMs it produced, and is identified by the name of the SRPM, without the `.src.rpm` part: `xenopsd-0.66.0-1.1.xcpng`.
-* **Package**: the build belongs to a **package**: `xenopsd`.
+* **RPM**: a **RPM** designates a specific RPM file: `xenopsd-0.150.5-1.1.xcpng8.2.x86_64.rpm`. This is what we install in XCP-ng ultimately.
+* **Build**: that RPM belongs to a **build**, which groups a Source RPM (SRPM) with all the RPMs it produced, and is identified by the name of the SRPM, without the `.src.rpm` part: `xenopsd-0.66.0-1.1.xcpng`.
+* **Package**: the build belongs to a **package**: `xenopsd`. A package has no associated files in itself: it's just the parent of all builds that belong to it, in Koji's database.
 
-This can be seen in this build information page: <https://koji.xcp-ng.org/buildinfo?buildID=663>. The package is visible as "Package Name" (you can click on it to see the package view) and the RPMs (SRPM and regular RPMs) are visible under the "RPMs" section.
+This can be seen in the information page for a given build: <https://koji.xcp-ng.org/buildinfo?buildID=2080>. The package is visible as "Package Name" (you can click on it to see the package view) and the RPMs (Source RPM and regular RPMs) are visible under the "RPMs" section.
+
+Represented as a tree:
+```
+package
+├── build: package-version-release
+│   ├── Source RPM: package-version-release.src.rpm
+│   ├── RPM: package-version-release.arch.rpm
+│   ├── (RPM: package-foo-version-release.arch.rpm)
+│   └── (RPM: package-bar-version-release.arch.rpm)
+├── another build: package-anotherversion-release
+│   ├── Source RPM: package-anotherversion-release.src.rpm
+│   ├── RPM: package-anotherversion-release.arch.rpm
+│   ├── (RPM: package-foo-anotherversion-release.arch.rpm)
+│   └── (RPM: package-bar-anotherversion-release.arch.rpm)
+├── yet another build...
+...
+```
 
 Take the time to assimilate this, because it will be used in the rest of this document.
 
@@ -251,26 +271,26 @@ The way to define the workflow in koji is by defining **tags**. This is the tric
 
 I'll try to explain.
 
-*Packages* (as defined above) can be associated with tags. For example we tagged the [xenopsd](https://koji.xcp-ng.org/packageinfo?packageID=409) package with tag `V7.6` in order to signify "this package is present in XCP-ng 7.6". It does not achieve much per se but it is necessary for what follows: tagging builds.
+*Packages* can be associated with tags. For example we tagged the [xenopsd](https://koji.xcp-ng.org/packageinfo?packageID=409) package with tag `V8.2` in order to signify "this package is present in XCP-ng 8.2". It does not achieve much per se but it is necessary for what follows: tagging builds.
 
-*Builds* (as defined above) can be associated with tags too, and that is much more useful. However you cannot tag a build if the package the build belongs to is not tagged itself with that tag, so we need to tag packages first. Or with a tag that is a parent of the latter. Oh yeah, did I mention that tags can inherit other tags? An example will help: tag `v7.6-testing` inherits its ancestor tag `V7.6`. Since `xenopsd` belongs to `V7.6`, we can tag the `xenopsd-0.66.0-1.1.xcpng` build with tag `v7.6-testing`.
+*Builds* can be associated with tags too, and that is much more useful. However you cannot tag a build if the package the build belongs to is not tagged itself with that tag, so we need to tag packages first. Or with a tag that is a parent of the latter. Oh yeah, did I mention that tags can inherit other tags? An example will help: tag `v8.2-updates` inherits its ancestor tag `V8.2`. Since `xenopsd` belongs to `V8.2`, we can tag the [`xenopsd-0.150.5-1.1.xcpng8.2`](https://koji.xcp-ng.org/buildinfo?buildID=2080) build with tag `v8.2-updates`.
 
-In our Koji, here's the inheritance chain of tags for a fictitious 8.x release:
+In our Koji, here's the inheritance chain of tags (example release taken: 8.2):
 ```
-V8.x (packages)
-  v8.x-base (builds)
-    v8.x-updates (builds)
-      v8.x-testing (builds)
+V8.2 (packages)
+  v8.2-base (builds)
+    v8.2-updates (builds)
+      v8.2-testing (builds)
 ```
-* `V8.x` is associated to all the packages used in XCP-ng 8.x, either as installed packages on servers or as build dependencies in Koji. Notice the capslock V which is a convention I'll try to follow to identify tags that are specifically associated to *packages*, not *builds*.
-* `v8.x-base` inherits `V8.x` so we were able to associate it to all the builds in base XCP-ng 8.x. The `base` RPM repository for 8.x is exported from this tag.
-* `v8.x-updates` inherits `v8.x-base` which means it contains all builds from `v8.x-base` plus builds specifically tagged `v8.x-updates`. Those are exported to the `updates` RPM repository for 8.x.
-* `v8.x-testing` inherits `v8.x-updates` so it contains all builds from `v8.x-base`, all builds from `v8.x-updates` and builds specifically tagged `v8.x-testing`. Why? As we will see below with build targets, this allows to make any released update taken into account when pulling dependencies for building packages in `v8.x-testing`. Builds specifically tagged `v8.x-testing` are exported to the `testing` RPM repository for 8.x.
+* `V8.2` is associated to all the packages used in XCP-ng 8.2, either as installed packages on servers or as build dependencies in Koji. Notice the capslock V which is a convention we follow to identify tags that are specifically associated with *packages*, not *builds*.
+* `v8.2-base` inherits `V8.2` so we were able to associate it to all the builds in base XCP-ng 8.x. The `base` RPM repository for 8.2 is exported from this tag.
+* `v8.2-updates` inherits `v8.2-base` which means it contains all builds from `v8.2-base` plus builds specifically tagged `v8.2-updates`. Those are exported to the `updates` RPM repository for 8.2.
+* `v8.2-testing` inherits `v8.2-updates` so it contains all builds from `v8.2-base`, all builds from `v8.2-updates` and builds specifically tagged `v8.2-testing`. Why? So that any new build targeted at `v8.2-testing` can pull its build dependencies from released updates rather than just from the older packages in the base repository. Builds specifically tagged `v8.2-testing` are exported to the `testing` RPM repository for 8.2.
 
 #### Build targets
 When you ask Koji to start a build, you **must** specify a build target.
 
-Actually, in the examples above, `xenopsd-0.66.0-1.1.xcpng` was automatically tagged `v7.6-testing` by koji when it was built because of another concept of Koji: **build targets**. That was not a manual operation. From XCP-ng 8.0 onwards, the only builds that we tag manually are packages imported from CentOS or EPEL. Everything that is built by Koji gets a tag depending on the *build target*'s destination tag.
+Actually, in the examples above, `xenopsd-0.150.5-1.1.xcpng8.2` was automatically tagged `v8.2-testing` by koji when it was built because of another concept of Koji: **build targets**. That was not a manual operation (however, we moved it manually afterwards to `v8.2-updates`, once the testing was over). The only builds that we tag manually are packages imported from CentOS or EPEL. Everything that is built by Koji gets a tag depending on the *build target*'s destination tag.
 
 A build target is defined by:
 * a name
@@ -278,45 +298,49 @@ A build target is defined by:
 * a destination tag
 
 Example:
-* build target name: `v8.x-testing`
-* build tag: `v8.x-testing`
-* destination tag: `v8.x-testing`
+* build **target** name: `v8.2-testing`
+* build tag: `v8.2-testing`
+* destination tag: `v8.2-testing`
 
-(Yeah, sorry, I named the target the same as the tags it relies on, I hope it will not confuse you). So, this build target will pull dependencies from an internal RPM repository that contains all the RPMs from builds that belong to the `v8.x-testing` tag (including those inherited from `v8.x-base` and `v8.x-updates`). Then once a build task finishes, it will tag the resulting build with the destination tag, here `v8.x-testing`. Here build tag and destination tag are the same, so this means that any build with the `v8.x-testing` target will be itself added to the `v8.x-testing` tag immediately after the build, so the next builds with the same target will be able to use it as a dependency (chained builds).
+(Yeah, sorry, we named the target the same as the tags it relies on. We hope it will not be confusing). So, this build target will pull dependencies from an internal (to Koji) RPM repository that contains all the RPMs from builds that belong to the `v8.2-testing` tag (including those inherited from `v8.2-base` and `v8.2-updates`). Then once a build task finishes, it will tag the resulting build with the destination tag we defined for the target, here `v8.2-testing`. Here build tag and destination tag are the same, so this means that any build with the `v8.2-testing` target will be itself added to the `v8.2-testing` tag immediately after the build, so the next builds with the same target will be able to use it as a build dependency (chained builds).
 
 Another (fictitious) example:
 * build target name: `v8.x-sandbox`
 * build tag: `v8.x-testing`
 * destination tag: `v8.x-sandbox`
 
-Here build tag and destination tag are different. Possible cause: we don't want packages built by other people in the sandbox to influence our own builds to it. This is a fictitious situation just to explain the concepts of build tag and destination tag.
+This is just to show that build tag and destination tag **can** be different. Build dependencies will be pulled from `v8.x-testing` and the result will be put in `v8.x-sandbox`. This means that builds to the sandbox will never use packages that are already in the sandbox as build dependencies. Why would we do that? To guarantee that builds made in the sandbox are never influenced by other builds made there, possibly by other users. This is a fictitious situation, just to illustrate the concepts of build tag and destination tag.
 
 ### Build and release process
-Here's how to update a package in XCP-ng, step by step. This process requires writing rights on the git repository corresponding to the package at <https://github.com/xcp-ng-rpms/> and submit rights in Koji. Others are invited to fork one the repositories at <https://github.com/xcp-ng-rpms/>, test their builds with <https://github.com/xcp-ng/xcp-ng-build-env> and then create pull requests. Reading the steps below will still be useful to you to help make appropriate changes.
+Here's how to update a package in XCP-ng, step by step. This process requires writing rights on the git repository corresponding to the package at <https://github.com/xcp-ng-rpms/> and submit rights in Koji. Others are invited to fork one the repositories at <https://github.com/xcp-ng-rpms/>, [build RPMs locally in our build container](#local-rpm-build), and then create pull requests. Reading the steps below will still be useful to you to help make appropriate changes.
 
-This applies only to packages that we build in Koji. Most packages from CentOS, for example, are not built in Koji: SRPMs and RPMs are imported directly from CentOS into our Koji instance.
+This applies only to packages that we build in Koji. There are also packages that are not built in Koji. Most packages from CentOS, for example, are imported directly from CentOS into our Koji instance.
 
 Let's go:
+
+#### 0. Install and setup Koji
+In order not to overload this section with information, the instructions are available in another section of this document: [Koji initial setup](#koji-initial-setup).
+
 #### 1. Package
 * Make sure `git-lfs` is installed.
 * Clone or update your local copy of the relevant repository at <https://github.com/xcp-ng-rpms/> (one per package).
-* Switch to the branch that corresponds to the release of XCP-ng you target, e.g. `git checkout 7.6` for XCP-ng 7.6. If you target several releases of XCP-ng, you'll have to make your changes to several branches and start several builds.
+* Switch to the branch that corresponds to the release of XCP-ng you target, e.g. `git checkout 8.2` for XCP-ng 8.2. If you target several releases of XCP-ng, you'll have to make your changes to several branches and start several builds.
 * Create a temporary work branch from that branch.
 * Make your changes to the `.spec` file, sources and/or patches. Follow the [RPM Packaging Guidelines](https://github.com/xcp-ng/xcp/wiki/RPM-Packaging-guidelines).
 * Commit and push
 
 #### 2. Test build
-* Choose a [build target](https://koji.xcp-ng.org/buildtargets). If the target release is an already released XCP-ng that is in maintenance phase, you will choose `v{VERSION}-testing`, for example `v7.6-testing`. For a development release of XCP-ng, you'll probably choose `v{VERSION}-base` instead.
+* Choose a [build target](https://koji.xcp-ng.org/buildtargets). If the target release is an already released XCP-ng that is in maintenance phase, you will choose `v{VERSION}-testing`, for example `v8.2-testing`. For a development release of XCP-ng, you'll probably choose `v{VERSION}-base` instead.
 * Use Koji's `--scratch` option to build the RPMs without pushing them to any RPM repository.
   * `koji build --scratch {BUILD_TARGET} git+https://github.com/xcp-ng-rpms/{PACKAGE_NAME}?#{COMMIT_HASH}`
-    * For a useful history, `{COMMIT_HASH}` must be a commit hash, not a branch name. Commit hashes are stable, branches are a moving target.
+    * For a useful history, `{COMMIT_HASH}` must be a commit hash, not a branch name. Commit hashes are stable, branches are moving targets.
 * If it fails, consult the build logs in [Koji's web interface](https://koji.xcp-ng.org/).
 * Ask for help if the build error is something that you can't act upon.
 * Once you got a successful build, test it in your test environment (for example a nested XCP-ng VM or better yet a test pool). Look at the list of built RPMs, identify those that are updates to RPMs on the system, and install them. If additional RPMs produced by the build deserve testing, test them too.
 
 #### 3. Review and merge
 * If you created several commits, consider squashing them into one unless it really makes sense to keep a separate history. If having several commits resulted from trials and errors, it's usually better to squash them into one single clean commit with a descriptive commit message.
-* If you are the official maintainer for that package, rebase your work branch on top of the target branch (e.g. `git rebase 7.6`), then merge your branch on the target branch. This will result in your commits being the last on top of the target branch even if someone pushed other commits to that branch while you were working.
+* If you are the official maintainer for that package, rebase your work branch on top of the target branch (e.g. `git rebase 8.2`), then merge your branch on the target branch. This will result in your commits being the last on top of the target branch even if someone pushed other commits to that branch while you were working.
 * If you are not the official maintainer, **create a pull request**. Your commit message should already explain why the change is needed. In addition to that, **link to the successful build result**, tell which RPMs you have **tested** from the build (no need to test `-devel` packages at this stage) and what you have tested. Even when a package requires some specific configuration or hardware, you can usually check that installing it causes no packaging conflicts, and no obvious runtime regression. If it is an update, you can also check that the update applies cleanly, that scripts or configuration reloading tasks that are meant to fire during the update are executed, etc.
 
 #### 4. Official build
@@ -325,7 +349,7 @@ Let's go:
 * Wait a few minutes for the RPMs to reach the RPM repositories at <https://updates.xcp-ng.org/>
 
 #### 5. Post-build tasks
-* Test that you can update a host from the repositories: look at the list of built RPMs, identify those that are updates to RPMs on the system, and update them with `yum update {PACKAGE1} {PACKAGE2} {...} --enablerepo='xcp-ng-testing'` (or `--enablerepo='xcp-ng-updates_testing'` for XCP-ng <= 7.6).
+* Test that you can update a host from the repositories: look at the list of built RPMs, identify those that are updates to RPMs on the system, and update them with `yum update {PACKAGE1} {PACKAGE2} {...} --enablerepo='xcp-ng-testing'`.
 * Check for obvious regressions (breakages in basic functionalities).
 
 Then, if it is an **update candidate** for an existing package:
@@ -488,7 +512,7 @@ Through our RPM repositories (configured by default on the hosts for `yum` to in
 
 ### Module Updates
 
-This section discusses the kind of updates kernel modules can receive during the maintenance cycle of a given release of XCP-ng (e.g. XCP-ng 7.6). For information about the general update process, see [Updates Howto](updates.md).
+This section discusses the kind of updates kernel modules can receive during the maintenance cycle of a given release of XCP-ng (e.g. XCP-ng 8.2). For information about the general update process, see [Updates Howto](updates.md).
 
 Updates for *supported modules* are offered automatically when one updates their host. In order to avoid risks of regression, they are usually only updated if there's an important bug to fix, or a security issue with them... Until the next upgrade of XCP-ng.
 
@@ -524,7 +548,7 @@ If the RPM contains several modules (to be avoided), then find an unambiguous na
 
 ##### Exceptions: `kmod` packages
 
-When we import third-party RPMs that build kernel modules, we may choose to keep the original names in order to minimize spec file changes. Examples that fall in that category: `kmod-zfs-{kernel_version}` and `kmod-spl-{kernel_version}`. Their name depends on the version of the kernel. In XCP-ng 7.6, they are named `kmod-zfs-4.4.0+10` and `kmod-spl-4.4.0+10`.
+When we import third-party RPMs that build kernel modules, we may choose to keep the original names in order to minimize spec file changes. Examples that fall in that category: `kmod-zfs-{kernel_version}` and `kmod-spl-{kernel_version}`. Their name depends on the version of the kernel. In XCP-ng 8.2, they are named `kmod-zfs-4.19.0+1` and `kmod-spl-4.19.0+1`.
 
 #### Alternate modules
 
@@ -806,7 +830,7 @@ To achieve this:
 From the `iso/` directory:
 ```
 OUTPUT=/path/to/destination/iso/file # change me
-VERSION=7.6 # change me
+VERSION=8.2 # change me
 genisoimage -o $OUTPUT -v -r -J --joliet-long -V "XCP-ng $VERSION" -c boot/isolinux/boot.cat -b boot/isolinux/isolinux.bin \
             -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/efiboot.img -no-emul-boot .
 isohybrid --uefi $OUTPUT
@@ -990,3 +1014,65 @@ sync;fio --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=test
 * Windows VM from an upgraded pool, with older guest drivers not updated
 * Update existing Windows guest drivers
 * Installation of guest drivers on new Windows VM
+
+
+## Koji initial setup
+
+### Certificates
+Once accepted as a proven packager or as an apprentice, you will receive your connection certificate as well as the server's CA public certificate:
+```
+client.crt # your certificate
+serverca.crt
+clientca.crt
+```
+
+Copy them to `~/.koji/` (create it if it doesn't exist yet).
+Make sure not to lose them and to not let anyone put their hands on them.
+
+You may also receive a browser certificate for the connection to Koji's web interface. It has little use, though. Unless you have admin rights, the only actions available are cancelling and resubmitting builds, which you can already do with the `koji` CLI tool.
+```
+{login}_browser_certificate.p12
+```
+You need to import it into your web browser's certificate store and then use it when you log in to <https://koji.xcp-ng.org/>
+
+### Installing koji
+If your Linux distribution provides `koji` in its repositories (e.g. Fedora, CentOS or Mageia), simply install it from there. Else you can either run it from a container, or clone it from <https://pagure.io/koji>, then run it from there with something like `PYTHONPATH=$(realpath .):/usr/lib/python3.5/site-packages/ cli/koji help`. If it fails, you probably need to install additional python dependencies.
+
+### Configuring koji
+Put this in `~/.koji/config`:
+```
+[koji]
+
+;url of XMLRPC server
+server = https://kojihub.xcp-ng.org
+
+;url of web interface
+weburl = http://koji.xcp-ng.org
+
+;url of package download site
+topurl = http://koji.xcp-ng.org/kojifiles
+
+;path to the koji top directory
+topdir = /mnt/koji
+
+; configuration for SSL authentication
+
+;client certificate
+cert = ~/.koji/client.crt
+
+;certificate of the CA that issued the HTTP server certificate
+serverca = ~/.koji/serverca.crt
+```
+
+In some cases, we've found that the configuration file in ~/.koji was not used. Solution: `cp ~/.koji /etc/koji.conf`.
+
+### Test your connection
+`koji moshimoshi`. If it greats you (in any language), then your connection to the server works.
+
+### Useful commands
+
+Just a quick list. Make sure to have read and understood [Development process tour](develprocess.md).
+
+* Get help about the commands: `koji help` or `koji {command name} --help`.
+* Start a build: `koji build [--scratch] {target} {SCM URL}`
+* List the builds in a tag: `koji list-tagged {tag name}`
