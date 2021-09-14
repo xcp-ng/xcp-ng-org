@@ -4,7 +4,7 @@ There are two ways of contributing:
 * by giving some of your time to work on the project (support, documentation, development...)
 * with money, by subscribing to [Pro Support](https://xcp-ng.com/), which funds further developments.
 
-## Helping others
+## Help others
 
 You don't have to be a programmer/IT-nerd to help at this project. Just ask or offer your help:
 
@@ -13,20 +13,13 @@ You don't have to be a programmer/IT-nerd to help at this project. Just ask or o
 
 We are happy about every helping hand!
 
-## Documentation
+## Write documentation
 
 Contribute to our documentation with pull requests modifying the files at <https://github.com/xcp-ng/xcp-ng-org/tree/master/docs>
 
-## Developing
+If you're not familiar will pull requests, but can also simply click the "Help us to improve this page" link at the bottom of any page of the documentation, which will offer a modification form and create a pull request for you.
 
-You are a developer and want to code with us? Cool!
-
-* Connect to us via
-    * IRC: #xcp-ng and #xcp-ng-dev on irc.freenode.net
-    * Forum -> Development Corner: <https://xcp-ng.org/forum/category/7/development>
-* Scroll through our open [Issues](https://github.com/xcp-ng/xcp/issues) to find your first project 🔨
-
-## Testing
+## Test
 
 It's important to test XCP-ng on many different platforms and devices. You have gear laying around or access to some special devices? -> be a tester and test all the features of XCP-ng 🚀
 
@@ -34,68 +27,30 @@ Your results are very welcome in our [Hardware Compatibility List (HCL)](hardwar
 
 It's also important to test Operating Systems on XCP-ng. You have fun to install different Operating Systems? -> great! Test them all on XCP-ng!
 
+Most community testing is organized on the forum, on dedicated threads.
+* Watch the [thread dedicated to update candidates on stable releases](https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing) (and make sure you enable mail notifications in your forum settings).
+* Check beta and RC announcements for new releases of XCP-ng [on the forum](https://xcp-ng.org/forum), and provide feedback before the final releases. Usually announced in the [News](https://xcp-ng.org/forum/category/11/news) section.
+* Check other topics created by our developers who look for feedback about new features. Topics usually created in the [Development](https://xcp-ng.org/forum/category/7/development) section.
 
-## RPM Packaging
+You can also read [this](develprocess.md#tests) for test ideas.
 
-See [Development process tour](develprocess.md) for an introduction about the packaging process and Koji.
+## Develop
 
-### Koji initial setup
+You are a developer and want to code with us? Cool!
 
-#### Certificates
-Once accepted as a proven packager or as an apprentice, you will receive your connection certificate as well as the server's CA public certificate:
-```
-client.crt # your certificate
-serverca.crt
-clientca.crt
-```
+There are many components, in various languages: C, ocaml, python and more.
 
-Copy them to `~/.koji/` (create it if it doesn't exist yet).
-Make sure not to lose them and to not let anyone put their hands on them.
+* Connect with us via
+    * IRC: #xcp-ng and #xcp-ng-dev on irc.freenode.net
+    * Forum -> Development Corner: <https://xcp-ng.org/forum/category/7/development>
+* Read [this introduction](develprocess.md#development). The rest of the [Development Process Tour](develprocess.md) is also of interest for anyone who wants to help on development.
 
-You may also receive a browser certificate for the connection to Koji's web interface. It has little use, though. Unless you have admin rights, the only actions available are cancelling and resubmitting builds, which you can already do with the `koji` CLI tool.
-```
-{login}_browser_certificate.p12
-```
-You need to import it into your web browser's certificate store and then use it when you log in to <https://koji.xcp-ng.org/>
+## Package
 
-#### Installing koji
-If your Linux distribution provides `koji` in its repositories (e.g. Fedora, CentOS or Mageia), simply install it from there. Else you can either run it from a container, or clone it from <https://pagure.io/koji>, then run it from there with something like `PYTHONPATH=$(realpath .):/usr/lib/python3.5/site-packages/ cli/koji help`. If it fails, you probably need to install additional python dependencies.
+Development is one thing, but for your changes to reach actual users, they need to be packaged into RPMs.
 
-#### Configuring koji
-Put this in `~/.koji/config`:
-```
-[koji]
+See the [Development Process Tour](develprocess.md) for an introduction about the packaging process, and useful tips (like: [how to rebuild a RPM for XCP-ng locally](develprocess.md#local-rpm-build)).
 
-;url of XMLRPC server
-server = https://kojihub.xcp-ng.org
+## Talk about us
 
-;url of web interface
-weburl = http://koji.xcp-ng.org
-
-;url of package download site
-topurl = http://koji.xcp-ng.org/kojifiles
-
-;path to the koji top directory
-topdir = /mnt/koji
-
-; configuration for SSL authentication
-
-;client certificate
-cert = ~/.koji/client.crt
-
-;certificate of the CA that issued the HTTP server certificate
-serverca = ~/.koji/serverca.crt
-```
-
-In some cases, we've found that the configuration file in ~/.koji was not used. Solution: `cp ~/.koji /etc/koji.conf`.
-
-#### Test your connection
-`koji moshimoshi`. If it replies to you (in any language), then your connection to the server works.
-
-#### Useful commands
-
-Just a quick list. Make sure to have read and understood [Development process tour](develprocess.md).
-
-* Get help about the commands: `koji help` or `koji {command name} --help`.
-* Start a build: `koji build [--scratch] {target} {SCM URL}`
-* List the builds in a tag: `koji list-tagged {tag name}`
+Another valuable way to help is by talking about XCP-ng to people you know or to your audience.
