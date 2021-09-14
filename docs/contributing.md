@@ -54,3 +54,41 @@ See the [Development Process Tour](develprocess.md) for an introduction about th
 ## Talk about us
 
 Another valuable way to help is by talking about XCP-ng to people you know or to your audience.
+
+## Developer Certificate of Origin (DCO)
+
+As a member of the Linux Foundation, XCP-ng asks that every contributor certifies that they are allowed to contribute the code or documentation they submit to us. This is done with a simple
+```
+Signed-off-by: Full Name <email>
+````
+line added at the end of the commit message. Git even has an option to add it for you: `git commit -s`. By adding this mention to your commit message, you state that you agree to the terms published at <https://developercertificate.org/> (and also written below) for that contribution.
+
+```
+Developer's Certificate of Origin 1.1
+
+By making a contribution to this project, I certify that:
+
+(a) The contribution was created in whole or in part by me and I
+    have the right to submit it under the open source license
+    indicated in the file; or
+
+(b) The contribution is based upon previous work that, to the best
+    of my knowledge, is covered under an appropriate open source
+    license and I have the right under that license to submit that
+    work with modifications, whether created in whole or in part
+    by me, under the same open source license (unless I am
+    permitted to submit under a different license), as indicated
+    in the file; or
+
+(c) The contribution was provided directly to me by some other
+    person who certified (a), (b) or (c) and I have not modified
+    it.
+
+(d) I understand and agree that this project and the contribution
+    are public and that a record of the contribution (including all
+    personal information I submit with it, including my sign-off) is
+    maintained indefinitely and may be redistributed consistent with
+    this project or the open source license(s) involved.
+```
+
+DCO is enforced for every repository under the GitHub [`xcp-ng`](https://github.com/xcp-ng) and [`xcp-ng-rpms`](https://github.com/xcp-ng-rpms) organizations.
