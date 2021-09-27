@@ -1,7 +1,34 @@
 # VM
 ## Windows VM
 ### Manage screen resolution
+#### Bios VM
+For Bios VM screen resolution can be managed directly through the OS:
+- Right click on the desktop
+- Display settings
+- Choose resolution
 
+#### UEFI VM
+
+For UEFI VM you will need to set up your resolution in the UEFI settings of the VM.
+For that you first will need to enter the VM UEFI setup:
+- At VM start during Tiano firware logo display press ESC.
+  
+![](../assets/img/screenshots/VM_Tiano.png)
+- You will enter The UEFI firmware management interface. Navigating with keyboard arrow select Device Manager and press enter.
+  
+![](../assets/img/screenshots/VM_Tiano_1.png)
+
+- in  the next screen select OVMF platform configuration
+  
+![](../assets/img/screenshots/VM_Tiano_2.png)
+
+-In the OVMF settings Change Preferred to the resolution you want.
+
+![](../assets/img/screenshots/VM_Tiano_3.png)
+- Press F10 and save the changes.
+- Restart your VM by sending a CTRL+ALT+DEL.
+- After reboot your VM will display the selected resolution.
+  
 # Guest tools
 
 XCP-ng needs guest tools to be installed in the VMs in order to communicate with the guest operating system. This brings better performance and is required for various features.
