@@ -8,7 +8,8 @@ module.exports = {
   themeConfig: {
     smoothScroll: false,
     logo: 'https://xcp-ng.org/assets/img/smalllogo_notext.png',
-    lastUpdated: 'Last Updated', // add latest Git commit modification for each file
+    // "abuse" lastUpdated label to add the License in the footer
+    lastUpdated: 'License: CC BY-SA 2.0 - Last Updated', // add latest Git commit modification for each file
     repo: 'xcp-ng/xcp-ng-org', // point to the GH repo
     editLinks: true, // display link for people to edit a page
     editLinkText: 'Help us to improve this page!', // link text
