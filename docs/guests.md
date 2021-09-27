@@ -1,3 +1,7 @@
+# VM
+## Windows VM
+### Manage screen resolution
+
 # Guest tools
 
 XCP-ng needs guest tools to be installed in the VMs in order to communicate with the guest operating system. This brings better performance and is required for various features.
