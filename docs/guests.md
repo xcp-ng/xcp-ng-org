@@ -1,13 +1,16 @@
-# VM
-## Windows VM
-### Manage screen resolution
-#### Bios VM
+---
+sidebarDepth: 2
+---
+## VM
+### Windows VM
+#### Manage screen resolution
+##### Bios VM
 For Bios VM screen resolution can be managed directly through the OS:
 - Right click on the desktop
 - Display settings
 - Choose resolution
 
-#### UEFI VM
+##### UEFI VM
 
 For UEFI VM you will need to set up your resolution in the UEFI settings of the VM.
 For that you first will need to enter the VM UEFI setup:
@@ -28,8 +31,20 @@ For that you first will need to enter the VM UEFI setup:
 - Press F10 and save the changes.
 - Restart your VM by sending a CTRL+ALT+DEL.
 - After reboot your VM will display the selected resolution.
-  
-# Guest tools
+
+#### Dynamic Memory
+
+Using Dynamic memory can be a good way to reduce your memory consumption, but you have to be careful because when migrating your VM XCP-ng will automatically reduce the VM memory to it's minimal settings and this can cause VM crash.
+
+We recommand you check your windows VM settings to see if dynamic memory as been enabled.
+In the Advanced tab of you Vm in the VM limits section, Memory limits (min/max):
+
+![](../assets/img/screenshots/Dynamic_mem.png)
+
+If dynamic min is eqaul to dynamic max as displayed in the screenshot dynamic memory is disabled.
+If not when VM will migrate the memory will be reduce to dynamic min and this can cause VM to crash 
+
+## Guest tools
 
 XCP-ng needs guest tools to be installed in the VMs in order to communicate with the guest operating system. This brings better performance and is required for various features.
 
@@ -39,7 +54,7 @@ The tools are made of two main components:
 * kernel drivers for the OS
 * a management agent
 
-## Linux
+### Linux
 
 Xen guest drivers have been built-in in the Linux kernel for many years. All currently supported Linux distributions include them.
 
@@ -49,14 +64,14 @@ Those guest tools can be installed:
 * from the target distribution's online repositories if available
 * from the Guest Tools ISO image that can be attached to any VM in XCP-ng
 
-### Install from the distro's online repositories
+#### Install from the distro's online repositories
 
 Distros often have policies that forbid enabling new services by default, so most of the time the steps are:
 * enable the appropriate repository
 * install the package from it
 * enable the service
 
-#### CentOS and Fedora
+##### CentOS and Fedora
 Enable the EPEL repository in the VM, then:
 ```
 yum install xe-guest-utilities-latest
@@ -67,7 +82,7 @@ systemctl enable xe-linux-distribution
 systemctl start xe-linux-distribution
 ```
 
-#### Alpine
+##### Alpine
 Enable the `community` repository in `/etc/apk/repositories`, then:
 ```
 apk add xe-guest-utilities
@@ -78,7 +93,7 @@ rc-update add xe-guest-utilities
 rc-service xe-guest-utilities start
 ```
 
-#### Ubuntu
+##### Ubuntu
 
 ```
 apt install xe-guest-utilities
@@ -86,9 +101,9 @@ apt install xe-guest-utilities
 
 *Feel free to add other distros to the above list if they provide the tools in their repositories.*
 
-### Install from the guest tools ISO
+#### Install from the guest tools ISO
 
-#### "Supported" Linux distributions
+##### "Supported" Linux distributions
 For distros that are supported by the `install.sh` script (Debian, CentOS, RHEL, SLES, Ubuntu...), the process is:
 * Attach the guest tools ISO to the guest from Xen Orchestra or using `xe`.
 * Then inside the VM, as root:
@@ -100,29 +115,29 @@ umount /dev/cdrom
 * No need to reboot the VM even if the script asks to. That's an old message from back when it was needed to install a kernel module in addition to the management agent. We'll get rid of it at some point.
 * Eject the guest tools ISO
 
-#### Derived Linux distributions
+##### Derived Linux distributions
 If your Linux distribution is not recognized by the installation script but derives from one that is supported by the script, you can override the detection and force the tools to install by using:
 ```
 bash /mnt/Linux/install.sh -d $DISTRO -m $MAJOR_VERSION
 ```
 Examples:
 ```
-# derived from debian 10
+## derived from debian 10
 bash /mnt/Linux/install.sh -d debian -m 10
-# derived from RHEL or CentOS 8
+## derived from RHEL or CentOS 8
 bash /mnt/Linux/install.sh -d rhel -m 8
 ```
 
 The likeliness for the installation to work correctly will depend on how much those distros differ from their "parent".
 
-#### Other Linux distributions
+##### Other Linux distributions
 For the remaining Linux distributions, mount the guest tools ISO as described above, then look for the `xe-guest-utilities_*_all.tgz` archive. Copy its contents on the system in `/etc` and `/usr`. It contains a System V init script by default but there's also a systemd unit file available on the ISO (`xe-linux-distribution.service`).
 
 See also [Contributing](guests.html#contributing) below.
 
-#### Specific cases
+##### Specific cases
 
-##### openSUSE Leap 15.2 with transactional-updates
+###### openSUSE Leap 15.2 with transactional-updates
 For the xe-daemon to start it is necessary that insserv is installed on the system. To make sure that is the case run
 ```
 sudo transactional-uptdates pkg install insserv-compat
@@ -149,12 +164,12 @@ systemctl enable xe-linux-distribution.service
 systemctl start xe-linux-distribution.service
 ```
 
-### Update the guest tools
+#### Update the guest tools
 It's a good habit, and may be even required in some cases (that would then be described in the [Release Notes](releases.md#all-releases), to update the guest tools to their latest version when your XCP-ng hosts are updated.
 
 Depending on the situation, just update from your distribution's online repositories, or follow the above installation process again.
 
-## FreeBSD
+### FreeBSD
 
 FreeBSD is a 30-year-old operating system used widely to run all sorts of systems and has served as the basis for a number of operating systems, including MacOS, pfSense, and FreeNAS. The Xen kernel modules are built and distributed in the GENERIC kernel, so if you haven't customised or recompiled your kernel, the drivers will be present.
 
@@ -174,7 +189,7 @@ By default the `xe-daemon` will run if FreeBSD detects the Xen hypervisor at boo
 
 Run `service xenguest [stop|start|restart]` to respectively stop, start, or restart the `xe-daemon`.
 
-## OpenBSD
+### OpenBSD
 
 On OpenBSD, the xen drivers are also already part of the kernel. The `install.sh` script doesn't support OpenBSD, but there are ways to install the management agent anyway.
 
@@ -182,7 +197,7 @@ On OpenBSD, the xen drivers are also already part of the kernel. The `install.sh
 For OpenBSD search [the forum](https://xcp-ng.org/forum). See for example [this thread](https://xcp-ng.org/forum/topic/2582/guest-tools-for-openbsd).
 :::
 
-## FreeNAS/TrueNAS
+### FreeNAS/TrueNAS
 
 FreeNAS is a locked-down version of FreeBSD, with many packages disabled to ensure a more stable environment for the fileserver. `xe-guest-utilities` is part of the packages that are **not** available in FreeNAS. But because it's based on FreeBSD, the packages from that OS can be installed, at your own risk. This is not a big issue for this particular package, because it's a _leaf_ in the chain of dependencies - nothing in FreeNAS depends on it.
 
@@ -235,13 +250,13 @@ To install it on versions 11 or higher, until version 12.0-U1 of TrueNAS that in
 
 More insights and options are available in [this issue](https://github.com/xcp-ng/xcp/issues/172#issuecomment-548181589) or [this issue](https://github.com/xcp-ng/xcp/issues/446).
 
-## Windows
+### Windows
 
 Windows guests need both the device drivers and the management agent.
 * The **device drivers** bring optimized I/O performances.
 * The **management agent** brings more manageability of the VM from XCP-ng, and guest metrics reporting to the host.
 
-### Citrix tools vs XCP-ng tools
+#### Citrix tools vs XCP-ng tools
 
 There exists two different set of tools that you can use on your VMs: the official tools from Citrix Hypervisor, or the fully open-source tools from XCP-ng. Both work well. The important point is **not to mix them in the same VM**.
 
@@ -260,31 +275,31 @@ XCP-ng tools:
 
 It's now up to you to choose.
 
-### XCP-ng Windows Guest Tools
+#### XCP-ng Windows Guest Tools
 Drivers built by the XCP-ng community.
 
 **Download**: <https://github.com/xcp-ng/win-pv-drivers/releases>
 
 Stability and testing status: [Windows guest tools community testing](https://github.com/xcp-ng/xcp/wiki/Windows-guest-tools-community-testing).
 
-#### How to know if tools are already installed and working
+##### How to know if tools are already installed and working
 
 The VM needs to be running for this test.
 
-##### From Xen Orchestra
+###### From Xen Orchestra
 You can see this information in the General tab of the VM view.
 * Device drivers: XO displays "Hardware virtualization with paravirtualization drivers enabled (PVHVM)" on the General tab
 * Management agent: XO displays "Management agent detected" or "Management agent version {version} detected"
 
 More detailed information can also be found in the Advanced tab.
 
-##### From command line
+###### From command line
 * Device drivers: `xe vm-param-get param-name=PV-drivers-detected uuid={VM-UUID}`
 * Management agent: `xe vm-param-get param-name=PV-drivers-version uuid={VM-UUID}` (ok if not empty)
 
-#### Installing on fresh installed Windows
+##### Installing on fresh installed Windows
 
-##### Prerequisite: Disable "Windows Update tools"
+###### Prerequisite: Disable "Windows Update tools"
 The first step, before the VM creation and first start, is to make sure than Windows Update is not going to install Citrix tools automatically at first boot. This behaviour is governed by the "Windows Update tools" parameter in a VMs advanced view. It must be off.
 
 Before creating the VM:
@@ -302,7 +317,7 @@ xe vm-param-get param-name=has-vendor-device uuid={VM-UUID}
 ```
 `True` means that it's active, `False` that it isn't. It needs to be `False`.
 
-##### Install the XCP-ng drivers
+###### Install the XCP-ng drivers
 0. snapshot before just in case
 1. unpack the ZIP file
 2. start setup.exe
@@ -314,7 +329,7 @@ xe vm-param-get param-name=has-vendor-device uuid={VM-UUID}
     * request for restart <- just restart!
     * Management Agent installed successfully <- enjoy :-)
 
-#### Upgrade from Citrix :registered: XenServer :registered: client tools
+##### Upgrade from Citrix :registered: XenServer :registered: client tools
 
 Our installer is not able currently to cleanly uninstall Citrix tools. Citrix tools' uninstaller itself isn't either: it leaves various things behind.
 
@@ -326,7 +341,7 @@ So we need to perform a complete manual clean-up of the tools:
 
 Following is the manual process.
 
-##### The confident option
+###### The confident option
 
 You can try a simple process first with some chances of success.
 
@@ -349,7 +364,7 @@ You can try a simple process first with some chances of success.
 
 **Note**: Restart can take a while if your windows is currently updating. Restart only occurs after windows has the updates finished.
 
-##### The nuclear option
+###### The nuclear option
 
 If the *confident option* above didn't yield the expected results, then we switch to a more aggressive attitude towards the old tools.
 
@@ -376,7 +391,7 @@ Help is welcome to help us reconcile both procedures into one.
 
 **Note**: Also have a look at our [Troubleshooting Guide - Windows PV-Tools](troubleshooting.html#windows-agent-pv-tools).
 
-#### VMs with INACCESSIBLE_BOOT_DEVICE error
+##### VMs with INACCESSIBLE_BOOT_DEVICE error
 
 You can try to manually inject the missing drivers in recovery mode.
 
@@ -389,30 +404,30 @@ dism /image:d:\ /add-driver /driver:e:\Drivers\xenbus\x64\xenbus.inf
 dism /image:d:\ /add-driver /driver:e:\Drivers\xenvbd\x64\xenvbd.inf
 ````
 
-### Using the Windows guest tools from Citrix
+#### Using the Windows guest tools from Citrix
 
 Tools from Citrix are not included in the guest tools ISO distributed with XCP-ng for legal reasons.
 
-#### A reminder
+##### A reminder
 As written above:
 
 > * The **device drivers** bring optimized I/O performances.
 > * The **management agent** brings more manageability of the VM from XCP-ng, and guest metrics reporting to the host.
 
-#### Management agent + device drivers
+##### Management agent + device drivers
 The only way to get the management agent is from Citrix. It can be freely downloaded from [the Citrix Hypervisor download page](https://www.citrix.com/downloads/citrix-hypervisor/), provided you create an account on their site. Name of the item: "Citrix VM Tools for Windows". The installer will install both the management agent and the device drivers.
 
-#### Automated installation via Windows Update: device drivers alone
+##### Automated installation via Windows Update: device drivers alone
 If you are using Xen Orchestra, you can switch the "Windows Update tools" advanced parameter on from the "Advanced" tab of the VM view. This will install the device drivers automatically at next reboot :warning: **but not the management agent** which still needs to be installed from Citrix tools' installer.
 
 ... So the "Windows Update tools" option is not a complete solution if you need the guest metrics from the management agent. However it may be a convenient way to get future driver updates if you wish so.
 
-#### Switching from XCP-ng tools to Citrix tools
+##### Switching from XCP-ng tools to Citrix tools
 If your VM already has XCP-ng tools and you wish to switch to Citrix tools, then you need to do the same kind of clean-up as described higher in this document for the opposite situation.
 
-### Contributing
-#### Linux / xBSD
+#### Contributing
+##### Linux / xBSD
 If you would like to contribute improvements to the `install.sh` script so that it supports your distro, create a pull request against: https://github.com/xcp-ng/xe-guest-utilities/tree/master/mk. Relevant files are usually `xe-linux-distribution` and `install.sh`.
 
-#### Windows
+##### Windows
 The XCP-ng team is looking for help in improving the guest tools installer, build process, and clean-up tools.
