@@ -17,7 +17,7 @@ For that you first will need to enter the VM UEFI setup:
 - At VM start, during Tiano firmware logo display, press ESC.
   
 ![](../assets/img/screenshots/VM_Tiano.png)
-- You will enter The UEFI firmware management interface. Navigating with keyboard arrow select Device Manager and press enter.
+- You will enter the UEFI firmware management interface. Navigating with keyboard arrows, select *Device Manager* and press Enter.
   
 ![](../assets/img/screenshots/VM_Tiano_1.png)
 
