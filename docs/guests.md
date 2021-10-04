@@ -2,7 +2,19 @@
 sidebarDepth: 2
 ---
 ## VM
-### Windows VM
+### All VMs
+#### Dynamic Memory
+
+Using Dynamic Memory Control (DMC) can be a good way to reduce your memory consumption, but you have to be careful: during live migration of a VM, XCP-ng will automatically reduce the VM memory to it's minimal settings and this can cause VM crash if it's not ready to function with this smaller amount of RAM.
+
+We recommand you check your VM settings to verify if dynamic memory has been enabled.
+In Xen Orchestra, the *Advanced* tab of your VM will display the memory limits, in the "VM limits" section:
+
+![](../assets/img/screenshots/Dynamic_mem.png)
+
+If dynamic min is equal to dynamic max - as displayed in the screenshot - then dynamic memory is disabled.
+If dynamic min < dynamic max, then make sure your VM is able to fully function with as little RAM as defined in *dynamic min*.
+### Windows VMs
 #### Manage screen resolution
 ##### Bios VM
 For a Bios VM, screen resolution can be managed directly through the OS:
@@ -31,18 +43,6 @@ For that you first will need to enter the VM UEFI setup:
 - Press F10 and save the changes.
 - Restart your VM by sending a CTRL+ALT+DEL.
 - After reboot your VM will display the selected resolution.
-
-#### Dynamic Memory
-
-Using Dynamic Memory Control (DMC) can be a good way to reduce your memory consumption, but you have to be careful: during live migration of a VM, XCP-ng will automatically reduce the VM memory to it's minimal settings and this can cause VM crash if it's not ready to function with this smaller amount of RAM.
-
-We recommand you check your VM settings to verify if dynamic memory has been enabled.
-In Xen Orchestra, the *Advanced* tab of your VM will display the memory limits, in the "VM limits" section:
-
-![](../assets/img/screenshots/Dynamic_mem.png)
-
-If dynamic min is equal to dynamic max - as displayed in the screenshot - then dynamic memory is disabled.
-If dynamic min < dynamic max, then make sure your VM is able to fully function with as little RAM as defined in *dynamic min*.
 
 ## Guest tools
 
