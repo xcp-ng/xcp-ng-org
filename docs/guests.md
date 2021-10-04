@@ -36,7 +36,7 @@ For that you first will need to enter the VM UEFI setup:
 
 Using Dynamic memory can be a good way to reduce your memory consumption, but you have to be careful because when migrating your VM XCP-ng will automatically reduce the VM memory to it's minimal settings and this can cause VM crash.
 
-We recommand you check your windows VM settings to see if dynamic memory as been enabled.
+We recommand you check your VM settings to verify if dynamic memory has been enabled.
 In the Advanced tab of you Vm in the VM limits section, Memory limits (min/max):
 
 ![](../assets/img/screenshots/Dynamic_mem.png)
