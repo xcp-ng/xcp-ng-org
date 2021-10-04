@@ -14,7 +14,7 @@ For a Bios VM, screen resolution can be managed directly through the OS:
 
 For a UEFI VM, you will need to set up your resolution in the UEFI settings of the VM.
 For that you first will need to enter the VM UEFI setup:
-- At VM start during Tiano firware logo display press ESC.
+- At VM start, during Tiano firmware logo display, press ESC.
   
 ![](../assets/img/screenshots/VM_Tiano.png)
 - You will enter The UEFI firmware management interface. Navigating with keyboard arrow select Device Manager and press enter.
