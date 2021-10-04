@@ -21,7 +21,7 @@ For that you first will need to enter the VM UEFI setup:
   
 ![](../assets/img/screenshots/VM_Tiano_1.png)
 
-- in  the next screen select OVMF platform configuration
+- In  the next screen select *OVMF platform configuration*.
   
 ![](../assets/img/screenshots/VM_Tiano_2.png)
 
