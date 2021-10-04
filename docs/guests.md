@@ -42,7 +42,7 @@ In Xen Orchestra, the *Advanced* tab of your VM will display the memory limits, 
 ![](../assets/img/screenshots/Dynamic_mem.png)
 
 If dynamic min is equal to dynamic max - as displayed in the screenshot - then dynamic memory is disabled.
-If not when VM will migrate the memory will be reduce to dynamic min and this can cause VM to crash 
+If dynamic min < dynamic max, then make sure your VM is able to fully function with as little RAM as defined in *dynamic min*.
 
 ## Guest tools
 
