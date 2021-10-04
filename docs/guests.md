@@ -5,7 +5,7 @@ sidebarDepth: 2
 ### Windows VM
 #### Manage screen resolution
 ##### Bios VM
-For Bios VM screen resolution can be managed directly through the OS:
+For a Bios VM, screen resolution can be managed directly through the OS:
 - Right click on the desktop
 - Display settings
 - Choose resolution
