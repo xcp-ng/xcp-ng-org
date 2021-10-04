@@ -25,7 +25,7 @@ For that you first will need to enter the VM UEFI setup:
   
 ![](../assets/img/screenshots/VM_Tiano_2.png)
 
--In the OVMF settings Change Preferred to the resolution you want.
+- In the OVMF settings, select *Change Preferred* then the resolution you want.
 
 ![](../assets/img/screenshots/VM_Tiano_3.png)
 - Press F10 and save the changes.
