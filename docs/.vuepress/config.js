@@ -40,7 +40,7 @@ module.exports = {
           ['/storage', 'Storage'],
           ['/networking', 'Networking'],
           ['/compute', 'Compute & GPU'],
-          ['/guests','Guests tools'],
+          ['/guests','VM & Guests tools'],
           ['/api', 'API'],
           ['/additionalpackages', 'Additional packages'],
           ['/troubleshooting', 'Troubleshooting'],
