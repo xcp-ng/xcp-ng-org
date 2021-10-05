@@ -978,7 +978,7 @@ Note: it's not necessary that the XCP-ng host boots in UEFI mode.
 ### How XCP-ng Manages the Certificates
 
 :::tip
-To understand UEFI Secure Boot variables (`PK`, `KEK`, `db` and `dbx`), please read James Bottomley's article [The Meaning of all the UEFI Keys](https://blog.hansenpatrnership.com/the-meaning-of-all-the-uefi-keys/).
+To understand UEFI Secure Boot variables (`PK`, `KEK`, `db` and `dbx`), please read James Bottomley's article [The Meaning of all the UEFI Keys](https://blog.hansenpartnership.com/the-meaning-of-all-the-uefi-keys/).
 
 In a few words:
 * `PK`: a single X509 key, the Platform Key.
