@@ -143,7 +143,7 @@ please try to:
 > Usually, when you install a recent distro in PVHVM (using other media) and you get a blank screen, try blacklisting by adding the following in your grub command at the end
 >
 > modprobe.blacklist=bochs_drm
-
+***
 ### Initrd is missing after an update
 
 #### Symptom
@@ -164,6 +164,7 @@ Can be a `yum` update process interrupted while rebuilding the `initrd`, such as
 Here is an example of `dracut` command on a 8.2 host: `dracut -f /boot/initrd-4.19.0+1.img 4.19.0+1`
 :::
 
+***
 ### VM not in expected power state
 
 #### Cause
@@ -171,6 +172,16 @@ The XAPI database thinks that the VM is On / Off. But this is fake news ;-)
 
 #### Solution
 Restart toolstack on CLI with the command `xe-toolstack-restart`. This just restarts the management services, all running VMs are untouched.
+
+***
+
+### Host and Pool have incompatible Licenses
+
+#### Cause
+You may get this error when attempting to add a new host to an existing pool. This occurs when you mix products, for instance adding a XenServer/Citrix Hypervisor host to an XCP-ng pool, or vice versa. 
+
+#### Solution
+To solve this, simply get your pool "coherent" and do not mix products. Ensure all hosts in the pool as well as hosts you'd like to add to the pool are running XCP-ng. It is not recommended to mix XCP-ng hosts with XenServer hosts in the same pool.
 
 ***
 
@@ -202,7 +213,7 @@ Unknown, the system keeps listening to the hardware clock instead of trusting NT
 echo "xen" > /sys/devices/system/clocksource/clocksource0/current_clocksource
   printf '%s\n\t%s\n%s\n' 'if test -f /sys/devices/system/clocksource/clocksource0/current_clocksource; then' 'echo xen > /sys/devices/system/clocksource/clocksource0/current_clocksource' 'fi' >> /etc/rc.local
 ```
-
+***
 ### Async Tasks/Commands Hang or Execute Extremely Slowly
 
 #### Cause
