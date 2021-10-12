@@ -205,6 +205,7 @@ This article describes how to proceed in order to convert your Citrix XenServer 
 * If HA (High Availability) is enabled, disable it before upgrading
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`
 * **It is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
+* If you already have an XCP-ng pool, do not try to add a slave running XenServer to it. You will get an "Incompatible License" error. Please upgrade the slave to XCP-ng first, then add it to your existing pool
 :::
 
 ### Before you start
