@@ -483,7 +483,7 @@ mkdir /opt/var/iso_repository
 xe sr-create name-label="ISO Repository" type=iso device-config:location=/opt/var/iso_repository device-config:legacy_mode=true content-type=iso
 a6732eb5-9129-27a7-5e4a-8784ac45df27
 
-xe sr-rescan uuid=a6732eb5-9129-27a7-5e4a-8784ac45df27
+xe sr-scan uuid=a6732eb5-9129-27a7-5e4a-8784ac45df27
 ```
 
 :::tip
