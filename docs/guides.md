@@ -1045,25 +1045,19 @@ Advanced use, not needed by most users.
 `secureboot-certs` also supports installing your own custom certificates. The certs may be in the following formats:
 
 * DER-encoded certificate
-* PEM-encdoed certificate
+* PEM-encoded certificate
 * An auth file (can be created with `/opt/xensource/libexec/create-auth`).
 
 For example, to install a custom PK you may do the following:
 
 ```
-# Create the key and cert using OpenSSL
-openssl req -newkey rsa:4096 -nodes -new -x509 -sha256 -days 3650 -subj "/CN=My PK/" -keyout pk.key -out PK.cer
-
-# Create the .auth file from the DER certificate
-/opt/xensource/libexec/create-auth -k pk.key -c pk.cer PK PK.auth pk.cer
-
 # Enroll it, along with the default certificates, with secureboot-certs
 secureboot-certs install PK.cer default default latest
 ```
 
 The same procedure may be used to install custom KEK, db, or dbx certs.
 
-To use multiple certificates in one variable (that is, have multiple certificates in PK, KEK, db, or dbx), the certs must be packaged together into a .auth file, see [Use two or more certificates for a Secure Boot variable](#use-two-or-more-certificates-for-a-secure-boot-variable).
+To use multiple certificates in one variable (that is, have multiple certificates stored as a single KEK, db, or dbx), the certs must be packaged together into a .auth file, see [Use two or more certificates for a Secure Boot variable](#use-two-or-more-certificates-for-a-secure-boot-variable). Note that multiple certificates in the PK is not supported. If an auth file with multiple certs is loaded as the PK, only the first one found will be used.
 
 Note that the virtual firmware (uefistored + OVMF), as is allowed by the specification, does not mandate that these default certificates be signed by their parent (i.e., the KEK doesn't need to be signed by PK) if they're installed via `secureboot-certs`. This verification *does* occur, however, when trying to enroll new certificates from inside the guest after boot. This is designed to give the host administrator full control over the certificates from the control domain.
 
