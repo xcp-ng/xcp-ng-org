@@ -1304,6 +1304,26 @@ From command line, use:
 xe vm-param-get uuid=<vm-uuid> param-name=HVM-boot-params param-key=firmware
 ```
 
+#### Check UEFI Secure Boot status from inside the VM
+
+Enabling Secure Boot for a VM means that it will either boot an appropriately signed bootloader and OS kernel, or not boot at all if the Secure Boot checks didn't pass.
+
+You may still want to verify, from inside a booted VM, whether Secure Boot was enforced or not.
+
+On Linux VMs, you can either:
+* run `dmesg -i secureboot`, which works on many distributions (not all) and should give you a line that looks like `secureboot: Secure boot enabled`
+* or, if `mokutil` is installed, run `mokutil --sb-state`, which should output `SecureBoot enabled`
+* or directly extract the information from the UEFI variables:
+  ```
+  # read the last byte of the SecureBoot variable and display it in hex format
+  tail -c1 /sys/firmware/efi/efivars/SecureBoot-8be4df61-93ca-11d2-aa0d-00e098032b8c | xxd -p
+  ```
+  The result should be either `01` (enabled) or `00` (disabled)
+
+On Windows VMs, you can either:
+* run `msinfo32` and check the value of `System Summary` / `Secure Boot State` (expected: `On`)
+* or, from PowerShell as admin, run `Confirm-SecureBootUEFI` (expected: `True`)
+
 #### Use two or more certificates for a Secure Boot variable
 
 To create a Secure Boot variable (PK, KEK, db, or dbx) with multiple certificates, it is required to use the `create-auth` tool to bundle the certificates into a single .auth file.
