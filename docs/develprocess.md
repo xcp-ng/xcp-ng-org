@@ -133,7 +133,9 @@ The first question to ask ourselves is: **who is the upstream for the software**
 
 We decide when to release a new version, and we decide the versioning.
 
-Example: `xcp-emu-manager`
+Examples: `xcp-emu-manager`, `uefistored`...
+
+Common case:
 * Tags: `vMAJOR.MINOR.PATCH` (`v1.1.2`, `v1.2.0`...)
 * Maintenance branch if needed: `VERSION-XCPNGVERSION`.
   * We don't need to create the maintenance branch in advance. Not all software gets hotfixes.
@@ -144,14 +146,11 @@ Example: `xcp-emu-manager`
   * Examples: `1.1.2-8.0`, `1.2-8.2`...
 * Next release developed on: `master`
 
-* Tag: `v1.2.0`
-* Maintenance branch: `1.2-8.2`
-
 If for any reason we decide to release a newer version of the software as a maintenance update, then:
 * We stop updating the existing maintenance branch
 * Further hotfixes would come from a new maintenance branch created from the appropriate tag.
 
-Special case: VERSION and XCPNGVERSION are always the same (example: `xcp-ng-release`). Then:
+Special case: if VERSION and XCPNGVERSION are always the same (example: `xcp-ng-release`), then:
 * Tags: `vXCPNGVERSIONFULL` (`v8.2.0`)
 * Maintenance branch if needed: `XCPNGVERSION` (`8.2`)
 
@@ -160,23 +159,46 @@ Special case: VERSION and XCPNGVERSION are always the same (example: `xcp-ng-rel
 We do not decide how and when new versions and released, and how they are numbered. So we need to somewhat mix the upstream versioning with our own branch names and versioning. For maintenance branches and tags related to an XCP-ng release, notably.
 
 Examples: `host-installer`, `sm`...
+
+Common case:
 * Tags:
- * We tag when we release a new version of XCP-ng: `vUPSTREAMVERSION-XCPNGVERSIONFULL` (`v1.29.0-8.2.0`)
- * Then we use the maintenance branch but don't tag anymore (each build pushed to koji already acts as a sort of tag). If we *really* wanted to tag for patch updates from the maintenance branch, we could increment neither `UPSTREAMVERSION` nor `XCPNGVERSIONFULL` so we'd have to add yet another suffix, e.g. `v1.29.0-8.2.0-3.1` where `3.1` would be the `Release` tag from the hotfix RPM.
+  * We tag when we release a new version of XCP-ng: `vUPSTREAMVERSION-XCPNGVERSIONFULL` (`v1.29.0-8.2.0`)
+  * Then we use the maintenance branch but don't tag anymore (each build pushed to koji already acts as a sort of tag). If we *really* wanted to tag for patch updates from the maintenance branch, we could increment neither `UPSTREAMVERSION` nor `XCPNGVERSIONFULL` so we'd have to add yet another suffix, e.g. `v1.29.0-8.2.0-3.1` where `3.1` would be the `Release` tag from the hotfix RPM.
 * Maintenance branch: `UPSTREAMVERSION-XCPNGVERSION` (`1.29.0-8.2`)
   * When we are downstream we always create a maintenance branch for a given XCP-ng release
-* Next release developed on: next maintenance branch directly (`1.29.0-8.2`)
+* Next release developed:
+  * **Upstream first!**
+  * If we really need to diverge a little from upstream, on a temporary dev branch `dev-NEXTXCPNGVERSION` (e.g. `dev-8.3`), based either on the current maintenance branch, or on a branch that is likely to be the one used in the next release (we don't always know!)
+  * Next maintenance branch directly (e.g. `1.45.0-8.3`) once the upstream SRPMs have been released
 
 If for any reason we decide to release a newer version of the software as a maintenance update, then we'd create new tag and a new maintenance branch that match `UPSTREAMVERSION` (that changes) and `XCPNGVERSIONFULL` (that doesn't change)
 
-Special case: the upstream version and the XCP-ng version are always the same (example: `host-installer`). Then:
-* Tags: `vXCPNGVERSIONFULL` (`v8.2.0`)
-* Maintenance branch: `XCPNGVERSION` (`8.2`)
+Special case: if the upstream version and the XCP-ng version are always the same (example: `host-installer`), then:
+  * Tags: `vXCPNGVERSIONFULL` (`v8.2.0`)
+  * Maintenance branch: `XCPNGVERSION` (`8.2`)
 
 #### About upstream branches
 
 * If we get the sources from XS SRPMs, then we import them to a branch named `XS` and tag `XS-XSVERSIONFULL` (`XS-8.2.0`). Example: `host-installer`.
 * If we forked a git repository, we don't need to push the upstream branches or tags to our own fork. However it could be a good habit to track maintenance or hotfix branches for changes.
+
+#### Special case: `qemu-dp`
+
+`qemu-dp` both *has* an upstream git repository and at the same time it *hasn't*:
+* The SRPM's source tarball comes from upstream `qemu`.
+* Additional patches by XenServer team come from a private git repository, so all we have is patches in the SRPM.
+
+We chose to base our `qemu-dp` repository on a fork of the upstream `qemu` [repository mirror on github](https://github.com/qemu/qemu), with additional branches:
+* To track XS patches, for each XS release:
+  * Branch `UPSTREAMVERSION-XS-XSVERSION` (`2.12.0-XS-8.2`), created from the `v2.12.0` upstream tag, and patches from the SRPM applied as commits on top.
+  * Tag `vUPSTREAMVERSION-XS-XSVERSIONFULL` (`v2.12.0-XS-8.2.0`) created from the commit of the above branch that corresponds to the initial release of XSVERSIONFULL.
+* For XCP-ng maintenance, for each release:
+  * Branch `UPSTREAMVERSION-XCPNGVERSION` (`2.12.0-8.2`), branched from tag `vUPSTREAMVERSION-XS-XSVERSIONFULL` (`v2.12.0-XS-8.2.0`)
+  * We tag when we release a new version of XCP-ng: `vUPSTREAMVERSION-XCPNGVERSIONFULL` (`v2.12.0-8.2.0`). Can be identical to the XS tag.
+* For XCP-ng development (new features):
+  * **Upstream first** if can be done. Not easy when there's no repo for XenServer patches.
+  * If we really need to diverge a little from upstream, on a temporary dev branch `dev-NEXTXCPNGVERSION` (e.g. `dev-8.3`), based either on the current maintenance branch, or on a branch that is likely to be the one used in the next release (we don't always know!)
+  * Next maintenance branch directly (e.g. `2.12.0-8.3`) once the upstream SRPMs have been released
 
 ## RPM packaging
 
