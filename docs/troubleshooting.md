@@ -423,15 +423,16 @@ primitive p_iscsi_lun_1 iSCSILogicalUnit \
 
 ## Reset root password
 
-Hi, this is a small trick I had to use once [(original article)](https://linuxconfig.org/how-to-reset-an-administrative-root-password-on-xenserver-7-linux)
+Hi, this is a small trick I had to use once [(original article)](https://support.citrix.com/article/CTX214360)
 
-* Reboot your XenServer into Grub boot menu.
-* Use arrows keys to locate an appropriate XenServer boot menu entry and press **e** key to edit boot options.
-* Locate read-only parameter **ro** and replace it with **rw**. Furthermore, locate keyword **splash** and replace it with **init=/bin/bash**.
-* **Hit F10** to boot into single-mode
-* Once in single-mode use **passwd** command to reset your XenServer's root password
-* Reboot xenserver by entering the command **exec /usr/sbin/init**
-* If everything went well you should now be able to login with your new XenServer password.
+* Reboot your XCP-ng into Grub boot menu.
+* Select XCP-ng boot menu entry and press **e** key to edit boot options.
+* Locate read-only parameter **ro** and replace it with **rw init=/sysroot/bin/sh**.
+* **Ctrl + X** to boot into single-mode.
+* From the Emergency Mode prompt, execute: **chroot /sysroot**.
+* Once in single-mode use **passwd** command to reset your XCP-ng root password.
+* Reboot XCP-ng by sending **Ctrl + Alt + Suppr**.
+* If everything went well you should now be able to login with your new XCP-ng password.
 
 ## XenStore related issues
 
