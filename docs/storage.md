@@ -129,7 +129,14 @@ Cost of thick provisioning is relatively high when you do snapshots (used for ba
 A local SR is using a disk or a partition of your local disk, to create a space for your VM disks. Local LVM will use logical volumes, whereas Local EXT will create an `ext4` filesystem and put `.vhd` files in it.
 
 :::tip
-The concept is simple: tell XCP-ng which disk or partition you want to use, and it will do everything for you! Don't do anything yourself (no need to create a logical volume or a filesystem)
+The concept is simple: tell XCP-ng which disk or partition you want to use, and it will do everything for you! Don't do anything yourself (no need to create a logical volume or a filesystem).
+:::
+
+:::warning
+As XCP-ng will handle everything for you, be aware that the device or partition will be formatted.
+
+* Don't create a SR over a device or partition that contains important data.
+* If you want to attach an existing SR to your pool, don't create a new local SR over it, else your virtual disks will be deleted. Instead, use the `xe sr-attach` command.
 :::
 
 In [Xen Orchestra](management.md#xen-orchestra):
@@ -198,8 +205,6 @@ Now you can create the SR on top of it:
 xe sr-create host-uuid=<HOST_UUID> type=zfs content-type=user name-label=LocalZFS device-config:location=/mnt/zfs/
 ```
 
-For better performance, you can disable sync with `zfs set sync=disabled tank`.
-
 :::tip
 Please report any problems (performance or otherwise) you might encounter with ZFS. [Our forum](https://xcp-ng.org/forum) is here for that!
 :::
@@ -252,6 +257,8 @@ There are many options to increase the performance of ZFS SRs:
 * Disable sync to disk: `zfs set sync=disabled tank/zfssr`
 * Turn on compression (it's cheap but effective): `zfs set compress=lz4 tank/zfssr`
 * Disable accesstime log: `zfs set atime=off tank/zfssr`
+
+Check ZFS documentation to understand the pros and cons of each optimization.
 
 ### XFS
 
