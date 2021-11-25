@@ -103,6 +103,54 @@ This kernel parameter is not retained when you upgrade an XCP-ng host [using the
 
 `[root@xen ~]# xe vm-start uuid=<vm uuid>`
 
+## PCI Passthrough Removal
+To remove a PCI device that has been attached to a VM via PCI passthrough:
+
+### 1. List PCI Devices with `lspci`
+_This is to make sure you remove the correct PCI device_
+```
+[root@xen ~]# lspci
+...
+04:01.0 Ethernet controller: Intel Corporation 82541PI Gigabit Ethernet Controller (rev 05)
+```
+
+### 2. Make sure your VM has halted
+```
+[root@xen ~]# xe vm-list uuid=<vm uuid>
+...
+uuid ( RO)           : 740e9485-8e1a-da89-2561-d75bcede3fc9
+    name-label ( RW): VM with PCI Passthrough
+    power-state ( RO): halted
+```
+
+### 3. Confirm the VM has the list of attached PCI devices
+Run 
+`xe vm-param-list uuid=<vm uuid> | grep -i other-config`
+```
+[root@xen ~]# xe vm-param-list uuid=740e9485-8e1a-da89-2561-d75bcede3fc9 | grep -i other-config
+other-config (MRW): pci: 0/0000:04:01.0; base_template_name: Other install media; import_task: OpaqueRef:46e1e0db-f7fa-4131-8539-0f82f0336d7c; mac_seed: ebd99219-9881-b965-610e-342087ec6606; install-methods: cdrom
+```
+> If you have multiple devices, note down their PCI addresses as you may have to add them back after removing your device.
+
+### 4. Remove the PCI device from the VM config using `vm-param-remove`
+Run `xe vm-param-remove param-name=other-config param-key=pci uuid=<vm uuid>`.
+```
+[root@xen ~]# xe vm-param-remove param-name=other-config param-key=pci uuid=740e9485-8e1a-da89-2561-d75bcede3fc9 
+```
+
+### 5. Confirm the PCI device is no longer attached
+Run `xe vm-param-list uuid=<vm uuid> | grep -i other-config` again.
+```
+[root@xen ~]# xe vm-param-list uuid=740e9485-8e1a-da89-2561-d75bcede3fc9 | grep -i other-config
+other-config (MRW): base_template_name: Other install media; import_task: OpaqueRef:46e1e0db-f7fa-4131-8539-0f82f0336d7c; mac_seed: ebd99219-9881-b965-610e-342087ec6606; install-methods: cdrom
+```
+> At this point, if you had multiple devices and they were removed, you should add them back again using the `vm-param-set` command`.
+
+You can now attach the device to another VM or add it back to the `dom0` control domain.
+
+### 6. Reattach PCI device to control domain
+Run `/opt/xensource/libexec/xen-cmdline --delete-dom0 xen-pciback.hide`
+
 ## GPU Passthrough
 To passthrough a complete graphics card to a VM (not virtualize it into multiple virtual vGPUs, which is different, see the vGPU section below), just follow the regular PCI passthrough instructions, no special steps are needed. Most Nvidia and AMD video cards should work without issue.  
 
