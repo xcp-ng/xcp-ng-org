@@ -154,7 +154,7 @@ Run `/opt/xensource/libexec/xen-cmdline --delete-dom0 xen-pciback.hide`.
 _Note: this command removes all PCI devices hidden from the control domain (`dom0`). If you have multiple devices, you can either: (a) add them back if they are inadvertently removed; or (b) use the previous `--set-dom0` command, to update the list of hidden PCI devices, excluding the device address that you want to add back to the control domain._
 
 :::tip
-You can use `cat /boot/efi/EFI/xenserver/grub.cfg` see a list of devices currently hidden under during a normal boot (`menuentry 'XCP-ng'`). The grub location will vary depending on how you setup your bootloader._
+You can use `cat /boot/efi/EFI/xenserver/grub.cfg` see a list of devices currently hidden under during a normal boot (`menuentry 'XCP-ng'`). The grub location will vary depending on how you setup your bootloader.
 :::
 
 :::tip
