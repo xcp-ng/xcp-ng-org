@@ -148,8 +148,24 @@ other-config (MRW): base_template_name: Other install media; import_task: Opaque
 
 You can now attach the device to another VM or add it back to the `dom0` control domain.
 
-### 6. Reattach PCI device to control domain
-Run `/opt/xensource/libexec/xen-cmdline --delete-dom0 xen-pciback.hide`
+### 6. Reattach PCI device to control domain (if desired)
+Run `/opt/xensource/libexec/xen-cmdline --delete-dom0 xen-pciback.hide`.
+
+_Note: this command removes all PCI devices hidden from the control domain (`dom0`). If you have multiple devices, you can either: (a) add them back if they are inadvertently removed; or (b) use the previous `--set-dom0` command, to update the list of hidden PCI devices, excluding the device address that you want to add back to the control domain._
+
+:::tip
+You can use `cat /boot/efi/EFI/xenserver/grub.cfg` see a list of devices currently hidden under during a normal boot (`menuentry 'XCP-ng'`). The grub location will vary depending on how you setup your bootloader._
+:::
+
+:::tip
+This is a kernel parameter, and thus is not retained when you upgrade an XCP-ng host [using the installation ISO](upgrade.md#upgrade-via-installation-iso-recommended). Remember to re-do this step after the upgrade, if you still have some PCI devices you want to hide from the control domain.
+:::
+
+### 7. Reboot the XCP-ng host
+
+`[root@xen ~]# reboot`. 
+_Note: Reboot is only necessary if you changed the kernel parameters, i.e. by adding or hiding devices from the control domain._
+
 
 ## GPU Passthrough
 To passthrough a complete graphics card to a VM (not virtualize it into multiple virtual vGPUs, which is different, see the vGPU section below), just follow the regular PCI passthrough instructions, no special steps are needed. Most Nvidia and AMD video cards should work without issue.  
