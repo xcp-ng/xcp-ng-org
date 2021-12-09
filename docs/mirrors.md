@@ -2,13 +2,13 @@
 
 Like a Linux distribution, XCP-ng's installation images and RPM repositories can be replicated by benevolent mirror providers.
 
-Starting with its 8.0 release, XCP-ng uses [mirrorbits](https://github.com/etix/mirrorbits) to redirect download requests to an appropriate mirror based on their update status and geographical position.
+XCP-ng uses [mirrorbits](https://github.com/etix/mirrorbits) to redirect download requests to an appropriate mirror based on their update status and geographical position.
 
 ## Original mirror
 
-`http://mirrors.xcp-ng.org` is the base URL for all download links, either downloads of installation ISO images, or RPM repositories used by `yum` to download updates.
+`mirrors.xcp-ng.org` is the base for all download links, either downloads of installation ISO images, or RPM repositories used by `yum` to download updates.
 
-Previous versions of XCP-ng downloaded files directly from `https://updates.xcp-ng.org`, which now becomes one mirror among others (and a fallback in case of files missing from other mirrors).
+Previous versions of XCP-ng used to download files directly from `https://updates.xcp-ng.org`, which since then has becomes one mirror among others (and a fallback in case of files missing from other mirrors).
 
 ## List of mirrors
 
@@ -26,16 +26,17 @@ Anyone or any entity can submit a mirror to our approval so that we add it to th
 
 In order to guarantee the quality of the mirrors offered to our users, there a some prerequisites:
 * Offer HTTP (more convenient than anonymous FTP for mirrors nowadays), or HTTPS.
-  * Note: HTTPS is required for downloads of installation ISO images, because recent browsers tend to refuse any HTTPS to HTTP downgrade. If you mirror only provides HTTP, it can still be used for downloading RPMs from XCP-ng hosts, since every RPM is GPG-signed. HTTPS may become a requirement for this too in the future.
+  * Note: HTTPS is required for downloads of installation ISO images, because recent browsers tend to refuse any HTTPS to HTTP downgrade. If your mirror only provides HTTP, it can still be used for downloading RPMs from XCP-ng hosts, since every RPM is GPG-signed. HTTPS may become a requirement for this too in the future.
   * If you offer HTTPS, you need a valid certificate and must renew it in time to avoid downtime.
+  * **If your certificate is provided by Let's Encrypt**, please read the dedicated section below.
   * If you already provided a mirror but are unsure if we added it as an HTTP or HTTPS mirror, check http://mirrors.xcp-ng.org/README.txt?mirrorlist&https=1, which selects HTTPS mirrors and lists the others in an "Excluded Mirrors" section.
 * Offer read-only `rsync`. Two reasons:
   * Mirrorbits needs this to regularly check the state of the mirror and automatically disable outdated or broken mirrors.
   * This will allow nearby mirrors to sync from yours in the future, if needed.
-* Sync from a quickly updated mirror (the first mirrors will sync from our main mirror) at least twice an hour, preferably four times an hour.
+* Sync from a quickly updated mirror (the first mirrors will sync from our main mirror) at least once an hour, preferably four times an hour.
 * Sync the whole mirror tree (we may reconsider this prerequisite when the mirror grows). On August 2021, the total size (XCP-ng 7.4 to 8.2) was 50 GiB.
 * Provision enough disk space for future growth, and monitor available space to avoid sync failures.
-* Minimum bandwidth: 100 Mbit/s. Preferably 1 Gbit/s. At some point, we may refuse applications that offer only 100 Mbit/s in areas with already enough quicker mirrors available.
+* Minimum bandwidth: 100 Mbit/s. Preferably 1 Gbit/s or more. At some point, we may refuse applications that offer only 100 Mbit/s in areas with already enough quicker mirrors available.
 * Up 24/24.
 
 If one of those prerequisites is causing an issue to you as a mirror provider, tell us.
@@ -49,6 +50,30 @@ rsync -rlptv --delete-delay updates.xcp-ng.org::repo/ /local/path/to/mirror
 
 Note: rsync access will be unlocked for your host after your application, see below.
 
+### Extra steps for mirrors using Let's Encrypt certificates
+
+On September 30 2021, a root certificate used by Let's Encrypt, *IdentTrust DST Root CA X3*, expired. That was planned, and of course another root certificate is now used instead by Let's Encrypt, so in most situations this is transparent.
+
+#### How it affects XCP-ng
+
+We discovered that the version of openssl that is present in our installer does not handle the situation very well. The Let's Encrypt certificates can be validated following several different chains of trust - one of which is not valid anymore - and openssl 1.0.2 rejects the certificate if one of the chains contains an expired certificate, rather than trying another - valid - chain.
+
+Fortunately, this doesn't affect yum, so hosts can still update from mirrors that have such a certificate.
+
+But it does affect netinstalls, because the installer checks the mirrors before it would installs the packages with yum, and that check fails. So users would get the following error message when our mirror manager would redirect to one such mirror: "A base installation repository was not found at that location".
+
+#### How to solve it
+
+We will release updated installer images that fix this issue (or may already have when you read this), but this won't be enough anyway: users may still use the previous installation images to do a network installation. So we need to also fix it at the mirror level.
+
+Thankfully, there is a way to workaround the issue at the mirror level:
+- Update certbot to at least 1.12.0
+- Edit the configuration file at /etc/letsencrypt/renewal/
+- Append "preferred_chain = ISRG Root X1" to the end of the [renewalparams] section.
+- Run "certbot renew --force-renewal"
+
+Unless there are valid concerns with this approach, we ask that every mirror that relies on Let's Encrypt for their certificates apply this workaround.
+
 ### Send your application
 
 Send an e-mail to mirrors (AT) xcp-ng [DOT] org, following the example below:
@@ -60,18 +85,20 @@ Body:
 Server name: mymirror.example.com
 City: Paris
 Country: France
+GPS coordinates: 45.738600, 4.889860 (or "auto" to let GeoIP locate your mirror)
 Bandwidth: 1 Gbit/s
 Source mirror: updates.xcp-ng.org
 Host or IP to authorize: mymirror.example.com
 Sync frequency: every 15 min
-HTTP(S) URL: http://mymirror.example.com/
+HTTP(S) URL: https://mymirror.example.com/
 RSYNC URL: rsync://mymirror.example.com/xcp-ng/
-Other prerequisites from https://github.com/xcp-ng/xcp/wiki/Mirrors checked: yes
+Workaround for Let's Encrypt certificates: applied (or "not concerned")
+Other prerequisites from https://xcp-ng.org/docs/mirrors.html checked: yes
 ```
 
-"Source mirror" is the mirror you will sync from. At this stage, we suggest that the source always be `updates.xcp-ng.org` which is the main, most up to date, mirror. Rsync is restricted by default on this mirror, so we need you to provide either a hostname or an IP address access that will we allowed to sync from that mirror (Hence the "Host or IP to authorize:..." line above).
+"Source mirror" is the mirror you will sync from. At this stage, we suggest that the source always be `updates.xcp-ng.org` which is the main, most up to date, mirror. Rsync is restricted by default on this mirror, so we need you to provide either a hostname or an IP address access that will be allowed to sync from it (Hence the "Host or IP to authorize:..." line above). You may sync from another mirror if you prefer: [choose one close to you that updates quickly](https://mirrors.xcp-ng.org/?mirrorstats) and review your choice from time to time.
 
-Ask any question.
+Feel free to ask any question in your application message.
 
 ## Security
 
