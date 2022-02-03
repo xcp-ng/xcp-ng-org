@@ -417,6 +417,12 @@ As written above:
 ##### Management agent + device drivers
 The only way to get the management agent is from Citrix. It can be freely downloaded from [the Citrix Hypervisor download page](https://www.citrix.com/downloads/citrix-hypervisor/), provided you create an account on their site. Name of the item: "Citrix VM Tools for Windows". The installer will install both the management agent and the device drivers.
 
+:::tip Update (2022-02-02)
+Since Citrix released their 8.2 CU1 version of Citrix Hypervisor, the Express edition is not available anymore for download, and so the Windows tools are not available either from there.
+
+You may try this link instead: <https://support.citrix.com/article/CTX235403>
+:::
+
 ##### Automated installation via Windows Update: device drivers alone
 If you are using Xen Orchestra, you can switch the "Windows Update tools" advanced parameter on from the "Advanced" tab of the VM view. This will install the device drivers automatically at next reboot :warning: **but not the management agent** which still needs to be installed from Citrix tools' installer.
 
