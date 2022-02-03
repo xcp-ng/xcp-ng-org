@@ -955,17 +955,6 @@ It is important that each RAID array has a different name as the system will not
 
 Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute trusted binaries at boot. In practice, these are the binaries released by the operating system (OS) team for the OS running in the VM (Microsoft Windows, Debian, RHEL, Alpine, etc.).
 
-:::tip
-Guest UEFI Secure Boot will soon be made available through an update to XCP-ng 8.2.
-
-Until then, you can test it with:
-```
-yum update uefistored varstored-tools --enablerepo=xcp-ng-testing
-```
-
-You can provide feedback or ask questions on the [dedicated forum thread](https://xcp-ng.org/forum/topic/4858/guest-uefi-secure-boot-on-xcp-ng).
-:::
-
 ### Requirements
 
 * XCP-ng 8.2, fully up to date.
