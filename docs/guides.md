@@ -38,6 +38,29 @@ If all your VMs are "agile", that is, they're not tied to local storage or local
 
 3. (After a reboot or host startup) **Move VMs back** to the host if appropriate. There is no need to re-enable the host: it is done automatically when it starts.
 
+## Logging system
+
+### logrotate
+
+`logrotate` is the tool to administrate the rotation, compression, removal, ... of log files.
+The configuration is located in `/etc/logrotate.conf` and is used by the daily cron task `/etc/cron.daily/logrotate`.
+
+By default a file is rotated if:
+  - its size is greater than 100 MiB (since 8.2.1 version)
+  - it's a new day (daily rotation)
+
+Also a file is compressed after two rotations, the first time it is just renamed.
+
+### rsyslog
+
+Because a file must be rotated if a log exceeds 100 MiB, the `rsyslog` daemon is used to trigger automatically the `/etc/cron.daily/logrotate` without waiting. (Conf location: `/etc/rsyslog.d/xenserver.conf`)
+
+### Specific config: `xensource.log`
+
+`xensource.log` has many particular and different configuration parameters, so another `logrotate` config is used: `/etc/xensource/xapi-logrotate.conf` in a shell script `/opt/xensource/libexec/xapi-logrotate.sh` that executes `logrotate` with this specific config.
+
+There is normally no need to run it manually, a cron task `/etc/cron.d/xapi-logrotate.cron` is present to schedule it each hour.
+
 ## pfSense / OPNsense VM
 
 pfSense and OPNsense do work great in a VM, but there are a few extra steps that need to be taken first.
