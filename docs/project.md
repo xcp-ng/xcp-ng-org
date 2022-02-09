@@ -12,7 +12,7 @@ The goal of XCP-ng is to make a fully community backed version of XenServer, wit
 
 Most of the community is on [XCP-ng Forum](https://xcp-ng.org/forum). Feel free go there and ask anything!
 
-There's also a [Twitter account](https://twitter.com/xcpng) and an IRC channel available on Freenode: #xcp-ng
+There's also a [Twitter account](https://twitter.com/xcpng) and an IRC channel available on OFTC: #xcp-ng
 
 ## History of XCP-ng
 
