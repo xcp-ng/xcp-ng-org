@@ -317,6 +317,25 @@ This setup will save you costs of 2 network switches you would otherwise have to
 * Forum post: <https://xcp-ng.org/forum/topic/1897/mesh-network>
 * Proxmox wiki: <https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server>
 
+## DNS Search Domains
+
+When XCP-ng is configured for static IP configuration there are no DNS search domains added. It is possible to add search domains into `/etc/resolv.conf`, however those won't persist across reboots. Use `xe pif-param-set` to add search domains that should persist across reboots.
+
+* First identify the PIF used as management interface.
+```
+# xe pif-list host-name-label=xcpng-srv01 management=true
+uuid ( RO)                  : 76608ca2-e099-9344-af36-5b63c0022913
+                device ( RO): bond0
+    currently-attached ( RO): true
+                  VLAN ( RO): -1
+          network-uuid ( RO): cc966455-d5f8-0257-04a7-d3d7c671636b
+```
+* Take note of the `uuid` field and pass that to `xe pif-param-set`
+```
+# xe pif-param-set uuid=76608ca2-e099-9344-af36-5b63c0022913 other-config:domain=searchdomain1.com,searchdomain2.com,searchdomain3.com
+```
+This procedure has to be done for all hosts in the same pool.
+
 ## Network Troubleshooting
 
 ### Network corruption
