@@ -330,7 +330,7 @@ uuid ( RO)                  : 76608ca2-e099-9344-af36-5b63c0022913
                   VLAN ( RO): -1
           network-uuid ( RO): cc966455-d5f8-0257-04a7-d3d7c671636b
 ```
-* Take note of the `uuid` field and pass that to  `xe pif-param-set`
+* Take note of the `uuid` field and pass that to `xe pif-param-set`
 ```
 # xe pif-param-set uuid=76608ca2-e099-9344-af36-5b63c0022913 other-config:domain=searchdomain1.com,searchdomain2.com,searchdomain3.com
 ```
