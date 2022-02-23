@@ -804,7 +804,7 @@ Using chroot as explained above, you can easily remove, add or update RPMs in th
 
 :::warning
 This modifies the installer filesystem, not the host!
-To modify the installed RPMs on a host see [change the list of installed RPMs](change-the-list-of-installed-rpms).
+To modify the installed RPMs on a host see [change the list of installed RPMs](#change-the-list-of-installed-rpms).
 :::
 
 Example use cases:
