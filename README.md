@@ -6,4 +6,6 @@ Based on XenServer, it's the result of massive cooperation between individuals a
 
 Visit the main website to know more: [https://xcp-ng.org](https://xcp-ng.org)
 
+Official documentation is at [https://xcp-ng.org/docs](https://xcp-ng.org/docs)
+
 ![](https://xcp-ng.org/assets/img/mainlogo.png)
