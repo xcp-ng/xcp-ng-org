@@ -986,10 +986,14 @@ Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute t
 
 ### Requirements
 
-* XCP-ng 8.2, fully up to date.
+* XCP-ng 8.2, fully up to date (>= 8.2.1).
+* UEFI Secure Boot Certificates installed on the pool (this is detailed below).
 * A UEFI guest VM.
 * For Windows, ensure the VM has at least 2 vCPUs.
-* UEFI Secure Boot Certificates installed on the pool (this is detailed below).
+
+:::warning
+Until we can re-sign XCP-ng's PV drivers for Windows, you will need the PV drivers from Citrix before enabling Secure Boot for a Windows VM. See [Setup Secure Boot for Windows VMs](#setup-secure-boot-for-windows-vms).
+:::
 
 Note: it's not necessary that the XCP-ng host boots in UEFI mode.
 
