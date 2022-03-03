@@ -1,6 +1,6 @@
 # XCP-ng 8.2 LTS
 
-XCP-ng 8.2 is a [LTS Release](releases.md#lts-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.0.iso?https=1).
+XCP-ng 8.2 is a [LTS Release](releases.md#lts-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1.iso?https=1).
 
 SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
@@ -152,6 +152,16 @@ There exists no easy way to convert an existing storage repository from a given 
 Plans are laid out for simpler installation and maintenance of Windows guest tools. Unfortunately, we haven't found people yet to implement them so the current state remains that of 8.1. ***If you're a developer on the Windows platforms, we're hiring! (full time or part time, contracts or hires) - Contact us.***
 
 Using the Windows guest tools is [documented here](guests.md#windows).
+
+## Update: what's new in XCP-ng 8.2.1
+
+XCP-ng 8.2.1 was released as a maintenance update for XCP-ng 8.2 LTS, which has its own version number because it also comes with updated installation images.
+
+XCP-ng 8.2.1 is still XCP-ng 8.2 LTS. It's the same, that just reached a new numbered milestone.
+
+The update brought a few enhancements such as [Guest Secure Boot](guides.md#guest-uefi-secure-boot), support for Rocket Lake CPUs, or better log rotation.
+
+They are detailed in the [Release announcement for XCP-ng 8.2.1](https://xcp-ng.org/blog/2022/02/28/xcp-ng-8-2-1-update/).
 
 ## Known issues
 
