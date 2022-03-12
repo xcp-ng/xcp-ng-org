@@ -1,22 +1,50 @@
-This is a draft roadmap, things aren't sorted in any way, and there is no ETA for them.
+# Roadmap
+
+The goal of this document is to give you a hint on what's next. However, since all topics are very complex, there's no real order or target date. In general, our priorities are:
+
+* security
+* simplicity and flexibility
+* performance and scalability
+
+![](./assets/img/roadmap.png)
+
+## In tech preview
+
+This categories means the technology is here, but not officially released for production usage at the moment.
+
+* [IPv6 support in dom0](https://xcp-ng.org/blog/2021/02/09/ipv6-in-xcp-ng/) (Network)
+* [LINSTOR integration](https://xcp-ng.org/blog/2020/11/13/xcp-ng-and-linbit-alliance-part-ii/) (Storage)
+* [RunX](https://xcp-ng.org/blog/2021/10/19/runx-is-available-in-tech-preview/) (Xen)
 
 ## In progress
 
-* Guest UEFI secure boot
-* Host secure boot
-* LinStor integration
-* IPv6 support in dom0
-* Xen RISC-V port
-* LACP support during install
+In there, it means we started to work on it, but it's not usable/visible yet.
+
+* SMAPIv3 evolution (storage)
+* Q35 emulation support (Xen)
+* New metrics (Xen/platform)
+* Xen RISC-V port (Xen)
+* Host secure boot (Xen/platform)
+* New signed Windows PV drivers (guest drivers)
+* Intel `igc` driver support (dom0 drivers)
+* Improved automated CI (build)
+* SPDK-based `blkif` backend (platform)
+* [DPU Support](https://xcp-ng.org/blog/2021/07/12/dpus-and-the-future-of-virtualization/) (storage/platform)
 
 ## Spec/Design/PoC
 
-* xenopsd-ng
+Those feature are still discussed or designed, not even partly coded.
+
+* [New Xen guest agents](https://gitlab.com/xen-project/xen-guest-agent) (guest agent)
+* [xenopsd-ng](https://github.com/xcp-ng/xenopsd-ng)
+* vTPM support
 * Soft RAID status/alerting (via XAPI plugin)
 * Virtio support
+* LACP support during install
 
 ## Done
 
+* Guest UEFI secure boot (2022)
 * Core scheduling (2020)
 * SDN OpenFlow (2020)
 * Restore VMs with their memory (2020)
@@ -38,14 +66,18 @@ This is a draft roadmap, things aren't sorted in any way, and there is no ETA fo
 
 ## Backlog
 
+This is a kind of whish list, without any priorities, where we try to put some ideas.
+
+![](./assets/img/backlog.png)
+
 ### Compute
 
 * Xen live patching
-* Faster Xen Motion (compression in `xenops`?)
-* VM migration improvement [#145](https://github.com/xcp-ng/xcp/issues/145)
-* more recent Xen in alternate repo
+* VM memory encryption
+* VM storage migration improvement [#145](https://github.com/xcp-ng/xcp/issues/145)
+* More recent Xen in alternate repo
 * MxGPU integration out-of-the-box
-* Q35 support
+* Faster Xen Motion (compression in `xenops`?)
 
 ### Storage
 
