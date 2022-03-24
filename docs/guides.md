@@ -78,7 +78,7 @@ pfSense and OPNsense do work great in a VM, but there are a few extra steps that
 
 ### 2. Install Guest Utilities
 
-There are 2 ways of doing that, either using the CLI (pfSense or OPNsense) or the Web UI (pfSense).
+There are 2 ways of doing that, either using the CLI (pfSense or OPNsense) or the Web UI (OPNsense).
 
 Option 1 via console/ssh:
 Now that you have the VM running, we need to install guest utilities and tell them to run on boot. SSH (or other CLI method) to the VM and perform the following:
@@ -90,10 +90,11 @@ ln -s /usr/local/etc/rc.d/xenguest /usr/local/etc/rc.d/xenguest.sh
 service xenguest start
 ```
 
-Option 2 is via Web GUI (only for pfSense):
-Open management page under http(s)://your-configured-ip and go to:
+Option 2 is via the Web GUI (only available on OPNsense):
+Open the web UI on `http(s)://your-configured-ip` and go to:
 *System -> Firmware -> Plugins*
-Scroll down to **os-xen** and let the gui do the steps needed. Next: Reboot the system to have the guest started (installer doesn't do that):
+Scroll down to **os-xen** and click the plus sign next to it to install them.  
+Next: Reboot the system to have the guest tools started (installer doesn't do this the first time):
 *Power -> Reboot*
 
 Guest Tools are now installed and running, and will automatically run on every boot of the VM.
