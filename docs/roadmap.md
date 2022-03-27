@@ -37,6 +37,7 @@ Those feature are still discussed or designed, not even partly coded.
 
 * [New Xen guest agents](https://gitlab.com/xen-project/xen-guest-agent) (guest agent)
 * [xenopsd-ng](https://github.com/xcp-ng/xenopsd-ng)
+* Linux 5.x kernel Dom0 support
 * vTPM support
 * Soft RAID status/alerting (via XAPI plugin)
 * Virtio support
