@@ -485,7 +485,7 @@ From the CLI:
 
 Here's an example creating a Shared ISO SR named "ISO Repository" that will be stored in /opt/var/iso_repository:
 ```
-mkdir /opt/var/iso_repository
+mkdir -p /opt/var/iso_repository
 
 xe sr-create name-label="ISO Repository" type=iso device-config:location=/opt/var/iso_repository device-config:legacy_mode=true content-type=iso
 a6732eb5-9129-27a7-5e4a-8784ac45df27
