@@ -35,13 +35,14 @@ In there, it means we started to work on it, but it's not usable/visible yet.
 
 Those feature are still discussed or designed, not even partly coded.
 
+* Aegis Project: AMD SEV-SNP support (Xen)
 * [New Xen guest agents](https://gitlab.com/xen-project/xen-guest-agent) (guest agent)
-* [xenopsd-ng](https://github.com/xcp-ng/xenopsd-ng)
-* Linux 5.x kernel Dom0 support
-* vTPM support
+* [xenopsd-ng](https://github.com/xcp-ng/xenopsd-ng) (Xen)
+* Linux 5.x kernel Dom0 support (platform)
+* vTPM support (Xen/platform)
 * Soft RAID status/alerting (via XAPI plugin)
-* Virtio support
-* LACP support during install
+* Virtio support (platform)
+* LACP support during install (platform)
 
 ## Done
 
