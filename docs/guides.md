@@ -1017,12 +1017,15 @@ The certificates are stored at several levels:
 * host **disk** (it basically mirrors the certificates in the XAPI database),
 * **VM** level (in the VM's UEFI variables).
 
-To install or modify the certificates on the **pool**, use the `secureboot-certs` command line utility. See [Configure the Pool](#configure-the-pool). Once `secureboot-certs` is called, the XAPI DB entry for the pool and all the hosts is populated with a base64-encoded tarball of the UEFI certificates. *The certificates are still not installed on disk, they only exist in the XAPI DB*.
+To install or modify the certificates on the **pool**, use the `secureboot-certs` command line utility. See [Configure the Pool](#configure-the-pool). Once `secureboot-certs` is called, the XAPI DB entry for the pool is populated with a base64-encoded tarball of the UEFI certificates. Note: on XCP-ng 8.2.x, at this stage, *the certificates are still not installed on disk*: they only exist in the XAPI DB*. See "Host disk certificates synchronisation" below.
+
+Host disk certificate synchronization:
+- On XCP-ng 8.2.x, the certificates are updated on the host's **disk** (in `/var/lib/uefistored/`) each time a UEFI VM starts on the host, if needed.
+- On any more recent release (8.3 or above), the disk certificates are synced from XAPI directly when `secureboot-certs install` is run, and again at every XAPI startup afterwards if needed.
 
 When a UEFI VM starts:
-1. The certificates are updated on the host's **disk** (in `/var/lib/uefistored/`) if they don't exist yet or differ from the ones in XAPI database.
-2. For each UEFI variable among `PK`, `KEK`, `db` and `dbx`: if it's not defined yet at the **VM** level, `uefistored` reads the corresponding file from the host's **disk** and populates the VM's NVRAM store with it. **/!\ If an UEFI variable is already defined at the VM level, then it is not modified by XCP-ng anymore, even if its value differs from the file on the host's disk.** Only the guest operating system or an admin may update it (see [Change the Certificates Already Installed on a VM](#change-the-certificates-already-installed-on-a-vm)). Unless you [remove it from the VM](#remove-certs-from-a-vm) before the boot, in which case `uefistored` will read the needed file(s) from disk again and populate the VM's NVRAM store again.
-3. Based on the certificates present and the state of the VM's `platform:secureboot` parameter, `uefistored` sets the Secure Boot state, on or off.
+- For each UEFI variable among `PK`, `KEK`, `db` and `dbx`: if it's not defined yet at the **VM** level, `uefistored` reads the corresponding file from the host's **disk** and populates the VM's NVRAM store with it. **/!\ If an UEFI variable is already defined at the VM level, then it is not modified by XCP-ng anymore, even if its value differs from the file on the host's disk.** Only the guest operating system or an admin may update it (see [Change the Certificates Already Installed on a VM](#change-the-certificates-already-installed-on-a-vm)). Unless you [remove it from the VM](#remove-certs-from-a-vm) before the boot, in which case `uefistored` will read the needed file(s) from disk again and populate the VM's NVRAM store again.
+- Based on the certificates present and the state of the VM's `platform:secureboot` parameter, `uefistored` sets the Secure Boot state, on or off.
 
 ### Configure the Pool
 
@@ -1259,7 +1262,12 @@ To remove the installed certs in the pool:
 secureboot-certs clear
 ```
 
-Note that this does not remove the certs from the VMs or from disk. To remove them from disk, remove the ".auth" files for the certs you'd like to remove, on every host (found in `/var/lib/uefistored/`). In order to clear the certs from the VMs it is required to use `varstore-rm`. See [Remove Certificates from a VM](#remove-certificates-from-a-vm).
+:::tip
+Note that this does not remove the certs from the VMs. On XCP-ng 8.2.x it doesn't remove them from host disk either.
+- On XCP-ng 8.2.x: to remove them from disk, remove the ".auth" files for the certs you'd like to remove, on every host (found in `/var/lib/uefistored/`).
+- On XCP-ng 8.3 and later, host disk certificates will be removed by the clear command.
+- In order to clear the certs from the VMs it is required to use `varstore-rm`. See [Remove Certificates from a VM](#remove-certificates-from-a-vm).
+:::
 
 #### Change the Certificates Already Installed on a VM
 
