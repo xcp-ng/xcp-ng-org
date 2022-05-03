@@ -222,10 +222,43 @@ If you want to make an installation in UEFI mode, you need to have a slightly di
     module2 /EFI/xcp-ng/install.img
  }
 ```
-4. Copy this `grub.cfg` file to `EFI/xcp-ng` folder on the TFTP server
+4. Copy this `grub.cfg` file to `EFI/xenserver/xcp-ng` folder on the TFTP server
 5. Get the following files from XCP-ng ISO: `grubx64.efi`, `install.img` (from the root directory), `vmlinuz`, and `xen.gz` (from the /boot directory) to the new EFI/xcp-ng directory on the TFTP server.
 
+How TFTP folder looks like when configured
+```
+tree -L 1 /srv/tftp/
+srv/tftp
+└── EFI
+    ├── xcp-ng
+    │   ├── grubx64.efi
+    │   ├── install.img
+    │   ├── vmlinuz
+    │   └── xen.gz
+    └── xenserver
+        └── grub.cfg
+```
+
 On the FTP, NFS or HTTP serveur, get all the installation media content in there.
+How the HTTP dir looks like:
+```
+tree /var/www/html/ -L 2 -a
+/var/www/html/
+├── index.html
+└── xcp-ng
+    ├── boot
+    ├── client_install
+    ├── EFI
+    ├── EULA
+    ├── install.img
+    ├── LICENSES
+    ├── Packages
+    ├── repodata
+    ├── RPM-GPG-KEY-CH-8
+    ├── RPM-GPG-KEY-CH-8-LCM
+    ├── RPM-GPG-KEY-Platform-V1
+    └── .treeinfo
+ ```
 
 :::tip
 When you do copy the installation files, **DO NOT FORGET** the `.treeinfo` file. Double check your webserver isn't blocking it (like Microsoft IIS does).
