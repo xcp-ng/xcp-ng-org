@@ -237,10 +237,15 @@ If `protov6` is static then the following elements must be present:
 
 #### Root password
 
-Specifies the root password. The value `!!` and a type of "hash" defers setting a password until first boot. Default: type="hash", `!!`.
+Specifies the root password. The value `!!` and a SHA-512 "hash" defers setting a password until first boot. Default: type="hash", `!!`.
 
 ```xml
   <root-password type="plaintext|hash">passwd</root-password>
+```
+How to create a hash.
+```
+mkpasswd -m SHA-512 'Password1'
+$6$Vv6DgmVWmbZ.SdRl$AUWzbpE5luuNQIyW.CUEztWLKEJkSrBhfTKFdMaX1eJhPrtXworF4RIG.GQ9cBtxE0yNBI4weakgnHdGjljFg/
 ```
 
 #### Name Server
