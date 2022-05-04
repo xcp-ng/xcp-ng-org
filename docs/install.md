@@ -241,7 +241,7 @@ srv/tftp
 
 On the FTP, NFS or HTTP serveur, get all the installation media content in there.
 
-For layout example check the [offical repository](https://updates.xcp-ng.org/netinstall/latest).
+For layout example check the [official repository](https://mirrors.xcp-ng.org/netinstall/latest).
 
 :::tip
 When you do copy the installation files, **DO NOT FORGET** the `.treeinfo` file. Double check your webserver isn't blocking it (like Microsoft IIS does).
