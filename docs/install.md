@@ -218,7 +218,7 @@ If you want to make an installation in UEFI mode, you need to have a slightly di
  menuentry "XCP-ng Install (serial)" {
     multiboot2 /EFI/xcp-ng/xen.gz dom0_mem=2048M,max:2048M watchdog \
     dom0_max_vcpus=4 com1=115200,8n1 console=com1,vga
-    module2 /EFI/xcp-ng/vmlinuz console=hvc0
+    module2 /EFI/xcp-ng/vmlinuz console=hvc0 install
     module2 /EFI/xcp-ng/install.img
  }
 ```
