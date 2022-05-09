@@ -218,14 +218,30 @@ If you want to make an installation in UEFI mode, you need to have a slightly di
  menuentry "XCP-ng Install (serial)" {
     multiboot2 /EFI/xcp-ng/xen.gz dom0_mem=2048M,max:2048M watchdog \
     dom0_max_vcpus=4 com1=115200,8n1 console=com1,vga
-    module2 /EFI/xcp-ng/vmlinuz console=hvc0
+    module2 /EFI/xcp-ng/vmlinuz console=hvc0 install
     module2 /EFI/xcp-ng/install.img
  }
 ```
-4. Copy this `grub.cfg` file to `EFI/xcp-ng` folder on the TFTP server
+4. Copy this `grub.cfg` file to `EFI/xenserver` folder on the TFTP server
 5. Get the following files from XCP-ng ISO: `grubx64.efi`, `install.img` (from the root directory), `vmlinuz`, and `xen.gz` (from the /boot directory) to the new EFI/xcp-ng directory on the TFTP server.
 
+How TFTP folder looks like when configured
+```
+tree -L 1 /srv/tftp/
+srv/tftp
+└── EFI
+    ├── xcp-ng
+    │   ├── grubx64.efi
+    │   ├── install.img
+    │   ├── vmlinuz
+    │   └── xen.gz
+    └── xenserver
+        └── grub.cfg
+```
+
 On the FTP, NFS or HTTP serveur, get all the installation media content in there.
+
+For layout example check the [official repository](https://mirrors.xcp-ng.org/netinstall/latest).
 
 :::tip
 When you do copy the installation files, **DO NOT FORGET** the `.treeinfo` file. Double check your webserver isn't blocking it (like Microsoft IIS does).

@@ -243,6 +243,12 @@ Specifies the root password. The value `!!` and a type of "hash" defers setting 
   <root-password type="plaintext|hash">passwd</root-password>
 ```
 
+How to create a hash.
+```
+mkpasswd -m SHA-512 'Password1'
+$6$Vv6DgmVWmbZ.SdRl$AUWzbpE5luuNQIyW.CUEztWLKEJkSrBhfTKFdMaX1eJhPrtXworF4RIG.GQ9cBtxE0yNBI4weakgnHdGjljFg/
+```
+
 #### Name Server
 
 Specifies one or more DNS entries.
