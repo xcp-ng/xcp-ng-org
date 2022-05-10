@@ -787,7 +787,7 @@ To use `yum` or `rpm`, you'll also need to mount `urandom` in your chrooted dir.
 From outside the chroot run:
 ```
 touch install/dev/urandom
-mount /dev/urandom install/dev/urandom # As root!
+mount -B /dev/urandom install/dev/urandom # As root!
 ```
 Then useful commands will be available to you in the context of that filesystem, such as `rpm`, `yum`, etc.
 
