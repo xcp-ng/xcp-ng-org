@@ -121,6 +121,26 @@ The log files are located in `C:\Users\<user>\AppData\Roaming\XCP-ng\XCP-ng Cent
 #### (PV-)Driver install log
 `C:\Windows\INF\setupapi.dev.log`
 
+
+## Useful data for debugging
+
+### DMAR/IVRS ACPI tables
+
+To debug various issues (for example IOMMU-related issues), developers may need to consult the DMAR (Intel) or IVRS (AMD) acpi tables, extracted from the firmware.
+
+Here's how to extract them, from a Linux system with `acpica-tools` (or equivalent name in your distro) installed, as root:
+
+```bash
+mkdir acpi && cd acpi
+acpidump > acpi.dmp
+acpixtract -a acpi.dmp
+[[ -f rmad.dat ]] && echo "DMAR" | dd of=rmad.dat bs=1 count=4 conv=notrunc
+iasl -d *.dat
+```
+
+This will produce either `ivrs.dsl`, `rmad.dsl` or `dmar.dsl`.
+
+
 ## Common Problems
 
 ### Blank screen (on a Linux VM)
