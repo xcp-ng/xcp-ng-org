@@ -934,7 +934,6 @@ menuentry "install" {
     module2 /boot/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=file:///answerfile.xml install
     module2 /install.img
 }
-
 ```
 
 6. Generate ISO
