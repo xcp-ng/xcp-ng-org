@@ -736,7 +736,7 @@ Obviously, a modified installation image is not an official installation image a
 ```
 mkdir tmpmountdir/
 mount -o loop filename.iso tmpmountdir/ # as root
-cp -a tmpmountdir/ iso
+cp -a tmpmountdir/. iso
 umount tmpmountdir/ # as root
 ```
 
@@ -857,6 +857,93 @@ genisoimage -o $OUTPUT -v -r -J --joliet-long -V "XCP-ng $VERSION" -c boot/isoli
             -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/efiboot.img -no-emul-boot .
 isohybrid --uefi $OUTPUT
 ```
+
+## Create unattended ISO file
+
+This guide will provide an example steps on how to create unattended ISO image that can be used for mass deployment.
+
+### Prerequisites
+1. Create an answerfile
+```
+<?xml version="1.0"?>
+    <installation mode="fresh" csrtype="ext">
+        <primary-disk>sda</primary-disk>
+        <keymap>us</keymap>
+        <root-password type="plain">123456</root-password>
+        <hostname>server1.lab</hostname>
+        <bootloader location="partition">grub2</bootloader>
+        <network-backend>vswitch</network-backend>
+        <source type="local"/>
+        <admin-interface name="eth0" proto="static">
+            <ipaddr>192.168.1.10</ipaddr>
+            <subnet>255.255.255.0</subnet>
+            <gateway>192.168.1.1</gateway>
+        </admin-interface>
+        <name-server>192.168.1.1</name-server>
+        <name-server>8.8.8.8</name-server>
+        <ntp-server>192.168.1.1</ntp-server>
+        <ntp-server>192.168.1.2</ntp-server>
+        <timezone>Europe/Sofia</timezone>
+    </installation>
+```
+2. Download XCP-NG ISO
+
+### Image baking
+
+1. [Extract ISO](https://xcp-ng.org/docs/develprocess.html#extract-an-existing-iso-image)
+2. [Extact install.img installer into install directory](https://xcp-ng.org/docs/develprocess.html#extract-install-img)
+3. Copy answerfile to the installer
+```
+cp answerfile "$WORK_DIR/install/answerfile.xml"
+```
+4. Pack the installer image and cleanup install directory
+```
+cd $WORKDIR/install
+find . |  cpio -o -H newc | bzip2 > ../install.img
+cd ..
+rm $WORK_DIR/install -rf
+```
+5. Modify grub to use answerfile
+Depending on the boot mode:
+- BIOS - open $WORK_DIR/boot/isolinux/isolinux.cfg
+Change this
+```
+LABEL install
+        KERNEL mboot.c32
+        APPEND /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga --- /boot/vmlinuz console=hvc0 console=tty0 --- /install.img
+```
+Into this
+```
+LABEL install
+        KERNEL mboot.c32
+        APPEND /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga --- /boot/vmlinuz console=hvc0 console=tty0 answerfile=file:///answerfile.xml install --- /install.img
+```
+- UEFI - open $WORK_DIR/EFI/xenserver/grub.cfg
+change this:
+```
+menuentry "install" {
+    multiboot2 /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga
+    module2 /boot/vmlinuz xencons=hvc console=hvc0 console=tty0
+    module2 /install.img
+}
+```
+into this:
+```
+menuentry "install" {
+    multiboot2 /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga
+    module2 /boot/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=file:///answerfile.xml install
+    module2 /install.img
+}
+
+```
+
+6. Generate ISO
+```
+genisoimage -o $OUTPUT_ISO -v -r -J --joliet-long -V "XCP-ng $VERSION" -c boot/isolinux/boot.cat -b boot/isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/efiboot.img -no-emul-boot $WORK_DIR
+isohybrid --uefi $OUTPUT_ISO
+```
+
+ISO is ready for installation.
 
 ## Commit message conventions
 
