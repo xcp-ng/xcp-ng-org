@@ -904,7 +904,6 @@ cd ..
 rm $WORK_DIR/install -rf
 ```
 5. Modify grub to use answerfile
-Depending on the boot mode:
 - BIOS - open $WORK_DIR/boot/isolinux/isolinux.cfg
 Change this
 ```
