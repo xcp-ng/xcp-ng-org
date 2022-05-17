@@ -758,6 +758,9 @@ We'll only list the files that are used during an installation or upgrade. The o
 * `repodata/`: yum metadata about the RPMs
 * `.treeinfo`: often forgotten when one copies the contents of the ISO for network installation, this hidden file contains necessary metadata about XCP-ng and its version
 
+:::tip
+Unatteneded ISO guide [is available on our Automated install page](https://xcp-ng.org/docs/install.html#with-unattended-iso-and-remote-config).
+
 ### Modify the installer itself
 
 The steps to modify the installer are:

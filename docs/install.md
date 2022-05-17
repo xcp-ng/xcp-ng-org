@@ -367,7 +367,7 @@ Your XML answer file can look like this:
 The full answerfile schema [is available in our Annex](answerfile.md).
 :::
 
-## with unattended ISO file and remote config
+### with unattended ISO and remote config
 
 1. [Prepare an answerfile](https://xcp-ng.org/docs/answerfile.html)
 2. [Extract the XCP-NG ISO file](https://xcp-ng.org/docs/develprocess.html#extract-an-existing-iso-image)
@@ -384,7 +384,7 @@ Add the following code to the line that has `module2 /boot/vmlinuz` and before `
 
 ISO is ready for installation.
 
-## with unattended ISO file and embedded config 
+### with unattended ISO and embedded config 
 
 1. [Prepare an answerfile](https://xcp-ng.org/docs/answerfile.html)
 2. [Extract the XCP-NG ISO file](https://xcp-ng.org/docs/develprocess.html#extract-an-existing-iso-image)
