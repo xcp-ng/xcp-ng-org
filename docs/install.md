@@ -367,52 +367,94 @@ Your XML answer file can look like this:
 The full answerfile schema [is available in our Annex](answerfile.md).
 :::
 
-### with unattended ISO and remote config
+### Unattended installation ISO with remote config
 
-1. [Prepare an answerfile](https://xcp-ng.org/docs/answerfile.html)
-2. [Extract the XCP-NG ISO file](https://xcp-ng.org/docs/develprocess.html#extract-an-existing-iso-image)
-3. Modify grub to use answerfile
-For BIOS boot - /boot/isolinux/isolinux.cfg
-For UEFI boot - /EFI/xenserver/grub.cfg
+If you don't want to setup PXE but still can serve a file (the answerfile) from a server that will be available to the hosts during installation, you can create an automated installation image that will fetch its configuration from the network.
 
-Add the following code to the line that has `module2 /boot/vmlinuz` and before `install` argument.
+1. [Prepare an answerfile](answerfile.md) and make it available from a local HTTP server
+2. [Extract the XCP-NG ISO file](develprocess.md#extract-an-existing-iso-image)
+3. Modify the boot configuration to use the remote answerfile
+  * For BIOS boot, edit `/boot/isolinux/isolinux.cfg`.
+    * Locate the `install` boot entry, which should look like this:
+    ```
+    LABEL install
+        KERNEL mboot.c32
+        APPEND /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga --- /boot/vmlinuz console=hvc0 console=tty0 --- /install.img
+    ```
+    * Append `answerfile=http://your_server/path/to/answerfile.xml install` to the parameters passed to vmlinuz, before the last `---`:
+    ```
+    LABEL install
+        KERNEL mboot.c32
+        APPEND /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga --- /boot/vmlinuz console=hvc0 console=tty0 answerfile=http://your_server/path/to/answerfile.xml install --- /install.img
+    ```
+  * For UEFI boot edit `/EFI/xenserver/grub.cfg` (and `/EFI/xenserver/grub-usb.cfg` for USB installation).
+    * Locate the `install` menuentry, which should look like this:
+    ```
+    menuentry "install" {
+        multiboot2 /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga
+        module2 /boot/vmlinuz console=hvc0 console=tty0
+        module2 /install.img
+    }
+    ```
+    * Append `answerfile=http://your_server/path/to/answerfile.xml install` to the parameters passed to vmlinuz, in the line that starts with `module2 /boot/vmlinuz`:
+    ```
+    menuentry "install" {
+        multiboot2 /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga
+        module2 /boot/vmlinuz console=hvc0 console=tty0 answerfile=http://your_server/path/to/answerfile.xml install
+        module2 /install.img
+    }
+    ```
+4. [Build a new ISO with your changes](develprocess.md#build-a-new-iso-image-with-your-changes)
 
-```answerfile=http://local_server/path/to/answerfile.xml
-```
+Your ISO is ready for installation.
 
-4. [Build a new ISO with your changes](https://xcp-ng.org/docs/develprocess.html#build-a-new-iso-image-with-your-changes)
+### Unattended installation ISO with embedded config 
 
-ISO is ready for installation.
+If can't either setup PXE or serve a file (the answerfile) from a server that will be available to the hosts during installation, you can create an automated installation image that will embed its own configuration. It's a bit more work and will need to be done again each time you want to modify the answerfile.
 
-### with unattended ISO and embedded config 
+1. [Prepare an answerfile](answerfile.md)
+2. [Extract the XCP-NG ISO file](develprocess.md#extract-an-existing-iso-image)
+3. Modify the boot configuration to use a local (= embedded in the ISO) answerfile
+  * For BIOS boot, edit `/boot/isolinux/isolinux.cfg`.
+    * Locate the `install` boot entry, which should look like this:
+    ```
+    LABEL install
+        KERNEL mboot.c32
+        APPEND /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga --- /boot/vmlinuz console=hvc0 console=tty0 --- /install.img
+    ```
+    * Append `answerfile=file:///answerfile.xml install` to the parameters passed to vmlinuz, before the last `---`:
+    ```
+    LABEL install
+        KERNEL mboot.c32
+        APPEND /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga --- /boot/vmlinuz console=hvc0 console=tty0 answerfile=file:///answerfile.xml install --- /install.img
+    ```
+  * For UEFI boot edit `/EFI/xenserver/grub.cfg` (and `/EFI/xenserver/grub-usb.cfg` for USB installation).
+    * Locate the `install` menuentry, which should look like this:
+    ```
+    menuentry "install" {
+        multiboot2 /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga
+        module2 /boot/vmlinuz console=hvc0 console=tty0
+        module2 /install.img
+    }
+    ```
+    * Append `answerfile=file:///answerfile.xml install` to the parameters passed to vmlinuz, in the line that starts with `module2 /boot/vmlinuz`:
+    ```
+    menuentry "install" {
+        multiboot2 /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga
+        module2 /boot/vmlinuz console=hvc0 console=tty0 answerfile=file:///answerfile.xml install
+        module2 /install.img
+    }
+    ```
+4. [Extract install.img](develprocess.md#extract-install-img)
+5. Add your answerfile
+    ```
+    cp answerfile.xml "$WORK_DIR/install/answerfile.xml"
+    ```
 
-1. [Prepare an answerfile](https://xcp-ng.org/docs/answerfile.html)
-2. [Extract the XCP-NG ISO file](https://xcp-ng.org/docs/develprocess.html#extract-an-existing-iso-image)
-3. Modify grub to use answerfile
-For BIOS boot - /boot/isolinux/isolinux.cfg
-For UEFI boot - /EFI/xenserver/grub.cfg
+6. [Build a new install.img with your changes](develprocess.md#build-a-new-install-img-with-your-changes)
+7. [Build a new ISO with your changes](develprocess.md#build-a-new-iso-image-with-your-changes)
 
-Add the following code to the line that has `module2 /boot/vmlinuz` and before `install` argument.
-
-```answerfile=file:///answerfile.xml
-```
-
-4. [Extract install.img to install directory](https://xcp-ng.org/docs/develprocess.html#extract-install-img)
-5. Add the answerfile 
-
-```cp answerfile "$WORK_DIR/install/answerfile.xml"
-```
-
-6. Pack the image and remove extracted directory
-
-```cd $WORK_DIR/install
-find . |  cpio -o -H newc | bzip2 > ../install.img
-cd ..
-rm $WORK_DIR/install -rf
-```
-
-7. [Build a new ISO with your changes](https://xcp-ng.org/docs/develprocess.html#build-a-new-iso-image-with-your-changes)
-
+Your ISO is ready for installation.
 
 
 #### Example with VirtualBox
