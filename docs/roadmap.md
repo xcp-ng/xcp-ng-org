@@ -1,6 +1,6 @@
 # Roadmap
 
-The goal of this document is to give you a hint on what's next. However, since all topics are very complex, there's no real order or target date. In general, our priorities are:
+The goal of this document is to give you a hint of what's next. However, since all topics are very complex, there's no real order or target date. In general, our priorities are:
 
 * security
 * simplicity and flexibility
@@ -9,16 +9,14 @@ The goal of this document is to give you a hint on what's next. However, since a
 ![](./assets/img/roadmap.png)
 
 ## In tech preview
-
-This categories means the technology is here, but not officially released for production usage at the moment.
+_Technology that is here, but not officially released for production usage._
 
 * [IPv6 support in dom0](https://xcp-ng.org/blog/2021/02/09/ipv6-in-xcp-ng/) (Network)
 * [LINSTOR integration](https://xcp-ng.org/blog/2020/11/13/xcp-ng-and-linbit-alliance-part-ii/) (Storage)
 * [RunX](https://xcp-ng.org/blog/2021/10/19/runx-is-available-in-tech-preview/) (Xen)
 
 ## In progress
-
-In there, it means we started to work on it, but it's not usable/visible yet.
+_Things we started to work on, but are not usable/visible yet._
 
 * SMAPIv3 evolution (storage)
 * Q35 emulation support (Xen)
@@ -32,8 +30,7 @@ In there, it means we started to work on it, but it's not usable/visible yet.
 * [DPU Support](https://xcp-ng.org/blog/2021/07/12/dpus-and-the-future-of-virtualization/) (storage/platform)
 
 ## Spec/Design/PoC
-
-Those feature are still discussed or designed, not even partly coded.
+_Features that are being discussed or designed, but not even partly coded._
 
 * Aegis Project: AMD SEV-SNP support (Xen)
 * [New Xen guest agents](https://gitlab.com/xen-project/xen-guest-agent) (guest agent)
@@ -68,7 +65,7 @@ Those feature are still discussed or designed, not even partly coded.
 
 ## Backlog
 
-This is a kind of whish list, without any priorities, where we try to put some ideas.
+This is a kind of wish list, without any priorities, where we try to put some ideas.
 
 ![](./assets/img/backlog.png)
 
