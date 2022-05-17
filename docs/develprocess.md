@@ -858,88 +858,49 @@ genisoimage -o $OUTPUT -v -r -J --joliet-long -V "XCP-ng $VERSION" -c boot/isoli
 isohybrid --uefi $OUTPUT
 ```
 
-## Create unattended ISO file
+## Unattended ISO file with remote config
 
-This guide will provide an example steps on how to create unattended ISO image that can be used for mass deployment.
+1. [Prepare an answerfile](https://xcp-ng.org/docs/answerfile.html)
+2. [Extract the XCP-NG ISO file](https://xcp-ng.org/docs/develprocess.html#extract-an-existing-iso-image)
+3. Modify grub to use answerfile
+For BIOS boot - $WORK_DIR/boot/isolinux/isolinux.cfg
+For UEFI boot - $WORK_DIR/EFI/xenserver/grub.cfg
 
-### Prerequisites
-1. Create an answerfile
+Add the following code to the line that has `module2 /boot/vmlinuz` and before `install` argument.
 ```
-<?xml version="1.0"?>
-    <installation mode="fresh" csrtype="ext">
-        <primary-disk>sda</primary-disk>
-        <keymap>us</keymap>
-        <root-password type="plain">123456</root-password>
-        <hostname>server1.lab</hostname>
-        <bootloader location="partition">grub2</bootloader>
-        <network-backend>vswitch</network-backend>
-        <source type="local"/>
-        <admin-interface name="eth0" proto="static">
-            <ipaddr>192.168.1.10</ipaddr>
-            <subnet>255.255.255.0</subnet>
-            <gateway>192.168.1.1</gateway>
-        </admin-interface>
-        <name-server>192.168.1.1</name-server>
-        <name-server>8.8.8.8</name-server>
-        <ntp-server>192.168.1.1</ntp-server>
-        <ntp-server>192.168.1.2</ntp-server>
-        <timezone>Europe/Sofia</timezone>
-    </installation>
+answerfile=http://local_server/path/to/answerfile.xml
 ```
-2. Download XCP-NG ISO
 
-### Image baking
+4. [Build a new ISO with your changes](https://xcp-ng.org/docs/develprocess.html#build-a-new-iso-image-with-your-changes)
 
-1. [Extract ISO](https://xcp-ng.org/docs/develprocess.html#extract-an-existing-iso-image)
-2. [Extact install.img installer into install directory](https://xcp-ng.org/docs/develprocess.html#extract-install-img)
-3. Copy answerfile to the installer
+ISO is ready for installation.
+
+## Unattended ISO file with embedded config 
+
+1. [Prepare an answerfile](https://xcp-ng.org/docs/answerfile.html)
+2. [Extract the XCP-NG ISO file](https://xcp-ng.org/docs/develprocess.html#extract-an-existing-iso-image)
+3. Modify grub to use answerfile
+For BIOS boot - $WORK_DIR/boot/isolinux/isolinux.cfg
+For UEFI boot - $WORK_DIR/EFI/xenserver/grub.cfg
+
+Add the following code to the line that has `module2 /boot/vmlinuz` and before `install` argument.
+```
+answerfile=file:///answerfile.xml
+```
+
+4. [Extract install.img to install directory](https://xcp-ng.org/docs/develprocess.html#extract-install-img)
+5. Add the answerfile 
 ```
 cp answerfile "$WORK_DIR/install/answerfile.xml"
 ```
-4. Pack the installer image and cleanup install directory
+6. Pack the image and remove extracted directory
 ```
-cd $WORKDIR/install
+cd $WORK_DIR/install
 find . |  cpio -o -H newc | bzip2 > ../install.img
 cd ..
 rm $WORK_DIR/install -rf
 ```
-5. Modify grub to use answerfile
-- BIOS - open $WORK_DIR/boot/isolinux/isolinux.cfg
-Change this
-```
-LABEL install
-        KERNEL mboot.c32
-        APPEND /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga --- /boot/vmlinuz console=hvc0 console=tty0 --- /install.img
-```
-Into this
-```
-LABEL install
-        KERNEL mboot.c32
-        APPEND /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga --- /boot/vmlinuz console=hvc0 console=tty0 answerfile=file:///answerfile.xml install --- /install.img
-```
-- UEFI - open $WORK_DIR/EFI/xenserver/grub.cfg
-change this:
-```
-menuentry "install" {
-    multiboot2 /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga
-    module2 /boot/vmlinuz xencons=hvc console=hvc0 console=tty0
-    module2 /install.img
-}
-```
-into this:
-```
-menuentry "install" {
-    multiboot2 /boot/xen.gz dom0_max_vcpus=1-16 dom0_mem=max:8192M com1=115200,8n1 console=com1,vga
-    module2 /boot/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=file:///answerfile.xml install
-    module2 /install.img
-}
-```
-
-6. Generate ISO
-```
-genisoimage -o $OUTPUT_ISO -v -r -J --joliet-long -V "XCP-ng $VERSION" -c boot/isolinux/boot.cat -b boot/isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/efiboot.img -no-emul-boot $WORK_DIR
-isohybrid --uefi $OUTPUT_ISO
-```
+7. [Build a new ISO with your changes](https://xcp-ng.org/docs/develprocess.html#build-a-new-iso-image-with-your-changes)
 
 ISO is ready for installation.
 
