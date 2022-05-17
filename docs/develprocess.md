@@ -858,52 +858,6 @@ genisoimage -o $OUTPUT -v -r -J --joliet-long -V "XCP-ng $VERSION" -c boot/isoli
 isohybrid --uefi $OUTPUT
 ```
 
-## Unattended ISO file with remote config
-
-1. [Prepare an answerfile](https://xcp-ng.org/docs/answerfile.html)
-2. [Extract the XCP-NG ISO file](https://xcp-ng.org/docs/develprocess.html#extract-an-existing-iso-image)
-3. Modify grub to use answerfile
-For BIOS boot - $WORK_DIR/boot/isolinux/isolinux.cfg
-For UEFI boot - $WORK_DIR/EFI/xenserver/grub.cfg
-
-Add the following code to the line that has `module2 /boot/vmlinuz` and before `install` argument.
-```
-answerfile=http://local_server/path/to/answerfile.xml
-```
-
-4. [Build a new ISO with your changes](https://xcp-ng.org/docs/develprocess.html#build-a-new-iso-image-with-your-changes)
-
-ISO is ready for installation.
-
-## Unattended ISO file with embedded config 
-
-1. [Prepare an answerfile](https://xcp-ng.org/docs/answerfile.html)
-2. [Extract the XCP-NG ISO file](https://xcp-ng.org/docs/develprocess.html#extract-an-existing-iso-image)
-3. Modify grub to use answerfile
-For BIOS boot - $WORK_DIR/boot/isolinux/isolinux.cfg
-For UEFI boot - $WORK_DIR/EFI/xenserver/grub.cfg
-
-Add the following code to the line that has `module2 /boot/vmlinuz` and before `install` argument.
-```
-answerfile=file:///answerfile.xml
-```
-
-4. [Extract install.img to install directory](https://xcp-ng.org/docs/develprocess.html#extract-install-img)
-5. Add the answerfile 
-```
-cp answerfile "$WORK_DIR/install/answerfile.xml"
-```
-6. Pack the image and remove extracted directory
-```
-cd $WORK_DIR/install
-find . |  cpio -o -H newc | bzip2 > ../install.img
-cd ..
-rm $WORK_DIR/install -rf
-```
-7. [Build a new ISO with your changes](https://xcp-ng.org/docs/develprocess.html#build-a-new-iso-image-with-your-changes)
-
-ISO is ready for installation.
-
 ## Commit message conventions
 
 ### Foreword
