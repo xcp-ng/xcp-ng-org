@@ -760,7 +760,7 @@ We'll only list the files that are used during an installation or upgrade. The o
 
 ### Create a fully automated installation image
 
-[A guide is available in the *Installation* page](install.md#unattended-installation-iso-with-remote-config).
+[A guide is available in the *Installation* page](install.md#unattended-installation-with-a-custom-iso-image).
 
 ### Modify the installer itself
 
