@@ -736,7 +736,7 @@ Obviously, a modified installation image is not an official installation image a
 ```
 mkdir tmpmountdir/
 mount -o loop filename.iso tmpmountdir/ # as root
-cp -a tmpmountdir/ iso
+cp -a tmpmountdir/. iso
 umount tmpmountdir/ # as root
 ```
 
@@ -757,6 +757,10 @@ We'll only list the files that are used during an installation or upgrade. The o
 * `Packages/`: all the RPMs that will be installed on the system
 * `repodata/`: yum metadata about the RPMs
 * `.treeinfo`: often forgotten when one copies the contents of the ISO for network installation, this hidden file contains necessary metadata about XCP-ng and its version
+
+### Create a fully automated installation image
+
+[A guide is available in the *Installation* page](install.md#unattended-installation-iso-with-remote-config).
 
 ### Modify the installer itself
 
