@@ -190,6 +190,8 @@ PXE boot doesn't support tagged VLAN networks! Be sure to boot on a untagged net
 
 ### TFTP server configuration
 
+#### TFTP server configuration - BIOS boot
+
 1. In your TFTP root directory (eg `/tftp`), create a folder named `xcp-ng`.
 2. Copy the `mboot.c32` and `pxelinux.0` files from the installation media to the TFTP root directory.
 3. From the XCP-ng installation media, copy the files `install.img` (from the root directory), `vmlinuz`, and `xen.gz` (from the /boot directory) to the new `xcp-ng` directory on the TFTP server.
@@ -207,12 +209,26 @@ label xcp-ng
     append xcp-ng/xen.gz dom0_max_vcpus=2 dom0_mem=2048M,max:2048M com1=115200,8n1 console=com1,vga --- xcp-ng/vmlinuz xencons=hvc console=hvc0 console=tty0 --- xcp-ng/install.img
 ```
 
-### UEFI boot
+How TFTP folder looks like when configured
+```
+tree -L 1 /srv/tftp/
+srv/tftp
+├── mboot.c32
+├── pxelinux.0
+├── pxelinux.cfg
+│   └── default
+└── xcp-ng
+    ├── install.img
+    ├── vmlinuz
+    └── xen.gz
+```
+
+#### TFTP server configuration - UEFI boot
 
 If you want to make an installation in UEFI mode, you need to have a slightly different TFTP server configuration:
 
 1. In your TFTP root folder, create a directory called `EFI/xcp-ng`
-2. Configure your DHCP serveur to provide `/EFI/xcp-ng/grubx64.efi` as the boot file
+2. Configure your DHCP server to provide `/EFI/xcp-ng/grubx64.efi` as the boot file
 3. Create a `grub.cfg` as follow:
 ```
  menuentry "XCP-ng Install (serial)" {
@@ -223,7 +239,7 @@ If you want to make an installation in UEFI mode, you need to have a slightly di
  }
 ```
 4. Copy this `grub.cfg` file to `EFI/xenserver` folder on the TFTP server
-5. Get the following files from XCP-ng ISO: `grubx64.efi`, `install.img` (from the root directory), `vmlinuz`, and `xen.gz` (from the /boot directory) to the new EFI/xcp-ng directory on the TFTP server.
+5. Get the following files from XCP-ng ISO: `grubx64.efi`, `install.img` (from the root directory), `vmlinuz`, and `xen.gz` (from the /boot directory) to the new `EFI/xcp-ng` directory on the TFTP server.
 
 How TFTP folder looks like when configured
 ```
@@ -239,7 +255,7 @@ srv/tftp
         └── grub.cfg
 ```
 
-On the FTP, NFS or HTTP serveur, get all the installation media content in there.
+On the FTP, NFS or HTTP server, get all the installation media content in there.
 
 For layout example check the [official repository](https://mirrors.xcp-ng.org/netinstall/latest).
 
@@ -316,35 +332,15 @@ configfile /EFI/xenserver/grub.cfg
 
 ## Automated install
 
-### Via PXE
+XCP-ng's installation can be automated by using network boot (PXE) or a custom installation image.
 
-Follow the previous section on Network boot (PXE) and get a configuration file that will fetch an answer file:
+### Answerfile
 
-```
-default xcp-ng-auto
-label xcp-ng-auto
-    kernel mboot.c32
-    append xcp-ng/xen.gz dom0_max_vcpus=2 dom0_mem=2048M,max:2048M com1=115200,8n1 console=com1,vga --- xcp-ng/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=http://pxehost.example.com/answerfile install --- xcp-ng/install.img
-```
+Unattended installation requires what is called an answer file, often spelled *answerfile*.
 
-:::tip
-Any SYSLINUX configuration style file will be valid. [Find more on the syslinux website](https://wiki.syslinux.org/wiki/index.php?title=PXELINUX).
-:::
+It is an XML file that contains the answers to questions the installer would ask during a manual installation.
 
-### With UEFI
-
-To have an automated install with UEFI, you need the following Grub configuration:
-
-```
-menuentry "XCP-ng Install (serial)" {
-    multiboot2 /EFI/xcp-ng/xen.gz dom0_mem=2048M,max:2048M watchdog \
-    dom0_max_vcpus=4 com1=115200,8n1 console=com1,vga
-    module2 /EFI/xcp-ng/vmlinuz console=hvc0 console=tty0 answerfile_device=eth0 answerfile=http://pxehost.example.com/answerfile install
-    module2 /EFI/xcp-ng/install.img
- }
-```
-
-Your XML answer file can look like this:
+Here's an example:
 
 ```xml
 <?xml version="1.0"?>
@@ -364,12 +360,49 @@ Your XML answer file can look like this:
 ```
 
 :::tip
-The full answerfile schema [is available in our Annex](answerfile.md).
+Check [the full answerfile reference](answerfile.md).
 :::
 
-### Unattended installation ISO with remote config
+### Via PXE
 
-If you don't want to setup PXE but still can serve a file (the answerfile) from a server that will be available to the hosts during installation, you can create an automated installation image that will fetch its configuration from the network.
+Follow the [previous section on Network boot (PXE)](#pxe-boot-install) and add options to that will fetch and use an answer file.
+
+#### PXE unattended install - BIOS boot
+
+Add `answerfile=http://your_server/path/to/answerfile.xml install` to the parameters passed to `vmlinuz` (the linux kernel of the installer).
+
+Example:
+```
+default xcp-ng-auto
+label xcp-ng-auto
+    kernel mboot.c32
+    append xcp-ng/xen.gz dom0_max_vcpus=2 dom0_mem=2048M,max:2048M com1=115200,8n1 console=com1,vga --- xcp-ng/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=http://your_server/path/to/answerfile.xml install --- xcp-ng/install.img
+```
+
+:::tip
+Any SYSLINUX configuration style file will be valid. [Find more on the syslinux website](https://wiki.syslinux.org/wiki/index.php?title=PXELINUX).
+:::
+
+#### PXE unattended install - UEFI boot
+
+Add `answerfile=http://your_server/path/to/answerfile.xml install` to the parameters passed to `vmlinuz` (the linux kernel of the installer).
+
+Example:
+```
+menuentry "XCP-ng Install (serial)" {
+    multiboot2 /EFI/xcp-ng/xen.gz dom0_mem=2048M,max:2048M watchdog dom0_max_vcpus=4 com1=115200,8n1 console=com1,vga
+    module2 /EFI/xcp-ng/vmlinuz console=hvc0 console=tty0 answerfile_device=eth0 answerfile=http://your_server/path/to/answerfile.xml install
+    module2 /EFI/xcp-ng/install.img
+}
+```
+
+### Unattended installation with a custom ISO image
+
+You may build a custom installation image that will automatically install XCP-ng. The answerfile can either be downloaded by the installer or embedded in the image itself.
+
+#### Unattended installation ISO with remote config
+
+If you can't or don't want to setup PXE but can still serve a file (the answerfile) from a server that will be available to the hosts during installation, you can create an automated installation image that will fetch its configuration from the network.
 
 1. [Prepare an answerfile](answerfile.md) and make it available from a local HTTP server
 2. [Extract the XCP-NG ISO file](develprocess.md#extract-an-existing-iso-image)
@@ -408,9 +441,9 @@ If you don't want to setup PXE but still can serve a file (the answerfile) from 
 
 Your ISO is ready for installation.
 
-### Unattended installation ISO with embedded config 
+#### Unattended installation ISO with embedded config
 
-If can't either setup PXE or serve a file (the answerfile) from a server that will be available to the hosts during installation, you can create an automated installation image that will embed its own configuration. It's a bit more work and will need to be done again each time you want to modify the answerfile.
+If can't either setup PXE or serve a file (the answerfile) from a server that will be available to the hosts during installation, you can create an automated installation image that will embed its own configuration. It's a bit more work and will need to be done again every time you want to modify the answerfile.
 
 1. [Prepare an answerfile](answerfile.md)
 2. [Extract the XCP-NG ISO file](develprocess.md#extract-an-existing-iso-image)
@@ -457,49 +490,9 @@ If can't either setup PXE or serve a file (the answerfile) from a server that wi
 Your ISO is ready for installation.
 
 
-#### Example with VirtualBox
+### Software RAID in answerfile
 
-To test the PXE in a VirtualBox environment you'll need to populate the [PXE special folder](https://www.virtualbox.org/manual/ch06.html#nat-tftp). Most of the content comes from the ISO image:
-
-```
-/Users/me/Library/Virtualbox/TFTP
-├── mboot.c32              <- from /boot/pxelinux
-├── menu.c32               <- from /boot/pxelinux
-├── pxelinux.cfg           <- mandatory name
-│   └── default            <- config file
-├── test.pxe               <- this is pxelinux.0 (from /boot/pxelinux) renamed to vmname.pxe
-└── xcp-ng                 <- most of it comes from /boot
-    ├── efiboot.img
-    ├── gcdx64.efi
-    ├── grubx64.efi
-    ├── install.img        <- this is /install.img from the .iso
-    ├── isolinux
-    │   ├── boot.cat
-    │   ├── isolinux.bin
-    │   ├── isolinux.cfg
-    │   ├── mboot.c32
-    │   ├── memtest
-    │   ├── menu.c32
-    │   ├── pg_help
-    │   ├── pg_main
-    │   └── splash.lss
-    ├── vmlinuz
-    └── xen.gz
-```
-
-The configuration file pxelinux.cfg/default is as follow:
-```
-default xcp-ng
-label xcp-ng
-kernel mboot.c32
-append xcp-ng/xen.gz dom0_max_vcpus=1-2 dom0_mem=max:2048M com1=115200,8n1 console=com1,vga --- xcp-ng/vmlinuz xencons=hvc console=hvc0 console=tty0 answerfile=https://gist.githubusercontent.com/nraynaud/4cca5205c805394a34fc4170b3903113/raw/ install --- xcp-ng/install.img
-```
-
-The rest is the same as the normal PXE configuration.
-
-#### Software RAID
-
-For an automated install using an answer file (PXE or similar required), software raid can be enabled as follows:
+For an automated install using an answer file, software raid can be enabled as follows:
 
 ```
 <?xml version="1.0"?>
@@ -539,7 +532,7 @@ See [the Troubleshooting page](troubleshooting.md#installation-and-upgrade).
 
 ## Misc
 
-#### Install on a USB stick
+### Install on a USB stick
 
 ::: danger
 We **strongly** advise against installing on USB stick. XCP-ng writes a lot into local files and this writing will wear out your USB-Stick in a short amount of time:
