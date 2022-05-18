@@ -9,6 +9,7 @@ The goal of this document is to give you a hint of what's next. However, since a
 ![](./assets/img/roadmap.png)
 
 ## In tech preview
+
 _Technology that is here, but not officially released for production usage._
 
 * [IPv6 support in dom0](https://xcp-ng.org/blog/2021/02/09/ipv6-in-xcp-ng/) (Network)
@@ -16,6 +17,7 @@ _Technology that is here, but not officially released for production usage._
 * [RunX](https://xcp-ng.org/blog/2021/10/19/runx-is-available-in-tech-preview/) (Xen)
 
 ## In progress
+
 _Things we started to work on, but are not usable/visible yet._
 
 * SMAPIv3 evolution (storage)
@@ -30,6 +32,7 @@ _Things we started to work on, but are not usable/visible yet._
 * [DPU Support](https://xcp-ng.org/blog/2021/07/12/dpus-and-the-future-of-virtualization/) (storage/platform)
 
 ## Spec/Design/PoC
+
 _Features that are being discussed or designed, but not even partly coded._
 
 * Aegis Project: AMD SEV-SNP support (Xen)
@@ -65,7 +68,7 @@ _Features that are being discussed or designed, but not even partly coded._
 
 ## Backlog
 
-This is a kind of wish list, without any priorities, where we try to put some ideas.
+_This is a kind of wish list, without any priorities, where we try to put some ideas._
 
 ![](./assets/img/backlog.png)
 
