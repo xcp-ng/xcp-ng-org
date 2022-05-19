@@ -1062,6 +1062,37 @@ This can be shortened to:
 secureboot-certs install
 ```
 
+If `secureboot-certs` fails to download the certificates from Microsoft due to microsoft.com deciding to forbid downloads from the user agent declared by the script, you may try to download with a different user agent (for example your current browser's user agent):
+
+```
+secureboot-certs install --user-agent="Mozilla/5.0 My custom user agent"
+```
+
+If this still fails, check the next section which explains how to install them manually.
+
+#### Install the Default UEFI Certificates Manually
+
+* Using your web browser, download the certificates listed in the table above (`KEK`, CA and PCA which will allow us to build `db`, and `dbx`).
+* Transfer the files to your master host.
+  ```
+  scp Mic*.crt dbxupdate_x64.bin root@ip_of_server:
+  ```
+* Build `db.auth`:
+  * SSH to the server as root
+  * convert the files from DER format to PEM:
+    ```
+    openssl x509 -in MicCorUEFCA2011_2011-06-27.crt -inform DER -outform PEM -out ms_ca.crt
+    openssl x509 -in MicWinProPCA2011_2011-10-19.crt -inform DER -outform PEM -out ms_pca.crt
+    ```
+  * bundle these files into `db.auth`:
+    ```
+    /opt/xensource/libexec/create-auth db db.auth ms_ca.crt ms_pca.crt
+    ```
+* Install the certificates:
+  ```
+  secureboot-certs install default MicCorKEKCA2011_2011-06-24.crt db.auth dbxupdate_x64.bin
+  ```
+
 #### Install Custom UEFI Certificates
 
 :::tip
