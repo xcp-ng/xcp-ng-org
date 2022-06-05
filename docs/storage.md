@@ -492,7 +492,10 @@ a6732eb5-9129-27a7-5e4a-8784ac45df27
 
 xe sr-scan uuid=a6732eb5-9129-27a7-5e4a-8784ac45df27
 ```
-If your host are in a pool, you need to get the host uuid first:
+If your host is in a pool of several hosts, you need to get the host uuid first:
+:::warning
+The ISO SR will be only available on the host where you have created the directory.
+:::
 
 ```
 xe host-list
