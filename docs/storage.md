@@ -497,13 +497,6 @@ If your host is in a pool of several hosts, you need to get the host uuid first:
 The ISO SR will be only available on the host where you have created the directory.
 :::
 
-```
-xe host-list
-#Get the uuid of the one your are connected to
-xe sr-create name-label="ISO Repository" type=iso device-config:location=/opt/var/iso_repository device-config:legacy_mode=true content-type=iso host-uuid=uuid-previously-retrieved
-953fcd3b-a4d5-1092-c4eb-1782cee0ff0b
-xe sr-scan uuid=953fcd3b-a4d5-1092-c4eb-1782cee0ff0b
-```
 :::tip
 Don't forget to rescan your SR after adding, changing, or deleting ISO files. Rescan is done automatically every 10 minutes otherwise.
 :::
