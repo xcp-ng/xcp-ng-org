@@ -492,6 +492,10 @@ a6732eb5-9129-27a7-5e4a-8784ac45df27
 
 xe sr-scan uuid=a6732eb5-9129-27a7-5e4a-8784ac45df27
 ```
+If your host is in a pool of several hosts, you need to add the `host-uuid` parameter to the `xe sr-create` command above. You can retrieve the host UUID with `xe host-list`.
+:::warning
+The ISO SR will be only available on the host where you have created the directory.
+:::
 
 :::tip
 Don't forget to rescan your SR after adding, changing, or deleting ISO files. Rescan is done automatically every 10 minutes otherwise.
