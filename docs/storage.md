@@ -158,7 +158,7 @@ Shared, thin-provisioned storage. Efficient, recommended for ease of maintenance
 In Xen Orchestra, go in the "New" menu entry, then Storage, and select NFS. Follow instructions from there.  
 
 :::tip
-Your host will mount the top-level NFS share you provide initially (example: /share/xen), then create folder(s) inside of that, then mount those directly instead (example: /share/xen/515982ab-476e-17b7-0e61-e68fef8d7d31). This means your NFS server or appliance must be set to allow sub-directory mounts, or adding the SR will fail. In TrueNAS, this checkbox is called "All dirs" in the NFS share properties.
+Your host will mount the top-level NFS share you provide initially (example: /share/xen), then create folder(s) inside of that, then mount those directly instead (example: /share/xen/515982ab-476e-17b7-0e61-e68fef8d7d31). This means your NFS server or appliance must be set to allow sub-directory mounts, or adding the SR will fail. In FreeNAS or TrueNAS, this checkbox is called "All dirs" in the NFS share properties.
 :::
 
 ### File
