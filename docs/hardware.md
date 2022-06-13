@@ -65,7 +65,7 @@ Fixed drivers have been released as official [updates](updates.md).
 
 There are several USB 5Gbps NICs based on this chipset available on the market. A [dedicated kernel module driver](https://github.com/xcp-ng-rpms/aqc111u-module) is available to add support to XCP-ng for _(supposedly)_ all NICs based on Marvell _(originally Aquantia)_ AQC111U over USB3. The driver should not be confused with the generic AQC111 that supports the whole family of NICs based on the AQC111 chipset, but NOT the ones connected over USB3. The kernel module provides support only for AQC111U-based NICs.
 
-The kernel module is just a repackage for XCP-ng of [the AQC111U drivers avaialble for Linux Kernel 3.10 on the Marvell website](https://www.marvell.com/support/downloads.html).
+The kernel module is just a repackage for XCP-ng of [the AQC111U drivers available for Linux Kernel 3.10 on the Marvell website](https://www.marvell.com/support/downloads.html).
 
 The kernel module has been tested in a homelab environment with XCP-ng version `8.2`.
 
