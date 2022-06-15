@@ -514,6 +514,18 @@ Then, you have to restart xapi :
 systemctl restart xapi
 ```
 
+### Install the certificate chain (for XCP-ng v8.2+)
+
+Upload the certificates to your XCP-ng host, then use the following command to install the certificates:
+
+```
+xe host-server-certificate-install certificate=<path>/cert.pem private-key=<path>/privkey.pem certificate-chain=<path>/chain.pem
+```
+
+:::tip
+You can use [Let's Encrypt](https://letsencrypt.org/) to generate free and browser-trusted certificates. 
+:::
+
 ## Dom0 memory
 
 :::tip
