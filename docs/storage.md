@@ -587,7 +587,7 @@ If you want to change the way to access to your SR, you must destroy and recreat
 1. Get the SR UUID (in XO, SR view, click on your NFS SR, the UUID is visible then)
 2. On your host console/terminal, find all the `PBD` for this SR:
 `xe sr-param-get param-name=PBDs uuid=<SR UUID>`
-3. For each `PBD`, copy paste the result of `xe pbd-param-list uuid=<PBD UUID>` in a text editor so you have them "saved" elsewhere. Each record got the host UUID and SR UUID, which will be needed to recreate one. It will also contains the "device config", which is required to indicate the way to access it (the NFS path).
+3. For each `PBD`, copy paste the result of `xe pbd-param-list uuid=<PBD UUID>` in a text editor so you have them "saved" elsewhere. Each record has the host UUID and SR UUID, which will be needed to recreate one. It will also contain the "device config", which is required to indicate the way to access it (the NFS path).
 4. Remove each of those PBDs with `xe pbd-destroy  uuid=<PBD UUID>`.
 5. Recreate each of them with `xe pbd-create host-uuid=<HOST UUID> sr-uuid=<SR UUID> device-config:<YOUR PREVIOUS CONFIG>`
 6. When it's done on all PBDs recreated, you can reconnect (in XO, SR view, "reconnect to all hosts" or do a `xe pbd-plug uuid=<PBD UUID` for each of them). When reconnected, you can start your VMs as if nothing happened.
