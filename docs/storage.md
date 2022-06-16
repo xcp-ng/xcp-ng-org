@@ -576,3 +576,18 @@ Luckily, Xen Orchestra is able to detect an uncoalesced chain. It means it won't
 But more than that, Xen Orchestra is also able to show you uncoalesced disk in the SR view, in the Advanced tab.
 
 More about this exclusive feature on <https://xen-orchestra.com/blog/xenserver-coalesce-detection-in-xen-orchestra/>
+
+## Modify an existing SR connection
+
+The link between a host and a SR is called the `PBD`. It's basically storing **how** to access a storage (like the path to the drive or to an NFS share).
+
+If you want to change the way to access to your SR, you must destroy and recreate the `PBD`. Let's take an example with an NFS server where you'll change its IP address:
+
+0. Double check you don't have running VMs on this SR. This is capital since this operation cannot be done in live.
+1. Get the SR UUID (in XO, SR view, click on your NFS SR, the UUID is visible then)
+2. On your host console/terminal, find all the `PBD` for this SR:
+`xe sr-param-get param-name=PBDs uuid=<SR UUID>`
+3. For each `PBD`, copy paste the result of `xe pbd-param-list uuid=<PBD UUID>` in a text editor so you have them "saved" elsewhere. Each record got the host UUID and SR UUID, which will be needed to recreate one. It will also contains the "device config", which is required to indicate the way to access it (the NFS path).
+4. Remove each of those PBDs with `xe pbd-destroy  uuid=<PBD UUID>`.
+5. Recreate each of them with `xe pbd-create host-uuid=<HOST UUID> sr-uuid=<SR UUID> device-config:<YOUR PREVIOUS CONFIG>`
+6. When it's done on all PBDs recreated, you can reconnect (in XO, SR view, "reconnect to all hosts" or do a `xe pbd-plug uuid=<PBD UUID` for each of them). When reconnected, you can start your VMs as if nothing happened.
