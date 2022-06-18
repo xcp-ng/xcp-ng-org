@@ -576,3 +576,19 @@ Luckily, Xen Orchestra is able to detect an uncoalesced chain. It means it won't
 But more than that, Xen Orchestra is also able to show you uncoalesced disk in the SR view, in the Advanced tab.
 
 More about this exclusive feature on <https://xen-orchestra.com/blog/xenserver-coalesce-detection-in-xen-orchestra/>
+
+## Modify an existing SR connection
+
+The link between a host and an SR is called the `PBD`. A PBD basically stores **how** to access a storage repository (like the path to the drive or to an NFS share).
+
+If you want to change how an SR is accessed (for example, if your NFS SR changed its IP), you must destroy and recreate the `PBD` with the new values. Let's use our example where an NFS SR has changed to a new IP:
+
+0. Double check you don't have running VMs on this SR. This is crucial as this operation cannot be performed live.
+1. Get the SR UUID (in XO, SR view, click on your NFS SR, the UUID is visible then)
+2. On your host console/terminal, find all the `PBD` UUIDs for this SR:
+`xe sr-param-get param-name=PBDs uuid=<SR UUID>`
+3. For each `PBD` UUID, run  `xe pbd-param-list uuid=<PBD UUID>` and copy the output to a text editor so you have them "saved" elsewhere. Each record has the host UUID and SR UUID, which will be needed to recreate them. It will also contain the `device-config`, which is required to indicate how to access it (the NFS path).
+4. Now you need to edit this `device-config` field with the new values. In our example, I will change my `device-config` from `serverpath: /mnt/xen; server: 192.168.1.2` to `serverpath: /mnt/xen; server: 192.168.1.5` to reflect the new NFS IP. Have this text ready for the next commands.
+5. Remove each of these old PBDs with `xe pbd-destroy uuid=<PBD UUID>`.
+6. Recreate each of them using your new `device-config` info by running `xe pbd-create host-uuid=<HOST UUID> sr-uuid=<SR UUID> device-config:<YOUR NEW CONFIG>`
+7. When you're done and all PBDs are recreated, you can reconnect (in XO, SR view, "reconnect to all hosts" or do a `xe pbd-plug uuid=<PBD UUID` for each of them). Once reconnected, you can start your VMs as if nothing happened.
