@@ -360,6 +360,10 @@ Here's an example:
 ```
 
 :::tip
+Supplying a password of type="hash" will suppress the EULA prompt on first boot.
+:::
+
+:::tip
 Check [the full answerfile reference](answerfile.md).
 :::
 
