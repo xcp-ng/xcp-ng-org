@@ -396,6 +396,13 @@ menuentry "XCP-ng Install (serial)" {
 }
 ```
 
+:::tip
+`answerfile` expects specific entries to be configured for `console` - if you attempt to change these values here, you may find the vmlinuz boot hangs indefinitely.
+
+Works: module2 /EFI/xcp-ng/vmlinuz console=hvc0 console=tty0 answerfile_device=eth0 answerfile=http://your_server/path/to/answerfile.xml install
+Fails: module2 /EFI/xcp-ng/vmlinuz console=hvc0 console=tty0 console=ttyS1,115200,8n1 answerfile_device=eth0 answerfile=http://your_server/path/to/answerfile.xml install
+:::
+
 ### Unattended installation with a custom ISO image
 
 You may build a custom installation image that will automatically install XCP-ng. The answerfile can either be downloaded by the installer or embedded in the image itself.
