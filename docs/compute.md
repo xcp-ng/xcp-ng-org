@@ -311,7 +311,7 @@ VM anti-affinity is a feature that prevents VMs with the same user tags to run o
 
 On multi-socket and MCM systems, the NUMA affinity may benefit memory-bound applications by restricting a VM to a specific NUMA node. That way, memory and cache accesses are kept local.
 
-The Xen scheduler implements two types of affinity: `soft` and `hard`. By default, it uses `soft`, a best effort algorithm which tries to achieve the memory locality. Since there's no guarantee, if the sysadmin wants to make sure that a VM will only run on a certain node, he needs to configure the hard affinity through the `VCPUs-params:mask` VM attribute.
+The Xen scheduler implements two types of affinity: `soft` and `hard`. By default, it uses `soft`, a best effort algorithm which tries to achieve the memory locality. Since there's no guarantee, if the sysadmin wants to make sure that a VM will only run on a certain node they will need to configure the hard affinity through the `VCPUs-params:mask` VM attribute.
 
 Taking a **8C/16T** dual socket as example, the topology would be:
 
