@@ -17,7 +17,7 @@ ACLs can be used to allow some XO users to only see some resources. See more abo
 
 ### Self-service
 
-The self-service feature allows users to create new VMs within a **limited amount of resources** (quotas). This is different from delegating existing resources (VMs) to them, and it leads to a lot of possibilities. [Read XO official doc on it](https://xen-orchestra.com/docs/self_service.html) to know more.
+The self-service feature allows users to create new VMs within a **limited amount of resources** (quotas). This is different from delegating existing resources (VMs) to them, and it leads to a lot of possibilities. [Read XO official doc on it](https://xen-orchestra.com/docs/users.html#self-service-portal) to know more.
 
 ![](https://xen-orchestra.com/docs/assets/selfservice_recap_quotas.png)
 
