@@ -23,7 +23,6 @@
 </div>
 
 <div class="xcp-ng-content">
-    <script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/unique-methods/embed.js" data-dojo-config="usePlainJson: true, isDebug: false"></script><script type="text/javascript">window.dojoRequire(["mojo/signup-forms/Loader"], function(L) { L.start({"baseUrl":"mc.us13.list-manage.com","uuid":"f1ab72021fb8816f4d5e72773","lid":"4d17393549","uniqueMethods":true}) })</script>
     <!-- Matomo -->
     <script type="text/javascript">
         var _paq = _paq || [];
@@ -41,15 +40,7 @@
         })();
     </script>
     <!-- End Matomo Code -->
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112481698-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
 
-        gtag('config', 'UA-112481698-1');
-    </script>
 
     <nav id="xcp-ng-navbar" class="navbar navbar-expand-sm fixed-top bg-light">
         <div id="xcp-ng-menu" class="container-fluid">
@@ -250,19 +241,34 @@
     <section class="xcp-ng-footer container-fluid">
         <div class="d-flex row">
             <div class="mr-auto order-10 order-sm-0">
-                Vates • Copyright © 2012-2018
+                <p>XCP-ng is a Xen Project incubation project hosted by the Linux Foundation<br/>
+                Copyright&copy; The Linux Foundation&reg;. All rights reserved.<br/>
+                The Linux Foundation has registered trademarks and uses trademarks.</p>
+                <p>For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage">Trademark Usage</a> page.<br/>
+                Linux is a registered trademark of Linus Torvalds.<br/>
+                <a href="http://www.linuxfoundation.org/privacy">Privacy Policy</a> and <a href="http://www.linuxfoundation.org/terms">Terms of Use</a></p>
             </div>
-            <div class="order-1">
+            <div id="menu-footer" class="order-1">
                 <a href="https://github.com/xcp-ng">Github</a>
             </div>
-            <div class="order-2">
-                <a href="https://github.com/xcp-ng/xcp/wiki">Documentation</a>
+            <div id="menu-footer" class="order-2">
+                <a href="https://xcp-ng.org/docs">Docs</a>
             </div>
-            <div class="order-3">
-                <a href="index.html#community">Community</a>
+            <div id="menu-footer" class="order-3">
+                <a href="#community">Community</a>
             </div>
-            <div class="order-4">
-                <a href="https://vates.fr">Vates</a>
+            <div id="menu-footer" class="order-3">
+                <a href="https://www.redbubble.com/people/vates/shop/" target="_blank" style="color:#ef9325">
+                  <i class="fal fa-star"></i>
+                    Goodies
+                  <i class="fal fa-star"></i>
+                </a>
+            </div>
+            <div class="order-5">
+              <br>
+                <img src="assets/img/logolfban.png" width="50%"/>
+                &nbsp;&nbsp;&nbsp;
+                <img src="assets/img/xenp-web.png" width="15%"/>
             </div>
         </div>
     </section>
@@ -278,8 +284,26 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.0.0/jquery.magnific-popup.min.js"></script>
 <script src='js/xcp-ng.min.js'></script>
 <script type='text/javascript' src='js/popper.min.js'></script>
+<script src="//marketing.vates.fr/focus/1.js" type="text/javascript" charset="utf-8" async="async"></script>
+<script>
+$(document).ready(function() {
+  $('#headerVideoLink').magnificPopup({
+    type:'inline',
+    midClick: true // Allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source in href.
+  });
+});
+</script>
+<script>
+    (function(w,d,t,u,n,a,m){w['MauticTrackingObject']=n;
+        w[n]=w[n]||function(){(w[n].q=w[n].q||[]).push(arguments)},a=d.createElement(t),
+        m=d.getElementsByTagName(t)[0];a.async=1;a.src=u;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://marketing.vates.fr/mtc.js','mt');
+
+    mt('send', 'pageview');
+</script>
 </body>
 
 </html>
