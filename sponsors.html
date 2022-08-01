@@ -23,7 +23,6 @@
 </div>
 
 <div class="xcp-ng-content">
-    <script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/unique-methods/embed.js" data-dojo-config="usePlainJson: true, isDebug: false"></script><script type="text/javascript">window.dojoRequire(["mojo/signup-forms/Loader"], function(L) { L.start({"baseUrl":"mc.us13.list-manage.com","uuid":"f1ab72021fb8816f4d5e72773","lid":"4d17393549","uniqueMethods":true}) })</script>
     <!-- Matomo -->
     <script type="text/javascript">
         var _paq = _paq || [];
@@ -41,15 +40,7 @@
         })();
     </script>
     <!-- End Matomo Code -->
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112481698-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
 
-        gtag('config', 'UA-112481698-1');
-    </script>
 
     <nav id="xcp-ng-navbar" class="navbar navbar-expand-sm fixed-top bg-light">
         <div id="xcp-ng-menu" class="container-fluid">
@@ -293,8 +284,26 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.0.0/jquery.magnific-popup.min.js"></script>
 <script src='js/xcp-ng.min.js'></script>
 <script type='text/javascript' src='js/popper.min.js'></script>
+<script src="//marketing.vates.fr/focus/1.js" type="text/javascript" charset="utf-8" async="async"></script>
+<script>
+$(document).ready(function() {
+  $('#headerVideoLink').magnificPopup({
+    type:'inline',
+    midClick: true // Allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source in href.
+  });
+});
+</script>
+<script>
+    (function(w,d,t,u,n,a,m){w['MauticTrackingObject']=n;
+        w[n]=w[n]||function(){(w[n].q=w[n].q||[]).push(arguments)},a=d.createElement(t),
+        m=d.getElementsByTagName(t)[0];a.async=1;a.src=u;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://marketing.vates.fr/mtc.js','mt');
+
+    mt('send', 'pageview');
+</script>
 </body>
 
 </html>
