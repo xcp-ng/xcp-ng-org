@@ -16,7 +16,7 @@ We got a dedicated section on [how to migrate from Citrix Hypervisor to XCP-ng](
 
 ## From Xen on Linux
 
-If you are running Xen on your usual distro (Debian, Ubuntu…), you are using `xl` to manage your VMs, and also plain text configuration files. You can migrate to an existing XCP-ng host thanks to [this Python script](http://www-archive.xenproject.org/files/xva/xva.py).
+If you are running Xen on your usual distro (Debian, Ubuntu…), you are using `xl` to manage your VMs, and also plain text configuration files. You can migrate to an existing XCP-ng host thanks to [this Python script](https://gist.github.com/olivierlambert/0182f1cee63568edffd3b71b497b2eff).
 
 1. Get that script in your current `dom0`.
 1. Shutdown your VM
