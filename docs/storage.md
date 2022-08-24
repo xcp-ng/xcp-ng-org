@@ -461,19 +461,21 @@ For the full discussion about Ceph in XCP-ng, see this forum thread: <https://xc
 
 ## ISO SR
 
-You might wonder: how to upload an ISO? Unlike other solutions, you need to create a dedicated "space" for those, a specific ISO SR. To create one, it's pretty easy.
+You might be wondering how to upload an ISO. Unlike other solutions, you need to create a dedicated "space" for these, a specific ISO SR. To create an ISO SR, you have 2 possibilities:
+- Shared: A shared ISO SR is on a VM or on a dedicated storage server. It's accessible with an IP address, like 192.168.1.100 via SMB or NFS.
+- Local (not recommended for production): A local ISO SR is a directory created directly on the dom0 host. It's only accessible on the host where the directory was created.
 
-In [Xen Orchestra](management.md#xen-orchestra) go into "New/Storage" and select "ISO SR":
+### Create a Shared ISO SR
+
+First, you need to create the NFS or SMB Share. There are plenty of options: from dedicated NAS hardware solutions and dedicated software solutions such as TrueNAS, to manual administration on any Linux/unix or Windows system.
+
+You can find some tutorials on the internet to create an NFS Server, for exemple here <https://wiki.linux-nfs.org/wiki/index.php/NFS_Howto> or here <https://wiki.archlinux.org/title/NFS>
+
+Then, in Xen Orchestra go into "New/Storage" and select "ISO SR":
 
 ![](https://xcp-ng.org/assets/img/screenshots/createSRISO.png)
 
-Usually, you can use a NFS or SMB share. But if you don't have any of those, you can rely on a local ISO SR that you create yourself:
-
-1. Select "Local" instead of NFS/SMB
-2. Enter a path that already exists on your physical host
-3. Upload ISO on your host to the same path
-
-That's it!
+### Create a Local ISO SR
 
 From the CLI:
 
@@ -483,19 +485,33 @@ From the CLI:
 4. You can add or update ISOs later by placing them into the directory you created in step 1
 5. Rescan the SR if you change the files stored in the ISO directory
 
-Here's an example creating a Shared ISO SR named "ISO Repository" that will be stored in /opt/var/iso_repository:
+Here's an example of how to create a Local ISO SR named "ISO Repository" that will be stored in /opt/var/iso_repository:
+
 ```
 mkdir -p /opt/var/iso_repository
 
 xe sr-create name-label="ISO Repository" type=iso device-config:location=/opt/var/iso_repository device-config:legacy_mode=true content-type=iso
-a6732eb5-9129-27a7-5e4a-8784ac45df27
+a6732eb5-9129-27a7-5e4a-8784ac45df27 # this is the output
 
 xe sr-scan uuid=a6732eb5-9129-27a7-5e4a-8784ac45df27
 ```
 If your host is in a pool of several hosts, you need to add the `host-uuid` parameter to the `xe sr-create` command above. You can retrieve the host UUID with `xe host-list`.
+
+You can then upload your ISO in /opt/var/iso_repository/
+
+On Xen Orchestra, go into "New/Storage" and select "ISO SR"
+
+* Select "Local" instead of NFS/SMB
+* Enter the path created before
+* Upload ISOs on your host to the same path
+
+![](https://xcp-ng.org/assets/img/screenshots/createLocalSRISO.png)
+
 :::warning
-The ISO SR will be only available on the host where you have created the directory.
+A local ISO SR will only be available on the host where it was created. Also, the dom0 filesystem is small with only about 15gb of space free for extra storage!
 :::
+
+That's it!
 
 :::tip
 Don't forget to rescan your SR after adding, changing, or deleting ISO files. Rescan is done automatically every 10 minutes otherwise.
