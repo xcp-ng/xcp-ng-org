@@ -66,6 +66,8 @@ Those guest tools can be installed:
 
 #### Install from the distro's online repositories
 
+Distros may provide guest tools for XCP-ng and Citrix Hypervisor in their own repositories. When they don't, or when the packages are outdated, we enjoin you to contact them to ask for new packages. Upstream sources are available at https://github.com/xenserver/xe-guest-utilities.
+
 Distros often have policies that forbid enabling new services by default, so most of the time the steps are:
 * enable the appropriate repository
 * install the package from it
@@ -98,6 +100,9 @@ rc-service xe-guest-utilities start
 ```
 apt install xe-guest-utilities
 ```
+
+The last known package was published for the LTS release Focal Fossa. It was dropped from more recent releases. We enjoin you to contact ubuntu packagers for them to start packaging it again. In the meantime you can install the guest tools from our guest tools ISO image, as explained below.
+
 
 *Feel free to add other distros to the above list if they provide the tools in their repositories.*
 
