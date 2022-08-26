@@ -498,7 +498,7 @@ From the CLI:
     You can add or update ISOs later by placing them into the directory you created in step 1
     Rescan the SR if you change the files stored in the ISO directory
 
-Here's an example creating a Shared ISO SR named "ISO Repository" that will be stored in /opt/var/iso_repository:
+Here's an example creating a Local ISO SR named "ISO Repository" that will be stored in /opt/var/iso_repository:
 
 ```
 mkdir -p /opt/var/iso_repository
