@@ -467,7 +467,9 @@ You might wonder: how to upload an ISO? Unlike other solutions, you need to crea
 
 Create a Shared ISO SR:
 
-First, you need to create the NFS or SMB Share. The creation depends on the device you want to use to store your ISO, but here a small tutorial to mount a NFS share on Debian 11:
+First, you need to create the NFS or SMB Share. There are plenty of options: from dedicated NAS hardware solutions and dedicated software solutions such as TrueNAS, to manual administration on any Linux/unix or Windows system.
+
+Here's a small example of creation of a NFS share on a Debian 11 VM:
 
 ```
 fdisk /dev/xvdb #create a new partition
