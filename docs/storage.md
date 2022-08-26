@@ -465,7 +465,7 @@ You might wonder: how to upload an ISO? Unlike other solutions, you need to crea
 - Shared: A shared ISO SR is on a VM or in your dedicated storage server. It's accessible with an IP address, like 192.168.1.100
 - Local (not recommended for production): Local ISO SR is a directory created directly on the dom0. It's only accessible on the pool where the dom0 ith the directory on it.
 
-Create a Shared ISO SR:
+### Create a Shared ISO SR
 
 First, you need to create the NFS or SMB Share. There are plenty of options: from dedicated NAS hardware solutions and dedicated software solutions such as TrueNAS, to manual administration on any Linux/unix or Windows system.
 
