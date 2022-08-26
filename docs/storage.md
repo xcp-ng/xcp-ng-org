@@ -488,7 +488,7 @@ Then, in Xen Orchestra go into "New/Storage" and select "ISO SR":
 
 ![](https://xcp-ng.org/assets/img/screenshots/createSRISO.png)
 
-Create a Local ISO SR:
+### Create a Local ISO SR
 
 From the CLI:
 
