@@ -514,9 +514,9 @@ You can then upload your ISO in /opt/var/iso_repository/
 
 On Xen Orchestra, go into "New/Storage" and select "ISO SR"
 
-    Select "Local" instead of NFS/SMB
-    Enter the path created before
-    Upload ISO on your host to the same path
+* Select "Local" instead of NFS/SMB
+* Enter the path created before
+* Upload ISO on your host to the same path
 
 (To-do: add image like the previous one, but for local ISO SR)
 
