@@ -174,7 +174,7 @@ Create primary partitions before installation. Used by XenRT to test preservatio
 Specifies the target disks and md device for creating a software RAID 1 array. The md device can then be used in `<primary-disk>` below. Nnew in xcp-ng 7.5.0-2 and 7.6.
 
 ```xml
-  <raid device=dev>
+  <raid device="dev">
     <disk>dev1</disk>
     <disk>dev2</disk>
   </raid>
