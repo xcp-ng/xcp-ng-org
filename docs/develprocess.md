@@ -186,21 +186,21 @@ Special case: if the upstream version and the XCP-ng version are always the same
 
 ##### How to create a new branch after a XCP-ng release?
 
-- Find the tag of the new sm release in the upstream repo and checkout it.
+- Find the tag of the new sm release in the upstream repo and check it out.
 - Create a new `UPSTREAMVERSION-XCPNGVERSION` (example: `2.46.11-8.3`) branch.
 - Rebase or cherry-pick our own commits from our current maintenance branch for the previous release (example: `2.30.4-8.2`) and resolve conflicts carefully. Reorganize commits if needed for the most consistent history possible. Of course, drop patches that were already merged upstream.
 
 ##### How to synchronize a maintenance branch with the upstream?
 
-The upstream repository doesn't contain the maintenance branches that are the basis for Citrix Hypervisor hotfixes. So the process is a bit more complicated for us, as we first need to create a branch whose contents matches the contents of the tar.gz in the hotfix SRPM, and tag this as a reference for generating our patches for the RPM.
+The upstream repository doesn't contain the maintenance branches that are the basis for Citrix Hypervisor hotfixes. So the process is a bit more complicated for us, as we first need to create a branch whose contents match the contents of the tar.gz in the hotfix SRPM, and tag this as a reference for generating our patches for the RPM.
 
-- Create a new maintenance branch, named following the `UPSTREAMVERSION-XCPNGVERSION` convention, from the tag that matches the current (before the hotfix) version of `sm` in our RPM.
+- Create a new maintenance branch, following the `UPSTREAMVERSION-XCPNGVERSION` naming convention, from the tag that matches the current (before the hotfix) version of `sm` in our RPM.
   - If it's the first `sm` hotfix for this release of XCP-ng, then start from the upstream tag
-  - Else start from the tag that we had to create for the previous hotfix because upstream didn't provide one. Named following a `vUPSTREAMVERSION-xcpng` convention. Example: `v2.30.4-xcpng`.
+  - Else start from the tag that we had to create for the previous hotfix because upstream didn't provide one. Follow the `vUPSTREAMVERSION-xcpng` naming convention. Example: `v2.30.4-xcpng`.
 - Cherry-pick upstream commits into this branch using the SRPM changelog of the upstream hotfix.
 - Check if we have the same source code between the SRPM and our branch using `diff -urq <sources> <upstream sources>`.
-- When our branch matches exactly the contents of the hotfix's tarball, tag it as `vUPSTREAMVERSION-xcpng`. This tag will be used to checkout for the next maintenance update, and as the base reference to generate patches for our RPM.
-- We can at last apply our specific commits on top: rebase or cherry-pick them from the previous maintenance branch for this release (example: `2.30.3-8.2`) and resolve conflicts carefully. Of course, drop patches that were already merged upstream.
+- When our branch exactly matches the contents of the hotfix's tarball, tag it as `vUPSTREAMVERSION-xcpng`. This tag will be used to checkout for the next maintenance update, and as the base reference to generate patches for our RPM.
+- At last, we can apply our specific commits on top: rebase or cherry-pick them from the previous maintenance branch for this release (example: `2.30.3-8.2`) and resolve conflicts carefully. Of course, drop patches that were already merged upstream.
 
 #### Special case: `qemu-dp`
 
