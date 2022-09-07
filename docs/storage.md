@@ -492,11 +492,11 @@ Then, in Xen Orchestra go into "New/Storage" and select "ISO SR":
 
 From the CLI:
 
-    Create a directory on the local filesystem to storage your ISOs
-    Copy/move ISOs to this new location
-    Create the ISO SR using xe sr-create
-    You can add or update ISOs later by placing them into the directory you created in step 1
-    Rescan the SR if you change the files stored in the ISO directory
+1. Create a directory on the local filesystem to storage your ISOs
+2. Copy/move ISOs to this new location
+3. Create the ISO SR using xe sr-create
+4. You can add or update ISOs later by placing them into the directory you created in step 1
+5. Rescan the SR if you change the files stored in the ISO directory
 
 Here's an example creating a Local ISO SR named "ISO Repository" that will be stored in /opt/var/iso_repository:
 
