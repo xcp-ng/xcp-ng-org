@@ -522,8 +522,9 @@ On Xen Orchestra, go into "New/Storage" and select "ISO SR"
 
 :::warning
 The ISO SR will be only available on the host where you have created the directory.
-That's it!
 :::
+
+That's it!
 
 :::tip
 Don't forget to rescan your SR after adding, changing, or deleting ISO files. Rescan is done automatically every 10 minutes otherwise.
