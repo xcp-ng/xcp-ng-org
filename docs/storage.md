@@ -521,7 +521,7 @@ On Xen Orchestra, go into "New/Storage" and select "ISO SR"
 (To-do: add image like the previous one, but for local ISO SR)
 
 :::warning
-The ISO SR will be only available on the host where you have created the directory.
+A local ISO SR will be only available on the host where it was created.
 :::
 
 That's it!
