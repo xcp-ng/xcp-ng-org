@@ -479,7 +479,7 @@ mkdir /ISOs
 mount /dev/xvdb1 /ISOs #mount the disks to /ISOs
 nano /etc/fstab
   /dev/xvdb	  /ISOs	  /ext4	  defaults	0	1
-emacs /etc/exports
+nano /etc/exports
   /ISOs 192.168.X.0/24(rw,sync,no_subtree_check,no_root_squash)
 exportfs -arv
 ```
