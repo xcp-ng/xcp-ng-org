@@ -14,6 +14,52 @@ In Xen Orchestra, the *Advanced* tab of your VM will display the memory limits, 
 
 If dynamic min is equal to dynamic max - as displayed in the screenshot - then dynamic memory is disabled.
 If dynamic min < dynamic max, then make sure your VM is able to fully function with as little RAM as defined in *dynamic min*.
+
+#### Use a VNC client
+
+1. Connect to a XCP-ng server using SSH, then execute this command with the VM UUID to join:
+
+```
+xe vm-list params=dom-id,resident-on uuid=<VM_UUID>
+```
+
+For example:
+
+```
+xe vm-list params=dom-id,resident-on uuid=b2632c6a-8c0c-2fcc-4f1f-5b872733f58c
+resident-on ( RO)    : 888254e8-da05-4f86-ad37-979b8d6bad04
+         dom-id ( RO): 2
+```
+
+2. Then, check you are on the host where the VM is currently running using the host UUID:
+
+```
+xe pif-list management=true params=IP host-uuid=888254e8-da05-4f86-ad37-979b8d6bad04
+IP ( RO)    : 172.16.210.15
+```
+
+If not, use this IP to create an SSH connection to the right host.
+
+3. Ensure `socat` is installed and execute this command with the DOM ID got earlier and a free TCP port:
+
+```
+socat TCP-LISTEN:<TCP_PORT_TO_USE> UNIX-CONNECT:/var/run/xen/vnc-<DOM_ID>
+```
+
+What have we done? We exposed a UNIX domain socket (which allows us to connect to the VM using VNC) directly over TCP.
+
+4. Fine, now open a new shell, and on your local machine create a SSH tunnel with a free TCP port:
+
+```
+ssh -L <LOCAL_PORT>:localhost:<REMOTE_PORT> root@<HOST_IP>
+```
+
+5. Finally, start the client, for example `vncviewer`:
+
+```
+vncviewer localhost:<LOCAL_PORT>
+```
+
 ### Windows VMs
 #### Manage screen resolution
 ##### Bios VM
