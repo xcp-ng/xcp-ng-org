@@ -469,20 +469,7 @@ You might wonder: how to upload an ISO? Unlike other solutions, you need to crea
 
 First, you need to create the NFS or SMB Share. There are plenty of options: from dedicated NAS hardware solutions and dedicated software solutions such as TrueNAS, to manual administration on any Linux/unix or Windows system.
 
-Here's a small example of creation of a NFS share on a Debian 11 VM:
-
-```
-fdisk /dev/xvdb #create a new partition
-mkfs.ext4 -b 4096 /dev/xvdb1 # format the partition to ext4
-apt install nfs-kernel-server
-mkdir /ISOs
-mount /dev/xvdb1 /ISOs #mount the disks to /ISOs
-nano /etc/fstab
-  /dev/xvdb	  /ISOs	  /ext4	  defaults	0	1
-nano /etc/exports
-  /ISOs 192.168.X.0/24(rw,sync,no_subtree_check,no_root_squash)
-exportfs -arv
-```
+You can find some tutorial on internet to create a NFS Server, for exemple here <https://wiki.linux-nfs.org/wiki/index.php/NFS_Howto> or here <https://wiki.archlinux.org/title/NFS>
 
 Then, in Xen Orchestra go into "New/Storage" and select "ISO SR":
 
@@ -518,7 +505,7 @@ On Xen Orchestra, go into "New/Storage" and select "ISO SR"
 * Enter the path created before
 * Upload ISO on your host to the same path
 
-(To-do: add image like the previous one, but for local ISO SR)
+![](https://xcp-ng.org/assets/img/screenshots/createLocalSRISO.png)
 
 :::warning
 A local ISO SR will be only available on the host where it was created.
