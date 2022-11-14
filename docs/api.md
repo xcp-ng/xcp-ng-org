@@ -32,20 +32,20 @@ Those changes aren't officially supported, and will be also wiped after an ISO u
 
 #### 24h task timeout
 
-Edit the `/etc/xapi.conf` file, and uncomment/change `pending_task_timeout` from:
+Create a new configuration file in `/etc/xapi.conf.d/`. Files in this directory are automatically loaded by XAPI when it starts.
 
+For example, you can name it `/etc/xapi.conf.d/increase-task-timeout.conf`.
+
+Define the new value for `pending_task_timeout`, in seconds.
+
+Example:
 ```ini
-# pending_task_timeout = 86400 # 1 day in seconds
-```
-
-To:
-
-```ini
+# set XAPI task timeout to 48h
 pending_task_timeout = 172800
 ```
 
 :::tip
-In this example, `172800` seconds means two days.
-
-After changing the configuration, don't forget to restart the toolstack with `xe-toolstack-restart`.
+After changing the configuration, restart the toolstack with `xe-toolstack-restart`.
 :::
+
+⚠️ Do NOT modify `/etc/xapi.conf` directly: any changes to this file may be overwritten in future XCP-ng updates.
