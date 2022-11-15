@@ -348,7 +348,9 @@ curl "http://ppa.moosefs.com/MooseFS-3-el7.repo" > /etc/yum.repos.d/MooseFS.repo
 yum install moosefs-client
 ```
 :::tip
-- By default, moosefs plugin is not enabled on the whitelist of SM plugins in /etc/xapi.conf so we have to add it to `sm-plugins` section.
+- By default, the `moosefs` storage driver is not enabled and must be whitelisted in XAPI's configuration.
+- The list of accepted storage drivers is defined in `/etc/xapi.conf` but we must *never* modify this file directly. Instead, copy the `sm-plugins` definition from it, add `moosefs` to the line, and write the resulting line to a new `/etc/xapi.conf.d/99-enable-moosefs.conf` file.
+- ⚠️ XAPI only takes the last definition of `sm-plugins` it reads into account. Files are read in alphabetical order. If there's already a configuration file in `/etc/xapi.conf.d` (to enable another additional storage driver), take it into consideration when you write your new definition of `sm-plugins`.
 :::
 
 Now when the MooseFS client is installed you can connect to an existing [MooseFS cluster](https://moosefs.com/support/#documentation) and create a shared SR for all hosts in the pool.
