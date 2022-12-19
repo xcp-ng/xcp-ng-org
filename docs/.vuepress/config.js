@@ -73,6 +73,7 @@ module.exports = {
           ['/architecture', 'Architecture'],
           ['/develprocess', 'Development Process'],
           ['/licenses', 'Licenses'],
+          ['/brand-guidelines', 'Brand Guidelines'],
           ['/gitrepo', 'Git Repositories'],
           ['/mirrors', 'Mirrors'],
           ['/roadmap', 'Roadmap'],
