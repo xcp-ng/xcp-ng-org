@@ -195,6 +195,18 @@ In the future if you ever need to unplug the virtual USB device from your VM, or
 xe vusb-unplug uuid=<vusb_uuid>
 xe vusb-destroy uuid=<vusb_uuid>
 ```
+### Passing through Keyboards and Mice
+xcp-ng host uses usb-policy.conf at `/etc/xensource/usb-policy.conf` with ALLOW and DENY rules for different classes of usb devices.
+The default file contains Mice and Keyboards with DENY rules. You can edit this file to allow these devices (and any other ones similarly).
+
+Once edited, run the following command to refresh:
+```
+/opt/xensource/libexec/usb_scan.py -d
+```
+Then run
+```
+xe pusb-scan host-uuid=<host_uuid>
+```
 
 ## VM load balancing
 
