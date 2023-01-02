@@ -116,7 +116,7 @@ If you decide to re-plug the host **lab1**, the host will be back online, withou
 
 Another scenario: this time, we will unplug the iSCSI/NFS link on **lab1**, despite **Minion 1** is running on it.
 
-So? **Minion 1** lost access to its disks ad after some time, **lab1** saw it can't access the heartbeat disk. Fencing protection is activated! The machine is rebooted, and after that, any `xe CLI` command on this host will give you that message:
+So? **Minion 1** lost access to its disks and after some time, **lab1** saw it can't access the heartbeat disk. Fencing protection is activated! The machine is rebooted, and after that, any `xe CLI` command on this host will give you that message:
 
 ```
 The host could not join the liveset because the HA daemon could not access the heartbeat disk.
