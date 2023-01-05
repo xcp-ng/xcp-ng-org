@@ -95,6 +95,7 @@ Usually discussion will happen:
 * On [GitHub issues](https://github.com/xcp-ng/xcp/issues).
 * In [the forum](https://xcp-ng.org/forum/).
 * Over IRC: <irc://irc.oftc.net/#xcp-ng> and <irc://irc.oftc.net/#xcp-ng-dev>
+* On [Discord](https://discord.gg/aNCR3yPaPn>).
 
 Then depending on the package, we'll bring the discussion to upstream channels whenever needed.
 

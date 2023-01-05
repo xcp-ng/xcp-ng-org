@@ -9,7 +9,7 @@ If you have a problem on XCP-ng, there's 2 options:
 Here is our handy **3-Step-Guide**:
 
 1. Check the [logs](troubleshooting.md#log-files). Check your settings. [Read below](troubleshooting.md#common-problems)... if you already did, proceed to Step 2.
-2. Get help at our [Forum](https://xcp-ng.org/forum) or get help [on IRC](irc://irc.oftc.net/#xcp-ng) and provide as much information as you can:
+2. Get help at our [Forum](https://xcp-ng.org/forum) or get help [on Discord](https://discord.gg/aNCR3yPaPn) or [on IRC](irc://irc.oftc.net/#xcp-ng) and provide as much information as you can:
     * ☑️ What did you **exactly** do to expose the bug?
     * :rocket: XCP-ng Version
     * :desktop_computer: Hardware
