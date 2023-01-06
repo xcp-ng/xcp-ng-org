@@ -9,7 +9,8 @@ There are two ways of contributing:
 You don't have to be a programmer/IT-nerd to help at this project. Just ask or offer your help:
 
 * Forum: <https://xcp-ng.org/forum>
-* IRC: #xcp-ng and #xcp-ng-dev on irc.freenode.net
+* IRC: <irc://irc.oftc.net/#xcp-ng>
+* [Discord](https://discord.gg/aNCR3yPaPn>)
 
 We are happy about every helping hand!
 
@@ -41,7 +42,8 @@ You are a developer and want to code with us? Cool!
 There are many components, in various languages: C, ocaml, python and more.
 
 * Connect with us via
-    * IRC: #xcp-ng and #xcp-ng-dev on irc.freenode.net
+    * IRC: <irc://irc.oftc.net/#xcp-ng> and <irc://irc.oftc.net/#xcp-ng-dev>
+    * [Discord](https://discord.gg/aNCR3yPaPn>)
     * Forum -> Development Corner: <https://xcp-ng.org/forum/category/7/development>
 * Read [this introduction](develprocess.md#development). The rest of the [Development Process Tour](develprocess.md) is also of interest for anyone who wants to help on development.
 
