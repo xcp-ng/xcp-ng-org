@@ -2636,7 +2636,7 @@ Uninstall a custom template. This operation will destroy those VDIs that are mar
 ## Update commands
 
 :::warning
-Update mechanism in XCP-ng is using `yum`, not this CLI. Please do NOT use it and check the [updates section](../Updates).
+Update mechanism in XCP-ng is using `yum`, not this CLI. Please do NOT use it and check the [updates section](../Installation/updates).
 :::
 
 The update objects can be listed with the standard object listing command (`xe update-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)

@@ -153,6 +153,7 @@ The last known package was published for the LTS release Focal Fossa. It was dro
 #### Install from the guest tools ISO
 
 ##### "Supported" Linux distributions
+
 For distros that are supported by the `install.sh` script (Debian, CentOS, RHEL, SLES, Ubuntu...), the process is:
 * Attach the guest tools ISO to the guest from Xen Orchestra or using `xe`.
 * Then inside the VM, as root:
@@ -165,6 +166,7 @@ umount /dev/cdrom
 * Eject the guest tools ISO
 
 ##### Derived Linux distributions
+
 If your Linux distribution is not recognized by the installation script but derives from one that is supported by the script, you can override the detection and force the tools to install by using:
 ```
 bash /mnt/Linux/install.sh -d $DISTRO -m $MAJOR_VERSION
@@ -180,13 +182,15 @@ bash /mnt/Linux/install.sh -d rhel -m 8
 The likeliness for the installation to work correctly will depend on how much those distros differ from their "parent".
 
 ##### Other Linux distributions
+
 For the remaining Linux distributions, mount the guest tools ISO as described above, then look for the `xe-guest-utilities_*_all.tgz` archive. Copy its contents on the system in `/etc` and `/usr`. It contains a System V init script by default but there's also a systemd unit file available on the ISO (`xe-linux-distribution.service`).
 
-See also [Contributing](guests.html#contributing) below.
+See also [Contributing](#contributing) below.
 
 ##### Specific cases
 
 ###### openSUSE Leap 15.2 with transactional-updates
+
 For the xe-daemon to start it is necessary that insserv is installed on the system. To make sure that is the case run
 ```
 sudo transactional-uptdates pkg install insserv-compat
@@ -214,7 +218,8 @@ systemctl start xe-linux-distribution.service
 ```
 
 #### Update the guest tools
-It's a good habit, and may be even required in some cases (that would then be described in the [Release Notes](releases.md#all-releases), to update the guest tools to their latest version when your XCP-ng hosts are updated.
+
+It's a good habit, and may be even required in some cases (that would then be described in the [Release Notes](../Releases/releases.md#all-releases), to update the guest tools to their latest version when your XCP-ng hosts are updated.
 
 Depending on the situation, just update from your distribution's online repositories, or follow the above installation process again.
 
@@ -438,7 +443,7 @@ Help is welcome to help us reconcile both procedures into one.
 * Open the Device Manager and Click View --> Show Hidden Devices. Select Other Devices and Right click on XENBUS VIF and select uninstall. If it asks to delete the driver, check yes. Do this for any xen related thing you see in device manager. Also do the same for any unknown devices.
 * Lastly, reboot the VM. You should now hopefully be able to install xen tools regularly.
 
-**Note**: Also have a look at our [Troubleshooting Guide - Windows PV-Tools](troubleshooting.html#windows-agent-pv-tools).
+**Note**: Also have a look at our [Troubleshooting Guide - Windows PV-Tools](../Troubleshooting/windows-pv-tools.md).
 
 ##### VMs with INACCESSIBLE_BOOT_DEVICE error
 

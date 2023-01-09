@@ -26,4 +26,4 @@ You can also find a video describing various backup options here:
 
 ## Other solutions
 
-There's other solutions officially compatible with XCP-ng to make VM backups. Please check our [ecosystem](./ecosystem.md#vm-backup) page on the backup section!
+There's other solutions officially compatible with XCP-ng to make VM backups. Please check our [ecosystem](../Project/ecosystem.md#vm-backup) page on the backup section!

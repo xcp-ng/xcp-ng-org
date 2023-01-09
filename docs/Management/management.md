@@ -17,7 +17,7 @@ As soon you start to work with multiple pools, or if you want to have advanced f
 
 The `xe` command line interface is installed by default on all XCP-ng hosts. A stand-alone remote CLI is also available for Linux.
 
-Please read the [xe dedicated section here](./cli_reference.md).
+Please read the [xe dedicated section here](../Appendix/cli_reference.md).
 
 :::tip
 `xe` however, works within a pool. If you want a cross-pool CLI (i.e. your whole infrastructure), please take a look at [Xen Orchestra CLI!](https://xen-orchestra.com/docs/architecture.html#xo-cli-cli)

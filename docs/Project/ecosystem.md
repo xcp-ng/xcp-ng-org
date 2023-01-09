@@ -87,7 +87,7 @@ The ecosystem around XCP-ng is getting bigger and bigger and we are really proud
 
 ## VM backup
 
-The main backup solution is Xen Orchestra, see the dedicated [backup](./backup.md) section. Alternatively, here is some 3rd party backup solutions that are officially compatible with XCP-ng.
+The main backup solution is Xen Orchestra, see the dedicated [backup](../Management/backup.md) section. Alternatively, here is some 3rd party backup solutions that are officially compatible with XCP-ng.
 
 ### Storware vProtect
 

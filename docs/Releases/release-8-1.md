@@ -1,10 +1,8 @@
 # XCP-ng 8.1
 
-**XCP-ng 8.1** is a [standard release](releases.md#standard-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso?https=1).
+**XCP-ng 8.1** is a [standard release](../Releases#standard-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso?https=1).
 
 SHA256 checksums, GPG signatures and net-install ISO are available [here](http://mirrors.xcp-ng.org/isos/8.1/).
-
-[[toc]]
 
 ## Release information
 
@@ -167,7 +165,7 @@ This issue has forced us to add the `gpumon` package to XCP-ng although it's not
 We want to thank our community of users who was very helpful in helping us identify, debug and fix this issue quickly, through an update and new installation ISOs.
 
 **If you are affected:**
-* Did you upgrade using the installation ISO? If yes, the safest is to rollback to the on-disk backup using the installation ISO then download a new, fixed, ISO (`xcp-ng-8.1.0-2`) from [xcp-ng.org]([https://xcp-ng.org) and upgrade again.
+* Did you upgrade using the installation ISO? If yes, the safest is to rollback to the on-disk backup using the installation ISO then download a new, fixed, ISO (`xcp-ng-8.1.0-2`) from [xcp-ng.org](https://xcp-ng.org) and upgrade again.
 * Else, or if reverting to the backup would make you lose important changes to your setup:
   * [Update your hosts](../Installation/updates) and reboot.
   * There may be consequences of the failed first boot after an upgrade:

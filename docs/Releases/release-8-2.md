@@ -8,8 +8,6 @@ SHA256 checksums, GPG signatures and net-install ISO are available [here](https:
 LTS means **Long Term Support**: this version is supported for 5 years, and even more for specific Extended Lifetime Support.
 :::
 
-[[toc]]
-
 ## Release information
 
 * Released on 2020-11-18

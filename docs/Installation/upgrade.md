@@ -51,7 +51,7 @@ If you can't boot from the ISO, see the next section.
 
 ### Troubleshooting ISO upgrades
 
-See [the Troubleshooting page](../Troubleshooting/after-../Installation/upgrade).
+See [the Troubleshooting page](../Troubleshooting/after-upgrade.md).
 
 ### Using the installation when you can't boot from it: remote upgrade
 
@@ -273,7 +273,7 @@ Here is how to proceed in order to migrate without having downtime in your infra
 
 ### Troubleshooting migration from XenServer
 
-See [the Troubleshooting page](../Troubleshooting/after-../Installation/upgrade).
+See [the Troubleshooting page](../Troubleshooting/after-upgrade.md).
 
 ### Alternate method: remote upgrade
 

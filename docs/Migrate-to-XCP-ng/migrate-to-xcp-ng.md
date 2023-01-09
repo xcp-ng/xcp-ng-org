@@ -33,7 +33,7 @@ This script is a bit old and not tested since while. If you have issues, feel fr
 
 ## From Virtualbox
 
-Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](migratetoxcpng.md#fromvmware) section.
+Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](#fromvmware) section.
 
 ## From VMware
 

@@ -12,7 +12,7 @@ Should I build applications on top of XAPI? In fact, because it's made with very
 
 XAPI is using a database (Read/write on the master, replicated to slaves in read only). It's an XML file located at `/var/lib/xcp/state.db`. All the metadata and settings of your pool, hosts, VMs and so on are stored there.
 
-See our [dedicated documentation](architecture#api) on XAPI for deeper technical details.
+See our [dedicated documentation](../Management/api.md) on XAPI for deeper technical details.
 
 ### Restarting the API
 
