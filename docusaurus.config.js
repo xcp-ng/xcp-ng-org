@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'XCP-ng Documentation',
   tagline: 'Documentation for XCP-ng',
-  url: 'https://xcp-ng.org',
+  url: 'https://docs.xcp-ng.org',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -74,18 +74,6 @@ const config = {
           {
             title: 'Docs',
             items: [
-              {
-                label: 'Install',
-                to: '/docs/intro',
-              },
-              {
-                label: 'Manage',
-                to: '/docs/intro',
-              },
-              {
-                label: 'Backup',
-                to: '/docs/intro',
-              },
             ],
           },
           {
