@@ -1,12 +1,18 @@
+---
+slug: /
+sidebar_label: Introduction
+sidebar_position: 1
+---
+
 # XCP-ng documentation
 
 XCP-ng is a high performance enterprise level virtualization platform with a rich ecosystem.
 
-Originally based on [XenServer](https://xenserver.org/) (now [Citrix Hypervisor](https://www.citrix.com/products/citrix-hypervisor/)), it's the result of massive cooperation between individuals and companies, to deliver a product without limits. No restrictions on features and every bit available on GitHub!
+Originally based on [XenServer](https://xenserver.org/), it's the result of massive cooperation between individuals and companies, to deliver a product without limits. No restrictions on features and every bit available on GitHub!
 
 Visit the main website to learn more: [https://xcp-ng.org](https://xcp-ng.org)
 
-![](https://xcp-ng.org/assets/img/mainlogo.png)
+![](../static/img/xcpbadge.png)
 
 ## Overview
 
