@@ -24,7 +24,7 @@ If you're not familiar will pull requests, but can also simply click the "Help u
 
 It's important to test XCP-ng on many different platforms and devices. You have gear laying around or access to some special devices? -> be a tester and test all the features of XCP-ng 🚀
 
-Your results are very welcome in our [Hardware Compatibility List (HCL)](hardware.md)!
+Your results are very welcome in our [Hardware Compatibility List (HCL)](../Installation/hardware.md)!
 
 It's also important to test Operating Systems on XCP-ng. You have fun to install different Operating Systems? -> great! Test them all on XCP-ng!
 

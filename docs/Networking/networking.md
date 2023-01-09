@@ -141,7 +141,7 @@ Before removing it, just be sure to remove its associated networks, so it won't 
 
 ## SDN controller
 
-An SDN controller is provided by a [Xen Orchestra](management.md#xen-orchestra) plugin. Thanks to that, you can enjoy advanced network features.
+An SDN controller is provided by a [Xen Orchestra](../Management#xen-orchestra) plugin. Thanks to that, you can enjoy advanced network features.
 
 ### GRE/VXLAN tunnels
 

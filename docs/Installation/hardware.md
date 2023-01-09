@@ -60,7 +60,7 @@ On XCP-ng <= 8.0, using default `bnx2x` driver triggers a kernel Oops on XCP-ng 
 
 ![](https://i.imgur.com/0FB7qVp.png)
 
-Fixed drivers have been released as official [updates](updates.md).
+Fixed drivers have been released as official [updates](../Installation/updates).
 
 
 #### Marvell/Aquantia AQC111U

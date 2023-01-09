@@ -16,7 +16,7 @@ Some clients are stateless (only running when you open or use them) and others a
 
 ## Web UI, CLI, heavy clients?
 
-You have multiple solutions to manage your hosts, see the dedicated [Management](management.md) section.
+You have multiple solutions to manage your hosts, see the dedicated [Management](../Management) section.
 
 ## Backup
 

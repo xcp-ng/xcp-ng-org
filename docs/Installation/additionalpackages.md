@@ -12,7 +12,7 @@ Best effort support is provided for additional packages provided by the XCP-ng p
 
 ### 1. Never enable additional repositories
 
-The [update process](updates.md) for XCP-ng assumes that **only XCP-ng repositories are enabled**. If you enable more repositories, updates may get pulled from there and overwrite XCP-ng packages and thus **break your system**.
+The [update process](../Installation/updates) for XCP-ng assumes that **only XCP-ng repositories are enabled**. If you enable more repositories, updates may get pulled from there and overwrite XCP-ng packages and thus **break your system**.
 
 **Warning**: some third party repositories are auto-enabled when installed. This is the case of EPEL, for example. Installing `epel-release` (the common way to enable it on CentOS) will automatically enable it. To avoid this, EPEL repositories are already added at system installation on XCP-ng, but they are *disabled*.
 
@@ -26,7 +26,7 @@ To disable a repository, edit `/etc/yum.repos.d/name_of_repo.repo` and set `enab
 
 ### 2. Prefer additional packages from XCP-ng's own repositories
 
-We offer a number of additional packages ranging from ZFS support, [newer drivers](hardware.md#alternate-drivers) or [newer kernel](hardware.md#alternate-kernel), to small utilities such as `vim`, `joe`, `iperf`, `mc`, etc.).
+We offer a number of additional packages ranging from ZFS support, [newer drivers](../Installation/hardware.md#alternate-drivers) or [newer kernel](../Installation/hardware.md#alternate-kernel), to small utilities such as `vim`, `joe`, `iperf`, `mc`, etc.).
 
 A regularly updated list of such utilities for XCP-ng 8.2 is available at <http://reports.xcp-ng.org/8.2/extra_installable.txt>.
 
@@ -98,13 +98,13 @@ And as usual make sure it won't overwrite existing packages...
 
 ## Up to date additional packages
 
-If you installed from XCP-ng repositories, [they will be updated like the rest of the XCP-ng system](updates.md).
+If you installed from XCP-ng repositories, [they will be updated like the rest of the XCP-ng system](../Installation/updates).
 
 If you installed from any other repository, including CentOS and EPEL, you need to update them (and their dependencies) manually
 
 ## System upgrade
 
-See [upgrade section](upgrade.md) for a discussion of the differences between "Installer upgrade" and "`yum`-style upgrade".
+See [upgrade section](../Installation/upgrade) for a discussion of the differences between "Installer upgrade" and "`yum`-style upgrade".
 
 Installer upgrade will reinstall the system from scratch and just keep your configuration related to XCP-ng (network, VMs, SRs, etc.). Anything else will have to be re-done.
 

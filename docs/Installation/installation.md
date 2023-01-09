@@ -528,7 +528,7 @@ Upon server reboot, normal `md` resync will take place.
 
 ## Troubleshooting
 
-See [the Troubleshooting page](../Troubleshooting/after-upgrade.md).
+See [the Troubleshooting page](../Troubleshooting/after-../Installation/upgrade).
 
 ## Misc
 

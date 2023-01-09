@@ -51,4 +51,4 @@ There was an issue with the installing of the drivers certificate, so the driver
 * Clean your system from `Citrix Client Tools` _AND_ `XCP-ng Client Tools` to create a clean state.
 * Then install the Client Tools from scratch.
 
-[This Guide](guests.md#upgrade-from-citrix-xenserver-client-tools) may help you through the process.
+[This Guide](../VMs#upgrade-from-citrix-xenserver-client-tools) may help you through the process.

@@ -8,7 +8,7 @@ Installing third-party software directly in the control domain of XCP-ng is not 
 
 ## XCP-ng system requirements
 
-Although XCP-ng is usually deployed on server-class hardware, XCP-ng is also compatible with many models of workstations and laptops. For more information, see the [Hardware Compatibility List (HCL)](hardware.md).
+Although XCP-ng is usually deployed on server-class hardware, XCP-ng is also compatible with many models of workstations and laptops. For more information, see the [Hardware Compatibility List (HCL)](../Installation/hardware.md).
 
 The following section describes the recommended XCP-ng hardware specifications.
 
@@ -21,7 +21,7 @@ XCP-ng can use:
 * Up to 288 logical processors per host.
 
 > Note
-The maximum number of logical processors supported differs by CPU. For more information, see the [Hardware Compatibility List (HCL)](hardware.md).
+The maximum number of logical processors supported differs by CPU. For more information, see the [Hardware Compatibility List (HCL)](../Installation/hardware.md).
 
 
 The system requirements for XCP-ng are:
@@ -48,7 +48,7 @@ A fixed amount of RAM is allocated to the control domain (dom0). The optimal amo
 * SAN via HBA (not through software) when installing with multipath boot from SAN.
 
 
-For a detailed list of compatible storage solutions, see the [Hardware Compatibility List (HCL)](hardware.md).
+For a detailed list of compatible storage solutions, see the [Hardware Compatibility List (HCL)](../Installation/hardware.md).
 
 ## Network
 

@@ -62,7 +62,7 @@ Here's a tree that represents the structure:
 * any additional build dependency we had to add to build the above RPMs.
 
 `updates` is enabled by default. It contains:
-* bugfix or security updates (see [Updates Howto](updates.md)),
+* bugfix or security updates (see [Updates Howto](../Installation/updates)),
 * occasionally, updates that bring enhancements without changing the behaviour you know and without regressions,
 * any optional extra RPMs provided by XCP-ng's packagers *after the release*,
 * any additional build dependency we had to add to build the above RPMs.
@@ -72,7 +72,7 @@ Note that having lots of additional packages in `base` and `updates` does not me
 * or when pulled as a dependency of another update (in which case we do want that).
 
 ### Stable release vs development release
-This is very common: released stable versions only get non-disruptive updates during their support lifetime: bug fixes and security fixes. Those are first published to the `testing` RPM repository and then moved to the `updates` RPM repository so that it is offered to all users (see [Updates Howto](updates.md)). We also allow ourselves to add features to an existing stable version as optional packages, or as updates to existing packages provided that we can do it without creating risks of regression. Example: we added support for `zstd` compression for VM exports to an already released XCP-ng 7.6.
+This is very common: released stable versions only get non-disruptive updates during their support lifetime: bug fixes and security fixes. Those are first published to the `testing` RPM repository and then moved to the `updates` RPM repository so that it is offered to all users (see [Updates Howto](../Installation/updates)). We also allow ourselves to add features to an existing stable version as optional packages, or as updates to existing packages provided that we can do it without creating risks of regression. Example: we added support for `zstd` compression for VM exports to an already released XCP-ng 7.6.
 
 On the contrary, the development version (aka the next stable release) can get any kind of breaking change until the day of release. Packages are then usually directly pushed to the `base` repository.
 
@@ -535,7 +535,7 @@ Here are the steps:
 
 ## Kernel module policy
 
-In XCP-ng, there is only one version of the kernel that is supported at a given time. There's also an [alternate kernel](hardware.md#alternate-kernel) available for troubleshooting. The policy differs whether the kernel modules are for XCP-ng's supported kernel or for an alternate kernel.
+In XCP-ng, there is only one version of the kernel that is supported at a given time. There's also an [alternate kernel](../Installation/hardware.md#alternate-kernel) available for troubleshooting. The policy differs whether the kernel modules are for XCP-ng's supported kernel or for an alternate kernel.
 
 ### What are kernel modules?
 See <https://en.wikipedia.org/wiki/Loadable_kernel_module>
@@ -555,7 +555,7 @@ Through our RPM repositories (configured by default on the hosts for `yum` to in
 
 ### Module Updates
 
-This section discusses the kind of updates kernel modules can receive during the maintenance cycle of a given release of XCP-ng (e.g. XCP-ng 8.2). For information about the general update process, see [Updates Howto](updates.md).
+This section discusses the kind of updates kernel modules can receive during the maintenance cycle of a given release of XCP-ng (e.g. XCP-ng 8.2). For information about the general update process, see [Updates Howto](../Installation/updates).
 
 Updates for *supported modules* are offered automatically when one updates their host. In order to avoid risks of regression, they are usually only updated if there's an important bug to fix, or a security issue with them... Until the next upgrade of XCP-ng.
 
@@ -735,7 +735,7 @@ In the case of an additional module, uninstalling the RPM will simply leave your
 
 ### Kernel modules for alternate kernels
 
-The policy for [alternate kernels](hardware.md#alternate-kernel) is simpler, because there are no alternate modules (with the meaning of *alternate modules* as described earlier). There's just the kernel's built-in modules and possibly additional or updated modules in `/lib/modules/{kernel_version}/updates`. This means that when an alternate kernel is updated, people who have installed it will get the update through the standard updates process. There's no support for cherry-picking specific versions of previous packages we may have released in the past. If there's a bug, please open a bug report. To avoid bugs, please take part in the testing phase.
+The policy for [alternate kernels](../Installation/hardware.md#alternate-kernel) is simpler, because there are no alternate modules (with the meaning of *alternate modules* as described earlier). There's just the kernel's built-in modules and possibly additional or updated modules in `/lib/modules/{kernel_version}/updates`. This means that when an alternate kernel is updated, people who have installed it will get the update through the standard updates process. There's no support for cherry-picking specific versions of previous packages we may have released in the past. If there's a bug, please open a bug report. To avoid bugs, please take part in the testing phase.
 
 RPMs that provide modules for an alternate kernel must follow these conventions:
 * The name must always end with `-kernel{MAJOR.MINOR}` (we don't include the patch version because we won't provide two competing kernel packages for the same MAJOR + MINOR versions).
@@ -781,7 +781,7 @@ We'll only list the files that are used during an installation or upgrade. The o
 
 ### Create a fully automated installation image
 
-[A guide is available in the *Installation* page](install.md#unattended-installation-with-a-custom-iso-image).
+[A guide is available in the *Installation* page](../Installation#unattended-installation-with-a-custom-iso-image).
 
 ### Modify the installer itself
 

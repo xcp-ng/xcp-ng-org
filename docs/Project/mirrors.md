@@ -116,7 +116,7 @@ This is a valid concern: maybe you are downloading from a mirror whose owner you
 
 Since XCP-ng 7.6, we use [GPG](https://gnupg.org/) to sign:
 * SHA256 sums for installation ISOs
-* SHA256 sums for repository configuration files (`xcp-ng-X.Y.repo`, downloaded as part of the [upgrade process](upgrade.md) if you choose to use `yum` to upgrade)
+* SHA256 sums for repository configuration files (`xcp-ng-X.Y.repo`, downloaded as part of the [upgrade process](../Installation/upgrade) if you choose to use `yum` to upgrade)
 * Every RPM package. They are automatically checked by `rpm` on an installed XCP-ng.
 * Repository metadata. They are automatically checked by `yum` on an installed XCP-ng.
 

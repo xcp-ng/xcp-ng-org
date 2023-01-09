@@ -15,7 +15,7 @@ SHA256 checksums, GPG signatures and net-install ISO are available [here](http:/
 * Kernel 4.19, with patches. Latest kernel hotfix from CH 8.1 at the date of release included in the release.
 
 ## Install
-See [Installation](install.md).
+See [Installation](../Installation).
 
 ## Upgrade from previous releases
 
@@ -23,7 +23,7 @@ Since XCP-ng 8.1.0 is a minor release, both upgrade methods are supported:
 * From the installation ISO
 * From command line using `yum` (**from XCP-ng 8.0 only!**)
 
-Refer to the [Upgrade Howto](upgrade.md).
+Refer to the [Upgrade Howto](../Installation/upgrade).
 
 ## What changed since 8.0
 
@@ -73,7 +73,7 @@ For more information and use cases, you can check [this Devblog](https://xen-orc
 
 Our installer now offers two new installation options. In legacy boot mode, access them with F2 when offered the choice. In UEFI mode, see the added boot menu entries.
 * First new option: boot the installer with a 2G RAM limit instead of the 8G default. This is a workaround for installation issues on hardware with Ryzen CPUs. Though those are Desktop-class CPUs and not supported officially in the HCL, we tried to make it easier to workaround the infamous "installer crashes on Ryzen" issue.
-* Second new option: boot the installer with our [alternate kernel](hardware.md#alternate-kernel) (kernel-alt). That kernel, built and maintained by @r1 for the team, is based on the main kernel, with all upstream kernel.org patches from the LTS 4.19 branch applied.It should be very stable by construction **but it receives less testing**. That option is there for cases when the main kernel and drivers have issues, so that you can quickly test if kernel.org patches have fixed it already. It will also install the alternate kernel in addition to the main kernel as a convenience. **If kernel-alt fixes issues for you, the most important thing to do is to tell us so that we may fix the main kernel!**
+* Second new option: boot the installer with our [alternate kernel](../Installation/hardware.md#alternate-kernel) (kernel-alt). That kernel, built and maintained by @r1 for the team, is based on the main kernel, with all upstream kernel.org patches from the LTS 4.19 branch applied.It should be very stable by construction **but it receives less testing**. That option is there for cases when the main kernel and drivers have issues, so that you can quickly test if kernel.org patches have fixed it already. It will also install the alternate kernel in addition to the main kernel as a convenience. **If kernel-alt fixes issues for you, the most important thing to do is to tell us so that we may fix the main kernel!**
 
 ### New leaf coalesce logic with dynamic limits
 
@@ -84,7 +84,7 @@ Those interested in the patches, see [this commit](https://github.com/xcp-ng-rpm
 ### Changes regarding our specific packages
 
 * ZFS updated to 0.8.3.
-* [Alternate kernel](hardware.md#alternate-kernel) updated to version 4.19.108. Installing it now automatically adds a new boot entry in grub's configuration, to make testing easier. Default entry remains that of the main kernel.
+* [Alternate kernel](../Installation/hardware.md#alternate-kernel) updated to version 4.19.108. Installing it now automatically adds a new boot entry in grub's configuration, to make testing easier. Default entry remains that of the main kernel.
 * `netdata-ui` still available from our repositories and also as a feature in Xen Orchestra.
   * r1 contributed a fix to netdata project to bring support for Xen 4.13
   * stormi made netdata cache be RAM-only to workaround an upstream bug that could make the disk cache grow forever
@@ -95,7 +95,7 @@ Those interested in the patches, see [this commit](https://github.com/xcp-ng-rpm
 
 Plans are laid out for simpler installation and maintenance of Windows guest tools. Unfortunately, we haven't found resources yet to implement them so the current state remains that of 8.0. ***If you're a developer on the Windows platforms, we're hiring! (full time or part time, contracts or hires) - Contact us.***
 
-However we have updated the [documentation about the guest tools](guests.md), which is hopefully clearer now!
+However we have updated the [documentation about the guest tools](../VMs), which is hopefully clearer now!
 
 ### Other changes
 
@@ -169,7 +169,7 @@ We want to thank our community of users who was very helpful in helping us ident
 **If you are affected:**
 * Did you upgrade using the installation ISO? If yes, the safest is to rollback to the on-disk backup using the installation ISO then download a new, fixed, ISO (`xcp-ng-8.1.0-2`) from [xcp-ng.org]([https://xcp-ng.org) and upgrade again.
 * Else, or if reverting to the backup would make you lose important changes to your setup:
-  * [Update your hosts](updates.md) and reboot.
+  * [Update your hosts](../Installation/updates) and reboot.
   * There may be consequences of the failed first boot after an upgrade:
     * Network issues requiring an emergency network reset
     * Disconnected Storage Repositories needing manual reconnection
@@ -257,7 +257,7 @@ Some exceptions to those CH 8.1 known issues:
 
 As every hand-updated list, this list below can quickly become obsolete or incomplete, so also check this: <https://github.com/xcp-ng/xcp/issues>
 
-Some hardware-related issues are also described in [this page](hardware.md).
+Some hardware-related issues are also described in [this page](../Installation/hardware.md).
 
 #### Cross-pool live migration from XenServer < 7.1
 

@@ -1,6 +1,6 @@
 # Updates
 
-This page details how to keep your XCP-ng system updated (bug fixes and security fixes) between [upgrades](upgrade.md).
+This page details how to keep your XCP-ng system updated (bug fixes and security fixes) between [upgrades](../Installation/upgrade).
 
 ## Support cycle
 
@@ -8,7 +8,7 @@ We maintain two releases in parallel:
 * The LTS Release (currently `8.2`).
 * The Standard release, on a best-effort basis (currently also `8.2`, until a future `8.3` release).
 
-If your version is lower than `8.2`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [upgrade](upgrade.md).
+If your version is lower than `8.2`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [upgrade](../Installation/upgrade).
 
 :::tip
 Exceptionally, XCP-ng 8.1 will continue to receive support until either XCP-ng 8.3 is available or until March 31 2021, whichever comes first. The general rule is to offer a transition period for you to upgrade after each new Standard release, a few months in general.
@@ -31,7 +31,7 @@ In any case, installing extra packages from outside the XCP-ng repositories can 
 * check the dependencies pulled by such packages: they must not overwrite existing packages in XCP-ng;
 * know that you are doing it at your own risk and be prepared to fix any issues that would arise, especially unforeseen upgrade issues (we can't test upgrade scenarios where unknown packages are installed on the system).
 
-More at [Additional packages](additionalpackages.md).
+More at [Additional packages](../Installation/additionalpackages).
 
 ## Get information about the updates
 

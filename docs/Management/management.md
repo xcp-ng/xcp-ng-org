@@ -2,12 +2,12 @@
 
 You have multiple ways to manage your hosts and your pool: all of those are called **clients**.
 
-* [`xe` CLI](management.md#xe) (talking to a host [XAPI](api.md) directly)
-* [*XCP-ng Center*](management.md#xcp-ng-center) (Windows client, only community supported)
-* [Xen Orchestra web UI](management.md#xen-orchestra) (need an XO virtual appliance running)
-* [Xen Orchestra CLI](management.md#xo-cli) (`xo-cli`, same requirement)
-* [Xen Orchestra API](management.md#xo-api) (same requirement)
-* [XO Lite](management.md#xo-lite) (future embedded lightweight client)
+* [`xe` CLI](../Management#xe) (talking to a host [XAPI](api.md) directly)
+* [*XCP-ng Center*](../Management#xcp-ng-center) (Windows client, only community supported)
+* [Xen Orchestra web UI](../Management#xen-orchestra) (need an XO virtual appliance running)
+* [Xen Orchestra CLI](../Management#xo-cli) (`xo-cli`, same requirement)
+* [Xen Orchestra API](../Management#xo-api) (same requirement)
+* [XO Lite](../Management#xo-lite) (future embedded lightweight client)
 
 :::tip
 As soon you start to work with multiple pools, or if you want to have advanced features, you'll need more advanced clients. For example, `xe`, XO Lite and *XCP-ng Center* are considered "basic", and Xen Orchestra web UI, CLI or API is so far the only one considered "advanced".

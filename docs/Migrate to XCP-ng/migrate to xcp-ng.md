@@ -8,11 +8,11 @@ OVA import will miss the information if the VM is running BIOS or UEFI mode. Dou
 
 ## From XenServer
 
-We got a dedicated section on [how to migrate from XenServer to XCP-ng](upgrade.md#upgrade-from-xenserver).
+We got a dedicated section on [how to migrate from XenServer to XCP-ng](../Installation/upgrade#upgrade-from-xenserver).
 
 ## From Citrix Hypervisor
 
-We got a dedicated section on [how to migrate from Citrix Hypervisor to XCP-ng](upgrade.md#upgrade-from-xenserver).
+We got a dedicated section on [how to migrate from Citrix Hypervisor to XCP-ng](../Installation/upgrade#upgrade-from-xenserver).
 
 ## From Xen on Linux
 
@@ -51,7 +51,7 @@ The fix for this is installing some xen drivers *before* exporting the VM from V
 
 `dracut --add-drivers "xen-blkfront xen-netfront" --force`
 
-[See here](https://unix.stackexchange.com/questions/278385/boot-problem-in-linux/496037#496037) for more details. Once the imported VM is properly booted, remove any VMware related tooling and be sure to install [Xen guest tools](guests.md).
+[See here](https://unix.stackexchange.com/questions/278385/boot-problem-in-linux/496037#496037) for more details. Once the imported VM is properly booted, remove any VMware related tooling and be sure to install [Xen guest tools](../VMs).
 
 ## From Hyper-V
 
