@@ -13,7 +13,7 @@ There are 3 upgrade methods, detailed below:
 
 ## Release Notes & Known Issues
 
-Read the [Release Notes and Known Issues](releases.md#all-releases) for every release that is higher than your current release. They may provide additional instructions for specific situations. Also **please read the following warnings**:
+Read the [Release Notes and Known Issues](../Releases/releases.md#all-releases) for every release that is higher than your current release. They may provide additional instructions for specific situations. Also **please read the following warnings**:
 
 :::warning
 * Always upgrade and reboot the pool master **FIRST**
@@ -35,11 +35,11 @@ This is the standard XCP-ng way. With this method, note that you can skip any in
 
 It will backup your system to the backup partition and reinstall the system from scratch on the system partition. Your XCP-ng configuration (VMs, storage repositories and so on) is retained.
 
-**Any additional changes made by you to the system will be lost, so remember to make them again after the upgrade. Including: kernel boot parameters (such as [those related to PCI passthrough](compute.md#_2-tell-xcp-ng-not-to-use-this-device-id-for-dom0)), changes to `/etc`, additional users created and their homes, local ISO SRs, [additional packages](additionalpackages.md)...**
+**Any additional changes made by you to the system will be lost, so remember to make them again after the upgrade. Including: kernel boot parameters (such as [those related to PCI passthrough](../Management/compute#_2-tell-xcp-ng-not-to-use-this-device-id-for-dom0)), changes to `/etc`, additional users created and their homes, local ISO SRs, [additional packages](additionalpackages.md)...**
 
 Steps:
 1. Download an installation ISO from the [download page](https://xcp-ng.org/download/). Choose either the standard installer or the network installer.
-2. [Check the authenticity and the integrity of the downloaded ISO](mirrors.md#check-an-iso-image).
+2. [Check the authenticity and the integrity of the downloaded ISO](../Project/mirrors.md#check-an-iso-image).
 3. Follow the installation procedure on the [download page](https://xcp-ng.org/download/).
 4. When offered the choice, choose to upgrade your existing XCP-ng installation.
 5. After the upgrade completed, reboot your host.
@@ -51,7 +51,7 @@ If you can't boot from the ISO, see the next section.
 
 ### Troubleshooting ISO upgrades
 
-See [the Troubleshooting page](troubleshooting.md#installation-and-upgrade).
+See [the Troubleshooting page](../Troubleshooting/after-upgrade.md).
 
 ### Using the installation when you can't boot from it: remote upgrade
 
@@ -156,7 +156,7 @@ In the commands below your shell will automatically replace `$VER` with the valu
   wget https://updates.xcp-ng.org/8/SHA256SUMS -O SHA256SUMS
   wget https://updates.xcp-ng.org/8/SHA256SUMS.asc -O SHA256SUMS.asc
   ```
-* Follow the steps to [check the integrity and origin of the repository file](mirrors.md#check-a-downloaded-file) (optional)
+* Follow the steps to [check the integrity and origin of the repository file](../Project/mirrors.md#check-a-downloaded-file) (optional)
 * Install the verified repository file so that yum uses it.
   ```
   cp xcp-ng-$VER.repo /etc/yum.repos.d/xcp-ng.repo
@@ -211,7 +211,7 @@ This article describes how to proceed in order to convert your Citrix XenServer 
 ### Before you start
 
 * Please re-read carefully all the previous warnings
-* Need a tool to [manage your XCP-ng hosts](management.md)? We strongly suggest that you use [Xen Orchestra](https://xen-orchestra.com), the web UI for XCP-ng. Alternatively, you can use `xe` CLI or XCP-ng Center.
+* Need a tool to [manage your XCP-ng hosts](../Management)? We strongly suggest that you use [Xen Orchestra](https://xen-orchestra.com), the web UI for XCP-ng. Alternatively, you can use `xe` CLI or XCP-ng Center.
 
 ### Migration process
 
@@ -273,7 +273,7 @@ Here is how to proceed in order to migrate without having downtime in your infra
 
 ### Troubleshooting migration from XenServer
 
-See [the Troubleshooting page](troubleshooting.md#installation-and-upgrade).
+See [the Troubleshooting page](../Troubleshooting/after-upgrade.md).
 
 ### Alternate method: remote upgrade
 

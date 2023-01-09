@@ -4,7 +4,7 @@ This guide will help you to set up XCP-ng.
 
 ## ISO installation
 
-If you want to use the netinstall ISO, see the [Netinstall section](install.md#netinstall).
+If you want to use the netinstall ISO, see the [Netinstall section](#netinstall).
 
 ### Download and create media
 
@@ -172,7 +172,7 @@ As with the regular installation ISO, write it on an USB media:
 dd if=xcp-ng-8.2.1-netinstall.iso of=/dev/sdX bs=8M oflag=direct
 ```
 
-Everything else is like the [regular install](install.md#start-the-host), except that it will not offer to install from local media, only from distant ones.
+Everything else is like the [regular install](#start-the-host), except that it will not offer to install from local media, only from distant ones.
 
 ## PXE boot install
 
@@ -198,7 +198,7 @@ PXE boot doesn't support tagged VLAN networks! Be sure to boot on a untagged net
 4. In the TFTP root directory, create a folder called `pxelinux.cfg`
 5. In the pxelinux.cfg directory, create your configuration file called `default`.
 
-The file itself will contain the way to install XCP-ng: manually (with answer to provide on the host console/screen) or fully automated (see [Automated install](install.md#automatedinstall) below).
+The file itself will contain the way to install XCP-ng: manually (with answer to provide on the host console/screen) or fully automated (see [Automated install](#automatedinstall) below).
 
 Here is an example of a manual installation:
 
@@ -360,7 +360,7 @@ Here's an example:
 ```
 
 :::tip
-Check [the full answerfile reference](answerfile.md).
+Check [the full answerfile reference](../Appendix/answerfile.md).
 :::
 
 ### Via PXE
@@ -404,8 +404,8 @@ You may build a custom installation image that will automatically install XCP-ng
 
 If you can't or don't want to setup PXE but can still serve a file (the answerfile) from a server that will be available to the hosts during installation, you can create an automated installation image that will fetch its configuration from the network.
 
-1. [Prepare an answerfile](answerfile.md) and make it available from a local HTTP server
-2. [Extract the XCP-NG ISO file](develprocess.md#extract-an-existing-iso-image)
+1. [Prepare an answerfile](../Appendix/answerfile.md) and make it available from a local HTTP server
+2. [Extract the XCP-NG ISO file](../Project/develprocess.md#extract-an-existing-iso-image)
 3. Modify the boot configuration to use the remote answerfile
   * For BIOS boot, edit `/boot/isolinux/isolinux.cfg`.
     * Locate the `install` boot entry, which should look like this:
@@ -437,7 +437,7 @@ If you can't or don't want to setup PXE but can still serve a file (the answerfi
         module2 /install.img
     }
     ```
-4. [Build a new ISO with your changes](develprocess.md#build-a-new-iso-image-with-your-changes)
+4. [Build a new ISO with your changes](../Project/develprocess.md#build-a-new-iso-image-with-your-changes)
 
 Your ISO is ready for installation.
 
@@ -445,8 +445,8 @@ Your ISO is ready for installation.
 
 If can't either setup PXE or serve a file (the answerfile) from a server that will be available to the hosts during installation, you can create an automated installation image that will embed its own configuration. It's a bit more work and will need to be done again every time you want to modify the answerfile.
 
-1. [Prepare an answerfile](answerfile.md)
-2. [Extract the XCP-NG ISO file](develprocess.md#extract-an-existing-iso-image)
+1. [Prepare an answerfile](../Appendix/answerfile.md)
+2. [Extract the XCP-NG ISO file](../Project/develprocess.md#extract-an-existing-iso-image)
 3. Modify the boot configuration to use a local (= embedded in the ISO) answerfile
   * For BIOS boot, edit `/boot/isolinux/isolinux.cfg`.
     * Locate the `install` boot entry, which should look like this:
@@ -478,14 +478,14 @@ If can't either setup PXE or serve a file (the answerfile) from a server that wi
         module2 /install.img
     }
     ```
-4. [Extract install.img](develprocess.md#extract-install-img)
+4. [Extract install.img](../Project/develprocess.md#extract-install-img)
 5. Add your answerfile
     ```
     cp answerfile.xml "$WORK_DIR/install/answerfile.xml"
     ```
 
-6. [Build a new install.img with your changes](develprocess.md#build-a-new-install-img-with-your-changes)
-7. [Build a new ISO with your changes](develprocess.md#build-a-new-iso-image-with-your-changes)
+6. [Build a new install.img with your changes](../Project/develprocess.md#build-a-new-install-img-with-your-changes)
+7. [Build a new ISO with your changes](../Project/develprocess.md#build-a-new-iso-image-with-your-changes)
 
 Your ISO is ready for installation.
 
@@ -528,7 +528,7 @@ Upon server reboot, normal `md` resync will take place.
 
 ## Troubleshooting
 
-See [the Troubleshooting page](troubleshooting.md#installation-and-upgrade).
+See [the Troubleshooting page](../Troubleshooting/after-upgrade.md).
 
 ## Misc
 

@@ -10,7 +10,7 @@ Issues can arise when the control domain is lacking memory, that's why we advise
 
 In any case:
 * monitor RAM usage in the control domain
-* if issues arise (failed live migration for example), [[look at the logs](troubleshooting.md#log-files) for messages related to lack of memory
+* if issues arise (failed live migration for example), [look at the logs](../Troubleshooting/log-files) for messages related to lack of memory
 
 ## Recommended values
 

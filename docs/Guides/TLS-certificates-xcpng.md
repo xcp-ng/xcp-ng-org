@@ -6,7 +6,7 @@ After installing XCP-ng, access to xapi via XCP-ng Center or Xen Orchestra is pr
 
 If you would like to replace this certificate by a valid one, either from an internal Certificate Authority or from a public one, you'll find here some indications on how to do that.
 
-Note that if you use an non-public certificate authority and XenOrchestra, you have [additional configuration to specify on XenOrchestra side](https://xen-orchestra.com/docs/configuration.html#custom-certificate-authority).
+Note that if you use an non-public certificate authority and XenOrchestra, you have [additional configuration to specify on Xen Orchestra side](https://xen-orchestra.com/docs/configuration.html#custom-certificate-authority).
 
 ## Generate certificate signing request
 

@@ -123,7 +123,7 @@ xe audit-log-get since=2009-09-24T17:56:20.530Z filename=/tmp/auditlog-pool-acti
 
 ## Bonding commands
 
-Commands for working with network bonds, for resilience with physical interface failover. For more information, see [Networking](networking.html#bonds).
+Commands for working with network bonds, for resilience with physical interface failover. For more information, see [Networking](../Networking).
 
 The bond object is a reference object which glues together *master* and *member* PIFs. The master PIF is the bonding interface which must be used as the overall PIF to refer to the bond. The member PIFs are a set of two or more physical interfaces that have been combined into the high-level bonded interface.
 
@@ -1559,7 +1559,7 @@ Create a PBD on your XCP-ng server. The read-only `device-config` parameter can 
 
 To add a mapping from ‘path’ to ‘/tmp’, the command line should contain the argument `device-config:path=/tmp`
 
-For a full list of supported device-config key/value pairs on each SR type, see [Storage](./storage.md).
+For a full list of supported device-config key/value pairs on each SR type, see [Storage](../Storage).
 
 ### `pbd-destroy`
 
@@ -2264,7 +2264,7 @@ sr-create name-label=name physical-size=size type=type content-type=content_type
 
 Creates an SR on the disk, introduces it into the database, and creates a PBD attaching the SR to the XCP-ng server. If `shared` is set to `true`, a PBD is created for each XCP-ng server in the pool. If `shared` is not specified or set to `false`, a PBD is created only for the XCP-ng server specified with `host-uuid`.
 
-The exact `device-config` parameters differ depending on the device `type`. For details of these parameters across the different storage back-ends, see [Storage](./storage.md).
+The exact `device-config` parameters differ depending on the device `type`. For details of these parameters across the different storage back-ends, see [Storage](../Storage).
 
 ### `sr-data-source-forget`
 
@@ -2354,7 +2354,7 @@ sr-probe type=type [host-uuid=host_uuid] [device-config:config_name=value]
 
 Performs a backend-specific scan, using the provided `device-config` keys. If the `device-config` is complete for the SR back-end, this command returns a list of the SRs present on the device, if any. If the `device-config` parameters are only partial, a back-end-specific scan is performed, returning results that guide you in improving the remaining `device-config` parameters. The scan results are returned as backend-specific XML, printed on the CLI.
 
-The exact `device-config` parameters differ depending on the device `type`. For details of these parameters across the different storage back-ends, see [Storage](./storage.md).
+The exact `device-config` parameters differ depending on the device `type`. For details of these parameters across the different storage back-ends, see [Storage](../Storage).
 
 ### `sr-probe-ext`
 
@@ -2636,7 +2636,7 @@ Uninstall a custom template. This operation will destroy those VDIs that are mar
 ## Update commands
 
 :::warning
-Update mechanism in XCP-ng is using `yum`, not this CLI. Please do NOT use it and check the [updates section](updates.md).
+Update mechanism in XCP-ng is using `yum`, not this CLI. Please do NOT use it and check the [updates section](../Updates).
 :::
 
 The update objects can be listed with the standard object listing command (`xe update-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
@@ -3795,7 +3795,7 @@ The VM or VMs on which this operation is performed are selected using the standa
 
 Use the `force` argument to cause an ungraceful shutdown, similar to pulling the plug on a physical server.
 
-An HVM mode VM requires `force=true` to be shutdown, unless [Guest Tools](guests.md#guest-tools) have been installed.
+An HVM mode VM requires `force=true` to be shutdown, unless [Guest Tools](../VMs#guest-tools) have been installed.
 
 ### `vm-snapshot`
 

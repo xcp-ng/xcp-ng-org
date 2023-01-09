@@ -174,7 +174,7 @@ to enable Secure Boot.
 
 #### Enable Secure Boot for an Existing UEFI VM using `xe`
 
-1. Shutdown the VM using the [shutdown](cli_reference.md#vm-shutdown) command if it is not already shut down.
+1. Shutdown the VM using the [shutdown](../Appendix/cli_reference.md#vm-shutdown) command if it is not already shut down.
 
 2. In the XCP-ng CLI, set the platform Secure Boot mode to `true`:
 
