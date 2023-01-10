@@ -2,7 +2,7 @@
 
 An XCP-ng computer is dedicated entirely to the task of running XCP-ng and hosting VMs, and is not used for other applications.
 
-::: warning
+:::caution
 Installing third-party software directly in the control domain of XCP-ng is not supported. The exception is for software supplied in the current repositories. If you want to add an extra package inside XCP-ng please [ask here](https://github.com/xcp-ng/xcp/issues/56).
 :::
 
@@ -20,8 +20,9 @@ XCP-ng can use:
 * Up to 16 physical NICs
 * Up to 288 logical processors per host.
 
-> Note
+:::tip
 The maximum number of logical processors supported differs by CPU. For more information, see the [Hardware Compatibility List (HCL)](../Installation/hardware.md).
+:::
 
 
 The system requirements for XCP-ng are:
