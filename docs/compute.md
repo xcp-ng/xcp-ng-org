@@ -1,3 +1,7 @@
+---
+sidebar_position: 8
+---
+
 # Compute and GPU
 
 This section is dedicated to compute related things, from Xen to GPU/vGPU or PCI passthrough.

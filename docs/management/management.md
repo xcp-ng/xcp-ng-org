@@ -2,77 +2,26 @@
 
 You have multiple ways to manage your hosts and your pool: all of those are called **clients**.
 
+## Local management
+
+If you have one host or small pool (a cluster), you can use those following tools:
+
 * [`xe` CLI](../Management#xe) (talking to a host [XAPI](api.md) directly)
-* [*XCP-ng Center*](../Management#xcp-ng-center) (Windows client, only community supported)
+* [XO Lite](../Management#xo-lite) (future embedded lightweight client)
+* [Xen API](https://xapi-project.github.io/) (XAPI)
+* [*XCP-ng Center*](../Management#xcp-ng-center) (Windows client, only community supported and not updated often)
+## Manage at scale
+
+As soon you start to management multiple hosts and/or pools, you might need a single/central orchestrator. That's the point of Xen Orchestra, which can be used via a web UI, a CLI or its API:
+
+
 * [Xen Orchestra web UI](../Management#xen-orchestra) (need an XO virtual appliance running)
 * [Xen Orchestra CLI](../Management#xo-cli) (`xo-cli`, same requirement)
 * [Xen Orchestra API](../Management#xo-api) (same requirement)
-* [XO Lite](../Management#xo-lite) (future embedded lightweight client)
 
 :::tip
-As soon you start to work with multiple pools, or if you want to have advanced features, you'll need more advanced clients. For example, `xe`, XO Lite and *XCP-ng Center* are considered "basic", and Xen Orchestra web UI, CLI or API is so far the only one considered "advanced".
+Xen Orchestra is not just an XCP-ng orchestrator at scale: it's also a backup tool. See the backup section for more details.
 :::
-
-## xe
-
-The `xe` command line interface is installed by default on all XCP-ng hosts. A stand-alone remote CLI is also available for Linux.
-
-Please read the [xe dedicated section here](../appendix/cli_reference.md).
-
-:::tip
-`xe` however, works within a pool. If you want a cross-pool CLI (i.e. your whole infrastructure), please take a look at [Xen Orchestra CLI!](https://xen-orchestra.com/docs/architecture.html#xo-cli-cli)
-:::
-
-## XCP-ng Center
-
-:::warning
-*XCP-ng Center* is only community maintained, and right now, by one person. It fills a gap between `xe` and Xen Orchestra, until XO Lite is available. Use it with caution.
-:::
-
-This is the heavy client working on Windows only. You can [download here](https://github.com/xcp-ng/xenadmin/releases/) on the GitHub project page.
-
-## Xen Orchestra
-
-Xen Orchestra is the **officially supported client for XCP-ng**. It's currently developed by the same team as the XCP-ng project ([Vates](https://vates.fr)).
-
-![](https://xen-orchestra.com/assets/featuresadmin.png)
-
-It's also far more than just a client: because it runs 24/7 in a daemon, a lot of extra cool stuff is possible:
-* reports
-* ACLs
-* Self Service
-* load balancing
-* SDN controller
-* backup
-* delta backup
-* Disaster Recovery
-* Continuous Replication
-* backup with RAM etc…
-
-Take a look at [the official doc](https://xen-orchestra.com/docs/) to take a tour on what's possible.
-
-Xen Orchestra is fully Open Source, and it comes in 2 "flavors":
-
-1. the turnkey/preinstalled virtual appliance, called **XOA** that you can [deploy in a minute](https://xen-orchestra.com/#!/xoa)
-2. manual install from GitHub ([documentation](https://xen-orchestra.com/docs/from_the_sources.html))
-
-:::tip
-We advise to start using XOA by deploying it really easily in [few clicks on this page](https://xen-orchestra.com/#!/xoa). You can always decide later to build it yourself from GitHub.
-:::
-
-### XOA vs XO from GitHub?
-
-XOA is meant to be used as the easiest way to test it, but also to use it in production: this is the version **professionally supported**. If you are an individual, feel free to enjoy version from GitHub directly!
-
-### Web UI
-
-You have access to all XCP-ng possibilities (and more!) from a web UI:
-
-![](https://xen-orchestra.com/assets/main_view.jpg)
-
-![](https://xen-orchestra.com/assets/stats.png)
-
-Please report to [XO official documentation](https://xen-orchestra.com/docs) for more!
 
 ### XO CLI
 

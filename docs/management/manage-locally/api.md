@@ -1,4 +1,4 @@
-# API
+# XCP-ng API
 
 XCP-ng is entirely managed by its API, called "XAPI". XAPI project is hosted [inside the Linux Foundation](https://xenproject.org/developers/teams/xen-api/) and the documentation is available on [its dedicated website](https://xapi-project.github.io/xen-api/).
 
