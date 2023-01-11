@@ -35,7 +35,7 @@ XCP-ng is distrubuted as an ISO file you can [download here](installation#downlo
 
 In terms of general architecture, XCP-ng and Xen Orchestra are relatively close. See for yourself:
 
-![](../static/img/xcp-ng-vs-vmware.png)
+![](../static/img/vsvmware.png)
 
 ## Introducing XCP-ng in video
 
