@@ -1,6 +1,7 @@
 ---
 slug: '/'
 sidebar_label: Introduction
+title: XCP-ng documentation
 sidebar_position: 1
 ---
 
