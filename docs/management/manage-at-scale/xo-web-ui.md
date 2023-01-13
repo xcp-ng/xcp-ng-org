@@ -2,11 +2,9 @@
 sidebar_position: 1
 ---
 
-# XO Web interface
+# Xen Orchestra Web UI
 
 If you see for a central console to manage all your hosts at a single point, Xen Orchestra (XO) is the right tool for that mission.
-
-## Xen Orchestra
 
 Xen Orchestra is the **officially supported client for XCP-ng**. It's currently developed by the same team as the XCP-ng project ([Vates](https://vates.fr)).
 
@@ -35,11 +33,11 @@ Xen Orchestra is fully Open Source, and it comes in 2 "flavors":
 We advise to start using XOA by deploying it really easily in [few clicks on this page](https://xen-orchestra.com/#!/xoa). You can always decide later to build it yourself from GitHub.
 :::
 
-### XOA vs XO from GitHub?
+## XOA vs XO from GitHub?
 
 XOA is meant to be used as the easiest way to test it, but also to use it in production: this is the version **professionally supported**. If you are an individual, feel free to enjoy version from GitHub directly!
 
-### Web UI
+## Web UI
 
 You have access to all XCP-ng possibilities (and more!) from a web UI:
 

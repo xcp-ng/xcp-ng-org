@@ -2,7 +2,7 @@
 
 If you are using another virtualization platform (VMware, KVM, etc.), this part of the documentation will help you to migrate to XCP-ng.
 
-:::warning
+:::caution
 OVA import will miss the information if the VM is running BIOS or UEFI mode. Double check your settings on your original system, and then enable (or not) UEFI on XCP-ng side for the destination VM. You can do so in VM advanced tab in Xen Orchestra.
 :::
 
@@ -27,7 +27,7 @@ If you are running Xen on your usual distro (Debian, Ubuntu…), you are using `
 
 If you have an error telling you that you don't have an default SR, please choose a default SR on your XCP-ng pool (in XO, Home/Storage, hover on the storage you want to put by default, there's an icon for it).
 
-:::warning
+:::caution
 This script is a bit old and not tested since while. If you have issues, feel free to report that!
 :::
 

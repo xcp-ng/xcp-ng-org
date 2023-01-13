@@ -1,18 +1,18 @@
 # High availability
 
+High availability (or HA) in XCP-ng world is the ability to detect a failed host and automatically boot all the VMs that were running on this host to the other alive machines.
+
 ## Introduction
 
-Implementing VM High availability (HA) is a real challenge: first because you need to reliably detect when a server has really failed to avoid unpredictable behavior. But that's not the only one.
-
-If you lose the network link but not the shared storage, how to ensure you will not write simultaneously on the storage and thus corrupt all your data?
+Implementing VM High availability (HA) is a real challenge: first because you need to reliably detect when a server has really failed to avoid unpredictable behavior. But that's not the only one. If you lose the network link but not the shared storage, how to ensure you will not write simultaneously on the storage and thus corrupt all your data?
 
 We'll see how to protect your precious VM in multiple cases, and we'll illustrate that with real examples.
 
-:::warning
+:::tip
 Even if you can have HA with only 2 hosts, it's strongly recommended to do it with at least 3 hosts, for obvious split-brains issues you might encounter.
 :::
 
-:::warning
+:::caution
 HA requires **far more maintenance** and will create some traps if you are not aware. In short, it comes at a cost. Before using it, **please carefully think about it**: do you **REALLY** need it? We saw people having less uptime because of HA than without. Because you **must understand** what you are doing every time you are rebooting or updating a host.
 :::
 
@@ -82,7 +82,7 @@ Before any update or host maintenance, planned reboot and so on, you need to **A
 
 If you have enough memory to put one host in maintenance (migrating all its VMs to other member of the pool), that will be alright. If you don't, you'll need to shutdown VMs manually **from a XAPI client** (Xen Orchestra or `xe`), and **NOT from inside the operating system**.
 
-:::warning
+:::caution
 You **must be very careful before ANY maintenance task**, otherwise HA will kick in and provide unpleasant surprises. You have been warned.
 :::
 
