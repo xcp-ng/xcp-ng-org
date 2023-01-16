@@ -93,8 +93,8 @@ The main backup solution is Xen Orchestra, see the dedicated [backup](./backup.m
 
 It's agentless but closed source. However, it supports a large variety of virtualization platforms, including [XCP-ng](https://storware.eu/storware-and-xcp-ng-technology-alliance/)!
 
-* Website: [https://storware.eu/](https://storware.eu/)
-* Documentation [is available here](https://storware.gitbook.io/storware-vprotect/)
+* Website: [https://storware.eu/](https://storware.eu/solutions/virtual-machine-backup-and-recovery/xcp-ng-backup-and-recovery/)
+* Documentation [is available here](https://storware.gitbook.io/backup-and-recovery)
 * Agentless: yes
 * Open Source: no
 
