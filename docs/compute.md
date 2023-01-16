@@ -10,7 +10,7 @@ This section is dedicated to compute related things, from Xen to GPU/vGPU or PCI
 
 ### 0. Prerequisites
 
-:::warning
+:::caution
 Ensure VT-d/IOMMU Support Is Enabled
 :::
 
@@ -24,7 +24,7 @@ If you attempt to perform PCI passthrough on a system which does not have VT-d/I
 Internal error: xenopsd internal error: Device.PCI.Cannot_add(_, _)
 ```
 
-:::warning
+:::caution
 You may not be able to passthrough USB controllers
 :::
 
@@ -118,7 +118,7 @@ Previously, Nvidia would block the use of gaming/consumer video cards for passth
 
 ### NVIDIA vGPU
 
-:::warning
+:::caution
 Due to a proprietary piece of code in XenServer, XCP-ng doesn't have (yet) support for NVIDIA vGPUs.
 :::
 
@@ -212,115 +212,6 @@ Then run
 xe pusb-scan host-uuid=<host_uuid>
 ```
 
-## VM load balancing
-
-This feature is available via Xen Orchestra, and its plugin "Load balancer":
-
-![](https://xcp-ng.org/assets/img/screenshots/loadbalancer.png)
-
-When using a virtualization platform, you have multiple physical hosts, which runs your virtual machines (VMs). Each host has a limited set of resources: CPU, RAM, network bandwidth etc.
-
-:::tip
-Maybe you already heard about VMWare DRS (Distributed Resource Scheduler): that's the same principle here, but for XCP-ng.
-:::
-
-So the first objective is to **adapt your VM placement in live** (without service interruption), depending of the load. Let's take a simple example:
-
-These 2 hosts are running 6 VMs:
-
-![](https://xen-orchestra.com/blog/content/images/2016/03/loadbalance1.png)
-
-> Let's say both hosts are using only 5% of all their CPUs
-
-Suddenly, one of your VM starts to have a very high CPU load (**in yellow**): performance of other VMs on this same host could be impacted negatively (**in pink**):
-
-![](https://xen-orchestra.com/blog/content/images/2016/03/loadbalance3.png)
-
-> Host 1 still using 5% of its CPUs, but host 2 is now a 95%.
-
-We are detecting it and now move others VM to the other host, like this:
-
-![](https://xen-orchestra.com/blog/content/images/2016/03/loadbalance4.png)
-
-> Host 1 has a slightly increased load, but host 2 can be fully used for the "problematic" VM without disrupting service of other VMs.
-
-This way, the impact of your high load usage on one VM doesn't penalize everyone.
-
-But it's not the only way to see this: there is multiple possibilities to "optimize" your existing resource usage:
-
-* maybe you want to **spread the VM load** on the maximum number of server, to get the most of your hardware? (previous example)
-* maybe you want to **reduce power consumption** and migrate your VMs to the minimum number of hosts possible? (and shutdown useless hosts)
-* or maybe **both**, depending of your own schedule?
-
-Those ways can be also called **modes**: "performance" for 1, "density" for number 2 and "mixed" for the last.
-
-### In Xen Orchestra
-
-We started to work on the "performance" mode inside Xen Orchestra. Our first objectives were:
-
-* to provide an easy way to create "plans" to supervise load balancing with simple rules
-* to work only on the host CPU usage
-* to start a detection every 2 minutes
-* to work across various pools
-* to be able to exclude hosts
-
-#### Creating a plan
-
-Creating a plan is the first step. In our example, we want to create a plan called "perf1", using "performance mode", and acting only on one pool, labelled "Lab Pool":
-
-By default, the CPU threshold is 90%, but it could be set manually (here at 80%):
-
-![](https://xen-orchestra.com/blog/content/images/2016/03/plan_creation.png)
-
-#### Let's play!
-
-Here is the initial situation:
-
-![](https://xen-orchestra.com/blog/content/images/2016/03/beforeload-1.png)
-
-> 4x VMs on 2 hosts, *lab1* and *lab2*
-
-CPU usage on both hosts is very low:
-
-![](https://xen-orchestra.com/blog/content/images/2016/03/lab1.png)
-
-> CPU usage on *lab1*
-
-![](https://xen-orchestra.com/blog/content/images/2016/03/lab2.png)
-
-> CPU usage on *lab2*
-
-Let's trigger a very high CPU load on the VM "Windows Server NFS Share" (using Prime95), which is on *lab1*:
-
-![](https://xen-orchestra.com/blog/content/images/2016/03/maxloadlab1.png)
-
-> *lab1* starts to work at 100% on all it's CPUs
-
-Both "nfs share" and "Salt Master" VMs will suffer this concurrent CPU usage and won't have enough power to deliver if necessary. And when the average on last 2 minutes hits the threshold (80% here), actions are taken:
-
-![](https://xen-orchestra.com/blog/content/images/2016/03/actionloadbalancing.png)
-
-![](https://xen-orchestra.com/blog/content/images/2016/03/migrated.png)
-
-
-> *lab1* is now working a full speed with the only the VM using all it's CPUs.
-
-Let's check the new CPU load on *lab2*:
-
-![](https://xen-orchestra.com/blog/content/images/2016/03/aftermigration.png)
-
-> Load is only slightly increased due to 2 new VMs
-
-### Conclusion
-
-With this simple but first initial algorithm, we managed to mitigate automatically an issue of VM resource usage. Of course, it works also in cases when you have to really spread the load on all your servers (i.e. when the sum of all VM usage is higher than the threshold): that's the exact same principle.
-
-You have more than 2 hosts? Again, same idea, it will also work.
-
-## VM anti-affinity
-
-VM anti-affinity is a feature that prevents VMs with the same user tags to run on the same host. To use this functionality, feel free to read the Xen Orchestra documentation: [Xen Orchestra VM anti-affinity](https://xen-orchestra.com/docs/load_balancing.html#vm-anti-affinity).
-
 ## Advanced Xen
 
 ### NUMA affinity
@@ -372,7 +263,7 @@ xl cpupool-numa-split # Will create a cpupool by NUMA node
 xl cpupool-migrate <VM> <Pool> # Will migrate a VM to the given pool
 ```
 
-:::warning
+:::caution
 Be careful, the changes done using `xl` only affect vCPU at the moment, the memory of the VM will not be moved between node nor the pinning stay after a reboot. You need to use `xe` for it to be taken into account at the VM startup.
 :::
 

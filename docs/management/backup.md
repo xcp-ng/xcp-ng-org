@@ -13,6 +13,8 @@ A lot of different backup options are supported via Xen Orcherstra:
 * CR (delta backup to another XCP-ng storage repository)
 * Metadata backup
 * File level restore
+* XO Proxy (backup remote sites without any VPN requirement)
+* S3 compatible backup storage
 
 ![](https://xen-orchestra.com/assets/backups-solutions.png)
 
