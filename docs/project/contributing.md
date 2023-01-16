@@ -1,5 +1,7 @@
 # Contributing
 
+How to contribute to XCP-ng.
+
 There are two ways of contributing:
 * by giving some of your time to work on the project (support, documentation, development...)
 * with money, by subscribing to [Pro Support](https://xcp-ng.com/), which funds further developments.

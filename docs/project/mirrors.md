@@ -1,5 +1,7 @@
 # Mirrors
 
+Mirrors hosting our packages.
+
 Like a Linux distribution, XCP-ng's installation images and RPM repositories can be replicated by benevolent mirror providers.
 
 XCP-ng uses [mirrorbits](https://github.com/etix/mirrorbits) to redirect download requests to an appropriate mirror based on their update status and geographical position.

@@ -1,6 +1,8 @@
 # Windows Agent / PV-Tools
 
-## "Windows Management Agent failed to install" directly after installing it
+Common issues with Windows PV tools.
+
+## Windows Management Agent failed to install
 
 ### Cause
 There was an issue with the installing of the drivers certificate, so the drivers did not load silently.
@@ -10,10 +12,15 @@ Resolved with version 8.2.2.200-RC1 and newer.
 
 ***
 
-## The Management Agent Installer was executed, but the PV-Drivers are not installed in the Device Manager
+## PV-Drivers missing in the Device Manager
 
-### Causes and Solutions
-#### Cause a) There can be leftovers from old Citrix XenServer Client Tools.
+### Cause
+
+If despite running the Windows tools installer, there's no devices visible in the device manager, it's likely because there's some leftovers from old Citrix XenServer Client Tools.
+
+### Solutions
+
+#### Leftovers from old Citrix XenServer Client Tools.
 1. remove any xen*.* files from `C:\Windows\system32` like
     * xenbus_coinst_7_2_0_51.dll
     * xenvbd_coinst_7_2_0_40.dll
@@ -22,27 +29,17 @@ Resolved with version 8.2.2.200-RC1 and newer.
 2. remove any leftover `XenServer` devices from device manager, also display hidden `XenServer` devices and remove them!
     * To show hidden devices in Device Manager: `View -> Show Hidden Devices`
 
-#### Cause b) There was an issue with the installing of the drivers certificate, so the drivers did not load silently
+#### There was an issue with the installing of the drivers certificate, so the drivers did not load silently
 
 Resolved with version 8.2.2.200-RC1 and newer.
 
 ***
 
-## Upgrading from XenTools 6.x to XCP-ng-Client-Tools-for-Windows-8.2.1-beta1 and get the error message "Windows Management Agent failed to install" directly after installing it
+## Network PV drivers aren't working.
 
-### Cause and solution:
+### Cause
 
-There was an issue with the installing of the drivers certificate, so the drivers did not load silently.
-
-Resolved with version 8.2.2.200-RC1 and newer.
-
-***
-
-## Client Tools installed but XCP-ng Center says that I/O is optimized but my network card is not (correctly) installed and the Management Agent is (also) not working.
-
-#### Cause
-
-There was an issue with the installing of the drivers certificate, so the drivers did not load silently.
+If the tools are installed, while XCP-ng Center says that I/O is optimized, but the network card is not correctly installed and the Management Agent is also not working. There was an issue with the installing of the drivers certificate, so the drivers did not load silently.
 
 ### Possible Solutions
 

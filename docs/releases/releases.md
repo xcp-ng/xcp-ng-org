@@ -2,7 +2,24 @@
 
 There are two kinds of XCP-ng releases: standard releases and Long Term Support (LTS) releases.
 
-## Standard Releases
+## 🟢 LTS Releases
+
+*Latest LTS: [XCP-ng 8.2](release-8-2.md)*
+
+Using the Long Term Support version is relevant if:
+
+* you want to be sure the system will stay stable
+* you want to have all security fixes without doing major upgrades every year
+* you want a predictable migration path on a longer timeframe
+* you don't care about new features coming for the next years
+
+LTS releases are supported for 5 years.
+
+![](../../assets/img/lts.png)
+
+If you prefer to get the latest improvements, go for our [latest standard release](#standard-releases).
+
+## 🟡 Standard Releases
 
 *Latest: [XCP-ng 8.2](release-8-2.md)*
 
@@ -21,22 +38,11 @@ If you prefer to be more conservative, go for our [LTS release](#lts-releases).
 Right now, the latest standard release (8.2) is also the LTS release. When XCP-ng 8.3 will be released, it will become the latest standard release, and 8.2 will stay as the latest LTS.
 :::
 
-## LTS Releases
+## 🔴 Pre Releases
 
-*Latest LTS: [XCP-ng 8.2](release-8-2.md)*
+*Latest Pre Release: XCP-ng 8.3 Alpha*
 
-Using the Long Term Support version is relevant if:
-
-* you want to be sure the system will stay stable
-* you want to have all security fixes without doing major upgrades every year
-* you want a predictable migration path on a longer timeframe
-* you don't care about new features coming for the next years
-
-LTS releases are supported for 5 years.
-
-![](../../assets/img/lts.png)
-
-If you prefer to get the latest improvements, go for our [latest standard release](#standard-releases).
+Using a pre release is only relevant for testing.
 
 ## All releases
 

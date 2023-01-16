@@ -1,6 +1,10 @@
-# Installation
+---
+sidebar_position: 2
+---
 
-This guide will help you to set up XCP-ng.
+# Install XCP-ng
+
+How to install XCP-ng.
 
 ## ISO installation
 

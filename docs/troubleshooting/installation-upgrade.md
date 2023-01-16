@@ -1,6 +1,6 @@
 # Installation and upgrade
 
-(Where "upgrade" here designates an upgrade using the installation ISO)
+Upgrade here designates an upgrade using the installation ISO
 
 ## If the installer starts booting up then crashes or hangs
 

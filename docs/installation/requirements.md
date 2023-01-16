@@ -1,4 +1,10 @@
+---
+sidebar_position: 1
+---
+
 # Requirements
+
+What is needed to run XCP-ng.
 
 An XCP-ng computer is dedicated entirely to the task of running XCP-ng and hosting VMs, and is not used for other applications.
 

@@ -1,3 +1,7 @@
+---
+sidebar_position: 4
+---
+
 # Additional packages
 
 The controller domain (dom0) is a privileged Linux VM, based on CentOS.

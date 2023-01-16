@@ -1,5 +1,7 @@
 # Roadmap
 
+Our global roadmap.
+
 The goal of this document is to give you a hint of what's next. However, since all topics are very complex, there's no real order or target date. In general, our priorities are:
 
 * security

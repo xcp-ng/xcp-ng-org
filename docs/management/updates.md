@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Updates
 
 This page details how to keep your XCP-ng system updated (bug fixes and security fixes) between [upgrades](../installation/upgrade).

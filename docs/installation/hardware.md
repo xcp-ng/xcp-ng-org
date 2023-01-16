@@ -1,4 +1,10 @@
+---
+sidebar_position: 5
+---
+
 # Hardware support
+
+All about the hardware supported by XCP-ng
 
 ## Hardware Compatibility List (HCL)
 

@@ -1,6 +1,8 @@
 # Security
 
-Security is a central concern in the whole XCP-ng project. We are using Xen as our core hypervisor engine, which is a huge collaboration project with security as core value. On top of that, we are closely monitoring all security releases from Citrix Hypervisor to be able to provide critical patches very fast too.
+Security is a central concern in the whole XCP-ng project.
+
+We are using Xen as our core hypervisor engine, which is a huge collaboration project with security as core value. On top of that, we are closely monitoring all security releases from Citrix Hypervisor to be able to provide critical patches very fast too.
 
 Because XCP-ng is made of a lot of various components, we are relying on multiple sources to improve the security and fixing flaws.
 

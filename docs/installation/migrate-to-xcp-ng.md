@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Migrate to XCP-ng
 
 If you are using another virtualization platform (VMware, KVM, etc.), this part of the documentation will help you to migrate to XCP-ng.

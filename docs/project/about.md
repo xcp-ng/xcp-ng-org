@@ -1,4 +1,6 @@
-# Project
+# About XCP-ng
+
+The story behind XCP-ng.
 
 XCP-ng is not just a "product" or a solution, it's also a great project with a great community!
 

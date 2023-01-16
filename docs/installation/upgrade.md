@@ -1,6 +1,12 @@
-# Upgrade
+---
+sidebar_position: 4
+---
 
-This page details how to upgrade to the latest version of XCP-ng from a previous release, e.g. 7.4 to 7.6 or 8.0 to 8.2.
+# Upgrade to a newer release
+
+Discover how to upgrade from an older release.
+
+We assume your goal is to get to the latest version of XCP-ng from a previous release, e.g. 7.4 to 7.6 or 8.0 to 8.2.
 
 For updates that don't change the version numbers (bugfixes, security fixes), see [the updates section](../installation/updates).
 
@@ -15,7 +21,7 @@ There are 3 upgrade methods, detailed below:
 
 Read the [Release Notes and Known Issues](../releases#all-releases) for every release that is higher than your current release. They may provide additional instructions for specific situations. Also **please read the following warnings**:
 
-:::warning
+:::caution
 * Always upgrade and reboot the pool master **FIRST**
 * DON'T use the `Maintenance Mode` in XCP-ng Center. It moves the pool master to another host, which has to be avoided in the upgrading procedure.
 * If HA (High Availability) is enabled, disable it before upgrading.

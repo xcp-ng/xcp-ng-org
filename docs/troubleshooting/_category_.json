@@ -1,8 +1,4 @@
 {
     "label": "Troubleshooting",
-    "position": 9,
-    "link": {
-      "type": "generated-index",
-      "description": "How to troubleshoot XCP-ng"
-  }
+    "position": 9
   }
