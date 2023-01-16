@@ -16,7 +16,7 @@ Best effort support is provided for additional packages provided by the XCP-ng p
 
 ### 1. Never enable additional repositories
 
-The [update process](../installation/updates) for XCP-ng assumes that **only XCP-ng repositories are enabled**. If you enable more repositories, updates may get pulled from there and overwrite XCP-ng packages and thus **break your system**.
+The [update process](../management/updates) for XCP-ng assumes that **only XCP-ng repositories are enabled**. If you enable more repositories, updates may get pulled from there and overwrite XCP-ng packages and thus **break your system**.
 
 **Warning**: some third party repositories are auto-enabled when installed. This is the case of EPEL, for example. Installing `epel-release` (the common way to enable it on CentOS) will automatically enable it. To avoid this, EPEL repositories are already added at system installation on XCP-ng, but they are *disabled*.
 
@@ -102,7 +102,7 @@ And as usual make sure it won't overwrite existing packages...
 
 ## Up to date additional packages
 
-If you installed from XCP-ng repositories, [they will be updated like the rest of the XCP-ng system](../installation/updates).
+If you installed from XCP-ng repositories, [they will be updated like the rest of the XCP-ng system](../management/updates).
 
 If you installed from any other repository, including CentOS and EPEL, you need to update them (and their dependencies) manually
 

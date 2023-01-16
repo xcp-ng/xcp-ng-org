@@ -19,7 +19,7 @@ LTS means **Long Term Support**: this version is supported for 5 years, and even
 
 ## Install
 
-See [Installation](../Installation).
+See [Installation](../installation/install-xcp-ng).
 
 ## Upgrade from previous releases
 
@@ -108,11 +108,11 @@ Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 
 
 ### Additional packages updated or added
 
-[Additional packages](../installation/additionalpackages) are packages made available by the XCP-ng team directly in our RPM repositories, for easy installation and update on XCP-ng hosts.
+[Additional packages](../management/additional-packages) are packages made available by the XCP-ng team directly in our RPM repositories, for easy installation and update on XCP-ng hosts.
 
 * `zfs` updated to 0.8.5
 * `glusterfs` 8.1 added to the XCP-ng repositories
-* New [additional driver package](../installation/additionalpackages): `r8125-module`, for the `r8125` Realtek device driver.
+* New [additional driver package](../management/additional-packages): `r8125-module`, for the `r8125` Realtek device driver.
 * [Alternate driver package](../installation/hardware#alternate-drivers) `intel-igb-alt` updated to version 5.4.6.
 
 ### Misc

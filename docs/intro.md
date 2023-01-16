@@ -32,7 +32,7 @@ There's few concepts to grasp in order to get a clear picture about what is XCP-
 
 ### Turnkey appliance
 
-XCP-ng is distrubuted as an ISO file you can [download here](installation#download-and-create-media) and [install](installation) on the hardware of your choice (see our [hardware support](installation/hardware) section for more details). It's meant to be an appliance, already pre-configured to run any kind of virtual machine you need without any preparation.
+XCP-ng is distrubuted as an ISO file you can [download here](installation/install-xcp-ng#download-and-create-media) and [install](installation/install-xcp-ng) on the hardware of your choice (see our [hardware support](installation/hardware) section for more details). It's meant to be an appliance, already pre-configured to run any kind of virtual machine you need without any preparation.
 
 ### Compared to VMware
 
@@ -67,7 +67,7 @@ Here is some content explaining XCP-ng in detail:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/hh1QADop_IY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-About the project itself, please see the [project page](Project).
+About the project itself, please see the [project page](/category/project).
 
 ### More video comparing XCP-ng to other products
 

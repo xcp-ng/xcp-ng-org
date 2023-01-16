@@ -13,7 +13,7 @@ SHA256 checksums, GPG signatures and net-install ISO are available [here](http:/
 * Kernel 4.19, with patches. Latest kernel hotfix from CH 8.1 at the date of release included in the release.
 
 ## Install
-See [Installation](../Installation).
+See [Installation](../installation/install-xcp-ng).
 
 ## Upgrade from previous releases
 
@@ -167,7 +167,7 @@ We want to thank our community of users who was very helpful in helping us ident
 **If you are affected:**
 * Did you upgrade using the installation ISO? If yes, the safest is to rollback to the on-disk backup using the installation ISO then download a new, fixed, ISO (`xcp-ng-8.1.0-2`) from [xcp-ng.org](https://xcp-ng.org) and upgrade again.
 * Else, or if reverting to the backup would make you lose important changes to your setup:
-  * [Update your hosts](../installation/updates) and reboot.
+  * [Update your hosts](../management/updates) and reboot.
   * There may be consequences of the failed first boot after an upgrade:
     * Network issues requiring an emergency network reset
     * Disconnected Storage Repositories needing manual reconnection

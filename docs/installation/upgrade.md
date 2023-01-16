@@ -8,7 +8,7 @@ Discover how to upgrade from an older release.
 
 We assume your goal is to get to the latest version of XCP-ng from a previous release, e.g. 7.4 to 7.6 or 8.0 to 8.2.
 
-For updates that don't change the version numbers (bugfixes, security fixes), see [the updates section](../installation/updates).
+For updates that don't change the version numbers (bugfixes, security fixes), see [the updates section](../management/updates).
 
 :::tip
 There are 3 upgrade methods, detailed below:
@@ -27,8 +27,8 @@ Read the [Release Notes and Known Issues](../releases#all-releases) for every re
 * If HA (High Availability) is enabled, disable it before upgrading.
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`.
 * Read [Handling alternate drivers or kernel](../installation/upgrade#handling-alternate-drivers-or-kernel) if your host depends on them.
-* [Update your pool with the latest updates](../installation/updates) **before** upgrading, and reboot or restart the toolstack, depending on the nature of the installed updates.
-* [Install the latest updates](../installation/updates) **after** upgrading.
+* [Update your pool with the latest updates](../management/updates) **before** upgrading, and reboot or restart the toolstack, depending on the nature of the installed updates.
+* [Install the latest updates](../management/updates) **after** upgrading.
 :::
 
 :::warning
@@ -41,7 +41,7 @@ This is the standard XCP-ng way. With this method, note that you can skip any in
 
 It will backup your system to the backup partition and reinstall the system from scratch on the system partition. Your XCP-ng configuration (VMs, storage repositories and so on) is retained.
 
-**Any additional changes made by you to the system will be lost, so remember to make them again after the upgrade. Including: kernel boot parameters (such as [those related to PCI passthrough](../compute#_2-tell-xcp-ng-not-to-use-this-device-id-for-dom0)), changes to `/etc`, additional users created and their homes, local ISO SRs, [additional packages](../installation/additionalpackages)...**
+**Any additional changes made by you to the system will be lost, so remember to make them again after the upgrade. Including: kernel boot parameters (such as [those related to PCI passthrough](../compute#_2-tell-xcp-ng-not-to-use-this-device-id-for-dom0)), changes to `/etc`, additional users created and their homes, local ISO SRs, [additional packages](../management/additional-packages)...**
 
 Steps:
 1. Download an installation ISO from the [download page](https://xcp-ng.org/download/). Choose either the standard installer or the network installer.
@@ -49,9 +49,9 @@ Steps:
 3. Follow the installation procedure on the [download page](https://xcp-ng.org/download/).
 4. When offered the choice, choose to upgrade your existing XCP-ng installation.
 5. After the upgrade completed, reboot your host.
-6. Then [install the updates](../installation/updates) that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
+6. Then [install the updates](../management/updates) that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
 
-Once upgraded, **keep the system regularly updated** (see [the updates section](../installation/updates)).
+Once upgraded, **keep the system regularly updated** (see [the updates section](../management/updates)).
 
 If you can't boot from the ISO, see the next section.
 
@@ -81,11 +81,11 @@ If you do not have access to your server or remote KVM in order to upgrade using
   ```
   The output should also be true. It has created a temporary entry in the grub bootloader which will automatically load the upgrade ISO on the next boot. It then automatically runs the XCP-ng upgrade with no user intervention required. It will also backup your existing XenServer dom0 install to the secondary backup partition, just like the normal upgrade.
 * To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it's available, but if not, it should proceed fine and boot into upgraded XCP-ng in 10 to 20 minutes.
-* Then [install the updates](../installation/updates) that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
+* Then [install the updates](../management/updates) that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
 
 Note: it has been brought to our attention that [a DHCP server may be necessary during the upgrade](https://xcp-ng.org/forum/topic/2480/unattended-upgrade-requires-dhcp).
 
-Once upgraded, **keep the system regularly updated** (see [Updates Howto](../installation/updates)).
+Once upgraded, **keep the system regularly updated** (see [Updates Howto](../management/updates)).
 
 ## From command line
 
@@ -100,7 +100,7 @@ Though it's been successfully tested by numerous people, this method is still co
 
 On the plus side, it's a lot *faster* provided you have a decent internet connection or a local mirror, and changes you have made to the host are retained.
 
-Once upgraded, **keep your system regularly updated** (see [Updates Howto](../installation/updates)) until the next upgrade.
+Once upgraded, **keep your system regularly updated** (see [Updates Howto](../management/updates)) until the next upgrade.
 
 ### Prerequisites
 
@@ -119,11 +119,11 @@ In any case, installing extra packages from outside the XCP-ng repositories can 
 * check the dependencies pulled by such packages: they must not overwrite existing packages in XCP-ng;
 * know that you are doing it at your own risk and be prepared to fix any issues that would arise, especially unforeseen upgrade issues (we can't test upgrade scenarios where unknown packages are installed on the system).
 
-More at [Additional packages](../installation/additionalpackages).
+More at [Additional packages](../management/additional-packages).
 
 #### Precautions
 
-The [precautions that apply to regular updates](../installation/updates#precautions) also apply to the upgrade process.
+The [precautions that apply to regular updates](../management/updates#precautions) also apply to the upgrade process.
 
 Check them carefully.
 

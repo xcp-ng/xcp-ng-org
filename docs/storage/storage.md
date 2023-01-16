@@ -193,7 +193,7 @@ XOSANv2 is coming soon in XCP-ng. Hang on!
 Local, thin-provisioned. Available since XCP-ng 8.2.
 
 :::tip
-[Additional package](../installation/additionalpackages) required and available in our repositories: `zfs`.
+[Additional package](../management/additional-packages) required and available in our repositories: `zfs`.
 Then either reboot or run `modprobe -v zfs` to load the kernel module.
 :::
 
@@ -269,7 +269,7 @@ Check ZFS documentation to understand the pros and cons of each optimization.
 Local, thin-provisioned storage.
 
 :::tip
-[Additional package](../installation/additionalpackages) required and available in our repositories: `xfsprogs`.
+[Additional package](../management/additional-packages) required and available in our repositories: `xfsprogs`.
 
 On XCP-ng before 8.2, you also need `sm-additional-drivers`.
 :::
@@ -287,7 +287,7 @@ xe sr-create host-uuid=<host UUID> type=xfs content-type=user name-label="Local 
 Shared, thin-provisioned storage. Available since XCP-ng 8.2.
 
 :::tip
-[Additional package](../installation/additionalpackages) required and available in our repositories: `glusterfs-server`.
+[Additional package](../management/additional-packages) required and available in our repositories: `glusterfs-server`.
 :::
 
 You can use this driver to connect to an existing [Gluster storage](https://docs.gluster.org/en/latest/) volume and configure it as a shared SR for all your hosts in the pool. For example, a Gluster storage with 3 nodes (`192.168.1.11`, `192.168.1.12` and `192.168.1.13`) and a volume name called `glustervolume` will be thin provisioned with the command:
@@ -301,7 +301,7 @@ xe sr-create content-type=user type=glusterfs name-label=GlusterSharedStorage sh
 Shared, thin-provisioned storage. Available since XCP-ng 8.2.
 
 :::warning
-This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](../installation/additionalpackages)). You will also need to be careful about system updates and upgrades.
+This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](../management/additional-packages)). You will also need to be careful about system updates and upgrades.
 :::
 
 You can use this driver to connect to an existing Ceph storage filesystem, and configure it as a shared SR for all your hosts in the pool. This driver uses `mount.ceph` from `ceph-common` package of `centos-release-ceph-nautilus` repo. So user needs to install it before creating the SR. Without it, the SR creation would fail with an error like below
@@ -410,7 +410,7 @@ IMPORTANT: User had many weird glitches with iSCSI connection via ceph gateway i
 ### Ceph RBD
 
 :::warning
-This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](../installation/additionalpackages)). You will also need to be careful about system updates and upgrades.
+This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](../management/additional-packages)). You will also need to be careful about system updates and upgrades.
 :::
 
 You can use this to connect to an existing Ceph storage over RBD, and configure it as a shared SR for all your hosts in the pool. This driver uses LVM (lvm) as generic driver and expects that the Ceph RBD volume is already connected to one or more hosts.

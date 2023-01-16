@@ -35,7 +35,7 @@ In any case, installing extra packages from outside the XCP-ng repositories can 
 * check the dependencies pulled by such packages: they must not overwrite existing packages in XCP-ng;
 * know that you are doing it at your own risk and be prepared to fix any issues that would arise, especially unforeseen upgrade issues (we can't test upgrade scenarios where unknown packages are installed on the system).
 
-More at [Additional packages](../installation/additionalpackages).
+More at [Additional packages](../management/additional-packages).
 
 ## Get information about the updates
 

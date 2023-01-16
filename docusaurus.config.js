@@ -80,7 +80,7 @@ const config = {
               },
               {
                 label: 'Installation',
-                href: 'installation',
+                href: '/category/installation',
               },
             ],
           },

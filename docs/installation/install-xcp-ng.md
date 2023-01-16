@@ -74,7 +74,7 @@ Alternatively, if you have two identical disks, you can use Software RAID (`mdad
 ![](https://xcp-ng.org/assets/img/screenshots/install6.png)
 
 :::tip
-If only one disk is found suitable for the installation, this step is skipped. The name of the device will be displayed to you [in the "Confirm Installation" step, later in the process](#_12-installation).
+If only one disk is found suitable for the installation, this step is skipped. The name of the device will be displayed to you [in the "Confirm Installation" step, later in the process](#12-installation).
 :::
 
 #### 6. VM storage selection
