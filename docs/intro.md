@@ -54,7 +54,7 @@ Some clients are stateless (only running when you open or use them) and others a
 
 ### Backup
 
-Some XCP-ng clients are also capable of doing backup. Please read the dedicated [backup section](management/backup).
+Xen Orchestra is a complete and agentless backup solution for your VMs running on XCP-ng. Please read the dedicated [backup section](management/backup) to get more details.
 
 ## 📹 Introducing XCP-ng in video
 
