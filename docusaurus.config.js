@@ -114,29 +114,29 @@ const config = {
         darkTheme: darkCodeTheme,
       },
       themes: ['@docusaurus/theme-search-algolia'],
-      algolia: {
-        // The application ID provided by Algolia
-        appId: 'I9J2TZ0RWH',
-  
-        // Public API key: it is safe to commit it
-        apiKey: '686ff13bb1d4900646d5ec519a8dc051',
-  
-        indexName: 'xcp-ng',
-  
-        // Optional: see doc section below
-        contextualSearch: true,
-  
-        // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
-        externalUrlRegex: 'docs.xcp-ng\\.org|xcp-ng\\.org',
-  
-        // Optional: Algolia search parameters
-        searchParameters: {},
-  
-        // Optional: path for search page that enabled by default (`false` to disable it)
-        searchPagePath: 'search',
-  
-        //... other Algolia params
-      },
+        algolia: {
+          // The application ID provided by Algolia
+          appId: 'I9J2TZ0RWH',
+
+          // Public API key: it is safe to commit it
+          apiKey: '686ff13bb1d4900646d5ec519a8dc051',
+
+          indexName: 'xcp-ng',
+
+          // Optional: see doc section below
+          contextualSearch: true,
+
+          // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
+          externalUrlRegex: 'docs\\.xcp-ng\\.org|xcp-ng\\.org',
+
+          // Optional: Algolia search parameters
+          searchParameters: {},
+
+          // Optional: path for search page that enabled by default (`false` to disable it)
+          searchPagePath: 'search',
+
+          //... other Algolia params
+        },
     }),
 };
 
