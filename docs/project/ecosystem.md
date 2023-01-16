@@ -1,3 +1,6 @@
+---
+title: 'Ecosystem'
+---
 # XCP-ng Ecosystem
 
 When we started developing XCP-ng as an alternative to Citrix XenServer, we were committed to creating a true and complete open source virtualization platform that companies can use in their production environment. This also means we were committed to creating a rich ecosystem to go along with it.
@@ -87,14 +90,14 @@ The ecosystem around XCP-ng is getting bigger and bigger and we are really proud
 
 ## VM backup
 
-The main backup solution is Xen Orchestra, see the dedicated [backup](../management/backup.md) section. Alternatively, here is some 3rd party backup solutions that are officially compatible with XCP-ng.
+**The main backup solution for XCP-ng is Xen Orchestra, see the dedicated [backup](../management/backup.md) section.** Alternatively, here is some 3rd party backup solutions that are officially compatible with XCP-ng.
 
 ### Storware vProtect
 
 It's agentless but closed source. However, it supports a large variety of virtualization platforms, including [XCP-ng](https://storware.eu/storware-and-xcp-ng-technology-alliance/)!
 
-* Website: [https://storware.eu/](https://storware.eu/)
-* Documentation [is available here](https://storware.gitbook.io/storware-vprotect/)
+* Website: [https://storware.eu/](https://storware.eu/solutions/virtual-machine-backup-and-recovery/xcp-ng-backup-and-recovery/)
+* Documentation [is available here](https://storware.gitbook.io/backup-and-recovery)
 * Agentless: yes
 * Open Source: no
 
