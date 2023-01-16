@@ -1,4 +1,8 @@
 {
     "label": "Installation",
-    "position": 2
+    "position": 2,
+    "link": {
+        "type": "generated-index",
+        "description": "How to install XCP-ng"
+    }
 }

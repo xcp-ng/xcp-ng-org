@@ -1,4 +1,8 @@
 {
     "label": "Management and Backup",
-    "position": 4
+    "position": 4,
+    "link": {
+        "type": "generated-index",
+        "description": "How to manage XCP-ng"
+    }
 }
