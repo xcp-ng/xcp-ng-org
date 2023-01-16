@@ -2,6 +2,8 @@
 
 Here is a list of common problems.
 
+---
+
 ## Blank screen (on a Linux VM)
 
 ### Cause
@@ -28,7 +30,7 @@ Blacklist the problematic driver ([source](https://xcp-ng.org/forum/post/1707)):
 >
 > `modprobe.blacklist=bochs_drm`
 
-***
+---
 
 ## Initrd is missing after an update
 
@@ -48,7 +50,7 @@ Can be a `yum` update process interrupted while rebuilding the `initrd`, such as
 Here is an example of `dracut` command on a 8.2 host: `dracut -f /boot/initrd-4.19.0+1.img 4.19.0+1`
 :::
 
-***
+---
 
 ## VM not in expected power state
 
@@ -60,7 +62,7 @@ The XAPI database thinks that the VM is On / Off. But this is fake news ;-)
 
 Restart toolstack on CLI with the command `xe-toolstack-restart`. This just restarts the management services, all running VMs are untouched.
 
-***
+---
 
 ## Host and Pool have incompatible Licenses
 
@@ -72,7 +74,7 @@ You may get this error when attempting to add a new host to an existing pool. Th
 
 To solve this, simply get your pool "coherent" and do not mix products. Ensure all hosts in the pool as well as hosts you'd like to add to the pool are running XCP-ng. It is not recommended to mix XCP-ng hosts with XenServer hosts in the same pool.
 
-***
+---
 
 ## Rebooting hangs the server
 
@@ -88,7 +90,7 @@ Try these steps:
 2. Flash any update(s) to the BIOS firmware.
 3. Append `reboot=pci` to kernel boot parameters. This can be done in `/etc/grub.cfg` or `/etc/grub-efi.cfg`.
 
-***
+---
 
 ## Server loses time on 14th gen Dell hardware
 
@@ -103,7 +105,7 @@ echo "xen" > /sys/devices/system/clocksource/clocksource0/current_clocksource
   printf '%s\n\t%s\n%s\n' 'if test -f /sys/devices/system/clocksource/clocksource0/current_clocksource; then' 'echo xen > /sys/devices/system/clocksource/clocksource0/current_clocksource' 'fi' >> /etc/rc.local
 ```
 
-***
+---
 
 ## Async Tasks/Commands Hang or Execute Extremely Slowly
 
@@ -119,7 +121,7 @@ This symptom can be caused by a variety of issues including RAID degradation, ag
 4. If these measures fail, login to your host and run `cat /var/log/kern.log | grep hung`. If this returns `"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.` your lvm layer may be hanging during storage scans. This could be caused by a drive that is starting to fail but has not hard failed yet.
 5. If all these measures fail, collect the logs and make your way to the forum for help.
 
-***
+---
 
 ## TCP Offload checksum errors
 
@@ -152,6 +154,8 @@ The PIF UUID can be found by executing:
 
 `# xe pif-list`
 
+---
+
 ## Reset XCP-ng root password
 
 ### Cause
@@ -171,6 +175,8 @@ The full prodecure can also be found on [this page](https://support.citrix.com/a
 * Reboot XCP-ng by sending <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Suppr</kbd>.
 * If everything went well, you should now be able to login with your new XCP-ng password.
 
+---
+
 ## XenStore related issues
 
 ### Cause
@@ -183,12 +189,13 @@ See the [Xen doc](https://wiki.xenproject.org/wiki/Debugging_Xen#Debugging_Xenst
 
 The `XENSTORED_TRACE` being enabled might give useful information.
 
+---
+
 ## Ubuntu 18.04 boot issue
 
 ### Cause
 
 Some versions of Ubuntu 18.04 might fail to boot, due to a Xorg bug affecting GDM and causing a crash of it (if you use Ubuntu HWE stack).
-
 
 ### Solution
 
@@ -199,6 +206,8 @@ You can also remove the `hwe` kernel and use the `generic` one: this way, the pr
 :::tip
 Alternatively, in a fresh Ubuntu 18.04 install, you can switch to UEFI and you won't have this issue.
 :::
+
+---
 
 ## Missing templates when creating a new VM
 
@@ -215,6 +224,7 @@ Simply go to the console of your XCP-NG host and enter the following command:
 
 This should recreate all the templates.
 
+---
 
 ## The updater plugin is busy
 
@@ -232,3 +242,5 @@ It should be empty, but if you have the bug, you got `check_update`.
 ### Solution
 
 Remove `/var/lib/xcp-ng-xapi-plugins/updater.py.lock` and that should fix it.
+
+---
