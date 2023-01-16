@@ -72,8 +72,16 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: 'Learn',
             items: [
+              {
+                label: 'Introduction',
+                href: '/',
+              },
+              {
+                label: 'Installation',
+                href: 'installation',
+              },
             ],
           },
           {
@@ -87,17 +95,13 @@ const config = {
                 label: 'Discord',
                 href: 'https://discord.gg/Hr98F6wRvx',
               },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/xcpng',
-              },
             ],
           },
           {
             title: 'More',
             items: [
               {
-                label: 'Blog',
+                label: 'News',
                 href: 'https://xcp-ng.org/blog',
               },
               {
