@@ -59,17 +59,53 @@ The fix for this is installing some xen drivers *before* exporting the VM from V
 
 ## From Hyper-V
 
-* Remove Hyper-V tools from every VM if installed.
-* Install an NFS Server somewhere. (You can also use Win-scp directly from Hyper-V and copy "$uuidger -r".vhd directly to storage and rescan after that)
-* Create an NFS share on that server.
-* Mount the NFS share as a Storage Repository in XenCenter or XOA.
-* Make sure the hyper-v virtual disk is not fixed type, use hyper-v mgmt to convert to dynamic vhd if needed.
-* Copy the VHD file you want to import to the NFS share.
-   -use **uuidgen -r** to generate uuid and use it to rename vhd file.
-* Create a new VM in xcp-ng with no disks.
-* Attach the VHD from the NFS share to your new VM.
-* Install Xenserver Tools.
-* If everything work well move virtual disk using XCP-ng center from temporary storage to dedicated storage on the fly, VM can be turned on and disk can be online.
+There's two options, both requiring to export your Hyper-V VM disk in VHD format.
+
+:::caution
+When exporting in VHD, always use a **dynamic disk** VHD format and not **static**, which doesn't work in XCP-ng.
+:::
+
+In any case, you **must remove all the Hyper-V tools** before exporting the disks.
+
+### Import the VHD in Xen Orchestra
+
+In the left menu, go for "Import" then "Disk". Select the destination SR, and then add your VHD file into it. Depending on the VHD file size, it might take some time. The upload progress can be tracked in another XO tab, in the "Task" menu.
+
+When the disk is imported, you can:
+
+4. Create a VM with the appropriate template, **without any disk in it**
+5. Attach the previously imported disk (VM/Disk/Attach an existing disk)
+6. Boot the VM
+7. Install the tools
+
+### Alternative: direct VHD copy
+
+:::caution
+This method is a bit more dangerous: if you don't respect the VHD name format, the SR will be blocked and giving warnings. Naming is crucial to avoid problems.
+:::
+
+It's possible to directly send the VHDs to an existing XCP-ng SR. However, you MUST respect some pre-requisites:
+* to use a dynamic disk VHD format
+* the VHD **MUST be named correctly** (see below)
+
+#### VHD naming
+
+The **ONLY** working format is `<UUID>.vhd`, eg `e4e573d8-6272-43ae-b969-255717e518aa.vhd`. You can generate an UUID by simply using the command `uuidgen`.
+
+#### Steps
+
+1. Rename the dynamic VHD disk to the format `<UUID>.vhd`
+2. Copy it to the destination SR (any file type is supported: local, NFS…)
+3. Scan the SR
+
+:::tip
+As soon you did scan the SR, the new disk is visible in the SR/disk view. Don't forget to add a name and a description to be able to identify it in the future. Indeed, any disk imported this way won't have any metadata, so it's up to you to fill it.
+:::
+
+4. Create a VM with the appropriate template, **without any disk in it**
+5. Attach the previously imported disk (VM/Disk/Attach an existing disk)
+6. Boot the VM
+7. Install the tools
 
 :::tip
 If You lost ability to extend migrated volume (opening journal failed: -2) You need to move disk to another storage, VM should be ON during moving process. This issue can occur when vhd files was directly copied to storage folder.
