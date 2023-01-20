@@ -517,7 +517,7 @@ openssl req -new -subj '/CN=XCP-ng hypervisor/' \
 ```
 
 #### Resource Pools
-Stats, consoles and other parts of a pool are served locally on a node within a pool.  E.g., when we ask to display the stats of a host, XAPI will tell us to ask the slave (with an HTTP redirect code).  In order to prevent certificates on the slave hosts from being rejected after this redirect, each host must use a ceritficate that is configured with a `SubjectAlternateName` for each DNS name and IP adress used by all hosts in the pool, not just the master.  
+Stats, consoles and other parts of a pool are served locally on a node within a pool.  E.g., when we ask to display the stats of a host, XAPI will tell us to ask the slave (with an HTTP redirect code).  In order to prevent certificates on the slave hosts from being rejected after this redirect, each host must use a ceritficate that is configured with a `SubjectAlternateName` for each DNS name and IP address used by all hosts in the pool, not just the master.  
 
 :::tip
 It is possible to generate a single certificate that encompasses all IPs and DNS Names used by all hosts in the pool, then deploy that certificate to each host in the pool.
