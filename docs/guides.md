@@ -498,11 +498,11 @@ Note that if you use an non-public certificate authority and XenOrchestra, you h
 Please see the [Install a TLS certificate on your server](https://docs.citrix.com/en-us/citrix-hypervisor/hosts-pools.html#install-a-tls-certificate-on-your-server) documentation from Citrix for details regarding the specific requirements for TLS certificates.
 
 :::warning
-As of this writing, the Citrix documentation makes no mention of the `SubjectAlternateName` extension that is effectively required in modern environments.  Please see the Subject Alternate Names section below for details.
+As of this writing, the Citrix documentation makes no mention of the `SubjectAlternateName` extension that is effectively required in modern environments. Please see the Subject Alternate Names section below for details.
 :::
 
 ### Subject Alternate Names
-Many, if not most, modern TLS and HTTPS clients reject certificates that do not include at least one `SubjectAlternateName` extension.  See the [Remove support for commonName matching in certificates](https://developer.chrome.com/blog/chrome-58-deprecations/#remove-support-for-commonname-matching-in-certificates) section of the [Deprecations and Removals in Chrome 58](https://developer.chrome.com/blog/chrome-58-deprecations/) post from March 2017 to the Chrome Developer Blog from for further details.
+Many, if not most, modern TLS and HTTPS clients reject certificates that do not include at least one `SubjectAlternateName` extension. See the [Remove support for commonName matching in certificates](https://developer.chrome.com/blog/chrome-58-deprecations/#remove-support-for-commonname-matching-in-certificates) section of the [Deprecations and Removals in Chrome 58](https://developer.chrome.com/blog/chrome-58-deprecations/) post from March 2017 to the Chrome Developer Blog from for further details.
 
 ### Generate certificate signing request
 
@@ -517,7 +517,7 @@ openssl req -new -subj '/CN=XCP-ng hypervisor/' \
 ```
 
 #### Resource Pools
-Stats, consoles and other parts of a pool are served locally on a node within a pool.  E.g., when we ask to display the stats of a host, XAPI will tell us to ask the slave (with an HTTP redirect code).  In order to prevent certificates on the slave hosts from being rejected after this redirect, each host must use a ceritficate that is configured with a `SubjectAlternateName` for each DNS name and IP address used by all hosts in the pool, not just the master.  
+Stats, consoles and other parts of a pool are served locally on a node within a pool. E.g., when we ask to display the stats of a host, XAPI will tell us to ask the slave (with an HTTP redirect code). In order to prevent certificates on the slave hosts from being rejected after this redirect, each host must use a ceritficate that is configured with a `SubjectAlternateName` for each DNS name and IP address used by all hosts in the pool, not just the master.
 
 :::tip
 It is possible to generate a single certificate that encompasses all IPs and DNS Names used by all hosts in the pool, then deploy that certificate to each host in the pool.
