@@ -74,6 +74,7 @@ pfSense and OPNsense do work great in a VM, but there are a few extra steps that
 ### 1. Create VM as normal.
 
 * When creating the VM, choose the `other install media` VM template
+* Prefer `UEFI` boot mode for pfSense versions > 2.4 (`BIOS` mode works but will be slower to boot)
 * Continue through the installer like normal
 
 ### 2. Install Guest Utilities
@@ -132,7 +133,7 @@ xe vm-list
 Find your pfSense / OPNsense VM in the list, and copy the UUID. Now stick the UUID in the following command:
 
 ```
-xe vif-list vm-uuid=08fcfc01-bda4-21b5-2262-741da6f5bfb0
+xe vif-list vm-uuid=57a27650-6dab-268e-1200-83ee17ee3a55
 ```
 
 This will list all the virtual interfaces assigned to the VM:
@@ -161,6 +162,34 @@ That's it! For this to take effect you need to fully shut down the VM then power
 
 :::tip
 If you ever add more virtual NICs to your VM, you will need to go back and do the same steps for these interfaces as well.
+:::
+
+### 4. Optimize VM Boot Process (Optional)
+
+During the boot process, pfSense will detect and try to use the virtual `parallel` and `serial` ports.
+
+The virtual `parallel` port will be scanned during the boot process which lasts ~30 seconds at `ppbus0: <Parallel port bus> on ppc0`.
+
+The virtual `serial` port can be chosen as the "default output" which will hide the boot output between `Hypervisor: Origin = "Microsoft Hv"` and `Bootup complete`.
+
+#### Remove Parallel / Serial Ports Using CLI
+
+SSH to dom0 on your XCP-NG hypervisor and find your pfSense / OPNsense VM UUID (see steps above: 3. "Using CLI").
+
+Configure the VM `parallel` port to `none` using the following command:
+
+```
+xe vm-param-set platform:parallel=none uuid=57a27650-6dab-268e-1200-83ee17ee3a55
+```
+
+Configure the VM `serial` port to `none` using the following command:
+
+```
+xe vm-param-set platform:hvm_serial=none uuid=57a27650-6dab-268e-1200-83ee17ee3a55
+```
+
+:::tip
+If your pfSense VM is experiencing long delays during the boot process, it may be due to the [VM communicating with the disks using the emulated IDE controller instead of the SCSI controller](https://blog.3mdeb.com/2019/2019-12-13-pfsense-boot-under-xen/#debug-xen). If this is the case, the pre-boot process can take a few minutes before the pfSense "Starting Device Manager (devd)" step which normally takes ~1 minute or less, then the boot process continues at the "normal" speed. This issue has been observed when the VM is using the `BIOS` boot mode (default for `Other install media` in XCP-ng Center) with recent pfSense > 2.4 versions. This problem only delays the boot process (booted VM performance is "normal") and is not observed when using the `UEFI` boot mode (as recommended in step 1).
 :::
 
 ## XCP-ng in a VM
