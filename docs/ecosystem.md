@@ -89,7 +89,7 @@ The ecosystem around XCP-ng is getting bigger and bigger and we are really proud
 
 The main backup solution is Xen Orchestra, see the dedicated [backup](./backup.md) section. Alternatively, here is some 3rd party backup solutions that are officially compatible with XCP-ng.
 
-### Storware vProtect
+### Storware Backup and Recovery
 
 It's agentless but closed source. However, it supports a large variety of virtualization platforms, including [XCP-ng](https://storware.eu/storware-and-xcp-ng-technology-alliance/)!
 
