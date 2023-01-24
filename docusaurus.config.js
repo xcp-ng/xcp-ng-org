@@ -17,8 +17,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'xcp-ng', // Usually your GitHub org/user name.
-  projectName: 'xcp-ng-org', // Usually your repo name.
+  //organizationName: 'xcp-ng', // Usually your GitHub org/user name.
+  //projectName: 'xcp-ng-org', // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
