@@ -45,7 +45,7 @@ There are many components, in various languages: C, ocaml, python and more.
 
 * Connect with us via
     * IRC: <irc://irc.oftc.net/#xcp-ng> and <irc://irc.oftc.net/#xcp-ng-dev>
-    * [Discord](https://discord.gg/aNCR3yPaPn>)
+    * [Discord](https://discord.gg/Hr98F6wRvx)
     * Forum -> Development Corner: <https://xcp-ng.org/forum/category/7/development>
 * Read [this introduction](development-process/development). The rest of the [Development Process Tour](../category/development-process) is also of interest for anyone who wants to help on development.
 
