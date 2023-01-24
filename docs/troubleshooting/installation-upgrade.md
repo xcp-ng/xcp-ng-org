@@ -37,4 +37,4 @@ The main log file is `/var/log/installer/install-log`.
 
 ## Debugging the installer
 
-You can [build your own installer](../project/development-process/ISO-modification).
+You can [build your own installer](../../project/development-process/ISO-modification).

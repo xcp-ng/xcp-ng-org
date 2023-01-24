@@ -51,5 +51,5 @@ To access the backup (with all your tools and modifications) just mount the back
     * update RAID controller / HBA firmware
     * update system firmware
 * Maybe we (or upstream Citrix XenServer) removed/updated something.
-    * Please check our [Hardware Compatibility List (HCL)](../installation/hardware).
+    * Please check our [Hardware Compatibility List (HCL)](../../installation/hardware).
     * Follow the [3-Step-Guide](#general).

@@ -35,7 +35,7 @@ Most community testing is organized on the forum, on dedicated threads.
 * Check beta and RC announcements for new releases of XCP-ng [on the forum](https://xcp-ng.org/forum), and provide feedback before the final releases. Usually announced in the [News](https://xcp-ng.org/forum/category/11/news) section.
 * Check other topics created by our developers who look for feedback about new features. Topics usually created in the [Development](https://xcp-ng.org/forum/category/7/development) section.
 
-You can also read [this](development-process/tests) for test ideas.
+You can also read [this](../development-process/tests) for test ideas.
 
 ## Develop
 
@@ -47,13 +47,13 @@ There are many components, in various languages: C, ocaml, python and more.
     * IRC: <irc://irc.oftc.net/#xcp-ng> and <irc://irc.oftc.net/#xcp-ng-dev>
     * [Discord](https://discord.gg/aNCR3yPaPn>)
     * Forum -> Development Corner: <https://xcp-ng.org/forum/category/7/development>
-* Read [this introduction](development-process/development). The rest of the [Development Process Tour](../category/development-process) is also of interest for anyone who wants to help on development.
+* Read [this introduction](../development-process/development). The rest of the [Development Process Tour](../../category/development-process) is also of interest for anyone who wants to help on development.
 
 ## Package
 
 Development is one thing, but for your changes to reach actual users, they need to be packaged into RPMs.
 
-See the [Development Process Tour](../category/development-process) for an introduction about the packaging process, and useful tips (like: [how to rebuild a RPM for XCP-ng locally](development-process/local-rpm-build)).
+See the [Development Process Tour](../../category/development-process) for an introduction about the packaging process, and useful tips (like: [how to rebuild a RPM for XCP-ng locally](../development-process/local-rpm-build)).
 
 ## Talk about us
 

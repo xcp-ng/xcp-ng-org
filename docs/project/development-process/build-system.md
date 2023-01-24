@@ -7,7 +7,7 @@ Sources and spec files for RPMs is one thing, but one needs a build environment 
 :::tip
 What follows is important if you want to understand how our official RPMs are built, or intend to contribute to the packaging.
 
-However, for local builds meant for testing your changes (e.g. add a few patches to see how the component behaves with them), check the [Local RPM build](local-rpm-build) section.
+However, for local builds meant for testing your changes (e.g. add a few patches to see how the component behaves with them), check the [Local RPM build](../local-rpm-build) section.
 :::
 
 ## Enter Koji
@@ -190,7 +190,7 @@ All those tags have no purpose in Koji's workflow. They are just useful pieces o
 ## RPM signing
 We automatically sign the RPMs built by or imported to Koji before exporting them towards the RPM repositories.
 
-[More information about RPM signing](../../project/mirrors#security).
+[More information about RPM signing](../../../project/mirrors#security).
 
 ## Repository generation
 Handled by a cron job on koji's server. Then the repository is synchronised to <https://updates.xcp-ng.org/>.

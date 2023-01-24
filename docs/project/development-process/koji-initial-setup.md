@@ -57,7 +57,7 @@ In some cases, we've found that the configuration file in ~/.koji was not used. 
 
 ## Useful commands
 
-Just a quick list. Make sure to have read and understood our [development process tour](../../category/development-process).
+Just a quick list. Make sure to have read and understood our [development process tour](../../../category/development-process).
 
 * Get help about the commands: `koji help` or `koji {command name} --help`.
 * Start a build: `koji build [--scratch] {target} {SCM URL}`

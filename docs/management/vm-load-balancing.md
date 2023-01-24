@@ -10,7 +10,7 @@ In the case of virtualization, you have multiple physical hosts, which runs your
 Maybe you already heard about VMWare DRS (Distributed Resource Scheduler): that's the same principle here, but for XCP-ng.
 :::
 
-So the first objective is to adapt your VM placement in live (without service interruption), depending of the load. Because [Xen Orchestra](manage-at-scale/xo-web-ui) is connected to multiple pools and XCP-ng supports live storage motion, we can perform load balancing on a **whole XCP-ng infrastructure** (even between remote datacenters). A load balancing policy is called a "**plan**".
+So the first objective is to adapt your VM placement in live (without service interruption), depending of the load. Because [Xen Orchestra](../manage-at-scale/xo-web-ui) is connected to multiple pools and XCP-ng supports live storage motion, we can perform load balancing on a **whole XCP-ng infrastructure** (even between remote datacenters). A load balancing policy is called a "**plan**".
 
 Let's take a simple example, with these 2 hosts running 6 VMs:
 

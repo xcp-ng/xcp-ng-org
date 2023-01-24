@@ -51,7 +51,7 @@ Here's a tree that represents the structure:
 * any additional build dependency we had to add to build the above RPMs.
 
 `updates` is enabled by default. It contains:
-* bugfix or security updates (see [Updates Howto](../../management/updates)),
+* bugfix or security updates (see [Updates Howto](../../../management/updates)),
 * occasionally, updates that bring enhancements without changing the behaviour you know and without regressions,
 * any optional extra RPMs provided by XCP-ng's packagers *after the release*,
 * any additional build dependency we had to add to build the above RPMs.
@@ -61,7 +61,7 @@ Note that having lots of additional packages in `base` and `updates` does not me
 * or when pulled as a dependency of another update (in which case we do want that).
 
 ## Stable release vs development release
-This is very common: released stable versions only get non-disruptive updates during their support lifetime: bug fixes and security fixes. Those are first published to the `testing` RPM repository and then moved to the `updates` RPM repository so that it is offered to all users (see [Updates Howto](../../management/updates)). We also allow ourselves to add features to an existing stable version as optional packages, or as updates to existing packages provided that we can do it without creating risks of regression. Example: we added support for `zstd` compression for VM exports to an already released XCP-ng 7.6.
+This is very common: released stable versions only get non-disruptive updates during their support lifetime: bug fixes and security fixes. Those are first published to the `testing` RPM repository and then moved to the `updates` RPM repository so that it is offered to all users (see [Updates Howto](../../../management/updates)). We also allow ourselves to add features to an existing stable version as optional packages, or as updates to existing packages provided that we can do it without creating risks of regression. Example: we added support for `zstd` compression for VM exports to an already released XCP-ng 7.6.
 
 On the contrary, the development version (aka the next stable release) can get any kind of breaking change until the day of release. Packages are then usually directly pushed to the `base` repository.
 

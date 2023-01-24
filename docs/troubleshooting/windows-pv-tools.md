@@ -48,4 +48,4 @@ If the tools are installed, while XCP-ng Center says that I/O is optimized, but 
 * Clean your system from `Citrix Client Tools` _AND_ `XCP-ng Client Tools` to create a clean state.
 * Then install the Client Tools from scratch.
 
-[This Guide](../VMs#upgrade-from-citrix-xenserver-client-tools) may help you through the process.
+[This Guide](../../vms#upgrade-from-citrix-xenserver-client-tools) may help you through the process.

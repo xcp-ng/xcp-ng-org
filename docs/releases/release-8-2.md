@@ -1,6 +1,6 @@
 # XCP-ng 8.2 LTS
 
-XCP-ng 8.2 is a [LTS Release](releases.md#lts-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1.iso?https=1).
+XCP-ng 8.2 is an [LTS Release](../../../releases#lts-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1.iso?https=1).
 
 SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
@@ -19,7 +19,7 @@ LTS means **Long Term Support**: this version is supported for 5 years, and even
 
 ## Install
 
-See [Installation](../installation/install-xcp-ng).
+See [Installation](../../../installation/install-xcp-ng).
 
 ## Upgrade from previous releases
 
@@ -27,7 +27,7 @@ Despite being an LTS, you can upgrade from previous releases. Both upgrade metho
 * From the installation ISO
 * From command line using `yum` (**from XCP-ng 8.0 or 8.1 only!**)
 
-Refer to the [Upgrade Howto](../installation/upgrade).
+Refer to the [Upgrade Howto](../../../installation/upgrade).
 
 ## What changed since 8.1
 
@@ -82,17 +82,17 @@ So we developed a dedicated `zfs` SR driver that checks whether `zfs` is present
 
 See [Transition to the new ZFS SR driver](#transition-to-the-new-zfs-sr-driver) if you were already using ZFS in XCP-ng before the 8.2 release.
 
-=> [ZFS SR Documentation](../Storage#zfs)
+=> [ZFS SR Documentation](../../../storage#zfs)
 
 #### `glusterfs`
 Use this driver to connect to an existing Gluster storage as a shared SR.
 
-=> [GlusterFS SR Documentation](../Storage#glusterfs)
+=> [GlusterFS SR Documentation](../../../storage#glusterfs)
 
 #### `cephfs`
 Use this driver to connect to an existing Ceph storage through the CephFS storage interface.
 
-=> [CephFS SR Documentation](../Storage#cephfs)
+=> [CephFS SR Documentation](../../../storage#cephfs)
 
 ### Guest tools ISO
 Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 8.2: they dropped the guest tools ISO, replaced by downloads from their website. We chose to retain the feature and still provide a guest tools ISO that you can mount to your VMs. Many thanks go to the [XAPI](https://github.com/xapi-project/xen-api/) developers who have accepted to keep the related source code in the XAPI project for us to keep using, rather than deleteing it.
@@ -100,7 +100,7 @@ Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 
 ### Other changes
 
 * We replaced Citrix's `gpumon` package, not built by us, by a mock build of `gpumon` sources, without the proprietary nvidia developer kit. For you as users, this changes nothing. For us, it means getting rid of a package that was not built by the XCP-ng build system.
-* [Alternate kernel](../installation/hardware#alternate-kernel) updated to version 4.19.142.
+* [Alternate kernel](../../installation/hardware#alternate-kernel) updated to version 4.19.142.
 * Intel's `e1000e` driver updated to version 3.8.4 in order to support more devices.
 * Cisco's `enic` and `fnic` drivers updated to offer better device support and compatibility.
 * `rsyslog` (logging daemon) synced from latest CentOS 7.8 security and bugfix update because several memory leaks have been patched in it.
@@ -108,21 +108,21 @@ Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 
 
 ### Additional packages updated or added
 
-[Additional packages](../management/additional-packages) are packages made available by the XCP-ng team directly in our RPM repositories, for easy installation and update on XCP-ng hosts.
+[Additional packages](../../management/additional-packages) are packages made available by the XCP-ng team directly in our RPM repositories, for easy installation and update on XCP-ng hosts.
 
 * `zfs` updated to 0.8.5
 * `glusterfs` 8.1 added to the XCP-ng repositories
-* New [additional driver package](../management/additional-packages): `r8125-module`, for the `r8125` Realtek device driver.
-* [Alternate driver package](../installation/hardware#alternate-drivers) `intel-igb-alt` updated to version 5.4.6.
+* New [additional driver package](../../management/additional-packages): `r8125-module`, for the `r8125` Realtek device driver.
+* [Alternate driver package](../../installation/hardware#alternate-drivers) `intel-igb-alt` updated to version 5.4.6.
 
 ### Misc
 
 #### Status of XCP-ng Center
 
-The community-maintained XCP-ng Center client is [now available for download](https://github.com/xcp-ng/xenadmin/releases/tag/v20.04.01.33). However, it is not a recommended client to use because it was modified for 8.2 support without any specific QA or validation. Keep in mind that the officially supported clients - all fully Open Source - are [documented on this page](../Management).
+The community-maintained XCP-ng Center client is [now available for download](https://github.com/xcp-ng/xenadmin/releases/tag/v20.04.01.33). However, it is not a recommended client to use because it was modified for 8.2 support without any specific QA or validation. Keep in mind that the officially supported clients - all fully Open Source - are [documented on this page](../../management).
 
 :::tip
-Although we host XCP-ng Center on our GitHub organisation and authorized its contributors to use the XCP-ng logo, we remind our users that - as documented [in the official docs](../Management#xcp-ng-center) and on its [download page](https://github.com/xcp-ng/xenadmin/releases) - **XCP-ng Center is not officially supported by the XCP-ng project**.
+Although we host XCP-ng Center on our GitHub organisation and authorized its contributors to use the XCP-ng logo, we remind our users that - as documented [in the official docs](../../management#xcp-ng-center) and on its [download page](https://github.com/xcp-ng/xenadmin/releases) - **XCP-ng Center is not officially supported by the XCP-ng project**.
 :::
 
 #### Transition to the new ZFS SR driver
@@ -142,14 +142,14 @@ There exists no easy way to convert an existing storage repository from a given 
     * Note the associated location (e.g. `/zfs/vol0`).
   * Unplug the PBD: `xe pbd-unplug uuid={PBD-UUID}`
   * Destroy the SR: `xe sr-destroy uuid={SR-UUID}`
-  * [Create the ZFS SR](../Storage#zfs)
+  * [Create the ZFS SR](../../../storage#zfs)
   * Move or import the VMs back to the new SR
 
 #### Status of Windows guest tools
 
 Plans are laid out for simpler installation and maintenance of Windows guest tools. Unfortunately, we haven't found people yet to implement them so the current state remains that of 8.1. ***If you're a developer on the Windows platforms, we're hiring! (full time or part time, contracts or hires) - Contact us.***
 
-Using the Windows guest tools is [documented here](../VMs#windows).
+Using the Windows guest tools is [documented here](../../../vms#windows).
 
 ## Update: what's new in XCP-ng 8.2.1
 
@@ -157,7 +157,7 @@ XCP-ng 8.2.1 was released as a maintenance update for XCP-ng 8.2 LTS, which has 
 
 XCP-ng 8.2.1 is still XCP-ng 8.2 LTS. It's the same, that just reached a new numbered milestone.
 
-The update brought a few enhancements such as [Guest Secure Boot](../Guides/guest-UEFI-Secure-Boot#guest-uefi-secure-boot), support for Rocket Lake CPUs, or better log rotation.
+The update brought a few enhancements such as [Guest Secure Boot](../../Guides/guest-UEFI-Secure-Boot#guest-uefi-secure-boot), support for Rocket Lake CPUs, or better log rotation.
 
 They are detailed in the [Release announcement for XCP-ng 8.2.1](https://xcp-ng.org/blog/2022/02/28/xcp-ng-8-2-1-update/).
 
@@ -216,7 +216,7 @@ Some exceptions to those Citrix Hypervisor known issues:
 
 As every hand-updated list, this list below can quickly become obsolete or incomplete, so also check this: <https://github.com/xcp-ng/xcp/issues>
 
-Some hardware-related issues are also described in [this page](../installation/hardware).
+Some hardware-related issues are also described in [this page](../../installation/hardware).
 
 #### Cross-pool live migration from XenServer < 7.1
 

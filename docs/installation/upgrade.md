@@ -8,7 +8,7 @@ Discover how to upgrade from an older release.
 
 We assume your goal is to get to the latest version of XCP-ng from a previous release, e.g. 7.4 to 7.6 or 8.0 to 8.2.
 
-For updates that don't change the version numbers (bugfixes, security fixes), see [the updates section](../management/updates).
+For updates that don't change the version numbers (bugfixes, security fixes), see [the updates section](../../management/updates).
 
 :::tip
 There are 3 upgrade methods, detailed below:
@@ -19,16 +19,16 @@ There are 3 upgrade methods, detailed below:
 
 ## Release Notes & Known Issues
 
-Read the [Release Notes and Known Issues](../releases#all-releases) for every release that is higher than your current release. They may provide additional instructions for specific situations. Also **please read the following warnings**:
+Read the [Release Notes and Known Issues](../../releases#all-releases) for every release that is higher than your current release. They may provide additional instructions for specific situations. Also **please read the following warnings**:
 
 :::caution
 * Always upgrade and reboot the pool master **FIRST**
 * DON'T use the `Maintenance Mode` in XCP-ng Center. It moves the pool master to another host, which has to be avoided in the upgrading procedure.
 * If HA (High Availability) is enabled, disable it before upgrading.
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`.
-* Read [Handling alternate drivers or kernel](../installation/upgrade#handling-alternate-drivers-or-kernel) if your host depends on them.
-* [Update your pool with the latest updates](../management/updates) **before** upgrading, and reboot or restart the toolstack, depending on the nature of the installed updates.
-* [Install the latest updates](../management/updates) **after** upgrading.
+* Read [Handling alternate drivers or kernel](../../installation/upgrade#handling-alternate-drivers-or-kernel) if your host depends on them.
+* [Update your pool with the latest updates](../../management/updates) **before** upgrading, and reboot or restart the toolstack, depending on the nature of the installed updates.
+* [Install the latest updates](../../management/updates) **after** upgrading.
 :::
 
 :::warning
@@ -41,23 +41,23 @@ This is the standard XCP-ng way. With this method, note that you can skip any in
 
 It will backup your system to the backup partition and reinstall the system from scratch on the system partition. Your XCP-ng configuration (VMs, storage repositories and so on) is retained.
 
-**Any additional changes made by you to the system will be lost, so remember to make them again after the upgrade. Including: kernel boot parameters (such as [those related to PCI passthrough](../compute#_2-tell-xcp-ng-not-to-use-this-device-id-for-dom0)), changes to `/etc`, additional users created and their homes, local ISO SRs, [additional packages](../management/additional-packages)...**
+**Any additional changes made by you to the system will be lost, so remember to make them again after the upgrade. Including: kernel boot parameters (such as [those related to PCI passthrough](../../compute#_2-tell-xcp-ng-not-to-use-this-device-id-for-dom0)), changes to `/etc`, additional users created and their homes, local ISO SRs, [additional packages](../../management/additional-packages)...**
 
 Steps:
 1. Download an installation ISO from the [download page](https://xcp-ng.org/download/). Choose either the standard installer or the network installer.
-2. [Check the authenticity and the integrity of the downloaded ISO](../project/mirrors.md#check-an-iso-image).
+2. [Check the authenticity and the integrity of the downloaded ISO](../../project/mirrors#check-an-iso-image).
 3. Follow the installation procedure on the [download page](https://xcp-ng.org/download/).
 4. When offered the choice, choose to upgrade your existing XCP-ng installation.
 5. After the upgrade completed, reboot your host.
-6. Then [install the updates](../management/updates) that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
+6. Then [install the updates](../../management/updates) that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
 
-Once upgraded, **keep the system regularly updated** (see [the updates section](../management/updates)).
+Once upgraded, **keep the system regularly updated** (see [the updates section](../../management/updates)).
 
 If you can't boot from the ISO, see the next section.
 
 ### Troubleshooting ISO upgrades
 
-See [the Troubleshooting page](../troubleshooting/after-upgrade.md).
+See [the Troubleshooting page](../../troubleshooting/after-upgrade).
 
 ### Using the installation when you can't boot from it: remote upgrade
 
@@ -81,11 +81,11 @@ If you do not have access to your server or remote KVM in order to upgrade using
   ```
   The output should also be true. It has created a temporary entry in the grub bootloader which will automatically load the upgrade ISO on the next boot. It then automatically runs the XCP-ng upgrade with no user intervention required. It will also backup your existing XenServer dom0 install to the secondary backup partition, just like the normal upgrade.
 * To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it's available, but if not, it should proceed fine and boot into upgraded XCP-ng in 10 to 20 minutes.
-* Then [install the updates](../management/updates) that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
+* Then [install the updates](../../management/updates) that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
 
 Note: it has been brought to our attention that [a DHCP server may be necessary during the upgrade](https://xcp-ng.org/forum/topic/2480/unattended-upgrade-requires-dhcp).
 
-Once upgraded, **keep the system regularly updated** (see [Updates Howto](../management/updates)).
+Once upgraded, **keep the system regularly updated** (see [Updates Howto](../../management/updates)).
 
 ## From command line
 
@@ -100,7 +100,7 @@ Though it's been successfully tested by numerous people, this method is still co
 
 On the plus side, it's a lot *faster* provided you have a decent internet connection or a local mirror, and changes you have made to the host are retained.
 
-Once upgraded, **keep your system regularly updated** (see [Updates Howto](../management/updates)) until the next upgrade.
+Once upgraded, **keep your system regularly updated** (see [Updates Howto](../../management/updates)) until the next upgrade.
 
 ### Prerequisites
 
@@ -119,11 +119,11 @@ In any case, installing extra packages from outside the XCP-ng repositories can 
 * check the dependencies pulled by such packages: they must not overwrite existing packages in XCP-ng;
 * know that you are doing it at your own risk and be prepared to fix any issues that would arise, especially unforeseen upgrade issues (we can't test upgrade scenarios where unknown packages are installed on the system).
 
-More at [Additional packages](../management/additional-packages).
+More at [Additional packages](../../management/additional-packages).
 
 #### Precautions
 
-The [precautions that apply to regular updates](../management/updates#precautions) also apply to the upgrade process.
+The [precautions that apply to regular updates](../../management/updates#precautions) also apply to the upgrade process.
 
 Check them carefully.
 
@@ -162,7 +162,7 @@ In the commands below your shell will automatically replace `$VER` with the valu
   wget https://updates.xcp-ng.org/8/SHA256SUMS -O SHA256SUMS
   wget https://updates.xcp-ng.org/8/SHA256SUMS.asc -O SHA256SUMS.asc
   ```
-* Follow the steps to [check the integrity and origin of the repository file](../project/mirrors.md#check-a-downloaded-file) (optional)
+* Follow the steps to [check the integrity and origin of the repository file](../../project/mirrors#check-a-downloaded-file) (optional)
 * Install the verified repository file so that yum uses it.
   ```
   cp xcp-ng-$VER.repo /etc/yum.repos.d/xcp-ng.repo
@@ -217,7 +217,7 @@ This article describes how to proceed in order to convert your Citrix XenServer 
 ### Before you start
 
 * Please re-read carefully all the previous warnings
-* Need a tool to [manage your XCP-ng hosts](../Management)? We strongly suggest that you use [Xen Orchestra](https://xen-orchestra.com), the web UI for XCP-ng. Alternatively, you can use `xe` CLI or XCP-ng Center.
+* Need a tool to [manage your XCP-ng hosts](../../Management)? We strongly suggest that you use [Xen Orchestra](https://xen-orchestra.com), the web UI for XCP-ng. Alternatively, you can use `xe` CLI or XCP-ng Center.
 
 ### Migration process
 
@@ -279,7 +279,7 @@ Here is how to proceed in order to migrate without having downtime in your infra
 
 ### Troubleshooting migration from XenServer
 
-See [the Troubleshooting page](../troubleshooting/after-upgrade.md).
+See [the Troubleshooting page](../../troubleshooting/after-upgrade).
 
 ### Alternate method: remote upgrade
 
@@ -318,11 +318,11 @@ Live migration **should work** from any older XenServer/XCP-ng toward the latest
 
 ## Handling alternate drivers or kernel
 
-If - before the upgrade - your host depends on [alternate drivers](../installation/hardware#alternate-drivers) or on the [alternate kernel](../installation/hardware#alternate-kernel) to function, then it is possible that the upgraded system doesn't need such alternatives anymore. It is also possible that it still needs them.
+If - before the upgrade - your host depends on [alternate drivers](../../installation/hardware#alternate-drivers) or on the [alternate kernel](../../installation/hardware#alternate-kernel) to function, then it is possible that the upgraded system doesn't need such alternatives anymore. It is also possible that it still needs them.
 
 When upgrading using the upgrade ISO:
 * Alternate drivers will not be installed automatically: install them from the repositories after the first reboot.
-* The alternate kernel will not be installed automatically, unless you tell the installer to do so (see [Alternate kernel](../installation/hardware#alternate-kernel)).
+* The alternate kernel will not be installed automatically, unless you tell the installer to do so (see [Alternate kernel](../../installation/hardware#alternate-kernel)).
 
 When upgrading using `yum`:
 * Alternate drivers will usually be kept and upgraded if a newer version is provided, but that is not a general rule: we handle it on a case by case basis. Sometimes a newer "default" driver will obsolete an older alternate driver.
