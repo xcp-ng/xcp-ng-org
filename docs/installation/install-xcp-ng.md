@@ -364,7 +364,7 @@ Here's an example:
 ```
 
 :::tip
-Check [the full answerfile reference](../appendix/answerfile).
+Check [the full answerfile reference](../../appendix/answerfile).
 :::
 
 ### Via PXE
@@ -408,8 +408,8 @@ You may build a custom installation image that will automatically install XCP-ng
 
 If you can't or don't want to setup PXE but can still serve a file (the answerfile) from a server that will be available to the hosts during installation, you can create an automated installation image that will fetch its configuration from the network.
 
-1. [Prepare an answerfile](../appendix/answerfile) and make it available from a local HTTP server
-2. [Extract the XCP-NG ISO file](../project/development-process/ISO-modification#extract-an-existing-iso-image)
+1. [Prepare an answerfile](../../appendix/answerfile) and make it available from a local HTTP server
+2. [Extract the XCP-NG ISO file](../../project/development-process/ISO-modification#extract-an-existing-iso-image)
 3. Modify the boot configuration to use the remote answerfile
   * For BIOS boot, edit `/boot/isolinux/isolinux.cfg`.
     * Locate the `install` boot entry, which should look like this:
@@ -441,7 +441,7 @@ If you can't or don't want to setup PXE but can still serve a file (the answerfi
         module2 /install.img
     }
     ```
-4. [Build a new ISO with your changes](../project/development-process/ISO-modification)
+4. [Build a new ISO with your changes](../../project/development-process/ISO-modification)
 
 Your ISO is ready for installation.
 
@@ -449,8 +449,8 @@ Your ISO is ready for installation.
 
 If can't either setup PXE or serve a file (the answerfile) from a server that will be available to the hosts during installation, you can create an automated installation image that will embed its own configuration. It's a bit more work and will need to be done again every time you want to modify the answerfile.
 
-1. [Prepare an answerfile](../appendix/answerfile)
-2. [Extract the XCP-NG ISO file](../project/development-process/ISO-modification#extract-an-existing-iso-image)
+1. [Prepare an answerfile](../../appendix/answerfile)
+2. [Extract the XCP-NG ISO file](../../project/development-process/ISO-modification#extract-an-existing-iso-image)
 3. Modify the boot configuration to use a local (= embedded in the ISO) answerfile
   * For BIOS boot, edit `/boot/isolinux/isolinux.cfg`.
     * Locate the `install` boot entry, which should look like this:
@@ -482,14 +482,14 @@ If can't either setup PXE or serve a file (the answerfile) from a server that wi
         module2 /install.img
     }
     ```
-4. [Extract install.img](../project/development-process/ISO-modification#extract-an-existing-iso-image)
+4. [Extract install.img](../../project/development-process/ISO-modification#extract-an-existing-iso-image)
 5. Add your answerfile
     ```
     cp answerfile.xml "$WORK_DIR/install/answerfile.xml"
     ```
 
-6. [Build a new install.img with your changes](../project/development-process/ISO-modification#build-a-new-installimg-with-your-changes)
-7. [Build a new ISO with your changes](../project/development-process/ISO-modification#build-a-new-iso-image-with-your-changes)
+6. [Build a new install.img with your changes](../../project/development-process/ISO-modification#build-a-new-installimg-with-your-changes)
+7. [Build a new ISO with your changes](../../project/development-process/ISO-modification#build-a-new-iso-image-with-your-changes)
 
 Your ISO is ready for installation.
 
@@ -532,7 +532,7 @@ Upon server reboot, normal `md` resync will take place.
 
 ## Troubleshooting
 
-See [the Troubleshooting page](../troubleshooting/after-upgrade.md).
+See [the Troubleshooting page](../../troubleshooting/after-upgrade).
 
 ## Misc
 

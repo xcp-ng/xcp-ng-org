@@ -2354,7 +2354,7 @@ sr-probe type=type [host-uuid=host_uuid] [device-config:config_name=value]
 
 Performs a backend-specific scan, using the provided `device-config` keys. If the `device-config` is complete for the SR back-end, this command returns a list of the SRs present on the device, if any. If the `device-config` parameters are only partial, a back-end-specific scan is performed, returning results that guide you in improving the remaining `device-config` parameters. The scan results are returned as backend-specific XML, printed on the CLI.
 
-The exact `device-config` parameters differ depending on the device `type`. For details of these parameters across the different storage back-ends, see [Storage](../Storage).
+The exact `device-config` parameters differ depending on the device `type`. For details of these parameters across the different storage back-ends, see [Storage](../../storage).
 
 ### `sr-probe-ext`
 
