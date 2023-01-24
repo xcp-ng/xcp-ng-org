@@ -124,7 +124,7 @@ const config = {
           appId: 'I9J2TZ0RWH',
 
           // Public API key: it is safe to commit it
-          apiKey: '686ff13bb1d4900646d5ec519a8dc051',
+          apiKey: '76ebf4008fbfcc765a5c416528597101',
 
           indexName: 'xcp-ng',
 
