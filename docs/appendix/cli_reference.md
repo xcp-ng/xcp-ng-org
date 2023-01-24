@@ -2264,7 +2264,7 @@ sr-create name-label=name physical-size=size type=type content-type=content_type
 
 Creates an SR on the disk, introduces it into the database, and creates a PBD attaching the SR to the XCP-ng server. If `shared` is set to `true`, a PBD is created for each XCP-ng server in the pool. If `shared` is not specified or set to `false`, a PBD is created only for the XCP-ng server specified with `host-uuid`.
 
-The exact `device-config` parameters differ depending on the device `type`. For details of these parameters across the different storage back-ends, see [Storage](../Storage).
+The exact `device-config` parameters differ depending on the device `type`. For details of these parameters across the different storage back-ends, see [Storage](../../storage/).
 
 ### `sr-data-source-forget`
 
