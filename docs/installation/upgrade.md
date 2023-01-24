@@ -217,7 +217,7 @@ This article describes how to proceed in order to convert your Citrix XenServer 
 ### Before you start
 
 * Please re-read carefully all the previous warnings
-* Need a tool to [manage your XCP-ng hosts](../../Management)? We strongly suggest that you use [Xen Orchestra](https://xen-orchestra.com), the web UI for XCP-ng. Alternatively, you can use `xe` CLI or XCP-ng Center.
+* Need a tool to [manage your XCP-ng hosts](../../management)? We strongly suggest that you use [Xen Orchestra](https://xen-orchestra.com), the web UI for XCP-ng. Alternatively, you can use `xe` CLI or XCP-ng Center.
 
 ### Migration process
 

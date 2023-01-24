@@ -157,7 +157,7 @@ XCP-ng 8.2.1 was released as a maintenance update for XCP-ng 8.2 LTS, which has 
 
 XCP-ng 8.2.1 is still XCP-ng 8.2 LTS. It's the same, that just reached a new numbered milestone.
 
-The update brought a few enhancements such as [Guest Secure Boot](../../Guides/guest-UEFI-Secure-Boot#guest-uefi-secure-boot), support for Rocket Lake CPUs, or better log rotation.
+The update brought a few enhancements such as [Guest Secure Boot](../../guides/guest-UEFI-Secure-Boot#guest-uefi-secure-boot), support for Rocket Lake CPUs, or better log rotation.
 
 They are detailed in the [Release announcement for XCP-ng 8.2.1](https://xcp-ng.org/blog/2022/02/28/xcp-ng-8-2-1-update/).
 

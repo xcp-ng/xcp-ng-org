@@ -143,7 +143,7 @@ As XCP-ng will handle everything for you, be aware that the device or partition 
 * If you want to attach an existing SR to your pool, don't create a new local SR over it, else your virtual disks will be deleted. Instead, use the `xe sr-introduce` command. Further explanation can be found in the official XenServer documentation: https://support.citrix.com/article/CTX121896/how-to-introduce-a-local-storage-repository-in-xenserver
 :::
 
-In [Xen Orchestra](../Management#xen-orchestra):
+In [Xen Orchestra](../management#xen-orchestra):
 
 ![](https://xcp-ng.org/assets/img/screenshots/createSRlocal.png)
 
