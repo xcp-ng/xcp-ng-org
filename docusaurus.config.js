@@ -118,6 +118,10 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      colorMode: {
+        defaultMode: 'dark',
+        respectPrefersColorScheme: true,
+      },
       algolia: {
         // The application ID provided by Algolia
         appId: 'I9J2TZ0RWH',
