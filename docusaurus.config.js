@@ -125,7 +125,7 @@ const config = {
         // Public API key: it is safe to commit it
         apiKey: '76ebf4008fbfcc765a5c416528597101',
 
-        indexName: 'xcpng',
+        indexName: 'xcp-ng',
 
         // Optional: see doc section below
         contextualSearch: true,
