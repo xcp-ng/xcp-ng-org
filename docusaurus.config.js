@@ -134,9 +134,7 @@ const config = {
         externalUrlRegex: 'docs\\.xcp-ng\\.org',
 
         // Optional: Algolia search parameters
-        searchParameters: {
-          facetFilters: ['language:en',['docusaurus_tag:default','docusaurus_tag:docs-default-current']],
-        },
+        searchParameters: {},
         // Optional: path for search page that enabled by default (`false` to disable it)
         searchPagePath: 'search',
       },
