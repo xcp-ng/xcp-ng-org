@@ -50,7 +50,7 @@ cert = ~/.koji/client.crt
 serverca = ~/.koji/serverca.crt
 ```
 
-In some cases, we've found that the configuration file in ~/.koji was not used. Solution: `cp ~/.koji /etc/koji.conf`.
+In some cases, we've found that the `cert` directive in `~/.koji/config ` was not used if there was no such directive in `/etc/koji.conf`. Workaround: add a `cert = ~/.koji/client.crt` to `/etc/koji.conf`, or possibly even `cp ~/.koji/config /etc/koji.conf`.
 
 ## Test your connection
 `koji moshimoshi`. If it greats you (in any language), then your connection to the server works.
