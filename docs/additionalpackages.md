@@ -32,6 +32,10 @@ A regularly updated list of such utilities for XCP-ng 8.2 is available at <http:
 
 The packages from this list are supported on a best-effort basis.
 
+The repositories are already enabled by default. Install with `yum install name_of_package`. For example: `yum install zfs`.
+
+In some cases, packages may be listed in the above list but not available yet in the default repositories. This means they are still undergoing tests and reside in the `xcp-ng-testing` repository. If you want to test them, add `--enablerepo=xcp-ng-testing` to the installation command.
+
 :::warning
 Anything installed outside this list of packages is at your own risk, even if that comes from XCP-ng repositories.
 :::
