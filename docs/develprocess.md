@@ -1171,6 +1171,81 @@ sync;fio --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=test
 * Update existing Windows guest drivers
 * Installation of guest drivers on new Windows VM
 
+### Test the Xen hypervisor itself
+
+The Xen hypervisor, which is at the core of XCP-ng, will benefit from being tested on a wide range of hardware. There exist test suites for this. You don't need to run them on every host you own if they are truly identical, but it's good to run them on as wide a range of hardware as possible.
+
+Be aware that some of the tests may sometimes cause the host to crash, so don't test on production hosts.
+
+:::tip Feedback
+Please report any issue or unexpected result on [the forum](https://xcp-ng.org/forum/).
+:::
+
+#### XTF
+
+The first test suite is **XTF** (stands for Xen Test Framework)
+
+Enable HVM FEP on the host. This is not mandatory but if you don't, several tests that require it will be skipped:
+```
+/opt/xensource/libexec/xen-cmdline --set-xen hvm_fep
+reboot
+```
+
+Note: this debug setting is not recommended for production.
+
+Build XTF
+```
+yum install gcc git -y
+git clone git://xenbits.xen.org/xtf.git
+cd xtf
+make -j8
+```
+
+(Optional, protects your host from a crash if its hardware is vulnerable to [XSA-304](https://xenbits.xen.org/xsa/advisory-304.html)) Switch EPT superpages to secure mode:
+```
+xl set-parameters ept=no-exec-sp
+```
+
+Run the tests
+```
+# self test
+./xtf-runner selftest -q --host
+# all tests
+# -q stands for quiet. Remove one or both if you want to see details.
+./xtf-runner -aqq --host
+# check return code. Should be "3" which means "no failures but some tests were skipped":
+echo $?
+```
+
+Switch back EPT superpages to fast mode, if needed
+```
+xl set-parameters ept=exec-sp
+```
+
+There will be a few SKIPPED tests, but there shouldn't be many.
+
+Known skipped tests:
+* `test-hvm32-umip test-hvm64-umip`: skipped if the CPU is not recent enough to support UMIP.
+* `test-pv64-xsa-167`: always skipped
+* `test-pv64-xsa-182`: skipped in default configuration.
+
+You can ignore skipped tests which belong to this list.
+
+#### xen-dom0-tests
+
+The testsuite is very limited in Xen 4.13, but let's still run what's available.
+
+Install:
+```
+yum install xen-dom0-tests
+```
+
+Run
+```
+/usr/libexec/xen/bin/test-cpu-policy
+# check return code. Must be 0, otherwise this means there was a failure.
+echo $?
+```
 
 ## Koji initial setup
 
