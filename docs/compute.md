@@ -79,23 +79,38 @@ To remove any passthrough devices from dom0:
 ```bash
 /opt/xensource/libexec/xen-cmdline --delete-dom0 xen-pciback.hide
 ```
-
 :::tip
 This kernel parameter is not retained when you upgrade an XCP-ng host [using the installation ISO](../installation/upgrade#upgrade-via-installation-iso-recommended). Remember to re-do this step after the upgrade.
 :::
 
-### 3. Reboot the XCP-ng host
+### 3. NVMe storage devices on Linux
+For NVMe storage devices, the Linux driver will try to allocate too many PCI MSI-X vectors, exceeding the number of extra IRQs allocated by Xen for a guest. Failing MSI-X setup might lead to very low performances on some buggy hardware if the driver cannot manage to fallback to legacy IRQs handling.
+
+The default number of extra guest IRQs (which is 64) needs to be increased with Xen's `extra_guest_irqs` boot parameter:
+```bash
+/opt/xensource/libexec/xen-cmdline --set-xen "extra_guest_irqs=128"
+```
+
+To remove the parameter from Xen command line:
+```bash
+/opt/xensource/libexec/xen-cmdline --delete-xen extra_guest_irqs
+```
+:::tip
+This kernel parameter is not retained when you upgrade an XCP-ng host [using the installation ISO](../installation/upgrade#upgrade-via-installation-iso-recommended). Remember to re-do this step after the upgrade.
+:::
+
+### 4. Reboot the XCP-ng host
 
 `[root@xen ~]# reboot`
 
-### 4. Check with `xl pci-assignable-list` on CLI
+### 5. Check with `xl pci-assignable-list` on CLI
 
 ```
 [root@xen ~]# xl pci-assignable-list
 0000:04:01.0
 ```
 
-### 5. Put this PCI device 'into' your VM
+### 6. Put this PCI device 'into' your VM
 
 `[root@xen ~]# xe vm-param-set`**`other-config:pci=0/0000:04:01.0`**`uuid=<vm uuid>`
 
@@ -103,7 +118,7 @@ This kernel parameter is not retained when you upgrade an XCP-ng host [using the
 >
 > `[root@xen ~]# xe vm-param-set`**` other-config:pci=0/0000:04:01.0,0/0000:00:19.0 `**`uuid=<vm uuid>`
 
-### 6. Start your VM and be happy :-)
+### 7. Start your VM and be happy :-)
 
 `[root@xen ~]# xe vm-start uuid=<vm uuid>`
 
