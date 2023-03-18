@@ -14,6 +14,34 @@ In order to use PCI passthrough your host system must have VT-d/IOMMU functional
 
 Consult your system or motherboard manual for instructions on where to find the setting in your BIOS/UEFI. In addition, system BIOS updates may reset the feature to its default state, which may require you to re-enable it.
 
+Check your current kernel boot parameters to see that you have either iommu_intel=on, iommu_amd=on, or iommu=pt enabled.
+```
+[root@xen ~]# cat /proc/cmdline | grep iommu
+...
+root=LABEL=root-peursi ro ... intel_iommu=on
+```
+
+Check that DMAR/IOMMU is enablled by the kernel.
+```
+[root@xen ~]# dmesg | grep -i dmar
+...
+[    0.697084] DMAR: IOMMU enabled
+```
+For performance, some guides recommend to replace the Intel/AMD setting with iommu=pt, if that is working.
+
+If you need to enable or disable the kernel parameters then use xen-cmdline, and reboot afterwards.
+```
+[root@xen ~]# /opt/xensource/libexec/xen-cmdline --set-dom0 intel_iommu=on
+[root@xen ~]# /opt/xensource/libexec/xen-cmdline --get-dom0 intel_iommu
+[root@xen ~]# /opt/xensource/libexec/xen-cmdline --delete-dom0 intel_iommu
+```
+
+Some, for example https://www.heiko-sieger.info/iommu-groups-what-you-need-to-consider/, also mentions that the /sys/kernel/iommu_groups should contain entries
+```
+[root@xen ~]# ls -l /sys/kernel/iommu_groups/
+```
+Even with no entries in the iommu_groups, the PCI passthrough can still work.
+
 If you attempt to perform PCI passthrough on a system which does not have VT-d/IOMMU enabled, you may encounter the following error when you start the target virtual machine:
 
 ```
