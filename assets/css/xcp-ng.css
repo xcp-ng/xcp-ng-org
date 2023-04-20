@@ -19,7 +19,7 @@
     --white: #fff;
     --gray: #6c757d;
     --gray-dark: #343a40;
-    --primary: #cc584c;
+    --primary: #BE1621;
     --secondary: #EF9325;
     --success: #28a745;
     --info: #17a2b8;
@@ -75,7 +75,7 @@ body {
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #263740;
+    color: #1A1B38;
     text-align: left;
     background-color: #191c27
 }
@@ -176,14 +176,14 @@ sup {
 }
 
 a {
-    color: #cc584c;
+    color: #be1621;
     text-decoration: none;
     background-color: transparent;
     -webkit-text-decoration-skip: objects
 }
 
 a:hover {
-    color: #cc584c;
+    color: #be1621;
     text-decoration: underline
 }
 
@@ -2288,27 +2288,27 @@ fieldset:disabled a.btn {
 
 .btn-primary {
     color: #fff;
-    background: #cc584c linear-gradient(180deg, #ae4e46, #cc584c) repeat-x;
-    border-color: #cc584c;
+    background: #BE1621 linear-gradient(180deg, #ae4e46, #BE1621) repeat-x;
+    border-color: #BE1621;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075)
 }
 
 .btn-primary:hover {
     color: #fff;
-    background: #cc584c linear-gradient(180deg, #ae4e46, #cc584c) repeat-x;
+    background: #BE1621 linear-gradient(180deg, #ae4e46, #BE1621) repeat-x;
     border-color: #ae403a
 }
 
 .btn-primary.focus,
 .btn-primary:focus {
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075), 0 0 0 .2rem #cc584c
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075), 0 0 0 .2rem #BE1621
 }
 
 .btn-primary.disabled,
 .btn-primary:disabled {
     color: #fff;
-    background-color: #cc584c;
-    border-color: #cc584c
+    background-color: #BE1621;
+    border-color: #BE1621
 }
 
 .btn-primary:not(:disabled):not(.disabled).active,
@@ -2317,13 +2317,13 @@ fieldset:disabled a.btn {
     color: #fff;
     background-color: #ae403a;
     background-image: none;
-    border-color: #cc584c
+    border-color: #BE1621
 }
 
 .btn-primary:not(:disabled):not(.disabled).active:focus,
 .btn-primary:not(:disabled):not(.disabled):active:focus,
 .show>.btn-primary.dropdown-toggle:focus {
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125), 0 0 0 .2rem #cc584c
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125), 0 0 0 .2rem #BE1621
 }
 
 .btn-secondary {
@@ -2408,42 +2408,42 @@ fieldset:disabled a.btn {
 
 .btn-info {
     color: #fff;
-    background: #cc584c linear-gradient(180deg, #cc584c, #cc584c) repeat-x;
-    border-color: #cc584c;
+    background: #BE1621 linear-gradient(180deg, #BE1621, #BE1621) repeat-x;
+    border-color: #BE1621;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075)
 }
 
 .btn-info:hover {
     color: #fff;
-    background: #cc584c linear-gradient(180deg, #cc584c, #cc584c) repeat-x;
-    border-color: #cc584c
+    background: #BE1621 linear-gradient(180deg, #BE1621, #BE1621) repeat-x;
+    border-color: #BE1621
 }
 
 .btn-info.focus,
 .btn-info:focus {
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075), 0 0 0 .2rem #cc584c
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075), 0 0 0 .2rem #BE1621
 }
 
 .btn-info.disabled,
 .btn-info:disabled {
     color: #fff;
-    background-color: #cc584c;
-    border-color: #cc584c
+    background-color: #BE1621;
+    border-color: #BE1621
 }
 
 .btn-info:not(:disabled):not(.disabled).active,
 .btn-info:not(:disabled):not(.disabled):active,
 .show>.btn-info.dropdown-toggle {
     color: #fff;
-    background-color: #cc584c;
+    background-color: #BE1621;
     background-image: none;
-    border-color: #cc584c
+    border-color: #BE1621
 }
 
 .btn-info:not(:disabled):not(.disabled).active:focus,
 .btn-info:not(:disabled):not(.disabled):active:focus,
 .show>.btn-info.dropdown-toggle:focus {
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125), 0 0 0 .2rem #cc584c
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125), 0 0 0 .2rem #BE1621
 }
 
 .btn-warning {
@@ -2607,26 +2607,26 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-primary {
-    color: #cc584c;
+    color: #BE1621;
     background-color: transparent;
     background-image: none;
-    border-color: #cc584c
+    border-color: #BE1621
 }
 
 .btn-outline-primary:hover {
     color: #fff;
-    background-color: #cc584c;
-    border-color: #cc584c
+    background-color: #BE1621;
+    border-color: #BE1621
 }
 
 .btn-outline-primary.focus,
 .btn-outline-primary:focus {
-    box-shadow: 0 0 0 .2rem #cc584c
+    box-shadow: 0 0 0 .2rem #BE1621
 }
 
 .btn-outline-primary.disabled,
 .btn-outline-primary:disabled {
-    color: #cc584c;
+    color: #BE1621;
     background-color: transparent
 }
 
@@ -2634,14 +2634,14 @@ fieldset:disabled a.btn {
 .btn-outline-primary:not(:disabled):not(.disabled):active,
 .show>.btn-outline-primary.dropdown-toggle {
     color: #fff;
-    background-color: #cc584c;
-    border-color: #cc584c
+    background-color: #BE1621;
+    border-color: #BE1621
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled).active:focus,
 .btn-outline-primary:not(:disabled):not(.disabled):active:focus,
 .show>.btn-outline-primary.dropdown-toggle:focus {
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125), 0 0 0 .2rem #cc584c
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125), 0 0 0 .2rem #BE1621
 }
 
 .btn-outline-secondary {
@@ -2912,7 +2912,7 @@ fieldset:disabled a.btn {
 
 .btn-link {
     font-weight: 400;
-    color: #cc584c;
+    color: #BE1621;
     background-color: transparent
 }
 
@@ -3157,7 +3157,7 @@ tbody.collapse.show {
 .dropdown-item:active {
     color: #fff;
     text-decoration: none;
-    background: #cc584c linear-gradient(180deg, #3396b0, #cc584c) repeat-x
+    background: #BE1621 linear-gradient(180deg, #3396b0, #BE1621) repeat-x
 }
 
 .dropdown-item.disabled,
@@ -3473,7 +3473,7 @@ tbody.collapse.show {
 
 .custom-control-input:checked~.custom-control-label::before {
     color: #fff;
-    background: #cc584c linear-gradient(180deg, #3396b0, #cc584c) repeat-x;
+    background: #BE1621 linear-gradient(180deg, #3396b0, #BE1621) repeat-x;
     box-shadow: none
 }
 
@@ -3531,7 +3531,7 @@ tbody.collapse.show {
 }
 
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
-    background: #cc584c linear-gradient(180deg, #3396b0, #cc584c) repeat-x
+    background: #BE1621 linear-gradient(180deg, #3396b0, #BE1621) repeat-x
 }
 
 .custom-checkbox .custom-control-input:checked~.custom-control-label::after {
@@ -3539,7 +3539,7 @@ tbody.collapse.show {
 }
 
 .custom-checkbox .custom-control-input:indeterminate~.custom-control-label::before {
-    background: #cc584c linear-gradient(180deg, #3396b0, #cc584c) repeat-x;
+    background: #BE1621 linear-gradient(180deg, #3396b0, #BE1621) repeat-x;
     box-shadow: none
 }
 
@@ -3548,11 +3548,11 @@ tbody.collapse.show {
 }
 
 .custom-checkbox .custom-control-input:disabled:checked~.custom-control-label::before {
-    background-color: #cc584c
+    background-color: #BE1621
 }
 
 .custom-checkbox .custom-control-input:disabled:indeterminate~.custom-control-label::before {
-    background-color: #cc584c
+    background-color: #BE1621
 }
 
 .custom-radio .custom-control-label::before {
@@ -3560,7 +3560,7 @@ tbody.collapse.show {
 }
 
 .custom-radio .custom-control-input:checked~.custom-control-label::before {
-    background: #cc584c linear-gradient(180deg, #3396b0, #cc584c) repeat-x
+    background: #BE1621 linear-gradient(180deg, #3396b0, #BE1621) repeat-x
 }
 
 .custom-radio .custom-control-input:checked~.custom-control-label::after {
@@ -3568,7 +3568,7 @@ tbody.collapse.show {
 }
 
 .custom-radio .custom-control-input:disabled:checked~.custom-control-label::before {
-    background-color: #cc584c
+    background-color: #BE1621
 }
 
 .custom-select {
@@ -3757,7 +3757,7 @@ tbody.collapse.show {
 .nav-pills .nav-link.active,
 .nav-pills .show>.nav-link {
     color: #fff;
-    background-color: #cc584c
+    background-color: #BE1621
 }
 
 .nav-fill .nav-item {
@@ -4463,7 +4463,7 @@ tbody.collapse.show {
     padding: .5rem .75rem;
     margin-left: -1px;
     line-height: 1.25;
-    color: #cc584c;
+    color: #BE1621;
     background-color: #fff;
     border: 1px solid #dee2e6
 }
@@ -4499,8 +4499,8 @@ tbody.collapse.show {
 .page-item.active .page-link {
     z-index: 1;
     color: #fff;
-    background-color: #cc584c;
-    border-color: #cc584c
+    background-color: #BE1621;
+    border-color: #BE1621
 }
 
 .page-item.disabled .page-link {
@@ -4572,7 +4572,7 @@ tbody.collapse.show {
 
 .badge-primary {
     color: #fff;
-    background-color: #cc584c
+    background-color: #BE1621
 }
 
 .badge-primary[href]:focus,
@@ -4850,7 +4850,7 @@ tbody.collapse.show {
     justify-content: center;
     color: #fff;
     text-align: center;
-    background-color: #cc584c;
+    background-color: #BE1621;
     transition: width .6s ease
 }
 
@@ -4932,8 +4932,8 @@ tbody.collapse.show {
 .list-group-item.active {
     z-index: 2;
     color: #fff;
-    background-color: #cc584c;
-    border-color: #cc584c
+    background-color: #BE1621;
+    border-color: #BE1621
 }
 
 .list-group-flush .list-group-item {
@@ -5790,7 +5790,7 @@ button.close {
 }
 
 .bg-primary {
-    background-color: #cc584c!important
+    background-color: #BE1621!important
 }
 
 a.bg-primary:focus,
@@ -5830,7 +5830,7 @@ a.bg-info:focus,
 a.bg-info:hover,
 button.bg-info:focus,
 button.bg-info:hover {
-    background-color: #cc584c!important
+    background-color: #BE1621!important
 }
 
 .bg-warning {
@@ -5863,22 +5863,22 @@ a.bg-light:focus,
 a.bg-light:hover,
 button.bg-light:focus,
 button.bg-light:hover {
-    background-color: #cc584c!important
+    background-color: #BE1621!important
 }
 
 .bg-dark {
-    background-color: #cc584c!important
+    background-color: #BE1621!important
 }
 
 a.bg-dark:focus,
 a.bg-dark:hover,
 button.bg-dark:focus,
 button.bg-dark:hover {
-    background-color: #cc584c!important
+    background-color: #BE1621!important
 }
 
 .bg-gradient-primary {
-    background: #cc584c linear-gradient(180deg, #3396b0, #cc584c) repeat-x!important
+    background: #BE1621 linear-gradient(180deg, #3396b0, #BE1621) repeat-x!important
 }
 
 .bg-gradient-secondary {
@@ -5958,7 +5958,7 @@ button.bg-dark:hover {
 }
 
 .border-primary {
-    border-color: #cc584c!important
+    border-color: #BE1621!important
 }
 
 .border-secondary {
@@ -8322,7 +8322,7 @@ button.bg-dark:hover {
 }
 
 .text-primary {
-    color: #cc584c!important
+    color: #BE1621!important
 }
 
 a.text-primary:focus,
@@ -8390,7 +8390,7 @@ a.text-light:hover {
 
 a.text-dark:focus,
 a.text-dark:hover {
-    color: #cc584c!important
+    color: #BE1621!important
 }
 
 .text-muted {
@@ -8489,7 +8489,7 @@ body {
     -moz-transition: all 1s ease-out;
     -o-transition: all 1s ease-out;
     transition: all 1s ease-out;
-    background-color: #263740;
+    background-color: #1A1B38;
     color: rgba(255, 255, 255, .7);
     padding: 0;
     margin: 0;
@@ -8597,14 +8597,14 @@ section p:last-child {
 }
 
 .btn-primary {
-    background: #cc584c
+    background: #BE1621
 }
 
 .btn-secondary {
     background: 0 0;
     border: none;
     box-shadow: none;
-    color: #cc584c
+    color: #BE1621
 }
 
 #xcp-ng-navbar {
@@ -8713,7 +8713,7 @@ nav a {
 }
 
 .xcp-ng-numbers {
-    background-color: #cc584c;
+    background-color: #BE1621;
     color: #fff;
     padding: 1em
 }
@@ -8734,7 +8734,7 @@ nav a {
 }
 
 .xcp-ng-features {
-    background-color: #263740;
+    background-color: #1A1B38;
     color: #fff;
     padding-bottom: 13em
 }
@@ -8805,7 +8805,7 @@ nav a {
 }
 
 .xcp-ng-screenshots .carousel-indicators li.active {
-    background-color: #cc584c
+    background-color: #BE1621
 }
 
 .xcp-ng-screenshots .carousel-control-prev {
@@ -8897,7 +8897,7 @@ nav a {
 
 .xcp-ng-easy-install .code {
     border-radius: 4px;
-    background-color: #263740;
+    background-color: #1A1B38;
     color: #fff;
     font-family: "Lucida Console", Courier, monospace;;
     font-size: 0.85rem;
@@ -8906,7 +8906,7 @@ nav a {
 }
 
 .xcp-ng-commercial-support {
-    background-color: #263740;
+    background-color: #1A1B38;
     color: #fff
 }
 
@@ -8920,12 +8920,12 @@ nav a {
 }
 
 .xcp-ng-commercial-support .btn-primary {
-    background: #cc584c;
+    background: #BE1621;
     border: 0
 }
 
 .xcp-ng-commercial-support .btn-primary:hover {
-    background: #cc584c linear-gradient(180deg, #cc584c, #ae4e46) repeat-x
+    background: #BE1621 linear-gradient(180deg, #BE1621, #ae4e46) repeat-x
 }
 
 .xcp-ng-footer {
