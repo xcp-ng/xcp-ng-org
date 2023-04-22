@@ -8690,8 +8690,8 @@ nav a {
     background-repeat: yes;
     background-position-x: center;
     background-position: bottom;
-    padding-bottom: 2em;
-    height: 34em
+    padding-bottom: 5em;
+    margin-top: 2em;
 }
 
 @media (max-width:768px) {
@@ -8844,7 +8844,6 @@ nav a {
     background-repeat: no-repeat;
     background-color: #ef9325;
     color: #fff;
-    padding-bottom: 5em
 }
 
 .xcp-ng-community h2 {
