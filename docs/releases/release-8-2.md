@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # XCP-ng 8.2 LTS
 
 XCP-ng 8.2 is an [LTS Release](../../../releases#lts-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1.iso?https=1).

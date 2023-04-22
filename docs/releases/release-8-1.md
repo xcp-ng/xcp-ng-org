@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+---
+
 # XCP-ng 8.1
 
 **XCP-ng 8.1** is a [standard release](../../../releases#standard-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso?https=1).
