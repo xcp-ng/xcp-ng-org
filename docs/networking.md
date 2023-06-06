@@ -3,7 +3,7 @@
 XCP-ng is using Open vSwitch as its core, and supports various features from it.
 
 :::tip
-If one NIC can be enough for your host, having a dedicated NIC for storage will be really important to get consistent performances (if you use shared storage (iSCSI or NFS).
+Even if one NIC can be enough for your host, having a dedicated NIC for storage will be really important to get consistent performances (especially if you use shared storage like iSCSI or NFS).
 :::
 
 ## Concepts
@@ -29,7 +29,8 @@ This section uses three types of server-side software objects to represent netwo
 * A network, which is a virtual Ethernet switch on a host. Network objects have a name and description, a UUID, and the collection of VIFs and PIFs connected to them.
 
 `xe` CLI, Xen Orchestra or XCP-ng center allow you to configure networking options. You can control the NIC used for management operations, and create advanced networking features such as VLANs and NIC bonds.
-Networks
+
+### Networks
 
 Each XCP-ng server has one or more networks, which are virtual Ethernet switches. Networks that are not associated with a PIF are considered internal. Internal networks can be used to provide connectivity only between VMs on a given XCP-ng server, with no connection to the outside world. Networks associated with a PIF are considered external. External networks provide a bridge between VIFs and the PIF connected to the network, enabling connectivity to resources available through the PIF’s NIC.
 
