@@ -221,6 +221,72 @@ We chose to base our `qemu-dp` repository on a fork of the upstream `qemu` [repo
   * If we really need to diverge a little from upstream, on a temporary dev branch `dev-NEXTXCPNGVERSION` (e.g. `dev-8.3`), based either on the current maintenance branch, or on a branch that is likely to be the one used in the next release (we don't always know!)
   * Next maintenance branch directly (e.g. `2.12.0-8.3`) once the upstream SRPMs have been released
 
+#### Special case: `host-installer`
+
+`host-installer` has an upstream repo, and we have a large number of
+modifications that have not yet made it upstream. Changes are
+organized for best upstreaming them, which means using per-topic
+branches based on an upstream revision: those can then be used for an
+upstream PR, and for merging into an XCP-ng release. Constructing an
+XCP-ng `host-installer` release then is done by starting from the
+upstream tag used by the matching XenServer release, and merging those
+topic branches.
+
+A `small-patches` branch is used to hold small non-upstreamable
+patches until we have decided what should be proposed upstream to
+replace them. This one is merged first (as essentially made of older
+changes).
+
+##### Adding a new feature
+
+A new feature gets a new topic branch, usually based on an upstream
+release -- though in some situations some features will depend on
+another topic branch that has not been merged yet. In this case the
+branch can be based on its dependency branch. In the case of multiple
+dependencies, it will be clearer to `merge --no-ff` each of those
+other topics in our new topic branch.
+
+This new branch will then be used to open a PR, usually against the
+upstream repo. In the case of an upstream PR progressing too slowly,
+we may decide to open a PR onto an XCP-ng `host-installer` branch so
+it can be included in a release, and it will join the pool of topic
+branches described above.
+
+##### Fixing/extending a topic branch
+
+Fixing of existing topic branches should be done "on the topic
+branch", which is to say they should be based on the last commit of
+that topic branch that was merged in the current XCP-ng branch. A PR
+is then openned for merging into this current XCP-ng branch.
+
+When introducing a fix, we should keep in mind whether it is
+meaningful on its own, or is meant to be squashed the next time this
+topic branch is rebased, and use the standard git conventions to mark
+those, e.g. using `git commit --squash`.
+
+##### Upgrading to a new upstream
+
+To switch to a new upstream version `vUPSTREAMVERSION` (`v10.10.5`),
+we want a new branch `UPSTREAMVERSION-XCPNGVERSION` (`10.10.5-8.3`)
+based on this tag and including a merge of every topic branch that has
+not been integrated upstream yet.
+
+A way to achieve that is through `git rebase -i -r` (aka
+`--interactive --rebase-merges`): the branch is first created as a
+clone of the previous one (i.e. on the same revision), and rebased
+while preserving the merge structure so the topics are kept isolated.
+
+Care should be taken to:
+* getting each topic branch merged only once (in the case where new
+  commits were piled on a topic during the previous version's
+  lifetime), and get the relevant piled commits squashed when
+  applicable
+* review the `rebase` instruction sheet to avoid unwanted rebasing of
+  each topic branch -- whether we want to change a given topic
+  branch's base depends on the status of the matching pull-request
+* pushing those topic branches we did want to rebase, so the uptream
+  PR gets our new version
+
 ## RPM packaging
 
 Creating packages that can be installed on the user's system is called **packaging**.
