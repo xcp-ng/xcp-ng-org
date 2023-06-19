@@ -229,7 +229,8 @@ organized for best upstreaming them, which means using per-topic
 branches based on an upstream revision: those can then be used for an
 upstream PR, and for merging into an XCP-ng release. Constructing an
 XCP-ng `host-installer` release then is done by starting from the
-upstream tag used by the matching XenServer release, and merging those
+upstream tag selected by the XCP-ng team to be the basis for our
+version of the installer, and merging those
 topic branches.
 
 A `small-patches` branch is used to hold small non-upstreamable
