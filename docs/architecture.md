@@ -9,7 +9,7 @@ Here you can find a high level view of how XCP-ng is interacted with by users an
 ### Interactions
 
 The Hypervisor runs on a host, and is managed by its user directly via CLI, or through other administration applications such as [Xen Orechestra](https://xen-orchestra.com/#!/xo-home)j or [XCP-ng Center](https://github.com/xcp-ng/xenadmin)
-![c4 system context diagram of XCP-ng](../assets/img/architecture/C1-context-driagram.drawio.png)
+![c4 system context diagram of XCP-ng](../assets/img/architecture/XCP-ng-SystemContext.svg)
 
 ### Main Building Blocks
 
@@ -21,7 +21,7 @@ Inside the hypervisor, there are various parts allowing its main features:
 
 Here is how they organize and interface with each others:
 
-![c4 container diagram of XCP-ng](../assets/img/architecture/C2-xcp-ng-container-diagram.drawio.png)
+![c4 container diagram of XCP-ng](../assets/img/architecture/XCP-ng-Container.svg)
 
 ## Storage
 
