@@ -23,6 +23,20 @@ Here is how they organize and interface with each others:
 
 ![c4 container diagram of XCP-ng](../assets/img/architecture/XCP-ng-Container.svg)
 
+## Network
+
+This parts focuses on XCP-ng and Para-Virtualized VMs.
+
+In XCP-ng, at the dom0 level, most of the networking is handled by [Open vSwitch](http://www.openvswitch.org/) for routing, filtering, tunneling and more. It hooks early in the Linux network stack, and the PV drivers handle the devices and their communication with the VMs.
+
+![c4 component diagram of XCP-ng's Network Stack](../assets/img/architecture/Network-Stack-Component.svg)
+
+The VIF driver is splitted in two parts:
+- the backend that runs on the dom0 and creates network interfaces named `vif[…].0`, like `vif1.0`
+- the frontend that runs on the guest VM and creates `enX0`
+
+This driver communicates between the two sides through shared memory pages.
+
 ## Storage
 
 ### Virtual disks on HVMs and PV guests
