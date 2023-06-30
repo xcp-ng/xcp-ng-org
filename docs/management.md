@@ -62,7 +62,7 @@ We advise to start using XOA by deploying it really easily in [few clicks on thi
 
 ### XOA vs XO from GitHub?
 
-XOA is meant to be used as the easiest way to test it, but also to use it in production: this is the version **professionally supported**. If you are an individual, feel free to enjoy version from GitHub directly!
+XOA is meant to be used as the easiest way to test it, but also to use it in production: this is the version **professionally supported**. If you are an individual, feel free to enjoy the version from GitHub directly!
 
 ### Web UI
 
@@ -116,10 +116,10 @@ Unlike `xe` which is only connected to one pool, `xo-cli` has access to all pool
 
 ### XO API
 
-You can also build your own application or automation on top of XO API. It's a JSON-RPC API, using the same function calls that `xo-cli`.
+You can also build your own application or automation on top of XO API. It's a JSON-RPC API, using the same function calls as `xo-cli`.
 
 ## XO Lite
 
 :::tip
-XO Lite is not there yet, but it will be embed in each host in a reasonable future
+XO Lite is not there yet, but it will be embeded in each host in the future.
 :::
