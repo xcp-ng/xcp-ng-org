@@ -121,5 +121,5 @@ You can also build your own application or automation on top of XO API. It's a J
 ## XO Lite
 
 :::tip
-XO Lite is not there yet, but it will be embeded in each host in the future.
+XO Lite is not there yet, but it will be embedded in each host in the future.
 :::
