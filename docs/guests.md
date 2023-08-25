@@ -147,8 +147,7 @@ rc-service xe-guest-utilities start
 apt install xe-guest-utilities
 ```
 
-The last known package was published for the LTS release Focal Fossa. It was dropped from more recent releases. We enjoin you to contact ubuntu packagers for them to start packaging it again. In the meantime you can install the guest tools from our guest tools ISO image, as explained below.
-
+Some older versions of Ubuntu, now EOL, may not have this package available in their repositories. Known such releases are 20.10 to 21.10. The best solution is to upgrade to a supported release. If this is really not possible, you may install the tools from the guest tools ISO.
 
 *Feel free to add other distros to the above list if they provide the tools in their repositories.*
 
