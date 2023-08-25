@@ -159,7 +159,7 @@ Special case: if VERSION and XCPNGVERSION are always the same (example: `xcp-ng-
 
 We do not decide how and when new versions and released, and how they are numbered. So we need to somewhat mix the upstream versioning with our own branch names and versioning. For maintenance branches and tags related to an XCP-ng release, notably.
 
-Examples: `host-installer`, `sm`...
+Examples: `sm`...
 
 Common case:
 * Tags:
@@ -174,13 +174,13 @@ Common case:
 
 If for any reason we decide to release a newer version of the software as a maintenance update, then we'd create new tag and a new maintenance branch that match `UPSTREAMVERSION` (that changes) and `XCPNGVERSIONFULL` (that doesn't change)
 
-Special case: if the upstream version and the XCP-ng version are always the same (example: `host-installer`), then:
+Special case: if the upstream version and the XCP-ng version are always the same, then:
   * Tags: `vXCPNGVERSIONFULL` (`v8.2.0`)
   * Maintenance branch: `XCPNGVERSION` (`8.2`)
 
 #### About upstream branches
 
-* If we get the sources from XS SRPMs, then we import them to a branch named `XS` and tag `XS-XSVERSIONFULL` (`XS-8.2.0`). Example: `host-installer`.
+* If we get the sources from XS SRPMs, then we import them to a branch named `XS` and tag `XS-XSVERSIONFULL` (`XS-8.2.0`).
 * If we forked a git repository, we don't need to push the upstream branches or tags to our own fork. However it could be a good habit to track maintenance or hotfix branches for changes.
 
 #### Special case: `sm`
@@ -230,8 +230,7 @@ branches based on an upstream revision: those can then be used for an
 upstream PR, and for merging into an XCP-ng release. Constructing an
 XCP-ng `host-installer` release then is done by starting from the
 upstream tag selected by the XCP-ng team to be the basis for our
-version of the installer, and merging those
-topic branches.
+version of the installer, and merging those topic branches.
 
 A `small-patches` branch is used to hold small non-upstreamable
 patches until we have decided what should be proposed upstream to
@@ -258,7 +257,7 @@ branches described above.
 Fixing of existing topic branches should be done "on the topic
 branch", which is to say they should be based on the last commit of
 that topic branch that was merged in the current XCP-ng branch. A PR
-is then openned for merging into this current XCP-ng branch.
+is then opened for merging into this current XCP-ng branch.
 
 When introducing a fix, we should keep in mind whether it is
 meaningful on its own, or is meant to be squashed the next time this
@@ -287,6 +286,12 @@ Care should be taken to:
   branch's base depends on the status of the matching pull-request
 * pushing those topic branches we did want to rebase, so the uptream
   PR gets our new version
+
+##### Tagging
+
+Versions are tagged when we want to release a new version to official
+repos.  Tags are named `vUPSTREAMVERSION.xcpng.REVISION`
+(`v10.10.5.xcpng.1`), and gpg-signed.
 
 ## RPM packaging
 
