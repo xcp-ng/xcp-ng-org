@@ -251,7 +251,7 @@ For OpenBSD search [the forum](https://xcp-ng.org/forum). See for example [this 
 
 FreeNAS is a locked-down version of FreeBSD, with many packages disabled to ensure a more stable environment for the fileserver. `xe-guest-utilities` is part of the packages that are **not** available in FreeNAS. But because it's based on FreeBSD, the packages from that OS can be installed, at your own risk. This is not a big issue for this particular package, because it's a _leaf_ in the chain of dependencies - nothing in FreeNAS depends on it.
 
-Version 12.0-U1 of TrueNAS includes the package by default, to install it on older versions (versions 11 or higher), follow these steps.
+Versions 12.0-U1 and higher of TrueNAS includes the package by default, to install it on older versions (versions 11 or higher), follow these steps.
 
 1. Enable the FreeBSD repo first:
    ```bash
