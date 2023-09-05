@@ -92,7 +92,8 @@ HTTP(S) URL: https://mymirror.example.com/
 RSYNC URL: rsync://mymirror.example.com/xcp-ng/
 Workaround for Let's Encrypt certificates: applied (or "not required" if you're not using L.E.)
 Other prerequisites from https://xcp-ng.org/docs/mirrors.html checked: yes
-Main contact: John Doe <john.doe@...> ```
+Main contact: John Doe <john.doe@...>
+```
 
 "Source mirror" is the mirror you will sync from. At this stage, we suggest that the source always be `updates.xcp-ng.org` which is the main, most up to date, mirror. Rsync is restricted by default on this mirror, so we need you to provide either a hostname or an IP address access that will be allowed to sync from it (Hence the "Host or IP to authorize:..." line above). You may sync from another mirror if you prefer: [choose one close to you that updates quickly](https://mirrors.xcp-ng.org/?mirrorstats) and review your choice from time to time.
 
