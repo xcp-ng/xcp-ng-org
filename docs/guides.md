@@ -493,21 +493,71 @@ If you would like to replace this certificate by a valid one, either from an int
 
 Note that if you use an non-public certificate authority and XenOrchestra, you have [additional configuration to specify on XenOrchestra side](https://xen-orchestra.com/docs/configuration.html#custom-certificate-authority).
 
+### Certificate Requirements
+
+Please see the [Install a TLS certificate on your server](https://docs.citrix.com/en-us/citrix-hypervisor/hosts-pools.html#install-a-tls-certificate-on-your-server) documentation from Citrix for details regarding the specific requirements for TLS certificates.
+
+:::warning
+As of this writing, the Citrix documentation makes no mention of the `SubjectAlternateName` extension that is effectively required in modern environments. Please see the Subject Alternate Names section below for details.
+:::
+
+### Subject Alternate Names
+Many, if not most, modern TLS and HTTPS clients reject certificates that do not include at least one `SubjectAlternateName` extension. See the [Remove support for commonName matching in certificates](https://developer.chrome.com/blog/chrome-58-deprecations/#remove-support-for-commonname-matching-in-certificates) section of the [Deprecations and Removals in Chrome 58](https://developer.chrome.com/blog/chrome-58-deprecations/) post from March 2017 to the Chrome Developer Blog from for further details.
+
 ### Generate certificate signing request
+
+#### Single Hosts
+You can use the auto-generated key to create a certificate signing request:
+
+```
+openssl req -new -subj '/CN=XCP-ng hypervisor/' \
+   -addext "subjectAltName = DNS:xcp-ng.example.com" \
+   -key /etc/xensource/xapi-ssl.pem \
+   -out xcp-ng.csr
+```
+
+#### Resource Pools
+Stats, consoles and other parts of a pool are served locally on a node within a pool. E.g., when we ask to display the stats of a host, XAPI will tell us to ask the slave (with an HTTP redirect code). In order to prevent certificates on the slave hosts from being rejected after this redirect, each host must use a ceritficate that is configured with a `SubjectAlternateName` for each DNS name and IP address used by all hosts in the pool, not just the master.
+
+:::tip
+It is possible to generate a single certificate that encompasses all IPs and DNS Names used by all hosts in the pool, then deploy that certificate to each host in the pool.
+:::
+
+For example, with a pool of 3 hosts:
+```
+name-label: xcp-ng-1, FQDN: xcp-ng-1.example.com, IP: 10.0.0.11
+name-label: xcp-ng-2, FQDN: xcp-ng-2.example.com, IP: 10.0.0.12
+name-label: xcp-ng-3, FQDN: xcp-ng-3.example.com, IP: 10.0.0.13
+```
 
 You can use the auto-generated key to create a certificate signing request:
 
 ```
-openssl req -new -key /etc/xensource/xapi-ssl.pem -subj '/CN=XCP-ng hypervisor/' -out xcp-ng.csr
+openssl req -new -subj '/CN=XCP-ng resource pool/' \
+   -addext "subjectAltName = DNS:xcp-ng-1.example.com" \
+   -addext "subjectAltName = DNS:xcp-ng-1.example.com" \
+   -addext "subjectAltName = DNS:xcp-ng-1.example.com" \
+   -addext "subjectAltName = IP:10.0.0.11" \
+   -addext "subjectAltName = IP:10.0.0.12" \
+   -addext "subjectAltName = IP:10.0.0.13" \
+   -key /etc/xensource/xapi-ssl.pem \
+   -out xcp-ng.csr
 ```
 
 ### Install the certificate chain (for XCP-ng v8.2+)
 
-Once you have your certificates, upload the certificates to your XCP-ng host, then use the following command to install the certificates:
+Once you have your certificate(s), upload the certificate(s) to your XCP-ng host, then use the following command to install the certificates:
 
 ```
-xe host-server-certificate-install certificate=<path to certificate> private-key=<path to key> certificate-chain=<path to chain>
+xe host-server-certificate-install \
+   certificate=<path to certificate> \
+   private-key=<path to key> \
+   certificate-chain=<path to chain> \
+   host=xcp-ng-1
 ```
+:::tip
+When deploying certificate(s) to a resource pool, repeat this process for each host in the resource pool.
+:::
 
 :::tip
 The `certificate-chain` parameter is optional. The private key can be deleted after certificate is installed for additional security. For additional details check Citrix [documentation](https://docs.citrix.com/en-us/citrix-hypervisor/hosts-pools.html#install-a-tls-certificate-on-your-server).
