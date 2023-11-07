@@ -342,7 +342,7 @@ The VM needs to be running for this test.
 ###### From Xen Orchestra
 You can see this information in the General tab of the VM view.
 * Device drivers: XO displays "Hardware virtualization with paravirtualization drivers enabled (PVHVM)" on the General tab
-* Management agent: XO displays "Management agent detected" or "Management agent version {version} detected"
+* Management agent: XO displays "Management agent detected" or "Management agent version \{version\} detected"
 
 More detailed information can also be found in the Advanced tab.
 

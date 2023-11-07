@@ -5,13 +5,15 @@ title: XCP-ng documentation
 sidebar_position: 1
 ---
 
-# 🚀 XCP-ng documentation
+![](../assets/img/bannerxcp.png)
+
+# Introduction
 
 XCP-ng is a high performance enterprise level virtualization platform with a rich ecosystem, that can be integrated in an entire stack to do management and backup for it (see [Xen Orchestra](management/manage-at-scale/xo-web-ui) section for that). XCP-ng stands for *Xen Cloud Platform - next generation*: it is the modern successor to XCP, initially created as an Open Source version of Citrix XenServer back in 2010.
 
 XCP-ng is -by default- a [secure platform](project/security) to run any kind of virtualization workload, while being managed by a [central administration console](management/manage-at-scale/xo-web-ui), integrated with an API and CLI but also compatible with Packer, Terraform and Ansible.
 
-Visit the main website to learn more: [https://xcp-ng.org](https://xcp-ng.org)
+Visit the [main website](https://xcp-ng.org) to learn more. Latest updates are published on [our blog](https://xcp-ng.org/blog), don't miss any announcement there!
 
 ## ⚙️ General design
 
