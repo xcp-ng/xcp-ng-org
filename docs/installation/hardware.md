@@ -8,7 +8,7 @@ All about the hardware supported by XCP-ng
 
 ## Hardware Compatibility List (HCL)
 
-Devices listed on [Citrix Hypervisor's Hardware Compatibility List](http://hcl.xenserver.org/) are supported.
+Devices listed on [XenServer's Hardware Compatibility List](http://hcl.xenserver.com/) are supported.
 
 For other hardware, see [Unlisted Hardware](#unlisted-hardware).
 
