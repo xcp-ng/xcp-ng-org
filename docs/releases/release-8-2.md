@@ -37,7 +37,7 @@ Refer to the [Upgrade Howto](../../../installation/upgrade).
 
 ### Highlight from Citrix Hypervisor changes
 
-Full release notes at <https://docs.citrix.com/en-us/citrix-hypervisor/whats-new.html>
+Full release notes at [https://docs.citrix.com/en-us/citrix-hypervisor/whats-new.html](https://docs.citrix.com/en-us/citrix-hypervisor/whats-new.html)
 
 Main changes announced by Citrix:
 * Maximum host RAM raised to 6 TB and maximum number of logical processors per host raised to 448 CPUs.
@@ -189,11 +189,11 @@ When a host is upgraded to XCP-ng 8.2 using the installation ISO, two files are 
 * `/etc/modprobe.d/blacklist-bridge.conf`
 * `/etc/modprobe.d/disable-ipv6.conf`
 
-We reported the issue to Citrix: <https://bugs.xenserver.org/browse/XSO-991>
+We reported the issue to Citrix: [https://bugs.xenserver.org/browse/XSO-991](https://bugs.xenserver.org/browse/XSO-991)
 
 There are no known consequences of having those files missing, except possible slightly increased memory usage.
 
-Reference: <https://github.com/xcp-ng/xcp/issues/457>
+Reference: [https://github.com/xcp-ng/xcp/issues/457](https://github.com/xcp-ng/xcp/issues/457)
 
 ### UEFI Windows compatibility
 
@@ -205,7 +205,7 @@ However, there remained specific situations where some Windows VMs had trouble s
 
 A fix was found and released as an official update to XCP-ng 8.2.
 
-Reference: <https://github.com/xcp-ng/xcp/issues/454>
+Reference: [https://github.com/xcp-ng/xcp/issues/454](https://github.com/xcp-ng/xcp/issues/454)
 
 ### Citrix Hypervisor's known issues
 
@@ -218,7 +218,7 @@ Some exceptions to those Citrix Hypervisor known issues:
 
 ### Older known issues
 
-As every hand-updated list, this list below can quickly become obsolete or incomplete, so also check this: <https://github.com/xcp-ng/xcp/issues>
+As every hand-updated list, this list below can quickly become obsolete or incomplete, so also check this: [https://github.com/xcp-ng/xcp/issues](https://github.com/xcp-ng/xcp/issues)
 
 Some hardware-related issues are also described in [this page](../../installation/hardware).
 
@@ -236,17 +236,17 @@ Reference: [XSO-938](https://bugs.xenserver.org/browse/XSO-938)
 
 Due to the presence of the diagnostic partition on Dell servers, the installer does not create all partitions, so for example there's no dedicated /var/log partition (side-effect: log rotation switches to aggressive mode, so old logs are deleted quickly, sometimes even the same day!).
 
-Reference: <https://github.com/xcp-ng/xcp/issues/149>
+Reference: [https://github.com/xcp-ng/xcp/issues/149](https://github.com/xcp-ng/xcp/issues/149)
 
 #### Installation on software RAID may fail on previously used disks
 
 Sometimes the presence of old `mdadm` metadata on the disks cause the installer to fail creating the software RAID. Zeroing the disks fixes it.
 
-Reference: <https://github.com/xcp-ng/xcp/issues/107>
+Reference: [https://github.com/xcp-ng/xcp/issues/107](https://github.com/xcp-ng/xcp/issues/107)
 
 #### Installer crashes on some hardware with AMD Ryzen APUs
 
 The installer gives an error on some hardware. Reducing the maximum amount of memory allocated to the installer workarounds it.
 The installer offers extra options to boot with only 2 G of RAM (usually solves the issue) or using an alternate kernel.
 
-Reference: <https://github.com/xcp-ng/xcp/issues/206>
+Reference: [https://github.com/xcp-ng/xcp/issues/206](https://github.com/xcp-ng/xcp/issues/206)

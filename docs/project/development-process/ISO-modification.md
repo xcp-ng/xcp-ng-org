@@ -98,7 +98,7 @@ rpm -ql host-installer
 ```
 Most of them are in `/opt/xensource/installer/`
 
-Our git repository for the installer is: <https://github.com/xcp-ng/host-installer>. Feel free to create pull requests for your enhancements or bug fixes.
+Our git repository for the installer is: [https://github.com/xcp-ng/host-installer](https://github.com/xcp-ng/host-installer). Feel free to create pull requests for your enhancements or bug fixes.
 
 ### Build a new `install.img` with your changes
 

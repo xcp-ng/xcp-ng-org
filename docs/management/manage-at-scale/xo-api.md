@@ -170,7 +170,7 @@ The following query parameters are supported to customize the created VDI:
 
 ### The future
 
-We are adding features and improving the REST API step by step. If you have interesting use cases or feedback, please ask directly at <https://xcp-ng.org/forum/category/12/xen-orchestra>
+We are adding features and improving the REST API step by step. If you have interesting use cases or feedback, please ask directly at [https://xcp-ng.org/forum/category/12/xen-orchestra](https://xcp-ng.org/forum/category/12/xen-orchestra)
 
 ## JSON-RPC over websockets
 

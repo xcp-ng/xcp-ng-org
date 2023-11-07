@@ -221,9 +221,9 @@ Note: If you use ZFS, assign at least 16GB RAM to avoid swapping. ZFS (in standa
 
 Do not hesitate to take a look at these links for more advanced explanations:
 
-* Wikipedia: <https://en.wikipedia.org/wiki/ZFS>
-* OpenZFS Basics: <https://www.youtube.com/watch?v=MsY-BafQgj4>
-* Blog full of useful information: <http://www.zfsbuild.com>
+* Wikipedia: [https://en.wikipedia.org/wiki/ZFS](https://en.wikipedia.org/wiki/ZFS)
+* OpenZFS Basics: [https://www.youtube.com/watch?v=MsY-BafQgj4](https://www.youtube.com/watch?v=MsY-BafQgj4)
+* Blog full of useful information: [http://www.zfsbuild.com](http://www.zfsbuild.com)
 
 You can monitor your ZFS pool using:
 
@@ -399,7 +399,7 @@ xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage 
 Experimental, this needs reliable testing to ensure no block corruption happens in regular use.
 :::
 
-This is at this moment the only way to connect to Ceph with no modifications of dom0, it's possible to create multiple Ceph iSCSI gateways following this: <https://docs.ceph.com/docs/master/rbd/iscsi-target-cli/>
+This is at this moment the only way to connect to Ceph with no modifications of dom0, it's possible to create multiple Ceph iSCSI gateways following this: [https://docs.ceph.com/docs/master/rbd/iscsi-target-cli/](https://docs.ceph.com/docs/master/rbd/iscsi-target-cli/)
 
 Ceph iSCSI gateway node(s) sits outside dom0, probably another Virtual or Physical machine. The packages referred in the URL are to be installed on iSCSI gateway node(s). For XCP-ng dom0, no modifications are needed as it would use LVMoISCSISR (lvmoiscsi) driver to access the iSCSI LUN presented by these gateways.
 
@@ -459,10 +459,10 @@ xe sr-create name-label='CEPH' shared=true device-config:device=/dev/rbd/rbd/xen
 
 You will probably want to configure ceph further so that the block device is mapped on reboot.
 
-For the full discussion about Ceph in XCP-ng, see this forum thread: <https://xcp-ng.org/forum/topic/4/ceph-on-xcp-ng>
+For the full discussion about Ceph in XCP-ng, see this forum thread: [https://xcp-ng.org/forum/topic/4/ceph-on-xcp-ng](https://xcp-ng.org/forum/topic/4/ceph-on-xcp-ng)
 
 :::tip
-* Do not use admin keyring for production, but make a separate key with only necessary privileges <https://docs.ceph.com/en/latest/rados/operations/user-management/>
+* Do not use admin keyring for production, but make a separate key with only necessary privileges [https://docs.ceph.com/en/latest/rados/operations/user-management/](https://docs.ceph.com/en/latest/rados/operations/user-management/)
 :::
 
 ## ISO SR
@@ -475,7 +475,7 @@ You might be wondering how to upload an ISO. Unlike other solutions, you need to
 
 First, you need to create the NFS or SMB Share. There are plenty of options: from dedicated NAS hardware solutions and dedicated software solutions such as TrueNAS, to manual administration on any Linux/unix or Windows system.
 
-You can find some tutorials on the internet to create an NFS Server, for exemple here <https://wiki.linux-nfs.org/wiki/index.php/NFS_Howto> or here <https://wiki.archlinux.org/title/NFS>
+You can find some tutorials on the internet to create an NFS Server, for exemple here [https://wiki.linux-nfs.org/wiki/index.php/NFS_Howto](https://wiki.linux-nfs.org/wiki/index.php/NFS_Howto) or here [https://wiki.archlinux.org/title/NFS](https://wiki.archlinux.org/title/NFS)
 
 Then, in Xen Orchestra go into "New/Storage" and select "ISO SR":
 
@@ -597,7 +597,7 @@ Luckily, Xen Orchestra is able to detect an uncoalesced chain. It means it won't
 
 But more than that, Xen Orchestra is also able to show you uncoalesced disk in the SR view, in the Advanced tab.
 
-More about this exclusive feature on <https://xen-orchestra.com/blog/xenserver-coalesce-detection-in-xen-orchestra/>
+More about this exclusive feature on [https://xen-orchestra.com/blog/xenserver-coalesce-detection-in-xen-orchestra/](https://xen-orchestra.com/blog/xenserver-coalesce-detection-in-xen-orchestra/)
 
 ## Modify an existing SR connection
 

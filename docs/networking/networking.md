@@ -314,8 +314,8 @@ This setup will save you costs of 2 network switches you would otherwise have to
 
 #### References
 
-* Forum post: <https://xcp-ng.org/forum/topic/1897/mesh-network>
-* Proxmox wiki: <https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server>
+* Forum post: [https://xcp-ng.org/forum/topic/1897/mesh-network](https://xcp-ng.org/forum/topic/1897/mesh-network)
+* Proxmox wiki: [https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server](https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server)
 
 ## DNS Search Domains
 
@@ -357,7 +357,7 @@ systemctl disable fcoe
 systemctl disable xs-fcoe
 ```
 
-See <https://github.com/xcp-ng/xcp/issues/138>.
+See [https://github.com/xcp-ng/xcp/issues/138](https://github.com/xcp-ng/xcp/issues/138).
 
 ### Emergency Network Reset
 
@@ -424,7 +424,7 @@ xe network-sriov-destroy uuid=<network_sriov_uuid>
 ```
 
 :::tip
-You can read a Citrix guide here: <https://support.citrix.com/article/CTX235044>
+You can read a Citrix guide here: [https://support.citrix.com/article/CTX235044](https://support.citrix.com/article/CTX235044)
 :::
 
 ### Intel i218/i219 slow speed

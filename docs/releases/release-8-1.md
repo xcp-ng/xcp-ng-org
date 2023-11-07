@@ -31,7 +31,7 @@ Refer to the [Upgrade Howto](../../installation/upgrade).
 
 ### Highlight from Citrix Hypervisor changes
 
-Full release notes at <https://docs.citrix.com/en-us/citrix-hypervisor/whats-new.html>
+Full release notes at [https://docs.citrix.com/en-us/citrix-hypervisor/whats-new.html](https://docs.citrix.com/en-us/citrix-hypervisor/whats-new.html)
 
 Citrix announces:
 * "Improved performance for VM imports and exports that use the XVA format" thanks to the use of a very efficient hash algorithm. Tests made with a 20G VM did not show any difference. According to the announcement the bigger the VM, the bigger the gains. One can suppose that the gain is only visible with large VMs.
@@ -242,7 +242,7 @@ swaplabel -L swap-abcdef /dev/sda6
 ```
 * remove installation media then reboot
 
-Forum thread: <https://xcp-ng.org/forum/topic/2849/post-8-1-upgrade-boot-fails-and-restore-fails>
+Forum thread: [https://xcp-ng.org/forum/topic/2849/post-8-1-upgrade-boot-fails-and-restore-fails](https://xcp-ng.org/forum/topic/2849/post-8-1-upgrade-boot-fails-and-restore-fails)
 
 ### Citrix Hypervisor's known issues
 
@@ -257,7 +257,7 @@ Some exceptions to those CH 8.1 known issues:
 
 ### Older known issues
 
-As every hand-updated list, this list below can quickly become obsolete or incomplete, so also check this: <https://github.com/xcp-ng/xcp/issues>
+As every hand-updated list, this list below can quickly become obsolete or incomplete, so also check this: [https://github.com/xcp-ng/xcp/issues](https://github.com/xcp-ng/xcp/issues)
 
 Some hardware-related issues are also described in [this page](../../installation/hardware).
 
@@ -275,17 +275,17 @@ Reference: [XSO-938](https://bugs.xenserver.org/browse/XSO-938)
 
 Due to the presence of the diagnostic partition on Dell servers, the installer does not create all partitions, so for example there's no dedicated /var/log partition (side-effect: log rotation switches to aggressive mode, so old logs are deleted quickly, sometimes even the same day!).
 
-Reference: <https://github.com/xcp-ng/xcp/issues/149>
+Reference: [https://github.com/xcp-ng/xcp/issues/149](https://github.com/xcp-ng/xcp/issues/149)
 
 #### Installation on software RAID may fail on previously used disks
 
 Sometimes the presence of old `mdadm` metadata on the disks cause the installer to fail creating the software RAID. Zeroing the disks fixes it.
 
-Reference: <https://github.com/xcp-ng/xcp/issues/107>
+Reference: [https://github.com/xcp-ng/xcp/issues/107](https://github.com/xcp-ng/xcp/issues/107)
 
 #### Installer crashes on some hardware with AMD Ryzen APUs
 
 The installer gives an error on some hardware. Reducing the maximum amount of memory allocated to the installer workarounds it.
 The installer offers extra options to boot with only 2 G of RAM (usually solves the issue) or using an alternate kernel.
 
-Reference: <https://github.com/xcp-ng/xcp/issues/206>
+Reference: [https://github.com/xcp-ng/xcp/issues/206](https://github.com/xcp-ng/xcp/issues/206)

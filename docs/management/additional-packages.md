@@ -32,7 +32,7 @@ To disable a repository, edit `/etc/yum.repos.d/name_of_repo.repo` and set `enab
 
 We offer a number of additional packages ranging from ZFS support, [newer drivers](../../installation/hardware#alternate-drivers) or [newer kernel](../../installation/hardware#alternate-kernel), to small utilities such as `vim`, `joe`, `iperf`, `mc`, etc.).
 
-A regularly updated list of such utilities for XCP-ng 8.2 is available at <http://reports.xcp-ng.org/8.2/extra_installable.txt>.
+A regularly updated list of such utilities for XCP-ng 8.2 is available at [http://reports.xcp-ng.org/8.2/extra_installable.txt](http://reports.xcp-ng.org/8.2/extra_installable.txt).
 
 The packages from this list are supported on a best-effort basis.
 

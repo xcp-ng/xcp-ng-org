@@ -270,6 +270,6 @@ Be careful, the changes done using `xl` only affect vCPU at the moment, the memo
 You can see the current memory scheme of the VM using the `debug-key` interface with the `u` key. e.g. `xl debug-key u; xl dmesg`.
 
 References:
-* <https://xcp-ng.org/forum/topic/2265/using-numa-split-on-xcp-ng>
-* <https://wiki.xen.org/wiki/Xen_on_NUMA_Machines>
-* <https://wiki.xenproject.org/wiki/Tuning_Xen_for_Performance>
+* [https://xcp-ng.org/forum/topic/2265/using-numa-split-on-xcp-ng](https://xcp-ng.org/forum/topic/2265/using-numa-split-on-xcp-ng)
+* [https://wiki.xen.org/wiki/Xen_on_NUMA_Machines](https://wiki.xen.org/wiki/Xen_on_NUMA_Machines)
+* [https://wiki.xenproject.org/wiki/Tuning_Xen_for_Performance](https://wiki.xenproject.org/wiki/Tuning_Xen_for_Performance)

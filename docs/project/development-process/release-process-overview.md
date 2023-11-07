@@ -5,7 +5,7 @@ How we make a release process.
 Let's first discuss the RPM repository structure and define stable and development releases. Then we'll see development and packaging aspects.
 
 ## XCP-ng's RPM repositories
-*A new repository structure has been introduced with XCP-ng 8.0, which is what this section will cover. For the structure used in XCP-ng 7.5 and 7.6, see <https://xcp-ng.org/forum/topic/185/structure-of-the-rpm-repositories>.*
+*A new repository structure has been introduced with XCP-ng 8.0, which is what this section will cover. For the structure used in XCP-ng 7.5 and 7.6, see [https://xcp-ng.org/forum/topic/185/structure-of-the-rpm-repositories](https://xcp-ng.org/forum/topic/185/structure-of-the-rpm-repositories).*
 
 First, the *goals* behind the RPM repository structure are:
 * Allow fast release of fixes to the maintained stable releases.
@@ -13,7 +13,7 @@ First, the *goals* behind the RPM repository structure are:
 * Allow users to upgrade from an older XCP-ng to the latest release with a simple yum update (as long as we don't cross major release borders. 7.4 to 7.6 is supported. 7.6 to 8.0 isn't).
 * Have a place where additional packages from XCP-ng's core team or from the community can be made available even after the release.
 
-You can browse the repository structure at <https://updates.xcp-ng.org/>
+You can browse the repository structure at [https://updates.xcp-ng.org/](https://updates.xcp-ng.org/)
 
 Here's a tree that represents the structure:
 ```
@@ -70,10 +70,10 @@ There are two sides of the coin: **development** and **RPM packaging**. For a gi
 
 Here are the usual steps. We will expand on them afterwards:
 * **Development**
-  * **Develop**: happens on a software git repository as in any software project. Example: <https://github.com/xcp-ng/xcp-emu-manager>. Skip if we are not the upstream developer for that software and are not contributing to it yet.
-  * **Release**: decide that your software is good to be released as part of XCP-ng, either as an update to an existing release of XCP-ng or in the next release. Create a tag in the git repository. Example: <https://github.com/xcp-ng/xcp-emu-manager/releases/tag/v0.0.9>. Skip if we are not the upstream developer for that software.
+  * **Develop**: happens on a software git repository as in any software project. Example: [https://github.com/xcp-ng/xcp-emu-manager](https://github.com/xcp-ng/xcp-emu-manager). Skip if we are not the upstream developer for that software and are not contributing to it yet.
+  * **Release**: decide that your software is good to be released as part of XCP-ng, either as an update to an existing release of XCP-ng or in the next release. Create a tag in the git repository. Example: [https://github.com/xcp-ng/xcp-emu-manager/releases/tag/v0.0.9](https://github.com/xcp-ng/xcp-emu-manager/releases/tag/v0.0.9). Skip if we are not the upstream developer for that software.
 * **Packaging**
-  * **Create or update RPM specs** and commit them to appropriate repository in the ['xcp-ng-rpms' github organization](https://github.com/xcp-ng-rpms/). Example: <https://github.com/xcp-ng-rpms/xcp-emu-manager>.
+  * **Create or update RPM specs** and commit them to appropriate repository in the ['xcp-ng-rpms' github organization](https://github.com/xcp-ng-rpms/). Example: [https://github.com/xcp-ng-rpms/xcp-emu-manager](https://github.com/xcp-ng-rpms/xcp-emu-manager).
   * **Add or update patches** to be applied above the upstream source tarball to that same repository.
   * **Submit build** to the build system ([koji](https://koji.xcp-ng.org/)).
   * **Publish the build** to the appropriate RPM repository (`testing` for stable releases, `base` for development release of XCP-ng)

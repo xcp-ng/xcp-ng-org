@@ -10,15 +10,15 @@ There are two ways of contributing:
 
 You don't have to be a programmer/IT-nerd to help at this project. Just ask or offer your help:
 
-* Forum: <https://xcp-ng.org/forum>
+* Forum: [https://xcp-ng.org/forum](https://xcp-ng.org/forum)
 * IRC: <irc://irc.oftc.net/#xcp-ng>
-* Discord: <https://discord.gg/Hr98F6wRvx>
+* Discord: [https://discord.gg/Hr98F6wRvx](https://discord.gg/Hr98F6wRvx)
 
 We are happy about every helping hand!
 
 ## Write documentation
 
-Contribute to our documentation with pull requests modifying the files at <https://github.com/xcp-ng/xcp-ng-org/tree/master/docs>
+Contribute to our documentation with pull requests modifying the files at [https://github.com/xcp-ng/xcp-ng-org/tree/master/docs](https://github.com/xcp-ng/xcp-ng-org/tree/master/docs)
 
 If you're not familiar will pull requests, but can also simply click the "Help us to improve this page" link at the bottom of any page of the documentation, which will offer a modification form and create a pull request for you.
 
@@ -46,7 +46,7 @@ There are many components, in various languages: C, ocaml, python and more.
 * Connect with us via
     * IRC: <irc://irc.oftc.net/#xcp-ng> and <irc://irc.oftc.net/#xcp-ng-dev>
     * [Discord](https://discord.gg/Hr98F6wRvx)
-    * Forum -> Development Corner: <https://xcp-ng.org/forum/category/7/development>
+    * Forum -> Development Corner: [https://xcp-ng.org/forum/category/7/development](https://xcp-ng.org/forum/category/7/development)
 * Read [this introduction](../development-process/development). The rest of the [Development Process Tour](../../category/development-process) is also of interest for anyone who wants to help on development.
 
 ## Package
@@ -65,7 +65,7 @@ As a member of the Linux Foundation, XCP-ng asks that every contributor certifie
 ```
 Signed-off-by: Full Name <email>
 ````
-line added at the end of the commit message. Git even has an option to add it for you: `git commit -s`. By adding this mention to your commit message, you state that you agree to the terms published at <https://developercertificate.org/> (and also written below) for that contribution.
+line added at the end of the commit message. Git even has an option to add it for you: `git commit -s`. By adding this mention to your commit message, you state that you agree to the terms published at [https://developercertificate.org/](https://developercertificate.org/) (and also written below) for that contribution.
 
 ```
 Developer's Certificate of Origin 1.1

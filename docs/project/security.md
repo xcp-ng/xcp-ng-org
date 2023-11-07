@@ -16,13 +16,13 @@ You can also see the change history with dates of each organization added into i
 
 ### XSA
 
-XSAs are "Xen Security Advisory". They are -in general- linked to a CVE. You can see the list of all XSAs at this place: <https://xenbits.xen.org/xsa/>
+XSAs are "Xen Security Advisory". They are -in general- linked to a CVE. You can see the list of all XSAs at this place: [https://xenbits.xen.org/xsa/](https://xenbits.xen.org/xsa/)
 
 ![](../../assets/img/xen_logo.png)
 
 ## Platform security
 
-XCP-ng code base is close to Citrix Hypervisor, and for that reason, we are integrating Citrix security patches very quickly into XCP-ng. We are also posting very often updates and explanation on each security patches available. You can see this list at this place: <https://xcp-ng.org/blog/tag/security/>
+XCP-ng code base is close to Citrix Hypervisor, and for that reason, we are integrating Citrix security patches very quickly into XCP-ng. We are also posting very often updates and explanation on each security patches available. You can see this list at this place: [https://xcp-ng.org/blog/tag/security/](https://xcp-ng.org/blog/tag/security/)
 
 However, it's more and more plausible that flaws might be discovered first on XCP-ng instead of Citrix Hypervisor. In that case, please see below.
 

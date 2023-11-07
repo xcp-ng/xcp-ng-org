@@ -28,7 +28,7 @@ And with a bit of scripting or additional components:
 
 ## Koji's concepts
 
-(see also <https://pagure.io/docs/koji/> though its howto is very Fedora-centric)
+(see also [https://pagure.io/docs/koji/](https://pagure.io/docs/koji/) though its howto is very Fedora-centric)
 
 In order to understand how Koji works, one needs to explain a few concepts: packages, builds, RPMs and tags.
 
@@ -38,7 +38,7 @@ In order to understand how Koji works, one needs to explain a few concepts: pack
 * **Build**: that RPM belongs to a **build**, which groups a Source RPM (SRPM) with all the RPMs it produced, and is identified by the name of the SRPM, without the `.src.rpm` part: `xenopsd-0.66.0-1.1.xcpng`.
 * **Package**: the build belongs to a **package**: `xenopsd`. A package has no associated files in itself: it's just the parent of all builds that belong to it, in Koji's database.
 
-This can be seen in the information page for a given build: <https://koji.xcp-ng.org/buildinfo?buildID=2080>. The package is visible as "Package Name" (you can click on it to see the package view) and the RPMs (Source RPM and regular RPMs) are visible under the "RPMs" section.
+This can be seen in the information page for a given build: [https://koji.xcp-ng.org/buildinfo?buildID=2080](https://koji.xcp-ng.org/buildinfo?buildID=2080). The package is visible as "Package Name" (you can click on it to see the package view) and the RPMs (Source RPM and regular RPMs) are visible under the "RPMs" section.
 
 Represented as a tree:
 ```
@@ -106,7 +106,7 @@ Another (fictitious) example:
 This is just to show that build tag and destination tag **can** be different. Build dependencies will be pulled from `v8.x-testing` and the result will be put in `v8.x-sandbox`. This means that builds to the sandbox will never use packages that are already in the sandbox as build dependencies. Why would we do that? To guarantee that builds made in the sandbox are never influenced by other builds made there, possibly by other users. This is a fictitious situation, just to illustrate the concepts of build tag and destination tag.
 
 ## Build and release process
-Here's how to update a package in XCP-ng, step by step. This process requires writing rights on the git repository corresponding to the package at <https://github.com/xcp-ng-rpms/> and submit rights in Koji. Others are invited to fork one the repositories at <https://github.com/xcp-ng-rpms/>, [build RPMs locally in our build container](#local-rpm-build), and then create pull requests. Reading the steps below will still be useful to you to help make appropriate changes.
+Here's how to update a package in XCP-ng, step by step. This process requires writing rights on the git repository corresponding to the package at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/) and submit rights in Koji. Others are invited to fork one the repositories at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/), [build RPMs locally in our build container](#local-rpm-build), and then create pull requests. Reading the steps below will still be useful to you to help make appropriate changes.
 
 This applies only to packages that we build in Koji. There are also packages that are not built in Koji. Most packages from CentOS, for example, are imported directly from CentOS into our Koji instance.
 
@@ -117,7 +117,7 @@ In order not to overload this section with information, the instructions are ava
 
 ### 1. Package
 * Make sure `git-lfs` is installed.
-* Clone or update your local copy of the relevant repository at <https://github.com/xcp-ng-rpms/> (one per package).
+* Clone or update your local copy of the relevant repository at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/) (one per package).
 * Switch to the branch that corresponds to the release of XCP-ng you target, e.g. `git checkout 8.2` for XCP-ng 8.2. If you target several releases of XCP-ng, you'll have to make your changes to several branches and start several builds.
 * Create a temporary work branch from that branch.
 * Make your changes to the `.spec` file, sources and/or patches. Follow the [RPM Packaging Guidelines](https://github.com/xcp-ng/xcp/wiki/RPM-Packaging-guidelines).
@@ -140,7 +140,7 @@ In order not to overload this section with information, the instructions are ava
 ### 4. Official build
 * The official maintainer for the package has the responsibility to start an official build in koji (once without `--scratch`), because the result will be pushed to public RPM repositories as testing RPMs.
 * Check that the build was successful
-* Wait a few minutes for the RPMs to reach the RPM repositories at <https://updates.xcp-ng.org/>
+* Wait a few minutes for the RPMs to reach the RPM repositories at [https://updates.xcp-ng.org/](https://updates.xcp-ng.org/)
 
 ### 5. Post-build tasks
 * Test that you can update a host from the repositories: look at the list of built RPMs, identify those that are updates to RPMs on the system, and update them with `yum update {PACKAGE1} {PACKAGE2} {...} --enablerepo='xcp-ng-testing'`.
@@ -149,14 +149,14 @@ In order not to overload this section with information, the instructions are ava
 Then, if it is an **update candidate** for an existing package:
 * If the update targets several releases (for example `8.x` and `8.x+1`), test for each release.
 * Announce the update candidate and ask for testers:
-  * Message to <https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing>
+  * Message to [https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing](https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing)
     * Why the update
     * List of updated RPMs
     * Command to install them.
     * Command to downgrade in case of issues.
     * What to test.
     * Is a reboot required...
-  * For better visibility of the update candidate, also create a GitHub issue, such as <https://github.com/xcp-ng/xcp/issues/154>. Add it to the [team board](https://github.com/orgs/xcp-ng/projects/2) in column "Update candidate".
+  * For better visibility of the update candidate, also create a GitHub issue, such as [https://github.com/xcp-ng/xcp/issues/154](https://github.com/xcp-ng/xcp/issues/154). Add it to the [team board](https://github.com/orgs/xcp-ng/projects/2) in column "Update candidate".
 
 ## Special case: new packages
 Importing new packages requires extra steps.
@@ -183,7 +183,7 @@ In addition to this, when we import RPMs from CentOS or EPEL we tag their *build
 * `centos-{VERSION}`, for example `centos-7.5`.
 * `epel-{MAJOR_VERSION}-{DATE}`, for example `epel-7-2019-01-30`
 
-Example: <https://koji.xcp-ng.org/buildinfo?buildID=655>
+Example: [https://koji.xcp-ng.org/buildinfo?buildID=655](https://koji.xcp-ng.org/buildinfo?buildID=655)
 
 All those tags have no purpose in Koji's workflow. They are just useful pieces of information for us.
 
@@ -193,4 +193,4 @@ We automatically sign the RPMs built by or imported to Koji before exporting the
 [More information about RPM signing](../../../project/mirrors#security).
 
 ## Repository generation
-Handled by a cron job on koji's server. Then the repository is synchronised to <https://updates.xcp-ng.org/>.
+Handled by a cron job on koji's server. Then the repository is synchronised to [https://updates.xcp-ng.org/](https://updates.xcp-ng.org/).

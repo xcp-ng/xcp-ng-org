@@ -14,7 +14,7 @@ Here is the list of hypervisors on which you can try XCP-ng :
 * [VMware ESXi & Workstation](https://github.com/xcp-ng/xcp/wiki/Testing-XCP-ng-in-Virtual-Machine-(Nested-Virtualization)#nested-xcp-ng-using-vmware-esxi-and-workstation)
 * [Hyper-V 2016](https://github.com/xcp-ng/xcp/wiki/Testing-XCP-ng-in-Virtual-Machine-(Nested-Virtualization)#nested-xcp-ng-using-microsoft-hyper-v-windows-10---windows-server-2016)
 * [QEMU/KVM](https://github.com/xcp-ng/xcp/wiki/Testing-XCP-ng-in-Virtual-Machine-(Nested-Virtualization)#nested-xcp-ng-using-qemukvm)
-* [Virtualbox](https://www.virtualbox.org) (Nested Virtualisation implemented only in v6.1.x and above - <https://www.virtualbox.org/ticket/4032>)
+* [Virtualbox](https://www.virtualbox.org) (Nested Virtualisation implemented only in v6.1.x and above - [https://www.virtualbox.org/ticket/4032](https://www.virtualbox.org/ticket/4032))
 
 ## Nested XCP-ng using XCP-ng
 
@@ -190,7 +190,7 @@ Like VMware, you must first enable the nested virtualization feature on your hos
 
     `egrep -wo 'vmx|ept' /proc/cpuinfo `
 
-   EPT is required to run nested XS/XCP-ng : <https://xcp-ng.org/forum/topic/550/shadow-paging-disable>
+   EPT is required to run nested XS/XCP-ng : [https://xcp-ng.org/forum/topic/550/shadow-paging-disable](https://xcp-ng.org/forum/topic/550/shadow-paging-disable)
 
 * If everything is OK, you can check if the nested virtualization is already activated.
 

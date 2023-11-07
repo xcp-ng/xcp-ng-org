@@ -332,7 +332,7 @@ It's now up to you to choose.
 #### XCP-ng Windows Guest Tools
 Drivers built by the XCP-ng community.
 
-**Download**: <https://github.com/xcp-ng/win-pv-drivers/releases>
+**Download**: [https://github.com/xcp-ng/win-pv-drivers/releases](https://github.com/xcp-ng/win-pv-drivers/releases)
 
 Stability and testing status: [Windows guest tools community testing](https://github.com/xcp-ng/xcp/wiki/Windows-guest-tools-community-testing).
 
@@ -389,7 +389,7 @@ Our installer is not able currently to cleanly uninstall Citrix tools. Citrix to
 
 So we need to perform a complete manual clean-up of the tools:
 * either entirely manually
-* or using the experimental PowerShell script contributed by one of our users at <https://github.com/siodor/win-tools-cleanup>
+* or using the experimental PowerShell script contributed by one of our users at [https://github.com/siodor/win-tools-cleanup](https://github.com/siodor/win-tools-cleanup)
 
 :warning: In any case, first disable "Windows Update tools" for the VM (Xen Orchestra, advanced tab) and reboot it.
 
@@ -431,7 +431,7 @@ Help is welcome to help us reconcile both procedures into one.
 :::
 
 * Follow the steps 0 to 4 of the "confident option" above if not done yet.
-* Follow this (ignore steps 6 and 7, do not try to install the tools yet) <https://support.citrix.com/article/CTX215427>
+* Follow this (ignore steps 6 and 7, do not try to install the tools yet) [https://support.citrix.com/article/CTX215427](https://support.citrix.com/article/CTX215427)
 * Now open regedit and go to HKLM\SYSTEM\CurrentControlSet\Services and delete entries for all xen* services.
 * In regedit, also go to HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DIFx\DriverStore and remove ONLY xennet* xenvif*
 * Go to C:\Windows\System32 and remove: (you may not have all these)
@@ -450,7 +450,7 @@ Help is welcome to help us reconcile both procedures into one.
 You can try to manually inject the missing drivers in recovery mode.
 
 * Get the "Drivers" folder from the XCP Tools installation path (C:\PROGRAM FILES...) - from another VM or install the tools somewhere else to get it.
-* Create an ISO-Image containing the "Drivers" folder (see <http://imgburn.com>) and mount that ISO-Image to your VM
+* Create an ISO-Image containing the "Drivers" folder (see [http://imgburn.com](http://imgburn.com)) and mount that ISO-Image to your VM
 * Boot to recovery mode and use the command line and the tool "dism" (see [Microsoft Docs](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/add-and-remove-drivers-to-an-offline-windows-image)) to inject the drivers (specifically the xenbus and xenvbd drivers) - watch out for the drive letter of the Windows installation and the CD-Drive ('D' and 'E' in the following example):
 
 ````
@@ -472,7 +472,7 @@ As written above:
 The only way to get the management agent is from Citrix. It can be freely downloaded from [the Citrix Hypervisor download page](https://www.citrix.com/downloads/citrix-hypervisor/), provided you create an account on their site. Name of the item: "Citrix VM Tools for Windows". The installer will install both the management agent and the device drivers.
 
 :::tip Update (2022-02-02)
-Since Citrix released their 8.2 CU1 version of Citrix Hypervisor, the Express edition is not available anymore for download. However, you can still get the Windows tools from the previous releases that are still available under "Citrix Hypervisor and XenServer Legacy Versions". You will also find present and past releases of the tools at: <https://support.citrix.com/article/CTX235403>.
+Since Citrix released their 8.2 CU1 version of Citrix Hypervisor, the Express edition is not available anymore for download. However, you can still get the Windows tools from the previous releases that are still available under "Citrix Hypervisor and XenServer Legacy Versions". You will also find present and past releases of the tools at: [https://support.citrix.com/article/CTX235403](https://support.citrix.com/article/CTX235403).
 :::
 
 ##### Automated installation via Windows Update: device drivers alone

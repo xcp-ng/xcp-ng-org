@@ -2,7 +2,7 @@
 
 The way we use tags and branches.
 
-We need a few conventions to work together. The following describes the naming conventions for branches and tags in our code repositories, that is repositories located at <https://github.com/xcp-ng>. Repositories used for RPM packaging, at <https://github.com/xcp-ng-rpms/>, use different conventions not discussed here.
+We need a few conventions to work together. The following describes the naming conventions for branches and tags in our code repositories, that is repositories located at [https://github.com/xcp-ng](https://github.com/xcp-ng). Repositories used for RPM packaging, at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/), use different conventions not discussed here.
 
 The objectives of the branch and tag naming conventions are:
 * always being able to know how to name tags and maintenance branches, depending on the situation

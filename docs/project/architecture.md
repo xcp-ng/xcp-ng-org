@@ -29,8 +29,8 @@ A PV driver can interact with the `XenStore` to get or set configuration, it's n
 
 :::tip
 For more information, take a look at:
-* <https://wiki.xen.org/wiki/XenStore>
-* <https://wiki.xenproject.org/wiki/XenStore_Reference>
+* [https://wiki.xen.org/wiki/XenStore](https://wiki.xen.org/wiki/XenStore)
+* [https://wiki.xenproject.org/wiki/XenStore_Reference](https://wiki.xenproject.org/wiki/XenStore_Reference)
 :::
 
 ### XenBus
@@ -228,8 +228,8 @@ After that the real connection can start, it's the goal of `static inline int re
 
 :::tip
 References and interesting links:
-* Xen documentation: <https://wiki.xen.org/wiki/XenBus>
-* How to write a XenBus driver? <https://fnordig.de/2016/12/02/xen-a-backend-frontend-driver-example/>
+* Xen documentation: [https://wiki.xen.org/wiki/XenBus](https://wiki.xen.org/wiki/XenBus)
+* How to write a XenBus driver? [https://fnordig.de/2016/12/02/xen-a-backend-frontend-driver-example/](https://fnordig.de/2016/12/02/xen-a-backend-frontend-driver-example/)
 :::
 
 ### Xen Grant table
@@ -240,7 +240,7 @@ Normally the grant table is used in the kernel space, but it exists a `/dev/xen/
 
 :::tip
 Xen documentation:
-* <https://wiki.xenproject.org/wiki/Grant_Table>
+* [https://wiki.xenproject.org/wiki/Grant_Table](https://wiki.xenproject.org/wiki/Grant_Table)
 :::
 
 ### Blkif
@@ -349,7 +349,7 @@ int xenevtchn_notify(xenevtchn_handle *xce, evtchn_port_t port);
 ```
 
 :::tip
-For more information concerning event channels: <https://xenbits.xenproject.org/people/dvrabel/event-channels-F.pdf>
+For more information concerning event channels: [https://xenbits.xenproject.org/people/dvrabel/event-channels-F.pdf](https://xenbits.xenproject.org/people/dvrabel/event-channels-F.pdf)
 :::
 
 #### Steps during write from guest to host
@@ -390,7 +390,7 @@ static struct grant *get_grant (
 ```
 
 :::tip
-If you want more info concerning the persistent feature: <https://xenproject.org/2012/11/23/improving-block-protocol-scalability-with-persistent-grants/>
+If you want more info concerning the persistent feature: [https://xenproject.org/2012/11/23/improving-block-protocol-scalability-with-persistent-grants/](https://xenproject.org/2012/11/23/improving-block-protocol-scalability-with-persistent-grants/)
 
 The persistent grants are not used in `tapdisk`.
 :::

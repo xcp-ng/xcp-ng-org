@@ -19,10 +19,10 @@ You may also receive a browser certificate for the connection to Koji's web inte
 ```
 {login}_browser_certificate.p12
 ```
-You need to import it into your web browser's certificate store and then use it when you log in to <https://koji.xcp-ng.org/>
+You need to import it into your web browser's certificate store and then use it when you log in to [https://koji.xcp-ng.org/](https://koji.xcp-ng.org/)
 
 ## Installing koji
-If your Linux distribution provides `koji` in its repositories (e.g. Fedora, CentOS or Mageia), simply install it from there. Else you can either run it from a container, or clone it from <https://pagure.io/koji>, then run it from there with something like `PYTHONPATH=$(realpath .):/usr/lib/python3.5/site-packages/ cli/koji help`. If it fails, you probably need to install additional python dependencies.
+If your Linux distribution provides `koji` in its repositories (e.g. Fedora, CentOS or Mageia), simply install it from there. Else you can either run it from a container, or clone it from [https://pagure.io/koji](https://pagure.io/koji), then run it from there with something like `PYTHONPATH=$(realpath .):/usr/lib/python3.5/site-packages/ cli/koji help`. If it fails, you probably need to install additional python dependencies.
 
 ## Configuring koji
 Put this in `~/.koji/config`:

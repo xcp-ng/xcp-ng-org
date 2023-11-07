@@ -20,7 +20,7 @@ This section is a community-enriched list of pieces of hardware that do not belo
 
 ### Supermicro / AMD EPYC CPU
 
-Reference: <https://xcp-ng.org/forum/topic/350/amd-epyc-compatible>
+Reference: [https://xcp-ng.org/forum/topic/350/amd-epyc-compatible](https://xcp-ng.org/forum/topic/350/amd-epyc-compatible)
 
 EPYC CPUs are working well on XCP-ng, but people with SuperMicro motherboard saw random reboot sometimes. Turning off the C-state control solved the issue:
 
@@ -37,16 +37,16 @@ In BIOS:
 
 - PCI-Vendor-ID: 10df (Emulex Corporation)
 - PCI-Device-ID: 0720
-- Downloads (long loading times, wait a bit!): <https://www.broadcom.com/support/download-search/?pg=Legacy+Products&pf=Legacy+Products&pn=OCe14102-NT+Ethernet+Network+Adapter&pa=All&po=&dk=>
+- Downloads (long loading times, wait a bit!): [https://www.broadcom.com/support/download-search/?pg=Legacy+Products&pf=Legacy+Products&pn=OCe14102-NT+Ethernet+Network+Adapter&pa=All&po=&dk=](https://www.broadcom.com/support/download-search/?pg=Legacy+Products&pf=Legacy+Products&pn=OCe14102-NT+Ethernet+Network+Adapter&pa=All&po=&dk=)
 
 
 Known to work (relatively stable) with latest Firmware 11.2.1153.23 on XCP-ng 7.5
-* Bootable Upgrade ISO: <https://docs.broadcom.com/docs/12378839>
+* Bootable Upgrade ISO: [https://docs.broadcom.com/docs/12378839](https://docs.broadcom.com/docs/12378839)
     * If you are coming from firmware below 10.0.803.37 -> "You must perform the firmware
 update procedure twice to ensure that the flash regions are properly configured, and
 you must reboot the system after each firmware update." (from Release Notes)
-* Firmware Release Notes: <https://docs.broadcom.com/docs/12378898>
-* Linux Driver Release Notes: <https://docs.broadcom.com/docs/1211170215974>
+* Firmware Release Notes: [https://docs.broadcom.com/docs/12378898](https://docs.broadcom.com/docs/12378898)
+* Linux Driver Release Notes: [https://docs.broadcom.com/docs/1211170215974](https://docs.broadcom.com/docs/1211170215974)
 
 Known Issues (with old firmware; also on XenServer 7.2 with current firmware)
 
@@ -138,7 +138,7 @@ Upgrades **using the `yum` method** will retain the alternate driver package, un
 
 ### Network drivers list
 
-A list is maintained at <https://github.com/xcp-ng/xcp/wiki/Drivers>
+A list is maintained at [https://github.com/xcp-ng/xcp/wiki/Drivers](https://github.com/xcp-ng/xcp/wiki/Drivers)
 
 Check the "XCP-ng X.Y alternate driver" column, which provides packages names and versions for every available alternate driver.
 
@@ -147,7 +147,7 @@ Check the "XCP-ng X.Y alternate driver" column, which provides packages names an
 
 Additional kernel modules are a lot like [alternate drivers](#alternate-drivers) (most of the above section applies to them) except that they don't replace an existing driver from the system. They add a new one that didn't exist at all.
 
-Their list is maintained at <https://github.com/xcp-ng/xcp/wiki/Drivers>, in a table named "Other kernel modules available in XCP-ng X.Y".
+Their list is maintained at [https://github.com/xcp-ng/xcp/wiki/Drivers](https://github.com/xcp-ng/xcp/wiki/Drivers), in a table named "Other kernel modules available in XCP-ng X.Y".
 
 
 ## Alternate kernel

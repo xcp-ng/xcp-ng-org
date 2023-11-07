@@ -5,23 +5,23 @@ How to build RPMs locally.
 Koji, the build system, is used only for official builds or update candidates. For daily development or community builds, we provide a simpler build environment using docker.
 
 ## `xcp-ng-build-env`
-We provide a build environment that can run locally on your computer: <https://github.com/xcp-ng/xcp-ng-build-env>. It revolves around docker containers and a few convenience scripts. This is what we use for development, before we send the actual changes to our official build system, `koji`.
+We provide a build environment that can run locally on your computer: [https://github.com/xcp-ng/xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env). It revolves around docker containers and a few convenience scripts. This is what we use for development, before we send the actual changes to our official build system, `koji`.
 
 ## Guide to local RPM rebuild
-With some prior knowledge about development and RPM packaging, the documentation of <https://github.com/xcp-ng/xcp-ng-build-env> should be enough to get you started. However, in what follows, we provide a step by step guide for anyone to become accustomed to the process.
+With some prior knowledge about development and RPM packaging, the documentation of [https://github.com/xcp-ng/xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env) should be enough to get you started. However, in what follows, we provide a step by step guide for anyone to become accustomed to the process.
 
 ### Requirements
 
 * Docker. There are plenty of guides on the internet for your specific OS, so we won't cover this part here.
-* A local clone of <https://github.com/xcp-ng/xcp-ng-build-env>.
+* A local clone of [https://github.com/xcp-ng/xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env).
 * Container images built using its `build.sh` script. One per XCP-ng release. Example: `./build.sh 8.2` if your target is XCP-ng 8.2.
-* [git-lfs](https://git-lfs.github.com/). It is required to be able to fetch the RPM sources from our repositories at <https://github.com/xcp-ng-rpms/>.
+* [git-lfs](https://git-lfs.github.com/). It is required to be able to fetch the RPM sources from our repositories at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/).
 
 ### Get the sources for the RPM
 
-Every RPM built by us has its sources located in a repository at <https://github.com/xcp-ng-rpms/>.
+Every RPM built by us has its sources located in a repository at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/).
 
-Example: <https://github.com/xcp-ng-rpms/xen>.
+Example: [https://github.com/xcp-ng-rpms/xen](https://github.com/xcp-ng-rpms/xen).
 
 * After double-checking that you have installed `git-lfs`, locally clone the repository you want to work on.
 * Checkout the branch that corresponds to your target. For XCP-ng 8.2, select the `8.2` branch.
@@ -37,7 +37,7 @@ You probably want to bring modifications to the RPM definitions before you rebui
     * `--volume` (`-v`): we need to 'mount' your working directory into the container using this option. Else the container won't have access to any persistent data. Example: `-v ~/workdir:/data` will make your local `~/workdir` directory available to the container under the local `/data` path.
     * `--rm`: destroy the running container when exited. Can save disk space because you won't have to remember to clean up old containers manually.
 * From within the container:
-  * Enter the directory containing the sources for the RPM you had cloned earlier from <https://github.com/xcp-ng-rpms/>. Example: `cd /data/git/xen`.
+  * Enter the directory containing the sources for the RPM you had cloned earlier from [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/). Example: `cd /data/git/xen`.
   * Install the build dependencies in the container: `sudo yum-builddep SPECS/*.spec -y`.
   * Build the RPM: `rpmbuild -ba SPECS/*.spec --define "_topdir $(pwd)"`. This `_topdir` strange thing is necessary to make rpmbuild accept to work in the current directory rather than in its default working directory, `~/rpmbuild`.
 * When the build completes, new directories are created: `RPMS/` and `SRPMS/`, that contain the build results. In a container started with the appropriate `-v` switch, the build results will be instantly available outside the container too.
