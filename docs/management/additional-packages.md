@@ -57,7 +57,30 @@ The controller domain is not an all-purpose Linux system. It must remain minimal
 * Avoid any software that may interfere with the existing
 * Avoid software that widens the attack surface on your hosts
 
-### 5. Ask before
+### 5. Known Security Risks
+
+#### Libreswan
+
+If you are using encrypted tunnels using `openvswitch-ipsec` and `libreswan`, for example through [Xen Orchestra's SDN Controller](https://xen-orchestra.com/docs/sdn_controller.html) there are security advisories you need to know about, there are 2 CVEs that are affecting our current libreswan version:
+- [CVE-2023-38712](https://libreswan.org/security/CVE-2023-38712/CVE-2023-38712.txt): Invalid IKEv1 repeat IKE SA delete causes crash and libreswan to restart
+- [CVE-2023-38710](https://libreswan.org/security/CVE-2023-38710/CVE-2023-38710.txt): Invalid IKEv2 REKEY proposal causes libreswan to restart
+
+Patches for these are not really backportable, we therefore kept it as is and target updating packages in the next major release.
+
+You can find information about all Libreswan CVEs on their [security page](https://libreswan.org/security/).
+
+##### Resulting security issue
+
+The `pluto` daemon may be crashed by malformed IKE (both v1 and v2) delete/notify requests, resulting in a DoS on the keying service. If the daemon is restarted in loop quickly enough, this could as well lead to a DoS of the whole host.
+
+##### Vulnerability Perimeter
+
+Various point regarding how critical this is:
+- these packages are not installed by default, and only required for encrypted tunnels
+- no privilege escalation
+- `pluto` will only process these packets if they are coming from an authenticated peer, limiting the possible sources
+
+### 6. Ask before
 
 If you have [pro support](https://xcp-ng.com), ask there. As part of the support, additional supported packages - such as new drivers - may be provided. Else ask the community on the [forum](https://xcp-ng.org/forum/).
 
