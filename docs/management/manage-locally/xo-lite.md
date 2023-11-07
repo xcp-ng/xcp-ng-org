@@ -19,3 +19,9 @@ XO Lite isn't an orchestrator, it's just a local management console. If you want
 XO Lite credentials are the same than the host (SSH credentials), usually `root` as user and the password chosen during the installation process.
 
 ![](../../../static/img/xolitelogin.png)
+
+## Dashboard
+
+Once logged, you can see the dashboard:
+
+![](../../../assets/img/xolite.jpg)
