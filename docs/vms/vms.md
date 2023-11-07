@@ -188,17 +188,17 @@ See also [Contributing](#contributing) below.
 
 ##### Specific cases
 
-###### openSUSE Leap 15.2 with transactional-updates
+###### openSUSE Leap 15.2 with transactional-update
 
 For the xe-daemon to start it is necessary that insserv is installed on the system. To make sure that is the case run
 ```
-sudo transactional-uptdates pkg install insserv-compat
+sudo transactional-uptdate pkg install insserv-compat
 ```
 and as good measure reboot if they weren't already installed.
 
 To install the guest tools open up the chroot environment with
 ```
-sudo transactional-updates shell
+sudo transactional-update shell
 ```
 and mount the ISO like with every other derived distro
 ```
@@ -206,7 +206,7 @@ mount /dev/cdrom /mnt
 bash /mnt/Linux/install.sh -d sles -m 15
 umount /dev/cdrom
 ```
-To exit the chroot cleanly you have to kill the `xe-daemon` process that may have been automatically started. Otherwise you end up with a corrupted snapshot and transactional-updates will fail.
+To exit the chroot cleanly you have to kill the `xe-daemon` process that may have been automatically started. Otherwise you end up with a corrupted snapshot and transactional-update will fail.
 
 And again reboot the system to go to your newest snapshot.
 
