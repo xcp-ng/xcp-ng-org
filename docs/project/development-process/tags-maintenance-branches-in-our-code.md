@@ -16,17 +16,17 @@ The first question to ask ourselves is: **who is the upstream for the software**
 
 We decide when to release a new version, and we decide the versioning.
 
-Examples: `xcp-emu-manager`, `uefistored`...
+Examples: `xcp-emu-manager`, `uefistored`…
 
 Common case:
-* Tags: `vMAJOR.MINOR.PATCH` (`v1.1.2`, `v1.2.0`...)
+* Tags: `vMAJOR.MINOR.PATCH` (`v1.1.2`, `v1.2.0`…)
 * Maintenance branch if needed: `VERSION-XCPNGVERSION`.
   * We don't need to create the maintenance branch in advance. Not all software gets hotfixes.
   * `VERSION` is the version we branched from:
     * If possible `MAJOR.MINOR` (`1.1`, `1.2`)
-    * ... Unless we tagged the project in a way that would make this ambiguous. In that case, `MAJOR.MINOR.PATCH` (`1.1.1`, `1.1.2`...).
-  * `XCPNGVERSION` is the two-digit version of XCP-ng: `8.1`, `8.2`...
-  * Examples: `1.1.2-8.0`, `1.2-8.2`...
+    * … Unless we tagged the project in a way that would make this ambiguous. In that case, `MAJOR.MINOR.PATCH` (`1.1.1`, `1.1.2`…).
+  * `XCPNGVERSION` is the two-digit version of XCP-ng: `8.1`, `8.2`…
+  * Examples: `1.1.2-8.0`, `1.2-8.2`…
 * Next release developed on: `master`
 
 If for any reason we decide to release a newer version of the software as a maintenance update, then:
@@ -41,7 +41,7 @@ Special case: if VERSION and XCPNGVERSION are always the same (example: `xcp-ng-
 
 We do not decide how and when new versions and released, and how they are numbered. So we need to somewhat mix the upstream versioning with our own branch names and versioning. For maintenance branches and tags related to an XCP-ng release, notably.
 
-Examples: `host-installer`, `sm`...
+Examples: `sm`…
 
 Common case:
 * Tags:
@@ -56,13 +56,13 @@ Common case:
 
 If for any reason we decide to release a newer version of the software as a maintenance update, then we'd create new tag and a new maintenance branch that match `UPSTREAMVERSION` (that changes) and `XCPNGVERSIONFULL` (that doesn't change)
 
-Special case: if the upstream version and the XCP-ng version are always the same (example: `host-installer`), then:
+Special case: if the upstream version and the XCP-ng version are always the same, then:
   * Tags: `vXCPNGVERSIONFULL` (`v8.2.0`)
   * Maintenance branch: `XCPNGVERSION` (`8.2`)
 
 ### About upstream branches
 
-* If we get the sources from XS SRPMs, then we import them to a branch named `XS` and tag `XS-XSVERSIONFULL` (`XS-8.2.0`). Example: `host-installer`.
+* If we get the sources from XS SRPMs, then we import them to a branch named `XS` and tag `XS-XSVERSIONFULL` (`XS-8.2.0`).
 * If we forked a git repository, we don't need to push the upstream branches or tags to our own fork. However it could be a good habit to track maintenance or hotfix branches for changes.
 
 ### Special case: `sm`
@@ -109,19 +109,19 @@ We chose to base our `qemu-dp` repository on a fork of the upstream `qemu` [repo
 
 A `small-patches` branch is used to hold small non-upstreamable patches until we have decided what should be proposed upstream to replace them. This one is merged first (as essentially made of older changes).
 
-##### Adding a new feature
+#### Adding a new feature
 
 A new feature gets a new topic branch, usually based on an upstream release -- though in some situations some features will depend on another topic branch that has not been merged yet. In this case the branch can be based on its dependency branch. In the case of multiple dependencies, it will be clearer to `merge --no-ff` each of those other topics in our new topic branch.
 
 This new branch will then be used to open a PR, usually against the upstream repo. In the case of an upstream PR progressing too slowly, we may decide to open a PR onto an XCP-ng `host-installer` branch so it can be included in a release, and it will join the pool of topic branches described above.
 
-##### Fixing/extending a topic branch
+#### Fixing/extending a topic branch
 
-Fixing of existing topic branches should be done "on the topic branch", which is to say they should be based on the last commit of that topic branch that was merged in the current XCP-ng branch. A PR is then openned for merging into this current XCP-ng branch.
+Fixing of existing topic branches should be done "on the topic branch", which is to say they should be based on the last commit of that topic branch that was merged in the current XCP-ng branch. A PR is then opened for merging into this current XCP-ng branch.
 
 When introducing a fix, we should keep in mind whether it is meaningful on its own, or is meant to be squashed the next time this topic branch is rebased, and use the standard git conventions to mark those, e.g. using `git commit --squash`.
 
-##### Upgrading to a new upstream
+#### Upgrading to a new upstream
 
 To switch to a new upstream version `vUPSTREAMVERSION` (`v10.10.5`), we want a new branch `UPSTREAMVERSION-XCPNGVERSION` (`10.10.5-8.3`) based on this tag and including a merge of every topic branch that has not been integrated upstream yet.
 
@@ -131,3 +131,8 @@ Care should be taken to:
 * getting each topic branch merged only once (in the case where new commits were piled on a topic during the previous version's lifetime), and get the relevant piled commits squashed when applicable
 * review the `rebase` instruction sheet to avoid unwanted rebasing of each topic branch -- whether we want to change a given topic branch's base depends on the status of the matching pull-request
 * pushing those topic branches we did want to rebase, so the uptream PR gets our new version
+
+#### Tagging
+
+Versions are tagged when we want to release a new version to official repos. Tags are named `vUPSTREAMVERSION.xcpng.REVISION` (`v10.10.5.xcpng.1`), and gpg-signed.
+
