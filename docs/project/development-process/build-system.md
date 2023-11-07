@@ -182,7 +182,7 @@ In addition to this, when we import RPMs from CentOS or EPEL we tag their *build
 * `centos-{VERSION}`, for example `centos-7.5`.
 * `epel-{MAJOR_VERSION}-{DATE}`, for example `epel-7-2019-01-30`
 
-Example: <https://koji.xcp-ng.org/buildinfo?buildID=655>
+Example: [https://koji.xcp-ng.org/buildinfo?buildID=655](https://koji.xcp-ng.org/buildinfo?buildID=655)
 
 All those tags have no purpose in Koji's workflow. They are just useful pieces of information for us.
 
@@ -192,4 +192,4 @@ We automatically sign the RPMs built by or imported to Koji before exporting the
 [More information about RPM signing](../../../project/mirrors#security).
 
 ## Repository generation
-Handled by a cron job on koji's server. Then the repository is synchronised to <https://updates.xcp-ng.org/>.
+Handled by a cron job on koji's server. Then the repository is synchronised to [https://updates.xcp-ng.org/](https://updates.xcp-ng.org/).
