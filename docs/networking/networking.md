@@ -3,7 +3,7 @@
 XCP-ng is using Open vSwitch as its core, and supports various features from it.
 
 :::tip
-If one NIC can be enough for your host, having a dedicated NIC for storage will be really important to get consistent performances (if you use shared storage (iSCSI or NFS).
+Even if one NIC can be enough for your host, having a dedicated NIC for storage will be really important to get consistent performances (especially if you use shared storage like iSCSI or NFS).
 :::
 
 ## Concepts
