@@ -107,4 +107,4 @@ Be careful with "Fixes" or "Closes", because they can automatically close issues
 
 ### Developer Certificate of Origin (DCO)
 
-As a member of the Linux Foundation, XCP-ng asks every contributor to certify that they are allowed to contribute the code or documentation they submit to us. See <contributing.md#developer-certificate-of-origin-dco> for details. This is enforced for every repository under the GitHub `xcp-ng` and `xcp-ng-rpms` organizations.
+As a member of the Linux Foundation, XCP-ng asks every contributor to certify that they are allowed to contribute the code or documentation they submit to us. See [contributing.md#developer-certificate-of-origin-dco](contributing.md#developer-certificate-of-origin-dco) for details. This is enforced for every repository under the GitHub `xcp-ng` and `xcp-ng-rpms` organizations.

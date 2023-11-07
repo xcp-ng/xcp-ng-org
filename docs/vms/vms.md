@@ -380,8 +380,8 @@ xe vm-param-get param-name=has-vendor-device uuid={VM-UUID}
 **Note**: Restart can take a while if your windows is currently updating. Restart only occurs after windows has the updates finished.
 
 4. after restart one of two messages should pop up
-    * request for restart <- just restart!
-    * Management Agent installed successfully <- enjoy :-)
+    * request for restart \<- just restart!
+    * Management Agent installed successfully \<- enjoy :-)
 
 ##### Upgrade from Citrix :registered: XenServer :registered: client tools
 
