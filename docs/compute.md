@@ -80,8 +80,26 @@ To remove any passthrough devices from dom0:
 /opt/xensource/libexec/xen-cmdline --delete-dom0 xen-pciback.hide
 ```
 
-:::tip
+:::warning
 This kernel parameter is not retained when you upgrade an XCP-ng host [using the installation ISO](../installation/upgrade#upgrade-via-installation-iso-recommended). Remember to re-do this step after the upgrade.
+:::
+
+
+:::tip
+### NVMe storage devices on Linux
+For NVMe storage devices, the Linux driver will try to allocate too many PCI MSI-X vectors, exceeding the number of extra IRQs allocated by Xen for a guest. Failing MSI-X setup might lead to very low performances on some buggy hardware if the driver cannot manage to fallback to legacy IRQs handling.
+
+The default number of extra guest IRQs (which is 64) needs to be increased with Xen's `extra_guest_irqs` boot parameter:
+
+```bash
+/opt/xensource/libexec/xen-cmdline --set-xen "extra_guest_irqs=128"
+```
+
+To remove the parameter from Xen command line:
+
+```bash
+/opt/xensource/libexec/xen-cmdline --delete-xen extra_guest_irqs
+```
 :::
 
 ### 3. Reboot the XCP-ng host
