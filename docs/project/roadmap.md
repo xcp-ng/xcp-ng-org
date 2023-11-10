@@ -8,13 +8,18 @@ The goal of this document is to give you a hint of what's next. However, since a
 * simplicity and flexibility
 * performance and scalability
 
+<div style={{textAlign: 'center'}}>
 ![](../assets/img/roadmap.png)
+</div>
+
+If you have any suggestion, feel free to ask on our [community forum](https://xcp-ng.org/forum/category/1/feedback-and-requests).
 
 ## In tech preview
 
 _Technology that is here, but not officially released for production usage._
 
 * [IPv6 support in dom0](https://xcp-ng.org/blog/2021/02/09/ipv6-in-xcp-ng/) (Network)
+* [New Xen guest agents](https://gitlab.com/xen-project/xen-guest-agent) (Guest agent)
 * [LINSTOR integration](https://xcp-ng.org/blog/2020/11/13/xcp-ng-and-linbit-alliance-part-ii/) (Storage)
 * [RunX](https://xcp-ng.org/blog/2021/10/19/runx-is-available-in-tech-preview/) (Xen)
 
@@ -22,32 +27,34 @@ _Technology that is here, but not officially released for production usage._
 
 _Things we started to work on, but are not usable/visible yet._
 
-* SMAPIv3 evolution (storage)
 * Q35 emulation support (Xen)
 * New metrics (Xen/platform)
+* Linux 6.x kernel Dom0 support (platform)
 * Xen RISC-V port (Xen)
-* Host secure boot (Xen/platform)
+* [AMD SEV-SNP support](https://github.com/xcp-ng/hyper-sev-project) (Xen)
 * New signed Windows PV drivers (guest drivers)
-* Intel `igc` driver support (dom0 drivers)
+* Host secure boot (Xen/platform)
+* SMAPIv3 evolution (storage)
 * Improved automated CI (build)
 * SPDK-based `blkif` backend (platform)
 * [DPU Support](https://xcp-ng.org/blog/2021/07/12/dpus-and-the-future-of-virtualization/) (storage/platform)
+* Intel `igc` driver support (dom0 drivers)
+* LACP support during install (platform)
+* Auto resume original VM when Xen live migration failed
 
 ## Spec/Design/PoC
 
 _Features that are being discussed or designed, but not even partly coded._
 
-* Aegis Project: AMD SEV-SNP support (Xen)
-* [New Xen guest agents](https://gitlab.com/xen-project/xen-guest-agent) (guest agent)
-* [xenopsd-ng](https://github.com/xcp-ng/xenopsd-ng) (Xen)
-* Linux 5.x kernel Dom0 support (platform)
-* vTPM support (Xen/platform)
 * Soft RAID status/alerting (via XAPI plugin)
+* [xenopsd-ng](https://github.com/xcp-ng/xenopsd-ng) (Xen)
 * Virtio support (platform)
-* LACP support during install (platform)
 
 ## Done
 
+* Conversion tool (facilitate migration to XCP-ng, done in XO for VMware)
+* Smartctl disk status (2023 for XCP-ng 8.3, already supported in XO)
+* vTPM support (2023, thanks to XenServer team)
 * Guest UEFI secure boot (2022)
 * Core scheduling (2020)
 * SDN OpenFlow (2020)
@@ -72,15 +79,15 @@ _Features that are being discussed or designed, but not even partly coded._
 
 _This is a kind of wish list, without any priorities, where we try to put some ideas._
 
+<div style={{textAlign: 'center'}}>
 ![](../assets/img/backlog.png)
+</div>
 
 ### Compute
 
 * Xen live patching
-* VM memory encryption
 * VM storage migration improvement [#145](https://github.com/xcp-ng/xcp/issues/145)
 * More recent Xen in alternate repo
-* MxGPU integration out-of-the-box
 * Faster Xen Motion (compression in `xenops`?)
 
 ### Storage
@@ -93,7 +100,6 @@ _This is a kind of wish list, without any priorities, where we try to put some i
 * Faster Xen Storage Motion (using on the fly compression for disk content? remove stunnel?)
 * SMAPIv3 full ZFS driver (using pyzfs with it)
 * NVMe driver for near bare metal perfs (specification in progress)
-* smarctl alerts (specification in progress)
 * General storage perf improvement
 * Thin pro on block based SR (architectural review needed)
 
@@ -104,12 +110,10 @@ _This is a kind of wish list, without any priorities, where we try to put some i
 ### API
 
 * XAPI HTTP lib 1.1 replacement (removing stunnel)
-* ISO upload in SR ISO
 * JSON-RPC compression support
 
 ### Platform/Installer
 
-* Conversion tool (facilitate migration to XCP-ng)
 * Installer using `ext4` for dom0
 * Installer allow join pool directly during install
 * Expose repo URL/modification from XAPI (possibility to use XOA with `apt-cacher-ng`)
