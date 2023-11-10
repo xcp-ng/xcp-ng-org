@@ -4,28 +4,37 @@ It's really important to backup your VMs. You have multiple options, but only Xe
 
 ## Xen Orchestra
 
-A lot of different backup options are supported via Xen Orcherstra:
+Xen Orchestra is the most advanced backup solution and 100% integrated with XCP-ng. There is many different backup options:
 
-* Automated Snapshots
-* Backup
-* Forever incremental backups (delta)
-* DR (backup to another XCP-ng storage repository)
-* CR (delta backup to another XCP-ng storage repository)
-* Metadata backup
+* Automated rollings napshots
+* Full Backup
+* Full Replication
+* Incremental Backup
+* Incremental Replication
+* Mirror backup
+* XO Metadata backup
+* XCP-ng Metadata backup
+* Cloud enabled XO Metadata backup
+
+<div style={{textAlign: 'center'}}>
+![](../../assets/img/schema-new-wording-backup.png)
+</div>
+
+And they come with different features:
+* NFS, SMB, S3 compatible backup repositories
+* Encryption
+* Compression
 * File level restore
+* NBD-enabled for extra backup speed
+* Rate limiting
 * XO Proxy (backup remote sites without any VPN requirement)
-* S3 compatible backup storage
 
-![](https://xen-orchestra.com/assets/backups-solutions.png)
+
 
 All options are explained in the [official documentation](https://xen-orchestra.com/docs/). Xen Orchestra is [available as a turnkey virtual appliance](https://xen-orchestra.com), called XOA which [you can deploy in a minute](https://xen-orchestra.com/#!/xoa).
 
 Alternatively, you can install and build it yourself [from the GitHub repository](https://github.com/vatesfr/xen-orchestra/).
 
-You can also find a video describing various backup options here:
+## 3rd party solutions
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/FfUqIwT8KzI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-## Other solutions
-
-There's other solutions officially compatible with XCP-ng to make VM backups. Please check our [ecosystem](../project/ecosystem.md#vm-backup) page on the backup section!
+There's 3rd party solutions officially compatible with XCP-ng to make VM backups. Please check our [ecosystem](../project/ecosystem.md#vm-backup) page on the backup section.
