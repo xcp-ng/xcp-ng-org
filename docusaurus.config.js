@@ -39,7 +39,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/xcp-ng/xcp-ng-org/edit/olt-new-doc/',
+            'https://github.com/xcp-ng/xcp-ng-org/edit/master/',
         },
         blog: false,
         theme: {
