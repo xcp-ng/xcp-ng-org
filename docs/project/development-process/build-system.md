@@ -35,7 +35,7 @@ In order to understand how Koji works, one needs to explain a few concepts: pack
 ### Packages, builds and RPMs
 
 * **RPM**: a **RPM** designates a specific RPM file: `xenopsd-0.150.5-1.1.xcpng8.2.x86_64.rpm`. This is what we install in XCP-ng ultimately.
-**Build**: that RPM belongs to a **build**, which groups a Source RPM (SRPM) with all the RPMs it produced, and is identified by the name of the SRPM, without the `.src.rpm` part: `xenopsd-0.150.5-1.1.xcpng8.2`.
+* **Build**: that RPM belongs to a **build**, which groups a Source RPM (SRPM) with all the RPMs it produced, and is identified by the name of the SRPM, without the `.src.rpm` part: `xenopsd-0.150.5-1.1.xcpng8.2`.
 * **Package**: the build belongs to a **package**: `xenopsd`. A package has no associated files in itself: it's just the parent of all builds that belong to it, in Koji's database.
 
 This can be seen in the information page for a given build: [https://koji.xcp-ng.org/buildinfo?buildID=2080](https://koji.xcp-ng.org/buildinfo?buildID=2080). The package is visible as "Package Name" (you can click on it to see the package view) and the RPMs (Source RPM and regular RPMs) are visible under the "RPMs" section.
