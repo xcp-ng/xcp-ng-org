@@ -9,7 +9,7 @@ The goal of this document is to give you a hint of what's next. However, since a
 * performance and scalability
 
 <div style={{textAlign: 'center'}}>
-![](../assets/img/roadmap.png)
+![](../../assets/img/roadmap.jpg)
 </div>
 
 If you have any suggestion, feel free to ask on our [community forum](https://xcp-ng.org/forum/category/1/feedback-and-requests).
@@ -80,9 +80,8 @@ _Features that are being discussed or designed, but not even partly coded._
 _This is a kind of wish list, without any priorities, where we try to put some ideas._
 
 <div style={{textAlign: 'center'}}>
-![](../assets/img/backlog.png)
+![](../../assets/img/backlogfuturistic.jpg)
 </div>
-
 ### Compute
 
 * Xen live patching
