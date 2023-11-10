@@ -21,5 +21,5 @@ As soon you start to management multiple hosts and/or pools, you might need a si
 * [Xen Orchestra API](manage-at-scale/xo-api) (REST and JSON-RPC APIs)
 
 :::tip
-Xen Orchestra is not just an XCP-ng orchestrator at scale: it's also a backup tool. See the backup section for more details.
+Xen Orchestra is not just an XCP-ng orchestrator at scale: it's also a backup tool. See the [backup section](backup.md) for more details.
 :::
