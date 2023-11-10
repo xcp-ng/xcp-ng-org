@@ -15,17 +15,23 @@ Some interesting "cloud-like" features are available in Xen Orchestra : ACLs and
 
 ACLs can be used to allow some XO users to only see some resources. See more about ACLs [on the official documentation](https://xen-orchestra.com/docs/acls.html).
 
+<div style={{textAlign: 'center'}}>
 ![](../../static/img/xoacl.png)
+</div>
 
 ### Self-service
 
 The self-service feature allows users to create new VMs within a **limited amount of resources** (quotas). This is different from delegating existing resources (VMs) to them, and it leads to a lot of possibilities. [Read XO official doc on it](https://xen-orchestra.com/docs/users.html#self-service-portal) to know more.
 
+<div style={{textAlign: 'center'}}>
 ![](../../static/img/xoself.png)
+</div>
 
 ## CloudStack
 
+<div style={{textAlign: 'center'}}>
 ![](../../static/img/cloudstack_logo.png)
+</div>
 
 Apache CloudStack is open source software designed to deploy and manage large networks of virtual machines, as a highly available, highly scalable Infrastructure as a Service (IaaS) cloud computing platform. CloudStack is used by a number of service providers to offer public cloud services, and by many companies to provide an on-premises (private) cloud offering, or as part of a hybrid cloud solution.
 
