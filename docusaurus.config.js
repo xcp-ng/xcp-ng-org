@@ -33,6 +33,20 @@ const config = {
     mermaid: true,
   },
   themes: ['@docusaurus/theme-mermaid'],
+  themeConfig: {
+    mermaid: {
+      options: {
+        fontSize: 20
+      },
+    },
+  },
+
+  scripts: [
+    {
+      src: './mautic.js',
+      async: true,
+    },
+  ],
 
   presets: [
     [
