@@ -28,6 +28,12 @@ const config = {
     locales: ['en'],
   },
 
+  // Mermaid graphs
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
+
   presets: [
     [
       'classic',
