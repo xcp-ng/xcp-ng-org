@@ -40,14 +40,17 @@ Right now, the latest standard release (8.2) is also the LTS release. When XCP-n
 
 ## 🔴 Pre Releases
 
-*Latest Pre Release: XCP-ng 8.3 Alpha*
+*Latest Pre Release: XCP-ng 8.3 Beta 1*
 
-Using a pre release is only relevant for testing.
+Using a pre release is only relevant for testing. Check our [latest 8.3 Beta 1 blog post](https://xcp-ng.org/blog/2023/06/22/xcp-ng-8-3-beta-1/) for more information.
+
+
 
 ## All releases
 
 | Version                   | Released   | Status               | Support until                                | Release notes                        |
 | ---                       | ---        | ---                  | ---                                          | ---                                  |
+| 8.3 Beta 1                | Not yet released | Pre-release/Beta1 | - | - |
 | [8.2 LTS](release-8-2.md) | **8.2.0**:&nbsp;2020-11-18<br/>**8.2.1**:&nbsp;2022-02-28 | Full support, LTS    | 2025-06-25                                   | [8.2 Release notes](release-8-2.md)  |
 | [8.1](release-8-1.md)     | 2020-03-31 | EOL                  | 2021-03-31                                   | [8.1 Release notes](release-8-1.md)  |
 | 8.0                       | 2019-07-25 | EOL                  | 2020-11-13                                   |                                      |
