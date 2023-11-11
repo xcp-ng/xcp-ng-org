@@ -116,6 +116,19 @@ const config = {
             ],
           },
           {
+            title: 'Pro Support',
+            items: [
+              {
+                label: 'Vates Stack',
+                href: 'https://vates.tech',
+              },
+              {
+                label: 'Contact us',
+                href: 'https://vates.tech/contact',
+              },
+            ],
+          },
+          {
             title: 'More',
             items: [
               {

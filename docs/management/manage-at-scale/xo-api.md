@@ -10,9 +10,11 @@ There's two different APIs to manage XCP-ng at scale via Xen Orchestra:
 
 ## REST API
 
-The REST API is still is development, but the best one to read objects from a central Xen Orchestra. If you want live interactions and updates, consider using the JSON-RPC over websockets API.
+We developed XO original API to be used between the Web UI `xo-web` and the server backend, `xo-server`. That's why it's a JSON-RPC API connected via websockets, allowing us to update objects live in the browser. This is perfect for our usage, but a bit complicated for others.
 
-Also, despite being very recent, it is versionned, so any breaking change will happen in a new URL handler. We are currently at version `v0`.
+Also, this API wasn't meant to be public, but over the years some users have expressed a desire to be able to use it for their own purposes. This led us to add more tooling around it, like `xo-cli` and to answer specific requests.
+
+For these reasons we decided to build a new API. Not an evolution of the current one, but 100% new. It is meant to be public and [REST-like](https://en.wikipedia.org/wiki/Representational_state_transfer). So a simple curl command can request it. We will also provide documentation as the intended goal is for it to be used by the public.
 
 ### Authentication
 
@@ -64,7 +66,7 @@ The following query parameters are supported:
 
 - `limit`: max number of objects returned
 - `fields`: if specified, instead of plain URLs, the results will be objects containing the requested fields
-- `filter`: a string that will be used to select only matching objects
+- `filter`: a string that will be used to select only matching objects, see [the syntax documentation](https://xen-orchestra.com/docs/manage_infrastructure.html#live-filter-search)
 - `ndjson`: if specified, the result will be in [NDJSON format](http://ndjson.org/)
 
 Simple request:
@@ -84,10 +86,10 @@ Content-Type: application/json
 
 Here is an example with `curl`:
 
-```bash
-curl \
-    -b authenticationToken=0OQIKwb1WjeHtch25Ls \
-    http://xoa.example.com/rest/v0/vms?fields=name_label,power_state
+```console
+$ curl \
+  -b authenticationToken=0OQIKwb1WjeHtch25Ls \
+  http://xoa.example.com/rest/v0/vms?fields=name_label,power_state
 [
   {
     "name_label": "FreeNAS",
@@ -125,20 +127,54 @@ Content-Type: application/x-ndjson
 {"name_label":"Debian 10 Cloudinit self-service","power_state":"Halted","url":"/rest/v0/vms/5019156b-f40d-bc57-835b-4a259b177be1"}
 ```
 
+### Properties update
+
+> This feature is restricted to `name_label` and `name_description` at the moment.
+
+```sh
+curl \
+  -X PATCH \
+  -b authenticationToken=KQxQdm2vMiv7jBIK0hgkmgxKzemd8wSJ7ugFGKFkTbs \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -d '{ "name_label": "The new name", "name_description": "The new description" }' \
+  'https://xo.example.org/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237cac'
+```
+
+### VM and VDI destruction
+
+For a VM:
+
+```sh
+curl \
+  -X DELETE \
+  -b authenticationToken=KQxQdm2vMiv7jBIK0hgkmgxKzemd8wSJ7ugFGKFkTbs \
+  'https://xo.example.org/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237cac'
+```
+
+For a VDI:
+
+```sh
+curl \
+  -X DELETE \
+  -b authenticationToken=KQxQdm2vMiv7jBIK0hgkmgxKzemd8wSJ7ugFGKFkTbs \
+  'https://xo.example.org/rest/v0/vdis/1a269782-ea93-4c4c-897a-475365f7b674'
+```
+
 ### VM and VDI export
 
 VDI export and VM export are supported by the API. Below is a simple example to export a VM with `zstd` compression into a `myVM.xva` file:
 
-```bash
+```sh
 curl \
   -b authenticationToken=KQxQdm2vMiv7jFEAZXOAGKFkTbs \
   'https://xoa.example.org/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237a12.xva?compress=zstd' \
   > myVM.xva
 ```
 
-For a VHD export, it's very similar:
+A VDI can be exported in VHD format at `/rest/v0/vdis/<uuid>.vhd` or the raw content at `/rest/v0/vdis/<uuid>.raw`.
 
-```bash
+```sh
 curl \
   -b authenticationToken=KQxQdm2vMiv7FkTbs \
   'https://xoa.example.org/rest/v0/vdis/1a269782-ea93-4c4c-897a-475365f7b674.vhd' \
@@ -149,7 +185,7 @@ curl \
 
 A VHD or a raw export can be imported on an SR to create a new VDI at `/rest/v0/srs/<sr uuid>/vdis`.
 
-```bash
+```sh
 curl \
   -X POST \
   -b authenticationToken=KQxQdm2vMiv7jBIK0hgkmgxKzemd8wSJ7ugFGKFkTbs \
@@ -168,9 +204,62 @@ The following query parameters are supported to customize the created VDI:
 - `name_description`
 - `raw`: this parameter must be used if importing a raw export instead of a VHD
 
+### Actions
+
+#### Available actions
+
+To see the actions available on a given object, get the collection at `/rest/v0/<type>/<uuid>/actions`.
+
+For example, to list all actions on a given VM:
+
+```sh
+curl \
+  -b authenticationToken=KQxQdm2vMiv7jBIK0hgkmgxKzemd8wSJ7ugFGKFkTbs \
+  'https://xo.example.org/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237cac/actions'
+```
+
+#### Start an action
+
+Post at the action endpoint which is `/rest/v0/<type>/<uuid>/actions/<action>`.
+
+For instance, to reboot a VM:
+
+```sh
+curl \
+  -X POST \
+  -b authenticationToken=KQxQdm2vMiv7jBIK0hgkmgxKzemd8wSJ7ugFGKFkTbs \
+  'https://xo.example.org/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237cac/actions/clean_reboot'
+```
+
+Some actions accept parameters, they should be provided in a JSON-encoded object as the request body:
+
+```sh
+curl \
+  -X POST \
+  -b authenticationToken=KQxQdm2vMiv7jBIK0hgkmgxKzemd8wSJ7ugFGKFkTbs \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -d '{ "name_label": "My snapshot" }' \
+  'https://xo.example.org/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237cac/actions/snapshot'
+```
+
+By default, actions are asynchronous and return the reference of the task associated with the request.
+
+> Tasks monitoring is still under construcration and will come in a future release :)
+
+The `?sync` flag can be used to run the action synchronously without requiring task monitoring. The result of the action will be returned encoded as JSON:
+
+```console
+$ curl \
+  -X POST \
+  -b authenticationToken=KQxQdm2vMiv7jBIK0hgkmgxKzemd8wSJ7ugFGKFkTbs \
+  'https://xo.example.org/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237cac/actions/clean_reboot'
+"2b0266aa-c753-6fbc-e4dd-c79be7782052"
+```
+
 ### The future
 
-We are adding features and improving the REST API step by step. If you have interesting use cases or feedback, please ask directly at [https://xcp-ng.org/forum/category/12/xen-orchestra](https://xcp-ng.org/forum/category/12/xen-orchestra)
+We are adding features and improving the REST API step by step. If you have interesting use cases or feedback, please ask directly at [the dedicated forum section](https://xcp-ng.org/forum/category/18/rest-api).
 
 ## JSON-RPC over websockets
 
