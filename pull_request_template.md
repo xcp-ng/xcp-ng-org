@@ -5,4 +5,4 @@
 > * [ ] "My contribution complies with the Developer Certificate of Origin [2]." 
 >
 > [1] https://creativecommons.org/licenses/by-sa/2.0/
-> [2] https://xcp-ng.org/docs/contributing.html#developer-certificate-of-origin-dco
+> [2] https://docs.xcp-ng.org/project/contributing/#developer-certificate-of-origin-dco
