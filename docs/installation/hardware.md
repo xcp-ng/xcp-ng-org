@@ -6,13 +6,13 @@ sidebar_position: 5
 
 All about the hardware supported by XCP-ng
 
-## Hardware Compatibility List (HCL)
+## 📖 Hardware Compatibility List (HCL)
 
 Devices listed on [XenServer's Hardware Compatibility List](http://hcl.xenserver.com/) are supported.
 
 For other hardware, see [Unlisted Hardware](#unlisted-hardware).
 
-## Unlisted Hardware
+## 🚫 Unlisted Hardware
 
 Many devices outside the HCL in fact work very well with XCP-ng. Being outside the HCL means that there have been not tests to ensure that they work. Most of the hardware support depends on the Linux kernel and thus support for hardware outside the HCL depends on on how well the drivers are supported by the Linux kernel included in XCP-ng.
 
@@ -92,7 +92,7 @@ Known compatible NICs are<sup id="nt1">[1](#fnt1)</sup>:
 Despite the AQC111U-based adapters support the IEEE 802.3bz standard _(AKA 5BASE-T)_ and will correctly negotiate with compatible peripherals the communication at 5Gbps, the actual bandwidth will not exceed 3.5Gbps due to the overhead of the incapsulation of the ethernet protocol over the 5Gbps connection via USB 3.0 _(AKA USB 3.1 Gen 1)_.
 
 
-## Alternate drivers
+## 🧰 Alternate drivers
 
 XCP-ng occasionally provides alternate drivers for users who have issues with the main drivers installed with XCP-ng.
 
@@ -143,14 +143,14 @@ A list is maintained at [https://github.com/xcp-ng/xcp/wiki/Drivers](https://git
 Check the "XCP-ng X.Y alternate driver" column, which provides packages names and versions for every available alternate driver.
 
 
-## Additional kernel modules
+## 🎁 Additional kernel modules
 
 Additional kernel modules are a lot like [alternate drivers](#alternate-drivers) (most of the above section applies to them) except that they don't replace an existing driver from the system. They add a new one that didn't exist at all.
 
 Their list is maintained at [https://github.com/xcp-ng/xcp/wiki/Drivers](https://github.com/xcp-ng/xcp/wiki/Drivers), in a table named "Other kernel modules available in XCP-ng X.Y".
 
 
-## Alternate kernel
+## 🚒 Alternate kernel
 
 We provide an "alternate Linux kernel" on XCP-ng 8.0 and above, named `kernel-alt`. It is kernel 4.19, as the main kernel, but with all updates from the Linux 4.19 branch applied. By construction, it should thus be stable. However it **receives less testing** so we cannot fully guarantee against regressions (any detected regression we'd work on a fix quickly, of course). We also backport security fixes from the main kernel to the alternate kernel when needed.
 

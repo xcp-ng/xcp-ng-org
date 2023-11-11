@@ -8,13 +8,13 @@ XAPI is requested by multiple **clients**, like Xen Orchestra or `xe` CLI. See [
 We strongly encourage to build applications on top of XO API and not XAPI. In fact, XAPI is made with very specific calls (close to the Xen logic), so it's a lot better to build a solution on top of a more global API, the one [provided by Xen Orchestra](https://xen-orchestra.com/docs/architecture.html#api). It will act as a central point for all your pools and you won't have to handle all the Xen specifics.
 :::
 
-## Architecture
+## 📐 Architecture
 
 XAPI is using a database (Read/write on the master, replicated to slaves in read only). It's an XML file located at `/var/lib/xcp/state.db`. All the metadata and settings of your pool, hosts, VMs and so on are stored there.
 
 ![](../../../static/img/xapiclasses.png)
 
-## Troubleshooting
+## 🧑‍⚕️ Troubleshooting
 
 ### Restarting the API
 

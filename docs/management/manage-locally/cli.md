@@ -6,7 +6,7 @@ The xe CLI can be used locally on any XCP-ng host, it's installed along with it.
 The complete set of all `xe` commands is available in the [Appendix section](../../../appendix/cli_reference).
 :::
 
-## Getting help with xe commands
+## ℹ️ Getting help with xe commands
 
 Basic help is available for CLI commands on-host by typing the following:
 
@@ -36,7 +36,7 @@ Or a list of all xe commands is displayed if you type:
 xe help --all
 ```
 
-## Basic xe syntax
+## 🪧 Basic xe syntax
 
 The basic syntax of all XCP-ng xe CLI commands is:
 
@@ -96,7 +96,7 @@ After running this command, you no longer have to specify the remote XCP-ng serv
 
 Using the `XE_EXTRA_ARGS` environment variable also enables tab completion of xe commands when issued against a remote XCP-ng server, which is disabled by default.
 
-## Special characters and syntax
+## 🀄 Special characters and syntax
 
 To specify argument/value pairs on the xe command line, write: `argument=value`
 
@@ -110,7 +110,7 @@ When you use the CLI on your XCP-ng server, commands have a tab completion featu
 Tab completion does not normally work when executing commands on a remote XCP-ng server. However, if you set the `XE_EXTRA_ARGS` variable on the machine where you enter the commands, tab completion is enabled. For more information, see Basic xe syntax.
 :::
 
-## Command types
+## 🧮 Command types
 
 The CLI commands can be split in two halves. Low-level commands are concerned with listing and parameter manipulation of API objects. Higher level commands are used to interact with VMs or hosts in a more abstract level.
 
@@ -172,7 +172,7 @@ Where class is one of:
 
 Not every value of class has the full set of class-param-action commands. Some values of class have a smaller set of commands.
 
-## Parameter types
+## 🧶 Parameter types
 
 The objects that are addressed with the xe commands have sets of parameters that identify them and define their states.
 
@@ -205,7 +205,7 @@ xe vm-param-set uuid=VM uuid other-config:foo=baa
 In previous releases, the hyphen character (-) was used to specify map parameters. This syntax still works but is deprecated.
 :::
 
-## Low-level parameter commands
+## 🔬 Low-level parameter commands
 
 There are several commands for operating on parameters of objects: class-param-get, class-param-set, class-param-add, class-param-remove, class-param-clear, and class-param-list. Each of these commands takes a uuid parameter to specify the particular object. Since these commands are considered low-level commands, they must use the `UUID` and not the VM name label.
 
@@ -233,7 +233,7 @@ Removes either a key/value pair from a map, or a key from a set.
 
 Completely clears a set or a map.
 
-## Low-level list commands
+## 📜 Low-level list commands
 
 The class-list command lists the objects of type class. By default, this type of command lists all objects, printing a subset of the parameters. This behavior can be modified in the following ways:
 
@@ -276,7 +276,7 @@ When scripting, a useful technique is passing `--minimal` on the command line, c
 a85d6717-7264-d00e-069b-3b1d19d56ad9,aaa3eec5-9499-bcf3-4c03-af10baea96b7, 42c044de-df69-4b30-89d9-2c199564581d
 ```
 
-## Secrets
+## 🙊 Secrets
 
 XCP-ng provides a secrets mechanism to avoid passwords being stored in plaintext in command-line history or on API objects. XenCenter uses this feature automatically and it can also be used from the xe CLI for any command that requires a password.
 

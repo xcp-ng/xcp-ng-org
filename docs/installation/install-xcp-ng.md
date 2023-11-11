@@ -6,7 +6,7 @@ sidebar_position: 2
 
 How to install XCP-ng.
 
-## ISO installation
+## 💿 ISO installation
 
 If you want to use the netinstall ISO, see the [Netinstall section](#netinstall).
 
@@ -164,7 +164,7 @@ After a reboot, you should see the GRUB menu:
 
 It means the system is correctly installed! Enjoy XCP-ng 🚀
 
-## Netinstall
+## 🌐 Netinstall
 
 The netinstall image is a lightweight ISO (around 150MiB) that will only contain the installer, but no actual RPM packages. Sometimes, it's more convenient/faster when your ISO is on a slow connection (e.g. a virtual media using a server IPMI).
 
@@ -178,7 +178,7 @@ dd if=xcp-ng-8.2.1-netinstall.iso of=/dev/sdX bs=8M oflag=direct
 
 Everything else is like the [regular install](#start-the-host), except that it will not offer to install from local media, only from distant ones.
 
-## PXE boot install
+## 🎬 PXE boot install
 
 ### Requirements
 
@@ -274,7 +274,7 @@ When you do copy the installation files, **DO NOT FORGET** the `.treeinfo` file.
 3. Select boot from the Ethernet card
 4. You should see the PXE menu you created before!
 
-## iPXE over HTTP install
+## ✨ iPXE over HTTP install
 
 This guide is for UEFI boot, using iPXE over an HTTP server to serve files needed for installation.
 
@@ -334,7 +334,7 @@ configfile /EFI/xenserver/grub.cfg
 7. Continue with installation as normal.
 
 
-## Automated install
+## 🤖 Automated install
 
 XCP-ng's installation can be automated by using network boot (PXE) or a custom installation image.
 
@@ -530,11 +530,11 @@ echo 0 > /proc/sys/dev/raid/speed_limit_min
 
 Upon server reboot, normal `md` resync will take place.
 
-## Troubleshooting
+## 🧑‍⚕️ Troubleshooting
 
 See [the Troubleshooting page](../../troubleshooting/after-upgrade).
 
-## Misc
+## ⛑️ Misc
 
 ### Install on a USB stick
 

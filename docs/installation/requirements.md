@@ -43,7 +43,7 @@ To support VMs running Windows or more recent versions of Linux, you require an 
 
 To support VMs running supported paravirtualized Linux, you require a standard 64-bit x86-based system with one or more CPUs.
 
-## RAM
+## Memory
 
 2 GB minimum, 4 GB or more recommended.
 
@@ -71,7 +71,27 @@ Ensure that the time setting in the BIOS of your server is set to the current ti
 
 ## Supported guest OS
 
-TODO.
+Officially supported OS. But there's a lot more than can run on XCP-ng.
+
+### Windows based
+
+* Windows Server 2012, 2016, 2019, 2022
+* Windows 10
+
+:::tip
+Older versions of Windows will run, but in emulation mode (like Windows XP, Server 2003 etc.)
+:::
+
+### Linux
+
+* RHEL/CentOS from 7, Rocky, Alma, Oracle…
+* All Debian/Ubuntu family
+* Arch, Alpine, SUSE and many more
+
+### BSD
+
+* FreeBSD and related (pfSense, TrueNAS…)
+* OpenBSD
 
 ## Pool requirements
 
