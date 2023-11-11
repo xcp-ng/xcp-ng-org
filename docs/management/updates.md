@@ -6,7 +6,15 @@ sidebar_position: 3
 
 This page details how to keep your XCP-ng system updated (bug fixes and security fixes) between [upgrades](../../installation/upgrade).
 
-## Support cycle
+## ⚡ Quick start
+
+If you want to manage your XCP-ng updates, we suggest that you use Xen Orchestra. It's the fastest & easiest way to keep your infrastructure up-to-date. See the [dedicated section](updates.md#from-xen-orchestra). If you want to learn more about Xen Orchestra, also check the [management section](management.md).
+
+:::tip
+Most updates will be explained in details with a dedicated blog post. Don't forget to visit https://xcp-ng.org/blog or to directly explore all articles with the tag updates: https://xcp-ng.org/blog/tag/update/
+:::
+
+## ♻️ Support cycle
 
 We maintain two releases in parallel:
 * The LTS Release (currently `8.2`).
@@ -14,11 +22,7 @@ We maintain two releases in parallel:
 
 If your version is lower than `8.2`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [upgrade](../../installation/upgrade).
 
-:::tip
-Exceptionally, XCP-ng 8.1 will continue to receive support until either XCP-ng 8.3 is available or until March 31 2021, whichever comes first. The general rule is to offer a transition period for you to upgrade after each new Standard release, a few months in general.
-:::
-
-## Prerequisites
+## ℹ️ Prerequisites
 
 ### Access to the repository
 
@@ -37,7 +41,7 @@ In any case, installing extra packages from outside the XCP-ng repositories can 
 
 More at [Additional packages](../../management/additional-packages).
 
-## Get information about the updates
+## 💡 Get information about the updates
 
 Every update is first tested and discussed on [this forum thread](https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing), which we highly recommend to subscribe to (activate e-mail notifications in your forum settings if you want to be notified of new messages). You will thus know about coming updates in advance and be able to help us validate them. Sometimes updates are **delayed** because of lack of feedback there.
 
@@ -60,9 +64,9 @@ A comprehensive list of updates is available on our build system's web interface
 * [List of official **updates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=27&order=-build_id&latest=1)
 * [List of **update candidates** and other **testing** packages](https://koji.xcp-ng.org/builds?inherited=0&tagID=28&order=-build_id&latest=1)
 
-## Precautions
+## 🚸 Precautions
 
-* Disable HA during the whole update process to avoid accidental fencing.
+* Disable HA during the whole update process to avoid accidental fencing (automatically handled by [Xen Orchestra RPU](updates.md#from-xen-orchestra))
 * Avoid applying updates while XAPI tasks are running (`xe task-list`).
 * Some updates may probe SCSI devices. If your devices are sensitive to that kind of thing, plug them off before updating (see [this unfortunate story](https://github.com/xcp-ng/xcp/issues/232) of dead tape robots).
 * As a precaution, it may be a good idea to disconnect passed-through devices before applying the update.
@@ -71,7 +75,7 @@ A comprehensive list of updates is available on our build system's web interface
 *Some people systematically run `xe vm-cd-eject --multiple` to eject all virtual CDs/DVDs from the VMs before updating and/or migrating.*
 * Do not update from an interactive shell that was directly started from the XCP-ng console (`xsconsole`), nor from the host's remote console that is available through the VNC protocol in Xen Orchestra or XCP-ng Center. The update process may restart those, kill the current shell and thus kill the update process which would leave the system in an unclean state (duplicate RPMs).
 
-## How to apply the updates
+## 🦮 How to apply the updates
 
 ### From command line
 
@@ -97,22 +101,41 @@ See below "[When to reboot?](#when-to-reboot)".
 
 ### From Xen Orchestra
 
-#### 1. Check prerequisites and precautions above
+If you are using a pool with at least 2 hosts and a shared storage, you can rely on the "Rolling Pool Update" feature, doing all the heavy lifting for you. Alternatively, you can update hosts individually.
 
-#### 2. Install the updates
+#### Rolling Pool Update (RPU)
 
-Xen Orchestra can install the patches to all the servers in a pool at once.
-[See this blog post](https://xen-orchestra.com/blog/xcp-ng-updates-from-xen-orchestra/#updatesviaxenorchestra).
+Also known as RPU, **this is the advised way to update your pool**. By just clicking on one button, Xen Orchestra will automatically move VMs around, apply updates and reboot the hosts, without any service interruption. The following button is available in the Pool view, on "Patches" tab:
 
-#### 3. Restart the XAPI toolstack on every host
+![](../../assets/img/rpubutton.png)
 
-As explained above in the *From command line* section.
+:::tip
+This powerful and fully automated mechanism requires some prerequisites: all your VMs disks must be on a one (or more) shared storage. Also, high-availability will be automatically disabled, as the XO load balancer plugin and backup jobs. Everything will be enabled back when it's done!
+:::
 
-#### 4. Consider rebooting the hosts, starting with the pool master
+![](../../assets/img/rpu1.png)
 
-As a precaution, Xen Orchestra will always tell you that a reboot is required after an update. See below "When to reboot?" to decide whether you want to obey it or not.
+#### Pool updates
 
-## When to reboot?
+If you can't use RPU (Rolling Pool Updates), you can still use "Install pool patches" button. This will simply install updates on all hosts on your pool and restart the toolstack, **without doing any host reboot**:
+
+![](../../assets/img/updatebutton.png)
+
+:::tip
+Restarting the toolstack won't have any impact on your running VMs. However, **most updates will require a reboot** to be applied, that you should execute during a scheduled maintenance.
+:::
+
+You can see hosts that will require a reboot via a small blue triangle:
+
+![](../../assets/img/xo5patching.png)
+
+#### Host updates
+
+:::warning
+We do NOT recommend to install updates to individual hosts. Obviously except if they are alone in their own pool. Running hosts in the same pool with different level of updates should be avoided as possible. We leave that option in case you have a specific need, but again, we discourage that usage as possible. Note that even a host alone in its pool can be updated via the "Pool update" button!
+:::
+
+## 🏁 When to reboot?
 
 There is currently no way for XCP-ng to automatically tell you if a reboot is required.
 
@@ -126,7 +149,7 @@ Else base your decision on an educated guess. Look at the list of the updated pa
 
 All updates are announced on [https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing](https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing) along with information about what steps are required after installing the update (reboot, toolstack restart, service restart...).
 
-## XCP-ng 7.5/7.6 and live migrations
+## 🔥 XCP-ng 7.5/7.6 and live migrations
 
 Since the component that handles live migrations in XenServer is closed-source, we had to write our own. However, it took several tries before we reached a fully functional replacement, that's why only hosts that have had the latest updates of the `xcp-emu-manager` package have the fully working replacement. Previous versions will or will not manage to migrate your VMs, depending on various contextual factors, including the VM's load.
 
