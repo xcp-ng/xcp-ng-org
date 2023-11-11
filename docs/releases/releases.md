@@ -13,7 +13,7 @@ Using the Long Term Support version is relevant if:
 * you want a predictable migration path on a longer timeframe
 * you don't care about new features coming for the next years
 
-LTS releases are supported for 5 years.
+LTS releases are supported for 5 years:
 
 ```mermaid
 %%{
@@ -31,9 +31,8 @@ LTS releases are supported for 5 years.
 gantt
     dateFormat  YYYY-MM-DD
     tickInterval 12month
-    XCP-ng 8.2.1 LTS       :2022-02-28, 3y
-    XCP-ng 8.2.0 LTS (EOL) :active,2020-11-18, 16M
-    XCP-ng 8.1 (EOL)       :active,2020-03-31, 1y
+    XCP-ng 8.2 LTS         :2020-11-18, 5y
+    XCP-ng 8.1 (EOL)       :2020-03-31, 1y
 ```
 
 If you prefer to get the latest improvements, go for our [latest standard release](#standard-releases).
