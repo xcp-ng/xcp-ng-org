@@ -2,7 +2,7 @@
 
 It's really important to backup your VMs. You have multiple options, but only Xen Orchestra is both **advanced, agentless, fully Open Source and officially supported** (tested for all XCP-ng releases).
 
-## Xen Orchestra
+## 🛰️ Xen Orchestra
 
 Xen Orchestra is the most advanced backup solution and 100% integrated with XCP-ng. There is many different backup options:
 
@@ -35,7 +35,7 @@ All options are explained in the [official documentation](https://xen-orchestra.
 
 Alternatively, you can install and build it yourself [from the GitHub repository](https://github.com/vatesfr/xen-orchestra/).
 
-## 3rd party solutions
+## 🛣️ 3rd party solutions
 
 There's 3rd party solutions officially compatible with XCP-ng to make VM backups. Please check our [ecosystem](../project/ecosystem.md#vm-backup) page on the backup section.
 

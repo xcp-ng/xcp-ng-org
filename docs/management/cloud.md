@@ -7,9 +7,24 @@ You have multiple choices:
 1. Using Xen Orchestra Cloud features (ACLs, Self Service)
 2. Using CloudStack or OpenStack (adapted to very large deployments)
 
-## Xen Orchestra
+## 🛰️ Xen Orchestra
 
 Some interesting "cloud-like" features are available in Xen Orchestra : ACLs and Self-service.
+
+### Cloud-init
+
+Cloud-init is a program "that handles the early initialization of a cloud instance". In other words, you can, on a "cloud-init"-ready template VM, pass a lot of data at first boot:
+
+* setting the hostname
+* add ssh keys
+* automatically grow the file system
+* create users
+* and a lot more!
+
+This tool is pretty standard and used everywhere. A lot of existing cloud templates are using it.
+
+So it means very easily customizing your VM when you create it from a compatible template. It brings you closer to the "instance" principle, like in Amazon cloud or OpenStack.
+
 
 ### ACLs
 
@@ -27,7 +42,7 @@ The self-service feature allows users to create new VMs within a **limited amoun
 ![](../../static/img/xoself.png)
 </div>
 
-## CloudStack
+## ☁️ CloudStack
 
 <div style={{textAlign: 'center'}}>
 ![](../../static/img/cloudstack_logo.png)
@@ -39,7 +54,7 @@ Apache CloudStack is open source software designed to deploy and manage large ne
 
 See the [dedicated documentation](https://docs.cloudstack.apache.org/en/4.17.2.0/installguide/hypervisor/xenserver.html?highlight=xcp-ng) on how to install CloudStack on top of XCP-ng.
 
-## OpenStack
+## 📚 OpenStack
 
 :::caution
 Unlike Cloudstack, we do not know the level of compatibility with OpenStack. Take time to ask OpenStack community about their support for XAPI-based hosts

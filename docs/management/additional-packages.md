@@ -12,7 +12,7 @@ It may be useful to add more packages to it, with precaution. The XCP-ng project
 Best effort support is provided for additional packages provided by the XCP-ng project ([supported list for XCP-ng 8.2](http://reports.xcp-ng.org/8.2/extra_installable.txt)). No support is provided for other additional packages, even if installed from our repositories, as they contain build dependencies not supposed to be installed in production.
 :::
 
-## Rules
+## 📜 Rules
 
 ### 1. Never enable additional repositories
 
@@ -84,7 +84,7 @@ Various point regarding how critical this is:
 
 If you have [pro support](https://xcp-ng.com), ask there. As part of the support, additional supported packages - such as new drivers - may be provided. Else ask the community on the [forum](https://xcp-ng.org/forum/).
 
-## How to install
+## 🦮 How to install
 
 Before doing any change, start keeping track somewhere of any change you bring to the system. This will help for:
 * support
@@ -127,13 +127,13 @@ And as above make sure no package from the system will get overwritten in the pr
 
 And as usual make sure it won't overwrite existing packages...
 
-## Up to date additional packages
+## 📦 Up to date additional packages
 
 If you installed from XCP-ng repositories, [they will be updated like the rest of the XCP-ng system](../../management/updates).
 
 If you installed from any other repository, including CentOS and EPEL, you need to update them (and their dependencies) manually
 
-## System upgrade
+## ♻️ System upgrade
 
 See [upgrade section](../../installation/upgrade) for a discussion of the differences between "Installer upgrade" and "`yum`-style upgrade".
 

@@ -16,7 +16,7 @@ Please take into consideration, that Xen API (XAPI) via their storage module (`S
 We encourage people to use file based SR (local ext, NFS, XOSAN…) because it's easier to deal with. If you want to know more, read the rest.
 :::
 
-## Storage types
+## 📑 Storage types
 
 There are two types of storage:
 
@@ -465,7 +465,7 @@ For the full discussion about Ceph in XCP-ng, see this forum thread: [https://xc
 * Do not use admin keyring for production, but make a separate key with only necessary privileges [https://docs.ceph.com/en/latest/rados/operations/user-management/](https://docs.ceph.com/en/latest/rados/operations/user-management/)
 :::
 
-## ISO SR
+## 💿 ISO SR
 
 You might be wondering how to upload an ISO. Unlike other solutions, you need to create a dedicated "space" for these, a specific ISO SR. To create an ISO SR, you have 2 possibilities:
 - Shared: A shared ISO SR is on a VM or on a dedicated storage server. It's accessible with an IP address, like 192.168.1.100 via SMB or NFS.
@@ -523,7 +523,7 @@ That's it!
 Don't forget to rescan your SR after adding, changing, or deleting ISO files. Rescan is done automatically every 10 minutes otherwise.
 :::
 
-## Storage API
+## 📡 Storage API
 
 Current storage stack on XCP-ng is called `SMAPIv1`. The VHD format is used, which has a maximum file size limitation of 2TiB. This means that when using this format your VM disk can't be larger than 2TiB.
 
@@ -562,7 +562,7 @@ You won't be able to live migrate storage on this disk or snapshot it anymore. O
 
 Also, the storage API is far more agnostic and the code is better. So what's the catch? Problem is there's no Open Source implementation of `SMAPIv3`, also the current API state isn't really complete (doesn't support a lot of features). However, XCP-ng team is working on it too, because it's clearly the future!
 
-## Coalesce
+## 🪄 Coalesce
 
 Coalesce process is an operation happening in your hosts as soon a snapshot is removed.
 
@@ -599,7 +599,7 @@ But more than that, Xen Orchestra is also able to show you uncoalesced disk in t
 
 More about this exclusive feature on [https://xen-orchestra.com/blog/xenserver-coalesce-detection-in-xen-orchestra/](https://xen-orchestra.com/blog/xenserver-coalesce-detection-in-xen-orchestra/)
 
-## Modify an existing SR connection
+## 🦮 How to modify an existing SR connection
 
 The link between a host and an SR is called the `PBD`. A PBD basically stores **how** to access a storage repository (like the path to the drive or to an NFS share).
 

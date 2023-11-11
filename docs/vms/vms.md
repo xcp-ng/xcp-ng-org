@@ -1,7 +1,8 @@
 # Virtual Machines (VMs)
 
-### All VMs
-#### Dynamic Memory
+## 🏘️ All VMs
+
+### Dynamic Memory
 
 Using Dynamic Memory Control (DMC) can be a good way to reduce your memory consumption, but you have to be careful: during live migration of a VM, XCP-ng will automatically reduce the VM memory to it's minimal settings and this can cause VM crash if it's not ready to function with this smaller amount of RAM.
 
@@ -13,7 +14,7 @@ In Xen Orchestra, the *Advanced* tab of your VM will display the memory limits, 
 If dynamic min is equal to dynamic max - as displayed in the screenshot - then dynamic memory is disabled.
 If dynamic min < dynamic max, then make sure your VM is able to fully function with as little RAM as defined in *dynamic min*.
 
-#### Use a VNC client
+### Use a VNC client
 
 1. Connect to a XCP-ng server using SSH, then execute this command with the VM UUID to join:
 
@@ -58,15 +59,18 @@ ssh -L <LOCAL_PORT>:localhost:<REMOTE_PORT> root@<HOST_IP>
 vncviewer localhost:<LOCAL_PORT>
 ```
 
-### Windows VMs
-#### Manage screen resolution
-##### Bios VM
+## 🪟 Windows VMs
+
+### Manage screen resolution
+
+#### Bios VM
+
 For a Bios VM, screen resolution can be managed directly through the OS:
 - Right click on the desktop
 - Display settings
 - Choose resolution
 
-##### UEFI VM
+#### UEFI VM
 
 For a UEFI VM, you will need to set up your resolution in the UEFI settings of the VM.
 For that you first will need to enter the VM UEFI setup:
@@ -88,7 +92,7 @@ For that you first will need to enter the VM UEFI setup:
 - Restart your VM by sending a CTRL+ALT+DEL.
 - After reboot your VM will display the selected resolution.
 
-## Guest tools
+## 🛠️ Guest tools
 
 XCP-ng needs guest tools to be installed in the VMs in order to communicate with the guest operating system. This brings better performance and is required for various features.
 

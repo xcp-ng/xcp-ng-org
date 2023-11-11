@@ -17,7 +17,7 @@ There are 3 upgrade methods, detailed below:
 * From command line a.k.a. yum-style upgrade. Only for point version upgrades.
 :::
 
-## Release Notes & Known Issues
+## ☢️ Release Notes & Known Issues
 
 Read the [Release Notes and Known Issues](../../releases#all-releases) for every release that is higher than your current release. They may provide additional instructions for specific situations. Also **please read the following warnings**:
 
@@ -35,7 +35,7 @@ Read the [Release Notes and Known Issues](../../releases#all-releases) for every
 * When upgrading from *XCP-ng 7.5 or lower* or from *XenServer* or *Citrix Hypervisor*, **it is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
 :::
 
-## Upgrade via installation ISO (recommended)
+## 💿 Upgrade via installation ISO (recommended)
 
 This is the standard XCP-ng way. With this method, note that you can skip any intermediate release (e.g. from 7.5 to 8.2 directly) without needing intermediate upgrade.
 
@@ -87,7 +87,7 @@ Note: it has been brought to our attention that [a DHCP server may be necessary 
 
 Once upgraded, **keep the system regularly updated** (see [Updates Howto](../../management/updates)).
 
-## From command line
+## 🧑‍💻 From command line
 
 A.k.a. yum-style upgrade.
 
@@ -195,7 +195,7 @@ find /etc \( -name "*.rpmnew" -or -name "*.rpmsave" ! -name "logrotate.cron.rpms
 
 #### 4. Reboot the host
 
-## Upgrade from XenServer
+## 🇽 Upgrade from XenServer
 
 This article describes how to proceed in order to convert your Citrix XenServer infrastructure into a XCP-ng infrastructure.
 
@@ -303,20 +303,17 @@ The output should also be true. It has created a temporary entry in the grub boo
 
 To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it's available, but if not, it should proceed fine and boot into upgraded XCP-NG in 10 to 20 minutes.
 
-## Migrate VMs from older XenServer/XCP-ng
+## 👴 Migrate VMs from older XenServer/XCP-ng
 
 ### Live migration
 
 Live migration **should work** from any older XenServer/XCP-ng toward the latest release. However, there are some cases where it doesn't. For example, XenServer (and XCP-ng) 7.6 has a regression that makes live migration with storage motion crash guests that are based on the "Other installation media" template when the source host has a version lower than 7.6 ([reported here to Citrix](https://bugs.xenserver.org/browse/XSO-924)). But **this bug has been fixed in latest XCP-ng 7.6 updates**.
 
-### Alternative VM migration solutions
+### Warm migration
 
-* clone/copy your VM before trying to live migrate. In case it fails, you won't have any surprises
-* offline migration is the safest if you can afford VM downtime
-* a hybrid solution is to use Xen Orchestra continuous replication to avoid downtime
-* restore Xen Orchestra backup on latest XCP-ng version will also work
+If a live migration doesn't work, Xen Orchestra is able to do a warm migration for you. It's safer and still have a reasonable downtime. [Read this dedicated article](https://xen-orchestra.com/blog/warm-migration-with-xen-orchestra/) to learn more about it.
 
-## Handling alternate drivers or kernel
+## ☣️ Handling alternate drivers or kernel
 
 If - before the upgrade - your host depends on [alternate drivers](../../installation/hardware#alternate-drivers) or on the [alternate kernel](../../installation/hardware#alternate-kernel) to function, then it is possible that the upgraded system doesn't need such alternatives anymore. It is also possible that it still needs them.
 

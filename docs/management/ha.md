@@ -2,7 +2,7 @@
 
 High availability (or HA) in XCP-ng world is the ability to detect a failed host and automatically boot all the VMs that were running on this host to the other alive machines.
 
-## Introduction
+## 📋 Introduction
 
 Implementing VM High availability (HA) is a real challenge: first because you need to reliably detect when a server has really failed to avoid unpredictable behavior. But that's not the only one. If you lose the network link but not the shared storage, how to ensure you will not write simultaneously on the storage and thus corrupt all your data?
 
@@ -16,7 +16,7 @@ Even if you can have HA with only 2 hosts, it's strongly recommended to do it wi
 HA requires **far more maintenance** and will create some traps if you are not aware. In short, it comes at a cost. Before using it, **please carefully think about it**: do you **REALLY** need it? We saw people having less uptime because of HA than without. Because you **must understand** what you are doing every time you are rebooting or updating a host.
 :::
 
-## Concepts
+## 🤹 Concepts
 
 The pool concept allows hosts to exchange their data and status:
 
@@ -31,7 +31,7 @@ Here is the possibles cases and their answers:
 * **lost storage but not network**: if the host can contact majority of pool members, it can stay alive. Indeed, in this scenario, there is no harm for the data (can't write to the VM disks). If the host is alone, i.e can't contact any other host or less than the majority, it decides to go for a reboot procedure.
 * **lost network but not storage (worst case!)**: the host considers itself as problematic, and start a reboot procedure (hard poweroff and restart). This fencing procedure guarantee the sanity of your data.
 
-## Configuration
+## ⚙️ Configuration
 
 ### Prepare the pool
 
@@ -76,7 +76,7 @@ You can also do that configuration with *xe CLI*:
 xe vm-param-set uuid=<VM_UUID> ha-restart-priority=restart
 ```
 
-## Updates/maintenance
+## 🔧 Updates/maintenance
 
 Before any update or host maintenance, planned reboot and so on, you need to **ALWAYS** put your host in maintenance mode. If you don't do it, XAPI will consider it as a unplanned failure, and will act accordingly.
 
@@ -86,7 +86,7 @@ If you have enough memory to put one host in maintenance (migrating all its VMs 
 You **must be very careful before ANY maintenance task**, otherwise HA will kick in and provide unpleasant surprises. You have been warned.
 :::
 
-## Behavior
+## ↔️ Behavior
 
 ### Halting the VM
 

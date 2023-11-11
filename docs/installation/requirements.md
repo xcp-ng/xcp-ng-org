@@ -12,7 +12,7 @@ An XCP-ng computer is dedicated entirely to the task of running XCP-ng and hosti
 Installing third-party software directly in the control domain of XCP-ng is not supported. The exception is for software supplied in the current repositories. If you want to add an extra package inside XCP-ng please [ask here](https://github.com/xcp-ng/xcp/issues/56).
 :::
 
-## XCP-ng system requirements
+## 📋 XCP-ng system requirements
 
 Although XCP-ng is usually deployed on server-class hardware, XCP-ng is also compatible with many models of workstations and laptops. For more information, see the [Hardware Compatibility List (HCL)](../../installation/hardware).
 
@@ -33,7 +33,7 @@ The maximum number of logical processors supported differs by CPU. For more info
 
 The system requirements for XCP-ng are:
 
-## CPUs
+### CPUs
 
 One or more 64-bit x86 CPUs, 1.5 GHz minimum, 2 GHz or faster multicore CPU recommended.
 
@@ -43,13 +43,13 @@ To support VMs running Windows or more recent versions of Linux, you require an 
 
 To support VMs running supported paravirtualized Linux, you require a standard 64-bit x86-based system with one or more CPUs.
 
-## Memory
+### Memory
 
 2 GB minimum, 4 GB or more recommended.
 
 A fixed amount of RAM is allocated to the control domain (dom0). The optimal amount of RAM for the control domain depends on the workload.
 
-## Disk space
+### Disk space
 
 * Locally attached storage (PATA, SATA, SCSI) with 46 GB of disk space minimum, 70 GB of disk space recommended.
 * SAN via HBA (not through software) when installing with multipath boot from SAN.
@@ -57,7 +57,7 @@ A fixed amount of RAM is allocated to the control domain (dom0). The optimal amo
 
 For a detailed list of compatible storage solutions, see the [Hardware Compatibility List (HCL)](../../installation/hardware).
 
-## Network
+### Network
 
 100 Mbit/s or faster NIC. One or more Gb, or 10 Gb NICs is recommended for faster P2V and export/import data transfers and VM live migration.
 
@@ -69,7 +69,7 @@ XCP-ng requires an IPv4 network for management and storage traffic.
 Ensure that the time setting in the BIOS of your server is set to the current time in UTC. In some support cases, serial console access is required for debug purposes. When setting up XCP-ng configuration, we recommend that you configure serial console access. For hosts that do not have physical serial port or where suitable physical infrastructure is not available, investigate whether you can configure an embedded management device. For example, Dell DRAC or HP iLO. For more information about setting up serial console access, see [CTX228930 - How to Configure Serial Console Access on XenServer 7.0 and later](https://support.citrix.com/article/CTX228930).
 :::
 
-## Supported guest OS
+## 🖥️ Supported guest OS
 
 Officially supported OS. But there's a lot more than can run on XCP-ng.
 
@@ -93,7 +93,7 @@ Older versions of Windows will run, but in emulation mode (like Windows XP, Serv
 * FreeBSD and related (pfSense, TrueNAS…)
 * OpenBSD
 
-## Pool requirements
+## 🎱 Pool requirements
 
 A resource pool is a homogeneous or heterogeneous aggregate of one or more servers, up to a maximum of 64. Before you create a pool or join a server to an existing pool, ensure that all servers in the pool meet the following requirements.
 Hardware requirements
@@ -103,7 +103,7 @@ All of the servers in a XCP-ng resource pool must have broadly compatible CPUs, 
 * The CPU vendor (Intel, AMD) must be the same on all CPUs on all servers.
 * To run HVM virtual machines, all CPUs must have virtualization enabled.
 
-## Other requirements
+## 📌 Other requirements
 
 In addition to the hardware prerequisites identified previously, there are some other configuration prerequisites for a server joining a pool:
 
