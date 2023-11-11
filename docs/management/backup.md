@@ -6,7 +6,7 @@ It's really important to backup your VMs. You have multiple options, but only Xe
 
 Xen Orchestra is the most advanced backup solution and 100% integrated with XCP-ng. There is many different backup options:
 
-* Automated rollings napshots
+* Automated rolling snapshots
 * Full Backup
 * Full Replication
 * Incremental Backup
@@ -31,10 +31,12 @@ And they come with different features:
 
 
 
-All options are explained in the [official documentation](https://xen-orchestra.com/docs/). Xen Orchestra is [available as a turnkey virtual appliance](https://xen-orchestra.com), called XOA which [you can deploy in a minute](https://xen-orchestra.com/#!/xoa).
+All options are explained in the [official documentation](https://xen-orchestra.com/docs/). Xen Orchestra is [available as a turnkey virtual appliance](https://xen-orchestra.com), called XOA which [you can deploy in a minute](https://vates.tech/deploy).
 
 Alternatively, you can install and build it yourself [from the GitHub repository](https://github.com/vatesfr/xen-orchestra/).
 
 ## 3rd party solutions
 
 There's 3rd party solutions officially compatible with XCP-ng to make VM backups. Please check our [ecosystem](../project/ecosystem.md#vm-backup) page on the backup section.
+
+However, you'll lose the tight integration you have between XCP-ng and Xen Orchestra, both bundled of the [Vates Stack](https://vates.tech).
