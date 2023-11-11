@@ -36,11 +36,11 @@ const config = {
 
   scripts: [
     {
-      src: './mautic.js',
+      src: './js/mautic.js',
       async: true,
     },
     {
-      src: './matomo.js',
+      src: './js/matomo.js',
       async: true,
     },
   ],
