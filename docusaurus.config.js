@@ -139,6 +139,16 @@ const config = {
         defaultMode: 'dark',
         respectPrefersColorScheme: true,
       },
+      // Mermaid
+      mermaid: {
+        options: {
+          fontSize: 25,
+          gantt: {
+            fontSize: 25,
+            barHeight: 70,
+          }
+        },
+      },
       algolia: {
         // The application ID provided by Algolia
         appId: 'I9J2TZ0RWH',

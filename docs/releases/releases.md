@@ -15,7 +15,26 @@ Using the Long Term Support version is relevant if:
 
 LTS releases are supported for 5 years.
 
-![](../../assets/img/lts.png)
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'fontSize': '32px',
+      'primaryColor': '#8e83fe',
+      'textColor': '#555',
+      'secondaryColor': '#5952a3',
+      'tertiaryColor': 'transparent'
+    }
+  }
+}%%
+gantt
+    dateFormat  YYYY-MM-DD
+    tickInterval 12month
+    XCP-ng 8.2.1 LTS       :2022-02-28, 3y
+    XCP-ng 8.2.0 LTS (EOL) :active,2020-11-18, 16M
+    XCP-ng 8.1 (EOL)       :active,2020-03-31, 1y
+```
 
 If you prefer to get the latest improvements, go for our [latest standard release](#standard-releases).
 
