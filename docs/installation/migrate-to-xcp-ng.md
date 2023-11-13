@@ -41,7 +41,29 @@ Export your VM in OVA format, and use Xen Orchestra to import it. If you have an
 
 ## 🇻 From VMware
 
-Using OVA export from VMware and then OVA import into Xen Orchestra is the preferred way.
+### XO V2V
+
+Xen Orchestra introduces "V2V," or "VMware to Vates", a streamlined tool for migrating from VMware to the Vates Stack, encompassing XCP-ng and Xen Orchestra (XO). Seamlessly integrated into Xen Orchestra, this tool utilizes the "warm migration" feature for efficient transitions. The process initiates with exporting an initial snapshot of the VMware-based VM, which, despite being time-consuming, occurs without disrupting the VM's operation, ensuring transparency.
+
+Once this comprehensive replication completes, the VM is shut down, and only the newly modified data blocks since the snapshot are exported. The VM is then activated on the XCP-ng platform, significantly minimizing downtime, a crucial benefit for large VMs. Furthermore, the migration process is largely automated, allowing for hands-off monitoring and execution. This entire procedure is fully automated for user convenience and efficiency.
+
+In your Xen Orchestra UI, go into the main menu in the left, on the "Import" then "From VMware" option:
+
+![](../../assets/img/v2v1.png)
+
+After giving the vCenter credentials, you can click on "Connect" and go to the next step:
+
+![](../../assets/img/v2v2.png)
+
+On this screen, you will basically select which VM to replicate, and to which pool, storage and network. When it's done, just click on "Import" and there you go!
+
+:::tip
+You can choose to enable "thin mode": it's longer ("double read") but the disk created on XCP-ng side will only use the space used in the VMware disk. For now, there's no progress on this initial read, but we have plans to expose the "XO task" for it in the next release.
+:::
+
+### OVA
+
+Using OVA export from VMware and then OVA import into Xen Orchestra is another possibility.
 
 :::tip
 Collect info about network cards used in windows VM (ipconfig /all) use same mac address(es) when creating interfaces in xcp-ng this step will help You skip windows activation if system was activated already.
