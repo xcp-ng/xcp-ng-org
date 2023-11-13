@@ -1,6 +1,6 @@
 # After Upgrade
 
-## The Server stays in Maintenance Mode
+## 🔧 The Server stays in Maintenance Mode
 
 ### Causes and Solutions
 * You enabled the maintenance mode and forgot about it.
@@ -14,7 +14,9 @@
 
 ***
 
-## Some of my VMs do not start. Error: "This operation cannot be performed because the specified virtual disk could not be found."
+## 🙅 Some of my VMs do not start
+
+With the following error: "This operation cannot be performed because the specified virtual disk could not be found."
 
 ### Cause
 It's mostly related to an inserted ISO that is no longer accessible.
@@ -24,18 +26,20 @@ Eject the ISO on those VMs.
 
 ***
 
-## I had some scripts/tools installed and after the upgrade all is gone! Help!
+## 💔 Missing scripts/tools after upgrade
 
 ### Cause
+
 XCP-ng ISO upgrade is a reinstall that saves only your XAPI database (Settings/VM Metadata).
 But it also creates a full backup of your previous XCP-ng/XenServer installation on a second partition, in most cases it's /dev/sda2.
 
 ### Solution
+
 To access the backup (with all your tools and modifications) just mount the backup partition (mostly /dev/sda2) and copy your data back.
 
 ***
 
-## After upgrading my XCP-ng host is unstable, network card freezes, kernel errors, etc.
+## 🐛 After upgrading my XCP-ng host is unstable, network card freezes, kernel errors, etc.
 
 ### Causes and Solutions
 
