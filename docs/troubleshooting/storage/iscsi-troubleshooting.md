@@ -24,6 +24,21 @@ Display a list of all current sessions logged in:
 iscsiadm -m session
 ```
 
+Log out of all targets:
+```sh
+iscsiadm -m node -u
+```
+
+Display information about a target:
+```sh
+iscsiadm -m node -T targetname -p <IP_address>
+```
+
+Rescan a volume after expanding a LUN:
+```sh
+iscsiadm -m node -p <IP_address> --rescan
+```
+
 ## 💓 iSCSI in storage-cluster environment
 
 This apply to setup using DRBD/Corosync/Pacemaker.
