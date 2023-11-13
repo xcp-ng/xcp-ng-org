@@ -14,7 +14,7 @@ The goal of this document is to give you a hint of what's next. However, since a
 
 If you have any suggestion, feel free to ask on our [community forum](https://xcp-ng.org/forum/category/1/feedback-and-requests).
 
-## In tech preview
+## 🏗️ In tech preview
 
 _Technology that is here, but not officially released for production usage._
 
@@ -23,9 +23,9 @@ _Technology that is here, but not officially released for production usage._
 * [LINSTOR integration](https://xcp-ng.org/blog/2020/11/13/xcp-ng-and-linbit-alliance-part-ii/) (Storage)
 * [RunX](https://xcp-ng.org/blog/2021/10/19/runx-is-available-in-tech-preview/) (Xen)
 
-## In progress
+## 👷 In progress
 
-_Things we started to work on, but are not usable/visible yet._
+_Things we started to work on, but are not usable or visible yet._
 
 * Q35 emulation support (Xen)
 * New metrics (Xen/platform)
@@ -42,7 +42,7 @@ _Things we started to work on, but are not usable/visible yet._
 * LACP support during install (platform)
 * Auto resume original VM when Xen live migration failed
 
-## Spec/Design/PoC
+## 🥼 Spec/Design/PoC
 
 _Features that are being discussed or designed, but not even partly coded._
 
@@ -50,7 +50,7 @@ _Features that are being discussed or designed, but not even partly coded._
 * [xenopsd-ng](https://github.com/xcp-ng/xenopsd-ng) (Xen)
 * Virtio support (platform)
 
-## Done
+## 🏁 Done
 
 * Conversion tool (facilitate migration to XCP-ng, done in XO for VMware)
 * Smartctl disk status (2023 for XCP-ng 8.3, already supported in XO)
@@ -75,7 +75,7 @@ _Features that are being discussed or designed, but not even partly coded._
 * Upgrade detection and upgrade with updater plugin (2018)
 * Extra package repo (2018)
 
-## Backlog
+## 🗃️ Backlog
 
 _This is a kind of wish list, without any priorities, where we try to put some ideas._
 
