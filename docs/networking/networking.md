@@ -137,11 +137,11 @@ By renaming/updating interfaces like this, you can assure all your hosts have th
 ### Remove a physical NIC
 
 Before removing a physical NIC, ensure that no VMs are using the interface. Shutdown the host, physically remove the NIC and boot.
-After boot, the PIF will need to be removed.
+After boot, the PIF will need to be removed. You can do it this way:
 ```
 xe pif-forget uuid=<PIF UUID>
 ```
-The `<PIF UUID>` can be obtained with either `xe pif-list`or with Xen Orchestra. This command only needs to be ran once on the pool. 
+The `<PIF UUID>` can be obtained with either `xe pif-list` or with Xen Orchestra. This command only needs to be ran once on the pool. 
 
 ## 🛞 SDN controller
 
