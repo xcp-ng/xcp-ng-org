@@ -1,4 +1,12 @@
-# Disk failure/replacement with software RAID
+---
+title: 'Software RAID issues'
+---
+
+# Software RAID issues
+
+This page regroups the common issues you might deal with regarding software RAID.
+
+## ⏏️ Disk replacement with software RAID
 
 If XCP-ng has been installed with a *software RAID 1 full disk mirror* method, a disk failure can be fixed with a disk replacement. Here's how:
 

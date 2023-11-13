@@ -1,22 +1,30 @@
 # About XCP-ng
 
-The story behind XCP-ng.
+## 🌱 The origin
 
-XCP-ng is not just a "product" or a solution, it's also a great project with a great community!
+XCP-ng stands as more than a mere product-it's a dynamic project fostered by an engaged community. Originating from the free [Xen Cloud Platform](https://wiki.xen.org/wiki/XCP_Overview) (XCP) and its commercial counterpart, Citrix XenServer, the landscape shifted when Citrix made XenServer open source, leading to the discontinuation of XCP.
 
-A long time ago there was the free hypervisor [Xen Cloud Platform - XCP](https://wiki.xen.org/wiki/XCP_Overview) and its commercial version Citrix XenServer. Later Citrix open sourced XenServer, so XCP was no longer needed and discontinued.
+However, Citrix's decision to strip several features from the free version of XenServer post-7.3 inspired project founder Olivier Lambert. Aiming to revive the essence of XCP, he initiated "XCP New Generation" or XCP-ng, aspiring to create an unrestricted, community-driven, open source hypervisor, mirroring XenServer's functionality without any feature limitations.
 
-But since XenServer 7.3, Citrix removed a lot of features from the free version. The project founder Olivier Lambert wanted to have a free, community based, unrestricted open source hypervisor with the spirit of XCP and so he called his new project `XCP New Generation`, in short XCP-ng.
+:::tip
+XCP-ng was conceived as a friendly fork of XenServer, characterized by an approach that seeks to keep changes to a minimum. Our philosophy is to contribute back to the upstream for all components wherever feasible, maintaining a collaborative and synergistic relationship with the original source.
+:::
 
-The goal of XCP-ng is to make a fully community backed version of XenServer, without any feature restrictions.
+You can now read more details about the [origin of the project on Wikipedia!](https://en.wikipedia.org/wiki/XCP-ng)
 
-## Community
+## 💬 Community
 
-Most of the community is on [XCP-ng Forum](https://xcp-ng.org/forum). Feel free go there and ask anything!
+Most of the community is on [XCP-ng Forum](https://xcp-ng.org/forum). Feel free go there and ask anything! We also have a [Discord server](https://discord.gg/Hr98F6wRvx) for live chat, or even on [Reddit](https://www.reddit.com/r/xcpng/) (however, the forum is the most active place).
 
-There's also a [Twitter account](https://twitter.com/xcpng) and an IRC channel available on OFTC: #xcp-ng
+You can also find us on many social networks:
+* [X/Twitter](https://twitter.com/xcpng)
+* [Mastodon](https://social.vates.tech/@xcpng)
+* [LinkedIn](https://www.linkedin.com/company/vates-sas)
+* [Facebook](https://www.facebook.com/XCPng)
+* IRC on OFTC at #xcp-ng
 
-## History of XCP-ng
+
+## 📜 History of XCP-ng
 
 Here is a video recorded at FOSDEM19:
 

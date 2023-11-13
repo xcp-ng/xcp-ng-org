@@ -6,7 +6,7 @@ XCP-ng is using Open vSwitch as its core, and supports various features from it.
 Even if one NIC can be enough for your host, having a dedicated NIC for storage will be really important to get consistent performances (especially if you use shared storage like iSCSI or NFS).
 :::
 
-## Concepts
+## 🎓 Concepts
 
 This section describes the general concepts of networking in XCP-ng.
 
@@ -34,7 +34,7 @@ This section uses three types of server-side software objects to represent netwo
 
 Each XCP-ng server has one or more networks, which are virtual Ethernet switches. Networks that are not associated with a PIF are considered internal. Internal networks can be used to provide connectivity only between VMs on a given XCP-ng server, with no connection to the outside world. Networks associated with a PIF are considered external. External networks provide a bridge between VIFs and the PIF connected to the network, enabling connectivity to resources available through the PIF’s NIC.
 
-## VLANs
+## 🏷️ VLANs
 
 VLANs, as defined by the IEEE 802.1Q standard, allow a single physical network to support multiple logical networks. XCP-ng hosts support VLANs in multiple ways.
 
@@ -60,11 +60,11 @@ Finally, click on "Create network":
 
 That's it!
 
-## Bonds
+## 🔗 Bonds
 
 It's same as previous section, just check the "Bonded Network" and select multiple PIFs in the Interface selector. You can either use VLANs or not, it doesn't matter!
 
-## Manage physical NICs
+## 🌐 Manage physical NICs
 
 ### Add a new NIC
 
@@ -76,8 +76,6 @@ Plug new NIC:
 `xe pif-plug uuid=<NIC UUID>`
 
 ### Renaming NICs
-
-
 
 In a pool, all NICs across your hosts should match up exactly. So if your management is NIC 0 and your 10Gbit storage interface is NIC 4 on host 1, it should be the same on host 2.
 
@@ -136,11 +134,11 @@ xe pif-introduce device=eth8 host-uuid=<host uuid> mac=<mac>
 By renaming/updating interfaces like this, you can assure all your hosts have the same interface order.
 
 
-## Remove a physical NIC
+### Remove a physical NIC
 
 Before removing it, just be sure to remove its associated networks, so it won't cause trouble. Then, shutdown, remove the NIC and finally boot. After the boot, do a `xe pif-forget uuid=<OLD PIF UUID>` to get rid of the object record.
 
-## SDN controller
+## 🛞 SDN controller
 
 An SDN controller is provided by a [Xen Orchestra](../management#xen-orchestra) plugin. Thanks to that, you can enjoy advanced network features.
 
@@ -193,7 +191,7 @@ It means the TLS certificate, used to identify a SDN controller, on the host doe
 
 The issue should be fixed.
 
-## Static routes
+## 🚏 Static routes
 
 Sometimes you need to add extra routes to an XCP-ng host. It can be done manually with an `ip route add 10.88.0.0/14 via 10.88.113.193` (for example). But it won't persist after a reboot.
 
@@ -225,7 +223,7 @@ A toolstack restart is needed as before.
 XAPI might not remove the already-installed route until the host is rebooted. If you need to remove it ASAP,  you can use `ip route del 10.88.0.0/14 via 10.88.113.193`. Check that it's gone with `route -n`.
 :::
 
-## Full mesh network
+## 🕸️ Full mesh network
 
 This page describes how to configure a three node meshed network ([see Wikipedia](https://en.wikipedia.org/wiki/Mesh_networking)) which is a very cheap approach to create a 3 node HA cluster, that can be used to host a Ceph cluster, or similar clustered solutions that require 3 nodes in order to operate with full high-availability.
 
@@ -318,7 +316,7 @@ This setup will save you costs of 2 network switches you would otherwise have to
 * Forum post: [https://xcp-ng.org/forum/topic/1897/mesh-network](https://xcp-ng.org/forum/topic/1897/mesh-network)
 * Proxmox wiki: [https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server](https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server)
 
-## DNS Search Domains
+## 🔎 DNS Search Domains
 
 When XCP-ng is configured for static IP configuration there are no DNS search domains added. It is possible to add search domains into `/etc/resolv.conf`, however those won't persist across reboots. Use `xe pif-param-set` to add search domains that should persist across reboots.
 
@@ -337,7 +335,7 @@ uuid ( RO)                  : 76608ca2-e099-9344-af36-5b63c0022913
 ```
 This procedure has to be done for all hosts in the same pool.
 
-## Network Troubleshooting
+## 👷 Network Troubleshooting
 
 ### Network corruption
 

@@ -1,6 +1,32 @@
 # iSCSI Troubleshooting
 
-## iSCSI in storage-cluster environment (DRBD / Corosync / Pacemaker )
+This page is dedicated to common issues you might have with iSCSI.
+
+## 🎓 Basic iSCSI commands
+
+Discover available targets from a discovery portal:
+```sh
+iscsiadm -m discovery -t sendtargets -p <IP_address>
+```
+
+Log into a specific target:
+```sh
+iscsiadm -m node -T targetname -p <IP_address> -l
+```
+
+Log into all targets:
+```sh
+iscsiadm -m node -l
+```
+
+Display a list of all current sessions logged in:
+```sh
+iscsiadm -m session
+```
+
+## 💓 iSCSI in storage-cluster environment
+
+This apply to setup using DRBD/Corosync/Pacemaker.
 
 #### iSCSI reconnect after reboot fails permanently ( Unsupported SCSI Opcode )
 

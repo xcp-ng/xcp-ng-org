@@ -16,7 +16,7 @@ Even if you can have HA with only 2 hosts, it's strongly recommended to do it wi
 HA requires **far more maintenance** and will create some traps if you are not aware. In short, it comes at a cost. Before using it, **please carefully think about it**: do you **REALLY** need it? We saw people having less uptime because of HA than without. Because you **must understand** what you are doing every time you are rebooting or updating a host.
 :::
 
-## 🤹 Concepts
+## 🎓 Concepts
 
 The pool concept allows hosts to exchange their data and status:
 

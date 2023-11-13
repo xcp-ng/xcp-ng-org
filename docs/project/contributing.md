@@ -1,12 +1,10 @@
 # Contributing
 
-How to contribute to XCP-ng.
+How to contribute to XCP-ng? There are many ways of contributing:
+* by giving some of your time to work on the project. Code isn't the only way! Community support, documentation, testing…
+* with money, by subscribing to [Pro Support](https://vates.tech), which funds further developments.
 
-There are two ways of contributing:
-* by giving some of your time to work on the project (support, documentation, development...)
-* with money, by subscribing to [Pro Support](https://xcp-ng.com/), which funds further developments.
-
-## Help others
+## 💁 Help others
 
 You don't have to be a programmer/IT-nerd to help at this project. Just ask or offer your help:
 
@@ -16,13 +14,11 @@ You don't have to be a programmer/IT-nerd to help at this project. Just ask or o
 
 We are happy about every helping hand!
 
-## Write documentation
+## ✍️ Write documentation
 
-Contribute to our documentation with pull requests modifying the files at [https://github.com/xcp-ng/xcp-ng-org/tree/master/docs](https://github.com/xcp-ng/xcp-ng-org/tree/master/docs)
+Contribute to our documentation with pull requests modifying the files in this very documentation. At the bottom of each page (including this one!), you can find a "🖊️ Edit this page" link. Click on it and contribute!
 
-If you're not familiar will pull requests, but can also simply click the "Help us to improve this page" link at the bottom of any page of the documentation, which will offer a modification form and create a pull request for you.
-
-## Test
+## 🧑‍🔬 Test
 
 It's important to test XCP-ng on many different platforms and devices. You have gear laying around or access to some special devices? -> be a tester and test all the features of XCP-ng 🚀
 
@@ -37,7 +33,7 @@ Most community testing is organized on the forum, on dedicated threads.
 
 You can also read [this](../development-process/tests) for test ideas.
 
-## Develop
+## 🧑‍💻 Develop
 
 You are a developer and want to code with us? Cool!
 
@@ -49,17 +45,17 @@ There are many components, in various languages: C, ocaml, python and more.
     * Forum -> Development Corner: [https://xcp-ng.org/forum/category/7/development](https://xcp-ng.org/forum/category/7/development)
 * Read [this introduction](../development-process/development). The rest of the [Development Process Tour](../../category/development-process) is also of interest for anyone who wants to help on development.
 
-## Package
+## 📦 Package
 
 Development is one thing, but for your changes to reach actual users, they need to be packaged into RPMs.
 
 See the [Development Process Tour](../../category/development-process) for an introduction about the packaging process, and useful tips (like: [how to rebuild a RPM for XCP-ng locally](../development-process/local-rpm-build)).
 
-## Talk about us
+## 📣 Talk about us
 
 Another valuable way to help is by talking about XCP-ng to people you know or to your audience.
 
-## Developer Certificate of Origin (DCO)
+## 🪪 Developer Certificate of Origin (DCO)
 
 As a member of the Linux Foundation, XCP-ng asks that every contributor certifies that they are allowed to contribute the code or documentation they submit to us. This is done with a simple
 ```

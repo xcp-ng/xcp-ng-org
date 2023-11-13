@@ -2,18 +2,19 @@
 
 Here is a complete list of repositories used by this project.
 
-## Main repositories
+## 📚 Main repositories
 
 * [https://github.com/xcp-ng/](https://github.com/xcp-ng/)
 
-## Spec files and sources for RPMs
+## 📦 Spec files and sources for RPMs
 
 * [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/)
 
-## XCP-ng Center
+## 🖥️ XCP-ng Center
+
 * [https://github.com/xcp-ng/xenadmin](https://github.com/xcp-ng/xenadmin)
 
-## Windows Client Tools
+## 🪟 Windows Client Tools
 
 * [https://github.com/xcp-ng/win-pv-drivers](https://github.com/xcp-ng/win-pv-drivers) - Windows Client Tools Releases and little helpers for Windows PV-driver development
 * [https://github.com/xcp-ng/win-xenbus](https://github.com/xcp-ng/win-xenbus) - Windows PV Bus Driver
