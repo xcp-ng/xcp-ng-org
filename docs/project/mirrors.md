@@ -6,13 +6,13 @@ Like a Linux distribution, XCP-ng's installation images and RPM repositories can
 
 XCP-ng uses [mirrorbits](https://github.com/etix/mirrorbits) to redirect download requests to an appropriate mirror based on their update status and geographical position.
 
-## Original mirror
+## 🏢 Original mirror
 
 `mirrors.xcp-ng.org` is the base for all download links, either downloads of installation ISO images, or RPM repositories used by `yum` to download updates.
 
 Previous versions of XCP-ng used to download files directly from `https://updates.xcp-ng.org`, which since then has becomes one mirror among others (and a fallback in case of files missing from other mirrors).
 
-## List of mirrors
+## 📋 List of mirrors
 
 You can check our live list of mirrors at this URL: [https://mirrors.xcp-ng.org/?mirrorstats](https://mirrors.xcp-ng.org/?mirrorstats)
 
@@ -20,7 +20,7 @@ You can check our live list of mirrors at this URL: [https://mirrors.xcp-ng.org/
 If loading this page fails due to too many redirections, just go to [https://xcp-ng.org](https://xcp-ng.org) once, then try again)
 :::
 
-## Add your mirror
+## 📥 Add your mirror
 
 Anyone or any entity can submit a mirror to our approval so that we add it to the list used by mirrorbits. It is a way to contribute to the XCP-ng project!
 
@@ -104,7 +104,7 @@ Main contact: John Doe <john.doe@...>
 
 Feel free to ask any question in your application message.
 
-## Security
+## 🔒 Security
 
 ### Context
 

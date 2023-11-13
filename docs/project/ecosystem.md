@@ -5,11 +5,13 @@ title: 'Ecosystem'
 
 Projects and partners around XCP-ng.
 
-When we started developing XCP-ng as an alternative to Citrix XenServer, we were committed to creating a true and complete open source virtualization platform that companies can use in their production environment. This also means we were committed to creating a rich ecosystem to go along with it.
+Initiated by [Vates](https://vates.tech), the development of XCP-ng was conceived as an open-source alternative to Citrix XenServer, with a dedication to establishing a fully open-source virtualization solution suitable for production use in businesses. This venture also emphasized the importance of building a robust and diverse ecosystem to complement the platform.
 
-![](../../assets/img/partners/partnership.png)
+<div style={{textAlign: 'center'}}>
+![](../../assets/img/vates-partner.png)
+</div>
 
-## Desktop virtualization
+## 🖥️ Desktop virtualization
 
 ### UDS Enterprise
 
@@ -32,7 +34,7 @@ Learn more about UDS Enterprise [on their website](https://www.udsenterprise.com
 
 We have carefully tested UDS deployment in an XCP-ng environment and UDS Enterprise is the first solution to join the XCP-ng ecosystem with an official Seal of Approval.
 
-## Network
+## 🕸️ Network
 
 Everything related to network specialists in XCP-ng and Xen Orchestra ecosystem.
 
@@ -60,7 +62,7 @@ VyOS is now fully compatible with XCP-ng and comes with paravirtual drivers dedi
 More to come soon on this side!
 :::
 
-## Storage
+## 💽 Storage
 
 In order to build the best platform with multiple storage options, we are also working with companies being expert in storage solutions.
 
@@ -90,9 +92,11 @@ The ecosystem around XCP-ng is getting bigger and bigger and we are really proud
 
 ![](../../assets/img/partners/linbitteam.jpg)
 
-## VM backup
+## 💾 VM backup
 
+:::warning
 **The main backup solution for XCP-ng is Xen Orchestra, see the dedicated [backup](../management/backup.md) section.** Alternatively, here is some 3rd party backup solutions that are officially compatible with XCP-ng.
+:::
 
 ### Storware Backup and Recovery
 
@@ -116,7 +120,7 @@ Another solution, which isn't agentless (you need to deploy some code in each ho
 
 ![](../../assets/img/partners/vinchin-logo-1.png)
 
-## Edge Computing
+## 💻 Edge Computing
 
 Edge Computing is, in short, bringing compute power outside the datacenter. And the combo XCP-ng/Xen Orchestra is great for that! Take a look on our intro on "[What's Edge Computing](https://xcp-ng.org/blog/2020/07/31/edge-case-0/)".
 
@@ -153,7 +157,7 @@ You can read more on our tests inside the blog post [Edge Case #1 - HPE Edgeline
 
 Stay tuned :)
 
-## Hosting
+## 🏢 Hosting
 
 Everything related to host XCP-ng at various providers.
 
@@ -191,6 +195,6 @@ Same as Scaleway, however their IPMI are a bit "weird". You can ask support to p
 
 [https://www.hetzner.com/](https://www.hetzner.com/)
 
-## Join the XCP-ng ecosystem
+## 🫵 Join the XCP-ng ecosystem
 
-Do you have a solution or product and you want to join the XCP-ng ecosystem? [Contact us!](mailto:contact@xcp-ng.org)
+Do you have a solution or product and you want to join the XCP-ng ecosystem? [Contact us!](https://vates.tech/contact)
