@@ -6,7 +6,7 @@ sidebar_position: 8
 
 This section is dedicated to compute related things, from Xen to GPU/vGPU or PCI passthrough.
 
-## PCI Passthrough
+## 🔗 PCI Passthrough
 
 ### 0. Prerequisites
 
@@ -125,14 +125,14 @@ To remove the parameter from Xen command line:
 
 `[root@xen ~]# xe vm-start uuid=<vm uuid>`
 
-## GPU Passthrough
+## 🎮 GPU Passthrough
 To passthrough a complete graphics card to a VM (not virtualize it into multiple virtual vGPUs, which is different, see the vGPU section below), just follow the regular PCI passthrough instructions, no special steps are needed. Most Nvidia and AMD video cards should work without issue.  
 
 :::tip
 Previously, Nvidia would block the use of gaming/consumer video cards for passthrough (the Nvidia installer would throw an **Error 43** when installing the driver inside your VM). They lifted this restriction in 2021 with driver R465 and above, so be sure to use the latest driver. [Details from Nvidia here.](https://nvidia.custhelp.com/app/answers/detail/a_id/5173/)
 :::
 
-## vGPU
+## 🖥️ vGPU
 
 ### NVIDIA vGPU
 
@@ -163,7 +163,7 @@ Start the VM and log into the guest OS and load the appropriate guest driver fro
 > Known working cards:
 * S7150x2
 
-## USB Passthrough
+## 🖱️ USB Passthrough
 
 :::tip
 There's no need to alter any files manually as some older guides suggest
@@ -230,7 +230,9 @@ Then run
 xe pusb-scan host-uuid=<host_uuid>
 ```
 
-## Advanced Xen
+## 🐼 Advanced Xen
+
+This section is dedicated to advanced Xen use cases. Use it with caution!
 
 ### NUMA affinity
 
