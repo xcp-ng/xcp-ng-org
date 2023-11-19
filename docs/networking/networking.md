@@ -68,12 +68,22 @@ It's same as previous section, just check the "Bonded Network" and select multip
 
 ### Add a new NIC
 
-After physically installing a new NIC, you'll need to run a `xe pif-scan` command on the host to get this NIC added as an available PIF.
-`xe pif-scan host-uuid=<HOST UUID>`
+Once a NIC is physically installed, in Xen Orchestra, go to your host's networking tab and click refresh.
+
+This can also be done on the command line. After physically installing a new NIC, you'll need to run a `xe pif-scan` command on the host to get this NIC added as an available PIF.
+```
+xe pif-scan host-uuid=<HOST UUID>
+```
+
 Check new NIC by UUID:
-`xe pif-list`
+```
+xe pif-list
+```
+
 Plug new NIC:
-`xe pif-plug uuid=<NIC UUID>`
+```
+xe pif-plug uuid=<NIC UUID>
+```
 
 ### Renaming NICs
 
