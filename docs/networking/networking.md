@@ -48,15 +48,15 @@ To use VLANs for your network logical isolation, it's really easy. You'll create
 
 First step, go in Xen Orchestra menu, "New" then "Network":
 
-![](https://xcp-ng.org/assets/img/screenshots/newnetwork1.png)
+![](../../assets/img/screenshots/newnetwork1.png)
 
 Then, select a pool where you want to create this network, and fill what's required, like physical interface selection, name and description and also VLAN number:
 
-![](https://xcp-ng.org/assets/img/screenshots/newnetwork2.png)
+![](../../assets/img/screenshots/newnetwork2.png)
 
 Finally, click on "Create network":
 
-![](https://xcp-ng.org/assets/img/screenshots/newnetwork3.png)
+![](../../assets/img/screenshots/newnetwork3.png)
 
 That's it!
 
@@ -70,7 +70,7 @@ It's same as previous section, just check the "Bonded Network" and select multip
 
 Once a NIC is physically installed, in Xen Orchestra, go to your host's networking tab and click refresh.
 
-![](https://xcp-ng.org/assets/img/screenshots/PIFs-refresh.png)
+![](../../assets/img/screenshots/PIFs-refresh.png)
 
 This can also be done on the command line. After physically installing a new NIC, you'll need to run a `xe pif-scan` command on the host to get this NIC added as an available PIF.
 ```
@@ -174,7 +174,7 @@ That's exactly what you can have thanks to XO SDN controller (here via GRE tunne
 
 To create a private network, go in Xen Orchestra, New/Network and select "Private Network":
 
-![](https://xcp-ng.org/assets/img/screenshots/sdn-controller.png)
+![](../../assets/img/screenshots/sdn-controller.png)
 
 #### Encryption
 
