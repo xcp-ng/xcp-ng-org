@@ -4,10 +4,12 @@ sidebar_position: 3
 
 # Migrate to XCP-ng
 
-If you are using another virtualization platform (VMware, KVM, etc.), this part of the documentation will help you to migrate to XCP-ng.
+How to migrate from VMware, KVM, etc. to XCP-ng.
 
-:::caution
-OVA import will miss the information if the VM is running BIOS or UEFI mode. Double check your settings on your original system, and then enable (or not) UEFI on XCP-ng side for the destination VM. You can do so in VM advanced tab in Xen Orchestra.
+This documentation will help you to make a migration to XCP-ng, from any most common other virtualization platform (VMware, KVM, etc.)
+
+:::note
+OVA import method will miss the information if the VM is running BIOS or UEFI mode. Double check your settings on your original system, and then enable (or not) UEFI on XCP-ng side for the destination VM. You can do so in VM advanced tab in Xen Orchestra.
 :::
 
 ## 🇽 From XenServer
@@ -31,7 +33,7 @@ If you are running Xen on your usual distro (Debian, Ubuntu…), you are using `
 
 If you have an error telling you that you don't have an default SR, please choose a default SR on your XCP-ng pool (in XO, Home/Storage, hover on the storage you want to put by default, there's an icon for it).
 
-:::caution
+:::info
 This script is a bit old and not tested since while. If you have issues, feel free to report that!
 :::
 
@@ -83,7 +85,7 @@ The fix for this is installing some xen drivers *before* exporting the VM from V
 
 There's two options, both requiring to export your Hyper-V VM disk in VHD format.
 
-:::caution
+:::warning
 When exporting in VHD, always use a **dynamic disk** VHD format and not **static**, which doesn't work in XCP-ng.
 :::
 
@@ -102,7 +104,7 @@ When the disk is imported, you can:
 
 ### Alternative: direct VHD copy
 
-:::caution
+:::warning
 This method is a bit more dangerous: if you don't respect the VHD name format, the SR will be blocked and giving warnings. Naming is crucial to avoid problems.
 :::
 
@@ -120,7 +122,7 @@ The **ONLY** working format is `<UUID>.vhd`, eg `e4e573d8-6272-43ae-b969-255717e
 2. Copy it to the destination SR (any file type is supported: local, NFS…)
 3. Scan the SR
 
-:::tip
+:::note
 As soon you did scan the SR, the new disk is visible in the SR/disk view. Don't forget to add a name and a description to be able to identify it in the future. Indeed, any disk imported this way won't have any metadata, so it's up to you to fill it.
 :::
 
@@ -129,8 +131,8 @@ As soon you did scan the SR, the new disk is visible in the SR/disk view. Don't 
 6. Boot the VM
 7. Install the tools
 
-:::tip
-If You lost ability to extend migrated volume (opening journal failed: -2) You need to move disk to another storage, VM should be ON during moving process. This issue can occur when vhd files was directly copied to storage folder.
+:::note
+If you lost ability to extend migrated volume (opening journal failed: -2) You need to move disk to another storage, VM should be ON during moving process. This issue can occur when vhd files was directly copied to storage folder.
 :::
 
 ## 🇰 From KVM (Libvirt)

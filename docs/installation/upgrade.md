@@ -10,7 +10,7 @@ We assume your goal is to get to the latest version of XCP-ng from a previous re
 
 For updates that don't change the version numbers (bugfixes, security fixes), see [the updates section](../../management/updates).
 
-:::tip
+:::info
 There are 3 upgrade methods, detailed below:
 * Using the installation ISO (recommended).
 * Using the installation ISO when you can't boot from it: remote upgrade.
@@ -21,7 +21,7 @@ There are 3 upgrade methods, detailed below:
 
 Read the [Release Notes and Known Issues](../../releases#all-releases) for every release that is higher than your current release. They may provide additional instructions for specific situations. Also **please read the following warnings**:
 
-:::caution
+:::warning
 * Always upgrade and reboot the pool master **FIRST**
 * DON'T use the `Maintenance Mode` in XCP-ng Center. It moves the pool master to another host, which has to be avoided in the upgrading procedure.
 * If HA (High Availability) is enabled, disable it before upgrading.

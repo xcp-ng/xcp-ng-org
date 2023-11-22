@@ -536,11 +536,16 @@ See [the Troubleshooting page](../../troubleshooting/after-upgrade).
 
 ## ⛑️ Misc
 
-### Install on a USB stick
+### Installation on USB drives
 
-:::warning
-We **strongly** advise against installing on USB stick. XCP-ng writes a lot into local files and this writing will wear out your USB-Stick in a short amount of time:
-* XAPI: the XenServer API database is changing a lot. Hence writing a lot, and believe me, USB sticks aren't really happy with that on the long run. Note: XAPI DB is what keep tracks on all XCP-ng's "state", and it's replicated on each host (from the slave).
-* Logs: XCP-ng keeps a LOT of debug logs. However, there is a workaround: use a remote syslog.
+:::danger
+We **strongly discourage** the installation of XCP-ng on USB drives. The frequent writing actions required by XCP-ng can rapidly degrade a USB drive due to:
+* XAPI: This is the XenServer API database, which undergoes constant changes. This results in significant write operations, which are detrimental to the longevity of USB drives. Note: The XAPI database maintains the state of all XCP-ng operations and is replicated across each host (from the slave).
+* Logs: XCP-ng generates a substantial amount of debug logs. A possible solution is to utilize a remote syslog.
 :::
 
+### Installation on SD cards
+
+:::danger
+For similar reasons as USB drives, we highly recommend against installing XCP-ng on SD cards. Opting for even a basic SSD would be vastly more effective in managing the XCP-ng system.
+:::

@@ -8,7 +8,7 @@ What is needed to run XCP-ng.
 
 An XCP-ng computer is dedicated entirely to the task of running XCP-ng and hosting VMs, and is not used for other applications.
 
-:::caution
+:::info
 Installing third-party software directly in the control domain of XCP-ng is not supported. The exception is for software supplied in the current repositories. If you want to add an extra package inside XCP-ng please [ask here](https://github.com/xcp-ng/xcp/issues/56).
 :::
 
@@ -26,7 +26,7 @@ XCP-ng can use:
 * Up to 16 physical NICs
 * Up to 288 logical processors per host.
 
-:::tip
+:::note
 The maximum number of logical processors supported differs by CPU. For more information, see the [Hardware Compatibility List (HCL)](../../installation/hardware).
 :::
 
@@ -57,6 +57,20 @@ A fixed amount of RAM is allocated to the control domain (dom0). The optimal amo
 
 For a detailed list of compatible storage solutions, see the [Hardware Compatibility List (HCL)](../../installation/hardware).
 
+#### Installation on USB drives
+
+:::danger
+We **strongly discourage** the installation of XCP-ng on USB drives. The frequent writing actions required by XCP-ng can rapidly degrade a USB drive due to:
+* XAPI: This is the XenServer API database, which undergoes constant changes. This results in significant write operations, which are detrimental to the longevity of USB drives. Note: The XAPI database maintains the state of all XCP-ng operations and is replicated across each host (from the slave).
+* Logs: XCP-ng generates a substantial amount of debug logs. A possible solution is to utilize a remote syslog.
+:::
+
+#### Installation on SD cards
+
+:::danger
+For similar reasons as USB drives, we highly recommend against installing XCP-ng on SD cards. Opting for even a basic SSD would be vastly more effective in managing system partitions.
+:::
+
 ### Network
 
 100 Mbit/s or faster NIC. One or more Gb, or 10 Gb NICs is recommended for faster P2V and export/import data transfers and VM live migration.
@@ -65,7 +79,7 @@ We recommend that you use multiple NICs for redundancy. The configuration of NIC
 
 XCP-ng requires an IPv4 network for management and storage traffic.
 
-:::tip
+:::info
 Ensure that the time setting in the BIOS of your server is set to the current time in UTC. In some support cases, serial console access is required for debug purposes. When setting up XCP-ng configuration, we recommend that you configure serial console access. For hosts that do not have physical serial port or where suitable physical infrastructure is not available, investigate whether you can configure an embedded management device. For example, Dell DRAC or HP iLO. For more information about setting up serial console access, see [CTX228930 - How to Configure Serial Console Access on XenServer 7.0 and later](https://support.citrix.com/article/CTX228930).
 :::
 
@@ -78,7 +92,7 @@ Officially supported OS. But there's a lot more than can run on XCP-ng.
 * Windows Server 2012, 2016, 2019, 2022
 * Windows 10
 
-:::tip
+:::info
 Older versions of Windows will run, but in emulation mode (like Windows XP, Server 2003 etc.)
 :::
 
