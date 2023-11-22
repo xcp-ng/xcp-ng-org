@@ -8,7 +8,7 @@ A generic definition (from Wikipedia), is:
 
 In the case of virtualization, you have multiple physical hosts, which runs your virtual machines (VMs). The goal here is to **distribute the VMs load** in the best way possible on your servers.
 
-:::tip
+:::note
 Maybe you already heard about VMWare DRS (Distributed Resource Scheduler): that's the same principle here, but for XCP-ng.
 :::
 

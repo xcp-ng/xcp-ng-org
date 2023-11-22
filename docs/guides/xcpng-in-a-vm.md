@@ -4,7 +4,7 @@ How to run XCP-ng in a VM?
 
 This page details how to install XCP-ng as a guest VM inside different hypervisors to test the solution before a bare-metal installation.
 
-:::caution
+:::warning
 This practice is not recommended for production, nested virtualization has only tests/labs purpose.
 :::
 

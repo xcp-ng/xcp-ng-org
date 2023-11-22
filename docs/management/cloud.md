@@ -56,7 +56,7 @@ See the [dedicated documentation](https://docs.cloudstack.apache.org/en/4.17.2.0
 
 ## 📚 OpenStack
 
-:::caution
+:::warning
 Unlike Cloudstack, we do not know the level of compatibility with OpenStack. Take time to ask OpenStack community about their support for XAPI-based hosts
 :::
 

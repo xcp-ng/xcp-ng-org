@@ -20,7 +20,7 @@ Please try to:
 
 Alternative solution:
 
-:::caution
+:::warning
 Please test this solution and report if it worked for you!
 :::
 

@@ -10,7 +10,7 @@ This section is dedicated to compute related things, from Xen to GPU/vGPU or PCI
 
 ### 0. Prerequisites
 
-:::caution
+:::warning
 Ensure VT-d/IOMMU Support Is Enabled
 :::
 
@@ -24,7 +24,7 @@ If you attempt to perform PCI passthrough on a system which does not have VT-d/I
 Internal error: xenopsd internal error: Device.PCI.Cannot_add(_, _)
 ```
 
-:::caution
+:::warning
 You may not be able to passthrough USB controllers
 :::
 
@@ -136,7 +136,7 @@ Previously, Nvidia would block the use of gaming/consumer video cards for passth
 
 ### NVIDIA vGPU
 
-:::caution
+:::warning
 Due to a proprietary piece of code in XenServer, XCP-ng doesn't have (yet) support for NVIDIA vGPUs.
 :::
 
@@ -283,7 +283,7 @@ xl cpupool-numa-split # Will create a cpupool by NUMA node
 xl cpupool-migrate <VM> <Pool> # Will migrate a VM to the given pool
 ```
 
-:::caution
+:::warning
 Be careful, the changes done using `xl` only affect vCPU at the moment, the memory of the VM will not be moved between node nor the pinning stay after a reboot. You need to use `xe` for it to be taken into account at the VM startup.
 :::
 

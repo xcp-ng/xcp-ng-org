@@ -8,7 +8,7 @@ The controller domain (dom0) is a privileged Linux VM, based on CentOS.
 
 It may be useful to add more packages to it, with precaution. The XCP-ng project offers some in its repositories, and other packages can be installed from CentOS, EPEL, or even third party repositories.
 
-:::tip
+:::note
 Best effort support is provided for additional packages provided by the XCP-ng project ([supported list for XCP-ng 8.2](http://reports.xcp-ng.org/8.2/extra_installable.txt)). No support is provided for other additional packages, even if installed from our repositories, as they contain build dependencies not supposed to be installed in production.
 :::
 

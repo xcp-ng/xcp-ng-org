@@ -4,7 +4,7 @@ XCP-ng is entirely managed by its API, called "XAPI". XAPI project is hosted [in
 
 XAPI is requested by multiple **clients**, like Xen Orchestra or `xe` CLI. See [our management](../../../management) section for more details.
 
-:::tip
+:::note
 We strongly encourage to build applications on top of XO API and not XAPI. In fact, XAPI is made with very specific calls (close to the Xen logic), so it's a lot better to build a solution on top of a more global API, the one [provided by Xen Orchestra](https://xen-orchestra.com/docs/architecture.html#api). It will act as a central point for all your pools and you won't have to handle all the Xen specifics.
 :::
 
@@ -28,7 +28,7 @@ Restarting XAPI won't affect any running VMs. However, all backup/export tasks w
 
 ### Modifications
 
-:::caution
+:::warning
 Those changes aren't officially supported, and will be also wiped after an ISO upgrade.
 :::
 

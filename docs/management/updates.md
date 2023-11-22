@@ -10,8 +10,8 @@ This page details how to keep your XCP-ng system updated (bug fixes and security
 
 If you want to manage your XCP-ng updates, we suggest that you use Xen Orchestra. It's the fastest & easiest way to keep your infrastructure up-to-date. See the [dedicated section](updates.md#from-xen-orchestra). If you want to learn more about Xen Orchestra, also check the [management section](management.md).
 
-:::tip
-Most updates will be explained in details with a dedicated blog post. Don't forget to visit https://xcp-ng.org/blog or to directly explore all articles with the tag updates: https://xcp-ng.org/blog/tag/update/
+:::info
+All our updates are explained in details inside a dedicated blog post. Don't forget to visit https://xcp-ng.org/blog or to directly explore all articles with the tag updates: https://xcp-ng.org/blog/tag/update/
 :::
 
 ## ♻️ Support cycle
@@ -109,7 +109,7 @@ Also known as RPU, **this is the advised way to update your pool**. By just clic
 
 ![](../../assets/img/rpubutton.png)
 
-:::tip
+:::info
 This powerful and fully automated mechanism requires some prerequisites: all your VMs disks must be on a one (or more) shared storage. Also, high-availability will be automatically disabled, as the XO load balancer plugin and backup jobs. Everything will be enabled back when it's done!
 :::
 
@@ -121,7 +121,7 @@ If you can't use RPU (Rolling Pool Updates), you can still use "Install pool pat
 
 ![](../../assets/img/updatebutton.png)
 
-:::tip
+:::info
 Restarting the toolstack won't have any impact on your running VMs. However, **most updates will require a reboot** to be applied, that you should execute during a scheduled maintenance.
 :::
 

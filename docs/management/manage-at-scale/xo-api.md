@@ -58,7 +58,7 @@ Authentication token created
 DiYBFavJwf9GODZqQJs23eAx9eh3KlsRhBi8RcoX0KM
 ```
 
-:::tip
+:::info
 Only admin users can currently use the API.
 :::
 
@@ -269,7 +269,7 @@ We are adding features and improving the REST API step by step. If you have inte
 
 This is the API used between Xen Orchestra web UI and the server part, `xo-server`. It's a bit harder to use than the REST API, but if you need a live subscription to events happening in your infrastructure, or to send advanced commands, this is the right one.
 
-:::tip
+:::note
 All features visible in your XO web UI are in fact using this API. So everything you do in the web UI is also doable in this API.
 :::
 

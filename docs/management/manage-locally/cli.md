@@ -2,7 +2,7 @@
 
 The xe CLI can be used locally on any XCP-ng host, it's installed along with it. However, it's poolwide only. If you want a CLI or an API to control multiple pools at once, we strongly advise to use [Xen Orchestra CLI](../../manage-at-scale/xo-cli).
 
-:::tip
+:::info
 The complete set of all `xe` commands is available in the [Appendix section](../../../appendix/cli_reference).
 :::
 
@@ -106,7 +106,7 @@ For values containing spaces, write: `argument="value with spaces"`
 
 When you use the CLI on your XCP-ng server, commands have a tab completion feature similar to the feature in the standard Linux bash shell. For example, if you type `xe vm-l` and then press the `TAB` key, the rest of the command is displayed. If more than one command begins with `vm-l`, pressing `TAB` a second time lists the possibilities. This feature is useful when specifying object UUIDs in commands.
 
-:::tip
+:::note
 Tab completion does not normally work when executing commands on a remote XCP-ng server. However, if you set the `XE_EXTRA_ARGS` variable on the machine where you enter the commands, tab completion is enabled. For more information, see Basic xe syntax.
 :::
 
@@ -201,7 +201,7 @@ To filter on a map parameter or set a map parameter, use a colon (`:`) to separa
 xe vm-param-set uuid=VM uuid other-config:foo=baa
 ```
 
-:::tip
+:::note
 In previous releases, the hyphen character (-) was used to specify map parameters. This syntax still works but is deprecated.
 :::
 
@@ -280,7 +280,7 @@ a85d6717-7264-d00e-069b-3b1d19d56ad9,aaa3eec5-9499-bcf3-4c03-af10baea96b7, 42c04
 
 XCP-ng provides a secrets mechanism to avoid passwords being stored in plaintext in command-line history or on API objects. XenCenter uses this feature automatically and it can also be used from the xe CLI for any command that requires a password.
 
-:::tip
+:::info
 Password secrets cannot be used to authenticate with a XCP-ng host from a remote instance of the xe CLI.
 :::
 

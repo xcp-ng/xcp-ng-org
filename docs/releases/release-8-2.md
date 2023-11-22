@@ -8,7 +8,7 @@ XCP-ng 8.2 is an [LTS Release](../../../releases#lts-releases). [Download the in
 
 SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
-:::tip
+:::info
 LTS means **Long Term Support**: this version is supported for 5 years, and even more for specific Extended Lifetime Support.
 :::
 
@@ -125,7 +125,7 @@ Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 
 
 The community-maintained XCP-ng Center client is [now available for download](https://github.com/xcp-ng/xenadmin/releases/tag/v20.04.01.33). However, it is not a recommended client to use because it was modified for 8.2 support without any specific QA or validation. Keep in mind that the officially supported clients - all fully Open Source - are [documented on this page](../../management).
 
-:::tip
+:::note
 Although we host XCP-ng Center on our GitHub organisation and authorized its contributors to use the XCP-ng logo, we remind our users that - as documented [in the official docs](../../management#xcp-ng-center) and on its [download page](https://github.com/xcp-ng/xenadmin/releases) - **XCP-ng Center is not officially supported by the XCP-ng project**.
 :::
 

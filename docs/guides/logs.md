@@ -2,7 +2,7 @@
 
 How to get further with XCP-ng logs?
 
-:::caution
+:::warning
 Any manual modification to the configuration files described below may prevent future XCP-ng updates to update the contents of those files. Avoid modifying them and ask for advice if you have a use case that appears to require such modifications.
 :::
 

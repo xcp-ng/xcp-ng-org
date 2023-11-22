@@ -52,7 +52,7 @@ Standard releases are supported until the next release, plus a few months to giv
 
 If you prefer to be more conservative, go for our [LTS release](#lts-releases).
 
-:::tip
+:::info
 Right now, the latest standard release (8.2) is also the LTS release. When XCP-ng 8.3 will be released, it will become the latest standard release, and 8.2 will stay as the latest LTS.
 :::
 

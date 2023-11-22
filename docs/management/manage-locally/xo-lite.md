@@ -6,11 +6,11 @@ sidebar_position: 2
 
 Xen Orchestra Lite is a lightweight version of the Xen Orchestra meant for single-host administration, running directly from your browser without having to deploy anything, hosted on XCP-ng directly.
 
-:::tip
+:::note
 XO Lite is still a work in progress! However, it's meant to cover all basic actions you need to boostrap your infrastructure or just do basic operation on your VMs.
 :::
 
-:::caution
+:::info
 XO Lite isn't an orchestrator, it's just a local management console. If you want to orchestrate your VMs (load balancing, backup, warm migration and so on), you MUST use [Xen Orchestra](../manage-at-scale/xo-web-ui.md)!
 :::
 

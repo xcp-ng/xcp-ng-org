@@ -18,7 +18,7 @@ In any case:
 * up to 64GiB RAM on your machine, at least 4GiB RAM for Dom0
 * an host with 128GiB or more should use 8GiB RAM for Dom0
 
-:::caution
+:::warning
 Note: If you use ZFS, assign at least 16GB RAM to avoid swapping. ZFS (in standard configuration) uses half the Dom0 RAM as cache!
 :::
 

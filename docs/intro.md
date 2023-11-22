@@ -63,7 +63,7 @@ Xen Orchestra is a complete and agentless backup solution for your VMs running o
 
 ## 📹 Community videos on XCP-ng
 
-:::tip
+:::note
 Those videos are made by 3rd parties. However, for example, Tom from Lawrence Systems is providing a lot of content on XCP-ng and Xen Orchestra. Check his [YouTube channel](https://www.youtube.com/channel/UCHkYOD-3fZbuGhwsADBd9ZQ).
 :::
 
