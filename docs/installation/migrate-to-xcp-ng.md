@@ -68,7 +68,7 @@ You can choose to enable "thin mode": it's longer ("double read") but the disk c
 Using OVA export from VMware and then OVA import into Xen Orchestra is another possibility.
 
 :::tip
-Collect info about network cards used in windows VM (ipconfig /all) use same mac address(es) when creating interfaces in xcp-ng this step will help You skip windows activation if system was activated already.
+To skip Windows activation if the system was already activated, collect info about the network cards used in the Windows VM (ipconfig /all) and use the same MAC address(es) when creating interfaces in XCP-ng.
 :::
 
 Importing a VMware Linux VM, you may encounter an error similar to this on boot:
