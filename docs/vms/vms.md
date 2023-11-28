@@ -92,6 +92,27 @@ For that you first will need to enter the VM UEFI setup:
 - Restart your VM by sending a CTRL+ALT+DEL.
 - After reboot your VM will display the selected resolution.
 
+### Booting a live Linux ISO on a Windows VM
+
+When a VM is created from a Windows template, it might not be possible to boot a Linux system on it. This can be useful when one wants to modify the disk partitioning using a gparted ISO image for example.
+
+The issue is due to a parameter value which is specific to Windows VMs and prevents the loading of the `xen-platform-pci` driver under Linux.
+
+First, get the UUID of the Windows VM (visible in Xen Orchestra, or in the output of `xe vm-list`) and make sure it is powered off.
+
+Open an ssh session to the XCP-ng host of the concerned VM and enter the following command:
+```bash
+$ xe vm-param-set uuid=VM-UUID platform:device_id=0001
+```
+Where `VM-UUID` is the uuid of the Windows VM.
+
+You should be able to boot the VM on any Linux ISO disk.
+
+Once done with Linux, shut down the VM and restore the parameter to its original value with:
+```bash
+$ xe vm-param-set uuid=VM-UUID platform:device_id=0002
+```
+
 ## 🛠️ Guest tools
 
 XCP-ng needs guest tools to be installed in the VMs in order to communicate with the guest operating system. This brings better performance and is required for various features.
