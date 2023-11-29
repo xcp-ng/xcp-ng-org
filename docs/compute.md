@@ -125,6 +125,26 @@ To remove the parameter from Xen command line:
 
 `[root@xen ~]# xe vm-start uuid=<vm uuid>`
 
+### Detaching a PCI device
+
+If you don't want to use your PCI device anymore, you can always remove it later.
+
+First, you need to remove it from the VM:
+
+```bash
+xe vm-param-remove param-name=other-config param-key=pci uuid=<vm uuid>
+```
+
+Then, when booting the VM, it won't be attached anymore.
+
+If you want to get the PCI device accessible again in the Dom0, you also need to removing it from the command line:
+
+```bash
+/opt/xensource/libexec/xen-cmdline --delete-dom0 xen-pciback.hide
+```
+
+It will be back in the Dom0 after a reboot.
+
 ## 🎮 GPU Passthrough
 To passthrough a complete graphics card to a VM (not virtualize it into multiple virtual vGPUs, which is different, see the vGPU section below), just follow the regular PCI passthrough instructions, no special steps are needed. Most Nvidia and AMD video cards should work without issue.  
 
