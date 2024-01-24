@@ -493,7 +493,7 @@ As written above:
 > * The **management agent** brings more manageability of the VM from XCP-ng, and guest metrics reporting to the host.
 
 ##### Management agent + device drivers
-The only way to get the management agent is from Citrix. It can be freely downloaded from [the Citrix Hypervisor download page](https://www.citrix.com/downloads/citrix-hypervisor/), provided you create an account on their site. Name of the item: "Citrix VM Tools for Windows". The installer will install both the management agent and the device drivers.
+The only way to get the management agent is from Citrix. It can be freely downloaded from [the Xenserver download page](https://www.xenserver.com/downloads). Name of the item: "XenServer VM Tools for Windows". The installer will install both the management agent and the device drivers.
 
 :::tip Update (2022-02-02)
 Since Citrix released their 8.2 CU1 version of Citrix Hypervisor, the Express edition is not available anymore for download. However, you can still get the Windows tools from the previous releases that are still available under "Citrix Hypervisor and XenServer Legacy Versions". You will also find present and past releases of the tools at: [https://support.citrix.com/article/CTX235403](https://support.citrix.com/article/CTX235403).
