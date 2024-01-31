@@ -115,11 +115,12 @@ To remove the parameter from Xen command line:
 
 ### 5. Put this PCI device 'into' your VM
 
-`[root@xen ~]# xe vm-param-set`**` other-config:pci=0/0000:04:01.0`**`uuid=<vm uuid>`
+`[root@xen ~]# xe vm-param-set other-config:pci=0/0000:04:01.0 uuid=<vm uuid>`
 
-> You can also pass through multiple devices. If you wanted to pass through another device at `00:19.0` just append it to the parameter.
->
-> `[root@xen ~]# xe vm-param-set`**` other-config:pci=0/0000:04:01.0,0/0000:00:19.0 `**`uuid=<vm uuid>`
+:::tip
+You can also pass through multiple devices. If you wanted to pass through another device at `00:19.0` just append it to the parameter:
+`[root@xen ~]# xe vm-param-set other-config:pci=0/0000:04:01.0,0/0000:00:19.0 uuid=<vm uuid>`
+:::
 
 ### 6. Start your VM and be happy :-)
 
