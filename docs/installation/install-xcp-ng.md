@@ -170,7 +170,7 @@ The netinstall image is a lightweight ISO (around 150MiB) that will only contain
 
 You can download it on this URL: [https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130-netinstall.iso?https=1](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130-netinstall.iso?https=1).
 
-As with the regular installation ISO, write it on an USB media:
+As with the regular installation ISO, write it on a USB media:
 
 ```
 dd if=xcp-ng-8.2.1-20231130-netinstall.iso of=/dev/sdX bs=8M oflag=direct

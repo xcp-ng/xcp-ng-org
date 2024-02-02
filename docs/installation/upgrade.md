@@ -224,7 +224,7 @@ This article describes how to proceed in order to convert your Citrix XenServer 
 XCP-NG installation follows roughly the same workflow as a XenServer installation. Therefore, the migration procedure will be very similar to an upgrade procedure in XenServer.
 
 * Download the XCP-ng ISO [from this XCP-ng website](https://xcp-ng.org/#easy-to-install)
-* Follow the [website instructions](https://xcp-ng.org/#easy-to-install) to put the ISO into an USB key or a CD
+* Follow the [website instructions](https://xcp-ng.org/#easy-to-install) to put the ISO into a USB key or a CD
 
 Then boot on the ISO!
 

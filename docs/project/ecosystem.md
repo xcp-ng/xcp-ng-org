@@ -191,7 +191,7 @@ Their hosts can be used with XCP-ng, via their IPMI to use any ISO to install XC
 
 #### Hetzner
 
-Same as Scaleway, however their IPMI are a bit "weird". You can ask support to plug an USB key for OS install and use the IPMI to continue the installation.
+Same as Scaleway, however their IPMI are a bit "weird". You can ask support to plug a USB key for OS install and use the IPMI to continue the installation.
 
 [https://www.hetzner.com/](https://www.hetzner.com/)
 
