@@ -94,29 +94,37 @@ The ecosystem around XCP-ng is getting bigger and bigger and we are really proud
 
 ## 💾 VM backup
 
-:::warning
-**The main backup solution for XCP-ng is Xen Orchestra, see the dedicated [backup](../management/backup.md) section.** Alternatively, here is some 3rd party backup solutions that are officially compatible with XCP-ng.
-:::
+**The main backup solution for XCP-ng is Xen Orchestra, see the dedicated [backup](../management/backup.md) section.**
+
+### Xen Orchestra
+
+* Website: [https://vates.tech](https://vates.tech/xen-orchestra/)
+* Documentation: ✅ [Available here](https://xen-orchestra.com/docs/)
+* Agentless: ✅
+* Open Source: ✅
+
+If you seek for alternatives, here is some 3rd party backup solutions that are officially compatible with XCP-ng.
+
 
 ### Storware Backup and Recovery
 
 It's agentless but closed source. However, it supports a large variety of virtualization platforms, including [XCP-ng](https://storware.eu/storware-and-xcp-ng-technology-alliance/)!
 
 * Website: [https://storware.eu/](https://storware.eu/solutions/virtual-machine-backup-and-recovery/xcp-ng-backup-and-recovery/)
-* Documentation [is available here](https://storware.gitbook.io/backup-and-recovery)
-* Agentless: yes
-* Open Source: no
+* Documentation: ✅ [Available here](https://storware.gitbook.io/backup-and-recovery)
+* Agentless: ✅
+* Open Source: ❌
 
 ![](../../assets/img/partners/storware_xcpng_www.jpg)
 
-### VinChin backup
+### Vinchin Backup & Recovery
 
 Another solution, which isn't agentless (you need to deploy some code in each host). XCP-ng is supported.
 
-* Website: [https://www.vinchin.com/en/](https://www.vinchin.com/en/)
-* Documentation: [available in PDF](https://www.vinchin.com/en/res/pdf/Vinchin_Product_Manual_2020.pdf)
-* Agentless: no
-* Open Source: no
+* Website: [https://www.vinchin.com](https://www.vinchin.com)
+* Documentation: ✅ [Available here](https://www.vinchin.com/en/res/pdf/Vinchin_Product_Manual_2020.pdf)
+* Agentless: ❌
+* Open Source: ❌
 
 ![](../../assets/img/partners/vinchin-logo-1.png)
 
