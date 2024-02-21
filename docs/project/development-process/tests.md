@@ -184,24 +184,39 @@ xl set-parameters ept=exec-sp
 There will be a few SKIPPED tests, but there shouldn't be many.
 
 Known skipped tests:
-* `test-hvm32-umip test-hvm64-umip`: skipped if the CPU is not recent enough to support UMIP.
-* `test-pv64-xsa-167`: always skipped
+* `test-hvm32-umip`, `test-hvm64-umip`: skipped if the CPU is not recent enough to support UMIP.
+* `test-pv64-xsa-167`: tests PV superpages, support for which was removed long ago from Xen. Always skips.
 * `test-pv64-xsa-182`: skipped in default configuration.
+* `test-pv64-xsa-444`: will skip if DBEXT (an AMD feature) support is not present. So skips on all Intel systems.
 
 You can ignore skipped tests which belong to this list.
 
 ### xen-dom0-tests
 
-The testsuite is very limited in Xen 4.13, but let's still run what's available.
+The `xen-dom0-tests` RPM provides several test programs from the Xen Project.
 
 Install:
 ```
 yum install xen-dom0-tests
 ```
 
-Run
+Read `/usr/share/xen-dom0-tests-metadata.json`, then, for each test listed in it, run the corresponding binary found in `/usr/libexec/xen/bin/` and check the return code.
+
+For example:
+
 ```
 /usr/libexec/xen/bin/test-cpu-policy
 # check return code. Must be 0, otherwise this means there was a failure.
 echo $?
+```
+
+Here is a `bash` snippet which automates this process. It requires python3 and thus will only work on XCP-ng 8.3 or above.
+
+```
+python3 << EOF && echo -e "\nALL TESTS PASSED" || (echo -e "\nSOMETHING WENT WRONG" && exit 1)
+import json, subprocess
+for test in json.loads(open("/usr/share/xen-dom0-tests-metadata.json").read())["tests"]:
+    print(f"\n*** {test} ***")
+    subprocess.check_call([f"/usr/libexec/xen/bin/{test}"])
+EOF
 ```
