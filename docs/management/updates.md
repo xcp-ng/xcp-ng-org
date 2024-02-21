@@ -97,7 +97,7 @@ This way some changes are taken into account without even rebooting. Even if you
 
 #### 4. Consider rebooting the hosts, starting with the pool master
 
-See below "[When to reboot?](#when-to-reboot)".
+See below "[When to reboot?](#-when-to-reboot)".
 
 ### From Xen Orchestra
 
