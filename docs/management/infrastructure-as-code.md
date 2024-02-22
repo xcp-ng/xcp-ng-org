@@ -11,9 +11,10 @@ You can use various 3rd party tools to manage your XCP-ng/XO stack "as code".
 
 ## 📦 Packer
 
-Packer is a free and open source tool for creating golden images for multiple platforms from a single source configuration.
+Packer is a free and open source tool for creating golden images for multiple platforms from a single source configuration. Combined with XCP-ng, you can create and regenerate templates for your own requirements or for your customers.
 
-Combined with XCP-ng, you can create and regenerate templates for your own requirements or for your customers.
+Here is a tutorial to start with Packer and XCP-ng: https://xcp-ng.org/blog/2024/02/22/using-packer-with-xcp-ng/
+
 
 ## 🌍 Terraform
 
