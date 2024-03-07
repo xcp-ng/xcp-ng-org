@@ -47,7 +47,7 @@ socat TCP-LISTEN:<TCP_PORT_TO_USE> UNIX-CONNECT:/var/run/xen/vnc-<DOM_ID>
 
 What have we done? We exposed a UNIX domain socket (which allows us to connect to the VM using VNC) directly over TCP.
 
-4. Fine, now open a new shell, and on your local machine create a SSH tunnel with a free TCP port:
+4. Fine, now open a new shell, and on your local machine create an SSH tunnel with a free TCP port:
 
 ```
 ssh -L <LOCAL_PORT>:localhost:<REMOTE_PORT> root@<HOST_IP>

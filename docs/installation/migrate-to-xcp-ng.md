@@ -114,7 +114,7 @@ It's possible to directly send the VHDs to an existing XCP-ng SR. However, you M
 
 #### VHD naming
 
-The **ONLY** working format is `<UUID>.vhd`, eg `e4e573d8-6272-43ae-b969-255717e518aa.vhd`. You can generate an UUID by simply using the command `uuidgen`.
+The **ONLY** working format is `<UUID>.vhd`, eg `e4e573d8-6272-43ae-b969-255717e518aa.vhd`. You can generate a UUID by simply using the command `uuidgen`.
 
 #### Steps
 

@@ -354,7 +354,7 @@ For more information concerning event channels: [https://xenbits.xenproject.org/
 
 #### Steps during write from guest to host
 
-1. An user process in the guest execute a write call on the virtual device.
+1. A user process in the guest execute a write call on the virtual device.
 
 2. The request is sent to the `blkfront` driver. At this moment the driver must associate a grant reference to the guest buffer address using this function (more precisely gfn to which the address belongs):
 

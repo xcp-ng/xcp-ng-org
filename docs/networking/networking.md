@@ -201,7 +201,7 @@ This feature is coming very soon!
 The error would look like this:
 > Client network socket disconnected before secure TLS connection was established
 
-It means the TLS certificate, used to identify a SDN controller, on the host doesn't match the one of the plugin, to solve it:
+It means the TLS certificate, used to identify an SDN controller, on the host doesn't match the one of the plugin, to solve it:
 - unload the SDN Controller plugin
 - in plugin config, set `override-certs` option to on (it will allow the plugin to uninstall the existing certificate before installing its own)
 - load the plugin
