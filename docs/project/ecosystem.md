@@ -103,8 +103,24 @@ The ecosystem around XCP-ng is getting bigger and bigger and we are really proud
 * Agentless: ✅
 * Open Source: ✅
 
+![](../../assets/img/xobadge.png)
+
 If you seek for alternatives, here is some 3rd party backup solutions that are officially compatible with XCP-ng.
 
+### VEEAM
+
+You can use VEEAM to deal with "application-aware" backup, by running the VEEAM agent inside your VMs. This is perfectly fine to use VEEAM with an agent in the VMs while using Xen Orchestra for the VM backup itself.
+
+* Website: [https://www.veeam.com/](https://www.veeam.com/)
+* Documentation: ✅ [Available here](https://www.veeam.com/documentation-guides-datasheets.html)
+* Agentless: ❌ (not yet)
+* Open Source: ❌
+
+:::note
+We are currently discussing with VEEAM to provide a tighter integration with XCP-ng.
+:::
+
+![](../../assets/img/partners/veeamlogo.png)
 
 ### Storware Backup and Recovery
 

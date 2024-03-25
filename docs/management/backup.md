@@ -39,4 +39,8 @@ Alternatively, you can install and build it yourself [from the GitHub repository
 
 There's 3rd party solutions officially compatible with XCP-ng to make VM backups. Please check our [ecosystem](../project/ecosystem.md#vm-backup) page on the backup section.
 
+:::tip
+Some popular backup solutions (like [VEEAM](https://www.veeam.com/)) can be used with agents inside your VMs, while Xen Orchestra deals with VM backup.
+:::
+
 However, you'll lose the tight integration you have between XCP-ng and Xen Orchestra, both bundled of the [Vates Stack](https://vates.tech).
