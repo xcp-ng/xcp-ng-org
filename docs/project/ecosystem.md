@@ -117,7 +117,7 @@ You can use VEEAM to deal with "application-aware" backup, by running the VEEAM 
 * Open Source: ❌
 
 :::note
-We are currently discussing with VEEAM to provide a tighter integration with XCP-ng.
+We are currently pushing VEEAM to provide a tighter integration with XCP-ng. If you want to accelerate it, please tell them on [this dedicated VEEAM forum thread](https://forums.veeam.com/veeam-backup-replication-f2/xcp-ng-support-t93030.html). More popular demand will make it happen sooner.
 :::
 
 ![](../../assets/img/partners/veeamlogo.png)
