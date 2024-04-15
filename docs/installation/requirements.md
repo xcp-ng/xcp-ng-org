@@ -20,11 +20,13 @@ The following section describes the recommended XCP-ng hardware specifications.
 
 XCP-ng must be a **64-bit x86** server-class machine devoted to hosting VMs. XCP-ng creates an optimized and hardened Linux partition with a Xen-enabled kernel. This kernel controls the interaction between the virtualized devices seen by VMs and the physical hardware.
 
-XCP-ng can use:
+XCP-ng can use, per host:
 
-* Up to 5 TB of RAM
+* Up to 6 TB of RAM
 * Up to 16 physical NICs
-* Up to 288 logical processors per host.
+* Up to 512 logical processors
+* Up to 512 virtual NICs
+* Up to 800 VLANs
 
 :::note
 The maximum number of logical processors supported differs by CPU. For more information, see the [Hardware Compatibility List (HCL)](../../installation/hardware).
