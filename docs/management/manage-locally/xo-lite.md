@@ -4,6 +4,8 @@ sidebar_position: 2
 
 # XO Lite
 
+# For Local Management 
+
 Xen Orchestra Lite is a lightweight version of the Xen Orchestra meant for single-host administration, running directly from your browser without having to deploy anything, hosted on XCP-ng directly.
 
 :::note
