@@ -59,6 +59,11 @@ ssh -L <LOCAL_PORT>:localhost:<REMOTE_PORT> root@<HOST_IP>
 vncviewer localhost:<LOCAL_PORT>
 ```
 
+### Disk WWID
+
+Certain applications, such as Oracle ASM, require a unique identifier for disk drives known as a WWID (World Wide Identifier). In a Linux environment, this can be achieved by utilizing the `ID_PART_ENTRY_UUID` or `ID_PART_ENTRY_NAME` variables. These identifiers can be set in the udev rules file located at `/etc/udev/rules.d/99-asm.rules`. For detailed instructions on configuring disk devices manually for Oracle ASM using WWID, refer to [this guide](https://alexzy.blogspot.com/2018/02/configuring-disk-devices-manually-for.html).
+
+
 ## 🪟 Windows VMs
 
 ### Manage screen resolution
