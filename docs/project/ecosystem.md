@@ -11,6 +11,28 @@ Initiated by [Vates](https://vates.tech), the development of XCP-ng was conceive
 ![](../../assets/img/vates-partner.png)
 </div>
 
+## ⚙️ Server hardware
+
+We pride ourselves on offering extensive hardware compatibility with XCP-ng. Beyond basic compatibility, we actively collaborate with our partners to validate designs and provide detailed information on specific hardware configurations. Additionally, it is possible to purchase models with XCP-ng pre-installed from our partners.
+
+### 2CRSi
+
+The entire Mona product line (Mainstream Compute Server) is certified to work seamlessly with XCP-ng. Selected models come with XCP-ng pre-installed, offering a ready-to-use solution tailored to your needs.
+
+* [Mona 1.12GG](https://2crsi.com/catalog/mona-1-12-gg-57421?category=17)
+* [Mona 1.14GG](https://2crsi.com/catalog/mona-1-14gg-57426?category=17#attr=1222,1217,1223,1224,1225,1221)
+* [Mona 1.44GG](https://2crsi.com/catalog/mona-1-44gg-57430?category=17#attr=1259,1254,1260,1261,1262,1258)
+
+For more details, you can read our blog post: https://vates.tech/blog/simplifying-it-2crsis-mona-servers-with-xcp-ng-onboard/
+
+![](../../assets/img/partners/2CRSi.png)
+
+### Ampere Computer
+
+We have initiated a technical collaboration with Ampere Computer to extend XCP-ng capabilities to the Arm architecture. This partnership is not just a short-term endeavor but a testament to our commitment to expanding XCP-ng beyond the conventional x86 server framework.
+
+For more details on this innovative project, please visit our blog: https://vates.tech/blog/bringing-modern-virtualization-in-the-arm-powered-datacenter/
+
 ## 🖥️ Desktop virtualization
 
 ### UDS Enterprise
@@ -177,10 +199,6 @@ We validated the **EL300** on XCP-ng, thanks to HPE letting us test the hardware
 You can read more on our tests inside the blog post [Edge Case #1 - HPE Edgeline server](https://xcp-ng.org/blog/2020/08/31/edge-case-1-xcp-ng/).
 
 
-### More hardware partners to come!
-
-Stay tuned :)
-
 ## 🏢 Hosting
 
 Everything related to host XCP-ng at various providers.
@@ -191,33 +209,39 @@ You can decide to host XCP-ng "outside" your wall for various reasons:
 * Disaster recovery
 * Hybrid solution (both on-prem and hosted)
 
-### XCP-ng Cloud
+:::tip
+In any case, you can [contact us to discuss](https://vates.tech/contact/) the best option regarding your private cloud needs.
+:::
 
-The main contributor to XCP-ng, [Vates](https://vates.fr) is not just offering Pro Support for your XCP-ng hosts running on-premises: there's also hosting possibilities, on fully dedicated hardware.
+### IONOS
 
-See [https://xcp-ng.com/cloud/](https://xcp-ng.com/cloud/) for more details.
+As an official partner, IONOS can give you everything you need to host your XCP-ng private cloud. See https://vates.tech/blog/vates-and-ionos-partnership/ for more details.
 
-### Alternatives
+https://www.ionos.com/
 
-XCP-ng Cloud is the only 100% validated hosting solution (hardware compatibility and tested with XCP-ng). However, other well known players will work with XCP-ng.
+### Equinix Metal
 
-#### OVH
+Vates is an Equinix Metal partner, so if you need any assistance to run your XCP-ng on their machine, just let us know!
+
+https://deploy.equinix.com
+
+### OVH
 
 OVH supports XenServer, so you can decide to deploy a host on XenServer, then to upgrade to XCP-ng.
 
-[https://www.ovh.com/world/dedicated-servers/](https://www.ovh.com/world/dedicated-servers/)
+https://www.ovh.com/world/dedicated-servers
 
-#### Scaleway
+### Scaleway
 
 Their hosts can be used with XCP-ng, via their IPMI to use any ISO to install XCP-ng. Tested and working.
 
-[https://www.scaleway.com/en/dedibox/](https://www.scaleway.com/en/dedibox/)
+https://www.scaleway.com/en/dedibox
 
-#### Hetzner
+### Hetzner
 
 Same as Scaleway, however their IPMI are a bit "weird". You can ask support to plug a USB key for OS install and use the IPMI to continue the installation.
 
-[https://www.hetzner.com/](https://www.hetzner.com/)
+https://www.hetzner.com
 
 ## 🫵 Join the XCP-ng ecosystem
 
