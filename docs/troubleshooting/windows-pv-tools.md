@@ -49,3 +49,15 @@ If the tools are installed, while XCP-ng Center says that I/O is optimized, but 
 * Then install the Client Tools from scratch.
 
 [This Guide](../../vms#upgrade-from-citrix-xenserver-client-tools) may help you through the process.
+
+## Not all PV drivers are correctly installed
+
+![](https://xcp-ng.org/forum/assets/uploads/files/1713455051057-02dc1378-09e6-4600-a1b3-9a1be2cbdecc-image.png)
+
+### Cause
+
+It's possible that some antivirus blocks the end of the installation of the PV drivers. We've seen this happening with SentinelOne AV already (see [this thread](https://xcp-ng.org/forum/post/76098)).
+
+### Solution
+
+Simply pausing the agent and doing a reboot will make the XenTools to install succesfully. After a succesfull installation, enabling the SentinelOne agent again is possible without any other issues regarding the tools or drivers.
