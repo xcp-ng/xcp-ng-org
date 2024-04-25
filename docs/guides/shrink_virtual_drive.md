@@ -26,6 +26,10 @@ Use the i686 version of Clonezilla to avoid boot issues on the ISO while using a
 
 #### Pre-requisites
 
+:::warning
+It seems that doing a `dism /Online /Set-ReservedStorageState /State:Disabled` first (before anything else) is required on Windows to get a succesful partition shrink and avoiding any data loss.
+:::
+
 1. Identify the partition you want to move to the new disk and then shut down the VM.
 1. Create a new drive of the smaller size you want in this VM.
 1. Switch the VM to BIOS mode.
