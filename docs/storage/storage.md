@@ -13,7 +13,7 @@ Storage in XCP-ng is quite a large topic. This section is dedicated to it. Keywo
 Please take into consideration, that Xen API (XAPI) via their storage module (`SMAPI`) is doing all the heavy lifting on your storage. **You don't need to format drives manually**.
 
 :::tip
-We encourage people to use file based SR (local ext, NFS, XOSAN…) because it's easier to deal with. If you want to know more, read the rest.
+We encourage people to use file based SR (local ext, NFS, XOSTOR…) because it's easier to deal with. If you want to know more, read the rest.
 :::
 
 ## 📑 Storage types
@@ -56,7 +56,7 @@ There are storage types that are officially supported, and others that are provi
     <td>X (use with caution)</td>
   </tr>
   <tr>
-    <td>XOSAN v2</td>
+    <td>XOSTOR</td>
     <td>X</td>
     <td>X</td>
     <td>Soon</td>
@@ -178,14 +178,14 @@ xe sr-create host-uuid=<host UUID> type=file content-type=user name-label="Local
 
 Avoid using it with mountpoints for remote storage: if for some reason the filesystem is not mounted when the SR is scanned for virtual disks, the `file` driver will believe that the SR is empty and drop all VDI metadata for that storage.
 
-### XOSANv2
+### XOSTOR
 
 Shared, thin-provisioned storage.
 
-XOSANv2 is an hyperconvergence solution. In short, your local storage are combined into a big shared storage.
+XOSTOR is an hyperconvergence solution. In short, your local storage are combined into a big shared storage.
 
 :::tip
-XOSANv2 is coming soon in XCP-ng. Hang on!
+XOSTOR is coming soon in XCP-ng. Hang on!
 :::
 
 ### ZFS

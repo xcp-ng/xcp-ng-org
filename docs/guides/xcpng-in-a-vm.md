@@ -108,7 +108,7 @@ Once your host's network is set up, we'll look at configuring the XCP-ng virtual
      * **LSI Logic SAS** controller is chosen to maximize at possible the compatibility and the performance. vNVMe
        controller works too, it can reduce CPU overhead and latency. **PVSCSI controller won't work**.
      * **Unlike the PVSCSI controller, the VMXNET3 controller works with XCP-ng**. It will be useful if heavy network
-       loads are planned between different XCP-ng virtual machines (XOSAN)
+       loads are planned between different XCP-ng virtual machines (XOSTOR)
 
    * Finally, install XCP-ng as usual, everything should work as expected. After installation, your XCP-ng virtual machine
      is manageable from XCP-ng Center or Xen Orchestra.

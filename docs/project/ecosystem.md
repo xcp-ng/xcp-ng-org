@@ -89,7 +89,7 @@ More to come soon on this side!
 In order to build the best platform with multiple storage options, we are also working with companies being expert in storage solutions.
 
 :::tip
-We are integrating storage solution available directly from Xen Orchestra (XOSAN and XOSTOR). Don't forget to take a look at [XO website](https://xen-orchestra.com) to learn more!
+We are integrating storage solution available directly from Xen Orchestra (XOSTOR). Don't forget to take a look at [XO website](https://xen-orchestra.com) to learn more!
 :::
 
 ### LINBIT
