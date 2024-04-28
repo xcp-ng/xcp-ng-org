@@ -49,6 +49,29 @@ Xen Orchestra introduces "V2V," or "VMware to Vates", a streamlined tool for mig
 
 Once this comprehensive replication completes, the VM is shut down, and only the newly modified data blocks since the snapshot are exported. The VM is then activated on the XCP-ng platform, significantly minimizing downtime, a crucial benefit for large VMs. Furthermore, the migration process is largely automated, allowing for hands-off monitoring and execution. This entire procedure is fully automated for user convenience and efficiency.
 
+You can read more in our [official VMware to XCP-ng migration guide](https://xcp-ng.org/blog/2022/10/19/migrate-from-vmware-to-xcp-ng/).
+
+#### How it works
+
+The initial situation: a running VM on ESXi on the left, your Xen Orchestra in the middle, and your Vates XCP-ng host on the right:
+
+![](../../assets/img/xoa-v2v-1.png)
+
+The initial sync: the empty VM is created on XCP-ng, and after a snapshot, the content is transferred from VMware side to the new VM disk on XCP-ng. This takes time, but your original VM is up all along (no service interruption):
+
+![](../../assets/img/xoa-v2v-2.png)
+
+After the initial sync, the original VM is shutdown, another snapshot is done and only the diff is sent to the VM on XCP-ng side. Since it's a small amount of data, the downtime will be minimal:
+
+![](../../assets/img/xoa-v2v-3.png)
+
+After the transfer, the VM on XCP-ng side is started:
+
+![](../../assets/img/xoa-v2v-4.png)
+
+
+#### From the XO UI
+
 In your Xen Orchestra UI, go into the main menu in the left, on the "Import" then "From VMware" option:
 
 ![](../../assets/img/v2v1.png)
