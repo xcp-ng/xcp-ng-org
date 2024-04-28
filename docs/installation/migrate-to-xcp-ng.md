@@ -82,10 +82,6 @@ After giving the vCenter credentials, you can click on "Connect" and go to the n
 
 On this screen, you will basically select which VM to replicate, and to which pool, storage and network. When it's done, just click on "Import" and there you go!
 
-:::tip
-You can choose to enable "thin mode": it's longer ("double read") but the disk created on XCP-ng side will only use the space used in the VMware disk. For now, there's no progress on this initial read, but we have plans to expose the "XO task" for it in the next release.
-:::
-
 ### OVA
 
 Using OVA export from VMware and then OVA import into Xen Orchestra is another possibility.
@@ -103,6 +99,40 @@ The fix for this is installing some xen drivers *before* exporting the VM from V
 `dracut --add-drivers "xen-blkfront xen-netfront" --force`
 
 [See here](https://unix.stackexchange.com/questions/278385/boot-problem-in-linux/496037#496037) for more details. Once the imported VM is properly booted, remove any VMware related tooling and be sure to install [Xen guest tools](../../vms).
+
+### Inline import
+
+Another possibility is to mount a VMware storage into XCP-ng and use `qemu-img` to convert the VMDK files to VHDs directly in your XCP-ng Storage Repository (SR).
+
+:::warning
+This method use external packages to install in XCP-ng directly (the Dom0), and you should remove them just after you did the migration. Those commands must be executed on the Dom0 itself.
+:::
+
+#### Install Qemu-img and vmfs tools
+
+```
+yum install qemu-img --enablerepo=base,updates
+wget https://forensics.cert.org/centos/cert/7/x86_64/vmfs6-tools-0.2.1-1.el7.x86_64.rpm
+yum localinstall vmfs6-tools-0.2.1-1.el7.x86_64.rpm
+```
+
+#### Mount the VMware storage repository
+
+```
+vmfs6-fuse /path/to/vmware/disk /mnt
+```
+
+#### Convert a VMDK file to a VHD
+
+For example, on a file-based SR (local ext or NFS):
+
+```
+qemu-img convert -f vmdk -O vpc myVMwaredisk.vmdk /run/sr-mount/<SR UUID>/`uuidgen`.vhd
+```
+
+#### Rescan the SR
+
+You need to rescan the SR where you new VHD file is, so it can be detected. It will appear in the disk list, without a name or description though. Attach it to the VM of your choice, and boot.
 
 ## 🇭 From Hyper-V
 
