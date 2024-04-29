@@ -104,9 +104,13 @@ The fix for this is installing some xen drivers *before* exporting the VM from V
 
 [See here](https://unix.stackexchange.com/questions/278385/boot-problem-in-linux/496037#496037) for more details. Once the imported VM is properly booted, remove any VMware related tooling and be sure to install [Xen guest tools](../../vms).
 
-### Inline import
+### Local migration (same host)
 
-Another possibility is to mount a VMware storage into XCP-ng and use `qemu-img` to convert the VMDK files to VHDs directly in your XCP-ng Storage Repository (SR).
+:::tip
+This method is helpful if you just install XCP-ng on an extra/dedicated drive on the same hardware, removing the need for a new server to migrate.
+:::
+
+In this case, you'll mount your local VMware storage into XCP-ng and use `qemu-img` to convert the VMDK files to VHDs directly in your own XCP-ng Storage Repository (SR). If you go from local storage to local storage, it's a very fast way to migrate even large disks.
 
 :::warning
 This method use external packages to install in XCP-ng directly (the Dom0), and you should remove them just after you did the migration. Those commands must be executed on the Dom0 itself.
@@ -136,7 +140,7 @@ qemu-img convert -f vmdk -O vpc myVMwaredisk.vmdk /run/sr-mount/<SR UUID>/`uuidg
 
 #### Rescan the SR
 
-You need to rescan the SR where you new VHD file is, so it can be detected. It will appear in the disk list, without a name or description though. Attach it to the VM of your choice, and boot.
+You need to rescan the SR where you new VHD file is, so it can be detected. It will appear in the disk list, without a name or description though. Attach it to any VM you created before (eg without booting it first), and boot.
 
 ## 🇭 From Hyper-V
 
