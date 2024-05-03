@@ -3,9 +3,13 @@ title: 'Ecosystem'
 ---
 # XCP-ng Ecosystem
 
-Projects and partners around XCP-ng.
+Projects and technological partners around XCP-ng.
 
 Initiated by [Vates](https://vates.tech), the development of XCP-ng was conceived as an open-source alternative to Citrix XenServer, with a dedication to establishing a fully open-source virtualization solution suitable for production use in businesses. This venture also emphasized the importance of building a robust and diverse ecosystem to complement the platform.
+
+:::tip
+If you're looking to become a reseller rather than a technological partner, we have dedicated opportunities just for you. Please [visit our Partner Page](https://vates.tech/partners/become-a-partner) to learn about our reseller program and start the application process. Join us in bringing innovative solutions to the market!
+:::
 
 <div style={{textAlign: 'center'}}>
 ![](../../assets/img/vates-partner.png)
@@ -129,11 +133,22 @@ The ecosystem around XCP-ng is getting bigger and bigger and we are really proud
 
 If you seek for alternatives, here is some 3rd party backup solutions that are officially compatible with XCP-ng.
 
+### Commvault
+
+Commvault is fully compatible with the XCP-ng API, enabling comprehensive backup capabilities from all Commvault features.
+
+* Website: [https://www.commvault.com](https://www.commvault.com)
+* Documentation: ✅ [Available here](https://documentation.commvault.com/)
+* Agentless: ✅
+* Open Source: ❌
+
+![](../../assets/img/partners/commvault.png)
+
 ### VEEAM
 
 You can use VEEAM to deal with "application-aware" backup, by running the VEEAM agent inside your VMs. This is perfectly fine to use VEEAM with an agent in the VMs while using Xen Orchestra for the VM backup itself.
 
-* Website: [https://www.veeam.com/](https://www.veeam.com/)
+* Website: [https://www.veeam.com](https://www.veeam.com/)
 * Documentation: ✅ [Available here](https://www.veeam.com/documentation-guides-datasheets.html)
 * Agentless: ❌ (not yet)
 * Open Source: ❌
@@ -148,7 +163,7 @@ We are currently pushing VEEAM to provide a tighter integration with XCP-ng. If 
 
 It's agentless but closed source. However, it supports a large variety of virtualization platforms, including [XCP-ng](https://storware.eu/storware-and-xcp-ng-technology-alliance/)!
 
-* Website: [https://storware.eu/](https://storware.eu/solutions/virtual-machine-backup-and-recovery/xcp-ng-backup-and-recovery/)
+* Website: [https://storware.eu](https://storware.eu/solutions/virtual-machine-backup-and-recovery/xcp-ng-backup-and-recovery/)
 * Documentation: ✅ [Available here](https://storware.gitbook.io/backup-and-recovery)
 * Agentless: ✅
 * Open Source: ❌

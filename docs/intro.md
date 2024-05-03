@@ -15,6 +15,10 @@ XCP-ng is -by default- a [secure platform](project/security) to run any kind of 
 
 Visit the [main website](https://xcp-ng.org) to learn more. Latest updates are published on [our blog](https://xcp-ng.org/blog), don't miss any announcement there!
 
+:::tip
+Discover the growing network around XCP-ng and Xen Orchestra, collectively known as the [Vates Stack](https://vates.tech). Visit our [ecosystem page to explore](project/ecosystem) our current partnerships and certification opportunities. Interested in joining? We’d love to [hear from you](https://vates.tech/contact)!
+:::
+
 ## ⚙️ General design
 
 XCP-ng contains multiple components, built around the Xen Hypervisor. It's meant to run on top of bare-metal machines.
