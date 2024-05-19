@@ -159,6 +159,21 @@ We are currently pushing VEEAM to provide a tighter integration with XCP-ng. If 
 
 ![](../../assets/img/partners/veeamlogo.png)
 
+### NAKIVO
+
+Another compatible solution with agents running in VMs.
+
+* Website: [https://www.nakivo.com](https://www.nakivo.com)
+* Documentation: ✅ [Available here](https://helpcenter.nakivo.com/)
+* Agentless: ❌ (not yet)
+* Open Source: ❌
+
+:::note
+We also started to discuss with NAKIVO to see if they could provide a native integration with XCP-ng.
+:::
+
+![](../../assets/img/partners/Nakivo.webp)
+
 ### Storware Backup and Recovery
 
 It's agentless but closed source. However, it supports a large variety of virtualization platforms, including [XCP-ng](https://storware.eu/storware-and-xcp-ng-technology-alliance/)!
