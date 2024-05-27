@@ -14,7 +14,7 @@ For other hardware, see [Unlisted Hardware](#-unlisted-hardware).
 
 ## 🚫 Unlisted Hardware
 
-Many devices outside the HCL in fact work very well with XCP-ng. Being outside the HCL means that there have been not tests to ensure that they work. Most of the hardware support depends on the Linux kernel and thus support for hardware outside the HCL depends on on how well the drivers are supported by the Linux kernel included in XCP-ng.
+Many devices outside the HCL in fact work very well with XCP-ng. Being outside the HCL means that there have been not tests to ensure that they work. Most of the hardware support depends on the Linux kernel and thus support for hardware outside the HCL depends on how well the drivers are supported by the Linux kernel included in XCP-ng.
 
 This section is a community-enriched list of pieces of hardware that do not belong to the HCL, along with information about how well they work (or not), workarounds, etc.
 
@@ -73,7 +73,7 @@ Fixed drivers have been released as official [updates](../../management/updates)
 
 There are several USB 5Gbps NICs based on this chipset available on the market. A [dedicated kernel module driver](https://github.com/xcp-ng-rpms/aqc111u-module) is available to add support to XCP-ng for _(supposedly)_ all NICs based on Marvell _(originally Aquantia)_ AQC111U over USB3. The driver should not be confused with the generic AQC111 that supports the whole family of NICs based on the AQC111 chipset, but NOT the ones connected over USB3. The kernel module provides support only for AQC111U-based NICs.
 
-The kernel module is just a repackage for XCP-ng of [the AQC111U drivers avaialble for Linux Kernel 3.10 on the Marvell website](https://www.marvell.com/support/downloads.html).
+The kernel module is just a repackage for XCP-ng of [the AQC111U drivers available for Linux Kernel 3.10 on the Marvell website](https://www.marvell.com/support/downloads.html).
 
 The kernel module has been tested in a homelab environment with XCP-ng version `8.2`.
 
