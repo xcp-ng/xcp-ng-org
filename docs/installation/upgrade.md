@@ -315,11 +315,11 @@ If a live migration doesn't work, Xen Orchestra is able to do a warm migration f
 
 ## ☣️ Handling alternate drivers or kernel
 
-If - before the upgrade - your host depends on [alternate drivers](../../installation/hardware#alternate-drivers) or on the [alternate kernel](../../installation/hardware#alternate-kernel) to function, then it is possible that the upgraded system doesn't need such alternatives anymore. It is also possible that it still needs them.
+If - before the upgrade - your host depends on [alternate drivers](../../installation/hardware#-alternate-drivers) or on the [alternate kernel](../../installation/hardware#-alternate-kernel) to function, then it is possible that the upgraded system doesn't need such alternatives anymore. It is also possible that it still needs them.
 
 When upgrading using the upgrade ISO:
 * Alternate drivers will not be installed automatically: install them from the repositories after the first reboot.
-* The alternate kernel will not be installed automatically, unless you tell the installer to do so (see [Alternate kernel](../../installation/hardware#alternate-kernel)).
+* The alternate kernel will not be installed automatically, unless you tell the installer to do so (see [Alternate kernel](../../installation/hardware#-alternate-kernel)).
 
 When upgrading using `yum`:
 * Alternate drivers will usually be kept and upgraded if a newer version is provided, but that is not a general rule: we handle it on a case by case basis. Sometimes a newer "default" driver will obsolete an older alternate driver.

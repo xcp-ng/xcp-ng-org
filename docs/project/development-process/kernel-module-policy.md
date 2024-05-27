@@ -2,7 +2,7 @@
 
 Our policity about kernel modules.
 
-In XCP-ng, there is only one version of the kernel that is supported at a given time. There's also an [alternate kernel](../../../installation/hardware#alternate-kernel) available for troubleshooting. The policy differs whether the kernel modules are for XCP-ng's supported kernel or for an alternate kernel.
+In XCP-ng, there is only one version of the kernel that is supported at a given time. There's also an [alternate kernel](../../../installation/hardware#-alternate-kernel) available for troubleshooting. The policy differs whether the kernel modules are for XCP-ng's supported kernel or for an alternate kernel.
 
 ## What are kernel modules?
 See [https://en.wikipedia.org/wiki/Loadable_kernel_module](https://en.wikipedia.org/wiki/Loadable_kernel_module)
@@ -202,7 +202,7 @@ In the case of an additional module, uninstalling the RPM will simply leave your
 
 ## Kernel modules for alternate kernels
 
-The policy for [alternate kernels](../../../installation/hardware#alternate-kernel) is simpler, because there are no alternate modules (with the meaning of *alternate modules* as described earlier). There's just the kernel's built-in modules and possibly additional or updated modules in `/lib/modules/{kernel_version}/updates`. This means that when an alternate kernel is updated, people who have installed it will get the update through the standard updates process. There's no support for cherry-picking specific versions of previous packages we may have released in the past. If there's a bug, please open a bug report. To avoid bugs, please take part in the testing phase.
+The policy for [alternate kernels](../../../installation/hardware#-alternate-kernel) is simpler, because there are no alternate modules (with the meaning of *alternate modules* as described earlier). There's just the kernel's built-in modules and possibly additional or updated modules in `/lib/modules/{kernel_version}/updates`. This means that when an alternate kernel is updated, people who have installed it will get the update through the standard updates process. There's no support for cherry-picking specific versions of previous packages we may have released in the past. If there's a bug, please open a bug report. To avoid bugs, please take part in the testing phase.
 
 RPMs that provide modules for an alternate kernel must follow these conventions:
 * The name must always end with `-kernel{MAJOR.MINOR}` (we don't include the patch version because we won't provide two competing kernel packages for the same MAJOR + MINOR versions).

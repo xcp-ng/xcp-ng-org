@@ -10,7 +10,7 @@ All about the hardware supported by XCP-ng
 
 Devices listed on [XenServer's Hardware Compatibility List](http://hcl.xenserver.com/) are supported.
 
-For other hardware, see [Unlisted Hardware](#unlisted-hardware).
+For other hardware, see [Unlisted Hardware](#-unlisted-hardware).
 
 ## 🚫 Unlisted Hardware
 
@@ -77,7 +77,7 @@ The kernel module is just a repackage for XCP-ng of [the AQC111U drivers avaialb
 
 The kernel module has been tested in a homelab environment with XCP-ng version `8.2`.
 
-To install the driver follow the instructions provided in the [**Alternate drivers** section below](#alternate-drivers) and use `aqc111u-module` as `package-name` _(`module-name` would be `aqc111u`)_.
+To install the driver follow the instructions provided in the [**Alternate drivers** section below](#-alternate-drivers) and use `aqc111u-module` as `package-name` _(`module-name` would be `aqc111u`)_.
 
 Known compatible NICs are<sup id="nt1">[1](#fnt1)</sup>:
 
@@ -145,7 +145,7 @@ Check the "XCP-ng X.Y alternate driver" column, which provides packages names an
 
 ## 🎁 Additional kernel modules
 
-Additional kernel modules are a lot like [alternate drivers](#alternate-drivers) (most of the above section applies to them) except that they don't replace an existing driver from the system. They add a new one that didn't exist at all.
+Additional kernel modules are a lot like [alternate drivers](#-alternate-drivers) (most of the above section applies to them) except that they don't replace an existing driver from the system. They add a new one that didn't exist at all.
 
 Their list is maintained at [https://github.com/xcp-ng/xcp/wiki/Drivers](https://github.com/xcp-ng/xcp/wiki/Drivers), in a table named "Other kernel modules available in XCP-ng X.Y".
 
