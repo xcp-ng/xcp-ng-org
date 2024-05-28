@@ -79,7 +79,7 @@ For more information and use cases, you can check [this Devblog](https://xen-orc
 
 Our installer now offers two new installation options. In legacy boot mode, access them with F2 when offered the choice. In UEFI mode, see the added boot menu entries.
 * First new option: boot the installer with a 2G RAM limit instead of the 8G default. This is a workaround for installation issues on hardware with Ryzen CPUs. Though those are Desktop-class CPUs and not supported officially in the HCL, we tried to make it easier to workaround the infamous "installer crashes on Ryzen" issue.
-* Second new option: boot the installer with our [alternate kernel](../../installation/hardware#alternate-kernel) (kernel-alt). That kernel, built and maintained by @r1 for the team, is based on the main kernel, with all upstream kernel.org patches from the LTS 4.19 branch applied.It should be very stable by construction **but it receives less testing**. That option is there for cases when the main kernel and drivers have issues, so that you can quickly test if kernel.org patches have fixed it already. It will also install the alternate kernel in addition to the main kernel as a convenience. **If kernel-alt fixes issues for you, the most important thing to do is to tell us so that we may fix the main kernel!**
+* Second new option: boot the installer with our [alternate kernel](../../installation/hardware#-alternate-kernel) (kernel-alt). That kernel, built and maintained by @r1 for the team, is based on the main kernel, with all upstream kernel.org patches from the LTS 4.19 branch applied.It should be very stable by construction **but it receives less testing**. That option is there for cases when the main kernel and drivers have issues, so that you can quickly test if kernel.org patches have fixed it already. It will also install the alternate kernel in addition to the main kernel as a convenience. **If kernel-alt fixes issues for you, the most important thing to do is to tell us so that we may fix the main kernel!**
 
 ### New leaf coalesce logic with dynamic limits
 
@@ -90,7 +90,7 @@ Those interested in the patches, see [this commit](https://github.com/xcp-ng-rpm
 ### Changes regarding our specific packages
 
 * ZFS updated to 0.8.3.
-* [Alternate kernel](../../installation/hardware#alternate-kernel) updated to version 4.19.108. Installing it now automatically adds a new boot entry in grub's configuration, to make testing easier. Default entry remains that of the main kernel.
+* [Alternate kernel](../../installation/hardware#-alternate-kernel) updated to version 4.19.108. Installing it now automatically adds a new boot entry in grub's configuration, to make testing easier. Default entry remains that of the main kernel.
 * `netdata-ui` still available from our repositories and also as a feature in Xen Orchestra.
   * r1 contributed a fix to netdata project to bring support for Xen 4.13
   * stormi made netdata cache be RAM-only to workaround an upstream bug that could make the disk cache grow forever

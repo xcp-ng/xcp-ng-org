@@ -104,7 +104,7 @@ Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 
 ### Other changes
 
 * We replaced Citrix's `gpumon` package, not built by us, by a mock build of `gpumon` sources, without the proprietary nvidia developer kit. For you as users, this changes nothing. For us, it means getting rid of a package that was not built by the XCP-ng build system.
-* [Alternate kernel](../../installation/hardware#alternate-kernel) updated to version 4.19.142.
+* [Alternate kernel](../../installation/hardware#-alternate-kernel) updated to version 4.19.142.
 * Intel's `e1000e` driver updated to version 3.8.4 in order to support more devices.
 * Cisco's `enic` and `fnic` drivers updated to offer better device support and compatibility.
 * `rsyslog` (logging daemon) synced from latest CentOS 7.8 security and bugfix update because several memory leaks have been patched in it.
@@ -117,7 +117,7 @@ Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 
 * `zfs` updated to 0.8.5
 * `glusterfs` 8.1 added to the XCP-ng repositories
 * New [additional driver package](../../management/additional-packages): `r8125-module`, for the `r8125` Realtek device driver.
-* [Alternate driver package](../../installation/hardware#alternate-drivers) `intel-igb-alt` updated to version 5.4.6.
+* [Alternate driver package](../../installation/hardware#-alternate-drivers) `intel-igb-alt` updated to version 5.4.6.
 
 ### Misc
 
