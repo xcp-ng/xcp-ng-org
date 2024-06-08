@@ -8,7 +8,7 @@ How to install XCP-ng.
 
 ## 💿 ISO installation
 
-If you want to use the netinstall ISO, see the [Netinstall section](#netinstall).
+If you want to use the netinstall ISO, see the [Netinstall section](#-netinstall).
 
 ### Download and create media
 
@@ -202,7 +202,7 @@ PXE boot doesn't support tagged VLAN networks! Be sure to boot on a untagged net
 4. In the TFTP root directory, create a folder called `pxelinux.cfg`
 5. In the pxelinux.cfg directory, create your configuration file called `default`.
 
-The file itself will contain the way to install XCP-ng: manually (with answer to provide on the host console/screen) or fully automated (see [Automated install](#automatedinstall) below).
+The file itself will contain the way to install XCP-ng: manually (with answer to provide on the host console/screen) or fully automated (see [Automated install](#-automatedinstall) below).
 
 Here is an example of a manual installation:
 
@@ -369,7 +369,7 @@ Check [the full answerfile reference](../../appendix/answerfile).
 
 ### Via PXE
 
-Follow the [previous section on Network boot (PXE)](#pxe-boot-install) and add options to that will fetch and use an answer file.
+Follow the [previous section on Network boot (PXE)](#-pxe-boot-install) and add options to that will fetch and use an answer file.
 
 #### PXE unattended install - BIOS boot
 
