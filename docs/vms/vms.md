@@ -14,6 +14,10 @@ In Xen Orchestra, the *Advanced* tab of your VM will display the memory limits, 
 If dynamic min is equal to dynamic max - as displayed in the screenshot - then dynamic memory is disabled.
 If dynamic min < dynamic max, then make sure your VM is able to fully function with as little RAM as defined in *dynamic min*.
 
+### Secure Boot
+
+How Secure Boot can be enabled in VMs is described in a [dedicated guide](../guides/guest-UEFI-Secure-Boot/).
+
 ### Use a VNC client
 
 1. Connect to a XCP-ng server using SSH, then execute this command with the VM UUID to join:
