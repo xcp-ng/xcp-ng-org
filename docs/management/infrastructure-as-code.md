@@ -16,12 +16,14 @@ Packer is a free and open source tool for creating golden images for multiple pl
 Here is a tutorial to start with Packer and XCP-ng: https://xcp-ng.org/blog/2024/02/22/using-packer-with-xcp-ng/
 
 
-## 🌍 Terraform
+## 🌍 Terraform / OpenTofu
 
-Terraform is an open-source infrastructure as code software tool that enables you to safely and predictably create, change, and improve infrastructure. There's a series of blog posts to explain it in more details:
+Terraform is an infrastructure as code software tool that enables you to safely and predictably create, change, and improve infrastructure. There's a series of blog posts to explain it in more details:
 
 * https://xen-orchestra.com/blog/virtops1-xen-orchestra-terraform-provider/
 * https://xen-orchestra.com/blog/managing-existing-infrastructure-with-terraform-2/
+
+While Terraform used to be free and open-source, Hashicorp decided to relicense it. There is a free and open source fork called [OpenTofu](https://opentofu.org/) which can use Terraform's providers, though!
 
 ## 🏷️ Ansible
 
