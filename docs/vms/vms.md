@@ -355,12 +355,37 @@ Citrix tools:
 XCP-ng tools:
 * :heavy_plus_sign: Fully open-source.
 * :heavy_plus_sign: Maintained by the XCP-ng project.
-* :heavy_plus_sign: :heavy_minus_sign: The sources for the drivers are from the Xen project directly, without additional Citrix patches. This is good, but it may be that in some specific situations Citrix drivers behave better (None known at the moment).
+* :heavy_minus_sign: The drivers are not signed with a key recognized by Microsoft, so Secure Boot can't be enabled with them.
 * :heavy_minus_sign: The sources for the management agent are older than that of Citrix (they have stopped updating GitHub a while ago).
-* :heavy_minus_sign: Maintained by one overloaded community member until Vates finds a developer to hire or contract with in order to maintain them more efficiently.
+* :heavy_minus_sign: Have not been updated in a long time, due to difficulties finding skilled developers to work on them. Being actively worked on.
 * :heavy_minus_sign: Won't transparently replace existing Citrix tools. You need to remove Citrix tools first if they are present, in order to install XCP-ng tools.
 
 It's now up to you to choose.
+
+#### Using the Windows guest tools from Citrix
+
+Tools from Citrix/XenServer are not included in the guest tools ISO distributed with XCP-ng for legal reasons.
+
+##### A reminder
+As written above:
+
+> * The **device drivers** bring optimized I/O performances.
+> * The **management agent** brings more manageability of the VM from XCP-ng, and guest metrics reporting to the host.
+
+##### Management agent + device drivers
+The only way to get the management agent is from XenServer directly. It can be freely downloaded from [the Xenserver download page](https://www.xenserver.com/downloads). Name of the item: "XenServer VM Tools for Windows". The installer will install both the management agent and the device drivers.
+
+:::tip
+You will also find present and past releases of the tools at: [https://support.citrix.com/article/CTX235403](https://support.citrix.com/article/CTX235403), but this may require a Citrix account.
+:::
+
+##### Automated installation via Windows Update: device drivers alone
+If you are using Xen Orchestra, you can switch the "Windows Update tools" advanced parameter on from the "Advanced" tab of the VM view. This will install the device drivers automatically at next reboot :warning: **but not the management agent** which still needs to be installed from Citrix tools' installer.
+
+... So the "Windows Update tools" option is not a complete solution if you need the guest metrics from the management agent. However it may be a convenient way to get future driver updates if you wish so.
+
+##### Switching from XCP-ng tools to Citrix tools
+If your VM already has XCP-ng tools and you wish to switch to Citrix tools, then you need to do the same kind of clean-up as described farther in this document for the opposite situation.
 
 #### XCP-ng Windows Guest Tools
 Drivers built by the XCP-ng community.
@@ -490,31 +515,6 @@ You can try to manually inject the missing drivers in recovery mode.
 dism /image:d:\ /add-driver /driver:e:\Drivers\xenbus\x64\xenbus.inf
 dism /image:d:\ /add-driver /driver:e:\Drivers\xenvbd\x64\xenvbd.inf
 ````
-
-#### Using the Windows guest tools from Citrix
-
-Tools from Citrix are not included in the guest tools ISO distributed with XCP-ng for legal reasons.
-
-##### A reminder
-As written above:
-
-> * The **device drivers** bring optimized I/O performances.
-> * The **management agent** brings more manageability of the VM from XCP-ng, and guest metrics reporting to the host.
-
-##### Management agent + device drivers
-The only way to get the management agent is from Citrix. It can be freely downloaded from [the Xenserver download page](https://www.xenserver.com/downloads). Name of the item: "XenServer VM Tools for Windows". The installer will install both the management agent and the device drivers.
-
-:::tip Update (2022-02-02)
-Since Citrix released their 8.2 CU1 version of Citrix Hypervisor, the Express edition is not available anymore for download. However, you can still get the Windows tools from the previous releases that are still available under "Citrix Hypervisor and XenServer Legacy Versions". You will also find present and past releases of the tools at: [https://support.citrix.com/article/CTX235403](https://support.citrix.com/article/CTX235403).
-:::
-
-##### Automated installation via Windows Update: device drivers alone
-If you are using Xen Orchestra, you can switch the "Windows Update tools" advanced parameter on from the "Advanced" tab of the VM view. This will install the device drivers automatically at next reboot :warning: **but not the management agent** which still needs to be installed from Citrix tools' installer.
-
-... So the "Windows Update tools" option is not a complete solution if you need the guest metrics from the management agent. However it may be a convenient way to get future driver updates if you wish so.
-
-##### Switching from XCP-ng tools to Citrix tools
-If your VM already has XCP-ng tools and you wish to switch to Citrix tools, then you need to do the same kind of clean-up as described higher in this document for the opposite situation.
 
 #### Contributing
 ##### Linux / xBSD
