@@ -1,17 +1,17 @@
 # Create and use custom XCP-NG templates: a guide for Ubuntu
 
-How to create and use custom XCP-NG templates: a guide for Ubuntu?
+How to create and use custom XCP-NG templates for Ubuntu?
 
 [Xen Orchestra](https://xen-orchestra.com) offers free templates via the XOA Hub (for users of Xen Orchestra Virtual Appliance). However, if you don't find what you need and wish to create your own templates with support for [Cloud-init](https://cloud-init.io/), this post is for you. 
 
 [Cloud-init](https://cloud-init.io/) is a tool used in cloud environments, developed to automate the configuration and initialization of virtual machines at first boot. It allows for various configurations to be applied to a virtual machine without manual intervention. Here is an overview of its main functions:
 
-* network configuration (static or dynamic),
-* SSH key management,
-* user configuration (with or without password),
-* script execution,
-* filesystem mounting,
-* system configuration (e.g., hostname).
+* network configuration (static or dynamic)
+* SSH key management
+* user configuration (with or without password)
+* script execution
+* filesystem mounting
+* and system configuration (e.g., hostname)
 
 This post explains in detail the steps to create templates based on Ubuntu. The same principles apply to other Linux distributions, provided they support [Cloud-init](https://cloud-init.io/). We will also discuss the use of templates and how to pass information to [Cloud-init](https://cloud-init.io/).
 
@@ -20,7 +20,7 @@ All experiments will be conducted using the graphical virtual machine manager [X
 ## Prerequisites
 
 * [XCP-NG](https://xcp-ng.org/)
-* [Xen Orchestra](https://xen-orchestra.com) from the sources or Xen Orchestra virtual Applicance (XOA)
+* [Xen Orchestra](https://xen-orchestra.com) from the sources or Xen Orchestra virtual Appliance (XOA)
 * [XO-CLI](https://www.npmjs.com/package/xo-cli) (for the last part of this post)
 * [JQ](https://jqlang.github.io/jq/) (for the last part of this post)
 * Ubuntu 22.04.04 Server LTS under ISO and OVA formats
@@ -38,13 +38,15 @@ At the end of this step, the result will be essentially the same, and both solut
 
 * Download an ISO file of Ubuntu 22.04.04 LTS version: [https://ubuntu.com/download/server](https://ubuntu.com/download/server)
 
-In order to access the ISO file during the virtual machine creation step, you will need to create a storage called ISO Store. There are several types available (Local, NFS, or SMB). For this post, we will be using the first type. Feel free to browse through this [post](https://xcp-ng.org/blog/2022/05/05/how-to-create-a-local-iso-repository-in-xcp-ng/) to learn how to create a local storage. In the following, I assume that there is a local storage on a machine managed by XCP-NG.
+In order to access the ISO file during the virtual machine creation step, it needs to be placed in an ISO storage repository. There are several types available (Local, NFS, or SMB). For this post, the first type will be used. Feel free to browse through this [post](https://xcp-ng.org/blog/2022/05/05/how-to-create-a-local-iso-repository-in-xcp-ng/) to learn how to create a local ISO storage repository. In the following, I assume that there is a local ISO storage repository on the XCP-NG host.
 
 * From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **Import** option and choose the **Disk** sub-option.
 
+* Select the ISO repository from the SR dropdown where the ISO file will be uploaded.
+
 * Drag and drop or select the file *ubuntu-22.04.4-live-server-amd64.iso*, click on **Import**, and wait for the import to finish.
 
-> You can also directly upload the ISO file to the server where the local storage is located using the **scp** tool.
+> You can also directly upload the ISO file to the server where the local ISO storage repository is located using the **scp** tool.
 
 * From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **New** option and choose the **VM** sub-option to create a new virtual machine.
 
