@@ -50,7 +50,7 @@ In order to access the ISO file during the virtual machine creation step, it nee
 
 * From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **New** option and choose the **VM** sub-option to create a new virtual machine.
 
-* Select the Ubuntu Focal Fossa 22.04 template (which is more of a loading profile than a template) and enter the following values for the parameters: custom-ubuntu22.04 for the name, 1 CPU, 4 GB of RAM, 10 GB of disk space, and choose the ISO file ubuntu-22.04.4-live-server-amd64.iso from the previously created local storage.
+* Select the Ubuntu Jammy Jellyfish 22.04 template (which is more of a loading profile than a template) and enter the following values for the parameters: custom-ubuntu22.04 for the name, 1 CPU, 4 GB of RAM, 10 GB of disk space, and choose the ISO file ubuntu-22.04.4-live-server-amd64.iso from the previously created local storage.
 
 * During the Ubuntu installation steps, please ensure 1) to create only one partition to allow resizing later and 2) to install the OpenSSH server.
 
