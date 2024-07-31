@@ -417,11 +417,38 @@ You can use this to connect to an existing Ceph storage over RBD, and configure 
 
 Known issue: this SR is not allowed to be used for HA state metadata due to LVM backend restrictions within XAPI drivers, so if you want to use HA, you will need to create another type of storage for HA metadata
 
-Installation steps
+Since most of the Centos repositories have been deprecated, you need to add the Vault repository before installing.
 
 ```
-# yum install centos-release-ceph-nautilus --enablerepo=extras
-# yum install ceph-common --enablerepo=base
+# nano /etc/yum.repos.d/CentOS-Vault.repo
+
+# Vault
+[Vault-base]
+name=Vault - CentOS-$releasever - Base
+baseurl=http://vault.centos.org/centos/$releasever/os/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
+
+[Vault-updates]
+name=Vault - CentOS-$releasever - Updates
+baseurl=http://vault.centos.org/centos/$releasever/updates/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
+
+[Vault-extras]
+name=Vault - CentOS-$releasever - Extras
+baseurl=http://vault.centos.org/centos/$releasever/extras/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
+```
+After that follow installation steps
+
+```
+# yum install centos-release-ceph-nautilus --enablerepo=Vault-extras
+# yum install ceph-common --enablerepo=Vault-base
 ```
 
 Create `/etc/ceph/keyring` with your access secret for Ceph.
