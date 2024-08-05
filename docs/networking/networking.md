@@ -369,11 +369,15 @@ If you are using bonds on FCoE capable devices, it's preferable to disable it en
 ```
 systemctl stop fcoe
 systemctl stop xs-fcoe
-systemctl disable fcoe
-systemctl disable xs-fcoe
+systemctl mask fcoe
+systemctl mask xs-fcoe
 ```
 
 See [https://github.com/xcp-ng/xcp/issues/138](https://github.com/xcp-ng/xcp/issues/138).
+
+:::tip
+`systemctl mask` is similar to `systemctl disable`, but will also prevent the service from being re-enabled automatically by future XCP-ng maintenance updates. This change will however have to be done again after an upgrade to a newer release of XCP-ng.
+:::
 
 ### Emergency Network Reset
 
