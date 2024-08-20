@@ -315,7 +315,13 @@ RemainAfterExit=true
 Only XCP-ng 8.2.1 is currently supported and with a maximum of 7 machines per pool.
 :::
 
-## The linstor command does not work!?
+## Update
+
+See this documentation: [RPU](/management/updates/#rolling-pool-update-rpu).
+
+## Global questions
+
+### The linstor command does not work!?
 
 If you get the following output, this is not necessarily abnormal:
 ```
@@ -342,7 +348,7 @@ linstor --controllers=172.16.210.84,172.16.210.85,172.16.210.86 r list
 Important: the `--controllers` parameter should always be just after the command name and before the action.
 :::
 
-## How to list LINSTOR resources and interpret this output?
+### How to list LINSTOR resources and interpret this output?
 
 Command:
 ```

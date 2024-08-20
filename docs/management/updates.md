@@ -113,6 +113,23 @@ Also known as RPU, **this is the advised way to update your pool**. By just clic
 This powerful and fully automated mechanism requires some prerequisites: all your VMs disks must be on a one (or more) shared storage. Also, high-availability will be automatically disabled, as the XO load balancer plugin and backup jobs. Everything will be enabled back when it's done!
 :::
 
+:::warning
+RPU is disabled for pools with XOSTOR SRs. The reason is that after a reboot of a just updated host, it's possible that it can no longer communicate with other hosts through LINSTOR satellites. In fact LINSTOR expects that we always use satellites and controllers with the same version.
+
+To avoid problems, it is strongly recommended to update the satellites, controllers packages of each host without rebooting:
+```
+yum update linstor-satellite linstor-controller
+```
+
+After updating all hosts without reboot:
+```
+systemctl restart linstor-satellites
+systemctl stop linstor-controller # "stop" is not a typo, it will auto restart the controller.
+```
+
+Then you can follow the instructions in the documentation to manually update the pool.
+:::
+
 ![](../../assets/img/rpu1.png)
 
 #### Pool updates
