@@ -87,22 +87,25 @@ Ensure that the time setting in the BIOS of your server is set to the current ti
 
 ## 🖥️ Supported guest OS
 
-Officially supported OS. But there's a lot more than can run on XCP-ng.
+We only officially support operating systems which still receive support from their publisher. But there's a lot more that can run on XCP-ng.
 
 ### Windows based
 
-* Windows Server 2012, 2016, 2019, 2022
+* Windows Server 2016, 2019, 2022
 * Windows 10
+* Windows 11 (starting with XCP-ng 8.3).
 
 :::info
-Older versions of Windows will run, but in emulation mode (like Windows XP, Server 2003 etc.)
+Very old versions of Windows will run, but without PV drivers, so with lower networking and disk performance (Windows XP, Windows Server 2003, etc.).
+
+Less old but EOL versions of Windows, such as Windows Server 2012, currently run well but we don't offer guarantees for the future. For example, the future PV drivers updates might drop the compatibility with such old releases.
 :::
 
 ### Linux
 
-* RHEL/CentOS from 7, Rocky, Alma, Oracle…
-* All Debian/Ubuntu family
-* Arch, Alpine, SUSE and many more
+* RHEL, CentOS, Rocky, AlmaLinux, Oracle…
+* Debian & Ubuntu
+* Arch, Alpine, SUSE and many more…
 
 ### BSD
 
