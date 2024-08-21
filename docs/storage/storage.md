@@ -310,10 +310,44 @@ Error code: SR_BACKEND_FAILURE_47
 Error parameters: , The SR is not available [opterr=ceph is not installed],
 ```
 
-Installation steps
+Since most of the Centos repositories have been deprecated, you need to add the Vault repository before installing.
+
 ```
-# yum install centos-release-ceph-nautilus --enablerepo=extras
-# yum install ceph-common --enablerepo=base
+# nano /etc/yum.repos.d/CentOS-Vault.repo
+
+# Vault
+[Vault-base]
+name=Vault - CentOS-$releasever - Base
+baseurl=http://vault.centos.org/centos/$releasever/os/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
+
+[Vault-updates]
+name=Vault - CentOS-$releasever - Updates
+baseurl=http://vault.centos.org/centos/$releasever/updates/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
+
+[Vault-extras]
+name=Vault - CentOS-$releasever - Extras
+baseurl=http://vault.centos.org/centos/$releasever/extras/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
+```
+After that follow installation steps
+
+```
+yum install centos-release-ceph-nautilus --enablerepo=Vault-extras
+yum-config-manager --disable centos-nfs-ganesha28 centos-ceph-nautilus
+# Fix the repo file so that it points at vault.centos.org
+sed -i -e '/^mirrorlist=/d' /etc/yum.repos.d/CentOS-Ceph-Nautilus.repo
+sed -i -e 's/#baseurl=/baseurl=/' /etc/yum.repos.d/CentOS-Ceph-Nautilus.repo
+sed -i -e 's/mirror\.centos\.org/vault.centos.org/' /etc/yum.repos.d/CentOS-Ceph-Nautilus.repo
+# install
+yum install ceph-common --enablerepo=centos-ceph-nautilus,Vault-base
 ```
 
 Create `/etc/ceph/admin.secret` with your access secret for CephFS.
@@ -447,8 +481,14 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
 After that follow installation steps
 
 ```
-# yum install centos-release-ceph-nautilus --enablerepo=Vault-extras
-# yum install ceph-common --enablerepo=Vault-base
+yum install centos-release-ceph-nautilus --enablerepo=Vault-extras
+yum-config-manager --disable centos-nfs-ganesha28 centos-ceph-nautilus
+# Fix the repo file so that it points at vault.centos.org
+sed -i -e '/^mirrorlist=/d' /etc/yum.repos.d/CentOS-Ceph-Nautilus.repo
+sed -i -e 's/#baseurl=/baseurl=/' /etc/yum.repos.d/CentOS-Ceph-Nautilus.repo
+sed -i -e 's/mirror\.centos\.org/vault.centos.org/' /etc/yum.repos.d/CentOS-Ceph-Nautilus.repo
+# install
+yum install ceph-common --enablerepo=centos-ceph-nautilus,Vault-base
 ```
 
 Create `/etc/ceph/keyring` with your access secret for Ceph.
