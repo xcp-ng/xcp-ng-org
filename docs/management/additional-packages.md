@@ -4,9 +4,9 @@ sidebar_position: 4
 
 # Additional packages
 
-The controller domain (dom0) is a privileged Linux VM, based on CentOS.
+The controller domain (dom0) is a privileged Linux VM, part of which is compatible with RHEL/CentOS packages.
 
-It may be useful to add more packages to it, with precaution. The XCP-ng project offers some in its repositories, and other packages can be installed from CentOS, EPEL, or even third party repositories.
+It may be useful to add more packages to it, with precaution. The XCP-ng project offers some in its repositories, and other packages can be installed from CentOS, EPEL, or even third party repositories, but at the user's own risks.
 
 :::note
 Best effort support is provided for additional packages provided by the XCP-ng project ([supported list for XCP-ng 8.2](http://reports.xcp-ng.org/8.2/extra_installable.txt)). No support is provided for other additional packages, even if installed from our repositories, as they contain build dependencies not supposed to be installed in production.
@@ -57,7 +57,7 @@ The controller domain is not an all-purpose Linux system. It must remain minimal
 * Avoid any software that may interfere with the existing
 * Avoid software that widens the attack surface on your hosts
 
-### 5. Known Security Risks
+### 5. Known Security Risks in additional packages
 
 #### Libreswan
 
@@ -104,6 +104,10 @@ yum install name_of_package --enablerepo=base,updates
 
 Make sure it will not try to overwrite system packages with updates from CentOS. XCP-ng uses fixed or modified versions of some CentOS packages whereas the CentOS repos point at the latest.
 
+:::warning
+CentOS 7 reached its end of life, so installing additional packages from its repositories is even more at your own risk now. Let us know what packages from there you really can't use XCP-ng without, so that we may consider providing them in our supported repositories (with security fixes when needed).
+:::
+
 ### From EPEL repositories
 
 On XCP-ng, the EPEL repos are already installed but are disabled, on purpose. Install from them with:
@@ -117,6 +121,10 @@ yum install name_of_package --enablerepo=epel,base,updates
 ```
 
 And as above make sure no package from the system will get overwritten in the process.
+
+:::warning
+EPEL 7 reached its end of life at the same time as CentOS 7, so installing additional packages from its repositories is even more at your own risk now. Let us know what packages from there you really can't use XCP-ng without, so that we may consider providing them in our supported repositories.
+:::
 
 ### From other third party repositories
 
@@ -139,4 +147,4 @@ See [upgrade section](../../installation/upgrade) for a discussion of the differ
 
 Installer upgrade will reinstall the system from scratch and just keep your configuration related to XCP-ng (network, VMs, SRs, etc.). Anything else will have to be re-done.
 
-`yum-style` upgrade will try to update or keep the packages that you installed. Packages installed from XCP-ng repositories should get updated seamlessly. Packages from other repositories will not get updated: they may be left in place (then you'll have to update them yourselves if needed), removed (due to package conflicts or because they are obsoleted by packages from the updated XCP-ng) or even make the upgrade fail until they are manually removed.
+An upgrade using `yum` directly will try to update or keep the packages that you installed. Packages installed from XCP-ng repositories should get updated seamlessly. Packages from other repositories will not get updated: they may be left in place (then you'll have to update them yourselves if needed), removed (due to package conflicts or because they are obsoleted by packages from the updated XCP-ng) or even make the upgrade fail until they are manually removed.
