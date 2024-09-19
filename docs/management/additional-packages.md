@@ -61,9 +61,10 @@ The controller domain is not an all-purpose Linux system. It must remain minimal
 
 #### Libreswan
 
-If you are using encrypted tunnels using `openvswitch-ipsec` and `libreswan`, for example through [Xen Orchestra's SDN Controller](https://xen-orchestra.com/docs/sdn_controller.html) there are security advisories you need to know about, there are 2 CVEs that are affecting our current libreswan version:
+If you are using encrypted tunnels on an 8.2 host using `openvswitch-ipsec` and `libreswan`, for example through [Xen Orchestra's SDN Controller](https://xen-orchestra.com/docs/sdn_controller.html) there are security advisories you need to know about, there are 3 CVEs that are affecting our current libreswan version:
 - [CVE-2023-38712](https://libreswan.org/security/CVE-2023-38712/CVE-2023-38712.txt): Invalid IKEv1 repeat IKE SA delete causes crash and libreswan to restart
 - [CVE-2023-38710](https://libreswan.org/security/CVE-2023-38710/CVE-2023-38710.txt): Invalid IKEv2 REKEY proposal causes libreswan to restart
+- [CVE-2024-3652](https://libreswan.org/security/CVE-2024-3652/CVE-2024-3652.txt): IKEv1 default AH/ESP responder can crash and restart
 
 Patches for these are not really backportable, we therefore kept it as is and target updating packages in the next major release.
 
