@@ -76,7 +76,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link ml-1 ml-md-3" href="https://xcp-ng.com" role="button">
+                        <a class="nav-link ml-1 ml-md-3" href="https://vates.tech/xcp-ng" role="button">
                             Pro Support
                         </a>
                     </li>
@@ -299,11 +299,11 @@
             <h2><a name="easy-to-install"></a>Easy To Install</h2>
         </div>
         <div class="row justify-content-center">
-            <div class="col col-sm-3 nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a class="nav-link active" id="v-pills-download-tab" data-toggle="pill" href="#v-pills-download"
-                   role="tab" aria-controls="v-pills-download" aria-selected="true">Download</a>
-                <a class="nav-link" id="v-pills-net-install-tab" data-toggle="pill" href="#v-pills-net-install"
-                   role="tab" aria-controls="v-pills-net-install" aria-selected="false">Net install</a>
+            <div class="col col-sm-3 nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="padding-top:5em;">
+                <a class="nav-link active" id="v-pills-download-tab" data-toggle="pill" href="#v-pills-download-lts"
+                   role="tab" aria-controls="v-pills-download-lts" aria-selected="true">Download 8.2 LTS</a>
+                <a class="nav-link" id="v-pills-download-latest-tab" data-toggle="pill" href="#v-pills-download-latest"
+                   role="tab" aria-controls="v-pills-download-latest" aria-selected="false">Download 8.3 Latest</a>
                 <a class="nav-link" id="v-pills-from-xo-tab" data-toggle="pill" href="#v-pills-from-xo"
                     role="tab" aria-controls="v-pills-from-xo" aria-selected="false">Web UI</a>
                 <a class="nav-link" id="v-pills-upgrade-tab" data-toggle="pill" href="#v-pills-upgrade"
@@ -317,32 +317,47 @@
             </div>
 
             <div class="col-8 tab-content" id="v-pills-tabContent">
-                <div class="tab-pane fade show active" id="v-pills-download" role="tabpanel"
-                     aria-labelledby="v-pills-download-tab">
+                <div class="tab-pane fade show active" id="v-pills-download-lts" role="tabpanel"
+                     aria-labelledby="v-pills-download-lts-tab">
+                    <h4 style="text-align: center; font-weight: bold;">XCP-ng 8.2 Long Term Support (LTS)</h4>
+                    <p style="text-align: center; font-style: italic; font-size: 0.9em;">Rock stable release with security updates only</p>
                     <p>
-                        Grab the latest <a href="https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1" onclick="_paq.push(['trackEvent', 'Download', 'full']);">8.2 ISO here</a>, then create your bootable USB key with:
+                        Grab the latest <a href="https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1" onclick="_paq.push(['trackEvent', 'Download', 'full']);">8.2 LTS full ISO</a> (590MiB), then create your bootable USB key with:
                     </p>
                     <div class="code p-1 m-1 p-sm-3 m-sm-3">
                         dd if=xcp-ng-8.2.1-20231130.iso of=/dev/sdX bs=8M oflag=direct
                     </div>
-                    <p>Then just boot on it!</p>
-                    <p>On Windows, you can use <a href="https://rufus.akeo.ie/">Rufus</a> to create the bootable USB stick.</p>
-                    <pre>SHA256: 108aa7144d1f5dd169a1b99ca70b510527136c549f2e3c3c1707b619e17ee1b6</pre>
-                </div>
-                <div class="tab-pane fade" id="v-pills-net-install" role="tabpanel"
-                     aria-labelledby="v-pills-net-install-tab">
+                    <p>Then just boot on it. Don't forget to always read <a href="https://docs.xcp-ng.org/releases/release-8-2">the release notes!</a></p>
+                    <p>On Windows, you can use <a href="https://rufus.akeo.ie/">Rufus</a> to create the bootable USB stick. SHA256 full ISO: </p>
+                    <pre>108aa7144d1f5dd169a1b99ca70b510527136c549f2e3c3c1707b619e17ee1b6</pre>
                     <p>
-                        Download the <a href="https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130-netinstall.iso?https=1" onclick="_paq.push(['trackEvent', 'Download', 'netinstall']);">Net install ISO</a> (150MiB), then create your bootable USB key:
+                        You can also download the <a href="https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130-netinstall.iso?https=1" onclick="_paq.push(['trackEvent', 'Download', 'netinstall']);">Net install ISO</a> (160MiB), then create your bootable USB key in the same fashion. SHA256 netinstall ISO:
                     </p>
-                    <div class="code p-1 m-1 p-sm-3 m-sm-3">
-                        dd if=xcp-ng-8.2.1-20231130-netinstall.iso of=/dev/sdX bs=8M oflag=direct
-                        </div>
-                        <p>Then just boot on it!</p>
-                        <p>On Windows, you can use <a href="https://rufus.akeo.ie/">Rufus</a> to create the bootable USB stick.</p>
-                        <pre>SHA256: 6d5e221ac56d318436105e20513197cecfc8fa29eee4d9bf72b5fd52db345a02</pre>
-                    </div>
+                        <pre>6d5e221ac56d318436105e20513197cecfc8fa29eee4d9bf72b5fd52db345a02</pre>
+                </div>
+                <div class="tab-pane fade" id="v-pills-download-latest" role="tabpanel"
+                     aria-labelledby="v-pills-download-latest-tab">
+                     <h4 style="text-align: center; font-weight: bold;">XCP-ng 8.3 Latest</h4>
+                     <p style="text-align: center; font-style: italic; font-size: 0.9em;">Most recent platform used as a base for our new features</p>
+                     <p>
+                         Grab the latest <a href="https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0.iso?https=1" onclick="_paq.push(['trackEvent', 'Download', 'full']);">8.3 Latest full ISO</a> (618MiB), then create your bootable USB key with:
+                     </p>
+                     <div class="code p-1 m-1 p-sm-3 m-sm-3">
+                         dd if=xcp-ng-8.3.0.iso of=/dev/sdX bs=8M oflag=direct
+                     </div>
+                     <p>Then just boot on it. Don't forget to always read <a href="https://docs.xcp-ng.org/releases/release-8-3">the release notes!</a></p>
+                     <p>On Windows, you can use <a href="https://rufus.akeo.ie/">Rufus</a> to create the bootable USB stick. SHA256 full ISO: </p>
+                     <pre>49b6143d1bbb1fd0bb1f7ce873817190c1f2ca394c258ce7b1f8e13a75c72674</pre>
+                     <p>
+                         You can also download the <a href="https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-netinstall.iso?https=1" onclick="_paq.push(['trackEvent', 'Download', 'netinstall']);">Net install ISO</a> (163MiB), then create your bootable USB key in the same fashion. SHA256 netinstall ISO:
+                     </p>
+                         <pre>de6c6c9d699fd9185ca295e0c30cee705efaad4df05ae3910584bb880e51fab2</pre>
+                 </div>
+
                 <div class="tab-pane fade" id="v-pills-upgrade" role="tabpanel"
                      aria-labelledby="v-pills-upgrade-tab">
+                    <h4 style="text-align: center; font-weight: bold;">Upgrade from XenServer</h4>
+                    <p style="text-align: center; font-style: italic; font-size: 0.9em;">Migrate out XenServer to enjoy a true open platform</p>
                     <p>Just insert the ISO and follow instructions. You'll have an <b>upgrade panel</b>, just select it and that's it!</p>
                     <p>After a reboot, you'll be on XCP-ng while keeping all your previous settings (Storage, VMs…)</p>
                     <img src="assets/img/upgradexs.png"><br/><br/>
@@ -351,6 +366,8 @@
                 </div>
                 <div class="tab-pane fade" id="v-pills-vmware" role="tabpanel"
                      aria-labelledby="v-pills-vmware-tab">
+                    <h4 style="text-align: center; font-weight: bold;">Easy migration out of Broadcom VMware</h4>
+                    <p style="text-align: center; font-style: italic; font-size: 0.9em;">Join the exodus with simple tools to assist on your VMware migration</p>
                     <p>Leverage Xen Orchestra to seamlessly migrate your VMware VMs to XCP-ng. This tool supports migration from any accessible ESXi host, including those at remote locations, by directly streaming the VMs to XCP-ng.</p>
                     <p>Learn more about the process by exploring our step-by-step guide on <a href="https://xcp-ng.org/blog/2022/10/19/migrate-from-vmware-to-xcp-ng?utm_campaign=migrate">how to migrate from VMware to XCP-ng with just a few clicks.</a></p>
                     <h4>Need further assistance?</h4>
@@ -358,6 +375,8 @@
                 </div>
                 <div class="tab-pane fade" id="v-pills-security" role="tabpanel"
                      aria-labelledby="v-pills-security-tab">
+                    <h4 style="text-align: center; font-weight: bold;">Security</h4>
+                    <p style="text-align: center; font-style: italic; font-size: 0.9em;">XCP-ng is focused on security, and it starts here</p>
                     <p>Security matters: all our repositories, ISOs and packages are signed with a GPG key. This key is available here:</p>
                     <div>
                         <a href="https://xcp-ng.org/RPM-GPG-KEY-xcpng">https://xcp-ng.org/RPM-GPG-KEY-xcpng</a>
@@ -367,6 +386,8 @@
                 </div>
                 <div class="tab-pane fade" id="v-pills-old" role="tabpanel"
                      aria-labelledby="v-pills-old-tab">
+                    <h4 style="text-align: center; font-weight: bold;">Old releases</h4>
+                    <p style="text-align: center; font-style: italic; font-size: 0.9em;">In case you want to track regressions or for the fun of it</p>
                     <p>We strongly suggest to download only the current release. This is only for historical purpose.</p>
                     <div>
                         <p>You can find all previous XCP-ng releases here:</p>
@@ -375,10 +396,13 @@
                 </div>
                 <div class="tab-pane fade" id="v-pills-from-xo" role="tabpanel"
                      aria-labelledby="v-pills-from-xo-tab">
+                    <h4 style="text-align: center; font-weight: bold;">Manage XCP-ng at scale</h4>
+                    <p style="text-align: center; font-style: italic; font-size: 0.9em;">Web UI, API or CLI, Xen Orchestra provides even native backup features.</p>
                     <p>Just go on this web page and follow instructions:</p>
                     <p><a href="https://vates.tech/deploy">https://vates.tech/deploy</a></p>
-                    <p>This will deploy a small VM doing all the management and backup for your XCP-ng. Follow instructions given on the screen, and you're up and running!</p>
-                    <p>If you want to learn more about Xen Orchestra, please <a href="https://xen-orchestra.com">visit the official website.</a></p>
+                    <p>This will deploy a small Xen Orchestra VM doing all the management and backup for your XCP-ng. Follow instructions given on the screen, and you're up and running!</p>
+                    <p>XCP-ng can be managed via both a centralized UI, API or a CLI. The choice is yours. There's also Terraform & Packer providers available.</p>
+                    <p>If you want to learn more about managing XCP-ng, please <a href="https://docs.xcp-ng.org/management">read all the possibilities on our official documentation.</a></p>
                     </p>
                 </div>
             </div>
@@ -389,7 +413,7 @@
     <section class="xcp-ng-commercial-support">
         <div class="row justify-content-center">
             <div class="col-10 text-center">
-                <h2>XCP-ng is a Xen Project incubation project</h2>
+                <h2>XCP-ng is officially part of the Xen Project</h2>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -401,7 +425,7 @@
 
             <div class="col-12 col-md-8 text-md-left text-center">
                 <p>XCP-ng, a virtualization platform incubated within the Xen Project and hosted by the Linux Foundation, aims to bridge the gap between users and developers. It stands as the preferred entry point for anyone seeking a reliable virtualization solution.</p>
-                <a class="btn btn-primary" href="https://xenproject.org/", target="_blank" role="button">Learn about Xen Project</a>
+                <a class="btn btn-primary" href="https://xenproject.org/", target="_blank" role="button">Learn about the Xen Project</a>
             </div>
         </div>
     </section>
@@ -447,7 +471,7 @@
             </div>
 
             <div class="col-10 col-md-6 text-md-left text-center">
-                <p><i>Vates</i>, supporting XCP-ng development, ensures businesses harness its full potential. Integrated within Vates' virtualization stack, XCP-ng & Xen Orchestra offer seamless infrastructure orchestration and backup solutions.</p>
+                <p><i>Vates</i>, supporting XCP-ng development, ensures businesses harness its full potential. Integrated within <a href="https://vates.tech">Vates' virtualization stack</a>, XCP-ng & Xen Orchestra offer seamless infrastructure orchestration and backup solutions.</p>
                 <a class="btn btn-primary" href="https://vates.tech" role="button">Learn More</a>
             </div>
         </div>
@@ -456,7 +480,8 @@
     <section class="they-trust-containous container-fluid text-center bg-light">
         <div class="row">
             <div class="col wow fadeInDown" data-wow-delay="1s">
-                <h1>Our KickStarter Backers</h1>
+                <h2>Our initial KickStarter Backers</h2>
+                <p>They helped us when we started XCP-ng, and for that we are grateful</p>
             </div>
         </div>
         <div class="row d-flex justify-content-center justify-content-sm-between">
