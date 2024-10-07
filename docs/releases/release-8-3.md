@@ -375,7 +375,7 @@ XCP-ng 8.3 doesn't support the old partition layout where the system partition o
 
 Upgrading Xen from version 4.13 to version 4.17 had a lot of benefits, but it came with one drawback: nested virtualization, which had always been experimental but was at least working in some useful situations (such as testing XCP-ng inside XCP-ng), is now non-functional due to fundamental changes in the codebase.
 
-What needs to be done in the codebase for complete nested virtualization support was explained to the Xen developer community during XenSummit by Georges Dunlap, but it's not a small task, so we don't know at the moment when nested virtualization will be fully implemented.
+What needs to be done in the codebase for complete nested virtualization support was explained to the Xen developer community during XenSummit by Georges Dunlap ([part 1](https://youtu.be/8jKGYY1Bi_o) and [part 2](https://youtu.be/3MxWvVTmY1s) on Youtube), but it's not a small task, so we don't know at the moment when nested virtualization will be fully implemented. We'll keep you posted on our blog. If you really need it, stay on XCP-ng 8.2 for now.
 
 ### AMD MxGPU driver
 
@@ -480,4 +480,4 @@ Live migrating a VM from an older XenServer version can sometimes result in erro
 * The VM may reboot.
 * The VM may get duplicated, meaning the same VM UUID (and usually its VDIs too) will appear both on the sender and receiver host. In such a case, you'll need to remove the duplicate from the receiver host.
 
-It would require a hotfix to the old XenServer, but since those versions are no longer supported, XenServer won't be developing one.
+It would require a hotfix to the old XenServer, but since those versions are no longer supported, XenServer won't be developing one. If you need to migrate from such old host, you should rely on [Xen Orchestra warm migration feature](https://xen-orchestra.com/blog/warm-migration-with-xen-orchestra/).
