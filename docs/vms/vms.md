@@ -252,7 +252,7 @@ systemctl start xe-linux-distribution.service
 
 #### Update the guest tools
 
-It's a good habit, and may be even required in some cases (that would then be described in the [Release Notes](../releases#all-releases), to update the guest tools to their latest version when your XCP-ng hosts are updated.
+It's a good habit, and may be even required in some cases (that would then be described in the [Release Notes](../releases#xcp-ng-release-history), to update the guest tools to their latest version when your XCP-ng hosts are updated.
 
 Depending on the situation, just update from your distribution's online repositories, or follow the above installation process again.
 

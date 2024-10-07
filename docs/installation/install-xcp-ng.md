@@ -12,14 +12,15 @@ If you want to use the netinstall ISO, see the [Netinstall section](#-netinstall
 
 ### Download and create media
 
-You can download the latest 8.2 ISO here: [https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1).
+You can download the latest installer for XCP-ng 8.2 LTS from here: [https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1) and the latest installer for XCP-ng 8.3 from here: [https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0.iso?https=1](https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0.iso?https=1).
 
-SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
+SHA256 checksums, GPG signatures and net-install ISOs are available [here](https://xcp-ng.org/#easy-to-install).
 
 
 Then, create the install media (e.g. a USB key 1GB or larger should work):
 
 ```
+# example with XCP-ng 8.2
 dd if=xcp-ng-8.2.1-20231130.iso of=/dev/sdX bs=8M oflag=direct
 ```
 
