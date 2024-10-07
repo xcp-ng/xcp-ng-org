@@ -8619,6 +8619,10 @@ section p:last-child {
     }
 }
 
+h2 {
+    font-size: 2.5em;
+}
+
 #xcp-ng-navbar .nav-link {
     color: #000
 }
@@ -8847,7 +8851,7 @@ nav a {
 }
 
 .xcp-ng-community h2 {
-    font-size: 2em
+    font-size: 2.5em
 }
 
 @media (min-width:768px) {
@@ -8875,7 +8879,7 @@ nav a {
 
 .xcp-ng-easy-install {
     background-color: #fff;
-    height: 30em
+    height: 45em
 }
 
 @media (max-width:575.9px) {
@@ -8910,7 +8914,7 @@ nav a {
 }
 
 .xcp-ng-commercial-support h2 {
-    margin-bottom: 1.5em
+    margin-bottom: 2.5em
 }
 
 .xcp-ng-commercial-support p {
