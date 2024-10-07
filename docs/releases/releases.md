@@ -1,19 +1,29 @@
 # Releases
 
-There are two kinds of XCP-ng releases: standard releases and Long Term Support (LTS) releases.
+## XCP-ng Release History
+
+| Version                   | Released   | Status               | Support until                                | Release notes                        |
+| ---                       | ---        | ---                  | ---                                          | ---                                  |
+| [8.3](release-8-3.md)     | 2024-07-12 | Full support         | 2028-11-30                                   | [8.3 Release notes](release-8-3.md)  |
+| [8.2 LTS](release-8-2.md) | **8.2.0**:&nbsp;2020-11-18<br/>**8.2.1**:&nbsp;2022-02-28 | Full support, LTS    | 2025-06-25                                   | [8.2 Release notes](release-8-2.md)  |
+| [8.1](release-8-1.md)     | 2020-03-31 | EOL                  | 2021-03-31                                   | [8.1 Release notes](release-8-1.md)  |
+| 8.0                       | 2019-07-25 | EOL                  | 2020-11-13                                   |                                      |
+| 7.6                       | 2018-10-31 | EOL                  | 2020-03-30                                   |                                      |
+| 7.5                       | 2018-08-10 | EOL                  | 2019-07-25                                   |                                      |
+| 7.4                       | 2018-03-31 | EOL                  | 2018-10-31                                   |                                      |
 
 ## 🟢 LTS Releases
 
 *Latest LTS: [XCP-ng 8.2](release-8-2.md)*
 
-Using the Long Term Support version is relevant if:
+Using the Long Term Support version is recommended if:
 
-* you want to be sure the system will stay stable
-* you want to have all security fixes without doing major upgrades every year
-* you want a predictable migration path on a longer timeframe
-* you don't care about new features coming for the next years
+* you want to ensure system stability
+* you prefer receiving security fixes without needing to perform major upgrades annually
+* you need a predictable migration path over a longer timeframe
+* you are not concerned about missing new features for a few years
 
-LTS releases are supported for 5 years:
+LTS releases are supported for up to 5 years:
 
 ```mermaid
 %%{
@@ -35,56 +45,41 @@ gantt
     XCP-ng 8.1 (EOL)       :2020-03-31, 1y
 ```
 
-If you prefer to get the latest improvements, go for our [latest standard release](#standard-releases).
+If you prefer to get the latest improvements, go for our [latest release](#latest-releases).
 
-## 🟡 Standard Releases
+## 🟡 Standard Release
 
-*Latest: [XCP-ng 8.2](release-8-2.md)*
+*Latest: [XCP-ng 8.3](release-8-3.md)*
 
-Using the standard release is relevant if:
+Using the standard release is recommended if:
 
-* you want to enjoy the most recent features and enhancements
-* you want to have the latest hardware support
-* you want to enjoy more performances
-* it's not a problem to do an upgrade twice a year or so
+* you want access to the latest features and enhancements
+* you need support for the newest hardware
+* you want to benefit from improved performance
+* you don't mind upgrading approximately twice a year
 
-Standard releases are supported until the next release, plus a few months to give you some time to transition. Check the support dates [in the table below](#all-releases).
+Standard releases are supported until the next release, plus a few additional months to allow time for transitioning. Check the support dates [in the table above](#xcp-ng-release-history).
 
-If you prefer to be more conservative, go for our [LTS release](#lts-releases).
+If you prefer a more conservative approach, consider choosing our [LTS release](#lts-releases).
 
-:::info
-Right now, the latest standard release (8.2) is also the LTS release. When XCP-ng 8.3 will be released, it will become the latest standard release, and 8.2 will stay as the latest LTS.
+:::note
+XCP-ng 8.3 is special in the following ways:
+* After the General Availability release, XCP-ng 8.3 will continue to receive updates, allowing us to introduce new features while maintaining platform stability through improved testing processes.
+* Over time, XCP-ng 8.3 will transition to a Long-Term Support (LTS) release, where only bug fixes and security patches will be applied, ensuring maximum stability.
 :::
+
 
 ## 🔴 Pre Releases
 
-*Latest Pre Release: XCP-ng 8.3 RC 1*
-
-Using a pre release is only relevant for testing. Check our [latest 8.3 RC 1 blog post](https://xcp-ng.org/blog/2024/07/12/xcp-ng-8-3-release-candidate-1/) for more information.
+Using a pre-release is relevant only for testing purposes. Check [the `Release` tag on our blog](https://xcp-ng.org/blog/tag/release/) for (pre-)release announcements.
 
 :::warning
 ### Important Note on Pre-Releases
 
-Pre-releases are intended to serve as testing platforms before final deployment. While these versions are stable, they are **NOT SUITABLE FOR PRODUCTION USE**. Key considerations include:
+Pre-releases are designed for testing before final General Availability. Although generally stable, they are **NOT SUITABLE FOR PRODUCTION USE**. Key considerations include:
 
-* Security Patches: Pre-releases may not receive urgent security updates as promptly as supported, production-grade releases.
-* Commercial Support: Vates does not provide commercial support for pre-releases until they are officially finalized.
+* Security Patches: Pre-releases may not receive urgent security updates as promptly as production-grade releases.
+* Commercial Support: Vates does not offer commercial support for pre-releases until they are officially finalized.
 
-These factors underscore why pre-releases should be reserved strictly for testing purposes.
+For these reasons, pre-releases should be used strictly for testing.
 :::
-
-
-
-## All releases
-
-| Version                   | Released   | Status               | Support until                                | Release notes                        |
-| ---                       | ---        | ---                  | ---                                          | ---                                  |
-| 8.3 RC1                   | 2024-07-12 | Release Candidate 1  | -                                            | [8.3 RC 1 blog post](https://xcp-ng.org/blog/2024/07/12/xcp-ng-8-3-release-candidate-1/)                 |
-| 8.3 Beta 2                | 2024-02-15 | Pre-release/Beta2    | -                                            | [8.3 Beta 2 blog post](https://xcp-ng.org/blog/2024/02/15/xcp-ng-8-3-beta-2/)          |
-| 8.3 Beta 1                | 2023-06-22 | Pre-release/Beta1    | -                                            | [8.3 Beta 1 blog post](https://xcp-ng.org/blog/2023/06/22/xcp-ng-8-3-beta-1/)          |
-| [8.2 LTS](release-8-2.md) | **8.2.0**:&nbsp;2020-11-18<br/>**8.2.1**:&nbsp;2022-02-28 | Full support, LTS    | 2025-06-25                                   | [8.2 Release notes](release-8-2.md)  |
-| [8.1](release-8-1.md)     | 2020-03-31 | EOL                  | 2021-03-31                                   | [8.1 Release notes](release-8-1.md)  |
-| 8.0                       | 2019-07-25 | EOL                  | 2020-11-13                                   |                                      |
-| 7.6                       | 2018-10-31 | EOL                  | 2020-03-30                                   |                                      |
-| 7.5                       | 2018-08-10 | EOL                  | 2019-07-25                                   |                                      |
-| 7.4                       | 2018-03-31 | EOL                  | 2018-10-31                                   |                                      |

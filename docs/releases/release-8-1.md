@@ -1,11 +1,11 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # XCP-ng 8.1
 
 :::danger
-XCP-ng 8.1 is EOL (End Of Life) since 2021. Please check the [currently supported release](release-8-2.md).
+XCP-ng 8.1 is EOL (End Of Life) since 2021. Please check the [currently supported release(s)](releases.md).
 :::
 
 **XCP-ng 8.1** is a [standard release](../../../releases#standard-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso?https=1).

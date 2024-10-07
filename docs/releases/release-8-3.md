@@ -371,6 +371,22 @@ XCP-ng 8.3 doesn't support the old partition layout where the system partition o
 * If the partitioning type is GPT, see [using the new partitions](../../installation/upgrade/#using-the-new-partitions).
 * If the partitioning type is MBR, a fresh installation is necessary. The presence of a Dell Utility Partition also prevents upgrading (and is usually coupled with an MBR partitioning type).
 
+### Support for Older Operating Systems
+
+Operating systems that have reached their End of Life (EOL) are no longer supported.
+
+This doesn't mean they can't run, but:
+
+* We no longer provide templates for them.
+* Future changes to XCP-ng might cause them to stop running.
+* Future updates to the PV drivers and VM management agents ("guest tools") may render them incompatible.
+
+Key operating systems that are no longer supported:
+
+* Windows Server 2012 R2
+* 32-bit Windows 10
+* 32-bit Debian Bullseye 11
+
 ### Nested virtualization (though not on purpose)
 
 Upgrading Xen from version 4.13 to version 4.17 had a lot of benefits, but it came with one drawback: nested virtualization, which had always been experimental but was at least working in some useful situations (such as testing XCP-ng inside XCP-ng), is now non-functional due to fundamental changes in the codebase.

@@ -6,27 +6,27 @@ sidebar_position: 4
 
 Discover how to upgrade from an older release.
 
-We assume your goal is to get to the latest version of XCP-ng from a previous release, e.g. 7.4 to 7.6 or 8.0 to 8.2.
+We assume your goal is to get to the latest version of XCP-ng from a previous release, e.g. 8.0 to 8.2.1 or 8.2.1 to 8.3.
 
 For updates that don't change the version numbers (bugfixes, security fixes), see [the updates section](../../management/updates).
 
 :::info
 There are 3 upgrade methods, detailed below:
-* Using the installation ISO (recommended).
-* Using the installation ISO when you can't boot from it: remote upgrade.
-* From command line a.k.a. yum-style upgrade. Only for point version upgrades.
+* [Using the installation ISO (recommended)](#-upgrade-via-installation-iso-recommended).
+* [Using the installation ISO when you can't boot from it: remote upgrade](#using-the-installation-iso-when-you-cant-boot-from-it-remote-upgrade).
+* [From command line a.k.a. yum-style upgrade](#-from-command-line). ⚠️ Only for some point version upgrades.
 :::
 
 ## ☢️ Release Notes & Known Issues
 
-Read the [Release Notes and Known Issues](../../releases#all-releases) for every release that is higher than your current release. They may provide additional instructions for specific situations. Also **please read the following warnings**:
+Read the [Release Notes and Known Issues](../../releases#xcp-ng-release-history) for every release that is higher than your current release. They may provide additional instructions for specific situations. Also **please read the following warnings**:
 
 :::warning
 * Always upgrade and reboot the pool master **FIRST**
-* DON'T use the `Maintenance Mode` in XCP-ng Center. It moves the pool master to another host, which has to be avoided in the upgrading procedure.
+* DON'T use the `Maintenance Mode` in XCP-ng Center. It moves the pool master to another host, which has to be avoided in the upgrade procedure.
 * If HA (High Availability) is enabled, disable it before upgrading.
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`.
-* Read [Handling alternate drivers or kernel](../../installation/upgrade#handling-alternate-drivers-or-kernel) if your host depends on them.
+* Read [Handling alternate drivers or kernel](##%EF%B8%8F-handling-alternate-drivers-or-kernel) if your host depends on them.
 * [Update your pool with the latest updates](../../management/updates) **before** upgrading, and reboot or restart the toolstack, depending on the nature of the installed updates.
 * [Install the latest updates](../../management/updates) **after** upgrading.
 :::
@@ -37,19 +37,24 @@ Read the [Release Notes and Known Issues](../../releases#all-releases) for every
 
 ## 💿 Upgrade via installation ISO (recommended)
 
-This is the standard XCP-ng way. With this method, note that you can skip any intermediate release (e.g. from 7.5 to 8.2 directly) without needing intermediate upgrade.
+This is the standard XCP-ng way. With this method, note that you can often skip intermediate release (e.g. from 7.5 to 8.2 directly) without needing intermediate upgrade, but there are exceptions, so check the [release notes](../../releases#xcp-ng-release-history)! For example, we strongly advise to upgrade to XCP-ng 8.2.1 first before jumping to XCP-ng 8.3.
 
 It will backup your system to the backup partition and reinstall the system from scratch on the system partition. Your XCP-ng configuration (VMs, storage repositories and so on) is retained.
 
-**Any additional changes made by you to the system will be lost, so remember to make them again after the upgrade. Including: kernel boot parameters (such as [those related to PCI passthrough](../../compute#_2-tell-xcp-ng-not-to-use-this-device-id-for-dom0)), changes to `/etc`, additional users created and their homes, local ISO SRs, [additional packages](../../management/additional-packages)...**
+**Any additional changes made by you to the system will be lost, so remember to make them again after the upgrade. Including: kernel or Xen boot parameters, changes to `/etc`, additional users created and their homes, local ISO SRs, [additional packages](../../management/additional-packages)...** Some boot parameters and configuration files are saved, but it's a short list.
 
 Steps:
 1. Download an installation ISO from the [download page](https://xcp-ng.org/download/). Choose either the standard installer or the network installer.
 2. [Check the authenticity and the integrity of the downloaded ISO](../../project/mirrors#check-an-iso-image).
-3. Follow the installation procedure on the [download page](https://xcp-ng.org/download/).
-4. When offered the choice, choose to upgrade your existing XCP-ng installation.
-5. After the upgrade completed, reboot your host.
-6. Then [install the updates](../../management/updates) that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
+
+Then, for every host of the pool, starting with the pool master:
+
+3. Move all VMs off the host if your setup allows it, or turn them off.
+4. Follow the installation procedure on the [download page](https://xcp-ng.org/download/).
+5. When offered the choice, choose to upgrade your existing XCP-ng installation.
+6. After the upgrade completed, reboot your host.
+7. [Install the updates](../../management/updates) that have been released after the installation ISO was created. They can fix bugs and/or security issues.
+8. Reboot.
 
 Once upgraded, **keep the system regularly updated** (see [the updates section](../../management/updates)).
 
@@ -59,11 +64,11 @@ If you can't boot from the ISO, see the next section.
 
 See [the Troubleshooting page](../../troubleshooting/after-upgrade).
 
-### Using the installation when you can't boot from it: remote upgrade
+### Using the installation ISO when you can't boot from it: remote upgrade
 
 This is an alternate method if you can't boot from the installation ISO.
 
-If you do not have access to your server or remote KVM in order to upgrade using the interactive ISO installer, you can initiate an automatic reboot and upgrade process using the following procedure:
+If you do not have access to your server or remote KVM in order to upgrade using the interactive ISO installer, you can initiate an automatic reboot and upgrade process using the following procedure, which replaces steps 4 to 6 in the above [upgrade procedure](#-upgrade-via-installation-iso-recommended).
 
 * Unpack/extract the XCP-ng ISO to a folder on an HTTP server. Make sure not to miss the hidden .treeinfo file (common mistake if you `cp` the files with `*`).
 * Get the UUID of your host by running the below command:
@@ -80,8 +85,7 @@ If you do not have access to your server or remote KVM in order to upgrade using
   xe host-call-plugin plugin=prepare_host_upgrade.py host-uuid=750d9176-6468-4a08-8647-77a64c09093e fn=main args:url=http://<ip-address>/xcp-ng/unpackedexample/
   ```
   The output should also be true. It has created a temporary entry in the grub bootloader which will automatically load the upgrade ISO on the next boot. It then automatically runs the XCP-ng upgrade with no user intervention required. It will also backup your existing XenServer dom0 install to the secondary backup partition, just like the normal upgrade.
-* To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it's available, but if not, it should proceed fine and boot into upgraded XCP-ng in 10 to 20 minutes.
-* Then [install the updates](../../management/updates) that have been released after the installation ISO was created, and reboot. They can fix bugs and/or security issues.
+* To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it's available, but if not, it should proceed fine and boot into the upgraded XCP-ng in 10 to 20 minutes.
 
 Note: it has been brought to our attention that [a DHCP server may be necessary during the upgrade](https://xcp-ng.org/forum/topic/2480/unattended-upgrade-requires-dhcp).
 
@@ -91,7 +95,11 @@ Once upgraded, **keep the system regularly updated** (see [Updates Howto](../../
 
 A.k.a. yum-style upgrade.
 
-:warning: **Supported across minor releases (e.g. from 8.0 to 8.2), but not supported across major releases (e.g. from 7.6 to 8.0).** :warning:
+:warning: **Supported across some minor releases (e.g. from 8.0 to 8.2), but not all of them (always check the release notes), and not supported across major releases (e.g. from 7.6 to 8.0).** :warning:
+
+:::warning
+This upgrade procedure is **not** supported to upgrade to XCP-ng 8.3.
+:::
 
 Though it's been successfully tested by numerous people, this method is still considered *riskier* than using the installation ISO:
 - this upgrade method **does not create a backup of your system**, unlike an upgrade via the installation ISO, so there's no possible return to the previous version (unless reinstalling it from scratch and reconfiguring it).
