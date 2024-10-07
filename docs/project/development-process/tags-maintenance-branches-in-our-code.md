@@ -111,7 +111,7 @@ A `small-patches` branch is used to hold small non-upstreamable patches until we
 
 #### Adding a new feature
 
-A new feature gets a new topic branch, usually based on an upstream release -- though in some situations some features will depend on another topic branch that has not been merged yet. In this case the branch can be based on its dependency branch. In the case of multiple dependencies, it will be clearer to `merge --no-ff` each of those other topics in our new topic branch.
+A new feature gets a new topic branch, usually based on an upstream release -- though in some situations some features will depend on another topic branch that has not been merged yet. In this case the branch can be based on its dependency branch. In the case of multiple dependencies, it will be clearer to start the new topic branch with a `merge --no-ff` of each of those dependency topics.
 
 This new branch will then be used to open a PR, usually against the upstream repo. In the case of an upstream PR progressing too slowly, we may decide to open a PR onto an XCP-ng `host-installer` branch so it can be included in a release, and it will join the pool of topic branches described above.
 
