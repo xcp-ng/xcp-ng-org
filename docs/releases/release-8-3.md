@@ -55,7 +55,7 @@ To upgrade from earlier releases, it is necessary to first upgrade the pool to X
 Refer to the [Upgrade How-to](../../../installation/upgrade) for the exact upgrade process.
 
 :::note
-Users who installed a prerelease of XCP-ng 8.3 must upgrade to the final 8.3.0 version using the installation ISO image. The only exception is for users who installed XCP-ng 8.3 RC2 or have already upgraded to RC2 using the installation ISO image. These users can simply [update their system](../../management/updates.md) without needing the ISO image.
+Users who installed a prerelease of XCP-ng 8.3 must upgrade to the final 8.3.0 version using the installation ISO image. The only exception is for users who installed XCP-ng 8.3 RC2 or have already upgraded to RC2 using the installation ISO image. These users can simply [update their system](../../management/updates) without needing the ISO image.
 :::
 
 ## What's new
