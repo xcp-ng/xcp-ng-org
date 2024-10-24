@@ -22,20 +22,9 @@ We got a dedicated section on [how to migrate from Citrix Hypervisor to XCP-ng](
 
 ## 🐼 From Xen on Linux
 
-If you are running Xen on your usual distro (Debian, Ubuntu…), you are using `xl` to manage your VMs, and also plain text configuration files. You can migrate to an existing XCP-ng host thanks to [this Python script](https://gist.github.com/olivierlambert/0182f1cee63568edffd3b71b497b2eff).
+If you are running Xen on your usual distro (Debian, Ubuntu…), you are using `xl` to manage your VMs, and also plain text configuration files. You can migrate to an existing XCP-ng host thanks to [the `xen2xcp` script](https://github.com/xcp-ng/xen2xcp).
 
-1. Get that script in your current `dom0`.
-1. Shutdown your VM
-1. Run the script, VM by VM with for example: `./xva.py -c /etc/xen/vm1.cfg -n vm1 -s xcp_host_1 --username=root --password="mypassword" --no-ssl`. You can use a hostname or the IP address of your XCP-ng host (name `xcp_host_1` here)
-1. Your disks are streamed while the configuration file is "translated" to a VM object in your XCP-ng host.
-1. As soon it's done, you should be able to boot your VM on destination
-1. Repeat for all your VMs
-
-If you have an error telling you that you don't have an default SR, please choose a default SR on your XCP-ng pool (in XO, Home/Storage, hover on the storage you want to put by default, there's an icon for it).
-
-:::info
-This script is a bit old and not tested since while. If you have issues, feel free to report that!
-:::
+Check [the README](https://github.com/xcp-ng/xen2xcp/blob/master/README.md) for usage instructions.
 
 ## 📦 From Virtualbox
 
