@@ -190,10 +190,6 @@ Shared, thin-provisioned storage.
 
 XOSTOR is an hyperconvergence solution. In short, your local storage are combined into a big shared storage.
 
-:::tip
-XOSTOR is coming soon in XCP-ng. Hang on!
-:::
-
 ### ZFS
 
 Local, thin-provisioned. Available since XCP-ng 8.2.
