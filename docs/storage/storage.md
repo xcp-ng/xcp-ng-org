@@ -92,7 +92,7 @@ There are storage types that are officially supported, and others that are provi
     <td></td>
   </tr>
   <tr>
-    <td rowspan="5">block based</td>
+    <td rowspan="6">block based</td>
     <td>Local LVM</td>
     <td></td>
     <td></td>
@@ -121,6 +121,12 @@ There are storage types that are officially supported, and others that are provi
     <td></td>
     <td>X</td>
     <td></td>
+  </tr>
+  <tr>
+    <td>Fibre Channel</td>
+    <td></td>
+    <td>X</td>
+    <td>X</td>
   </tr>
 </table>
 
