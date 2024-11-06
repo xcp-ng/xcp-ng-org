@@ -389,9 +389,9 @@ Key operating systems that are no longer supported:
 
 ### Nested virtualization (though not on purpose)
 
-Upgrading Xen from version 4.13 to version 4.17 had a lot of benefits, but it came with one drawback: nested virtualization, which had always been experimental but was at least working in some useful situations (such as testing XCP-ng inside XCP-ng), is now non-functional due to fundamental changes in the codebase.
+Upgrading Xen from version 4.13 to version 4.17 had a lot of benefits, but it came with one potential drawback: nested virtualization, which had always been experimental, unsupported and insecure (risks for the host), but was at least somewhat working in some useful situations (such as testing XCP-ng inside XCP-ng), is now entirely non-functional due to fundamental changes in the codebase.
 
-What needs to be done in the codebase for complete nested virtualization support was explained to the Xen developer community during XenSummit by Georges Dunlap ([part 1](https://youtu.be/8jKGYY1Bi_o) and [part 2](https://youtu.be/3MxWvVTmY1s) on Youtube), but it's not a small task, so we don't know at the moment when nested virtualization will be fully implemented. We'll keep you posted on our blog. If you really need it, stay on XCP-ng 8.2 for now.
+What needs to be done in the codebase for proper nested virtualization support was explained to the Xen developer community during XenSummit by Georges Dunlap ([part 1](https://youtu.be/8jKGYY1Bi_o) and [part 2](https://youtu.be/3MxWvVTmY1s) on Youtube), but it's not a small task, so we don't know at the moment when nested virtualization will be fully implemented. We'll keep you posted on our blog. If you really need it in its previous incomplete state and still want to use it despite its unsupported status and the security implications, stay on XCP-ng 8.2 for now.
 
 ### AMD MxGPU driver
 
