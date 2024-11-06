@@ -4,7 +4,7 @@ sidebar_position: 8
 
 # Compute and GPU
 
-This section is dedicated to compute related things, from Xen to GPU/vGPU or PCI passthrough.
+This section is dedicated to compute related things, like GPU/vGPU or PCI passthrough, nested virtualization or advanced Xen features.
 
 ## 🔗 PCI Passthrough
 
@@ -250,6 +250,25 @@ Then run
 ```
 xe pusb-scan host-uuid=<host_uuid>
 ```
+
+## 📦 Nested Virtualization
+
+Nested virtualization is the ability to run a hypervisor within another hypervisor. For example, running XCP-ng inside a VM that itself runs on XCP-ng.
+
+This feature is useful for testing purposes and is also required for certain advanced features in Windows guests, such as containers (note: containers on Linux do not require nested virtualization).
+
+Unfortunately, Xen currently does not support nested virtualization. It is a desired feature for both the Xen Project and XCP-ng, but its implementation is still pending. You can find technical details in this Xen Summit talk: [part 1](https://www.youtube.com/watch?v=8jKGYY1Bi_o) and [part 2](https://www.youtube.com/watch?v=3MxWvVTmY1s).
+
+In the past, partial nested virtualization was implemented in Xen. However, it was experimental and insecure (with risks such as host crashes or worse) and, therefore, was not officially supported. Following a necessary rework of Xen's codebase, the limited functionality that existed was removed until it could be properly reimplemented.
+
+**But I saw it working!**
+
+Xen Orchestra previously offered a "Nested Virtualization" toggle in a VM's advanced settings without warning users of its unsupported status. This led users to believe it was a supported feature. As a result, when this functionality was completely removed from XCP-ng 8.3 (and XenServer 8), it came as a surprise. Xen Orchestra has since been updated to clarify the unsupported status of nested virtualization.
+
+**But I really need it!**
+
+We understand the use cases that necessitate nested virtualization and are committed to making this feature available in a supported form in the future. Until it is implemented, there is unfortunately no supported way to enable it.
+
 
 ## 🐼 Advanced Xen
 
