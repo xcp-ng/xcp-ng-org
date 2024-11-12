@@ -486,6 +486,12 @@ With all the IPv4-only assumptions embedded in the code of various components, a
 - DHCPv6 support is still incomplete.
 - Manually configured DNS settings can be overwritten by autoconf.
 
+### Pool metadata backup temporarily unavailable from console
+
+The metadata backup and restore feature, previously available from the host console, was removed due to a vulnerability and could not be restored before the initial release of XCP-ng 8.3. It will be (or has been, depending on when you read this) added back in a future update.
+
+Meanwhile, the feature is still available through Xen Orchestra.
+
 ### Known issues from XenServer 8
 
 Though not all issues from XenServer 8 apply to XCP-ng 8.3, some of the information and tips provided in [XenServer 8's Known Issues](https://docs.xenserver.com/en-us/xenserver/8/whats-new/known-issues) might still be useful for certain scenarios.
