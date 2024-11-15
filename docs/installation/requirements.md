@@ -22,10 +22,19 @@ XCP-ng must be a **64-bit x86** server-class machine dedicated to hosting VMs. I
 
 XCP-ng supports, per host:
 
-- Up to 6 TB of RAM
+### RAM
+- Up to 6 TB
+
+### Physical Network Interface Cards (NICs)
 - Up to 16 physical NICs
+
+### Logical processors
 - Up to 512 logical processors
+
+### Virtual Network Interface Cards (vNICs)
 - Up to 512 virtual NICs
+
+### Virtual Local Area Networks (VLANs)
 - Up to 800 VLANs
 
 :::note
