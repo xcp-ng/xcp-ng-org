@@ -852,3 +852,66 @@ Note: iptables config must also be modified to remove LINSTOR port rules (edit `
 For more info:
 - https://linbit.com/blog/linstors-auto-evict/
 - https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-linstor-auto-evict
+
+### How to-enable dm-cache?
+
+:::warning
+This feature is currently experimental and not covered by [Vates Pro Support](https://vates.tech/pricing-and-support).
+:::
+
+On each host, create a new PV and VG using your cache devices:
+```
+pvcreate linstor_group_cache <CACHE_DEVICES>
+vgcreate linstor_group_cache <CACHE_DEVICES>
+```
+
+Then you can enable the cache with few commands using the linstor controller.
+
+First, verify the group to modify, this last one must start with "xcp-sr-":
+```
+linstor storage-pool list
+```
+
+Make sure the primary resource group is configured with cache support and enable the cache on the volume group:
+```
+linstor rg modify xcp-sr-linstor_group_thin_device --layer-list drbd,cache,storage
+linstor vg set-property xcp-sr-linstor_group_thin_device 0 Cache/CachePool linstor_group_cache
+```
+
+:::tip
+You can list caches on a host using `dmsetup ls`. Also one important thing, a cache is only created on diskful resources.
+:::
+
+#### How to configure the cache size?
+
+By default, a VDI uses a cache size of 1% of its volume size. But it can be changed globally for all VDIs:
+```
+linstor vg set-property xcp-sr-linstor_group_thin_device 0 Cache/Cachesize <PERCENTAGE>
+```
+
+You can change this value globally or on a particular resource definition with:
+```
+linstor rd set-property <VOLUME_NAME> Cache/Cachesize <PERCENTAGE>
+```
+
+It's totally arbitrary. You can go up to 20-30% for for VMS with a high write rate. This should be enough to support a significant number of requests. 10% for solicited VMs. Between 1-5% for VMs with a few requests. You can use 100% if you want, for example for a database on a small VDI with a lot of queries.
+
+:::warning
+The use of snapshots can consume more memory than necessary due to VHD chains that are too long. It's advisable to limit their use except via XOA during backup processes.
+:::
+
+#### How to switch between read and read-write mode?
+
+Simply use:
+```
+linstor vg set-property xcp-sr-linstor_group_thin_device 0 Cache/OpMode <MODE>
+```
+
+By default `writethrough` mode is used. This mode is only useful to improve read performance.
+
+With `writeback` mode enabled, the block to be written is added in the cached layer, not on the DRBD.
+This data block is moved later, and the process caller (here tapdisk) is only notified when the block is flushed in the cache disk.
+
+This algorithm is efficient in not having to wait for writes to be flushed to the local disk as well as to other DRBDs replicated on other nodes.
+But if you have a power outage on the machine using the cache and if it contains data, then the data is lost.
+You don't have this issue with writethrough, but this mode is only used for read performance.
