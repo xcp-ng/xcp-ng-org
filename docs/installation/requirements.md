@@ -29,7 +29,12 @@ XCP-ng supports, per host:
 - Up to 16 physical NICs
 
 ### Logical processors
-- Up to 512 logical processors
+
+#### XCP-ng 8.2 LTS
+- Up to 448 logical processors
+
+#### XCP-ng 8.3
+- Up to 960 logical processors, depending on CPU support
 
 ### Virtual Network Interface Cards (vNICs)
 - Up to 512 virtual NICs
