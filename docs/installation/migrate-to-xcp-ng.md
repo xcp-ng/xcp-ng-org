@@ -135,11 +135,23 @@ You need to rescan the SR where you new VHD file is, so it can be detected. It w
 
 There's two options, both requiring to export your Hyper-V VM disk in VHD format.
 
+### Exporting the VM disk
+
 :::warning
-When exporting in VHD, always use a **dynamic disk** VHD format and not **static**, which doesn't work in XCP-ng.
+When exporting in VHD, **always**: 
+
+* use a **dynamic disk** VHD format and not **static**, which doesn't work in XCP-ng.
+* name your VHD using the pattern `<UUID>.vhd`, as the disk type depends on the file extension.
+* remove all the Hyper-V tools before exporting the disks.
 :::
 
-In any case, you **must remove all the Hyper-V tools** before exporting the disks.
+1. Shut down the VM in Hyper-V.
+2. (Optional). If your VM disk is in the VHDX format, convert it to the VHD format.  
+To do this, run the following PowerShell command:  
+
+```powershell
+Convert-VHD -Path <source path> -DestinationPath <destination path> -VHDType Dynamic
+```
 
 ### Import the VHD in Xen Orchestra
 
