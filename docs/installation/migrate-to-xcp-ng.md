@@ -4,37 +4,37 @@ sidebar_position: 3
 
 # Migrate to XCP-ng
 
-How to migrate from VMware, KVM, etc. to XCP-ng.
+Learn how to migrate from other virtualization platforms like VMware, KVM, and more to XCP-ng.
 
-This documentation will help you to make a migration to XCP-ng, from any most common other virtualization platform (VMware, KVM, etc.)
+This guide provides step-by-step instructions for migrating your virtual machines (VMs) from popular platforms to XCP-ng.
 
 :::note
-OVA import method will miss the information if the VM is running BIOS or UEFI mode. Double check your settings on your original system, and then enable (or not) UEFI on XCP-ng side for the destination VM. You can do so in VM advanced tab in Xen Orchestra.
+The OVA import method doesn't retain information about whether the VM uses BIOS or UEFI mode. Ensure you verify your VM's boot mode on the source platform and enable or disable UEFI accordingly on the XCP-ng side. You can adjust this setting in the **Advanced** tab of the VM configuration in Xen Orchestra.
 :::
 
 ## 🇽 From XenServer
 
-We got a dedicated section on [how to migrate from XenServer to XCP-ng](../../installation/upgrade#upgrade-from-xenserver).
+We provide a dedicated guide on [migrating from XenServer to XCP-ng](../../installation/upgrade#upgrade-from-xenserver).
 
 ## 🍋 From Citrix Hypervisor
 
-We got a dedicated section on [how to migrate from Citrix Hypervisor to XCP-ng](../../installation/upgrade#upgrade-from-xenserver).
+Follow our detailed instructions for [migrating from Citrix Hypervisor to XCP-ng](../../installation/upgrade#upgrade-from-xenserver).
 
 ## 🐼 From Xen on Linux
 
-If you are running Xen on your usual distro (Debian, Ubuntu…), you are using `xl` to manage your VMs, and also plain text configuration files. You can migrate to an existing XCP-ng host thanks to [the `xen2xcp` script](https://github.com/xcp-ng/xen2xcp).
+If you're running Xen on a Linux distribution (e.g., Debian, Ubuntu) using `xl` and plain text configuration files, you can migrate to an XCP-ng host using the [xen2xcp script](https://github.com/xcp-ng/xen2xcp).
 
-Check [the README](https://github.com/xcp-ng/xen2xcp/blob/master/README.md) for usage instructions.
+Refer to the [README](https://github.com/xcp-ng/xen2xcp/blob/master/README.md) for detailed usage instructions.
 
 ## 📦 From Virtualbox
 
-Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](#-fromvmware) section.
+Export your VirtualBox VM as an OVA file, then use Xen Orchestra to import it. If you encounter boot issues, check the [VMware migration](#from-vmware) section for troubleshooting tips.
 
 ## 🇻 From VMware
 
-### XO V2V
+### XO V2V Migration
 
-Xen Orchestra introduces "V2V," or "VMware to Vates", a streamlined tool for migrating from VMware to the Vates Stack, encompassing XCP-ng and Xen Orchestra (XO). Seamlessly integrated into Xen Orchestra, this tool utilizes the "warm migration" feature for efficient transitions. The process initiates with exporting an initial snapshot of the VMware-based VM, which, despite being time-consuming, occurs without disrupting the VM's operation, ensuring transparency.
+Xen Orchestra offers a "V2V" (VMware-to-Vates) tool for seamless migration from VMware to the XCP-ng platform. This method uses a **warm migration** process, ensuring minimal downtime. The process initiates with exporting an initial snapshot of the VMware-based VM, which, despite being time-consuming, occurs without disrupting the VM's operation, ensuring transparency.
 
 Once this comprehensive replication completes, the VM is shut down, and only the newly modified data blocks since the snapshot are exported. The VM is then activated on the XCP-ng platform, significantly minimizing downtime, a crucial benefit for large VMs. Furthermore, the migration process is largely automated, allowing for hands-off monitoring and execution. This entire procedure is fully automated for user convenience and efficiency.
 
@@ -50,15 +50,15 @@ The initial situation: a running VM on ESXi on the left, your Xen Orchestra in t
 
 ![](../../assets/img/xoa-v2v-1.png)
 
-The initial sync: the empty VM is created on XCP-ng, and after a snapshot, the content is transferred from VMware side to the new VM disk on XCP-ng. This takes time, but your original VM is up all along (no service interruption):
+1. A snapshot of the VMware VM is exported while the VM remains operational, ensuring no service interruption.
 
 ![](../../assets/img/xoa-v2v-2.png)
 
-After the initial sync, the original VM is shutdown, another snapshot is done and only the diff is sent to the VM on XCP-ng side. Since it's a small amount of data, the downtime will be minimal:
+2. After the initial transfer, the source VM is shut down, and only the changes since the snapshot are exported to XCP-ng. Since it's a small amount of data, the downtime will be minimal:
 
 ![](../../assets/img/xoa-v2v-3.png)
 
-After the transfer, the VM on XCP-ng side is started:
+3. The VM is then started on XCP-ng.
 
 ![](../../assets/img/xoa-v2v-4.png)
 
@@ -75,25 +75,33 @@ After giving the vCenter credentials, you can click on "Connect" and go to the n
 
 On this screen, you will basically select which VM to replicate, and to which pool, storage and network. When it's done, just click on "Import" and there you go!
 
-### OVA
+### OVA Import Method
 
-Using OVA export from VMware and then OVA import into Xen Orchestra is another possibility.
+An alternative to V2V is exporting a VMware VM as an OVA file and importing it into Xen Orchestra.
 
 :::tip
-To skip Windows activation if the system was already activated, collect info about the network cards used in the Windows VM (ipconfig /all) and use the same MAC address(es) when creating interfaces in XCP-ng.
+To avoid Windows reactivation issues:
+- Before migration, gather network configuration details (e.g., `ipconfig /all` on the source system).
+- Reuse the same MAC address for the VM network interface on XCP-ng.
 :::
 
-Importing a VMware Linux VM, you may encounter an error similar to this on boot:
+For Linux VMs, you may encounter a boot error such as:
 
 `dracut-initqueue[227]: Warning: /dev/mapper/ol-root does not exist`
 
-The fix for this is installing some xen drivers *before* exporting the VM from VMware:
+To resolve this:
 
-`dracut --add-drivers "xen-blkfront xen-netfront" --force`
+1. Install Xen drivers before exporting the VM from VMware:
+   ```bash
+   dracut --add-drivers "xen-blkfront xen-netfront" --force
 
-[See here](https://unix.stackexchange.com/questions/278385/boot-problem-in-linux/496037#496037) for more details. Once the imported VM is properly booted, remove any VMware related tooling and be sure to install [Xen guest tools](../../vms).
+[See here](https://unix.stackexchange.com/questions/278385/boot-problem-in-linux/496037#496037) for more details. 
 
-### Local migration (same host)
+2. Import the VM into XCP-ng.
+
+3. Remove VMware tools and install the [Xen guest tools](../../vms).
+
+### Local Migration on the Same Host
 
 :::tip
 This method is helpful if you just install XCP-ng on an extra/dedicated drive on the same hardware, removing the need for a new server to migrate.
@@ -102,10 +110,10 @@ This method is helpful if you just install XCP-ng on an extra/dedicated drive on
 In this case, you'll mount your local VMware storage into XCP-ng and use `qemu-img` to convert the VMDK files to VHDs directly in your own XCP-ng Storage Repository (SR). If you go from local storage to local storage, it's a very fast way to migrate even large disks.
 
 :::warning
-This method use external packages to install in XCP-ng directly (the Dom0), and you should remove them just after you did the migration. Those commands must be executed on the Dom0 itself.
+This method requires external packages to be installed temporarily on XCP-ng's Dom0. Remove them after completing the migration. Those commands must be executed on the Dom0 itself.
 :::
 
-#### Install Qemu-img and vmfs tools
+#### 1. Install Qemu-img and vmfs-tools
 
 ```
 yum install qemu-img --enablerepo=base,updates
@@ -113,27 +121,29 @@ wget https://forensics.cert.org/centos/cert/7/x86_64/vmfs6-tools-0.2.1-1.el7.x86
 yum localinstall vmfs6-tools-0.2.1-1.el7.x86_64.rpm
 ```
 
-#### Mount the VMware storage repository
+#### 2. Mount the VMware storage repository
 
 ```
 vmfs6-fuse /path/to/vmware/disk /mnt
 ```
 
-#### Convert a VMDK file to a VHD
+#### 3. Convert a VMDK file to a VHD
 
-For example, on a file-based SR (local ext or NFS):
+For example, on a file-based storage repository (local ext or NFS):
 
 ```
 qemu-img convert -f vmdk -O vpc myVMwaredisk.vmdk /run/sr-mount/<SR UUID>/`uuidgen`.vhd
 ```
 
-#### Rescan the SR
+#### 4. Rescan the SR
 
-You need to rescan the SR where you new VHD file is, so it can be detected. It will appear in the disk list, without a name or description though. Attach it to any VM you created before (eg without booting it first), and boot.
+Rescan the SR to detect the new disk. It will appear in the disk list, without a name or a description. Attach it to a VM, then boot.
 
 ## 🇭 From Hyper-V
 
 There's two options, both requiring to export your Hyper-V VM disk in VHD format.
+
+### Exporting the VM disk
 
 When exporting in VHD, **always**: 
 
@@ -151,14 +161,16 @@ Convert-VHD -Path <source path> -DestinationPath <destination path> -VHDType Dyn
 
 ### Import the VHD in Xen Orchestra
 
-In the left menu, go for "Import" then "Disk". Select the destination SR, and then add your VHD file into it. Depending on the VHD file size, it might take some time. The upload progress can be tracked in another XO tab, in the "Task" menu.
+3. In the left menu, go for **Import**, then **Disk**. 
+4. Select the destination storage repository and add your VHD file to it.  
+It might take some time, depending on the VHD file size. You can track the import progress from another XO tab, using the **Task** menu.
 
-When the disk is imported, you can:
+Once the disk import is complete, you can:
 
-4. Create a VM with the appropriate template, **without any disk in it**
-5. Attach the previously imported disk (VM/Disk/Attach an existing disk)
-6. Boot the VM
-7. Install the tools
+3. Create a VM with the appropriate template, **without any disk in it**
+4. Attach the previously imported disk (VM/Disk/Attach an existing disk)
+5. Boot the VM
+6. Install the tools
 
 ### Alternative: direct VHD copy
 
@@ -166,40 +178,43 @@ When the disk is imported, you can:
 This method is a bit more dangerous: if you don't respect the VHD name format, the SR will be blocked and giving warnings. Naming is crucial to avoid problems.
 :::
 
-It's possible to directly send the VHDs to an existing XCP-ng SR. However, you MUST respect some pre-requisites:
-* to use a dynamic disk VHD format
-* the VHD **MUST be named correctly** (see below)
+You can send the VHDs to an existing XCP-ng SR directly. However, you **MUST** respect the following prerequisites:
+* use a dynamic disk VHD format
+* name the VHD correctly (see below)
 
 #### VHD naming
 
-The **ONLY** working format is `<UUID>.vhd`, eg `e4e573d8-6272-43ae-b969-255717e518aa.vhd`. You can generate a UUID by simply using the command `uuidgen`.
+The only working format is `<UUID>.vhd`, eg `e4e573d8-6272-43ae-b969-255717e518aa.vhd`. Use the command `uuidgen` to generate a UUID.
 
 #### Steps
 
-1. Rename the dynamic VHD disk to the format `<UUID>.vhd`
-2. Copy it to the destination SR (any file type is supported: local, NFS…)
-3. Scan the SR
+1. Rename the dynamic VHD disk to the `<UUID>.vhd` format.
+2. Copy the VHD disk to the destination storage repository (any file type is supported: local, NFS…).
+3. Scan the storage repository.
 
 :::note
-As soon you did scan the SR, the new disk is visible in the SR/disk view. Don't forget to add a name and a description to be able to identify it in the future. Indeed, any disk imported this way won't have any metadata, so it's up to you to fill it.
+Once you scan the SR, the new disk is visible in the SR/disk view.  
+Make sure to add a name and a description, so you can to identify your disk in the future. Disks imported following this  method have no metadata, so you will have to provide it.
 :::
 
-4. Create a VM with the appropriate template, **without any disk in it**
-5. Attach the previously imported disk (VM/Disk/Attach an existing disk)
-6. Boot the VM
-7. Install the tools
+4. Create a VM with the appropriate template, **without any disk in it**.
+5. Attach the previously imported disk (VM/Disk/Attach an existing disk).
+6. Boot the VM.
+7. Install the tools.
 
 :::note
-If you lost ability to extend migrated volume (opening journal failed: -2) You need to move disk to another storage, VM should be ON during moving process. This issue can occur when vhd files was directly copied to storage folder.
+If you can no longer extend a migrated volume (`opening journal failed: -2`), move the disk to another storage.  
+The VM should be running during the moving process. This issue can occur when VHD files are directly to a storage folder directly.
 :::
 
 ## 🇰 From KVM (Libvirt)
 
-Related forum thread: [https://xcp-ng.org/forum/topic/1465/migrating-from-kvm-to-xcp-ng](https://xcp-ng.org/forum/topic/1465/migrating-from-kvm-to-xcp-ng)
+Convert your KVM QCOW2 images to VHD using `qemu-img`, then import them into XCP-ng. You can find more details on [our forum thread](https://xcp-ng.org/forum/topic/1465/migrating-from-kvm-to-xcp-ng).
+
 
 _Due the fact I have only server here, I have setup a "buffer" machine on my desktop to backup and convert the VM image file._
 
-* Install the dracut packages : yum install dracut-config-generic dracut-network
+* Install the dracut packages : `yum install dracut-config-generic dracut-network`
 
   `dracut --add-drivers xen-blkfront -f /boot/initramfs-$(uname -r).img $(uname -r)`
 
@@ -207,25 +222,25 @@ _Due the fact I have only server here, I have setup a "buffer" machine on my des
 
   `dracut --regenerate-all -f && grub2-mkconfig -o /boot/grub2/grub.cfg`
 
-  If your VMs are in UEFI mode (OVMF Tianocore) :
+  If your VMs are in UEFI mode (OVMF Tianocore):
 
   `dracut --regenerate-all -f && grub2-mkconfig -o /boot/efi/EFI/<your distribution>/grub.cfg`
 
-* Shutdown the VM
+* Shut down the VM
 
-* Use rsync to copy VM files to the "buffer" machine using `--sparse` flag.
+* Use `rsync` to copy the VM files to the "buffer" machine, using the  `--sparse` flag.
 
 * Convert the QCOW2 to VHD using QEMU-IMG :
 
   `qemu-img convert -O vpc myvm.qcow2 myvm.vhd`
 
-* Use rsync to copy the converted files (VHD) to your XCP-ng host.
+* Use `rsync` to copy the converted files (VHD) to your XCP-ng host.
 
-* After the rsync operation, the VHD are not valid for the XAPI, so repair them :
+* After the rsync operation, the VHD files are not valid for the XAPI. Run the commands below to repair them:
 
-   `vhd-util repair -n myvm.vhd`
+  `vhd-util repair -n myvm.vhd`
 
-    `vhd-util check -n myvm.vhd` should return `myvm.vhd is valid`
+  `vhd-util check -n myvm.vhd` should return `myvm.vhd is valid`
 
 * For each VM, create a VDI on Xen Orchestra with the virtual size of your VHD + 1GB (i.e the virtual size of myvm is 21GB, so I create a VDI with a size of 22GB).
 
@@ -233,14 +248,16 @@ _Due the fact I have only server here, I have setup a "buffer" machine on my des
 
   `xe vdi-import filename=myvm.vhd format=vhd --progress uuid=<VDI UUID>`
 
-* Once the import is done, create a virtual machine using XO or XCP-ng Center, delete the VM disk that has been created and attach your newly created VDI to the VM. Don't forget to set the VM boot mode to UEFI if your VMs was in UEFI mode.
+* Once the import is done, create a virtual machine using XO or XCP-ng Center. Delete the VM disk that was created, and attach your newly created VDI to the VM. Make sure to set the VM boot mode to UEFI if your VMs were in UEFI mode.
 
-* Boot the VM and find a way to enter in the virtual UEFI of the VM. Here, I type the Escape and F9,F10,F11,F12 keys like crazy. Select Boot Manager, you should see this window :
+* Boot the VM and find a way to access the virtual UEFI of the VM. Here, I type the ESC, F9, F10, F11, and F12 keys like crazy. Select **Boot Manager** and you should see this window :
+
+![](../../assets/img/migrate-to-xcp-ng-boot-manager.png)
 
 ![](https://xcp-ng.org/forum/assets/uploads/files/1567269672854-f2fffe78-22bf-4f2f-b72a-3a142868535a-image.png)
 
-* Select `UEFI QEMU HARDDISK`, the screen should be black for seconds and you should see the GRUB. Let the machine worked for minutes and you should see the prompt finally 👍
+* Select `UEFI QEMU HARDDISK`. The screen should be black for a few seconds, then you should see the GRUB bootloader. Let the machine work for a few minutes and you should finally see the prompt 👍
 
-* Install Guest Tools and reboot. The reboot shouldn't take long, you don't have to redo step 13, the OS seems to have repair the boot sequence by itself.
+* Install Guest Tools and reboot. The reboot shouldn't take long, you don't have to redo step 13, the OS seems to have repaired the boot sequence by itself.
 
-Done !
+Done!
