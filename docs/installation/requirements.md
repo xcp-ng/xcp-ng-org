@@ -122,7 +122,7 @@ Older Windows versions may work but lack PV drivers, resulting in lower networki
 
 ## Virtual Machine Requirements
 
-Here are the recommended setup limits for virtual machines on XCP-ng to keep things running smoothly and efficiently:
+Here are the supported limits for virtual machines on XCP-ng. In certain cases, it may be possible to exceed these limits, but such configurations are untested and may not be supported from a security standpoint.
 
 ### CPU
 
