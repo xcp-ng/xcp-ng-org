@@ -255,7 +255,7 @@ _Due the fact I have only server here, I have setup a "buffer" machine on my des
 
 * Boot the VM and find a way to enter in the virtual UEFI of the VM. Here, I type the Escape and F9,F10,F11,F12 keys like crazy. Select Boot Manager, you should see this window :
 
-![](https://xcp-ng.org/forum/assets/uploads/files/1567269672854-f2fffe78-22bf-4f2f-b72a-3a142868535a-image.png)
+![](../../assets/img/migrate-to-xcp-ng_bootloader.png)
 
 * Select `UEFI QEMU HARDDISK`, the screen should be black for seconds and you should see the GRUB. Let the machine worked for minutes and you should see the prompt finally 👍
 
