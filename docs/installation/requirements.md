@@ -20,33 +20,6 @@ The following outlines the recommended XCP-ng hardware specifications.
 
 XCP-ng must be a **64-bit x86** server-class machine dedicated to hosting VMs. It creates a hardened Linux partition using a Xen-enabled kernel, which manages interactions between VMs and the physical hardware.
 
-XCP-ng supports, per host:
-
-### RAM
-- Up to 6 TB
-
-### Physical Network Interface Cards (NICs)
-- Up to 16 physical NICs
-
-### Logical processors
-
-#### XCP-ng 8.2 LTS
-- Up to 448 logical processors
-
-#### XCP-ng 8.3
-- Up to 960 logical processors, depending on CPU support
-
-### Virtual Network Interface Cards (vNICs)
-- Up to 512 virtual NICs
-
-### Virtual Local Area Networks (VLANs)
-- Up to 800 VLANs
-
-:::note
-The maximum number of supported logical processors may vary by CPU. For more information, see the [Hardware Compatibility List (HCL)](../../installation/hardware).
-:::
-
-
 The system requirements for XCP-ng are:
 
 ### CPUs
@@ -65,7 +38,7 @@ The system requirements for XCP-ng are:
 
 ### Disk Space
 
-- Local storage (PATA, SATA, SCSI) with a minimum of 46 GB, recommended 70 GB.
+- Local storage (PATA, SATA, SCSI) with a minimum of 46 GB, recommended 70 GB or more.
 - SAN access via HBA (not software) when installing with multipath boot from SAN.
 
 For more details, refer to the [Hardware Compatibility List (HCL)](../../installation/hardware).
@@ -95,64 +68,98 @@ XCP-ng 8.2 requires an IPv4 network for management and storage traffic. Starting
 Set the server's BIOS clock to the current UTC time. For debugging support cases, serial console access may be required. Consider configuring serial console access for XCP-ng. For systems without physical serial ports, explore embedded management devices like Dell DRAC or HP iLO. See [CTX228930 - How to Configure Serial Console Access on XenServer 7.0 and later](https://support.citrix.com/article/CTX228930).
 :::
 
-## 🖥️ Supported Guest OSes
+## 📋 XCP-ng Configuration Limits
 
-XCP-ng officially supports operating systems still receiving updates from their publishers. Many other systems can also run on XCP-ng.
+XCP-ng supports the following per host:
 
-### Windows
+### RAM
 
-- Windows Server 2016, 2019, 2022
-- Windows 10
-- Windows 11 (starting with XCP-ng 8.3)
+- Up to 6 TB.
 
-:::info
-Older Windows versions may work but lack PV drivers, resulting in lower networking and disk performance (e.g., Windows XP, Windows Server 2003). While unsupported versions like Windows Server 2012 still function, future PV driver updates may drop compatibility.
+In XCP-ng 8.3, Xen theoretically supports up to 12 TiB with security support, and even more without security support.
+
+### Physical Network Interface Cards (NICs)
+
+- Up to 16 physical NICs.
+
+### Logical Processors
+
+:::note
+The maximum number of supported logical processors may vary depending on the CPU. For more information, see the [Hardware Compatibility List (HCL)](../../installation/hardware).
 :::
 
-### Linux
+#### XCP-ng 8.2 LTS
 
-- RHEL, CentOS, Rocky, AlmaLinux, Oracle
-- Debian, Ubuntu
-- Arch, Alpine, SUSE, and others
+- Up to 448 logical processors (theoretical, untested: 512).
 
-### BSD
+#### XCP-ng 8.3
 
-- FreeBSD and related distributions (e.g., pfSense, TrueNAS)
-- OpenBSD
+- Up to 960 logical processors, depending on CPU support (theoretical, untested: 1024).
 
-## Virtual Machine Requirements
+### Virtual Network Interface Cards (vNICs)
 
-Here are the supported limits for virtual machines on XCP-ng. In certain cases, it may be possible to exceed these limits, but such configurations are untested and may not be supported from a security standpoint.
+- Up to 512 virtual NICs.
+
+### Virtual Local Area Networks (VLANs)
+
+- Up to 800 VLANs.
+
+## Virtual Machine Configuration Limits
+
+Below are the supported limits for virtual machines on XCP-ng.
 
 ### CPU
 
 #### XCP-ng 8.2 LTS
 
-- Virtual CPUs (vCPUs) for Linux VMs: You can use up to **32 vCPUs**, but make sure to check what your guest OS supports.
-- Virtual CPUs (vCPUs) for Windows VMs: You can use up to **32 vCPUs**.
+- **Virtual CPUs (vCPUs) per VM**: Up to **32 vCPUs**.
+
+Ensure that your guest OS supports this configuration.
 
 #### XCP-ng 8.3
 
-- Virtual CPUs (vCPUs) for Linux and Windows VMs: You can use up to **64 vCPUs**, but make sure to check what your guest OS supports.
-For example, Red Hat Enterprise Linux 8 and its similar distributions only handle up to 32 vCPUs. Even though 64 is possible, sticking to 32 is a safer bet for reliability and stability.  
+- **Virtual CPUs (vCPUs) per VM**:
+  - For untrusted VMs, the security-supported limit is **32 vCPUs**.
+  - For trusted VMs, the theoretical limit is **254 vCPUs**. Linux VMs with **128 vCPUs** have been successfully tested.
 
-#### GPU
-- Virtual GPUs per VM: 8  
-- Passed-through GPUs per VM: 1  
+Guest OS support is also an important factor to consider.
 
-#### Memory
-- Maximum RAM per VM: 1.5 TiB. Just keep in mind that the actual memory your OS can use depends on its limits. If you go over what it can manage, you might see some performance drops.
+### GPU
 
-#### Storage
-- Virtual Disk Images per VM, including CD-ROMs: Up to 241. This number is influenced by what your guest OS supports, so double-check your OS documentation to stay within its limits.  
-- Virtual CD-ROM drives per VM: 1  
-- Maximum Virtual Disk Size: 2,040 GiB
+- **Virtual GPUs per VM**: Up to **8**.
 
-#### Networking
-- Virtual Network Interface Controllers (NICs) per VM: Up to 7. Some guest operating systems might have stricter limits, or you might need to install XCP-ng Guest Tools to hit the maximum limit.
+### Memory
 
-#### Other
-- Passed-through USB devices: Up to 6
+#### XCP-ng 8.2 LTS
+
+- **Maximum RAM per VM**: **1.5 TiB**.
+
+#### XCP-ng 8.3
+
+- **Maximum RAM per VM**:
+  - With memory snapshot support: **1.5 TiB**.
+  - Without memory snapshot support: **8 TiB**.
+  - Theoretical limit without security support: **16 TiB** (minus the RAM allocated to Xen and the controller domain).
+
+Keep in mind that the actual usable memory depends on the guest OS limits. In some cases, going beyond what the OS can manage efficiently may lead to performance drops.
+
+### Storage
+
+- **Virtual Disk Images per VM (including CD-ROMs)**: Up to **241**. This is also influenced by the limits of your guest OS; refer to its documentation to ensure compatibility.
+- **Virtual CD-ROM drives per VM**: **1**.
+- **Maximum Virtual Disk Size**:
+  - **2,040 GiB** using storage drivers with the VHD format (`Local EXT`, `Local LVM`, `NFS`, `LVM over iSCSI`, `XOSTOR`, etc.).
+  - Nearly unlimited when using the `raw` storage driver or disk pass-through to the VM (note: snapshots and live migration are not supported in these cases).
+  - New storage drivers are under active development to overcome the **2,040 GiB** VHD limit while retaining features like snapshots and live migration.
+
+### Networking
+
+- **Virtual Network Interface Controllers (NICs) per VM**: Up to **7**.
+  Note: Some guest operating systems may have stricter limits, or you may need to install XCP-ng Guest Tools to reach this maximum.
+
+### Other
+
+- **Passed-through USB devices**: Up to **6**.
 
 ## 🎱 Pool Requirements
 
