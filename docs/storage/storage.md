@@ -65,31 +65,31 @@ There are storage types that are officially supported, and others that are provi
     <td>ZFS</td>
     <td>X</td>
     <td></td>
-    <td></td>
+    <td>**No. Provided as-is**</td>
   </tr>
   <tr>
     <td>XFS</td>
     <td>X</td>
     <td></td>
-    <td></td>
+    <td>**No. Provided as-is**</td>
   </tr>
   <tr>
     <td>GlusterFS</td>
     <td>X</td>
     <td>X</td>
-    <td></td>
+    <td>**No. Provided as-is**</td>
   </tr>
   <tr>
     <td>CephFS</td>
     <td>X</td>
     <td>X</td>
-    <td></td>
+    <td>**No. Provided as-is**</td>
   </tr>
   <tr>
     <td>MooseFS</td>
     <td>X</td>
     <td>X</td>
-    <td></td>
+    <td>**No. Provided as-is**</td>
   </tr>
   <tr>
     <td rowspan="5">block based</td>
@@ -114,13 +114,13 @@ There are storage types that are officially supported, and others that are provi
     <td>Ceph iSCSI gateway</td>
     <td></td>
     <td>X</td>
-    <td></td>
+    <td>**No. Provided as-is**</td>
   </tr>
   <tr>
     <td>CephRBD</td>
     <td></td>
     <td>X</td>
-    <td></td>
+    <td>**No. Provided as-is**</td>
   </tr>
 </table>
 
@@ -189,6 +189,10 @@ XOSTOR is coming soon in XCP-ng. Hang on!
 :::
 
 ### ZFS
+
+:::warning
+**ZFS storage integration is offered as-is** and does not come with official support.
+:::
 
 Local, thin-provisioned. Available since XCP-ng 8.2.
 
@@ -266,6 +270,10 @@ Check ZFS documentation to understand the pros and cons of each optimization.
 
 ### XFS
 
+:::warning
+**XFS storage integration is offered as-is** and does not come with official support.
+:::
+
 Local, thin-provisioned storage.
 
 :::tip
@@ -286,6 +294,10 @@ xe sr-create host-uuid=<host UUID> type=xfs content-type=user name-label="Local 
 
 Shared, thin-provisioned storage. Available since XCP-ng 8.2.
 
+:::warning
+**Glusterfs storage integration is offered as-is** and does not come with official support.
+:::
+
 :::tip
 [Additional package](../management/additional-packages) required and available in our repositories: `glusterfs-server`.
 :::
@@ -301,7 +313,8 @@ xe sr-create content-type=user type=glusterfs name-label=GlusterSharedStorage sh
 Shared, thin-provisioned storage. Available since XCP-ng 8.2.
 
 :::warning
-This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](../management/additional-packages)). You will also need to be careful about system updates and upgrades.
+- **CephFS storage integration is offered as-is** and does not come with official support.
+- This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](../management/additional-packages)). You will also need to be careful about system updates and upgrades.
 :::
 
 You can use this driver to connect to an existing Ceph storage filesystem, and configure it as a shared SR for all your hosts in the pool. This driver uses `mount.ceph` from `ceph-common` package of `centos-release-ceph-nautilus` repo. So user needs to install it before creating the SR. Without it, the SR creation would fail with an error like below
@@ -375,6 +388,7 @@ MooseFS is a fault-tolerant, highly available, highly performing, scaling-out, n
 SR driver was contributed directly by MooseFS Development Team.
 
 :::warning
+- **MooseFS storage integration is provided as-is** and does not come with official support.
 - The MooseFS client is not included with XCP-ng, so it must be installed on dom0 from the official MooseFS repository.
 - By default, the MooseFS repository will be set as enabled. This means that any system update will also update the MooseFS client. Please, consider disabling the repository after installation.
 :::
@@ -430,7 +444,7 @@ xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage 
 ### Ceph iSCSI gateway
 
 :::warning
-Experimental, this needs reliable testing to ensure no block corruption happens in regular use.
+**Experimental** - This needs reliable testing to ensure no block corruption happens in regular use. No official support is provided.
 :::
 
 This is at this moment the only way to connect to Ceph with no modifications of dom0, it's possible to create multiple Ceph iSCSI gateways following this: [https://docs.ceph.com/docs/master/rbd/iscsi-target-cli/](https://docs.ceph.com/docs/master/rbd/iscsi-target-cli/)
@@ -444,7 +458,8 @@ IMPORTANT: User had many weird glitches with iSCSI connection via ceph gateway i
 ### Ceph RBD
 
 :::warning
-This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](../management/additional-packages)). You will also need to be careful about system updates and upgrades.
+- **Ceph RBD storage integration is provided as-is** and does not come with official support.
+- This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](../management/additional-packages)). You will also need to be careful about system updates and upgrades.
 :::
 
 You can use this to connect to an existing Ceph storage over RBD, and configure it as a shared SR for all your hosts in the pool. This driver uses LVM (lvm) as generic driver and expects that the Ceph RBD volume is already connected to one or more hosts.
