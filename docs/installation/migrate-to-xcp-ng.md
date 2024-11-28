@@ -135,11 +135,37 @@ You need to rescan the SR where you new VHD file is, so it can be detected. It w
 
 There's two options, both requiring to export your Hyper-V VM disk in VHD format.
 
-:::warning
-When exporting in VHD, always use a **dynamic disk** VHD format and not **static**, which doesn't work in XCP-ng.
-:::
+### Export the VM disk
 
-In any case, you **must remove all the Hyper-V tools** before exporting the disks.
+**If the server can be taken offline:** Shut down the VM and create a VHD file from the existing VHDX.  
+  This process leaves the original disk file unchanged, allowing you to restart the VM in Hyper-V if needed. Ensure sufficient disk space is available for both the original VM and the new VHD file.
+
+**If the server must remain online:** Export the VM and then convert the VHDX to a VHD file.  
+  Note that the original VM will continue running and may be updated during the migration process. Ensure enough disk space is available for the original VM, the exported VM, and the new VHD file.
+
+1. Prepare the VHD for export.  
+  Before exporting, remove all the Hyper-V tools from the VM to ensure compatibility.
+
+2. (Optional). Shut down the VM in Hyper-V.  
+  To shut down the VM, run this command in PowerShell:
+  ```powershell
+  STOP-VM -Name <VM name>
+  ```
+
+3. Identify the VM disk to be exported.  
+  To identify the VM disk, run this command:
+  ```powershell
+  Get-VMHardDiskDrive -VMName <VM name>
+  ```
+
+4. Make sure the VM disk has the correct format.   
+  - Use a **dynamic disk** format, as the **static format is not compatible with XCP-ng**.
+  - If the disk is in the **VHDX** format, convert it to the **VHD** format. 
+  To convert the disk from VHDX to VHD, run this command:  
+
+  ```powershell
+  Convert-VHD -Path <source path> -DestinationPath <destination path> -VHDType Dynamic
+  ```
 
 ### Import the VHD in Xen Orchestra
 
@@ -229,7 +255,7 @@ _Due the fact I have only server here, I have setup a "buffer" machine on my des
 
 * Boot the VM and find a way to enter in the virtual UEFI of the VM. Here, I type the Escape and F9,F10,F11,F12 keys like crazy. Select Boot Manager, you should see this window :
 
-![](https://xcp-ng.org/forum/assets/uploads/files/1567269672854-f2fffe78-22bf-4f2f-b72a-3a142868535a-image.png)
+![](../../assets/img/migrate-to-xcp-ng_bootloader.png)
 
 * Select `UEFI QEMU HARDDISK`, the screen should be black for seconds and you should see the GRUB. Let the machine worked for minutes and you should see the prompt finally 👍
 
