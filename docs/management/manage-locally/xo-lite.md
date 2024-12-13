@@ -26,6 +26,9 @@ Once logged, you can see the dashboard:
 
 ![](../../../assets/img/xolite.jpg)
 
+## SSL certificate
+Xolite use `stunnel@xapi.service` as proxy and SSL certificate can be configured by replace /etc/xensource/xapi-ssl.pem with cerificate-chain or editing `/etc/stunnel/xapi.conf` to pointing to certificate-hain file.
+
 :::info
 XO Lite isn't a multi-cluster orchestrator, it's just a local management console. If you want to orchestrate your VMs at scale (load balancing, backup, warm migration and so on), you MUST use [Xen Orchestra](../manage-at-scale/xo-web-ui.md)!
 :::
