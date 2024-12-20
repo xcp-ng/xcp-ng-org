@@ -311,6 +311,10 @@ RemainAfterExit=true
 - At least 1 disk on any machine of the pool (case without replication). Otherwise, any number of disks can be used on a machine. However, to be consistent, we recommend using the same model and number for each machine that has disks.
 - The replication/place count must be equal to 1, 2 or 3.
 
+:::warning
+- LINSTOR services like satellites and controller can use a lot of memory resources. It is therefore more than necessary to have sufficient RAM allocated to the Dom-0, 16 GiB can be enough for average pools with around a hundred volumes. But it may be essential to increase the dedicated memory for more intensive use. So make sure to monitor the memory usage of your pool to prevent the OOM Killer from being triggered.
+:::
+
 :::important
 Only XCP-ng 8.2.1 is currently supported and with a maximum of 7 machines per pool.
 :::
