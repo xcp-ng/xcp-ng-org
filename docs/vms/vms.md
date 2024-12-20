@@ -122,6 +122,13 @@ Once done with Linux, shut down the VM and restore the parameter to its original
 $ xe vm-param-set uuid=VM-UUID platform:device_id=0002
 ```
 
+## 🐧Linux VMs
+### Performance drop after live migration for RHEL 8-like VMs
+
+On some RHEL 8-like systems, running kernels prior to v4.20, and using XFS as default root file system, performance issues have been observed after a live migration under heavy disk activity.
+
+XFS seems to have better performances with recent kernels but for older ones we recommend to use another journaled file system like EXT4.
+
 ## 🛠️ Guest tools
 
 XCP-ng needs guest tools to be installed in the VMs in order to communicate with the guest operating system. This brings better performance and is required for various features.
