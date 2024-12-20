@@ -122,6 +122,21 @@ Once done with Linux, shut down the VM and restore the parameter to its original
 $ xe vm-param-set uuid=VM-UUID platform:device_id=0002
 ```
 
+## 🐧Linux VMs
+### Performance drop after live migration for RHEL 8-like VMs
+
+On some RHEL 8-like systems, running kernels prior to v4.20, and using XFS as default root file system, performance issues have been observed after a live migration under heavy disk activity.
+
+XFS seems to have better performances with recent kernels but for older ones we recommend to use another journaled file system like EXT4.
+
+### Distorted display console on Ubuntu UEFI VMs
+
+This only concerns `UEFI` VMs running `Ubuntu` distributions. Also note that a default `Ubuntu` installation works just fine.
+
+The default Ubuntu installation includes a package named `linux-modules-extra` containing the only driver (`bochs`) suitable for the VGA cards emulated by Qemu for the Xen Orchestra console. Removing this package leads to a scrambled display in the console so please don't do so.
+
+For more details, the problem comes from `Ubuntu` kernels that don't have the `efi-framebuffer` driver compiled in. This driver should be used if the `bochs` driver isn't present and it is just not selected in the `Ubuntu` kernel build config. To be more precise, `Ubuntu` kernels try to use a driver called `simple-framebuffer` for which there seems to be an incompatibility with the way the OVMF UEFI bios initializes the VGA card, causing the distorted display.
+
 ## 🛠️ Guest tools
 
 XCP-ng needs guest tools to be installed in the VMs in order to communicate with the guest operating system. This brings better performance and is required for various features.
