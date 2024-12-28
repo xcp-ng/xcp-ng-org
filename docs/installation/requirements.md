@@ -4,146 +4,193 @@ sidebar_position: 1
 
 # Requirements
 
-What is needed to run XCP-ng.
+Understand what is needed to run XCP-ng.
 
-An XCP-ng computer is dedicated entirely to the task of running XCP-ng and hosting VMs, and is not used for other applications.
+An XCP-ng server is dedicated entirely to running XCP-ng and hosting VMs. It is not used for other applications.
 
 :::info
-Installing third-party software directly in the control domain of XCP-ng is not supported. The exception is for software supplied in the current repositories. If you want to add an extra package inside XCP-ng please [ask here](https://github.com/xcp-ng/xcp/issues/56).
+Installing third-party software directly in the XCP-ng control domain is not supported, except for software supplied in the official repositories. If you wish to add extra packages to XCP-ng, please [submit your request here](https://github.com/xcp-ng/xcp/issues/56).
 :::
 
-## 📋 XCP-ng system requirements
+## 📋 XCP-ng System Requirements
 
-Although XCP-ng is usually deployed on server-class hardware, XCP-ng is also compatible with many models of workstations and laptops. For more information, see the [Hardware Compatibility List (HCL)](../../installation/hardware).
+XCP-ng is generally deployed on server-class hardware, but it also supports many workstation and laptop models. For more information, refer to the [Hardware Compatibility List (HCL)](../../installation/hardware).
 
-The following section describes the recommended XCP-ng hardware specifications.
+The following outlines the recommended XCP-ng hardware specifications.
 
-XCP-ng must be a **64-bit x86** server-class machine devoted to hosting VMs. XCP-ng creates an optimized and hardened Linux partition with a Xen-enabled kernel. This kernel controls the interaction between the virtualized devices seen by VMs and the physical hardware.
-
-XCP-ng can use, per host:
-
-* Up to 6 TB of RAM
-* Up to 16 physical NICs
-* Up to 512 logical processors
-* Up to 512 virtual NICs
-* Up to 800 VLANs
-
-:::note
-The maximum number of logical processors supported differs by CPU. For more information, see the [Hardware Compatibility List (HCL)](../../installation/hardware).
-:::
-
+XCP-ng must be a **64-bit x86** server-class machine dedicated to hosting VMs. It creates a hardened Linux partition using a Xen-enabled kernel, which manages interactions between VMs and the physical hardware.
 
 The system requirements for XCP-ng are:
 
 ### CPUs
 
-One or more 64-bit x86 CPUs, 1.5 GHz minimum, 2 GHz or faster multicore CPU recommended.
+- One or more 64-bit x86 CPUs, minimum 1.5 GHz; 2 GHz or faster multicore CPUs are recommended.
+- To run Windows VMs or recent Linux versions, an Intel VT or AMD-V 64-bit x86-based system with one or more CPUs is required.
 
-To support VMs running Windows or more recent versions of Linux, you require an Intel VT or AMD-V 64-bit x86-based system with one or more CPUs.
+> **Note**: For Windows VMs or newer Linux distributions, enable hardware virtualization in the BIOS. It may be disabled by default—consult your BIOS documentation for guidance.
 
-> Note: To run Windows VMs or more recent versions of Linux, enable hardware support for virtualization on XCP-ng. Virtualization support is an option in the BIOS. It is possible that your BIOS might have virtualization support disabled. For more information, see your BIOS documentation.
-
-To support VMs running supported paravirtualized Linux, you require a standard 64-bit x86-based system with one or more CPUs.
+- For VMs running supported paravirtualized Linux, a standard 64-bit x86-based system with one or more CPUs is required.
 
 ### Memory
 
-2 GB minimum, 4 GB or more recommended.
+- Minimum 2 GB, recommended 4 GB or more.
+- A fixed amount of RAM is allocated to the control domain (dom0). Optimal allocation depends on your workload.
 
-A fixed amount of RAM is allocated to the control domain (dom0). The optimal amount of RAM for the control domain depends on the workload.
+### Disk Space
 
-### Disk space
+- Local storage (PATA, SATA, SCSI) with a minimum of 46 GB, recommended 70 GB or more.
+- SAN access via HBA (not software) when installing with multipath boot from SAN.
 
-* Locally attached storage (PATA, SATA, SCSI) with 46 GB of disk space minimum, 70 GB of disk space recommended.
-* SAN via HBA (not through software) when installing with multipath boot from SAN.
+For more details, refer to the [Hardware Compatibility List (HCL)](../../installation/hardware).
 
-
-For a detailed list of compatible storage solutions, see the [Hardware Compatibility List (HCL)](../../installation/hardware).
-
-#### Installation on USB drives
+#### Installation on USB Drives
 
 :::danger
-We **strongly discourage** the installation of XCP-ng on USB drives. The frequent writing actions required by XCP-ng can rapidly degrade a USB drive due to:
-* XAPI: This is the XenServer API database, which undergoes constant changes. This results in significant write operations, which are detrimental to the longevity of USB drives. Note: The XAPI database maintains the state of all XCP-ng operations and is replicated across each host (from the slave).
-* Logs: XCP-ng generates a substantial amount of debug logs. A possible solution is to utilize a remote syslog.
+**Strongly discouraged** due to heavy write operations in XCP-ng:
+- **XAPI Database**: Undergoes frequent changes, resulting in extensive write operations, potentially reducing USB drive lifespan. The XAPI database maintains the state of all XCP-ng operations and is replicated across all hosts.
+- **Logging**: XCP-ng generates a high volume of logs. Consider using a remote syslog service as an alternative.
 :::
 
-#### Installation on SD cards
+#### Installation on SD Cards
 
 :::danger
-For similar reasons as USB drives, we highly recommend against installing XCP-ng on SD cards. Opting for even a basic SSD would be vastly more effective in managing system partitions.
+Similarly, installing XCP-ng on SD cards is highly discouraged. A basic SSD offers a vastly more durable and effective alternative for managing system partitions.
 :::
 
 ### Network
 
-100 Mbit/s or faster NIC. One or more Gb, or 10 Gb NICs is recommended for faster P2V and export/import data transfers and VM live migration.
+- Minimum 100 Mbit/s NIC. Recommended: one or more Gb or 10 Gb NICs for faster data transfers, including P2V, import/export, and VM live migrations.
+- Use multiple NICs for redundancy. Network configuration depends on your storage type—refer to vendor documentation for guidance.
 
-We recommend that you use multiple NICs for redundancy. The configuration of NICs differs depending on the storage type. For more information, see the vendor documentation.
-
-XCP-ng 8.2 requires an IPv4 network for management and storage traffic. Starting with XCP-ng 8.3, the management network can use IPv6.
-
-:::info
-Ensure that the time setting in the BIOS of your server is set to the current time in UTC. In some support cases, serial console access is required for debug purposes. When setting up XCP-ng configuration, we recommend that you configure serial console access. For hosts that do not have physical serial port or where suitable physical infrastructure is not available, investigate whether you can configure an embedded management device. For example, Dell DRAC or HP iLO. For more information about setting up serial console access, see [CTX228930 - How to Configure Serial Console Access on XenServer 7.0 and later](https://support.citrix.com/article/CTX228930).
-:::
-
-## 🖥️ Supported guest OS
-
-We only officially support operating systems which still receive support from their publisher. But there's a lot more that can run on XCP-ng.
-
-### Windows based
-
-* Windows Server 2016, 2019, 2022
-* Windows 10
-* Windows 11 (starting with XCP-ng 8.3).
+XCP-ng 8.2 requires an IPv4 network for management and storage traffic. Starting from XCP-ng 8.3, the management network supports IPv6.
 
 :::info
-Very old versions of Windows will run, but without PV drivers, so with lower networking and disk performance (Windows XP, Windows Server 2003, etc.).
-
-Less old but EOL versions of Windows, such as Windows Server 2012, currently run well but we don't offer guarantees for the future. For example, the future PV drivers updates might drop the compatibility with such old releases.
+Set the server's BIOS clock to the current UTC time. For debugging support cases, serial console access may be required. Consider configuring serial console access for XCP-ng. For systems without physical serial ports, explore embedded management devices like Dell DRAC or HP iLO. See [CTX228930 - How to Configure Serial Console Access on XenServer 7.0 and later](https://support.citrix.com/article/CTX228930).
 :::
 
-### Linux
+## 📋 XCP-ng Configuration Limits
 
-* RHEL, CentOS, Rocky, AlmaLinux, Oracle…
-* Debian & Ubuntu
-* Arch, Alpine, SUSE and many more…
+XCP-ng supports the following per host:
 
-### BSD
+### RAM
 
-* FreeBSD and related (pfSense, TrueNAS…)
-* OpenBSD
+- Up to 6 TB.
 
-## 🎱 Pool requirements
+In XCP-ng 8.3, Xen theoretically supports up to 12 TiB with security support, and even more without security support.
 
-A resource pool is a homogeneous or heterogeneous aggregate of one or more servers, up to a maximum of 64. Before you create a pool or join a server to an existing pool, ensure that all servers in the pool meet the following requirements.
-Hardware requirements
+### Physical Network Interface Cards (NICs)
 
-All of the servers in a XCP-ng resource pool must have broadly compatible CPUs, that is:
+- Up to 16 physical NICs.
 
-* The CPU vendor (Intel, AMD) must be the same on all CPUs on all servers.
-* To run HVM virtual machines, all CPUs must have virtualization enabled.
+### Logical Processors
 
-## 📌 Other requirements
+:::note
+The maximum number of supported logical processors may vary depending on the CPU. For more information, see the [Hardware Compatibility List (HCL)](../../installation/hardware).
+:::
+
+#### XCP-ng 8.2 LTS
+
+- Up to 448 logical processors (theoretical, untested: 512).
+
+#### XCP-ng 8.3
+
+- Up to 960 logical processors, depending on CPU support (theoretical, untested: 1024).
+
+### Virtual Network Interface Cards (vNICs)
+
+- Up to 512 virtual NICs.
+
+### Virtual Local Area Networks (VLANs)
+
+- Up to 800 VLANs.
+
+## Virtual Machine Configuration Limits
+
+Below are the supported limits for virtual machines on XCP-ng.
+
+### CPU
+
+#### XCP-ng 8.2 LTS
+
+- **Virtual CPUs (vCPUs) per VM**: Up to **32 vCPUs**.
+
+Ensure that your guest OS supports this configuration.
+
+#### XCP-ng 8.3
+
+- **Virtual CPUs (vCPUs) per VM**:
+  - For untrusted VMs, the security-supported limit is **32 vCPUs**.
+  - For trusted VMs, the theoretical limit is **254 vCPUs**. Linux VMs with **128 vCPUs** have been successfully tested.
+
+Guest OS support is also an important factor to consider.
+
+### GPU
+
+- **Virtual GPUs per VM**: Up to **8**.
+
+### Memory
+
+#### XCP-ng 8.2 LTS
+
+- **Maximum RAM per VM**: **1.5 TiB**.
+
+#### XCP-ng 8.3
+
+- **Maximum RAM per VM**:
+  - With memory snapshot support: **1.5 TiB**.
+  - Without memory snapshot support: **8 TiB**.
+  - Theoretical limit without security support: **16 TiB** (minus the RAM allocated to Xen and the controller domain).
+
+Keep in mind that the actual usable memory depends on the guest OS limits. In some cases, going beyond what the OS can manage efficiently may lead to performance drops.
+
+### Storage
+
+- **Virtual Disk Images per VM (including CD-ROMs)**: Up to **241**. This is also influenced by the limits of your guest OS; refer to its documentation to ensure compatibility.
+- **Virtual CD-ROM drives per VM**: **1**.
+- **Maximum Virtual Disk Size**:
+  - **2,040 GiB** using storage drivers with the VHD format (`Local EXT`, `Local LVM`, `NFS`, `LVM over iSCSI`, `XOSTOR`, etc.).
+  - Nearly unlimited when using the `raw` storage driver or disk pass-through to the VM (note: snapshots and live migration are not supported in these cases).
+  - New storage drivers are under active development to overcome the **2,040 GiB** VHD limit while retaining features like snapshots and live migration.
+
+### Networking
+
+- **Virtual Network Interface Controllers (NICs) per VM**: Up to **7**.
+  Note: Some guest operating systems may have stricter limits, or you may need to install XCP-ng Guest Tools to reach this maximum.
+
+### Other
+
+- **Passed-through USB devices**: Up to **6**.
+
+## 🎱 Pool Requirements
+
+A resource pool is a collection of one or more servers (up to 64), which can be homogeneous or heterogeneous. Before creating or joining a pool, ensure the following:
+
+### Hardware Requirements
+
+- All servers must have compatible CPUs (same vendor — Intel or AMD). To run HVM VMs, CPUs must support virtualization.
+
+### Additional Pool Requirements
 
 In addition to the hardware prerequisites identified previously, there are some other configuration prerequisites for a server joining a pool:
 
-* It must have a consistent IP address (a static IP address on the server or a static DHCP lease). This requirement also applies to the servers providing shared NFS or iSCSI storage.
-* Its system clock must be synchronized to the pool master (for example, through NTP).
-* It cannot be a member of an existing resource pool.
-* It cannot have any running or suspended VMs or any active operations in progress on its VMs, such as shutting down or exporting. Shut down all VMs on the server before adding it to a pool.
-* It cannot have any shared storage already configured.
-* It cannot have a bonded management interface. Reconfigure the management interface and move it on to a physical NIC before adding the server to the pool. After the server has joined the pool, you can reconfigure the management interface again.
+- Static IP address (or static DHCP lease). This requirement also applies to the servers providing shared NFS or iSCSI storage.
+- System clock synchronized to the pool master (e.g., via NTP).
+- Must not be part of an existing pool.
+- No running or suspended VMs, or active VM operations (shut down VMs before joining).
+- No configured shared storage.
+* It cannot have a bonded management interface. Reconfigure the management interface and move it to a physical NIC before adding the server to the pool. Once the server has joined the pool, you can reconfigure the management interface again.
 * It must be running the same version of XCP-ng, at the same update level, as servers already in the pool.
 
-XCP-ng hosts in resource pools can contain different numbers of physical network interfaces and have local storage repositories of varying size. In practice, it is often difficult to obtain multiple servers with the exact same CPUs, and so minor variations are permitted. If you want your environment to have hosts with varying CPUs in the same resource pool, you can force join a pool together using the CLI. For information about forcing the joining operation, see Hosts and resource pools.
+Resource pools can have hosts with varying physical network interfaces and local storage capacities. In practice, it is often difficult to obtain multiple servers with the exact same CPUs, and so minor variations are permitted. If you want your environment to have hosts with varying CPUs in the same resource pool, you can force join a pool together using the CLI. To know more on forced joining operation, see Hosts and Resource Pools.
 
-> Note: Servers providing shared NFS or iSCSI storage for the pool must have a static IP address or be DNS addressable.
+> **Note**: Servers providing shared NFS or iSCSI storage must have static or DNS-addressable IPs.
 
-### Homogeneous pools
+### Homogeneous Pools
 
-A homogeneous resource pool is an aggregate of servers with identical CPUs. CPUs on a server joining a homogeneous resource pool must have the same vendor, model, and features as the CPUs on servers already in the pool.
+A homogeneous resource pool is an aggregate of servers with identical CPUs. Servers in a homogeneous pool must have identical CPUs, including vendor, model, and features.
 
-### Heterogeneous pools
+### Heterogeneous Pools
 
-Heterogeneous pool creation is made possible by using technologies in Intel (FlexMigration) and AMD (Extended Migration) CPUs that provide CPU masking or levelling. These features allow a CPU to be configured to appear as providing a different make, model, or feature set than it actually does. These capabilities enable you to create pools of hosts with different CPUs but still safely support live migrations.
+Technologies such as Intel FlexMigration or AMD Extended Migration allow you to create heterogeneous pools. These technologies provide CPU masking or leveling, which means you can configure a CPU to appear to provide a different make, model, or feature set than it actually does. These capabilities allow you to create pools of hosts with different CPUs and still support secure, live migrations.
 
-For information about creating heterogeneous pools, see Hosts and resource pools.
+For detailed information, see the Hosts and Resource Pools.
