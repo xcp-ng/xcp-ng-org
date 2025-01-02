@@ -370,9 +370,7 @@ Citrix tools:
 XCP-ng tools:
 * :heavy_plus_sign: Fully open-source.
 * :heavy_plus_sign: Maintained by the XCP-ng project.
-* :heavy_minus_sign: The drivers are not signed with a key recognized by Microsoft, so Secure Boot can't be enabled with them.
-* :heavy_minus_sign: The sources for the management agent are older than that of Citrix (they have stopped updating GitHub a while ago).
-* :heavy_minus_sign: Have not been updated in a long time, due to difficulties finding skilled developers to work on them. Being actively worked on.
+* :heavy_minus_sign: At the moment, only contains I/O device drivers and not the management agent.
 * :heavy_minus_sign: Won't transparently replace existing Citrix tools. You need to remove Citrix tools first if they are present, in order to install XCP-ng tools.
 
 It's now up to you to choose.
@@ -403,7 +401,7 @@ If you are using Xen Orchestra, you can switch the "Windows Update tools" advanc
 If your VM already has XCP-ng tools and you wish to switch to Citrix tools, then you need to do the same kind of clean-up as described farther in this document for the opposite situation.
 
 #### XCP-ng Windows Guest Tools
-Drivers built by the XCP-ng community.
+Drivers built and signed by Vates.
 
 **Download**: [https://github.com/xcp-ng/win-pv-drivers/releases](https://github.com/xcp-ng/win-pv-drivers/releases)
 
@@ -445,95 +443,22 @@ xe vm-param-get param-name=has-vendor-device uuid={VM-UUID}
 `True` means that it's active, `False` that it isn't. It needs to be `False`.
 
 ###### Install the XCP-ng drivers
-0. snapshot before just in case
-1. unpack the ZIP file
-2. start setup.exe
-3. follow the install wizard
+0. Snapshot your VM before installing (just in case)
+1. Unpack the ZIP file
+2. Start the installation MSI
+3. Follow the install wizard
 
-**Note**: Restart can take a while if your windows is currently updating. Restart only occurs after windows has the updates finished.
+##### Upgrade from XCP-ng Windows PV Tools (8.2 or earlier) or XenServer VM Tools
 
-4. after restart one of two messages should pop up
-    * request for restart \<- just restart!
-    * Management Agent installed successfully \<- enjoy :-)
+Our installer will block installation when these tools are already present. These tools must be cleanly uninstalled before continuing with the installation.
 
-##### Upgrade from Citrix :registered: XenServer :registered: client tools
-
-Our installer is not able currently to cleanly uninstall Citrix tools. Citrix tools' uninstaller itself isn't either: it leaves various things behind.
-
-So we need to perform a complete manual clean-up of the tools:
-* either entirely manually
-* or using the experimental PowerShell script contributed by one of our users at [https://github.com/siodor/win-tools-cleanup](https://github.com/siodor/win-tools-cleanup)
+:warning: If you're using XCP-ng Windows PV Tools 8.2 or earlier, it must be uninstalled using XenClean to avoid encountering BSODs. Follow the procedure in our [Troubleshooting Guide - Windows PV Tools](../troubleshooting/windows-pv-tools.md).
 
 :warning: In any case, first disable "Windows Update tools" for the VM (Xen Orchestra, advanced tab) and reboot it.
-
-Following is the manual process.
-
-###### The confident option
-
-You can try a simple process first with some chances of success.
-
-0. Make a snapshot so you can rollback. Windows can get unstable/unbootable if things go wrong.
-1. Uninstall Citrix :registered: XenServer :registered: Client Tools
-2. Reboot
-3. Uninstall `XenServer PV`-Drivers in Device Manager in following order (reboots may be needed):
-    * `XenServer PV Network Device` (one ore more Devices)
-    * `XenServer PV Storage Host Adapter`
-    * `XenServer PV Network Class`
-    * `XenServer Interface`
-    * `XenServer PV Bus (c000)` (if present)
-    * `XenServer PV Bus (0002)` or `XenServer PV Bus (0001)`
-4. Reboot
-5. Check that you see this unknown device in Device Manager:
-    * `SCSI-Controller` - PCI-Device ID `5853:0002`
-6. Unpack ZIP file
-7. Start setup.exe
-8. Follow the install wizard
-
-**Note**: Restart can take a while if your windows is currently updating. Restart only occurs after windows has the updates finished.
-
-###### The nuclear option
-
-If the *confident option* above didn't yield the expected results, then we switch to a more aggressive attitude towards the old tools.
-
-:::tip
-What follows works in many cases, but some users occasionally still meet the following issues: XCP-ng tools not installing (but Citrix tools install well, so that is a solution to have working tools), and occasional BSODs in some cases or versions of Windows.
-
-Through many tests, a user came up with a similar yet slightly different procedure that allowed them to avoid Blue Screens Of Death in their situation: https://xcp-ng.org/forum/post/27602.
-
-Help is welcome to help us reconcile both procedures into one.
-:::
-
-* Follow the steps 0 to 4 of the "confident option" above if not done yet.
-* Follow this (ignore steps 6 and 7, do not try to install the tools yet) [https://support.citrix.com/article/CTX215427](https://support.citrix.com/article/CTX215427)
-* Now open regedit and go to HKLM\SYSTEM\CurrentControlSet\Services and delete entries for all xen* services.
-* In regedit, also go to HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DIFx\DriverStore and remove ONLY xennet* xenvif*
-* Go to C:\Windows\System32 and remove: (you may not have all these)
-  * xenbus_coinst*.dll
-  * xenvbd_coinst*.dll
-  * liteagent.exe
-* Now go to C:\Windows\System32\drivers and remove any files named xen*
-* Go to C:\Windows\system32\DriverStore\FileRepository and remove xennet* and Xenvif* directories.
-* Open the Device Manager and Click View --> Show Hidden Devices. Select Other Devices and Right click on XENBUS VIF and select uninstall. If it asks to delete the driver, check yes. Do this for any xen related thing you see in device manager. Also do the same for any unknown devices.
-* Lastly, reboot the VM. You should now hopefully be able to install xen tools regularly.
-
-**Note**: Also have a look at our [Troubleshooting Guide - Windows PV-Tools](../troubleshooting/windows-pv-tools.md).
-
-##### VMs with INACCESSIBLE_BOOT_DEVICE error
-
-You can try to manually inject the missing drivers in recovery mode.
-
-* Get the "Drivers" folder from the XCP Tools installation path (C:\PROGRAM FILES...) - from another VM or install the tools somewhere else to get it.
-* Create an ISO-Image containing the "Drivers" folder (see [http://imgburn.com](http://imgburn.com)) and mount that ISO-Image to your VM
-* Boot to recovery mode and use the command line and the tool "dism" (see [Microsoft Docs](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/add-and-remove-drivers-to-an-offline-windows-image)) to inject the drivers (specifically the xenbus and xenvbd drivers) - watch out for the drive letter of the Windows installation and the CD-Drive ('D' and 'E' in the following example):
-
-````
-dism /image:d:\ /add-driver /driver:e:\Drivers\xenbus\x64\xenbus.inf
-dism /image:d:\ /add-driver /driver:e:\Drivers\xenvbd\x64\xenvbd.inf
-````
 
 #### Contributing
 ##### Linux / xBSD
 If you would like to contribute improvements to the `install.sh` script so that it supports your distro, create a pull request against: https://github.com/xcp-ng/xe-guest-utilities/tree/master/mk. Relevant files are usually `xe-linux-distribution` and `install.sh`.
 
 ##### Windows
-The XCP-ng team is looking for help in improving the guest tools installer, build process, and clean-up tools.
+The XCP-ng team is looking for help in improving the guest tools installer, build process, and clean-up tools. For more details, see the [win-pv-drivers/xcp-ng-9.1](https://github.com/xcp-ng/win-pv-drivers/tree/xcp-ng-9.1) branch.
