@@ -84,14 +84,14 @@ For a Bios VM, screen resolution can be managed directly through the OS:
 For a UEFI VM, you will need to set up your resolution in the UEFI settings of the VM.
 For that you first will need to enter the VM UEFI setup:
 - At VM start, during Tiano firmware logo display, press ESC.
-  
+
 ![](../../assets/img/screenshots/VM_Tiano.png)
 - You will enter the UEFI firmware management interface. Navigating with keyboard arrows, select *Device Manager* and press Enter.
-  
+
 ![](../../assets/img/screenshots/VM_Tiano_1.png)
 
 - In  the next screen select *OVMF platform configuration*.
-  
+
 ![](../../assets/img/screenshots/VM_Tiano_2.png)
 
 - In the OVMF settings, select *Change Preferred* then the resolution you want.
@@ -276,8 +276,8 @@ Depending on the situation, just update from your distribution's online reposito
 FreeBSD is a 30-year-old operating system used widely to run all sorts of systems and has served as the basis for a number of operating systems, including MacOS, pfSense, and FreeNAS. The Xen kernel modules are built and distributed in the GENERIC kernel, so if you haven't customised or recompiled your kernel, the drivers will be present.
 
 To communicate with the hypervisor, you need to install two [ports](https://www.freebsd.org/ports/):
-* [sysutils/xe-guest-utilities](https://www.freshports.org/sysutils/xe-guest-utilities/) 
-* [sysutils/xen-guest-tools](https://www.freshports.org/sysutils/xen-guest-tools/) 
+* [sysutils/xe-guest-utilities](https://www.freshports.org/sysutils/xe-guest-utilities/)
+* [sysutils/xen-guest-tools](https://www.freshports.org/sysutils/xen-guest-tools/)
 
 The `install.sh` script on the guest tools ISO does not yet support FreeBSD, so there is no point in mounting the guest tools ISO on a FreeBSD VM.
 
@@ -313,33 +313,33 @@ Versions 12.0-U1 and higher of TrueNAS include the package by default, to instal
    ```bash
    # sed -i '' 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/local.conf
    ```
-   
+
 2. Create a temporary directory and move into it:
    ```bash
    # mkdir /tmp/repo
    # cd /tmp/repo
    ```
-   
+
 3. Fetch the required packages. A directory **All** will be created and you will find the packages with their current versions under there:
-   ```bash   
+   ```bash
    # pkg fetch -o /tmp/repo/ xen-guest-tools
    # pkg fetch -o /tmp/repo/ xe-guest-utilities
    ```
-   
-4. Add the downloaded packages, without their dependencies:   
+
+4. Add the downloaded packages, without their dependencies:
    ```bash
    # pkg add -M All/xen-guest-tools-4.14.0.txz
    # pkg add -M All/xe-guest-utilities-6.2.0_3.txz
    ```
    The versions reported here are just the current version and they maybe different in your installation.
-   
+
 5. Revert the repos to their original settings to avoid surprises down the road. The second command should be run just if you disabled the local repo in step 1:
    ```bash
    # sed -i '' 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/FreeBSD.conf
    # sed -i '' 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/local.conf
    ```
    A restart of the VM will perform a reset of these files to their original settings too.
-   
+
 6. Once the package is installed, you need to tell FreeNAS to start the `xe-daemon` process when starting:
    1. Go to _Tasks -> Init/Shutdown Script_
    2. Create a new task with the following settings:
@@ -370,9 +370,6 @@ Citrix tools:
 XCP-ng tools:
 * :heavy_plus_sign: Fully open-source.
 * :heavy_plus_sign: Maintained by the XCP-ng project.
-* :heavy_minus_sign: The drivers are not signed with a key recognized by Microsoft, so Secure Boot can't be enabled with them.
-* :heavy_minus_sign: The sources for the management agent are older than that of Citrix (they have stopped updating GitHub a while ago).
-* :heavy_minus_sign: Have not been updated in a long time, due to difficulties finding skilled developers to work on them. Being actively worked on.
 * :heavy_minus_sign: Won't transparently replace existing Citrix tools. You need to remove Citrix tools first if they are present, in order to install XCP-ng tools.
 
 It's now up to you to choose.
@@ -403,7 +400,7 @@ If you are using Xen Orchestra, you can switch the "Windows Update tools" advanc
 If your VM already has XCP-ng tools and you wish to switch to Citrix tools, then you need to do the same kind of clean-up as described farther in this document for the opposite situation.
 
 #### XCP-ng Windows Guest Tools
-Drivers built by the XCP-ng community.
+Drivers built and signed by Vates.
 
 **Download**: [https://github.com/xcp-ng/win-pv-drivers/releases](https://github.com/xcp-ng/win-pv-drivers/releases)
 
@@ -445,27 +442,26 @@ xe vm-param-get param-name=has-vendor-device uuid={VM-UUID}
 `True` means that it's active, `False` that it isn't. It needs to be `False`.
 
 ###### Install the XCP-ng drivers
-0. snapshot before just in case
-1. unpack the ZIP file
-2. start setup.exe
-3. follow the install wizard
+0. Snapshot your VM before installing (just in case)
+1. Unpack the ZIP file
+2. Start the installation MSI
+3. Follow the install wizard
 
-**Note**: Restart can take a while if your windows is currently updating. Restart only occurs after windows has the updates finished.
+##### Upgrade from XCP-ng Windows PV Tools (8.2 or earlier) or XenServer VM Tools
 
-4. after restart one of two messages should pop up
-    * request for restart \<- just restart!
-    * Management Agent installed successfully \<- enjoy :-)
+Our installer will block installation when these tools are already present. These tools must be cleanly uninstalled before continuing with the installation.
 
-##### Upgrade from Citrix :registered: XenServer :registered: client tools
+:::warning
+If you're using XCP-ng Windows PV Tools 8.2 or earlier, it must be uninstalled using XenClean to avoid encountering BSODs. Follow the procedure in our [Troubleshooting Guide - Windows PV Tools](../troubleshooting/windows-pv-tools.md).
+:::
 
-Our installer is not able currently to cleanly uninstall Citrix tools. Citrix tools' uninstaller itself isn't either: it leaves various things behind.
-
-So we need to perform a complete clean-up of it using the XenClean utility.
-You will find the detailed instructions in our [Troubleshooting Guide - Windows PV Tools](../troubleshooting/windows-pv-tools.md).
+:::warning
+In any case, first disable "Windows Update tools" for the VM (Xen Orchestra, advanced tab) and reboot it.
+:::
 
 #### Contributing
 ##### Linux / xBSD
 If you would like to contribute improvements to the `install.sh` script so that it supports your distro, create a pull request against: https://github.com/xcp-ng/xe-guest-utilities/tree/master/mk. Relevant files are usually `xe-linux-distribution` and `install.sh`.
 
 ##### Windows
-The XCP-ng team is looking for help in improving the guest tools installer, build process, and clean-up tools.
+The XCP-ng team is looking for help in improving the guest tools installer, build process, and clean-up tools. For more details, see the [win-pv-drivers/xcp-ng-9.1](https://github.com/xcp-ng/win-pv-drivers/tree/xcp-ng-9.1) branch.
