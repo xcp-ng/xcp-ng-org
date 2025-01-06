@@ -17,8 +17,8 @@ All our updates are explained in details inside a dedicated blog post. Don't for
 ## ♻️ Support cycle
 
 We maintain two releases in parallel:
-* The LTS Release (currently `8.2`).
-* The Standard release, on a best-effort basis (currently also `8.2`, until a future `8.3` release).
+* The LTS release (currently `8.3`).
+* The Standard release, on a best-effort basis (currently `8.2`).
 
 If your version is lower than `8.2`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [upgrade](../../installation/upgrade).
 
@@ -43,11 +43,16 @@ More at [Additional packages](../../management/additional-packages).
 
 ## 💡 Get information about the updates
 
-Every update is first tested and discussed on [this forum thread](https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing), which we highly recommend to subscribe to (activate e-mail notifications in your forum settings if you want to be notified of new messages). You will thus know about coming updates in advance and be able to help us validate them. Sometimes updates are **delayed** because of lack of feedback there.
+Every update is first tested and discussed in [this forum](https://xcp-ng.org/forum/category/11/news), which we highly recommend to subscribe to (activate e-mail notifications in your forum settings if you want to be notified of new messages). You will thus know about coming updates in advance and be able to help us validate them. Sometimes updates are **delayed** because of lack of feedback there.
 
 Important updates - especially security updates - are announced [on the blog](https://xcp-ng.org/blog/) and the most important ones are also announced through [the newsletter](https://xcp-ng.us13.list-manage.com/subscribe?u=f1ab72021fb8816f4d5e72773&id=4d17393549).
 
 A comprehensive list of updates is available on our build system's web interface. Click the package names for details:
+
+#### Updates for XCP-ng 8.3
+
+* [List of official **updates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=65&order=-build_id&latest=1)
+* [List of **update candidates** and other **testing** packages](https://koji.xcp-ng.org/builds?inherited=0&tagID=66&order=-build_id&latest=1)
 
 #### Updates for XCP-ng 8.2
 
