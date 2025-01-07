@@ -59,7 +59,7 @@ There are storage types that are officially supported, and others that are provi
     <td>XOSTOR</td>
     <td>X</td>
     <td>X</td>
-    <td>Soon</td>
+    <td>X</td>
   </tr>
   <tr>
     <td>ZFS</td>
@@ -92,7 +92,7 @@ There are storage types that are officially supported, and others that are provi
     <td>**No. Provided as-is**</td>
   </tr>
   <tr>
-    <td rowspan="5">block based</td>
+    <td rowspan="6">block based</td>
     <td>Local LVM</td>
     <td></td>
     <td></td>
@@ -121,6 +121,12 @@ There are storage types that are officially supported, and others that are provi
     <td></td>
     <td>X</td>
     <td>**No. Provided as-is**</td>
+  </tr>
+  <tr>
+    <td>Fibre Channel</td>
+    <td></td>
+    <td>X</td>
+    <td>X</td>
   </tr>
 </table>
 
@@ -183,10 +189,6 @@ Avoid using it with mountpoints for remote storage: if for some reason the files
 Shared, thin-provisioned storage.
 
 XOSTOR is an hyperconvergence solution. In short, your local storage are combined into a big shared storage.
-
-:::tip
-XOSTOR is coming soon in XCP-ng. Hang on!
-:::
 
 ### ZFS
 
