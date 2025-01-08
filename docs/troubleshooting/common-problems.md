@@ -156,6 +156,33 @@ The PIF UUID can be found by executing:
 
 ---
 
+## TCP Segmentation Offload (TSO) decreasing performances
+
+### Cause
+
+In some cases, at least observed on XCP-ng 8.2.1 with Intel I219-V NICs, having TCP Segmentation Offload, divides performances by almost 2.
+
+### Solution
+
+**NOTE**: This change does not guarantee improved network performance, please use iperf3 to check before and after the change.
+
+- Identify your PIF UUID using `# xe pif-list`
+- Disable TSO: `# xe pif-param-set uuid=$PIFUUID other-config:ethtool-tso="off"`
+- Either unplug/plug the PIF for the change to be taken into account, or reboot your host
+
+:::warning
+If running the unplug/plug commands through ssh, make sure you're not doing so over the network that will be unplugged. Ideally it is recommended to do such changes through your machine IPMI interface or on via physical access
+:::
+
+```
+# xe pif-unplug uuid=$PIFUUID
+# xe pif-plug uuid=$PIFUUID
+```
+
+:::tip
+If working on a pool, you can set this for all the PIFs of the pool from a single host as `xe pif-list` will show all the PIFs of the pool. You can then do a "Rolling Pool Reboot" in XO from your pool page, in the advanced tab.
+:::
+
 ## Reset XCP-ng root password
 
 ### Cause
