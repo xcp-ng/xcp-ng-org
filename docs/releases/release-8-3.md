@@ -434,7 +434,11 @@ To prevent this situation after an upgrade:
 2. The installer will refuse to upgrade if the detected key length is too small.
 3. Xen Orchestra developers have added a visible warning to make users aware of the issue before attempting any upgrade to XCP-ng 8.3. If applicable, the warning is displayed next to the host name in the Hosts view.
 
-If you never installed custom host certificates, then you are likely using the default self-signed certificate XCP-ng generates the first time it is installed. In this case, you can generate a new one, from XCP-ng 8.2.1, with the command `xe host-emergency-reset-server-certificate` on the host.
+If you've never installed custom host certificates, then you are likely using the default self-signed certificate XCP-ng generates the first time it is installed. In this case, you can generate a new one, from XCP-ng 8.2.1, with the command `xe host-emergency-reset-server-certificate` on the host.
+
+You can validate your existing and new certificates with `openssl x509 -text -noout -in /etc/xensource/xapi-ssl.pem | grep Public-Key`. Running this will either output `1024` which has been depreciated or `2048` which is supported for XCP-ng 8.3.X. 
+
+In some rare scenario's you may have very a very old version of XCP-ng still installed in a backup file on your system, please open a ticket with support if this is the case. Alternative, you may need to perform a fresh installation of XCP-ng erasing all configuration on a given host. 
 
 On the other hand, if you installed a custom host certificate and its key is too small, you will need to generate a new one on your side and install it the same way you installed the first one.
 
