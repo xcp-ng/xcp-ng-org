@@ -9,7 +9,9 @@ The controller domain (dom0) is a privileged Linux VM, part of which is compatib
 It may be useful to add more packages to it, with precaution. The XCP-ng project offers some in its repositories, and other packages can be installed from CentOS, EPEL, or even third party repositories, but at the user's own risks.
 
 :::note
-Best effort support is provided for additional packages provided by the XCP-ng project ([supported list for XCP-ng 8.2](http://reports.xcp-ng.org/8.2/extra_installable.txt)). No support is provided for other additional packages, even if installed from our repositories, as they contain build dependencies not supposed to be installed in production.
+Best effort support is provided for additional packages provided by the XCP-ng project. No support is provided for other additional packages, even if installed from our repositories, as they contain build dependencies not supposed to be installed in production.
+* [supported list for XCP-ng 8.3](http://reports.xcp-ng.org/8.3/extra_installable.txt)
+* [supported list for XCP-ng 8.2](http://reports.xcp-ng.org/8.2/extra_installable.txt)
 :::
 
 ## 📜 Rules
@@ -32,7 +34,7 @@ To disable a repository, edit `/etc/yum.repos.d/name_of_repo.repo` and set `enab
 
 We offer a number of additional packages ranging from ZFS support, [newer drivers](../../installation/hardware#-alternate-drivers) or [newer kernel](../../installation/hardware#-alternate-kernel), to small utilities such as `vim`, `joe`, `iperf`, `mc`, etc.).
 
-A regularly updated list of such utilities for XCP-ng 8.2 is available at [http://reports.xcp-ng.org/8.2/extra_installable.txt](http://reports.xcp-ng.org/8.2/extra_installable.txt).
+A regularly updated list of such utilities for XCP-ng 8.2 is available at [http://reports.xcp-ng.org/8.2/extra_installable.txt](http://reports.xcp-ng.org/8.2/extra_installable.txt), and at [http://reports.xcp-ng.org/8.3/extra_installable.txt](http://reports.xcp-ng.org/8.3/extra_installable.txt) for XCP-ng 8.3.
 
 The packages from this list are supported on a best-effort basis.
 

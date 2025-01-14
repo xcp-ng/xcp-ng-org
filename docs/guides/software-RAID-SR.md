@@ -304,7 +304,7 @@ When installing the upgrade, no differences from a normal upgrade process are ne
 
 After the upgrade has finished and the host system reboots, there may be problems with recognizing one or both of the RAID arrays. It is very unlikely that there will be a problem with the `md127` RAID 1 boot array with the most likely problem being the array operating with only one drive. Problems with the RAID 5 storage array are more likely but not common with the most likely problems being drives missing from the array or the array failing to activate. 
 
-Once the host system has rebooted, check whether the `mdadm.conf` and `dracut_mdraid.conf` files are still in the correct locations and have the correct contents. It is possible that one or both of the files have been retained; in a test upgrade from XCP-ng version 8.2 to version 8.2 on the example system, the `mdadm.conf` file was preserved as part of the upgrade while the `dracut_mdraid.conf` file was not.
+Once the host system has rebooted, check whether the `mdadm.conf` and `dracut_mdraid.conf` files are still in the correct locations and have the correct contents. It is possible that one or both of the files have been retained; in a test upgrade from XCP-ng version 8.2 to version 8.2 itself on the example system, the `mdadm.conf` file was preserved as part of the upgrade while the `dracut_mdraid.conf` file was not.
 
 Missing files can be copied from the previous system by mounting the partition containing the saved copy. If not using a software RAID 1 system drive we would need to mount the second partition of the disk used as the system drive, most likely `/dev/sda2`.
 
