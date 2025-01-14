@@ -45,26 +45,26 @@ More at [Additional packages](../../management/additional-packages).
 
 ## 💡 Get information about the updates
 
-Every update is first tested and discussed on [this forum thread](https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing), which we highly recommend to subscribe to (activate e-mail notifications in your forum settings if you want to be notified of new messages). You will thus know about coming updates in advance and be able to help us validate them. Sometimes updates are **delayed** because of lack of feedback there.
+Every update is first tested and discussed on a forum thread. We highly recommend to subscribe to these threads (activate e-mail notifications in your forum settings if you want to be notified of new messages). You will thus know about coming updates in advance and be able to help us validate them. No one would like updates to be delayed because of lack of feedback there.
+
+* [XCP-ng 8.2 updates announcements and testing](https://xcp-ng.org/forum/topic/365/xcp-ng-8-2-updates-announcements-and-testing)
+* [XCP-ng 8.3 updates announcements and testing](https://xcp-ng.org/forum/topic/9964/xcp-ng-8-3-updates-announcements-and-testing)
 
 Important updates - especially security updates - are announced [on the blog](https://xcp-ng.org/blog/) and the most important ones are also announced through [the newsletter](https://xcp-ng.us13.list-manage.com/subscribe?u=f1ab72021fb8816f4d5e72773&id=4d17393549).
 
 A comprehensive list of updates is available on our build system's web interface. Click the package names for details:
 
+#### Updates for XCP-ng 8.3
+
+* [List of official **updates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=65&order=-build_id&latest=1)
+* [List of immediate **update candidates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=91&order=-build_id&latest=1)
+* [List of **testing** packages prepared for a future update](https://koji.xcp-ng.org/builds?inherited=0&tagID=66&order=-build_id&latest=1)
+
 #### Updates for XCP-ng 8.2
 
 * [List of official **updates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=42&order=-build_id&latest=1)
-* [List of **update candidates** and other **testing** packages](https://koji.xcp-ng.org/builds?inherited=0&tagID=43&order=-build_id&latest=1)
-
-#### Updates for XCP-ng 8.1
-
-* [List of official **updates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=36&order=-build_id&latest=1)
-* [List of **update candidates** and other **testing** packages](https://koji.xcp-ng.org/builds?inherited=0&tagID=37&order=-build_id&latest=1)
-
-#### Updates for XCP-ng 8.0
-
-* [List of official **updates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=27&order=-build_id&latest=1)
-* [List of **update candidates** and other **testing** packages](https://koji.xcp-ng.org/builds?inherited=0&tagID=28&order=-build_id&latest=1)
+* [List of immediate **update candidates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=89&order=-build_id&latest=1)
+* [List of **testing** packages prepared for a future update](https://koji.xcp-ng.org/builds?inherited=0&tagID=43&order=-build_id&latest=1)
 
 ## 🚸 Precautions
 
