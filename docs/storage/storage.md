@@ -184,6 +184,8 @@ Shared, thin-provisioned storage.
 
 XOSTOR is an hyperconvergence solution. In short, your local storage are combined into a big shared storage.
 
+The detailed documentation is available on [this dedicated page](../xostor/xostor.md).
+
 
 ### ZFS
 
