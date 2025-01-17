@@ -29,7 +29,7 @@ XCP-ng contains multiple components, built around the Xen Hypervisor. It's meant
 
 ## 📚 Stack overview
 
-The main goal of XCP-ng is to be a fully integrated and dedicated virtualization platform, without requiring any deep Linux or system knowledge. It's meant to be managed in a centralized manner via [Xen Orchestra](management/#xen-orchestra), regardless the fact you have only one host or thousand of them. Backup is also included inside Xen Orchestra.
+The main goal of XCP-ng is to be a fully integrated and dedicated virtualization platform, without requiring any deep Linux or system knowledge. It's meant to be managed in a centralized manner via [Xen Orchestra](management/#%EF%B8%8F-manage-at-scale), regardless the fact you have only one host or thousand of them. Backup is also included inside Xen Orchestra.
 
 <div style={{textAlign: 'center'}}>
 ![](../assets/img/vates-vms.png)

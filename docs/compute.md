@@ -81,7 +81,7 @@ To remove any passthrough devices from dom0:
 ```
 
 :::warning
-This kernel parameter is not retained when you upgrade an XCP-ng host [using the installation ISO](../installation/upgrade#upgrade-via-installation-iso-recommended). Remember to re-do this step after the upgrade.
+This kernel parameter is not retained when you upgrade an XCP-ng host [using the installation ISO](../installation/upgrade#-upgrade-via-installation-iso-recommended). Remember to re-do this step after the upgrade.
 :::
 
 

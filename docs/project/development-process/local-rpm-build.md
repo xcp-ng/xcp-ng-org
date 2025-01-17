@@ -50,7 +50,7 @@ The additional `-n` switch means "don't exit when finished", which will let you 
 
 ### Modify the RPM
 
-Now that we know that we are able to build it, let's modify it. Here, you need basic knowledge about [RPM packaging](https://rpm-packaging-guide.github.io/). Check also our [Packaging Guidelines](#packaging-guidelines).
+Now that we know that we are able to build it, let's modify it. Here, you need basic knowledge about [RPM packaging](https://rpm-packaging-guide.github.io/). Check also our [Packaging Guidelines](../rpm-packaging/#packaging-guidelines).
 
 Basically, all the sources and patches are in the `SOURCES/` directory, and the definitions and rules are in the spec file located in `SPECS/`.
 

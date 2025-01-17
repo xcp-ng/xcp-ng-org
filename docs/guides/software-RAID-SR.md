@@ -277,7 +277,7 @@ We will eventually need to update or patch the system to fix problems or close s
 
 [Updates](../../management/updates) are patches that are applied to isolated parts of the system and replace or correct just the affected programs or data files. The patches are applied using the `yum` command from the host system's command line or via the Xen Orchestra patches tab for a host or pool. The individual update patches should not affect either the added `mdadm.conf` or `dracut_mdraid.conf` files and any rebuild of the initrd file as part of a Linux kernel update should use the configuration from those files. In general, updates should be safe to apply without risk of affecting software RAID operation.
 
-[Upgrades made by booting from CD](../../installation/upgrade#upgrade-via-installation-iso-recommended) or the equivalent via network booting are different from updates. The upgrade process replaces the entire running system by creating a backup copy of the current system into a separate disk partition then performing a full installation from the CD and makes copies of the configuration data and files from the previous system, upgrading them as needed. As part of a full upgrade, it is likely that one or both of the added RAID configuration files will not be copied from the original system to the upgraded system.
+[Upgrades made by booting from CD](../../installation/upgrade#-upgrade-via-installation-iso-recommended) or the equivalent via network booting are different from updates. The upgrade process replaces the entire running system by creating a backup copy of the current system into a separate disk partition then performing a full installation from the CD and makes copies of the configuration data and files from the previous system, upgrading them as needed. As part of a full upgrade, it is likely that one or both of the added RAID configuration files will not be copied from the original system to the upgraded system.
 
 Before installing an upgrade via CD, check the running RAID arrays and look for any problems with drives as follows:
 
@@ -329,7 +329,7 @@ If the `mdadm.conf` or `dracut_mdraid.conf` files are damaged or cannot be copie
 
 After the rebuilding of the initrd file has finished, it should be safe to reboot the host system. At this point, the system should start and run normally.
 
-In some cases it is also possible to perform [an upgrade using `yum`](../../installation/upgrade#from-command-line) instead of booting from CD. This type of upgrade does not completely replace the running system and does not create a backup copy. It is really a long series of updates instead of a full replacement. When upgrading a system using `yum`, the `mdadm.conf` and `dracut_mdraid.conf` files should remain in place just as with updates but copies of the files should be saved before the upgrade just in case.
+In some cases it is also possible to perform [an upgrade using `yum`](../../installation/upgrade#-from-command-line) instead of booting from CD. This type of upgrade does not completely replace the running system and does not create a backup copy. It is really a long series of updates instead of a full replacement. When upgrading a system using `yum`, the `mdadm.conf` and `dracut_mdraid.conf` files should remain in place just as with updates but copies of the files should be saved before the upgrade just in case.
 
 ## More and Different
 
