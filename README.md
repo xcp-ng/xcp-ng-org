@@ -9,6 +9,8 @@ Our website is a simple and static HTML page.
 
 Our documentation is built using [Docusaurus 3](https://docusaurus.io/), a modern static website and documentation generator. It's available at https://docs.xcp-ng.org
 
+**Note:** The sidebar contents used to be generated automatically. Since we've moved to Docusaurus, the contents are declared manually. When creating a new page, make sure to add it to sidebars.js or it may not appear in the sidebar.
+
 ### Installation
 
 ```
