@@ -8,7 +8,7 @@
 * The server is still booting.
     * Take your time and let him boot up :-) this takes sometimes some time, but typically not longer than some minutes.
 * A Storage Repository (SR) could not be attached.
-    * Check the corresponding disk(s), network(s) and setting(s). Follow the [3-Step-Guide](#general).
+    * Check the corresponding disk(s), network(s) and setting(s). Follow the [3-Step-Guide](../#the-3-step-guide).
 * There is a serious problem.
     * Follow the 3-Step-Guide.
 
@@ -56,4 +56,4 @@ To access the backup (with all your tools and modifications) just mount the back
     * update system firmware
 * Maybe we (or upstream Citrix XenServer) removed/updated something.
     * Please check our [Hardware Compatibility List (HCL)](../../installation/hardware).
-    * Follow the [3-Step-Guide](#general).
+    * Follow the [3-Step-Guide](../#the-3-step-guide).

@@ -106,14 +106,14 @@ Another (fictitious) example:
 This is just to show that build tag and destination tag **can** be different. Build dependencies will be pulled from `v8.x-testing` and the result will be put in `v8.x-sandbox`. This means that builds to the sandbox will never use packages that are already in the sandbox as build dependencies. Why would we do that? To guarantee that builds made in the sandbox are never influenced by other builds made there, possibly by other users. This is a fictitious situation, just to illustrate the concepts of build tag and destination tag.
 
 ## Build and release process
-Here's how to update a package in XCP-ng, step by step. This process requires writing rights on the git repository corresponding to the package at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/) and submit rights in Koji. Others are invited to fork one the repositories at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/), [build RPMs locally in our build container](#local-rpm-build), and then create pull requests. Reading the steps below will still be useful to you to help make appropriate changes.
+Here's how to update a package in XCP-ng, step by step. This process requires writing rights on the git repository corresponding to the package at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/) and submit rights in Koji. Others are invited to fork one the repositories at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/), [build RPMs locally in our build container](../local-rpm-build), and then create pull requests. Reading the steps below will still be useful to you to help make appropriate changes.
 
 This applies only to packages that we build in Koji. There are also packages that are not built in Koji. Most packages from CentOS, for example, are imported directly from CentOS into our Koji instance.
 
 Let's go:
 
 ### 0. Install and setup Koji
-In order not to overload this section with information, the instructions are available in another section of this document: [Koji initial setup](#koji-initial-setup).
+In order not to overload this section with information, the instructions are available in another section of this document: [Koji initial setup](../koji-initial-setup).
 
 ### 1. Package
 * Make sure `git-lfs` is installed.
@@ -189,7 +189,7 @@ All those tags have no purpose in Koji's workflow. They are just useful pieces o
 ## RPM signing
 We automatically sign the RPMs built by or imported to Koji before exporting them towards the RPM repositories.
 
-[More information about RPM signing](../../../project/mirrors#security).
+[More information about RPM signing](../../../project/mirrors#-security).
 
 ## Repository generation
 Handled by a cron job on koji's server. Then the repository is synchronised to [https://updates.xcp-ng.org/](https://updates.xcp-ng.org/).

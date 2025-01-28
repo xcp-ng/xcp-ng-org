@@ -79,7 +79,9 @@ The kernel module has been tested in a homelab environment with XCP-ng version `
 
 To install the driver follow the instructions provided in the [**Alternate drivers** section below](#-alternate-drivers) and use `aqc111u-module` as `package-name` _(`module-name` would be `aqc111u`)_.
 
-Known compatible NICs are<sup id="nt1">[1](#fnt1)</sup>:
+Known compatible NICs are [^1]:
+
+[^1]: There might be other NICs compatible as long as they are based on the Marvell AQC111U chip.
 
 | Brand    | Model      | Tested             |
 |----------|:----------:|:------------------:|
@@ -188,8 +190,3 @@ yum remove kernel-alt
 ```
 
 This will remove the added grub entry automatically too and set default boot to main kernel if needed.
-
----
-Notes:
-
-<b id="fnt1">1:</b> There might be other NICs compatible as long as they are based on the Marvell AQC111U chip. [↩](#nt1)
