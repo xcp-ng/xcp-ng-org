@@ -1,3 +1,7 @@
+---
+sidebar_position: 7
+---
+
 # Local RPM build
 
 How to build RPMs locally.

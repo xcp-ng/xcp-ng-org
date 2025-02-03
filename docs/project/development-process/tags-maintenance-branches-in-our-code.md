@@ -1,3 +1,7 @@
+---
+sidebar_position: 4
+---
+
 # Tags, maintenance branches in our code repositories
 
 The way we use tags and branches.

@@ -1,3 +1,7 @@
+---
+sidebar_position: 6
+---
+
 # Build system
 
 Details on our build system.
