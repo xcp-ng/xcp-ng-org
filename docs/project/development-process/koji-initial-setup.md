@@ -1,3 +1,7 @@
+---
+sidebar_position: 14
+---
+
 # Koji initial setup
 
 How to configure Koji as a user.

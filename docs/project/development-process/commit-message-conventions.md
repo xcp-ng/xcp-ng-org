@@ -1,3 +1,7 @@
+---
+sidebar_position: 11
+---
+
 # Commit message conventions
 
 Our conventions on commit messages.
