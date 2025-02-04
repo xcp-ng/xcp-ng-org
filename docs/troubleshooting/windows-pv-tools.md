@@ -63,6 +63,23 @@ It's possible that some antivirus blocks the end of the installation of the PV d
 Simply pausing the agent and rebooting will allow the PV drivers to install successfully.
 After a successful installation, enabling the SentinelOne agent again is possible without any other issues regarding the tools or drivers.
 
+## Low storage performance on Windows
+
+### Cause
+
+Virtual disks on Windows VMs may perform poorly if the system power profile is not set to Performance.
+
+### Workaround
+
+As reported by [nesting4lyfe2024](https://xcp-ng.org/forum/user/nesting4lyfe2024), [marcoi](https://xcp-ng.org/forum/user/marcoi) and [wiseowl](https://xcp-ng.org/forum/user/wiseowl) on the XCP-ng forum ([link](https://xcp-ng.org/forum/topic/10375/slow-windows-11-guest-vm-virtual-disk-performance-on-r730-w-h730-controller-but-all-other-oses-are-fast-normal)).
+
+Set your BIOS power profile to "Performance" or "Performance Per Watt (OS)".
+Consult your motherboard manual for details; for example, on Dell systems with iDRAC Enterprise, this setting may be found at Configuration - BIOS Settings - System Profile Settings - System Profile:
+
+<div style={{textAlign: 'center'}}>
+![](../../static/img/performance-setting.png)
+</div>
+
 ## Windows bug check 0x3B (SYSTEM_SERVICE_EXCEPTION) on systems with newer Intel CPUs
 
 ### Cause
