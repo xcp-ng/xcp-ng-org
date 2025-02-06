@@ -11,7 +11,9 @@ How to properly setup storage multipathing with Xen Orchestra and XCP-ng.
 ### Requirements
 * Two different network cards (It can be the same model)
 * Dedicated network interfaces without VLAN tagging on XCP-ng host and storage unit
-* Two different switches (not stacked)
+* All network interfaces to the hosts and storage unit **must be set to "STP portEdge"** on the network equipment.
+* Two different switches (not stacked) **without Spaning-Tree**
+* Spanning-tree must be disabled on the switches
 * Two VLANs **without L3 routing**
 * Two IPv4 subnets **without L3 routing**
 * Multiple targets per LUN on your storage unit
