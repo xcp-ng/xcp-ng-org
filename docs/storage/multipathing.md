@@ -137,7 +137,7 @@ linkStyle 13 stroke:#8C8C8C,stroke-width:2px;
 1. On one of the host servers, make sure that the multipath.conf configuration includes your storage equipment.
    
    This can be found in the file `/etc/multipath.xenserver/multipath.conf`
-2. If your equipment is not present, ask the manufacturer for the multipath configuration for GNU/Linux
+2. If your equipment is not present, ask the manufacturer for the multipath configuration for GNU/Linux otherwise move on to the [next step (Prepare the pool)](../../storage/multipathing/#2-prepare-the-pool)
    
    Add it to the file ```/etc/multipath/conf.d/custom.conf```
 
@@ -239,7 +239,7 @@ linkStyle 5 stroke:#5CB85C,stroke-width:2px;
 1. On one of the host servers, make sure that the multipath.conf configuration includes your storage equipment.
    
    This can be found in the file `/etc/multipath.xenserver/multipath.conf`
-2. If your equipment is not present, ask the manufacturer for the multipath configuration for GNU/Linux
+2. If your equipment is not present, ask the manufacturer for the multipath configuration for GNU/Linux otherwise move on to the [next step (Prepare the pool)](../../storage/multipathing/#2-prepare-the-pool-1)
    
    Add it to the file ```/etc/multipath/conf.d/custom.conf```
 
