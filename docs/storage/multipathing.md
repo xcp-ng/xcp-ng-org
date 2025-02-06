@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Multipathing
 
-How to properly setup storage multipathing with Xen Orchestra and XCP-ng.
+How to properly setup new storage multipathing with Xen Orchestra and XCP-ng.
 
 ## iSCSI
 
