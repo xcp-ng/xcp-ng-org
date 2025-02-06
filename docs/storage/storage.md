@@ -441,11 +441,15 @@ We also suggest to use a folder on the MooseFS cluster as a root path rather tha
 
 Shared, thick-provisioned storage.
 
+For an iSCSI multipath configuration, please follow [these steps](../../storage/multipathing/#iscsi) first.
+
 In Xen Orchestra, go in the "New" menu entry, then Storage, and select iSCSI. Follow instructions from there.
 
 ### HBA
 
 Shared, thick-provisioned storage.
+
+For a Fibre Channel multipath configuration, please follow [these steps](../../storage/multipathing/#fibre-channel-hba) first.
 
 You can add a Host Bus Adapter (HBA) storage device with `xe`:
 
