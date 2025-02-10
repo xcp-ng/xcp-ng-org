@@ -4,14 +4,18 @@ sidebar_position: 1
 
 # Multipathing
 
-How to properly setup new storage multipathing with Xen Orchestra and XCP-ng.
+How to properly setup new SR with multipathing on Xen Orchestra and XCP-ng.
+
+:::warning
+Do not attempt to enable multipathing on a production pool with existing and active iSCSI and/or HBA and/or FC SRs.
+:::
 
 ## iSCSI
 
 ### Requirements
 * Two different network cards (It can be the same model)
 * Dedicated network interfaces without VLAN tagging on XCP-ng host and storage unit
-* All network interfaces to the hosts and storage unit **must be set to "STP portEdge"** on the network equipment.
+* All network interfaces to the hosts and storage unit **must be set to "STP portEdge"** on the network equipment
 * Two different switches (not stacked) **without Spaning-Tree**
 * Spanning-tree must be disabled on the switches
 * Two VLANs **without L3 routing**
@@ -20,9 +24,9 @@ How to properly setup new storage multipathing with Xen Orchestra and XCP-ng.
 * iSCSI target ports are operating in portal mode
 
 :::info
-It is recommended to configure the network interfaces of XCP-ng host servers, switch interfaces, and storage array interfaces with Jumbo frames (MTU 9000).
+If the storage vendor recommends using Jumbo Frames, you will need to implement them.
 
-If your switch cannot handle Jumbo frames, you can leave the default values (MTU 1500). But make sure that all elements are set to MTU 1500.
+Since each architecture is unique, feel free to check with the storage vendor if it’s possible to stay with an MTU of 1500 (e.g., using storage dedicated PIF at 10Gb/s or 25Gb/s).
 :::
 
 :::warning
@@ -141,6 +145,28 @@ linkStyle 13 stroke:#8C8C8C,stroke-width:2px;
    
    Add it to the file ```/etc/multipath/conf.d/custom.conf```
 
+   For exemple:
+   ```
+   devices {
+
+     # Configuration for ACME CORP UltraSAN
+     # This is an example of syntax; do not use it in production.
+     device {
+        vendor  "ACME"
+        product "UltraSAN"
+        path_selector "service-time 0"
+        path_grouping_policy group_by_prio
+        prio alua
+        features "1 queue_if_no_path"
+        hardware_handler "1 alua"
+        failback immediate
+        rr_weight uniform
+        rr_min_io 100
+        no_path_retry 10
+     }
+   }
+   ```
+
    :::info
    In this case, the configuration will be kept after updates.
    :::
@@ -159,16 +185,16 @@ If this is not the case:
 #### 3. Configure the SR
 Proceed with the iSCSI SR configuration as indicated in the [storage documentation](../../storage/#iscsi).
 
-## Fiber Channel (HBA)
+## Fibre Channel (HBA)
 ### Requirements
-* Check that the Fiber Channel cards model(s) is supported via the HCL
-* Two different Fiber Channel cards (It can be the same model)
+* Check that the Fibre Channel cards model(s) is supported via the HCL
+* Two different Fibre Channel ports (You can also have multiple cards if you want)
 * Two different SAN switches
 * Multiple targets per LUN on your storage unit
 * Zoning performed
 
 :::warning
-Make sure not to mix Fiber Channel speeds.
+Make sure not to mix Fibre Channel speeds.
 :::
 
 ### Target architecture
@@ -186,13 +212,10 @@ flowchart LR
 
   subgraph server[XCP-ng host]
     direction LR
-    subgraph Card2[Fiber Channel card 2]
-        direction RL
-        card2port1[port1]
-    end
-    subgraph Card1[Fiber Channel card 1]
+    subgraph Card1[Fibre Channel card]
         direction RL
         card1port1[port1]
+        card1port2[port2]
     end
   end
 
@@ -219,7 +242,7 @@ flowchart LR
   vlan421<---->ctrl1-port1
   vlan421<---->ctrl2-port1
 
-  card2port1<---->vlan422
+  card1port2<---->vlan422
   vlan422<---->ctrl1-port2
   vlan422<---->ctrl2-port2
 
@@ -243,6 +266,28 @@ linkStyle 5 stroke:#5CB85C,stroke-width:2px;
    
    Add it to the file ```/etc/multipath/conf.d/custom.conf```
 
+   For exemple:
+   ```
+   devices {
+
+     # Configuration for ACME CORP UltraSAN
+     # This is an example of syntax; do not use it in production.
+     device {
+        vendor  "ACME"
+        product "UltraSAN"
+        path_selector "service-time 0"
+        path_grouping_policy group_by_prio
+        prio alua
+        features "1 queue_if_no_path"
+        hardware_handler "1 alua"
+        failback immediate
+        rr_weight uniform
+        rr_min_io 100
+        no_path_retry 10
+     }
+   }
+   ```
+
    :::info
    In this case, the configuration will be kept after updates.
    :::
@@ -260,3 +305,124 @@ If this is not the case:
 
 #### 3. Configure the SR
 Proceed with the HBA SR configuration as indicated in the [storage documentation](../../storage/#hba).
+
+
+## Maintenance operations
+### Add a new host to an existing multipathing pool
+
+:::warning
+Do not add the new host server to the pool without completing these steps.
+:::
+
+1. Prepare the host server as specified in this [operating procedure for iSCSI](../../storage/multipathing/#operating-procedure) or this [operating procedure for FC](../../storage/multipathing/#operating-procedure-1)
+2. Ensure that the iSCSI PIF configuration is completed if you are using iSCSI
+3. Add the new host server to the pool
+
+## Troubleshooting
+
+### Verify multipathing
+You can use the command ```multipath -ll``` to check if multipathing is active.
+
+```
+3600a098765432100000123456789abcd dm-3 ACME,UltraSAN
+size=500G features='1 queue_if_no_path' hwhandler='1 alua' wp=rw
+|-+- policy='service-time 0' prio=50 status=active
+| |- 8:0:0:1  sdb  8:16   active ready running
+| |- 8:0:1:1  sdd  8:48   active ready running
+|-+- policy='service-time 0' prio=10 status=enabled
+  |- 8:0:2:1  sdf  8:80   active ready running
+  |- 8:0:3:1  sdh  8:112  active ready running
+```
+:::info
+In this example, we have four active paths: our multipathing is working correctly.
+:::
+
+### iSCSI
+#### Verify iSCSI sessions
+You can use the command ```iscsiadm -m session``` to check if iSCSI session is active.
+
+```
+tcp: [1] 10.42.1.101:3260,1 iqn.2024-02.com.acme:ultrasan.lun01 (non-flash)
+tcp: [2] 10.42.1.102:3260,1 iqn.2024-02.com.acme:ultrasan.lun01 (non-flash)
+tcp: [3] 10.42.2.101:3260,2 iqn.2024-02.com.acme:ultrasan.lun01 (non-flash)
+tcp: [4] 10.42.2.102:3260,2 iqn.2024-02.com.acme:ultrasan.lun01 (non-flash)
+```
+:::info
+In this example, we have four iSCSI sessions with one LUN.
+:::
+
+#### iSCSI: Verify Jumbo Frame configuration
+To check the Jumbo Frames configuration, connect to a host server and try pinging all IP addresses involved in your iSCSI storage (target and initiator) using this command.
+
+```
+ping -M do -s 8972 <REMOTE_IP_ADDRESS>
+```
+:::warning
+If you get an error, usually ```ping: sendmsg: Message too long```, your MTU settings are incorrect, and you need to fix your network configuration.
+:::
+
+:::tip
+If your storage vendor allows it, feel free to use 1500 for MTU.
+:::
+
+## Appendix
+### Network configuration exemples for jumbo frames
+
+:::tip
+We recommend keeping the standard MTU of 1500.
+:::
+
+If you want to use jumbo frames, here are some configuration examples. We recommend following the vendor documentation, as this information is for reference only.
+
+#### Arista
+Enabling Jumbo Frames on ```Ethernet1``` interface:
+```
+conf t
+  interface Ethernet1
+    mtu 9000
+  exit
+wr mem
+```
+
+Disabling Jumbo Frames on ```Ethernet1``` interface:
+```
+conf t
+  interface Ethernet1
+    mtu 1500
+  exit
+wr mem
+```
+#### Cisco IOS
+Enabling Jumbo Frames on ```TenGigabitEthernet1/1``` interface:
+```
+conf t
+  interface TenGigabitEthernet1/1
+    mtu 9000
+  exit
+wr mem
+```
+
+Disabling Jumbo Frames on ```TenGigabitEthernet1/1``` interface:
+```
+conf t
+  interface Ethernet1
+    mtu 1500
+  exit
+wr mem
+```
+#### Juniper
+Enabling Jumbo Frames on ```xe-0/0/1``` interface:
+```
+configure
+set interfaces xe-0/0/1 mtu 9216
+commit
+exit
+```
+
+Disabling Jumbo Frames on ```xe-0/0/1``` interface:
+```
+configure
+delete interfaces xe-0/0/1 mtu 9216
+commit
+exit
+```
