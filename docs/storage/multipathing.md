@@ -13,7 +13,7 @@ Do not attempt to enable multipathing on a production pool with existing and act
 ## iSCSI
 
 ### Requirements
-* Two different network cards (It can be the same model)
+* Four different network interfaces (we recommend using two separate network cards)
 * Dedicated network interfaces without VLAN tagging on XCP-ng host and storage unit
 * All network interfaces to the hosts and storage unit **must be set to "STP portEdge"** on the network equipment
 * Two different switches (not stacked) **without Spaning-Tree**
@@ -56,15 +56,12 @@ flowchart LR
 
   subgraph server[XCP-ng host]
     direction LR
-    subgraph Card2[Network card 2]
-        direction RL
-        card2pif1[pif4]
-        card2pif2[pif3]
-    end
-    subgraph Card1[Network card 1]
+    subgraph Card1[Network cards]
         direction RL
         card1pif1[pif1]
         card1pif2[pif2]
+        card2pif1[pif4]
+        card2pif2[pif3]
     end
   end
   subgraph Switch 2
