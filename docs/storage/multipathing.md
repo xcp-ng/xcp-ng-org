@@ -402,7 +402,7 @@ wr mem
 Disabling Jumbo Frames on ```TenGigabitEthernet1/1``` interface:
 ```
 conf t
-  interface Ethernet1
+  interface TenGigabitEthernet1/1
     mtu 1500
   exit
 wr mem
