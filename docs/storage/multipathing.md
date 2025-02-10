@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Multipathing
 
-How to properly setup new SR with multipathing on Xen Orchestra and XCP-ng.
+How to properly setup a new SR with multipathing on Xen Orchestra and XCP-ng.
 
 :::warning
 Do not attempt to enable multipathing on a production pool with existing and active iSCSI and/or HBA and/or FC SRs.
@@ -16,7 +16,7 @@ Do not attempt to enable multipathing on a production pool with existing and act
 * Four different network interfaces (we recommend using two separate network cards)
 * Dedicated network interfaces without VLAN tagging on XCP-ng host and storage unit
 * All network interfaces to the hosts and storage unit **must be set to "STP portEdge"** on the network equipment
-* Two different switches (not stacked) **without Spaning-Tree**
+* Two different switches (not stacked) **without Spanning-Tree**
 * Spanning-tree must be disabled on the switches
 * Two VLANs **without L3 routing**
 * Two IPv4 subnets **without L3 routing**
@@ -142,7 +142,7 @@ linkStyle 13 stroke:#8C8C8C,stroke-width:2px;
    
    Add it to the file ```/etc/multipath/conf.d/custom.conf```
 
-   For exemple:
+   For example:
    ```
    devices {
 
@@ -263,7 +263,7 @@ linkStyle 5 stroke:#5CB85C,stroke-width:2px;
    
    Add it to the file ```/etc/multipath/conf.d/custom.conf```
 
-   For exemple:
+   For example:
    ```
    devices {
 
