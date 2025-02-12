@@ -867,13 +867,12 @@ This feature is currently experimental and not covered by [Vates Pro Support](ht
 
 On each host, create a new PV and VG using your cache devices:
 ```
-pvcreate linstor_group_cache <CACHE_DEVICES>
 vgcreate linstor_group_cache <CACHE_DEVICES>
 ```
 
 Then you can enable the cache with a few commands using the linstor controller.
 
-Verify the group to modify, it must start with "xcp-sr-":
+Verify the group to modify, it must start with "xcp-sr-" (generally `linstor_group_thin_device` for thin):
 ```
 linstor storage-pool list
 ```
@@ -883,6 +882,10 @@ Make sure the primary resource group is configured with cache support and enable
 linstor rg modify xcp-sr-linstor_group_thin_device --layer-list drbd,cache,storage
 linstor vg set-property xcp-sr-linstor_group_thin_device 0 Cache/CachePool linstor_group_cache
 ```
+
+:::warning
+The previous and following commands are only valid for a thin configuration. For thick configuration, you need to replace all occurrences of `xcp-sr-linstor_group_thin_device` with `xcp-sr-linstor_group`. If you use another group or thin device replace `linstor_group` and/or `thin_device`.
+:::
 
 :::tip
 You can list caches on a host using `dmsetup ls`. Also one important thing, a cache is only created on diskful resources.
