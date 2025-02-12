@@ -857,7 +857,9 @@ For more info:
 - https://linbit.com/blog/linstors-auto-evict/
 - https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-linstor-auto-evict
 
-### How to-enable dm-cache?
+### How to enable dm-cache (Device mapper cache)?
+
+`dm-cache` is a part of the Linux kernel's device mapper, which is a system for managing storage devices. It lets you use fast storage, like SSDs, as a cache for slower storage, like HDDs. This helps improve performance by creating a hybrid storage system on a XOSTOR SR.
 
 :::warning
 This feature is currently experimental and not covered by [Vates Pro Support](https://vates.tech/pricing-and-support).
@@ -869,9 +871,9 @@ pvcreate linstor_group_cache <CACHE_DEVICES>
 vgcreate linstor_group_cache <CACHE_DEVICES>
 ```
 
-Then you can enable the cache with few commands using the linstor controller.
+Then you can enable the cache with a few commands using the linstor controller.
 
-First, verify the group to modify, this last one must start with "xcp-sr-":
+Verify the group to modify, it must start with "xcp-sr-":
 ```
 linstor storage-pool list
 ```
@@ -901,21 +903,21 @@ linstor rd set-property <VOLUME_NAME> Cache/Cachesize <PERCENTAGE>
 It's totally arbitrary. You can go up to 20-30% for for VMS with a high write rate. This should be enough to support a significant number of requests. 10% for solicited VMs. Between 1-5% for VMs with a few requests. You can use 100% if you want, for example for a database on a small VDI with a lot of queries.
 
 :::warning
-The use of snapshots can consume more memory than necessary due to VHD chains that are too long. It's advisable to limit their use except via XOA during backup processes.
+Due to too-long VHD chains, snapshots can consume more memory than necessary. It's advisable to limit their use to backup processes via XOA.
 :::
 
-#### How to switch between read and read-write mode?
+#### How to switch between read and read-write modes?
 
 Simply use:
 ```
 linstor vg set-property xcp-sr-linstor_group_thin_device 0 Cache/OpMode <MODE>
 ```
 
-By default `writethrough` mode is used. This mode is only useful to improve read performance.
+By default `writethrough` mode is used. This mode is only useful for improving read performance.
 
 With `writeback` mode enabled, the block to be written is added in the cached layer, not on the DRBD.
 This data block is moved later, and the process caller (here tapdisk) is only notified when the block is flushed in the cache disk.
 
 This algorithm is efficient in not having to wait for writes to be flushed to the local disk as well as to other DRBDs replicated on other nodes.
-But if you have a power outage on the machine using the cache and if it contains data, then the data is lost.
+However, if a power outage occurs on a machine using a cache that contains data, the data will be lost.
 You don't have this issue with writethrough, but this mode is only used for read performance.
