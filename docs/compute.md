@@ -11,10 +11,10 @@ This section is dedicated to compute related things, like GPU/vGPU or PCI passth
 ### 0. Prerequisites
 
 :::warning
-Ensure VT-d/IOMMU Support Is Enabled
+Ensure VT-d/AMD-Vi Is Enabled
 :::
 
-In order to use PCI passthrough your host system must have VT-d/IOMMU/SR-IOV functionality enabled. This should be more commonly enabled by default on enterprise hardware than on consumer hardware. It can be enabled in the BIOS/UEFI of systems with CPUs and chipsets which support it. For Intel platforms the feature is typically referred to as VT-d (Intel Virtualization Technology for Directed I/O); on AMD platforms it is typically listed as IOMMU or AMD-Vi. Please note that this is not the same as VT-x/AMD-v virtualisation support, and so these options are often listed separately.
+In order to use PCI passthrough your host system must have IOMMU functionality enabled. This should be more commonly enabled by default on enterprise hardware than on consumer hardware. It can be enabled in the BIOS/UEFI of systems with CPUs and chipsets which support it. For Intel platforms the feature is typically referred to as VT-d (Intel Virtualization Technology for Directed I/O); on AMD platforms it is typically listed as IOMMU or AMD-Vi. Please note that this is not the same as VT-x/AMD-v virtualisation support, and so these options are often listed separately.
 
 Consult your system or motherboard manual for instructions on where to find the setting in your BIOS/UEFI. In addition, system BIOS updates may reset the feature to its default state, which may require you to re-enable it.
 
@@ -25,10 +25,10 @@ Internal error: xenopsd internal error: Device.PCI.Cannot_add(_, _)
 ```
 
 :::warning
-You may not be able to passthrough USB controllers
+You may not be able to passthrough USB controllers on XCP-ng 8.2
 :::
 
-When attempting to enable PCI passthrough on USB controllers, you may see an error when starting the VM in your logs similar to
+When attempting to enable PCI passthrough on USB controllers on XCP-ng 8.2, you may see an error when starting the VM in your logs similar to
 
 ```
 Internal error: xenopsd internal error: Cannot_add(0000:00:1d.0, Xenctrlext.Unix_error(30, "1: Operation not permitted"))
@@ -41,7 +41,7 @@ and an error in `/var/log/xen/hypervisor.log`
 [2020-08-22 10:09:03] (XEN) [  297.542136] d[IO]: assign (0000:08:00.0) failed (-1)
 ```
 
-This indicates that your device is using [RMRR](https://access.redhat.com/sites/default/files/attachments/rmrr-wp1.pdf).  Intel [IOMMU does not allow DMA to these devices](https://www.kernel.org/doc/Documentation/Intel-IOMMU.txt) and therefore PCI passthrough is not supported.
+On XCP-ng 8.3, this limitation is lifted for most hardware.
 
 ### 1. Find your devices ID ([B/D/F](https://en.wikipedia.org/wiki/PCI_configuration_space#BDF)) on the PCI bus using one of the following methods:
 
