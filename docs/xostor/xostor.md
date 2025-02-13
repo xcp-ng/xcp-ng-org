@@ -856,3 +856,71 @@ Note: iptables config must also be modified to remove LINSTOR port rules (edit `
 For more info:
 - https://linbit.com/blog/linstors-auto-evict/
 - https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-linstor-auto-evict
+
+### How to enable dm-cache (Device mapper cache)?
+
+`dm-cache` is a part of the Linux kernel's device mapper, which is a system for managing storage devices. It lets you use fast storage, like SSDs, as a cache for slower storage, like HDDs. This helps improve performance by creating a hybrid storage system on a XOSTOR SR.
+
+:::warning
+This feature is currently experimental and not covered by [Vates Pro Support](https://vates.tech/pricing-and-support).
+:::
+
+On each host, create a new PV and VG using your cache devices:
+```
+vgcreate linstor_group_cache <CACHE_DEVICES>
+```
+
+Then you can enable the cache with a few commands using the linstor controller.
+
+Verify the group to modify, it must start with "xcp-sr-" (generally `linstor_group_thin_device` for thin):
+```
+linstor storage-pool list
+```
+
+Make sure the primary resource group is configured with cache support and enable the cache on the volume group:
+```
+linstor rg modify xcp-sr-linstor_group_thin_device --layer-list drbd,cache,storage
+linstor vg set-property xcp-sr-linstor_group_thin_device 0 Cache/CachePool linstor_group_cache
+```
+
+:::warning
+The previous and following commands are only valid for a thin configuration. For thick configuration, you need to replace all occurrences of `xcp-sr-linstor_group_thin_device` with `xcp-sr-linstor_group`. If you use another group or thin device replace `linstor_group` and/or `thin_device`.
+:::
+
+:::tip
+You can list caches on a host using `dmsetup ls`. Also one important thing, a cache is only created on diskful resources.
+:::
+
+#### How to configure the cache size?
+
+By default, a VDI uses a cache size of 1% of its volume size. But it can be changed globally for all VDIs:
+```
+linstor vg set-property xcp-sr-linstor_group_thin_device 0 Cache/Cachesize <PERCENTAGE>
+```
+
+You can change this value globally or on a particular resource definition with:
+```
+linstor rd set-property <VOLUME_NAME> Cache/Cachesize <PERCENTAGE>
+```
+
+It's totally arbitrary. You can go up to 20-30% for for VMS with a high write rate. This should be enough to support a significant number of requests. 10% for solicited VMs. Between 1-5% for VMs with a few requests. You can use 100% if you want, for example for a database on a small VDI with a lot of queries.
+
+:::warning
+Due to too-long VHD chains, snapshots can consume more memory than necessary. It's advisable to limit their use to backup processes via XOA.
+:::
+
+#### How to switch between read and read-write modes?
+
+Simply use:
+```
+linstor vg set-property xcp-sr-linstor_group_thin_device 0 Cache/OpMode <MODE>
+```
+
+By default `writethrough` mode is used. This mode is only useful for improving read performance.
+
+With `writeback` mode enabled, the block to be written is added in the cached layer, not on the DRBD.
+This data block is moved later, and the process caller (here tapdisk) is only notified when the block is flushed in the cache disk.
+
+This algorithm is efficient in not having to wait for writes to be flushed to the local disk as well as to other DRBDs replicated on other nodes.
+However, if a power outage occurs on a machine using a cache that contains data, the data will be lost.
+You don't have this issue with writethrough, but this mode is only used for read performance.
