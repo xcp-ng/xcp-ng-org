@@ -17,6 +17,10 @@ There are 3 upgrade methods, detailed below:
 * [From command line a.k.a. yum-style upgrade](#-from-command-line). ⚠️ Only for some point version upgrades.
 :::
 
+:::warning
+For upgrading XCP-ng machines with an XOSTOR SR, please refer to this [additional information](../../xostor#upgrade) before taking any action.
+:::
+
 ## ☢️ Release Notes & Known Issues
 
 Read the [Release Notes and Known Issues](../../releases#xcp-ng-release-history) for every release that is higher than your current release. They may provide additional instructions for specific situations. Also **please read the following warnings**:
