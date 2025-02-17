@@ -388,6 +388,48 @@ varstore-ls <vm-uuid>
 
 If the relevant certs are installed, their names will be in the output (i.e., `PK`, `KEK`, `db`, or `dbx`).
 
+#### Preparing for Secure Boot Variable Changes
+
+:::warning
+Changing existing Secure Boot certificates on a vTPM-enabled VM will invalidate its PCR7 measurements.
+Any encryption keys bound to the TPM (e.g. disk encryption keys) will become inaccessible.
+Make sure to take a backup of your disk encryption key (e.g. BitLocker recovery key) before making any changes to Secure Boot.
+:::
+
+If you're using BitLocker with a TPM-based key protector, use the following command to query the TPM binding state of your VM:
+
+```
+manage-bde -protectors -get C:
+```
+
+The following output shows an example of a Secure Boot-bound TPM configuration:
+
+```
+Volume C: []
+All Key Protectors
+
+    [...]
+      ID: {XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}
+      PCR Validation Profile:
+        7, 11
+        (Uses Secure Boot for integrity validation)
+```
+
+Before changing Secure Boot keys, run this command to suspend BitLocker protection:
+
+```
+manage-bde -protectors -disable C: -rebootcount 1
+```
+
+:::tip
+BitLocker protection will continue immediately at reboot.
+You will need to follow the sequence: suspend BitLocker - **immediately shutdown** - update Secure Boot certificates - restart.
+Alternatively, you may increase the `-rebootcount` value, update Secure Boot variables, then subsequently resume protection with the following command:
+`manage-bde -protectors -enable C:`
+:::
+
+If using `systemd-cryptenroll` or `clevis`, follow your distribution's user manual.
+
 #### Propagate Pool Certificates to a VM
 
 You may need to trigger the propagation of the pool's default UEFI certificates to a VM.
@@ -522,4 +564,3 @@ We don't know why someone would want to use Setup Mode in their VMs, but if for 
 ```
 varstore-sb-state
 ```
-
