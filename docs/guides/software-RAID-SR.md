@@ -1,5 +1,11 @@
 # Software RAID Storage Repository
 
+:::warning
+Software RAID for storage repositories is documented here for our user community. However, it is not eligible for official support in a production environment.
+
+Official support can be provided for pools that have Software RAID SRs, but such support won't cover issues with the storage repositories themselves.
+:::
+
 How to manage a software RAID storage for my VMs?
 
 XCP-ng has support for creating a software RAID for the operating system but it is limited to RAID level 1 (mirrored drives) and by the size of the drives used. It is strictly intended for hardware redundancy and doesn't provide any additional storage beyond what a single drive provides.

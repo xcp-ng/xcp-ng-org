@@ -105,12 +105,6 @@ There are storage types that are officially supported, and others that are provi
     <td>X</td>
   </tr>
   <tr>
-    <td>Software RAID</td>
-    <td>X</td>
-    <td></td>
-    <td>**No. Provided as-is**</td>
-  </tr>
-  <tr>
     <td>iSCSI</td>
     <td></td>
     <td>X</td>
@@ -171,6 +165,8 @@ In addition to the two main, rock-solid, local storages (EXT and LVM), XCP-ng of
 
 Local, with ```mdadm```. Not recommended.
 
+See our [community-contributed guide](../guides/software-RAID-SR/).
+
 :::tip
 We strongly recommend using a hardware RAID system instead of software RAID.
 :::
@@ -178,7 +174,7 @@ We strongly recommend using a hardware RAID system instead of software RAID.
 :::warning
 **Software RAID storage integration is offered as-is** and does not come with official support.
 
-We do not provide support for issues resulting from the choice of software RAID.
+We do not provide support for issues resulting from the choice of software RAID for storage repositories.
 :::
 
 ### NFS
