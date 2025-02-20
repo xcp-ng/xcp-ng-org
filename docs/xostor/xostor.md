@@ -323,6 +323,120 @@ Only XCP-ng 8.2.1 is currently supported and with a maximum of 7 machines per po
 
 See this documentation: [RPU](/management/updates/#rolling-pool-update-rpu).
 
+## Upgrade
+
+If you are reading this documentation, we assume that you want to upgrade a pool on which XOSTOR is deployed, i.e. change the version of XCP-ng, for example from 8.2 to 8.3.
+For updates that don't change the version numbers (bugfixes, security fixes), see [the update section](#update).
+
+### 1. Prerequisites
+
+- All hosts must be up to date on the version of XCP-ng you are currently using. For this refer to [the update section](#update).
+- HA must be disabled on your pool.
+
+### 2. Information to retrieve before upgrading
+
+1. Note the UUID of the XOSTOR SR you are using on your pool.
+
+2. Before starting the upgrade procedure, you must also retrieve the `group-name` used by the XOSTOR SR of your pool via this command (replace `<UUID>` with the correct one):
+```
+xe pbd-list sr-uuid=<UUID>
+```
+
+Example output where the group-name is `linstor_group/thin_device`:
+```
+uuid ( RO)                  : 06d10e9e-c7ad-2ed6-a901-53ac1c2c7486
+             host-uuid ( RO): 4bac16be-b25b-4d0b-a159-8f5bda930640
+               sr-uuid ( RO): d5f990f6-abca-0ebf-8582-b7e55901fb50
+         device-config (MRO): group-name: linstor_group/thin_device; redundancy: 2; provisioning: thin
+    currently-attached ( RO): true
+
+
+uuid ( RO)                  : 06b5e263-8ec1-74e9-3162-d39785be6ba7
+             host-uuid ( RO): f7737f79-ad49-491c-a303-95ac37fb6a13
+               sr-uuid ( RO): d5f990f6-abca-0ebf-8582-b7e55901fb50
+         device-config (MRO): group-name: linstor_group/thin_device; redundancy: 2; provisioning: thin
+    currently-attached ( RO): true
+
+
+uuid ( RO)                  : 1d872d5b-fb60-dbd7-58fc-555a211f18fa
+             host-uuid ( RO): ef942670-e37d-49e6-81d0-d2a484b0cd10
+               sr-uuid ( RO): d5f990f6-abca-0ebf-8582-b7e55901fb50
+         device-config (MRO): group-name: linstor_group/thin_device; redundancy: 2; provisioning: thin
+    currently-attached ( RO): true
+```
+
+### 3. Upgrade
+
+From this point we can proceed to upgrade your XOSTOR-enabled pool.
+
+An upgrade can take quite a long time so we recommend disabling the auto-evict mechanism during this procedure to avoid bad behavior.
+On the host where the controller is running:
+```
+linstor controller set-property DrbdOptions/AutoEvictAllowEviction False
+```
+
+For each host of the pool (starting with the master), we break down the different steps as follows:
+
+1. Update the host following the instructions in [this guide](../installation/upgrade/#-upgrade-via-installation-iso-recommended), but do not proceed to the next host yet.
+
+2. After rebooting the host, you will need to run specific commands to have a working LINSTOR node.
+
+Install the LINSTOR RPMs:
+```
+yum install -y xcp-ng-release-linstor
+yum install -y xcp-ng-linstor
+```
+
+Restart the toolstack to detect the LINSTOR driver:
+```
+xe-toolstack-restart
+```
+
+Then finally open the ports and enable the LINSTOR services using the `<GROUP_NAME>` and `<HOST_UUID>` obtained above:
+```
+xe host-call-plugin host-uuid=<HOST_UUID> plugin=linstor-manager fn=addHost args:groupName=<GROUP_NAME>
+```
+
+Find where the controller is running on your pool and check the status of the nodes:
+```
+linstor n list
+```
+
+The node can be marked `OFFLINE` or `EVICTED` (if the auto-evict mechanism is still active):
+```
+╭───────────────────────────────────────────────────────────────────────────────────────────╮
+┊ Node   ┊ NodeType ┊ Addresses              ┊ State                                        ┊
+╞═══════════════════════════════════════════════════════════════════════════════════════════╡
+┊ node01 ┊ COMBINED ┊ 10.1.0.60:3366 (PLAIN) ┊ EVICTED                                      ┊
+┊ node02 ┊ COMBINED ┊ 10.1.0.61:3366 (PLAIN) ┊ Online                                       ┊
+┊ node03 ┊ COMBINED ┊ 10.1.0.62:3366 (PLAIN) ┊ Online                                       ┊
+╰───────────────────────────────────────────────────────────────────────────────────────────╯
+```
+
+In this situation, you can restore the node:
+```
+linstor node restore node01
+```
+
+Wait a little while and check if there is an issue with the resources:
+```
+linstor r list
+linstor advise r # Give possible fix commands in case of problems.
+```
+
+Finally check in XOA that the PBD of the SR of this host is connected. If not, do so.
+
+:::warning
+Very important, if you don't want to break the quorum or your production environment. You must execute the commands given above after upgrading a host and do not reboot/upgrade the others until the host's satellite is operational and its PBD is plugged.
+:::
+
+### 4. After pool upgrade
+
+If you have deactivated auto eviction as recommended, it's necessary to reactivate it. On the host where the controller resides, execute this command:
+```
+linstor controller set-property DrbdOptions/AutoEvictAllowEviction True
+```
+
 ## Global questions
 
 ### The linstor command does not work!?
