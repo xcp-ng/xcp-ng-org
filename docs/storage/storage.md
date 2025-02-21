@@ -106,7 +106,7 @@ There are storage types that are officially supported, and others that are provi
   </tr>
   <tr>
     <td>Software RAID</td>
-    <td>X</td>
+    <td></td>
     <td></td>
     <td>**No. Provided as-is**</td>
   </tr>
@@ -170,6 +170,8 @@ In addition to the two main, rock-solid, local storages (EXT and LVM), XCP-ng of
 ### Software RAID
 
 Local, with ```mdadm```. Not recommended.
+
+See our [community-contributed guide](../guides/software-RAID-SR/).
 
 :::tip
 We strongly recommend using a hardware RAID system instead of software RAID.
