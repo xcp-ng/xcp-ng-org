@@ -109,7 +109,7 @@ Of course, drop any patches that have already been merged upstream.
   You need to create the new branch according to your needs.
 - If the XCP-ng version changes, follow the same process: create a new branch and rebase or
 cherry-pick the patches.
-- To generate the list of patches to be used for the RPM, use `git format-patch --no-numbered UPSTREAMVERSION`
+- To generate the list of patches to be used for the RPM, use `git format-patch --no-numbered --no-signature UPSTREAMVERSION`
 
 ### Special case: `qemu-dp`
 
