@@ -47,7 +47,7 @@ This apply to setup using DRBD/Corosync/Pacemaker.
 
 The problem is that in a storage-cluster environment every time the node changes or pacemaker start /stop /restart iSCSI resources the "iSCSI SN" for a lun are new generated and differs from that before.
 Xen uses the "iSCSI SN" as an identifier, so you have to ensure that "iSCSI SN" is the same on all cluster nodes.
-You can read more about it [here](https://smcleod.net/tech/2015/12/14/iscsi-scsiid-persistence.html).
+You can read more about it [here](https://smcleod.net/2015/12/iscsi-scsi-id-/-serial-persistence/).
 
 * error message xen orchestra
 
