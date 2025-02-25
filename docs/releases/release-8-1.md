@@ -46,7 +46,7 @@ Citrix announces:
 * Support for **AMD EPYC 7xx2(P)** added
 
 Other changes:
-* Windows drivers delivered through Windows Update should now work well with non-English locales. Source: [XSO-951](https://bugs.xenserver.org/browse/XSO-951).
+* Windows drivers delivered through Windows Update should now work well with non-English locales.
 * `chrony` replaces `ntp` for time synchronisation
 * **PV guests are not supported anymore**
   * Templates for creating PV guests have been removed
@@ -187,7 +187,7 @@ If the ntp server can't be reached, the `chrony-wait` service may stall the boot
 * up to 10 minutes if you installed with `xcp-ng-8.1.0.iso`, or with yum update before 2020-04-03;
 * up to 2 minutes only if you installed with `xcp-ng-8.1.0-2.iso`, with yum update after 2020-04-03, or have updated your host after 2020-04-03.
 
-Reported to Citrix: [XSO-981](https://bugs.xenserver.org/browse/XSO-981)
+Reported to Citrix.
 
 We must stress that it is important that all your hosts have accurate date and time and so be able to connect an ntp server.
 
@@ -202,7 +202,7 @@ See [this forum thread](https://xcp-ng.org/forum/topic/2822/xcp-ng-8-0-upgrade-t
 ### Backup partition restore from installer fails on UEFI hosts
 Context: the installer creates a backup of the root partition when you upgrade. It also allows to restore that backup when a backup is found.
 
-On UEFI hosts, the backup restore function of the installer fails with the following error message: `setEfiBootEntry() takes exactly 5 arguments (4 given)`. This is [a bug inherited from Citrix Hypervisor 8.1](https://bugs.xenserver.org/browse/XSO-984).
+On UEFI hosts, the backup restore function of the installer fails with the following error message: `setEfiBootEntry() takes exactly 5 arguments (4 given)`. This is a bug inherited from Citrix Hypervisor 8.1.
 
 Consequences: although the root filesystem is correctly restored, the system is unbootable.
 
