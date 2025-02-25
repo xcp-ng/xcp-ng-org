@@ -244,11 +244,10 @@ Note: If you use ZFS, assign at least 16GB RAM to avoid swapping. ZFS (in standa
 
 #### ZFS Knowledge & status
 
-Do not hesitate to take a look at these links for more advanced explanations:
+Feel free to look at these links for more advanced explanations:
 
 * Wikipedia: [https://en.wikipedia.org/wiki/ZFS](https://en.wikipedia.org/wiki/ZFS)
 * OpenZFS Basics: [https://www.youtube.com/watch?v=MsY-BafQgj4](https://www.youtube.com/watch?v=MsY-BafQgj4)
-* Blog full of useful information: [http://www.zfsbuild.com](http://www.zfsbuild.com)
 
 You can monitor your ZFS pool using:
 
