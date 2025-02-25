@@ -309,7 +309,7 @@ Versions 12.0-U1 and higher of TrueNAS include the package by default, to instal
    ```bash
    # sed -i '' 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/FreeBSD.conf
    ```
-   If you are using FreeNAS v11.2 or higher, you also have to disable the local package repository [to avoid an issue in that particular release and that may affect later versions](https://www.justinsilver.com/random/fix-pkg-on-freenas-11-2/) before running `pkg install`:
+   If you are using FreeNAS v11.2 or higher, you also have to disable the local package repository to avoid an issue in that particular release and that may affect later versions before running `pkg install`:
    ```bash
    # sed -i '' 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/local.conf
    ```
