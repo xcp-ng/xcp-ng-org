@@ -48,7 +48,7 @@ Main changes announced by Citrix:
 
 Other changes:
   * Bug fixed for hosts configured with DHCP. `xcp-networkd` used not to send the hostname along with the DHCP request. Fix contributed by XCP-ng team.
-  * [Backup restore fixed for UEFI hosts](https://bugs.xenserver.org/browse/XSO-984). Bug reported by XCP-ng community.
+  * Backup restore fixed for UEFI hosts. Bug reported by XCP-ng community.
 
 **The rest, below, is about changes specific to XCP-ng.**
 
@@ -189,7 +189,7 @@ When a host is upgraded to XCP-ng 8.2 using the installation ISO, two files are 
 * `/etc/modprobe.d/blacklist-bridge.conf`
 * `/etc/modprobe.d/disable-ipv6.conf`
 
-We reported the issue to Citrix: [https://bugs.xenserver.org/browse/XSO-991](https://bugs.xenserver.org/browse/XSO-991)
+We reported the issue to Citrix.
 
 There are no known consequences of having those files missing, except possible slightly increased memory usage.
 
@@ -229,8 +229,6 @@ Live migrating a VM from an old XenServer can sometimes end with an error, with 
 * It gets duplicated: the same VM uuid (and usually its VDIs too) is present both on the sender and the receiver host. Remove it from the receiver host.
 
 Would require a hotfix to the old XenServer, but since those versions are not supported anymore, Citrix won't develop one.
-
-Reference: [XSO-938](https://bugs.xenserver.org/browse/XSO-938)
 
 #### Dell servers do not get the best partitioning
 
