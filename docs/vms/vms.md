@@ -503,18 +503,28 @@ Through many tests, a user came up with a similar yet slightly different procedu
 Help is welcome to help us reconcile both procedures into one.
 :::
 
-* Follow the steps 0 to 4 of the "confident option" above if not done yet.
-* Follow this (ignore steps 6 and 7, do not try to install the tools yet) [https://support.citrix.com/article/CTX215427](https://support.citrix.com/article/CTX215427)
-* Now open regedit and go to HKLM\SYSTEM\CurrentControlSet\Services and delete entries for all xen* services.
-* In regedit, also go to HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DIFx\DriverStore and remove ONLY xennet* xenvif*
-* Go to C:\Windows\System32 and remove: (you may not have all these)
-  * xenbus_coinst*.dll
-  * xenvbd_coinst*.dll
-  * liteagent.exe
-* Now go to C:\Windows\System32\drivers and remove any files named xen*
-* Go to C:\Windows\system32\DriverStore\FileRepository and remove xennet* and Xenvif* directories.
-* Open the Device Manager and Click View --> Show Hidden Devices. Select Other Devices and Right click on XENBUS VIF and select uninstall. If it asks to delete the driver, check yes. Do this for any xen related thing you see in device manager. Also do the same for any unknown devices.
-* Lastly, reboot the VM. You should now hopefully be able to install xen tools regularly.
+1. If not done yet, follow Steps 0 to 4 of the "confident option" above.
+2. Open the **Windows Registry** (regedit).
+3. Go to `HKLM\SYSTEM\CurrentControlSet\Services` and delete entries for all `xen*` services.
+4. Delete the following entries:
+   - `HKLM\SYSTEM\CurrentControlSet\Enum\XENBUS`
+   - `HKLM\SYSTEM\CurrentControlSet\Enum\XENVIF`
+5. Go to `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DIFx\DriverStore` and remove these entries ONLY:
+   - `xennet`
+   - `xenvif*`
+6. Go to `C:\Windows\System32` and remove: (you may not have all these)
+   - `xenbus_coinst*.dll`
+   - `xenvbd_coinst*.dll`
+   - `liteagent.exe`
+7. Go to `C:\Windows\System32\drivers` and remove any files named `xen*`.
+8. Go to `C:\Windows\system32\DriverStore\FileRepository` and remove these directories:
+   - `xennet*`
+   - `Xenvif*`
+9. Open the **Device Manager** and click **View → Show Hidden Devices**. 
+10. Select **Other Devices**, right-click **XENBUS VIF** and select **uninstall**.\
+If it asks to delete the driver, check **yes**. Do this for any xen-related thing you see in Device Manager. Do the same for any unknown devices.
+10. Reboot the VM.\
+You should now be able to install xen tools regularly.
 
 **Note**: Also have a look at our [Troubleshooting Guide - Windows PV-Tools](../troubleshooting/windows-pv-tools.md).
 
