@@ -30,6 +30,27 @@ If your version is lower than `8.2`, it will not receive updates anymore. To kee
 
 Your dom0 system must either have access to the internet, or to a local mirror. In the second case, make sure to update the `baseurl` values in `/etc/yum.repos.d/xcp-ng.repo` to make them point at the local mirror, and keep the mirror regularly synced.
 
+#### Proxy configuration
+
+If your hosts require a proxy to access the repositories, you have several options depending on your needs:
+
+For all yum repositories:
+- Set `proxy=<proxy_url>` in the `[main]` section of `/etc/yum.conf`
+
+For specific repositories:
+- Set `proxy=<proxy_url>` in the relevant repository section within files located in `/etc/yum.repos.d`
+
+Set a system-wide proxy that will be used for everything, not only yum:
+- Export the `http_proxy` and `https_proxy` variables in `/etc/environment`:
+```bash
+export http_proxy=<proxy_url>
+export https_proxy=<proxy_url>
+```
+
+:::warning
+These changes will be remain intact through standard updates, but they will be lost if you upgrade to a new major version.
+:::
+
 ### Be cautious with third party repositories and packages
 
 If you have enabled third party repositories (CentOS, EPEL...) in the past, make sure to **disable** them before updating. Otherwise, core packages from your dom0 system can be overwritten with versions of packages that have not been tested in the context of XCP-ng, or lack specific patches.
