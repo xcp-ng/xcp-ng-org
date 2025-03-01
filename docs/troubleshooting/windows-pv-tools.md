@@ -162,3 +162,29 @@ Stop the VM, run the following command on the host then restart the VM:
 ```
 xe vm-param-add uuid=<VM's UUID> param-name=platform msr-relaxed=true
 ```
+
+## Windows fails to boot, keeps exiting to Startup Repair/recovery menu after updating
+
+### Cause
+
+This is often caused by the Windows boot loader failing to find the Windows partition.
+
+### Workaround
+
+From the recovery menu, open Command Prompt, then use `diskpart` to assign drive letters to the EFI system partition:
+
+```
+list vol
+sel vol N  # N = number of volume with info = "System"
+assign letter=S
+exit
+```
+
+After exiting Diskpart, use the following commands:
+
+```bat
+bcdedit /store S:\EFI\Microsoft\Boot /set {default} device=partition=C:
+bcdedit /store S:\EFI\Microsoft\Boot /set {default} osdevice=partition=C:
+```
+
+After exiting to Windows, your system should boot successfully.
