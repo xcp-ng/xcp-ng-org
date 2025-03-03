@@ -191,7 +191,7 @@ If you need to modify your XCP-ng root password, you may follow the steps below.
 
 ### Solution
 
-The full prodecure can also be found on [this page](https://support.citrix.com/article/CTX214360).
+The full prodecure can also be found on [this page](https://linuxconfig.org/how-to-reset-an-administrative-root-password-on-xenserver-7-linux).
 
 * Reboot your XCP-ng into Grub boot menu.
 * Select XCP-ng boot menu entry and press <kbd>e</kbd> key to edit boot options.
