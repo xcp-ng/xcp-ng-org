@@ -4,6 +4,30 @@ How to configure UEFI Secure boot?
 
 Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute trusted binaries at boot. In practice, these are the binaries released by the operating system (OS) vendor for the OS running in the VM (Microsoft Windows, Debian, RHEL, Alpine, etc.).
 
+## Upcoming changes in Secure Boot
+
+The default Secure Boot keys in XCP-ng are changing.
+
+Previously, XCP-ng only shipped with the PK included by default; Secure Boot databases had to be installed using `secureboot-certs`.
+
+New versions of XCP-ng `varstored` (from version **TODO** and newer) now comes with a complete set of Secure Boot databases (PK/KEK/db/dbx) by default, meaning that guest Secure Boot will now work without needing further pool configuration.
+
+### What this change means for you
+
+You will not be affected in most cases.
+
+* Existing VMs will not be affected unless you use the ["Propagate certificates"](#propagate-pool-certificates-to-a-vm) feature in Xen Orchestra (which has always had the effect of resetting VM Secure Boot variables to that of the pool).
+* If you followed our previous guides and used `secureboot-certs install` to install the default Secure Boot databases into your pool, these databases will not be changed.
+
+The only VMs affected by these changes are those with Secure Boot enabled but without custom Secure Boot databases. Previously, these VMs will execute all UEFI binaries even with Secure Boot enabled (due to an empty dbx variable); however, going forward, revoked UEFI binaries (e.g. from an outdated media) will no longer boot on such VMs with Secure Boot enabled.
+
+To continue booting outdated media on these VMs, you can either:
+
+- Disable Secure Boot;
+- Or erase the VM's dbx variable with the command `varstore-rm <vm uuid> d719b2cb-3d3a-4596-a3bc-dad00e67656f dbx`
+
+Once your VM has completed installing, it should be able to manage its own Secure Boot variables (db/dbx) via its update mechanism.
+
 ## Requirements
 
 * XCP-ng >= 8.2.1.
@@ -17,7 +41,7 @@ Until we can re-sign XCP-ng's PV drivers for Windows, you will need the PV drive
 
 Note: it's not necessary that the XCP-ng host boots in UEFI mode for Secure Boot to be enabled on VMs.
 
-## Quick Start
+## Quick Start (8.2.1 and 8.3 with varstored < **TODO**)
 
 We believe that reading this guide will provide you with useful knowledge about the way Guest Secure Boot is handled in XCP-ng, and let you avoid mistakes.
 
@@ -90,6 +114,10 @@ To download and install XCP-ng's default certificates (what almost all users wil
 For custom certificates (advanced use), see [Install Custom UEFI Certificates](#install-custom-uefi-certificates)
 
 ### Install the Default UEFI Certificates
+
+:::info
+This procedure is not necessary if you're using varstored **TODO** and newer.
+:::
 
 `secureboot-certs` supports installing a default set of certificates across the pool.
 
