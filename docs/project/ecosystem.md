@@ -172,7 +172,16 @@ Another compatible solution with agents running in VMs.
 We also started to discuss with NAKIVO to see if they could provide a native integration with XCP-ng.
 :::
 
-![](../../assets/img/partners/Nakivo.webp)
+### Bacula
+
+Bacula offers an advanced module (or *plugin*) that provides native integration of Bacula with XCP-ng.
+
+* Website: [https://www.bacula.org/](https://www.bacula.org/)
+* Documentation: ✅ [Available here](https://www.bacula.org/documentation/)
+* Agentless: ✅ 
+* Open Source: ✅
+
+![](../../assets/img/partners/Bacula_logo.png)
 
 ### Storware Backup and Recovery
 
