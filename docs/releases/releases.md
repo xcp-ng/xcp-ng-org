@@ -45,7 +45,7 @@ gantt
     XCP-ng 8.1 (EOL)       :2020-03-31, 1y
 ```
 
-If you prefer to get the latest improvements, go for our [latest release](#latest-releases).
+If you prefer to get the latest improvements, go for our [latest release](#-standard-release).
 
 ## 🟡 Standard Release
 
@@ -60,7 +60,7 @@ Using the standard release is recommended if:
 
 Standard releases are supported until the next release, plus a few additional months to allow time for transitioning. Check the support dates [in the table above](#xcp-ng-release-history).
 
-If you prefer a more conservative approach, consider choosing our [LTS release](#lts-releases).
+If you prefer a more conservative approach, consider choosing our [LTS release](#-lts-releases).
 
 :::note
 XCP-ng 8.3 is special in the following ways:

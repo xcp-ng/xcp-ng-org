@@ -161,26 +161,9 @@ const config = {
             barHeight: 70,
           }
         },
-      },
-      algolia: {
-        // The application ID provided by Algolia
-        appId: 'I9J2TZ0RWH',
-
-        // Public API key: it is safe to commit it
-        apiKey: '76ebf4008fbfcc765a5c416528597101',
-
-        indexName: 'xcp-ng',
-
-        // Optional: see doc section below
-        contextualSearch: true,
-
-        // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
-        externalUrlRegex: 'docs\\.xcp-ng\\.org',
-
-        // Optional: path for search page that enabled by default (`false` to disable it)
-        searchPagePath: 'search',
-      },
+      }
     }),
+  plugins: [require.resolve('docusaurus-lunr-search')],
 };
 
 module.exports = config;

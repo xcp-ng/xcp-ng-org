@@ -125,8 +125,8 @@ yum update linstor-satellite linstor-controller
 
 After updating all hosts without reboot:
 ```
-systemctl restart linstor-satellites
 systemctl stop linstor-controller # "stop" is not a typo, it will auto restart the controller.
+systemctl restart linstor-satellite
 ```
 
 Then you can follow the instructions in the documentation to manually update the pool.

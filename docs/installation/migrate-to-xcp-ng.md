@@ -14,11 +14,11 @@ OVA import method will miss the information if the VM is running BIOS or UEFI mo
 
 ## 🇽 From XenServer
 
-We got a dedicated section on [how to migrate from XenServer to XCP-ng](../../installation/upgrade#upgrade-from-xenserver).
+We got a dedicated section on [how to migrate from XenServer to XCP-ng](../../installation/upgrade#-upgrade-from-xenserver).
 
 ## 🍋 From Citrix Hypervisor
 
-We got a dedicated section on [how to migrate from Citrix Hypervisor to XCP-ng](../../installation/upgrade#upgrade-from-xenserver).
+We got a dedicated section on [how to migrate from Citrix Hypervisor to XCP-ng](../../installation/upgrade#-upgrade-from-xenserver).
 
 ## 🐼 From Xen on Linux
 
@@ -28,7 +28,7 @@ Check [the README](https://github.com/xcp-ng/xen2xcp/blob/master/README.md) for 
 
 ## 📦 From Virtualbox
 
-Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](#-fromvmware) section.
+Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](#-from-vmware) section.
 
 ## 🇻 From VMware
 

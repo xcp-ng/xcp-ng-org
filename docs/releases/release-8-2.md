@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # XCP-ng 8.2 LTS
 
-XCP-ng 8.2 is an [LTS Release](../../../releases#lts-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1).
+XCP-ng 8.2 is an [LTS Release](../#-lts-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1).
 
 SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
@@ -126,7 +126,7 @@ Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 
 The community-maintained XCP-ng Center client is [now available for download](https://github.com/xcp-ng/xenadmin/releases/tag/v20.04.01.33). However, it is not a recommended client to use because it was modified for 8.2 support without any specific QA or validation. Keep in mind that the officially supported clients - all fully Open Source - are [documented on this page](../../management).
 
 :::note
-Although we host XCP-ng Center on our GitHub organisation and authorized its contributors to use the XCP-ng logo, we remind our users that - as documented [in the official docs](../../management#xcp-ng-center) and on its [download page](https://github.com/xcp-ng/xenadmin/releases) - **XCP-ng Center is not officially supported by the XCP-ng project**.
+Although we host XCP-ng Center on our GitHub organisation and authorized its contributors to use the XCP-ng logo, we remind our users that - as documented [in the official docs](../../management#-local-management) and on its [download page](https://github.com/xcp-ng/xenadmin/releases) - **XCP-ng Center is not officially supported by the XCP-ng project**.
 :::
 
 #### Transition to the new ZFS SR driver
@@ -161,7 +161,7 @@ XCP-ng 8.2.1 was released as a maintenance update for XCP-ng 8.2 LTS, which has 
 
 XCP-ng 8.2.1 is still XCP-ng 8.2 LTS. It's the same, that just reached a new numbered milestone.
 
-The update brought a few enhancements such as [Guest Secure Boot](../../guides/guest-UEFI-Secure-Boot#guest-uefi-secure-boot), support for Rocket Lake CPUs, or better log rotation.
+The update brought a few enhancements such as [Guest Secure Boot](../../guides/guest-UEFI-Secure-Boot), support for Rocket Lake CPUs, or better log rotation.
 
 They are detailed in the [Release announcement for XCP-ng 8.2.1](https://xcp-ng.org/blog/2022/02/28/xcp-ng-8-2-1-update/).
 

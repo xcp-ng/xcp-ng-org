@@ -1,3 +1,7 @@
+---
+sidebar_position: 10
+---
+
 # ISO modification
 
 How to modify the installation ISO.

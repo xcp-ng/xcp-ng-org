@@ -1,3 +1,7 @@
+---
+sidebar_position: 14
+---
+
 # Koji initial setup
 
 How to configure Koji as a user.
@@ -48,6 +52,9 @@ cert = ~/.koji/client.crt
 
 ;certificate of the CA that issued the HTTP server certificate
 serverca = ~/.koji/serverca.crt
+
+; select authentication type
+authtype = ssl
 ```
 
 In some cases, we've found that the `cert` directive in `~/.koji/config ` was not used if there was no such directive in `/etc/koji.conf`. Workaround: add a `cert = ~/.koji/client.crt` to `/etc/koji.conf`, or possibly even `cp ~/.koji/config /etc/koji.conf`.

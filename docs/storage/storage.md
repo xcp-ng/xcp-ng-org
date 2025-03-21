@@ -37,11 +37,17 @@ There are storage types that are officially supported, and others that are provi
     <th>Officially Supported</th>
   </tr>
   <tr>
-    <td rowspan="9">file based</td>
+    <td rowspan="10">file based</td>
     <td>Local EXT</td>
     <td>X</td>
     <td></td>
     <td>X</td>
+  </tr>
+  <tr>
+    <td>Software RAID</td>
+    <td>X</td>
+    <td></td>
+    <td>**No. Provided as-is**</td>
   </tr>
   <tr>
     <td>NFS</td>
@@ -59,7 +65,7 @@ There are storage types that are officially supported, and others that are provi
     <td>XOSTOR</td>
     <td>X</td>
     <td>X</td>
-    <td>Soon</td>
+    <td>X (8.2 LTS only)</td>
   </tr>
   <tr>
     <td>ZFS</td>
@@ -92,7 +98,7 @@ There are storage types that are officially supported, and others that are provi
     <td>**No. Provided as-is**</td>
   </tr>
   <tr>
-    <td rowspan="5">block based</td>
+    <td rowspan="6">block based</td>
     <td>Local LVM</td>
     <td></td>
     <td></td>
@@ -143,7 +149,7 @@ As XCP-ng will handle everything for you, be aware that the device or partition 
 * If you want to attach an existing SR to your pool, don't create a new local SR over it, else your virtual disks will be deleted. Instead, use the `xe sr-introduce` command. Further explanation can be found in the official XenServer documentation: https://support.citrix.com/article/CTX121896/how-to-introduce-a-local-storage-repository-in-xenserver
 :::
 
-In [Xen Orchestra](../management#xen-orchestra):
+In [Xen Orchestra](../management#%EF%B8%8F-manage-at-scale):
 
 ![](https://xcp-ng.org/assets/img/screenshots/createSRlocal.png)
 
@@ -154,6 +160,22 @@ xe sr-create host-uuid=<host UUID> type=ext content-type=user name-label="Local 
 ```
 
 In addition to the two main, rock-solid, local storages (EXT and LVM), XCP-ng offers storage drivers for other types of local storage (ZFS, XFS, etc.).
+
+### Software RAID
+
+Local, with ```mdadm```. Not recommended.
+
+See our [community-contributed guide](../guides/software-RAID-SR/).
+
+:::tip
+We strongly recommend using a hardware RAID system instead of software RAID.
+:::
+
+:::warning
+**Software RAID storage integration is offered as-is** and does not come with official support.
+
+We do not provide support for issues resulting from the choice of software RAID for storage repositories.
+:::
 
 ### NFS
 
@@ -184,9 +206,8 @@ Shared, thin-provisioned storage.
 
 XOSTOR is an hyperconvergence solution. In short, your local storage are combined into a big shared storage.
 
-:::tip
-XOSTOR is coming soon in XCP-ng. Hang on!
-:::
+The detailed documentation is available on [this dedicated page](../xostor/xostor.md).
+
 
 ### ZFS
 

@@ -1,3 +1,7 @@
+---
+sidebar_position: 13
+---
+
 # Performance Tests
 
 Basic ways to test XCP-ng performances.

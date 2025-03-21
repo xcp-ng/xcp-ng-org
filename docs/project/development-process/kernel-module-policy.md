@@ -1,3 +1,7 @@
+---
+sidebar_position: 9
+---
+
 # Kernel module policy
 
 Our policity about kernel modules.

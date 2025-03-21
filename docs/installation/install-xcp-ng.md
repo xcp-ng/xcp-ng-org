@@ -64,8 +64,10 @@ NEVER switch from UEFI to BIOS (or vice-versa) **after** you installed XCP-ng. S
 
 ![](https://xcp-ng.org/assets/img/screenshots/install4.png)
 
+
 #### 5. Disk selection
 
+<a name="_5-disk-selection"></a>
 This is the screen where you'll select where XCP-ng system will be installed. **XCP-ng is a specialized Linux distribution**, so you need to dedicate a physical disk to it. Partitioning is done automatically.
 
 ![](https://xcp-ng.org/assets/img/screenshots/install5.png)
@@ -90,7 +92,7 @@ EXT instead of LVM? We advise to use EXT to benefit from thin provisioning!
 :::
 
 :::warning
-When the installer skips [step 5](#_5-disk-selection) automatically, users sometimes mistake this step with the selection of the system disk.
+When the installer skips [step 5](#5-disk-selection) automatically, users sometimes mistake this step with the selection of the system disk.
 :::
 
 #### 7. Installation source
@@ -203,7 +205,7 @@ PXE boot doesn't support tagged VLAN networks! Be sure to boot on a untagged net
 4. In the TFTP root directory, create a folder called `pxelinux.cfg`
 5. In the pxelinux.cfg directory, create your configuration file called `default`.
 
-The file itself will contain the way to install XCP-ng: manually (with answer to provide on the host console/screen) or fully automated (see [Automated install](#-automatedinstall) below).
+The file itself will contain the way to install XCP-ng: manually (with answer to provide on the host console/screen) or fully automated (see [Automated install](/installation/install-xcp-ng/#-automated-install) below).
 
 Here is an example of a manual installation:
 
@@ -336,7 +338,7 @@ configfile /EFI/xenserver/grub.cfg
 
 
 ## 🤖 Automated install
-
+<a name="-automatedinstall"></a>
 XCP-ng's installation can be automated by using network boot (PXE) or a custom installation image.
 
 ### Answerfile

@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # What XCP-ng is made of
 
 What's inside XCP-ng?

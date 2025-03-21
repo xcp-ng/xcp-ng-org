@@ -157,7 +157,7 @@ The `<PIF UUID>` can be obtained with either `xe pif-list` or with Xen Orchestra
 
 ## 🛞 SDN controller
 
-An SDN controller is provided by a [Xen Orchestra](../management#xen-orchestra) plugin. Thanks to that, you can enjoy advanced network features.
+An SDN controller is provided by a [Xen Orchestra](../management#%EF%B8%8F-manage-at-scale) plugin. Thanks to that, you can enjoy advanced network features.
 
 ### GRE/VXLAN tunnels
 

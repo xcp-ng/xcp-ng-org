@@ -1,3 +1,7 @@
+---
+sidebar_position: 12
+---
+
 # Tests
 
 How and what to test in XCP-ng.

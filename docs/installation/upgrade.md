@@ -26,7 +26,7 @@ Read the [Release Notes and Known Issues](../../releases#xcp-ng-release-history)
 * DON'T use the `Maintenance Mode` in XCP-ng Center. It moves the pool master to another host, which has to be avoided in the upgrade procedure.
 * If HA (High Availability) is enabled, disable it before upgrading.
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`.
-* Read [Handling alternate drivers or kernel](##%EF%B8%8F-handling-alternate-drivers-or-kernel) if your host depends on them.
+* Read [Handling alternate drivers or kernel](#%EF%B8%8F-handling-alternate-drivers-or-kernel) if your host depends on them.
 * [Update your pool with the latest updates](../../management/updates) **before** upgrading, and reboot or restart the toolstack, depending on the nature of the installed updates.
 * [Install the latest updates](../../management/updates) **after** upgrading.
 :::
@@ -131,7 +131,7 @@ More at [Additional packages](../../management/additional-packages).
 
 #### Precautions
 
-The [precautions that apply to regular updates](../../management/updates#precautions) also apply to the upgrade process.
+The [precautions that apply to regular updates](../../management/updates#-precautions) also apply to the upgrade process.
 
 Check them carefully.
 

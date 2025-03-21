@@ -1,3 +1,7 @@
+---
+sidebar_position: 8
+---
+
 # Local XAPI build
 
 How to build [XAPI](https://github.com/xcp-ng/xen-api) locally.

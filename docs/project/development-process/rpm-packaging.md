@@ -1,3 +1,7 @@
+---
+sidebar_position: 5
+---
+
 # RPM packaging
 
 Creating packages that can be installed on the user's system is called **packaging**.

@@ -225,7 +225,7 @@ Cluster doesn't work with XCP-ng, but only with Citrix Hypervisor Please do NOT 
 
 Commands for working with consoles.
 
-The console objects can be listed with the standard object listing command (`xe console-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands).
+The console objects can be listed with the standard object listing command (`xe console-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands).
 
 ## Console parameters
 
@@ -491,7 +491,7 @@ The class name can be any of the [event classes](#event-classes) listed at the b
 
 Commands for working with physical GPUs, GPU groups, and virtual GPUs.
 
-The GPU objects can be listed with the standard object listing commands: `xe pgpu-list`, `xe gpu-group-list`, and `xe vgpu-list`. The parameters can be manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands).
+The GPU objects can be listed with the standard object listing commands: `xe pgpu-list`, `xe gpu-group-list`, and `xe vgpu-list`. The parameters can be manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands).
 
 ### Physical GPU parameters
 
@@ -656,7 +656,7 @@ Commands for interacting with XCP-ng server.
 
 XCP-ng servers are the physical servers running XCP-ng software. They have VMs running on them under the control of a special privileged Virtual Machine, known as the control domain or domain 0.
 
-The XCP-ng server objects can be listed with the standard object listing commands: `xe host-list`, `xe host-cpu-list`, and `xe host-crashdump-list`). The parameters can be manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands).
+The XCP-ng server objects can be listed with the standard object listing commands: `xe host-list`, `xe host-cpu-list`, and `xe host-crashdump-list`). The parameters can be manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands).
 
 ### Host selectors
 
@@ -1161,7 +1161,7 @@ host-set-power-on-mode host=host_uuid power-on-mode={"" | "wake-on-lan" | "iLO" 
 
 Use to enable the *Host Power On* function on XCP-ng hosts that are compatible with remote power solutions. When using the `host-set-power-on` command, you must specify the type of power management solution on the host (that is, the power-on-mode). Then specify configuration options using the power-on-config argument and its associated key-value pairs.
 
-To use the secrets feature to store your password, specify the key `"power_on_password_secret"`. For more information, see [Secrets](#secrets).
+To use the secrets feature to store your password, specify the key `"power_on_password_secret"`. For more information, see [Secrets](../../management/manage-locally/cli#-secrets).
 
 ### `host-shutdown`
 
@@ -1300,7 +1300,7 @@ Set all loggers to the specified output (nil, stderr, string, file:*file name*, 
 
 Commands for working with messages. Messages are created to notify users of significant events, and are displayed in XenCenter as alerts.
 
-The message objects can be listed with the standard object listing command (`xe message-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The message objects can be listed with the standard object listing command (`xe message-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ### Message parameters
 
@@ -1341,7 +1341,7 @@ Destroys an existing message. You can build a script to destroy all messages. Fo
 
 Commands for working with networks.
 
-The network objects can be listed with the standard object listing command (`xe network-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The network objects can be listed with the standard object listing command (`xe network-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ### Network parameters
 
@@ -1387,7 +1387,7 @@ Destroys an existing network.
 
 Commands for working with SR-IOV.
 
-The network-sriov objects can be listed with the standard object listing command (`xe network-sriov-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The network-sriov objects can be listed with the standard object listing command (`xe network-sriov-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ### SR-IOV parameters
 
@@ -1533,7 +1533,7 @@ Upload a patch file to the server.
 
 Commands for working with PBDs (Physical Block Devices). PBDs are the software objects through which the XCP-ng server accesses storage repositories (SRs).
 
-The PBD objects can be listed with the standard object listing command (`xe pbd-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The PBD objects can be listed with the standard object listing command (`xe pbd-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ### PBD parameters
 
@@ -1589,7 +1589,7 @@ Attempt to unplug the PBD from the XCP-ng server.
 
 Commands for working with PIFs (objects representing the physical network interfaces).
 
-The PIF objects can be listed with the standard object listing command (`xe pif-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The PIF objects can be listed with the standard object listing command (`xe pif-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ### PIF parameters
 
@@ -1718,7 +1718,7 @@ Attempt to bring down the specified physical interface.
 
 Commands for working with pools. A *pool* is an aggregate of one or more XCP-ng servers. A pool uses one or more shared storage repositories so that the VMs running on one host in the pool can be migrated in near-real time to another host in the pool. This migration happens while the VM is still running, without it needing to be shut down and brought back up. Each XCP-ng server is really a pool consisting of a single member by default. When your XCP-ng server is joined to a pool, it is designated as a member, and the pool it has joined becomes the master for the pool.
 
-The singleton pool object can be listed with the standard object listing command (`xe pool-list`). Its parameters can be manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The singleton pool object can be listed with the standard object listing command (`xe pool-list`). Its parameters can be manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ### Pool parameters
 
@@ -2138,7 +2138,7 @@ Introduce new PVS site.
 
 Commands for controlling Storage Manager plug-ins.
 
-The storage manager objects can be listed with the standard object listing command (`xe sm-list`). The parameters can be manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The storage manager objects can be listed with the standard object listing command (`xe sm-list`). The parameters can be manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ## SM parameters
 
@@ -2229,7 +2229,7 @@ Uninstall a snapshot. This operation will destroy those VDIs that are marked RW 
 
 Commands for controlling SRs (storage repositories).
 
-The SR objects can be listed with the standard object listing command (`xe sr-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The SR objects can be listed with the standard object listing command (`xe sr-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ## SR parameters
 
@@ -2468,7 +2468,7 @@ Destroy a secret.
 
 Commands for working with long-running asynchronous tasks. These commands are tasks such as starting, stopping, and suspending a virtual machine. The tasks are typically made up of a set of other atomic subtasks that together accomplish the requested operation.
 
-The task objects can be listed with the standard object listing command (`xe task-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The task objects can be listed with the standard object listing command (`xe task-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ### Task parameters
 
@@ -2505,7 +2505,7 @@ Commands for working with VM templates.
 
 Templates are essentially VMs with the `is-a-template` parameter set to `true`. A template is a "gold image" that contains all the various configuration settings to instantiate a specific VM. XCP-ng ships with a base set of templates, which are generic "raw" VMs that can boot an OS vendor installation CD (for example: RHEL, CentOS, SLES, Windows). You can create VMs, configure them in standard forms for your particular needs, and save a copy of them as templates for future use in VM deployment.
 
-The template objects can be listed with the standard object listing command (`xe template-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The template objects can be listed with the standard object listing command (`xe template-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 :::tip
 Templates cannot be directly converted into VMs by setting the `is-a-template` parameter to `false`. Setting `is-a-template` parameter to `false` is not supported and results in a VM that cannot be started.
@@ -2639,7 +2639,7 @@ Uninstall a custom template. This operation will destroy those VDIs that are mar
 Update mechanism in XCP-ng is using `yum`, not this CLI. Please do NOT use it and check the [updates section](../../management/updates).
 :::
 
-The update objects can be listed with the standard object listing command (`xe update-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The update objects can be listed with the standard object listing command (`xe update-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ## Update parameters
 
@@ -2729,7 +2729,7 @@ Commands for working with VBDs (Virtual Block Devices).
 
 A VBD is a software object that connects a VM to the VDI, which represents the contents of the virtual disk. The VBD has the attributes which tie the VDI to the VM (is it bootable, its read/write metrics, and so on). The VDI has the information on the physical attributes of the virtual disk (which type of SR, whether the disk is sharable, whether the media is read/write or read only, and so on).
 
-The VBD objects can be listed with the standard object listing command (`xe vbd-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The VBD objects can be listed with the standard object listing command (`xe vbd-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ### VBD parameters
 
@@ -2825,7 +2825,7 @@ Commands for working with VDIs (Virtual Disk Images).
 
 A VDI is a software object that represents the contents of the virtual disk seen by a VM. This is different to the VBD, which is an object that ties a VM to the VDI. The VDI has the information on the physical attributes of the virtual disk (which type of SR, whether the disk is sharable, whether the media is read/write or read only, and so on). The VBD has the attributes that tie the VDI to the VM (is it bootable, its read/write metrics, and so on).
 
-The VDI objects can be listed with the standard object listing command (`xe vdi-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The VDI objects can be listed with the standard object listing command (`xe vdi-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ### VDI parameters
 
@@ -3039,7 +3039,7 @@ Refresh the fields of the VDI object in the database.
 
 Commands for working with VIFs (Virtual network interfaces).
 
-The VIF objects can be listed with the standard object listing command (`xe vif-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The VIF objects can be listed with the standard object listing command (`xe vif-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ## VIF parameters
 
@@ -3206,7 +3206,7 @@ Commands for controlling VMs and their attributes.
 
 Several of the commands listed here have a common mechanism for selecting one or more VMs on which to perform the operation. The simplest way is by supplying the argument `vm=name_or_uuid`. An easy way to get the uuid of an actual VM is to, for example, execute `xe vm-list power-state=running`. (Get the full list of fields that can be matched by using the command `xe vm-list params=all`. ) For example, specifying `power-state=halted` selects VMs whose `power-state` parameter is equal to `halted`. Where multiple VMs are matching, specify the option `--multiple` to perform the operation. The full list of parameters that can be matched is described at the beginning of this section.
 
-The VM objects can be listed with the standard object listing command (`xe vm-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The VM objects can be listed with the standard object listing command (`xe vm-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ### VM parameters
 
@@ -3795,7 +3795,7 @@ The VM or VMs on which this operation is performed are selected using the standa
 
 Use the `force` argument to cause an ungraceful shutdown, similar to pulling the plug on a physical server.
 
-An HVM mode VM requires `force=true` to be shutdown, unless [Guest Tools](../../vms#guest-tools) have been installed.
+An HVM mode VM requires `force=true` to be shutdown, unless [Guest Tools](../../vms#%EF%B8%8F-guest-tools) have been installed.
 
 ### `vm-snapshot`
 
@@ -3877,7 +3877,7 @@ We advise to use Xen Orchestra instead of this method. See [Xen Orchestra rollin
 
 Commands for controlling VM scheduled snapshots and their attributes.
 
-The vmss objects can be listed with the standard object listing command (`xe vmss-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](#low-level-parameter-commands)
+The vmss objects can be listed with the standard object listing command (`xe vmss-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
 ### `vmss-create`
 
