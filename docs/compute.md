@@ -75,9 +75,16 @@ Add the **`xen-pciback.hide`** parameter to the kernel boot parameters:
 >
 > `/opt/xensource/libexec/xen-cmdline --set-dom0 "xen-pciback.hide=(0000:04:01.0)(0000:00:19.0)"`
 
-To remove any passthrough devices from dom0:
-```bash
-/opt/xensource/libexec/xen-cmdline --delete-dom0 xen-pciback.hide
+To remove any passthrough devices from dom0, run the following XAPI commands:
+```
+# Get the list of PCI devices
+xe pci-list 
+
+# Hide the device from dom0
+xe pci-disable-dom0-access uuid=<pci uuid>
+
+# Unhide the device from dom0
+xe pci-enable-dom0-access uuid=<pci uuid> 
 ```
 
 :::warning
