@@ -22,7 +22,7 @@ If despite running the Windows tools installer, there's no devices visible in th
 
 #### Leftovers from old Citrix XenServer Client Tools.
 
-See the [XenClean guide](#completely-removing-existing-xen-pv-drivers-with-xenclean) below for instructions.
+See the [XenClean guide](#fully-removing-xen-pv-drivers-with-xenclean) below for instructions.
 
 ## Network PV drivers aren't working.
 
@@ -37,7 +37,7 @@ If the tools are installed, while XCP-ng Center says that I/O is optimized, but 
 * Clean your system from `Citrix Client Tools` _AND_ `XCP-ng Client Tools` to create a clean state.
 * Then install the Client Tools from scratch.
 
-See the [XenClean guide](#completely-removing-existing-xen-pv-drivers-with-xenclean) below for instructions.
+See the [XenClean guide](#fully-removing-xen-pv-drivers-with-xenclean) below for instructions.
 
 ## Not all PV drivers are correctly installed
 
