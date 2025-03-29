@@ -53,11 +53,3 @@ Apache CloudStack is open source software designed to deploy and manage large ne
 **XCP-ng is a certified and compatible platform for CloudStack.**
 
 See the [dedicated documentation](https://docs.cloudstack.apache.org/en/4.17.2.0/installguide/hypervisor/xenserver.html?highlight=xcp-ng) on how to install CloudStack on top of XCP-ng.
-
-## 📚 OpenStack
-
-:::warning
-Unlike Cloudstack, we do not know the level of compatibility with OpenStack. Take time to ask OpenStack community about their support for XAPI-based hosts
-:::
-
-Documentation can be found [on this page](https://wiki.openstack.org/wiki/XenServer/XenAndXenServer).
