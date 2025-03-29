@@ -4,7 +4,7 @@ sidebar_position: 9
 
 # Kernel module policy
 
-Our policity about kernel modules.
+Our policy regarding kernel modules.
 
 In XCP-ng, there is only one version of the kernel that is supported at a given time. There's also an [alternate kernel](../../../installation/hardware#-alternate-kernel) available for troubleshooting. The policy differs whether the kernel modules are for XCP-ng's supported kernel or for an alternate kernel.
 
