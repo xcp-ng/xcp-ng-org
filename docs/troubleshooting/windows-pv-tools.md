@@ -1,16 +1,6 @@
 # Windows PV Tools
 
-Common issues with Windows PV tools.
-
-## Windows Management Agent failed to install
-
-### Cause
-There was an issue with the installing of the drivers certificate, so the drivers did not load silently.
-
-### Solution
-Resolved with version 8.2.2.200-RC1 and newer.
-
-***
+Common issues and topics related to Windows PV tools.
 
 ## PV-Drivers missing in the Device Manager
 
@@ -31,8 +21,6 @@ See the [XenClean guide](#fully-removing-xen-pv-drivers-with-xenclean) below for
 If the tools are installed, while XCP-ng Center says that I/O is optimized, but the network card is not correctly installed and the Management Agent is also not working. There was an issue with the installing of the drivers certificate, so the drivers did not load silently.
 
 ### Possible Solutions
-
-* Resolved with version 8.2.2.200-RC1 and newer.
 
 * Clean your system from `Citrix Client Tools` _AND_ `XCP-ng Client Tools` to create a clean state.
 * Then install the Client Tools from scratch.
