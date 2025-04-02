@@ -5,12 +5,14 @@
 | Version                   | Released   | Status               | Support until                                | Release notes                        |
 | ---                       | ---        | ---                  | ---                                          | ---                                  |
 | [8.3](release-8-3.md)     | 2024-10-07 | Full support         | 2028-11-30                                   | [8.3 Release notes](release-8-3.md)  |
-| [8.2 LTS](release-8-2.md) | **8.2.0**:&nbsp;2020-11-18<br/>**8.2.1**:&nbsp;2022-02-28 | Full support, LTS    | 2025-06-25                                   | [8.2 Release notes](release-8-2.md)  |
+| [8.2 LTS](release-8-2.md) | **8.2.0**:&nbsp;2020-11-18<br/>**8.2.1**:&nbsp;2022-02-28 | Full support, LTS    | 2025-06-25 (*)                                | [8.2 Release notes](release-8-2.md)  |
 | [8.1](release-8-1.md)     | 2020-03-31 | EOL                  | 2021-03-31                                   | [8.1 Release notes](release-8-1.md)  |
 | 8.0                       | 2019-07-25 | EOL                  | 2020-11-13                                   |                                      |
 | 7.6                       | 2018-10-31 | EOL                  | 2020-03-30                                   |                                      |
 | 7.5                       | 2018-08-10 | EOL                  | 2019-07-25                                   |                                      |
 | 7.4                       | 2018-03-31 | EOL                  | 2018-10-31                                   |                                      |
+
+(*) Support for XCP-ng 8.2 LTS will be extended for a short period to ensure a three-month gap between the official LTS release of XCP-ng 8.3 and the end of support for XCP-ng 8.2 LTS. See [this article](https://xcp-ng.org/blog/2025/03/14/the-future-of-xcp-ng-lts/).
 
 ## 🟢 LTS Releases
 
@@ -23,7 +25,7 @@ Using the Long Term Support version is recommended if:
 * you need a predictable migration path over a longer timeframe
 * you are not concerned about missing new features for a few years
 
-LTS releases are supported for up to 5 years:
+XCP-ng's LTS releases are typically supported for up to five years. However, XCP-ng 8.3 is an exception: it will be supported until 2028-11-30 to make way for the next major release, XCP-ng 9.0.
 
 ```mermaid
 %%{
@@ -41,11 +43,9 @@ LTS releases are supported for up to 5 years:
 gantt
     dateFormat  YYYY-MM-DD
     tickInterval 12month
-    XCP-ng 8.2 LTS         :2020-11-18, 5y
-    XCP-ng 8.1 (EOL)       :2020-03-31, 1y
+    XCP-ng 8.3 LTS         :2025-05-31, 3.5y
+    XCP-ng 8.2 LTS         :2024-08-30, 1y
 ```
-
-If you prefer to get the latest improvements, go for our [latest release](#-standard-release).
 
 ## 🟡 Standard Release
 
