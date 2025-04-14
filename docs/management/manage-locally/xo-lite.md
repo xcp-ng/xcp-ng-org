@@ -29,3 +29,25 @@ Once logged, you can see the dashboard:
 :::info
 XO Lite isn't a multi-cluster orchestrator, it's just a local management console. If you want to orchestrate your VMs at scale (load balancing, backup, warm migration and so on), you MUST use [Xen Orchestra](../manage-at-scale/xo-web-ui.md)!
 :::
+
+## Disabling XO Lite
+
+First, let's emphasize that XO Lite is merely an XAPI client. While it is made readily available by the web server on XCP-ng, it actually runs entirely in your web browser. It does **not** increase the attack surface on XCP-ng servers. Additionally, in a properly configured XCP-ng deployment, the management interface resides on a dedicated network, accessible only to administrators.
+
+However, you might still want to prevent XCP-ng from offering XO Lite altogether. To do so, simply add the following line to a new file in `/etc/xapi.conf.d/`:
+
+```
+disable-webserver=1
+```
+
+Here's a one-liner to do that:
+
+```
+echo "disable-webserver=1" > /etc/xapi.conf.d/disable-webserver.conf
+```
+
+You must perform this step on every host in the pool, followed by a toolstack restart (ensure no critical tasks are running before doing so):
+
+```
+xe-toolstack-restart
+```
