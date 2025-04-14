@@ -43,7 +43,7 @@ disable-webserver=1
 Here's a one-liner to do that:
 
 ```
-echo "disable-webserver=1" > /etc/xapi.conf.d/disable-webserver.conf
+echo "disable-webserver=true" > /etc/xapi.conf.d/disable-webserver.conf
 ```
 
 You must perform this step on every host in the pool, followed by a toolstack restart (ensure no critical tasks are running before doing so):
