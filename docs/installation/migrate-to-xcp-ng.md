@@ -32,13 +32,18 @@ Export your VM in OVA format, and use Xen Orchestra to import it. If you have an
 
 ## 🇻 From VMware
 
+:::warning
+Migrating from VMware to XCP-ng is not just a technical operation on one VM, it's a process. How long the migration takes depends on various factors, such as:
+
+- **Number of VMs**  Make sure to know the size of your infrastructure before starting a migration. To migrate hundreds or thousands of VMs, you may want automate the export/import steps with a script.
+- **Hardware performance and compatibility**: It's important to take into account the performance of your hardware. SSD or HDD? Network hardware performance? RAM and CPU availability? All these elements will have an impact on your migration.
+:::
+
 ### XO V2V
 
 Xen Orchestra introduces "V2V," or "VMware to Vates", a streamlined tool for migrating from VMware to the Vates Stack, encompassing XCP-ng and Xen Orchestra (XO). Seamlessly integrated into Xen Orchestra, this tool utilizes the "warm migration" feature for efficient transitions. The process initiates with exporting an initial snapshot of the VMware-based VM, which, despite being time-consuming, occurs without disrupting the VM's operation, ensuring transparency.
 
 Once this comprehensive replication completes, the VM is shut down, and only the newly modified data blocks since the snapshot are exported. The VM is then activated on the XCP-ng platform, significantly minimizing downtime, a crucial benefit for large VMs. Furthermore, the migration process is largely automated, allowing for hands-off monitoring and execution. This entire procedure is fully automated for user convenience and efficiency.
-
-You can read more in our [official VMware to XCP-ng migration guide](https://xcp-ng.org/blog/2022/10/19/migrate-from-vmware-to-xcp-ng/).
 
 :::tip
 This method doesn't require any direct access to the VMware storage, only an HTTP access to the ESXi API. This is pretty powerful, allowing you to migrate everything remotely from one Xen Orchestra.
@@ -62,25 +67,56 @@ After the transfer, the VM on XCP-ng side is started:
 
 ![](../../assets/img/xoa-v2v-4.png)
 
+This process is fully automated, without any human intervention after it starts on step 1.
 
 #### From the XO UI
 
-In your Xen Orchestra UI, go into the main menu in the left, on the "Import" then "From VMware" option:
+In your Xen Orchestra UI, go to the main menu on the left, on **Import** click **From VMware**:
 
 ![](../../assets/img/v2v1.png)
 
-After giving the vCenter credentials, you can click on "Connect" and go to the next step:
+After giving the vCenter credentials, click **Connect** and go to the next step:
 
 ![](../../assets/img/v2v2.png)
 
 On this screen, you will basically select which VM to replicate, and to which pool, storage and network. When it's done, just click on "Import" and there you go!
 
+#### From the CLI
+
+You can also use the command-line interface (CLI) to migrate your VM. 
+
+To do this:
+
+1. Gather all the information needed to contact the VMware side :
+    - IP
+    - Credentials
+    - SSL check or not
+    - The ID of the VM and the ID of the VM
+2. On the XCP-ng side, provide the following information:
+    - SR
+    - Network
+
+3. Run this command with `xo-cli`:
+
+`xo-cli vm.importFromEsxi host=<VSPHERE_IP> user=<VSPHERE_USER> password=<VSHPERE_PWD> sslVerify=<true|false> vm=<VSPHERE_VM_ID> sr=<SR_UUID> network=<NETWORK_UUID>`
+
+Now, you can see the transfer progress in the **Task** view of the Xen Orchestra UI. As soon it's done, you can boot the VM directly!
+
 ### OVA
 
-Using OVA export from VMware and then OVA import into Xen Orchestra is another possibility.
+You can also export an OVA from VMware and import an OVA into Xen Orchestra.
+
+An OVA is a big, single file using the standard Open Virtualization Format. The OVA contains an XML describing the metadata (VM name, description, etc.) and your disks in the VMDK format.
 
 :::tip
 To skip Windows activation if the system was already activated, collect info about the network cards used in the Windows VM (ipconfig /all) and use the same MAC address(es) when creating interfaces in XCP-ng.
+:::
+
+:::warning
+
+- **Downtime**: The OVA can only be exported while the VM is off (except if you export a clone, but all blocks written after the clone won't be on the imported VM. If you can sync after, it's fine!). This can take a while, and your VMs won't be reachable until it's fully exported AND imported on destination.
+- **Storage**: You need an intermediary storage where you can export then import the OVA file. If your VMs are small, it's OK.
+- **Manual process**: Even if it's simple to do, it can be cumbersome if you have a lot of VMs to migrate.
 :::
 
 Importing a VMware Linux VM, you may encounter an error similar to this on boot:
@@ -92,6 +128,21 @@ The fix for this is installing some xen drivers *before* exporting the VM from V
 `dracut --add-drivers "xen-blkfront xen-netfront" --force`
 
 [See here](https://unix.stackexchange.com/questions/278385/boot-problem-in-linux/496037#496037) for more details. Once the imported VM is properly booted, remove any VMware related tooling and be sure to install [Xen guest tools](../../vms).
+
+### CloneZilla
+
+An alternative to using OVA. 
+
+1. Insert a CloneZilla live CD in your existing VMware VM, and boot on it. In the meantime, you also have a VM on the destination with the right metadata (same name and disks), which you'll also boot with CloneZilla.
+
+2. From the VM console, you can tell the source VM running CloneZilla to send all the blocks to the destination VM, also running CloneZilla. 
+
+3. As soon it's done, you can safely shut down the original VM and boot the copy on destination!
+
+:::warning
+- **Downtime**: Even if the downtime will be reduced compared to using OVA, you still need to run the export/import process while the VM is off.
+- **Setup time**: Not complex, but various operations are needed until you can start the replication for one VM. If you have a lot of VMs, this can take some effort.
+:::
 
 ### Local migration (same host)
 
