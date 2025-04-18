@@ -73,11 +73,11 @@ Consult your motherboard manual for details; for example, on Dell systems with i
 
 XenClean is an utility for cleanly removing Xen PV drivers and management agents of the following products:
 
-* XCP-ng Windows PV Tools, versions 8.2 and 9.1
-* XenServer VM Tools for Windows, versions 9.3 and 9.4
+* XCP-ng Windows PV Tools, versions 8.2 to 9.1
+* XenServer VM Tools for Windows, versions 7.1 to 9.4
 * Other Xen drivers
 
-It is included in the installation package of XCP-ng Windows PV Tools 9.1 and above.
+It is included in the installation package of XCP-ng Windows PV Tools 9.0 and above.
 [See the newest releases here.](https://github.com/xcp-ng/win-pv-drivers/releases)
 
 :::note
@@ -98,7 +98,7 @@ XenClean leaves its log files at the current directory and at `%TEMP%\xenclean-<
 ## Windows fails to boot (hanging at boot or BSOD with Stop code `INACCESSIBLE_BOOT_DEVICE`)
 
 In some situations (failed uninstallation, major Windows version upgrades), Xen PV drivers (whether Citrix or XCP-ng) may cause Windows to fail to start (hanging at boot, BSOD with Stop code `INACCESSIBLE_BOOT_DEVICE`).
-The XenBootFix utility included with XCP-ng Windows PV Tools 9.1 and above helps you disable any active Xen PV drivers and get your system to a bootable state before running XenClean.
+The XenBootFix utility included with XCP-ng Windows PV Tools 9.0 and above helps you disable any active Xen PV drivers and get your system to a bootable state before running XenClean.
 
 :::note
 The utility only runs in Windows Preinstallation Environment (PE) or Windows Recovery Environment (RE). It will not run from Safe Mode.
@@ -121,9 +121,8 @@ Below is a procedure for using XenBootFix to recover a non-booting VM:
     * If your Windows partition does not have a drive letter, type `sel vol N` where `N` is the volume number shown in Diskpart, then type `assign letter=W`. Your Windows partition will be assigned the drive letter `W:`.
     * Finally, at the `DISKPART>` prompt, type `exit` to exit Diskpart.
 5. Obtain XenBootFix.
-  * If you're using XCP-ng Windows PV Tools 9.1 or later, it is located at `W:\Program Files\XCP-ng\Windows PV Drivers\XenBootFix\XenBootFix.exe` where `W:` is your Windows drive letter.
-  * If you have PowerShell, run the following command: `Invoke-WebRequest https://<download path of XenBootFix.exe> -OutFile XenBootFix.exe`
-  * Failing all that, you can create a new ISO image containing XenBootFix using WinCDEmu, ImgBurn or a similar tool, then attach it to your VM.
+  * The easiest way is to download and use the [latest release ISO](https://github.com/xcp-ng/win-pv-drivers/releases) of XCP-ng Windows PV Tools, which includes a copy of XenBootFix at `package\XenBootFix\XenBootFix.exe`.
+  * If you're using XCP-ng Windows PV Tools 9.0 or later, it is also located at `W:\Program Files\XCP-ng\Windows PV Drivers\XenBootFix\XenBootFix.exe` where `W:` is your Windows drive letter.
   * **Note**: If using Windows PE, do not remove its CD image when it's running. You may encounter unexpected errors otherwise.
 6. Run the command `<path to XenBootFix.exe> W:\Windows` where `W:` is your Windows drive letter.
   * **Note**: Make sure the drive letter belongs to your actual Windows installation and not Windows PE/RE. By default, Windows PE/RE use the drive letter **X:**.
