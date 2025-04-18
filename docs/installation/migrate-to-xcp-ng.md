@@ -33,20 +33,40 @@ Export your VM in OVA format, and use Xen Orchestra to import it. If you have an
 ## 🇻 From VMware
 
 :::warning
+
+**Disk Size Limitations** 
+
+Disks larger than 2TB - 8MB cannot be migrated automatically. You will need to create the VM in Xen Orchestra with multiple disks and use the OS capabilities to build them into a joined disk of the required size. Then, migrate the disk content using your preferred tool (e.g., Clonezilla, Robocopy, Rsync).
+
+**Warm migration prerequisites** 
+
+Warm migration (as explained below in the [XO V2V](#xo-v2v) section) involves migrating all content up to the last snapshot, then stopping the VM and migrating the snapshot content. This method requires that the VM has at least one snapshot and that the account used has permission to stop the VM.
+
+**Migration time**
+
 Migrating from VMware to XCP-ng is not just a technical operation on one VM, it's a process. How long the migration takes depends on various factors, such as:
 
-- **Number of VMs**  Make sure to know the size of your infrastructure before starting a migration. To migrate hundreds or thousands of VMs, you may want automate the export/import steps with a script.
-- **Hardware performance and compatibility**: It's important to take into account the performance of your hardware. SSD or HDD? Network hardware performance? RAM and CPU availability? All these elements will have an impact on your migration.
+- **Number of VMs:**  Make sure to know the size of your infrastructure before starting a migration. To migrate hundreds or thousands of VMs, you may want automate the export/import steps with a script.
+- **Hardware performance and compatibility:** It's important to take into account the performance of your hardware. SSD or HDD? Network hardware performance? RAM and CPU availability? All these elements will have an impact on your migration.
+- **Network:** The network used to write data onto XCP-ng is the "default backup network", if configured.
+:::
+
+:::tip
+**Before Starting**
+
+Remove the VMware drivers before starting the migration.
 :::
 
 ### XO V2V
 
-Xen Orchestra introduces "V2V," or "VMware to Vates", a streamlined tool for migrating from VMware to the Vates Stack, encompassing XCP-ng and Xen Orchestra (XO). Seamlessly integrated into Xen Orchestra, this tool utilizes the "warm migration" feature for efficient transitions. The process initiates with exporting an initial snapshot of the VMware-based VM, which, despite being time-consuming, occurs without disrupting the VM's operation, ensuring transparency.
+Xen Orchestra introduces "V2V", or "VMware to Vates", a streamlined tool for migrating from VMware to the Vates Stack, which includes XCP-ng and Xen Orchestra (XO). 
 
-Once this comprehensive replication completes, the VM is shut down, and only the newly modified data blocks since the snapshot are exported. The VM is then activated on the XCP-ng platform, significantly minimizing downtime, a crucial benefit for large VMs. Furthermore, the migration process is largely automated, allowing for hands-off monitoring and execution. This entire procedure is fully automated for user convenience and efficiency.
+This tool is seamlessly integrated into Xen Orchestra and leverages the "warm migration" feature for efficient transitions. The process begins by exporting an initial snapshot of the VMware-based VM. Although this step can be time-consuming, it occurs without disrupting the VM's operation, ensuring transparency.
+
+Once this comprehensive replication is complete, the VM is shut down, and only the newly modified data blocks since the snapshot are exported. The VM is then activated on the XCP-ng platform, significantly minimizing downtime—a crucial benefit for large VMs.  Furthermore, the migration process is largely automated, allowing for hands-off monitoring and execution. This entire procedure is fully automated for user convenience and efficiency.
 
 :::tip
-This method doesn't require any direct access to the VMware storage, only an HTTP access to the ESXi API. This is pretty powerful, allowing you to migrate everything remotely from one Xen Orchestra.
+This method doesn't require any direct access to the VMware storage, only an HTTP access to the ESXi API. This is pretty powerful, allowing you to migrate everything remotely from one Xen Orchestra instance.
 :::
 
 #### How it works
@@ -68,6 +88,22 @@ After the transfer, the VM on XCP-ng side is started:
 ![](../../assets/img/xoa-v2v-4.png)
 
 This process is fully automated, without any human intervention after it starts on step 1.
+
+#### Storage types
+:::warning
+
+- **Raw disks:** Raw disks are not supported.
+- **VSAN:** 
+    - When migrating from a VSAN, make sure your remote has enough storage capacity to accommodate the largest VM you plan to import. The VM will be stopped before migration begins, and the process may be slow.
+    - In this case, the network path is: VSAN → vSphere → Host running XOA → Remote → Host running XOA → Host with target storage → Target storage
+- **VMFS datastores:** 
+    - Warm migration is reported to work in most cases with VMFS5. If it doesn't work, try migrating the VM while it is stopped.
+    - In this case, the network path is: VMFS storage → ESXi → Host running XOA → Host with target storage → Target storage
+- **NFS datastores:** When migrating from NFSdatastores (such as NFSDatastoreEsxi):\
+    - Create a corresponding NFS remote in Xen Orchestra named `[VmWare] NFSDatastoreEsxi`. If not, it will fall back to the VMFS process.
+    - Warm migration is reported to work in all cases.
+    - In this case, the network path is: NFS remote → Host running XOA → Host with target storage → Target storage
+:::
 
 #### From the XO UI
 
@@ -104,12 +140,14 @@ Now, you can see the transfer progress in the **Task** view of the Xen Orchestra
 
 ### OVA
 
-You can also export an OVA from VMware and import an OVA into Xen Orchestra.
+You can export an OVA from VMware and import an OVA into Xen Orchestra.
 
-An OVA is a big, single file using the standard Open Virtualization Format. The OVA contains an XML describing the metadata (VM name, description, etc.) and your disks in the VMDK format.
+An OVA is a large, single file that uses the standard Open Virtualization Format. It contains an XML file describing the metadata (such as VM name and description) and your disks in VMDK format.
 
 :::tip
-To skip Windows activation if the system was already activated, collect info about the network cards used in the Windows VM (ipconfig /all) and use the same MAC address(es) when creating interfaces in XCP-ng.
+- Before starting the migration, make sure to stop the VM on the VMware side.
+- To skip Windows activation if the system was already activated, gather information about the network cards used in the Windows VM (using `ipconfig /all`) and use the same MAC address(es) when creating interfaces in XCP-ng.
+
 :::
 
 :::warning
@@ -128,6 +166,35 @@ The fix for this is installing some xen drivers *before* exporting the VM from V
 `dracut --add-drivers "xen-blkfront xen-netfront" --force`
 
 [See here](https://unix.stackexchange.com/questions/278385/boot-problem-in-linux/496037#496037) for more details. Once the imported VM is properly booted, remove any VMware related tooling and be sure to install [Xen guest tools](../../vms).
+
+### VMDK
+
+You can also export Virtual Machine Disks (VMDK). VMDK is a file format that describes containers for virtual hard disk drives to be used in virtual machines like VMware Workstation. 
+
+There are two methods to export VMDKs:
+
+#### Method 1: Export without conversion
+
+1. Stop the VM on the VMware side.
+2. Export each disk as a VMDK file.
+3. Create a diskless VM in Xen Orchestra.
+4. Import the disks using the **Import → Disk** menu in Xen Orchestra.
+5. Attach the disks to the VM and start it.
+
+#### Method 2: Export with conversion
+
+:::warning
+
+Snapshot migration is slow due to the huge differences between VMDK and VHD file formats. Limit the number of snapshots to the minimum.
+
+:::
+
+1. Stop the VM on the VMware side.
+2. Export each disk as a VMDK file.
+3. Convert the VMDK files to the VHD format, using the command: `qemu-img convert -f vmdk -O vpc source.vmdk destination.vhd`.
+4. Create a diskless VM in Xen Orchestra.
+5. Import the disks using the **Import → Disk** menu in XO.
+6. Attach the disk to the VM and start it.
 
 ### CloneZilla
 
