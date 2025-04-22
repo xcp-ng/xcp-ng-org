@@ -62,6 +62,30 @@ In some cases, we've found that the `cert` directive in `~/.koji/config ` was no
 ## Test your connection
 `koji moshimoshi`. If it greats you (in any language), then your connection to the server works.
 
+## Koji in Docker container
+
+When your Linux distribution doesn't have a useable `koji`, you can always run it in a container.
+
+Prepare an image:
+```
+docker build -t koji:latest - <<EOF
+FROM fedora:41
+RUN dnf install -qy koji
+EOF
+```
+
+Then, to run koji with it, which will use the `~/.koji` directory that you've prepared outside the container:
+```
+docker run -it --rm -v$HOME/.koji:/root/.koji:ro koji:latest koji moshimoshi
+```
+
+### Alternative as a one-liner
+
+This command does the same as above, but relies on docker caching the result of a `docker build`:
+```
+docker run -it --rm -v$HOME/.koji:/root/.koji:ro $(docker build -q - <<<$'FROM fedora:41\nRUN dnf install -qy koji') koji moshimoshi
+```
+
 ## Useful commands
 
 Just a quick list. Make sure to have read and understood our [development process tour](../../../category/development-process).
