@@ -65,7 +65,19 @@ _This method works best for finding the device ID by class. The example below th
 ../../devices/pci0000:00/0000:04:01.0/net/eth1
 ```
 
+**Method 3: List PCI devices using XAPI**
+
+_This method works since XCP-ng 8.3._
+
+Run `xe pci-list`.
+
 ### 2. Tell XCP-ng not to use this device ID for Dom0
+
+#### Disabling the device
+
+To hide the device from dom0:
+
+##### XCP-ng 8.2
 
 Add the **`xen-pciback.hide`** parameter to the kernel boot parameters:
 ```bash
@@ -75,10 +87,26 @@ Add the **`xen-pciback.hide`** parameter to the kernel boot parameters:
 >
 > `/opt/xensource/libexec/xen-cmdline --set-dom0 "xen-pciback.hide=(0000:04:01.0)(0000:00:19.0)"`
 
-To remove any passthrough devices from dom0:
-```bash
-/opt/xensource/libexec/xen-cmdline --delete-dom0 xen-pciback.hide
+##### XCP-ng 8.3
+
+Run the following XAPI command:
+
 ```
+xe pci-disable-dom0-access uuid=<pci uuid>
+```
+
+#### Enabling the device
+
+To unhide the device from dom0:
+
+##### XCP-ng 8.2
+`/opt/xensource/libexec/xen-cmdline --delete-dom0 xen-pciback.hide`
+
+##### XCP-ng 8.3
+
+Run the following XAPI command:
+
+`xe pci-enable-dom0-access uuid=<pci uuid>`
 
 :::warning
 This kernel parameter is not retained when you upgrade an XCP-ng host [using the installation ISO](../installation/upgrade#-upgrade-via-installation-iso-recommended). Remember to re-do this step after the upgrade.
