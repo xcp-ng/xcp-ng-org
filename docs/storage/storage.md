@@ -177,6 +177,14 @@ We strongly recommend using a hardware RAID system instead of software RAID.
 We do not provide support for issues resulting from the choice of software RAID for storage repositories.
 :::
 
+:::info
+An automated RAID health check is performed regularly using the `check_raid` plugin.
+
+This plugin is executed automatically every ten minutes by Xen Orchestra on each host. When a check is in progress, Xen Orchestra displays an alert to notify users that the RAID status is being verified:
+
+![](../assets/img/raid-check-alert.png)
+:::
+
 ### NFS
 
 Shared, thin-provisioned storage. Efficient, recommended for ease of maintenance and space savings.
