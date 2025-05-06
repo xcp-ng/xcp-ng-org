@@ -220,6 +220,16 @@ This article describes how to proceed in order to convert your Citrix XenServer 
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`
 * **It is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
 * If you already have an XCP-ng pool, do not try to add a slave running XenServer to it. You will get an "Incompatible License" error. Please upgrade the slave to XCP-ng first, then add it to your existing pool
+* Before proceeding, it is important to ensure that the `xapi` service
+  currently running on your host is compatible with the version provided by
+  XCP-ng. To verify this, open a terminal session on the host machine and execute
+  the command `rpm -qi xapi-core`. This command will display detailed information
+  about the installed `xapi-core` package, including its version number. Check the
+  xapi version available in [XCP-ng updates](https://mirrors.xcp-ng.org/8/8.3/updates/Source/SPackages/).
+  Compatibility is essential because the XCP-ng installation ISO can only upgrade
+  XenServer hosts whose xapi version is equal to or lower than the version
+  included with XCP-ng. If your xapi version exceeds this, the upgrade process may
+  not proceed correctly.
 :::
 
 ### Before you start
@@ -238,7 +248,7 @@ Then boot on the ISO!
 
 ![](https://xcp-ng.org/wp-content/uploads/2018/03/install1.png)
 
-Eventually, you will reach a screen offering to upgrade your XenServer 7.X to XCP-ng:
+Eventually, you will reach a screen offering to upgrade your XenServer to XCP-ng:
 
 ![](https://xcp-ng.org/wp-content/uploads/2018/03/install4.png)
 
@@ -246,7 +256,9 @@ Once the installation process is complete, reboot your host:
 
 ![](https://xcp-ng.org/wp-content/uploads/2018/03/install8.png)
 
-Then you'll boot on XCP-ng, with **all your previous settings, VMs, storage and network ready!**
+Boot on your new XCP-ng and [install the updates](../../management/updates).
+
+Enjoy XCP-ng, with **all your previous settings, VMs, storage and network ready!**
 
 > Note: if you have a pool, after you did that with the master, you can continue with the slaves, in the order you like.
 
