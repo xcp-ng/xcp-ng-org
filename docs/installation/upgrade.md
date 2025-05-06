@@ -43,6 +43,8 @@ It will backup your system to the backup partition and reinstall the system from
 
 **Any additional changes made by you to the system will be lost, so remember to make them again after the upgrade. Including: kernel or Xen boot parameters, changes to `/etc`, additional users created and their homes, local ISO SRs, [additional packages](../../management/additional-packages)...** Some boot parameters and configuration files are saved, but it's a short list.
 
+
+
 Steps:
 1. Download an installation ISO from the [download page](https://xcp-ng.org/download/). Choose either the standard installer or the network installer.
 2. [Check the authenticity and the integrity of the downloaded ISO](../../project/mirrors#check-an-iso-image).
@@ -220,6 +222,14 @@ This article describes how to proceed in order to convert your Citrix XenServer 
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`
 * **It is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
 * If you already have an XCP-ng pool, do not try to add a slave running XenServer to it. You will get an "Incompatible License" error. Please upgrade the slave to XCP-ng first, then add it to your existing pool
+* Before proceeding, it is important to ensure that the `xapi` service
+  currently running on your host is compatible with the version provided by
+  XCP-ng. To verify this, open a terminal session on the host machine and execute
+  the command `rpm -qi xapi-core`. This command will display detailed information
+  about the installed `xapi-core` package, including its version number.
+  Compatibility is crucial because the XCP-ng installation ISO supports upgrading
+  XenServer hosts only if their xapi version is up to and including version 24. If
+  your xapi version exceeds this, the upgrade process may not proceed correctly.
 :::
 
 ### Before you start
