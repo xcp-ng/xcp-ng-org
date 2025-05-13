@@ -138,6 +138,91 @@ To do this:
 
 Now, you can see the transfer progress in the **Task** view of the Xen Orchestra UI. As soon it's done, you can boot the VM directly!
 
+#### Troubleshooting
+
+Here is a comprehensive checklist of steps to take when encountering issues during VMware migration:
+
+##### General Checks
+
+**XOA Version**
+
+1. Make sure you can go to this screen in XOA:
+
+![](../../assets/img/check-update-xoa.png)
+
+2. Check your version of XOA. You should be usng the `latest` channel:
+
+![](../../assets/img/check-xoa-version.png)
+
+If you were not using the `latest` channel previously:
+    1. Switch to that channel.
+    2. Update your VM.
+
+:::tip
+- **Backup method:** The migration will use the default backup migration. Check if the XOA VM can access it.
+- **Task timeout:** Note that XAPI tasks are limited to 24 hours by default. To increase that limitation, refer to the **24h task timeout** section of [this page](/management/manage-locally/api#_24h-task-timeout).
+:::
+
+From this point onward, the process varies depending on the type of datastore you're using.
+
+##### VMFS 5 (Mostly up to VMware 6.5)
+
+For VMFS 5, **you can perform a warm migration** (the VM doesn't need to be shut down before migration). 
+
+Here's what you need to check:
+
+1. Uninstall VMware tools before migration.
+2. Make sure no ISO files are mounted to the VM.
+3. Remove any unnecessary snapshots before migration, as they are take lots of resources to handle.
+4. You must have at least one snapshot to perform a warm migration.
+    - Take a new snapshot and check the **stop VM** option. This will stop the VM before migrating the last snapshot.
+    - If you don't check the toggle **stop the VM** on a running VM, it will only migrate data before the last snapshot.
+    - Without any snapshots, nothing will be migrated.
+
+##### VMFS 6 (6.7 and newer)
+
+For VMFS 6, **the VM needs to be shut down**. Follow these steps:
+
+1. Uninstall VMware tools before migration.
+2. Remove all snapshots attached to the VM.
+3. Ensure no ISO files are mounted to the VM.
+4. Shut down the VM.
+5. Take a fresh snapshot.
+6. Start the migration process.
+
+##### vSAN
+
+For VMs residing on a vSAN:
+
+:::tip
+
+Snapshots are not used, so it doesn't matter if there are any.
+
+:::
+
+1. Uninstall VMware Tools before starting the migration.
+2. Make sure that no ISO files are mounted to the VM.
+3. The VM **must** be powered off.
+4. Connect directly to vSphere via its IP address.
+5. If the V2V tool successfully detects that the VM is on a vSAN store, it should prompt you to select an XOA remote (see **Settings → Remotes**) to store a temporary VMDK export.
+6. If it does not prompt you to select an XOA remote before import, it has not detected your vSAN properly. 
+\
+In that case, please open a support ticket with details of the issue.
+
+##### NFS Datastore
+
+For VMs residing on an NFS datastore, **you can perform a warm migration** (the VM doesn't need to be shut down before migration). 
+
+Here's what you need to check:
+
+1. Set up an NFS backup remote in XOA under **Settings → Remotes** that connects to the NFS datastore. Name it `[VMWARE]datastorename`, where `datastorename` is the exact name of the datastore on the VMware side.
+2. Uninstall VMware tools before migration.
+3. Make sure no ISO files are mounted to the VM.
+4. Remove any unnecessary snapshots before migration, as they are take lots of resources to handle.
+5. You must have at least one snapshot to perform a warm migration. Take a new snapshot and check the toggle **stop VM** option. This will stop the VM before migrating the last snapshot.
+6. If you don't check the **stop the VM** option on a running VM, it will only migrate data up to the point of the last snapshot.\
+Nothing will be migrated if there is no snapshot.
+
 ### OVA
 
 You can export an OVA from VMware and import an OVA into Xen Orchestra.
