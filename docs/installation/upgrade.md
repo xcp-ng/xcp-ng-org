@@ -315,7 +315,7 @@ To start the process, just tell the host to reboot. It is best to watch the prog
 
 ### Live migration
 
-Live migration **should work** from any older XenServer/XCP-ng toward the latest release. However, there are some cases where it doesn't. For example, XenServer (and XCP-ng) 7.6 has a regression that makes live migration with storage motion crash guests that are based on the "Other installation media" template when the source host has a version lower than 7.6 ([reported here to Citrix](https://bugs.xenserver.org/browse/XSO-924)). But **this bug has been fixed in latest XCP-ng 7.6 updates**.
+Live migration **should work** from any older XenServer/XCP-ng toward the latest release. However, there are some cases where it doesn't. For example, XenServer (and XCP-ng) 7.6 has a regression that makes live migration with storage motion crash guests that are based on the "Other installation media" template when the source host has a version lower than 7.6. But **this bug has been fixed in latest XCP-ng 7.6 updates**.
 
 ### Warm migration
 

@@ -89,6 +89,28 @@ The upstream repository doesn't contain the maintenance branches that are the ba
 - When our branch exactly matches the contents of the hotfix's tarball, tag it as `vUPSTREAMVERSION-xcpng`. This tag will be used to checkout for the next maintenance update, and as the base reference to generate patches for our RPM.
 - At last, we can apply our specific commits on top: rebase or cherry-pick them from the previous maintenance branch for this release (example: `2.30.3-8.2`) and resolve conflicts carefully. Of course, drop patches that were already merged upstream.
 
+### Special case: `xapi`
+
+The primary objective is to do everything necessary to **push our patches upstream**. We
+can maintain patches in our branches so that they are available in our RPMs as early as possible,
+but it's crucial that these patches ultimately be awaiting upstream acceptance.
+
+#### How to manage patches?
+
+- Create a new `UPSTREAMVERSION-XCPNGVERSION` branch (example: `v24.39.1-8.3`).
+- To update either the upstream version or the xcpng version, rebase or cherry-pick your commits
+from the current maintenance branch for the previous release (e.g, `v24.19.2-8.3`), and
+resolve conflicts carefully. Reorganize commits as needed to maintain a consistent history.
+Of course, drop any patches that have already been merged upstream.
+- For example, if the upstream version changes:
+  - create a new branch using the naming convention.
+  - rebase or cherry-pick the patches from the older version. Rebasing is often a better
+  approach but if you need to keep a subset of patches cherry-picking can be an option.
+  You need to create the new branch according to your needs.
+- If the XCP-ng version changes, follow the same process: create a new branch and rebase or
+cherry-pick the patches.
+- To generate the list of patches to be used for the RPM, use `git format-patch --no-numbered --no-signature UPSTREAMVERSION`
+
 ### Special case: `qemu-dp`
 
 `qemu-dp` both *has* an upstream git repository and at the same time it *hasn't*:

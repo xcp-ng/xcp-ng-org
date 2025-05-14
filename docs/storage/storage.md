@@ -37,11 +37,17 @@ There are storage types that are officially supported, and others that are provi
     <th>Officially Supported</th>
   </tr>
   <tr>
-    <td rowspan="9">file based</td>
+    <td rowspan="10">file based</td>
     <td>Local EXT</td>
     <td>X</td>
     <td></td>
     <td>X</td>
+  </tr>
+  <tr>
+    <td>Software RAID</td>
+    <td>X</td>
+    <td></td>
+    <td>**No. Provided as-is**</td>
   </tr>
   <tr>
     <td>NFS</td>
@@ -92,7 +98,7 @@ There are storage types that are officially supported, and others that are provi
     <td>**No. Provided as-is**</td>
   </tr>
   <tr>
-    <td rowspan="5">block based</td>
+    <td rowspan="6">block based</td>
     <td>Local LVM</td>
     <td></td>
     <td></td>
@@ -154,6 +160,22 @@ xe sr-create host-uuid=<host UUID> type=ext content-type=user name-label="Local 
 ```
 
 In addition to the two main, rock-solid, local storages (EXT and LVM), XCP-ng offers storage drivers for other types of local storage (ZFS, XFS, etc.).
+
+### Software RAID
+
+Local, with ```mdadm```. Not recommended.
+
+See our [community-contributed guide](../guides/software-RAID-SR/).
+
+:::tip
+We strongly recommend using a hardware RAID system instead of software RAID.
+:::
+
+:::warning
+**Software RAID storage integration is offered as-is** and does not come with official support.
+
+We do not provide support for issues resulting from the choice of software RAID for storage repositories.
+:::
 
 ### NFS
 
@@ -222,11 +244,10 @@ Note: If you use ZFS, assign at least 16GB RAM to avoid swapping. ZFS (in standa
 
 #### ZFS Knowledge & status
 
-Do not hesitate to take a look at these links for more advanced explanations:
+Feel free to look at these links for more advanced explanations:
 
 * Wikipedia: [https://en.wikipedia.org/wiki/ZFS](https://en.wikipedia.org/wiki/ZFS)
 * OpenZFS Basics: [https://www.youtube.com/watch?v=MsY-BafQgj4](https://www.youtube.com/watch?v=MsY-BafQgj4)
-* Blog full of useful information: [http://www.zfsbuild.com](http://www.zfsbuild.com)
 
 You can monitor your ZFS pool using:
 
