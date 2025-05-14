@@ -70,6 +70,33 @@ Certain applications, such as Oracle ASM, require a unique identifier for disk d
 
 ## 🪟 Windows VMs
 
+### Enabling Viridian extensions
+
+Viridian is a codename for [Hyper-V](https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/hyper-v-overview), a native hypervisor developed by Microsoft that allows the creation of virtual machines on x86-64 systems running Windows.
+
+Viridian extensions —referred to as "Viridian enlightenments" by Microsoft— are used by any "recent" Windows OS to work properly. Make sure they are enabled for your VM. 
+
+:::warning
+
+Viridian enlightenments are enabled by default on Windows VM templates included with XCP-ng. 
+
+To enable Viridian enlightenments for other non-Windows VM templates, you need to: 
+
+1. **Enable Viridian**. To do this, run `xe vm-param-set uuid=<vm uuid> platform:viridian=true` in your VM.
+2. **Enable the extra Viridian parameters** necessary for your template to run optimally with Windows. To do this, run the same `xe` command in your VM, but change the arguments with the following:
+
+    ```
+    "device_id": "0002", // ID used by XCP-ng to detect Windows VMs
+    "viridian": "true",
+    "viridian_time_ref_count": "true",
+    "viridian_reference_tsc": "true",
+    "viridian_apic_assist": "true",
+    "viridian_crash_ctl": "true",
+    "viridian_stimer": "true"
+    ```
+
+:::
+
 ### Manage screen resolution
 
 #### Bios VM
