@@ -13,13 +13,8 @@ Do not attempt to enable multipathing on a production pool with existing and act
 ## iSCSI
 
 ### Requirements
-* Four different network interfaces (we recommend using two separate network cards)
-* Dedicated network interfaces without VLAN tagging on XCP-ng host and storage unit
-* All network interfaces to the hosts and storage unit **must be set to "STP portEdge"** on the network equipment
-* Two different switches (not stacked) **without Spanning-Tree**
-* Spanning-tree must be disabled on the switches
-* Two VLANs **without L3 routing**
-* Two IPv4 subnets **without L3 routing**
+* Two different network interfaces
+* Two different switches
 * Multiple targets per LUN on your storage unit
 * iSCSI target ports are operating in portal mode
 
@@ -33,6 +28,21 @@ Since each architecture is unique, feel free to check with the storage vendor if
 1. Make sure you do not use bond-type network interfaces on the host and on the storage unit for iSCSI interfaces.
 2. Make sure you do not configure network routes on iSCSI interfaces.
 :::
+
+<!-- To be discussed later but to be kept so as not to lose the work
+#### Advanced requirements for high performance - OPTIONAL and not mandatory
+* Four different network interfaces on two separate network cards
+* Dedicated network interfaces without VLAN tagging on XCP-ng host and storage unit
+* All network interfaces to the hosts and storage unit **must be set to "STP portEdge"** on the network equipment
+* Two different switches (not stacked) **without Spanning-Tree**
+* Two IPv4 subnets for iSCSI
+* Two VLANs for iSCSI on switches
+* Spanning-tree must be disabled on the switches
+* Two VLANs **without L3 routing**  for iSCSI
+* Two IPv4 subnets **without L3 routing** for iSCSI
+* Multiple targets per LUN on your storage unit
+* iSCSI target ports are operating in portal mode
+-->
 
 ### Target architecture
 
@@ -184,8 +194,8 @@ Proceed with the iSCSI SR configuration as indicated in the [storage documentati
 
 ## Fibre Channel (HBA)
 ### Requirements
-* Check that the Fibre Channel cards model(s) is supported via the HCL
-* Two different Fibre Channel ports (You can also have multiple cards if you want)
+* Check that the Fibre Channel cards model(s) is supported via the [HCL](https://hcl.xenserver.com/)
+* Two different Fibre Channel ports
 * Two different SAN switches
 * Multiple targets per LUN on your storage unit
 * Zoning performed
@@ -209,7 +219,7 @@ flowchart LR
 
   subgraph server[XCP-ng host]
     direction LR
-    subgraph Card1[Fibre Channel card]
+    subgraph Card1[Fibre Channel]
         direction RL
         card1port1[port1]
         card1port2[port2]
