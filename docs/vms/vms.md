@@ -385,76 +385,50 @@ Windows guests need both the device drivers and the management agent.
 * The **device drivers** bring optimized I/O performances.
 * The **management agent** brings more manageability of the VM from XCP-ng, and guest metrics reporting to the host.
 
-#### Citrix tools vs XCP-ng tools
+#### XCP-ng tools vs XenServer tools
 
-There exists two different set of tools that you can use on your VMs: the official tools from Citrix Hypervisor, or the fully open-source tools from XCP-ng. Both work well. The important point is **not to mix them in the same VM**.
+There exist two sets of Windows guest tools compatible with XCP-ng: XCP-ng's Windows Guest Tools and XenServer's Windows Guest Tools.
 
-Citrix tools:
-* :heavy_plus_sign: Benefit from all the testing by Citrix QA team.
-* :heavy_plus_sign: The drivers can be updated through Windows Update.
-* :heavy_minus_sign: Proprietary, closed-source.
+Despite being ready, XCP-ng's Windows Guest Tools are held back by delays in Microsoft's certification process (a process started years ago!).
 
-XCP-ng tools:
-* :heavy_plus_sign: Fully open-source.
-* :heavy_plus_sign: Maintained by the XCP-ng project.
-* :heavy_minus_sign: The drivers are not signed with a key recognized by Microsoft, so Secure Boot can't be enabled with them.
-* :heavy_minus_sign: The sources for the management agent are older than that of Citrix (they have stopped updating GitHub a while ago).
-* :heavy_minus_sign: Have not been updated in a long time, due to difficulties finding skilled developers to work on them. Being actively worked on.
-* :heavy_minus_sign: Won't transparently replace existing Citrix tools. You need to remove Citrix tools first if they are present, in order to install XCP-ng tools.
+So, until this is finalized, XenServer's Windows Guest Tools, based on the same upstream Open Source project from the Xen Project, are the recommended guest tools for your Windows VMs.
 
-It's now up to you to choose.
 
 #### Using the Windows guest tools from Citrix
 
 Tools from Citrix/XenServer are not included in the guest tools ISO distributed with XCP-ng for legal reasons.
-
-##### A reminder
-As written above:
-
-> * The **device drivers** bring optimized I/O performances.
-> * The **management agent** brings more manageability of the VM from XCP-ng, and guest metrics reporting to the host.
 
 ##### Management agent + device drivers
 The only way to get the management agent is from XenServer directly. It can be freely downloaded from [the Xenserver download page](https://www.xenserver.com/downloads). Name of the item: "XenServer VM Tools for Windows". The installer will install both the management agent and the device drivers.
 
 :::tip
 You will also find present and past releases of the tools at: [https://support.citrix.com/article/CTX235403](https://support.citrix.com/article/CTX235403), but this may require a Citrix account.
+
+Using past releases is not recommended, for security reasons, but may prove useful with old, unsupported, Windows releases.
 :::
 
 ##### Automated installation via Windows Update: device drivers alone
-If you are using Xen Orchestra, you can switch the "Windows Update tools" advanced parameter on from the "Advanced" tab of the VM view. This will install the device drivers automatically at next reboot :warning: **but not the management agent** which still needs to be installed from Citrix tools' installer.
+In Xen Orchestra, you can switch the "Windows Update tools" advanced parameter on from the "Advanced" tab of the VM view. This will install the device drivers automatically at next reboot :warning: **but not the management agent** which still needs to be installed from XenServer tools' installer.
 
 ... So the "Windows Update tools" option is not a complete solution if you need the guest metrics from the management agent. However it may be a convenient way to get future driver updates if you wish so.
 
 ##### Switching from XCP-ng tools to Citrix tools
-If your VM already has XCP-ng tools and you wish to switch to Citrix tools, then you need to do the same kind of clean-up as described farther in this document for the opposite situation.
+If your VM already has XCP-ng tools and you wish to switch to Citrix tools, then you need to perform a clean-up as decribed in [Fully removing Xen PV drivers with XenClean](#fully-removing-xen-pv-drivers-with-xenclean).
 
 #### XCP-ng Windows Guest Tools
-Drivers built by the XCP-ng community.
+
+:::warning
+Despite being ready, XCP-ng's Windows Guest Tools are held back by delays in Microsoft's certification process (a process started years ago!). As soon as this process completes, we will publish the signed drivers.
+
+So, at the moment, installing the XCP-ng drivers requires enabling testsigning, which we don't recommend in production.
+
+We do not advise either to install the older 8.2.x XCP-ng drivers, due to vulnerabilities discovered in all Windows guest tools built before May 2025 (see https://xcp-ng.org/blog/xsa-468-windows-pv-driver-vulnerabilities).
+:::
 
 **Download**: [https://github.com/xcp-ng/win-pv-drivers/releases](https://github.com/xcp-ng/win-pv-drivers/releases)
 
-Stability and testing status: [Windows guest tools community testing](https://github.com/xcp-ng/xcp/wiki/Windows-guest-tools-community-testing).
-
-##### How to know if tools are already installed and working
-
-The VM needs to be running for this test.
-
-###### From Xen Orchestra
-You can see this information in the General tab of the VM view.
-* Device drivers: XO displays "Hardware virtualization with paravirtualization drivers enabled (PVHVM)" on the General tab
-* Management agent: XO displays "Management agent detected" or "Management agent version \{version\} detected"
-
-More detailed information can also be found in the Advanced tab.
-
-###### From command line
-* Device drivers: `xe vm-param-get param-name=PV-drivers-detected uuid={VM-UUID}`
-* Management agent: `xe vm-param-get param-name=PV-drivers-version uuid={VM-UUID}` (ok if not empty)
-
-##### Installing on fresh installed Windows
-
 ###### Prerequisite: Disable "Windows Update tools"
-The first step, before the VM creation and first start, is to make sure than Windows Update is not going to install Citrix tools automatically at first boot. This behaviour is governed by the "Windows Update tools" parameter in a VMs advanced view. It must be off.
+The first step before installing XCP-ng's Windows Guest Tools, before the VM creation and first start, is to make sure than Windows Update is not going to install Citrix tools automatically at first boot. This behaviour is governed by the "Windows Update tools" parameter in a VMs advanced view. It must be off.
 
 Before creating the VM:
 * Make sure you are not creating it from a custom template than has the "Windows Update tools enabled.
@@ -463,7 +437,7 @@ Before creating the VM:
 Before starting the VM:
 * Check the value of "Windows Update tools" in the Advanced tab of your VM in Xen Orchestra. Must be off.
 
-If you already started the VM with the option on, then the Citrix drivers have been installed automatically. Restart from scratch or see below how to remove them.
+If you already started the VM with the option on, then the Citrix drivers have been installed automatically. Restart from scratch or go to Fully removing Xen PV drivers with XenClean](#fully-removing-xen-pv-drivers-with-xenclean).
 
 Tip: you can also check the value of the parameter from the command line.
 ```
@@ -472,24 +446,112 @@ xe vm-param-get param-name=has-vendor-device uuid={VM-UUID}
 `True` means that it's active, `False` that it isn't. It needs to be `False`.
 
 ###### Install the XCP-ng drivers
-0. snapshot before just in case
-1. unpack the ZIP file
-2. start setup.exe
-3. follow the install wizard
+0. Snapshot your VM before installing (just in case)
+1. Check the above prerequisite about the "Windows Update Tools" option
+2. [Verify that no other guest tools are currently installed](#how-to-know-if-tools-are-already-installed-and-working). Our installer will block installation when other Xen tools are already present anyway. Use [XenClean](#Fully-removing-Xen-PV-drivers-with-XenClean) to remove any tools present. Do not uninstall the drivers in any other way: it may lead to BSOD at reboot (at least when uninstalling XCP-ng 8.2.x tools)
+3. Unpack the ZIP file
+4. Start the installation MSI
+5. Follow the install wizard
 
-**Note**: Restart can take a while if your windows is currently updating. Restart only occurs after windows has the updates finished.
+**Note**: Restart can take a while if your Windows is currently updating. Restart only occurs after Windows has the updates finished.
 
-4. after restart one of two messages should pop up
-    * request for restart \<- just restart!
-    * Management Agent installed successfully \<- enjoy :-)
+##### Upgrade from XCP-ng Windows PV Tools (8.2 or earlier) or XenServer VM Tools
+Just follow the installation procedure above, making sure to follow every step.
 
-##### Upgrade from Citrix :registered: XenServer :registered: client tools
+#### How to know if tools are already installed and working
 
-Our installer is not able currently to cleanly uninstall Citrix tools. Citrix tools' uninstaller itself isn't either: it leaves various things behind.
+The VM needs to be running for this test.
 
-#### Contributing
-##### Linux / xBSD
-If you would like to contribute improvements to the `install.sh` script so that it supports your distro, create a pull request against: https://github.com/xcp-ng/xe-guest-utilities/tree/master/mk. Relevant files are usually `xe-linux-distribution` and `install.sh`.
+##### From Xen Orchestra
+You can see this information in the General tab of the VM view.
+* Device drivers: XO displays "Hardware virtualization with paravirtualization drivers enabled (PVHVM)" on the General tab
+* Management agent: XO displays "Management agent detected" or "Management agent version \{version\} detected"
 
-##### Windows
-The XCP-ng team is looking for help in improving the guest tools installer, build process, and clean-up tools.
+More detailed information can also be found in the Advanced tab.
+
+##### From command line
+* Device drivers: `xe vm-param-get param-name=PV-drivers-detected uuid={VM-UUID}`
+* Management agent: `xe vm-param-get param-name=PV-drivers-version uuid={VM-UUID}` (ok if not empty)
+
+#### Fully removing Xen PV drivers with XenClean
+
+XenClean is an utility for cleanly removing Xen PV drivers and management agents of the following products:
+
+* XCP-ng Windows PV Tools, versions 8.2 to 9.1
+* XenServer VM Tools for Windows, versions 7.1 to 9.4
+* Other Xen drivers
+
+It is included in the installation package of XCP-ng Windows PV Tools 9.0 and above.
+[See the newest releases here.](https://github.com/xcp-ng/win-pv-drivers/releases)
+
+:::note
+Before running XenClean:
+
+* Take a snapshot of your VM..
+* You should always use the latest version of XenClean regardless of your Windows PV driver version. The same applies to XenBootFix.
+* You should disable the "Manage Citrix PV drivers via Windows Update" option on your VM. Otherwise, Windows may reinstall PV drivers from Windows Update after rebooting.
+* If you downloaded XenClean from the internet, you may need to unblock the script file before running it. This can be done by right-clicking the file, then choosing **Properties** - **Unblock** - **OK**.
+* There is no need to uninstall the tools manually, as XenClean will also take care of that.
+:::
+
+To use XenClean, simply run the `Invoke-XenClean.ps1` script **as Administrator**. Your system will automatically reboot.
+
+:::tip
+XenClean leaves its log files at the current directory and at `%TEMP%\xenclean-<time>`. Please provide these logs in case of uninstallation failure.
+:::
+
+#### Windows Guest Tools security
+Whenever vulnerabilities are found in the guest tools, we update this section in addition to the public security advisories, to serve as a persistent and up to date reference.
+
+##### XSA-468 multiple Windows PV driver vulnerabilities
+Original announcement: https://xcp-ng.org/blog/xsa-468-windows-pv-driver-vulnerabilities
+
+###### Summary
+Multiple vulnerabilities have been discovered in all existing Xen PV drivers for Windows from all vendors (XCP-ng, XenServer, etc.)
+These vulnerabilities allow unprivileged users to gain system privileges inside Windows guests.
+
+###### Am I affected?
+Windows guests running vulnerable versions of Xen PV drivers are affected. Other guest OSes are not affected.
+
+To check if you're affected, verify the version of Xen PV drivers in Device Manager.
+* XCP-ng PV Bus, XCP-ng Interface and XCP-ng PV Console older than 9.0.9065 are affected.
+* XenServer/Citrix PV Bus older than 9.1.11.115; PV Interface older than 9.1.12.94 are affected.
+* Other Xen PV drivers for Windows (Amazon, Xen Project) are also affected. If you are using these drivers, verify each vendor's security bulletins for more details.
+
+Note: Driver version numbers are independent from Xen PV tools package versions. You must check Device Manager for the precise driver versions.
+
+###### How to patch my VMs?
+You should create backups and snapshot your VM before updating.
+
+* If you're using XCP-ng Windows PV drivers 9.0: Install XCP-ng driver version 9.0.9065 or later.
+* If you're using XenServer Windows PV drivers or have enabled the "Manage Citrix PV drivers via Windows Update" feature: Upgrade to XenServer VM Tools 9.4.1 or later.
+* If you're using XCP-ng Windows PV drivers 8.2.x, you should use XenClean to remove the existing drivers, then choose one of the following:
+  * On a production system, install XenServer VM Tools 9.4.1 or later;
+  * If you're not running a production system, and want to test the latest XCP-ng Windows PV drivers: install XCP-ng driver version 9.0.9065 or later. (Note that this requires bringing Windows into test signing mode)
+
+###### I don't want to patch, what should I do?
+You are encouraged to apply the latest updates as soon as possible.
+
+If you absolutely cannot update, apply the mitigation script provided by Vates and the Xen Project, available at https://xenbits.xen.org/xsa/advisory-468.html.
+
+Note that this mitigation script only covers vulnerabilities in the Xen PV Interface driver.
+
+You should run the mitigation script in Scan mode afterwards to make sure the vulnerability is effectively mitigated.
+
+###### How is Vates VMS helping to fix this vulnerability?
+This issue was discovered by Vates as part of our investment into upstream Xen development. Vates VMS provides multiple facilities to help users affected this issue:
+
+* We developed fixes for these vulnerabilities, which have been integrated upstream.
+* We provided a mitigation script for those who cannot install the update.
+* We have added detection logic in Xen Orchestra's latest release channel to actively alert on vulnerable Windows VMs. We also updated XCP-ng 8.2 and 8.3 so that PV driver versions are reported to Xen Orchestra for it to detect vulnerable Windows VMs.
+* We are publishing an alert about the vulnerability inside all Xen Orchestra appliances.
+
+###### Why can't I use XCP-ng Windows PV drivers in production?
+The XCP-ng 9.0 drivers aren't signed by Microsoft yet, and thus currently require putting Windows into test mode. As a result, these drivers are not appropriate for production use.
+
+You may have noticed that the XCP-ng 8.2.x Windows drivers can still be used when Secure Boot is disabled. This is due to these drivers being signed before Microsoft changed the driver signing rules and forcing 1st-party driver signatures.
+
+We are actively working with Microsoft to get the drivers signed (which is a slow process). An announcement will be made as soon as a Microsoft-signed build is available.
+
+###### Related links
+Xen Project announcement: https://xenbits.xen.org/xsa/advisory-468.html

@@ -12,7 +12,7 @@ If despite running the Windows tools installer, there's no devices visible in th
 
 #### Leftovers from old Citrix XenServer Client Tools.
 
-See the [XenClean guide](#fully-removing-xen-pv-drivers-with-xenclean) below for instructions.
+See the [XenClean guide](/vms/#fully-removing-xen-pv-drivers-with-xenclean) for instructions.
 
 ## Network PV drivers aren't working.
 
@@ -22,12 +22,10 @@ If the tools are installed, while XCP-ng Center says that I/O is optimized, but 
 
 ### Possible Solutions
 
-* Resolved with version 8.2.2.200-RC1 and newer.
-
 * Clean your system from `Citrix Client Tools` _AND_ `XCP-ng Client Tools` to create a clean state.
 * Then install the Client Tools from scratch.
 
-See the [XenClean guide](#fully-removing-xen-pv-drivers-with-xenclean) below for instructions.
+See the [XenClean guide](/vms/#fully-removing-xen-pv-drivers-with-xenclean) for instructions.
 
 ## Not all PV drivers are correctly installed
 
@@ -59,31 +57,6 @@ Consult your motherboard manual for details; for example, on Dell systems with i
 ![](../../static/img/performance-setting.png)
 </div>
 
-## Fully removing Xen PV drivers with XenClean
-
-XenClean is an utility for cleanly removing Xen PV drivers and management agents of the following products:
-
-* XCP-ng Windows PV Tools, versions 8.2 to 9.1
-* XenServer VM Tools for Windows, versions 7.1 to 9.4
-* Other Xen drivers
-
-It is included in the installation package of XCP-ng Windows PV Tools 9.0 and above.
-[See the newest releases here.](https://github.com/xcp-ng/win-pv-drivers/releases)
-
-:::note
-Before running XenClean:
-
-* Take a snapshot of your VM.
-* You should always use the latest version of XenClean regardless of your Windows PV driver version. The same applies to XenBootFix.
-* You should disable the "Manage Citrix PV drivers via Windows Update" option on your VM. Otherwise, Windows may reinstall PV drivers from Windows Update after rebooting.
-* If you downloaded XenClean from the internet, you may need to unblock the script file before running it. This can be done by right-clicking the file, then choosing **Properties** - **Unblock** - **OK**.
-:::
-
-To use XenClean, simply run the `Invoke-XenClean.ps1` script **as Administrator**. Your system will automatically reboot.
-
-:::tip
-XenClean leaves its log files at the current directory and at `%TEMP%\xenclean-<time>`. Please provide these logs in case of uninstallation failure.
-:::
 
 ## Windows fails to boot (hanging at boot or BSOD with Stop code `INACCESSIBLE_BOOT_DEVICE`)
 
