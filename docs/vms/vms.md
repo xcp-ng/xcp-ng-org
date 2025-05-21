@@ -399,7 +399,7 @@ So, until this is finalized, XenServer's Windows Guest Tools, based on the same 
 Tools from Citrix/XenServer are not included in the guest tools ISO distributed with XCP-ng for legal reasons.
 
 ##### Management agent + device drivers
-The only way to get the management agent is from XenServer directly. It can be freely downloaded from [the Xenserver download page](https://www.xenserver.com/downloads). Name of the item: "XenServer VM Tools for Windows". The installer will install both the management agent and the device drivers.
+You can get the management agent from XenServer directly. It can be freely downloaded from [the Xenserver download page](https://www.xenserver.com/downloads). Name of the item: "XenServer VM Tools for Windows". The installer will install both the management agent and the device drivers.
 
 :::tip
 You will also find present and past releases of the tools at: [https://support.citrix.com/article/CTX235403](https://support.citrix.com/article/CTX235403), but this may require a Citrix account.
