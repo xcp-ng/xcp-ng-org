@@ -1,7 +1,7 @@
 # Contributing
 
 How to contribute to XCP-ng? There are many ways of contributing:
-* by giving some of your time to work on the project. Code isn't the only way! Community support, documentation, testing…
+* by giving some of your time to work on the project. Code isn't the only way! Community support, translation, documentation, testing…
 * with money, by subscribing to [Pro Support](https://vates.tech), which funds further developments.
 
 ## 💁 Help others
@@ -13,6 +13,10 @@ You don't have to be a programmer/IT-nerd to help at this project. Just ask or o
 * Discord: [https://discord.gg/aNCR3yPaPn](https://discord.gg/aNCR3yPaPn)
 
 We are happy about every helping hand!
+
+## 🌍 Translations
+
+[Help us translate the built-in web interface (XO Lite) in more languages!](http://translate.vates.tech/engage/xen-orchestra/)
 
 ## ✍️ Write documentation
 
