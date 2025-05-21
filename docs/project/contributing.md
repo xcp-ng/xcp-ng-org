@@ -16,7 +16,7 @@ We are happy about every helping hand!
 
 ## 🌍 Translations
 
-[Help us translate built-in web interface (XO-lite) in more languages!](http://translate.vates.tech/engage/xen-orchestra/)
+[Help us translate the built-in web interface (XO Lite) in more languages!](http://translate.vates.tech/engage/xen-orchestra/)
 
 ## ✍️ Write documentation
 
