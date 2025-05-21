@@ -2,16 +2,6 @@
 
 Common issues with Windows PV tools.
 
-## Windows Management Agent failed to install
-
-### Cause
-There was an issue with the installing of the drivers certificate, so the drivers did not load silently.
-
-### Solution
-Resolved with version 8.2.2.200-RC1 and newer.
-
-***
-
 ## PV-Drivers missing in the Device Manager
 
 ### Cause
