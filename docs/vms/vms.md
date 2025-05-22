@@ -205,13 +205,14 @@ XenClean leaves its log files at the current directory and at `%TEMP%\xenclean-<
 :::
 
 ### Windows Guest Tools security
-Whenever vulnerabilities are found in the guest tools, we update this section in addition to the public security advisories, to serve as a persistent and up to date reference.
+This section serves as a persistent and updated reference for known guest tools vulnerabilities.
 
 #### XSA-468 multiple Windows PV driver vulnerabilities
 Original announcement: https://xcp-ng.org/blog/xsa-468-windows-pv-driver-vulnerabilities
 
 ##### Summary
-Multiple vulnerabilities have been discovered in all existing Xen PV drivers for Windows from all vendors (XCP-ng, XenServer, etc.)
+Multiple vulnerabilities have been discovered in all existing Xen PV drivers for Windows from all vendors (XCP-ng, XenServer, etc.) published prior to the disclosure, on May 2025.
+
 These vulnerabilities allow unprivileged users to gain system privileges inside Windows guests.
 
 ##### Am I affected?
