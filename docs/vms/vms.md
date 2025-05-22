@@ -112,9 +112,9 @@ Using past releases is not recommended, for security reasons, but may prove usef
 :::
 
 ##### Automated installation via Windows Update: device drivers alone
-In Xen Orchestra, you can switch the "Windows Update tools" advanced parameter on from the "Advanced" tab of the VM view. This will install the device drivers automatically at next reboot :warning: **but not the management agent** which still needs to be installed from XenServer tools' installer.
+In Xen Orchestra, you can switch the "Manage Citrix PV drivers via Windows Update" advanced parameter on from the "Advanced" tab of the VM view. This will install the device drivers automatically at next reboot :warning: **but not the management agent** which still needs to be installed from XenServer tools' installer.
 
-... So the "Windows Update tools" option is not a complete solution if you need the guest metrics from the management agent. However it may be a convenient way to get future driver updates if you wish so.
+... So the "Manage Citrix PV drivers via Windows Update" option is not a complete solution if you need the guest metrics from the management agent. However it may be a convenient way to get future driver updates if you wish so.
 
 ##### Switching from XCP-ng tools to Citrix tools
 If your VM already has XCP-ng tools and you wish to switch to Citrix tools, then you need to perform a clean-up as decribed in [Fully removing Xen PV drivers with XenClean](#fully-removing-xen-pv-drivers-with-xenclean).
@@ -131,15 +131,15 @@ We do not advise either to install the older 8.2.2 XCP-ng drivers, due to vulner
 
 **Download**: [https://github.com/xcp-ng/win-pv-drivers/releases](https://github.com/xcp-ng/win-pv-drivers/releases)
 
-###### Prerequisite: Disable "Windows Update tools"
-The first step before installing XCP-ng's Windows Guest Tools, before the VM creation and first start, is to make sure than Windows Update is not going to install Citrix tools automatically at first boot. This behaviour is governed by the "Windows Update tools" parameter in a VMs advanced view. It must be off.
+###### Prerequisite: Disable "Manage Citrix PV drivers via Windows Update"
+The first step before installing XCP-ng's Windows Guest Tools, before the VM creation and first start, is to make sure than Windows Update is not going to install Citrix tools automatically at first boot. This behaviour is governed by the "Manage Citrix PV drivers via Windows Update" parameter in a VM's advanced view. It must be off.
 
 Before creating the VM:
-* Make sure you are not creating it from a custom template than has the "Windows Update tools enabled.
+* Make sure you are not creating it from a custom template than has the "Manage Citrix PV drivers via Windows Update" option enabled.
 * :warning: Do not create it from XCP-ng Center. XCP-ng Center automatically enables that option when the license allows it (and in XCP-ng the license always allows it...). This behaviour may be modified in the future.
 
 Before starting the VM:
-* Check the value of "Windows Update tools" in the Advanced tab of your VM in Xen Orchestra. Must be off.
+* Check the value of "Manage Citrix PV drivers via Windows Update" in the Advanced tab of your VM in Xen Orchestra. Must be off.
 
 If you already started the VM with the option on, then the Citrix drivers have been installed automatically. Restart from scratch or go to Fully removing Xen PV drivers with XenClean](#fully-removing-xen-pv-drivers-with-xenclean).
 
@@ -151,7 +151,7 @@ xe vm-param-get param-name=has-vendor-device uuid={VM-UUID}
 
 ###### Install the XCP-ng drivers
 0. Snapshot your VM before installing (just in case)
-1. Check the above prerequisite about the "Windows Update Tools" option
+1. Check the above prerequisite about the "Manage Citrix PV drivers via Windows Update" option
 2. [Verify that no other guest tools are currently installed](#how-to-know-if-tools-are-already-installed-and-working). Our installer will block installation when other Xen tools are already present anyway. Use [XenClean](#Fully-removing-Xen-PV-drivers-with-XenClean) to remove any tools present. Do not uninstall the drivers in any other way: it may lead to BSOD at reboot (at least when uninstalling XCP-ng 8.2.2 tools)
 3. Unpack the ZIP file
 4. Start the installation MSI
@@ -340,7 +340,7 @@ Once done with Linux, shut down the VM and restore the parameter to its original
 $ xe vm-param-set uuid=VM-UUID platform:device_id=0002
 ```
 
-## 🐧Linux VMs
+## 🐧 Linux VMs
 
 ### Linux Guest Tools
 
