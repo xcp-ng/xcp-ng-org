@@ -246,15 +246,19 @@ XCP-NG installation follows roughly the same workflow as a XenServer installatio
 
 Then boot on the ISO!
 
-![](https://xcp-ng.org/wp-content/uploads/2018/03/install1.png)
+![](https://xcp-ng.org/assets/img/screenshots/install1bis.png)
 
 Eventually, you will reach a screen offering to upgrade your XenServer to XCP-ng:
 
-![](https://xcp-ng.org/wp-content/uploads/2018/03/install4.png)
+![](https://xcp-ng.org/assets/img/screenshots/upgrade-xs1.png)
+
+The installer will ask you to confirm the installation of XCP-ng over XenServer while preserving the existing VMs:
+
+![](https://xcp-ng.org/assets/img/screenshots/upgrade-xs2.png)
 
 Once the installation process is complete, reboot your host:
 
-![](https://xcp-ng.org/wp-content/uploads/2018/03/install8.png)
+![](https://xcp-ng.org/assets/img/screenshots/install22.png)
 
 Boot on your new XCP-ng and [install the updates](../../management/updates).
 
