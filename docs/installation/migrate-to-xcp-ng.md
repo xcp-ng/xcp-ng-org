@@ -8,9 +8,29 @@ How to migrate from VMware, KVM, etc. to XCP-ng.
 
 This documentation will help you to make a migration to XCP-ng, from any most common other virtualization platform (VMware, KVM, etc.)
 
-:::note
-OVA import method will miss the information if the VM is running BIOS or UEFI mode. Double check your settings on your original system, and then enable (or not) UEFI on XCP-ng side for the destination VM. You can do so in VM advanced tab in Xen Orchestra.
-:::
+## 📋 Prerequisites
+
+Before migrating your VMs, make sure to check the following:
+
+### Uninstall Existing Guest Tools
+
+To avoid conflicts with XCP-ng guest tools, uninstall any existing VM tools (such as VMware Tools or QEMU Guest Agent) from the VM.
+
+### Install Xen Drivers
+
+On some systems (especially RHEL-based and SLES distributions) Xen drivers are not installed by default. Migrating a VM without these drivers can prevent the OS from detecting disks and network interfaces.
+
+Before shutting down the VM, install the drivers with:
+
+```
+dracut --add-drivers "xen-blkfront xen-netfront" --force
+```
+
+### Install XCP-ng Guest Tools After Migration
+
+Guest tools are essential for proper VM operation (especially on Windows). Be sure to install the XCP-ng guest tools after the migration.
+
+See the [guest tools documentation](../vms/vms.md#%EF%B8%8F-guest-tools) for more details.
 
 ## 🇽 From XenServer
 
@@ -25,10 +45,6 @@ We got a dedicated section on [how to migrate from Citrix Hypervisor to XCP-ng](
 If you are running Xen on your usual distro (Debian, Ubuntu…), you are using `xl` to manage your VMs, and also plain text configuration files. You can migrate to an existing XCP-ng host thanks to [the `xen2xcp` script](https://github.com/xcp-ng/xen2xcp).
 
 Check [the README](https://github.com/xcp-ng/xen2xcp/blob/master/README.md) for usage instructions.
-
-## 📦 From Virtualbox
-
-Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](#-from-vmware) section.
 
 ## 🇻 From VMware
 
@@ -101,48 +117,6 @@ To do this:
 `xo-cli vm.importFromEsxi host=<VSPHERE_IP> user=<VSPHERE_USER> password=<VSHPERE_PWD> sslVerify=<true|false> vm=<VSPHERE_VM_ID> sr=<SR_UUID> network=<NETWORK_UUID>`
 
 Now, you can see the transfer progress in the **Task** view of the Xen Orchestra UI. As soon it's done, you can boot the VM directly!
-
-### OVA
-
-You can also export an OVA from VMware and import an OVA into Xen Orchestra.
-
-An OVA is a big, single file using the standard Open Virtualization Format. The OVA contains an XML describing the metadata (VM name, description, etc.) and your disks in the VMDK format.
-
-:::tip
-To skip Windows activation if the system was already activated, collect info about the network cards used in the Windows VM (ipconfig /all) and use the same MAC address(es) when creating interfaces in XCP-ng.
-:::
-
-:::warning
-
-- **Downtime**: The OVA can only be exported while the VM is off (except if you export a clone, but all blocks written after the clone won't be on the imported VM. If you can sync after, it's fine!). This can take a while, and your VMs won't be reachable until it's fully exported AND imported on destination.
-- **Storage**: You need an intermediary storage where you can export then import the OVA file. If your VMs are small, it's OK.
-- **Manual process**: Even if it's simple to do, it can be cumbersome if you have a lot of VMs to migrate.
-:::
-
-Importing a VMware Linux VM, you may encounter an error similar to this on boot:
-
-`dracut-initqueue[227]: Warning: /dev/mapper/ol-root does not exist`
-
-The fix for this is installing some xen drivers *before* exporting the VM from VMware:
-
-`dracut --add-drivers "xen-blkfront xen-netfront" --force`
-
-[See here](https://unix.stackexchange.com/questions/278385/boot-problem-in-linux/496037#496037) for more details. Once the imported VM is properly booted, remove any VMware related tooling and be sure to install [Xen guest tools](../../vms).
-
-### CloneZilla
-
-An alternative to using OVA. 
-
-1. Insert a CloneZilla live CD in your existing VMware VM, and boot on it. In the meantime, you also have a VM on the destination with the right metadata (same name and disks), which you'll also boot with CloneZilla.
-
-2. From the VM console, you can tell the source VM running CloneZilla to send all the blocks to the destination VM, also running CloneZilla. 
-
-3. As soon it's done, you can safely shut down the original VM and boot the copy on destination!
-
-:::warning
-- **Downtime**: Even if the downtime will be reduced compared to using OVA, you still need to run the export/import process while the VM is off.
-- **Setup time**: Not complex, but various operations are needed until you can start the replication for one VM. If you have a lot of VMs, this can take some effort.
-:::
 
 ### Local migration (same host)
 
@@ -218,16 +192,7 @@ There's two options, both requiring to export your Hyper-V VM disk in VHD format
   Convert-VHD -Path <source path> -DestinationPath <destination path> -VHDType Dynamic
   ```
 
-### Import the VHD in Xen Orchestra
-
-In the left menu, go for "Import" then "Disk". Select the destination SR, and then add your VHD file into it. Depending on the VHD file size, it might take some time. The upload progress can be tracked in another XO tab, in the "Task" menu.
-
-When the disk is imported, you can:
-
-4. Create a VM with the appropriate template, **without any disk in it**
-5. Attach the previously imported disk (VM/Disk/Attach an existing disk)
-6. Boot the VM
-7. Install the tools
+Then [import your VHD](../../installation/migrate-to-xcp-ng/#import-the-vhd)
 
 ### Alternative: direct VHD copy
 
@@ -262,54 +227,123 @@ As soon you did scan the SR, the new disk is visible in the SR/disk view. Don't 
 If you lost ability to extend migrated volume (opening journal failed: -2) You need to move disk to another storage, VM should be ON during moving process. This issue can occur when vhd files was directly copied to storage folder.
 :::
 
-## 🇰 From KVM (Libvirt)
+## 🇰 From KVM (Libvirt, Proxmox and other)
 
-Related forum thread: [https://xcp-ng.org/forum/topic/1465/migrating-from-kvm-to-xcp-ng](https://xcp-ng.org/forum/topic/1465/migrating-from-kvm-to-xcp-ng)
+First, shut down the virtual machine. If you don’t already have the `qemu-img` command available, you can install it by installing the `qemu-utils` package on your computer or server.
 
-_Due the fact I have only server here, I have setup a "buffer" machine on my desktop to backup and convert the VM image file._
+Next, convert the QCOW2 disk to a VHD format using the following command:
 
-* Install the dracut packages : yum install dracut-config-generic dracut-network
+```
+qemu-img convert -O vpc disk.qcow2 `uuidgen`.vhd
+```
 
-  `dracut --add-drivers xen-blkfront -f /boot/initramfs-$(uname -r).img $(uname -r)`
+Then [import your VHD](../../installation/migrate-to-xcp-ng/#import-the-vhd)
 
-  If your VMs are in BIOS mode :
+## 🔄 Alternatives 
 
-  `dracut --regenerate-all -f && grub2-mkconfig -o /boot/grub2/grub.cfg`
+### OVA
 
-  If your VMs are in UEFI mode (OVMF Tianocore) :
+You can also export an OVA from your hypervisor (VirtualBox, VMWare...) and import an OVA into Xen Orchestra.
 
-  `dracut --regenerate-all -f && grub2-mkconfig -o /boot/efi/EFI/<your distribution>/grub.cfg`
+An OVA is a big, single file using the standard Open Virtualization Format. The OVA contains an XML describing the metadata (VM name, description, etc.) and your disks in the VMDK format.
 
-* Shutdown the VM
+:::tip
+To skip Windows activation if the system was already activated, collect info about the network cards used in the Windows VM (ipconfig /all) and use the same MAC address(es) when creating interfaces in XCP-ng.
+:::
 
-* Use rsync to copy VM files to the "buffer" machine using `--sparse` flag.
+![](../assets/img/import-ova.png)
 
-* Convert the QCOW2 to VHD using QEMU-IMG :
+:::warning
 
-  `qemu-img convert -O vpc myvm.qcow2 myvm.vhd`
+- **Downtime**: The OVA can only be exported while the VM is off (except if you export a clone, but all blocks written after the clone won't be on the imported VM. If you can sync after, it's fine!). This can take a while, and your VMs won't be reachable until it's fully exported AND imported on destination.
+- **Storage**: You need an intermediary storage where you can export then import the OVA file. If your VMs are small, it's OK.
+- **Manual process**: Even if it's simple to do, it can be cumbersome if you have a lot of VMs to migrate.
+:::
 
-* Use rsync to copy the converted files (VHD) to your XCP-ng host.
 
-* After the rsync operation, the VHD are not valid for the XAPI, so repair them :
+:::note
+OVA import method will miss the information if the VM is running BIOS or UEFI mode. Double check your settings on your original system, and then enable (or not) UEFI on XCP-ng side for the destination VM. You can do so in VM advanced tab in Xen Orchestra.
+:::
 
-   `vhd-util repair -n myvm.vhd`
+### CloneZilla
 
-    `vhd-util check -n myvm.vhd` should return `myvm.vhd is valid`
+Clonezilla is a free and open-source disk imaging and cloning tool used for system backups, recovery, and deployment.
 
-* For each VM, create a VDI on Xen Orchestra with the virtual size of your VHD + 1GB (i.e the virtual size of myvm is 21GB, so I create a VDI with a size of 22GB).
+1. Insert a CloneZilla live CD in your existing VM, and boot on it. In the meantime, you also have a VM on the destination with the right metadata (same name and disks), which you'll also boot with CloneZilla.
 
-* Get the UUID of the VDI (on Xen Orchestra or CLI) and use the CLI on the XCP-ng host to import the VHD content into the VDI :
+2. From the VM console, you can tell the source VM running CloneZilla to send all the blocks to the destination VM, also running CloneZilla. 
 
-  `xe vdi-import filename=myvm.vhd format=vhd --progress uuid=<VDI UUID>`
+3. As soon it's done, you can safely shut down the original VM and boot the copy on destination!
 
-* Once the import is done, create a virtual machine using XO or XCP-ng Center, delete the VM disk that has been created and attach your newly created VDI to the VM. Don't forget to set the VM boot mode to UEFI if your VMs was in UEFI mode.
+:::warning
+- **Downtime**: Even if the downtime will be reduced compared to using OVA, you still need to run the export/import process while the VM is off.
+- **Setup time**: Not complex, but various operations are needed until you can start the replication for one VM. If you have a lot of VMs, this can take some effort.
+:::
 
-* Boot the VM and find a way to enter in the virtual UEFI of the VM. Here, I type the Escape and F9,F10,F11,F12 keys like crazy. Select Boot Manager, you should see this window :
+## 📥 Import the VHD 
 
-![](../../assets/img/migrate-to-xcp-ng_bootloader.png)
+### With Xen Orchestra
 
-* Select `UEFI QEMU HARDDISK`, the screen should be black for seconds and you should see the GRUB. Let the machine worked for minutes and you should see the prompt finally 👍
+In the left menu, go for "Import" then "Disk". Select the destination SR, and then add your VHD file into it. Depending on the VHD file size, it might take some time. The upload progress can be tracked in another XO tab, in the "Task" menu.
 
-* Install Guest Tools and reboot. The reboot shouldn't take long, you don't have to redo step 13, the OS seems to have repair the boot sequence by itself.
+![](../assets/img/import-disk.png)
 
-Done !
+When the disk is imported, you can:
+
+-  Create a VM with the appropriate template, **without any disk in it**
+- Attach the previously imported disk (VM/Disk/Attach an existing disk)
+- Boot the VM
+- Install the tools
+
+### Via the CLI
+
+You can transfer the VHD file directly to your XCP-ng storage repository (SR) using SCP:
+
+```
+scp thegenerateduuid.vhd ip.xcp-ng.server:/run/sr-mount/uuid-of-your-SR
+```
+
+:::warning
+The name of your VHD MUST BE an uuid (e.g. 44ad36fc-e9f1-4d74-9090-2d9bffddbee2.vhd).
+
+You can generate one with the command `uuidgen` on Linux.
+:::
+
+You need to rescan the SR where you new VHD file is, so it can be detected. It will appear in the disk list, without a name or description though. You can use `xe sr-scan` or use the scan button on the storage in Xen Orchestra.
+
+In Xen Orchestra, create a new VM without a disk, and make sure to uncheck the "Boot VM after creation" option under advanced settings. Then, go to the "Disks" tab, click on "Attach disk", select the VHD you just uploaded, and attach it.
+
+
+## 🛠️ Troubleshooting
+
+### My imported VM is not booting 
+
+- Check if the Boot firmware (in advanced setting) is on the correct type (BIOS or UEFI)
+- Check if the boot disk is the first in the VM disk tab
+- Check [here](../../installation/migrate-to-xcp-ng/#error-dracut-initqueue227-warning-devmapperol-root-does-not-exist-or-no-bootable-device)
+
+### Error "dracut-initqueue[227]: Warning: /dev/mapper/ol-root does not exist" (or no bootable device)
+
+This error means Xen driver are not present in the kernel (see [here](../../installation/migrate-to-xcp-ng/#install-xen-drivers))
+
+You can boot an live CD, and mount root and boot partition
+```
+mount <root device> /mnt/
+mount <boot device> /mnt/boot/
+
+for x in sys proc run dev tmp; do mount --bind /$x /mnt/$x; done
+```
+Check your fstab to see the exact layout of your partition !
+If you have LVM partition, you can enable them with `vgchange -ay`
+
+Chroot in your mounted partition 
+```
+chroot /mnt
+```
+Find your initrd files (if you have several file, use the more recent version), usualy in /boot or /boot/efi
+Then add the xen drivers:
+```
+dracut --kver <version> -f /boot/initrd<version> --add-drivers "xen-blkfront xen-netfront" --force
+```
+Exit the chroot, unmount all your partition, and you can reboot, or detach the disk if you used your XO
+You VM should be booting now !
