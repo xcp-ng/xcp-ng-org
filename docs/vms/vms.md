@@ -223,23 +223,25 @@ These vulnerabilities allow unprivileged users to gain system privileges inside 
 Windows guests running vulnerable versions of Xen PV drivers are affected. Other guest OSes are not affected.
 
 To check if you're affected, verify the version of Xen PV drivers in Device Manager.
-* XCP-ng PV Bus, XCP-ng Interface and XCP-ng PV Console older than 9.0.9065 are affected.
-* XenServer/Citrix PV Bus older than 9.1.11.115; PV Interface older than 9.1.12.94 are affected.
-* Other Xen PV drivers for Windows (Amazon, Xen Project) are also affected. If you are using these drivers, verify each vendor's security bulletins for more details.
+The following drivers are affected:
 
-Note: Driver version numbers are independent from Xen PV tools package versions. You must check Device Manager for the precise driver versions.
+* XCP-ng PV Bus, XCP-ng Interface and XCP-ng PV Console older than 9.0.9065;
+* XenServer/Citrix PV Bus older than 9.1.11.115; PV Interface older than 9.1.12.94;
+* Other Xen PV drivers for Windows (Amazon, Xen Project). If you are using these drivers, verify each vendor's security bulletins for more details.
+
+Note: Driver version numbers are independent from Xen PV tools package versions. Check Device Manager for the precise driver versions.
 
 ##### How to patch my VMs?
 You should create backups and snapshot your VM before updating.
 
 * If you're using XCP-ng Windows PV drivers 9.0: Install XCP-ng driver version 9.0.9065 or later.
-* If you're using XenServer Windows PV drivers or have enabled the "Manage Citrix PV drivers via Windows Update" feature: Upgrade to XenServer VM Tools 9.4.1 or later.
+* If you're using XenServer Windows PV drivers, or have enabled the option "Manage Citrix PV drivers via Windows Update": Upgrade to XenServer VM Tools 9.4.1 or later.
 * If you're using XCP-ng Windows PV drivers 8.2.x, you should use XenClean to remove the existing drivers, then choose one of the following:
   * On a production system, install XenServer VM Tools 9.4.1 or later;
-  * If you're not running a production system, and want to test the latest XCP-ng Windows PV drivers: install XCP-ng driver version 9.0.9065 or later. (Note that this requires bringing Windows into test signing mode)
+  * If you're not running a production system and want to test the latest XCP-ng Windows PV drivers: install XCP-ng driver version 9.0.9065 or later. (Note that this requires bringing Windows into test signing mode)
 
 ##### I don't want to patch, what should I do?
-You are encouraged to apply the latest updates as soon as possible.
+We encourage you to apply the latest updates as soon as possible.
 
 If you absolutely cannot update, apply the mitigation script provided by Vates and the Xen Project, available at https://xenbits.xen.org/xsa/advisory-468.html.
 
@@ -248,15 +250,15 @@ Note that this mitigation script only covers vulnerabilities in the Xen PV Inter
 You should run the mitigation script in Scan mode afterwards to make sure the vulnerability is effectively mitigated.
 
 ##### How is Vates VMS helping to fix this vulnerability?
-This issue was discovered by Vates as part of our investment into upstream Xen development. Vates VMS provides multiple facilities to help users affected this issue:
+This issue was discovered by Vates as part of our investment into upstream Xen development. Vates VMS provides multiple facilities to help users affected by the issue:
 
 * We developed fixes for these vulnerabilities, which have been integrated upstream.
 * We provided a mitigation script for those who cannot install the update.
-* We have added detection logic in Xen Orchestra's latest release channel to actively alert on vulnerable Windows VMs. We also updated XCP-ng 8.2 and 8.3 so that PV driver versions are reported to Xen Orchestra for it to detect vulnerable Windows VMs.
+* We have added detection logic in Xen Orchestra's latest release channel to alert on vulnerable Windows VMs. We also updated XCP-ng 8.2 and 8.3 so that PV driver versions are reported to Xen Orchestra for it to detect vulnerable Windows VMs.
 * We are publishing an alert about the vulnerability inside all Xen Orchestra appliances.
 
 ##### Why can't I use XCP-ng Windows PV drivers in production?
-The XCP-ng 9.0 drivers aren't signed by Microsoft yet, and thus currently require putting Windows into test mode. As a result, these drivers are not appropriate for production use.
+Microsoft have not signed the XCP-ng 9.0 drivers yet. Since the drivers can't work outside Windows' test mode, they are not appropriate for production use.
 
 You may have noticed that the XCP-ng 8.2 Windows drivers can still be used when Secure Boot is disabled. This is due to these drivers being signed before Microsoft changed the driver signing rules and forcing 1st-party driver signatures.
 
