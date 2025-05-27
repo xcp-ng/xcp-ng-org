@@ -262,7 +262,7 @@ This method requires the latest XCP-ng updates to be applied, in XCP-ng 8.2 and 
 We developed two features to help you handle these vulnerabilities.
 
 * A [host-side detection script](https://github.com/xcp-ng/win-pv-drivers/blob/xcp-ng-9.1/extras/detect_xsa468.py), that you can run in dom0. It will list affected Windows VMs based on their PV driver versions. See the script for documentation.
-* A warning :warning: sign next to affected VMs and a `vulnerable?` filter in Xen Orchestra. *These features will be made available very soon, through an update to the stable channel. We will update this announcement once it is released.*
+* A warning :warning: sign next to affected VMs and a `vulnerable?` filter in Xen Orchestra. These features are available in Xen Orchestra 5.107.0 (latest channel) and 5.106.4 (stable channel).
 
 :::note
 This detection depends on XAPI accurately reporting PV driver versions. Prior to the recent XCP-ng 8.2 and 8.3 updates released in May 2025, this was not the case. As a result, the detection tools cannot assess VMs that have not been run since the updates were applied. If no driver information is available, a warning will be displayed.
@@ -297,8 +297,8 @@ This issue was discovered by Vates as part of our investment into upstream Xen d
 
 * We developed fixes for these vulnerabilities, which have been integrated upstream.
 * We provided a mitigation script for those who cannot install the update.
-* We have added detection logic in Xen Orchestra's latest release channel to alert on vulnerable Windows VMs. We also updated XCP-ng 8.2 and 8.3 so that PV driver versions are reported to Xen Orchestra for it to detect vulnerable Windows VMs. See "Am I affected?" above.
-* We have developed a script that can be run in dom0 to perform the same detection, in case Xen Orchestra’s detection logic is not yet available to you. See "Am I affected?" above.
+* We have added detection logic in Xen Orchestra to alert on vulnerable Windows VMs. We also updated XCP-ng 8.2 and 8.3 so that PV driver versions are reported to Xen Orchestra for it to detect vulnerable Windows VMs. See "Am I affected?" above.
+* We have developed a script that can be run in dom0 to perform the same detection, in case Xen Orchestra's detection logic is not yet available to you. See "Am I affected?" above.
 * We are publishing an alert about the vulnerability inside all Xen Orchestra appliances.
 * We alert about this vulnerability at the beginning of our latest newsletter.
 
