@@ -189,7 +189,8 @@ XenClean is an utility for cleanly removing Xen PV drivers and management agents
 * XenServer VM Tools for Windows, versions 7.1 to 9.4
 * Other Xen drivers
 
-It is included in the installation package of XCP-ng Windows PV Tools 9.0 and above.
+It is included in the installation ISO of XCP-ng Windows PV Tools 9.0 and above.
+You'll find the ISO download in the Assets section.
 [See the newest releases here.](https://github.com/xcp-ng/win-pv-drivers/releases)
 
 :::note
@@ -212,50 +213,94 @@ XenClean leaves its log files at the current directory and at `%TEMP%\xenclean-<
 This section serves as a persistent and updated reference for known guest tools vulnerabilities.
 
 #### XSA-468 multiple Windows PV driver vulnerabilities
-Original announcement: https://xcp-ng.org/blog/xsa-468-windows-pv-driver-vulnerabilities
+Original announcement: https://xcp-ng.org/blog/2025/05/27/xsa-468-windows-pv-driver-vulnerabilities
 
 ##### Summary
 Multiple vulnerabilities have been discovered in all existing Xen PV drivers for Windows from all vendors (XCP-ng, XenServer, etc.) published prior to the disclosure, on May 2025.
 
 These vulnerabilities allow unprivileged users to gain system privileges inside Windows guests.
 
+These issues have the following identifiers:
+
+* [CVE-2025-27462](https://www.cve.org/CVERecord?id=CVE-2025-27462)
+* [CVE-2025-27463](https://www.cve.org/CVERecord?id=CVE-2025-27463)
+* [CVE-2025-27464](https://www.cve.org/CVERecord?id=CVE-2025-27464)
+
 ##### Am I affected?
 Windows guests running vulnerable versions of Xen PV drivers are affected. Other guest OSes are not affected.
 
-To check if you're affected, verify the version of Xen PV drivers in Device Manager.
+To check if you are affected, verify the version of Xen PV drivers inside every Windows VM.
+
+:::note
+Driver version numbers are independent from Xen PV tools package versions.
+**Use the methods below to check the precise driver versions.**
+:::
+
 The following drivers are affected:
 
-* XCP-ng PV Bus, XCP-ng Interface and XCP-ng PV Console older than 9.0.9065;
-* XenServer/Citrix PV Bus older than 9.1.11.115; PV Interface older than 9.1.12.94;
-* Other Xen PV drivers for Windows (Amazon, Xen Project). If you are using these drivers, verify each vendor's security bulletins for more details.
+* *XCP-ng PV Bus*, *XCP-ng Interface* and *XCP-ng PV Console* older than 9.0.9065;
+* *XenServer/Citrix PV Bus* older than 9.1.11.115; *PV Interface* older than 9.1.12.94;
+* Other Xen PV drivers for Windows are also likely affected. If you are using these drivers, verify each vendor's security bulletins for more details.
 
-Note: Driver version numbers are independent from Xen PV tools package versions. Check Device Manager for the precise driver versions.
+You can check for this vulnerability from within the Windows VMs themselves (most precise, recommended) but also from outside the VMs, using tools we built for this purpose.
+
+:::note
+If you are reading this article shortly after its publication, it's likely that **all of your Windows VMs are vulnerable**.
+Once patched, follow these instructions to verify that your VMs are no longer vulnerable.
+:::
+
+###### Check a Windows VM for vulnerability
+This is the most precise way, but needs to be done per VM.
+
+* Verify the version numbers in Device Manager.
+* Use the [mitigation script published in the XSA-468 advisory](https://xenbits.xen.org/xsa/advisory-468.html) in `-Scan` mode (will only report the vulnerability, not version numbers). See the script for documentation.
+
+###### Detect vulnerable VMs at the pool level
+
+This method requires the latest XCP-ng updates to be applied, in XCP-ng 8.2 and 8.3.
+
+We developed two features to help you handle these vulnerabilities.
+
+* A [host-side detection script](https://github.com/xcp-ng/win-pv-drivers/blob/xcp-ng-9.1/extras/detect_xsa468.py), that you can run in dom0. It will list affected Windows VMs based on their PV driver versions. See the script for documentation.
+* A warning :warning: sign next to affected VMs and a `vulnerable?` filter in Xen Orchestra. *These features will be made available very soon, through an update to the stable channel. We will update this announcement once it is released.*
+
+:::note
+This detection depends on XAPI accurately reporting PV driver versions. Prior to the recent XCP-ng 8.2 and 8.3 updates released in May 2025, this was not the case. As a result, the detection tools cannot assess VMs that have not been run since the updates were applied. If no driver information is available, a warning will be displayed.
+:::
+
+:::warning
+Only virtual machines (VMs) created using a Windows template—or from templates or VMs originally derived from one—can be detected by these tools. They are designed to help users identify vulnerable VMs that may have been overlooked, forgotten during patching, or restored from backups taken before vulnerability fixes were applied. These tools are not intended to serve as comprehensive detection solutions, so do not rely on them exclusively.
+:::
 
 ##### How to patch my VMs?
-You should create backups and snapshot your VM before updating.
+First, create backups and snapshot your VMs before updating.
 
-* If you're using XCP-ng Windows PV drivers 9.0: Install XCP-ng driver version 9.0.9065 or later.
-* If you're using XenServer Windows PV drivers, or have enabled the option "Manage Citrix PV drivers via Windows Update": Upgrade to XenServer VM Tools 9.4.1 or later.
-* If you're using XCP-ng Windows PV drivers 8.2.x, you should use XenClean to remove the existing drivers, then choose one of the following:
-  * On a production system, install XenServer VM Tools 9.4.1 or later;
-  * If you're not running a production system and want to test the latest XCP-ng Windows PV drivers: install XCP-ng driver version 9.0.9065 or later. (Note that this requires bringing Windows into test signing mode)
+If you're using *XenServer Windows PV drivers* or have enabled the option *Manage Citrix PV drivers via Windows Update*: Upgrade to *XenServer VM Tools* 9.4.1 or later.
+
+If you're using *XCP-ng Windows PV drivers* 8.2.x, you should use [XenClean](#fully-removing-xen-pv-drivers-with-xenclean) to remove the existing drivers, then choose one of the following:
+  * On a production system, install [XenServer VM Tools 9.4.1 or later](https://www.xenserver.com/downloads);
+  * If you're not running a production system and want to test the latest *XCP-ng Windows PV drivers*: install XCP-ng driver version 9.0.9065 or later. (Note that this requires bringing Windows into test signing mode)
+
+If you're already using *XCP-ng Windows PV drivers 9.0*: Install XCP-ng driver version 9.0.9065 or later.
 
 ##### I don't want to patch, what should I do?
 We encourage you to apply the latest updates as soon as possible.
 
 If you absolutely cannot update, apply the mitigation script provided by Vates and the Xen Project, available at https://xenbits.xen.org/xsa/advisory-468.html.
 
-Note that this mitigation script only covers vulnerabilities in the Xen PV Interface driver.
+Note that this mitigation script only covers vulnerabilities in the *Xen PV Interface* driver.
 
 You should run the mitigation script in Scan mode afterwards to make sure the vulnerability is effectively mitigated.
 
-##### How is Vates VMS helping to fix this vulnerability?
+##### How is Vates helping to fix this vulnerability?
 This issue was discovered by Vates as part of our investment into upstream Xen development. Vates VMS provides multiple facilities to help users affected by the issue:
 
 * We developed fixes for these vulnerabilities, which have been integrated upstream.
 * We provided a mitigation script for those who cannot install the update.
-* We have added detection logic in Xen Orchestra's latest release channel to alert on vulnerable Windows VMs. We also updated XCP-ng 8.2 and 8.3 so that PV driver versions are reported to Xen Orchestra for it to detect vulnerable Windows VMs.
+* We have added detection logic in Xen Orchestra's latest release channel to alert on vulnerable Windows VMs. We also updated XCP-ng 8.2 and 8.3 so that PV driver versions are reported to Xen Orchestra for it to detect vulnerable Windows VMs. See "Am I affected?" above.
+* We have developed a script that can be run in dom0 to perform the same detection, in case Xen Orchestra’s detection logic is not yet available to you. See "Am I affected?" above.
 * We are publishing an alert about the vulnerability inside all Xen Orchestra appliances.
+* We alert about this vulnerability at the beginning of our latest newsletter.
 
 ##### Why can't I use XCP-ng Windows PV drivers in production?
 Microsoft have not signed the XCP-ng 9.0 drivers yet. Since the drivers can't work outside Windows' test mode, they are not appropriate for production use.
@@ -265,7 +310,8 @@ You may have noticed that the XCP-ng 8.2 Windows drivers can still be used when 
 We are actively working with Microsoft to get the drivers signed (which is a slow process). An announcement will be made as soon as a Microsoft-signed build is available.
 
 ##### Related links
-Xen Project announcement: https://xenbits.xen.org/xsa/advisory-468.html
+* Xen Project announcement: https://xenbits.xen.org/xsa/advisory-468.html
+* XenServer Security Bulletin: https://support.citrix.com/article/CTX692748
 
 
 ### Enabling Viridian extensions
