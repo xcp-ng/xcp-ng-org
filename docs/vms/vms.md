@@ -1,3 +1,7 @@
+---
+toc_max_heading_level: 4
+---
+
 # Virtual Machines (VMs)
 
 ## 🛠️ Guest Tools
