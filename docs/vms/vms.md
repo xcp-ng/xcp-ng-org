@@ -286,7 +286,7 @@ If you're using *XCP-ng Windows PV drivers* 8.2.x, you should use [XenClean](#fu
 
 If you're already using *XCP-ng Windows PV drivers 9.0*: Install XCP-ng driver version 9.0.9065 or later.
 
-##### I don't want to patch, what should I do?
+##### I can't patch now, what should I do?
 We encourage you to apply the latest updates as soon as possible.
 
 If you absolutely cannot update, apply the mitigation script provided by Vates and the Xen Project, available at https://xenbits.xen.org/xsa/advisory-468.html.
