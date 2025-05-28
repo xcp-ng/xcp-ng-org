@@ -273,7 +273,10 @@ Only virtual machines (VMs) created using a Windows template—or from templates
 :::
 
 ##### How to patch my VMs?
+
+:::warning
 First, create backups and snapshot your VMs before updating.
+:::
 
 If you're using *XenServer Windows PV drivers* or have enabled the option *Manage Citrix PV drivers via Windows Update*: Upgrade to *XenServer VM Tools* 9.4.1 or later.
 
