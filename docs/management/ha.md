@@ -39,13 +39,51 @@ Here are the possible cases and how they are dealt with:
 * **Lost storage but not network**: if the host can contact a majority of pool members, it can stay alive. Indeed, in this scenario, there is no harm for the data (can't write to the VM disks). If the host is alone (i.e can't contact any other host or less than the majority), it goes for a reboot procedure.
 * **Lost network but not storage (worst case!)**: the host considers itself as problematic and starts a reboot procedure (hard power off and restart). This fencing procedure guarantees the sanity of your data.
 
+## Requirements
+
+Enabling HA in XCP-ng requires thorough planning and validation of several prerequisites:
+
+- **Pool-Level HA only**: HA can only be configured at the pool level, not across different pools.
+- **Minimum of 3 hosts recommended**: While HA can function with just 2 XCP-ng servers in a pool, we recommend using **at least 3** to prevent issues such as a split-brain scenario. With only 2 hosts, an equal split could result in one host being randomly fenced.
+- **Shared storage requirements**: You must have shared storage available, including at least one iSCSI, NFS, XOSTOR or Fiber Channel LUN with a minimum size of **356 MB for the heartbeat Storage Repository (SR)**. The HA mechanism creates two volumes on this SR:
+    - A **4 MB heartbeat volume** for monitoring host status.
+    - A **256 MB metadata volume** to store pool master information for master failover situations.
+- **Dedicated heartbeat SR optional**: While it's not necessary to dedicate a separate SR for the heartbeat, you can choose to do so. Alternatively, you can use the same SR that hosts your VMs.
+- **Unsupported storage for heartbeat**: Storage using SMB or iSCSI authenticated via CHAP **cannot be used as the heartbeat SR**.
+- **Static IP addresses**: Make sure that all hosts have static IP addresses to avoid disruptions from DHCP servers potentially reassigning IPs.
+- **Dedicated bonded interface recommended**: For optimal reliability, we recommend using a dedicated bonded interface for the HA management network.
+- **VM agility for HA protection**: For a VM to be protected by HA, it must meet certain agility requirements:
+    - The VM’s virtual disks must **reside on shared storage**, such as iSCSI, NFS, or Fibre Channel LUN, which is also necessary for the storage heartbeat.
+    - The VM must **support live migration**.
+    - The VM should **not have a local DVD drive connection configured**.
+    - The VM’s network interfaces should be on **pool-wide networks**.
+
+:::tip
+For enabling HA, we **strongly recommend** to use a bonded management interface for servers in the pool, and to configure multipathed storage for the heartbeat SR.
+:::
+
+
+If you create VLANs and bonded interfaces via the CLI, they might not be active or properly connected, causing a VM to appear non-agile and, therefore, unprotected by HA. 
+
+Use the `pif-plug` command in the CLI to activate VLAN and bond PIFs, ensuring the VM becomes agile. 
+
+Additionally, the `xe diagnostic-vm-status` CLI command can help identify why a VM isn’t agile, allowing you to take corrective action as needed.
+
+
 ## ⚙️ Configuration
 
 ### Prepare the pool
 
-You can check if your pool has HA enabled or not. In Xen Orchestra, you'll have a small "cloud" icon in the **Home/pool** view for each pool with HA enabled.
+You can check if your pool has HA enabled or not. 
 
-You can enable it with this xe CLI command:
+* In Xen Orchestra, for each pool where HA has been enabled, go to the **Home → Pool** view and you'll see a small "cloud" icon with a green check.
+* In the **Pool → Advanced** tab, you'll see a **High Availability** switch that shows if HA is enabled or not:
+
+![](../assets/img/xo-ha-enabled-disabled.png)
+
+To enable HA, just toggle it on, which gives you a SR selector as Heartbeat SR. 
+
+You can also enable it with this xe CLI command:
 
 ```
 xe pool-ha-enable heartbeat-sr-uuids=<SR_UUID>
@@ -55,33 +93,86 @@ xe pool-ha-enable heartbeat-sr-uuids=<SR_UUID>
 Remember that you need to use a shared storage repository to enable high availability.
 :::
 
+Once enabled, HA status will be displayed with the green toggle.
+
 ### Maximum host failure number
 
 How many host failures you can tolerate before running out of options? For 2 hosts in a Pool, the answer is pretty simple: **1** is the maximum number: after losing one host, it will be impossible to ensure a HA policy if the last one also fails.
 
-This value can be computed by XCP-ng, and in our sample case:
+XCP-ng can calculate this value for you. In our sample case, it looks like this:
 
 ```
 xe pool-ha-compute-max-host-failures-to-tolerate
 1
 ```
 
-But it could be also **0**. Because, even if you lose 1 host, is there not enough RAM to boot the HA VM on the last one? If not, you can't ensure their survival. If you want to set the number yourself, you can do it with this command:
+But it could be also **0**. Because, even if you lose 1 host, is there not enough RAM to boot the HA VM on the last one? If not, you can't ensure their survival. 
+
+If you want to set the number yourself, you can do it with this command:
 
 ```
 xe pool-param-set ha-host-failures-to-tolerate=1 uuid=<Pool_UUID>
 ```
 
-When you have more hosts failed equal to this number, a system alert is raised: you are in an **over-commitment** situation.
+If more hosts fail than this number, the system will raise an **over-commitment** alert.
 
 ### Configure a VM for HA
 
-This is pretty straightforward with Xen Orchestra. Go to your VM page and edit the **Advanced** panel: just tick the **HA** checkbox.
+#### VM High availability modes
+
+In XCP-ng, you can choose between 3 high availability modes: restart, best-effort, and disabled:
+
+- **Restart**: if a protected VM cannot be immediately restarted after a server failure, HA will attempt to restart the VM when additional capacity becomes available in the pool. However, there is no guarantee that this attempt will be successful.
+- **Best-Effort**: for VMs configured with best-effort, HA will try to restart them on another host if their original host goes offline.\
+This attempt will only occur after all VMs set to the "restart" mode have been successfully restarted. HA will make only one attempt to restart a best-effort VM. If it fails, no further attempts will be made.
+- **Disabled**: if an unprotected VM or its host is stopped, HA will not attempt to restart the VM.
+
+#### Choosing a high availability mode
+
+This is pretty straightforward with Xen Orchestra. Go to the **Advanced** panel of your VM page and use the **HA** dropdown menu:
+
+![](../assets/img/xo-ha-selector.png)
 
 You can also do that configuration with *xe CLI*:
 
 ```
 xe vm-param-set uuid=<VM_UUID> ha-restart-priority=restart
+```
+
+#### Start order
+
+##### What's the start order?
+
+The start order defines the sequence in which XCP-ng HA attempts to restart protected VMs following a failure. The order property of each protected VM determines this sequence.
+
+##### How and when does it apply?
+
+While the order property can be set for any VM, HA only uses it for VMs marked as **protected**. 
+
+The order value is an integer, with the default set to **0**, indicating the **highest priority**. VMs with an order value of 0 are restarted first, and those with higher values are restarted later in the sequence.
+
+##### How do I set the start order?
+
+You can set the order property value of a VM via the command-line interface:
+
+```
+xe vm-param-set uuid=<VM UUID> order=<number>
+```
+
+#### Configure HA timeout
+
+##### What's the HA timeout?
+
+The HA timeout represents the duration during which networking or storage might be inaccessible to the hosts in your pool. 
+
+If any XCP-ng server cannot regain access to networking or storage within the specified timeout period, it may self-fence and restart. 
+
+##### How do I configure it?
+
+The **default timeout is 60 seconds**, but you can adjust this value using the following command to suit your needs:
+
+```
+xe pool-param-set uuid=<pool UUID> other-config:default_ha_timeout=<timeout in seconds>
 ```
 
 ## 🔧 Updates/maintenance
@@ -106,7 +197,7 @@ However, if you halt the VM directly in the guest OS (via the console or in SSH)
 
 We'll see 3 different scenarios for the host, with an example on 2 hosts, **lab1** and **lab2**:
 
-* Physically "hard" shutdown the server
+* Physically power off the server.
 * Physically remove the **storage** connection
 * Physically remove the **network** connection
 
