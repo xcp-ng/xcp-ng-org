@@ -21,11 +21,11 @@ Create a new GPO in your desired OU and edit it:
 ![](../assets/img/winpv-update/gpo1.png)
 ![](../assets/img/winpv-update/gpo2.png)
 
-In **Computer Configuration** - **Policies** - **Software Settings** - **Software Installation**, add a new package:
+In **Computer Configuration** → **Policies** → **Software Settings** → **Software Installation**, add a new package:
 
 ![](../assets/img/winpv-update/gpo3.png)
 
-Select the installation MSI you want to install and click OK:
+Select the installation MSI you want to install and click **OK**:
 
 ![](../assets/img/winpv-update/gpo4.png)
 
@@ -50,7 +50,7 @@ The autoreboot feature will restart your VM without warning.
 You can delete the autoreboot settings once your update campaign is complete.
 :::
 
-Come back to the GPO you created and navigate to Computer Configuration - Preferences - Windows Settings - Registry.
+Come back to the GPO you created and navigate to **Computer Configuration** → **Preferences** → **Windows Settings** → **Registry**.
 Create a new registry item:
 
 ![](../assets/img/winpv-update/gpo6.png)
@@ -92,11 +92,13 @@ Once the update finishes, you should no longer see the vulnerability warning in 
 ## Appendix: Blocking vulnerable Xen drivers with Application Control for Windows
 
 :::warning
-**Risk of BSOD**: Incorrect application of App Control rules can cause the system to not boot.
+**Risk of BSOD**: Incorrect application of App Control rules can prevent the system from booting.
 While the policy provided in this guide is safe even if enforced, be sure to test your rules in audit mode and carefully review the event logs before applying them in enforced mode, especially if you modify the policy.
 :::
 
 Application Control for Windows (also known under various names: Windows Defender Application Control (WDAC), Device Guard, SIPolicy, CIPolicy etc.) is a powerful Windows feature that blocks binaries from executing.
+It can be used to totally block vulnerable drivers and prevent their abuse (as done in "bring-your-own-vulnerable-driver" attacks).
+App Control policies support signing to deter tampering, and can integrate with Measured Boot to prove enforcement.
 
 In this section, we provide instructions for installing an App Control policy for blocking XenIface drivers vulnerable to XSA-468.
 The provided policy is compatible with Windows 10 version 1903 or later and Windows Server 2022 or later.
@@ -118,7 +120,7 @@ Afterwards, use the [RefreshPolicy.exe](https://www.microsoft.com/en-us/download
 The new policy takes effect immediately.
 
 :::tip
-For details on how to deploy App Control policies to multiple machines, check [Microsoft documentation](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/deployment/appcontrol-deployment-guide).
+For details on how to deploy App Control policies to multiple machines, check the [Microsoft documentation](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/deployment/appcontrol-deployment-guide).
 :::
 
 ### Reviewing audit logs
@@ -127,14 +129,14 @@ The above policy is provided in audit mode.
 Instead of blocking drivers, the policy will create events in the Windows event log every time a blocked driver is loaded.
 You should review the policy and make sure it's working as expected before enforcement.
 
-Look for Event 3076 in the Microsoft-Windows-CodeIntegrity/Operational log to look for blocked drivers.
+Look for **Event 3076** in the `Microsoft-Windows-CodeIntegrity/Operational` log to look for blocked drivers.
 Make sure that no unintended drivers were targeted by your policy.
 
 ![](../assets/img/winpv-update/wdac1.png)
 
 ### Enforcement
 
-Once you're ready to fully apply the policy, remove the Audit rule option and bump the rule version, followed by recompiling the policy:
+Once you're ready to fully apply the policy, remove the Audit rule option, bump the rule version and recompile the policy:
 
 ```
 Set-RuleOption -FilePath .\xsa468.xml -Option 3 -Delete
