@@ -150,3 +150,28 @@ bcdedit /store S:\EFI\Microsoft\Boot /set {default} osdevice=partition=C:
 ```
 
 After exiting to Windows, your system should boot successfully.
+
+## Data drives showing as removable in Windows
+
+Follow the instructions in the Citrix KB entry [CTX583997: In XenServer, fixed data drives show as removable data drives to BitLocker](https://support.citrix.com/s/article/CTX583997-in-xenserver-fixed-data-drives-show-as-removable-data-drives-to-bitlocker).
+
+To summarize, first set the following registry keys in your VMs:
+
+```
+HKLM\System\CurrentControlSet\Services\XenBus\Parameters\VBD\AllowPdoRemove = 0
+HKLM\System\CurrentControlSet\Services\XenBus\Parameters\VBD\AllowPdoEject = 0
+```
+
+Next, set each VBD's property to non-unpluggable:
+
+```
+xe vbd-param-set uuid=<vbd-uuid> unpluggable=false
+```
+
+## Windows PV NICs losing IP after driver upgrade
+
+This is a known issue when updating XenServer VM Tools from versions older than 9.3.3.
+
+Refer to Citrix KB entry [CTX678047: Static IP loss when updating to VM Tools for Windows 9.3.3 or earlier](https://support.citrix.com/s/article/CTX678047-static-ip-loss-when-updating-to-vm-tools-for-windows-933-or-earlier).
+
+Future updates from XenServer VM Tools 9.3.3 to a later version will not encounter this issue.
