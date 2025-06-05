@@ -287,6 +287,10 @@ If you're using *XCP-ng Windows PV drivers* 8.2.x, you should use [XenClean](#fu
 
 If you're already using *XCP-ng Windows PV drivers 9.0*: Install XCP-ng driver version 9.0.9065 or later.
 
+:::tip
+Follow our guide [Updating Windows PV drivers automatically with Group Policy](/guides/winpv-update.md) to automate your driver update process.
+:::
+
 ##### I can't patch now, what should I do?
 We encourage you to apply the latest updates as soon as possible.
 
