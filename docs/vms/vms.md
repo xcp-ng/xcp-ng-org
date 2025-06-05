@@ -279,6 +279,7 @@ First, create backups and snapshot your VMs before updating.
 :::
 
 If you're using *XenServer Windows PV drivers* or have enabled the option *Manage Citrix PV drivers via Windows Update*: Upgrade to *XenServer VM Tools* 9.4.1 or later.
+Follow Citrix's guidance in [CTX678047](https://support.citrix.com/s/article/CTX678047-static-ip-loss-when-updating-to-vm-tools-for-windows-933-or-earlier) to avoid losing your static IP settings during an upgrade.
 
 If you're using *XCP-ng Windows PV drivers* 8.2.x, you should use [XenClean](#fully-removing-xen-pv-drivers-with-xenclean) to remove the existing drivers, then choose one of the following:
   * On a production system, install [XenServer VM Tools 9.4.1 or later](https://www.xenserver.com/downloads);
