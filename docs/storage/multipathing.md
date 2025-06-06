@@ -356,4 +356,4 @@ If you get an error, usually ```ping: sendmsg: Message too long```, your MTU set
 
 :::tip
 If your storage vendor allows it, feel free to use 1500 for MTU.
-:::%
+:::
