@@ -1,18 +1,18 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer').themes.github;
-const darkCodeTheme = require('prism-react-renderer').themes.dracula;
+const lightCodeTheme = require("prism-react-renderer").themes.github;
+const darkCodeTheme = require("prism-react-renderer").themes.dracula;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'XCP-ng Documentation',
-  tagline: 'Documentation for XCP-ng',
-  url: 'https://docs.xcp-ng.org',
-  baseUrl: '/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/xcpcrop128.png',
+  title: "XCP-ng Documentation",
+  tagline: "Documentation for XCP-ng",
+  url: "https://docs.xcp-ng.org",
+  baseUrl: "/",
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
+  favicon: "img/xcpcrop128.png",
   trailingSlash: true,
 
   // GitHub pages deployment config.
@@ -24,43 +24,38 @@ const config = {
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: "en",
+    locales: ["en"],
   },
 
   // Mermaid graphs
   markdown: {
     mermaid: true,
   },
-  themes: ['@docusaurus/theme-mermaid'],
+  themes: ["@docusaurus/theme-mermaid"],
 
   scripts: [
     {
-      src: '/js/mautic.js',
-      async: true,
-    },
-    {
-      src: '/js/matomo.js',
+      src: "https://cdn.vates.tech/rgpd/doc-xcp-ng-org.js",
       async: true,
     },
   ],
 
   presets: [
     [
-      'classic',
+      "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          routeBasePath: '/',
-          sidebarPath: require.resolve('./sidebars.js'),
+          routeBasePath: "/",
+          sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/xcp-ng/xcp-ng-org/edit/master/',
+          editUrl: "https://github.com/xcp-ng/xcp-ng-org/edit/master/",
         },
         blog: false,
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
         },
       }),
     ],
@@ -70,74 +65,78 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'XCP-ng Documentation',
+        title: "XCP-ng Documentation",
         logo: {
-          alt: 'XCP-ng logo',
-          src: 'img/xcpcrop128.png',
+          alt: "XCP-ng logo",
+          src: "img/xcpcrop128.png",
         },
         items: [
-          {href: 'https://xcp-ng.org', label: 'Home', position: 'right'},
-          {href: 'https://xcp-ng.org/blog', label: 'Blog', position: 'right'},
-          {href: 'https://vates.tech', label: 'Pro Support', position: 'right'},
+          { href: "https://xcp-ng.org", label: "Home", position: "right" },
+          { href: "https://xcp-ng.org/blog", label: "Blog", position: "right" },
           {
-            href: 'https://github.com/xcp-ng',
-            label: 'GitHub',
-            position: 'right',
+            href: "https://vates.tech",
+            label: "Pro Support",
+            position: "right",
+          },
+          {
+            href: "https://github.com/xcp-ng",
+            label: "GitHub",
+            position: "right",
           },
         ],
       },
       footer: {
-        style: 'dark',
+        style: "dark",
         links: [
           {
-            title: 'Learn',
+            title: "Learn",
             items: [
               {
-                label: 'Introduction',
-                href: '/',
+                label: "Introduction",
+                href: "/",
               },
               {
-                label: 'Installation',
-                href: '/category/installation',
+                label: "Installation",
+                href: "/category/installation",
               },
             ],
           },
           {
-            title: 'Community',
+            title: "Community",
             items: [
               {
-                label: 'Forum',
-                href: 'https://xcp-ng.org/forum',
+                label: "Forum",
+                href: "https://xcp-ng.org/forum",
               },
               {
-                label: 'Discord',
-                href: 'https://discord.gg/Hr98F6wRvx',
+                label: "Discord",
+                href: "https://discord.gg/Hr98F6wRvx",
               },
             ],
           },
           {
-            title: 'Pro Support',
+            title: "Pro Support",
             items: [
               {
-                label: 'Vates Stack',
-                href: 'https://vates.tech',
+                label: "Vates Stack",
+                href: "https://vates.tech",
               },
               {
-                label: 'Contact us',
-                href: 'https://vates.tech/contact',
+                label: "Contact us",
+                href: "https://vates.tech/contact",
               },
             ],
           },
           {
-            title: 'More',
+            title: "More",
             items: [
               {
-                label: 'News',
-                href: 'https://xcp-ng.org/blog',
+                label: "News",
+                href: "https://xcp-ng.org/blog",
               },
               {
-                label: 'GitHub',
-                href: 'https://github.com/xcp-ng/xcp-ng-org',
+                label: "GitHub",
+                href: "https://github.com/xcp-ng/xcp-ng-org",
               },
             ],
           },
@@ -149,7 +148,7 @@ const config = {
         darkTheme: darkCodeTheme,
       },
       colorMode: {
-        defaultMode: 'dark',
+        defaultMode: "dark",
         respectPrefersColorScheme: true,
       },
       // Mermaid
@@ -159,11 +158,11 @@ const config = {
           gantt: {
             fontSize: 25,
             barHeight: 70,
-          }
+          },
         },
-      }
+      },
     }),
-  plugins: [require.resolve('docusaurus-lunr-search')],
+  plugins: [require.resolve("docusaurus-lunr-search")],
 };
 
 module.exports = config;
