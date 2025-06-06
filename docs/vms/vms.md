@@ -276,6 +276,9 @@ Only virtual machines (VMs) created using a Windows template—or from templates
 
 :::warning
 First, create backups and snapshot your VMs before updating.
+
+**Users of Windows 8.1/Server 2012 R2 and older**: The latest PV drivers from XCP-ng or XenServer only support Windows 10/Server 2016 or later.
+Refer to the [I can't patch now, what should I do?](#i-cant-patch-now-what-should-i-do) section for an alternative solution.
 :::
 
 If you're using *XenServer Windows PV drivers* or have enabled the option *Manage Citrix PV drivers via Windows Update*: Upgrade to *XenServer VM Tools* 9.4.1 or later.
@@ -294,7 +297,9 @@ Follow our guide [Updating Windows PV drivers automatically with Group Policy](/
 ##### I can't patch now, what should I do?
 We encourage you to apply the latest updates as soon as possible.
 
-If you absolutely cannot update, apply the mitigation script provided by Vates and the Xen Project, available at https://xenbits.xen.org/xsa/advisory-468.html.
+If you absolutely cannot update, apply the mitigation script provided by Vates and the Xen Project, available at https://xenbits.xen.org/xsa/advisory-468.html (Windows 10 1607/Server 2016 and later only).
+
+For older operating systems (Windows 7 up to Windows 8.1/Server 2012 R2), use our [legacy mitigation script](https://github.com/xcp-ng/win-pv-drivers/blob/xcp-ng-9.1/extras/Install-XSA468Workaround-Win7.ps1) instead.
 
 Note that this mitigation script only covers vulnerabilities in the *Xen PV Interface* driver.
 
