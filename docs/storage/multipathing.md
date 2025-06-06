@@ -13,13 +13,8 @@ Do not attempt to enable multipathing on a production pool with existing and act
 ## iSCSI
 
 ### Requirements
-* Four different network interfaces (we recommend using two separate network cards)
-* Dedicated network interfaces without VLAN tagging on XCP-ng host and storage unit
-* All network interfaces to the hosts and storage unit **must be set to "STP portEdge"** on the network equipment
-* Two different switches (not stacked) **without Spanning-Tree**
-* Spanning-tree must be disabled on the switches
-* Two VLANs **without L3 routing**
-* Two IPv4 subnets **without L3 routing**
+* Two different network interfaces
+* Two different switches
 * Multiple targets per LUN on your storage unit
 * iSCSI target ports are operating in portal mode
 
@@ -33,6 +28,7 @@ Since each architecture is unique, feel free to check with the storage vendor if
 1. Make sure you do not use bond-type network interfaces on the host and on the storage unit for iSCSI interfaces.
 2. Make sure you do not configure network routes on iSCSI interfaces.
 :::
+
 
 ### Target architecture
 
@@ -136,10 +132,10 @@ linkStyle 13 stroke:#8C8C8C,stroke-width:2px;
 
 #### 1. Prepare XCP-ng hosts
 1. On one of the host servers, make sure that the multipath.conf configuration includes your storage equipment.
-   
+
    This can be found in the file `/etc/multipath.xenserver/multipath.conf`
 2. If your equipment is not present, ask the manufacturer for the multipath configuration for GNU/Linux otherwise move on to the [next step (Prepare the pool)](../../storage/multipathing/#2-prepare-the-pool)
-   
+
    Add it to the file ```/etc/multipath/conf.d/custom.conf```
 
    For example:
@@ -167,7 +163,7 @@ linkStyle 13 stroke:#8C8C8C,stroke-width:2px;
    :::info
    In this case, the configuration will be kept after updates.
    :::
-   
+
 3. If necessary, migrate the VMs active on the XCP-ng host in question to another one
 4. Reboot the current XCP-ng host on the affected pool
 5. Do the same for all servers in the pool
@@ -184,8 +180,8 @@ Proceed with the iSCSI SR configuration as indicated in the [storage documentati
 
 ## Fibre Channel (HBA)
 ### Requirements
-* Check that the Fibre Channel cards model(s) is supported via the HCL
-* Two different Fibre Channel ports (You can also have multiple cards if you want)
+* Check that the Fibre Channel cards model(s) is supported via the [HCL](https://hcl.xenserver.com/)
+* Two different Fibre Channel ports
 * Two different SAN switches
 * Multiple targets per LUN on your storage unit
 * Zoning performed
@@ -209,7 +205,7 @@ flowchart LR
 
   subgraph server[XCP-ng host]
     direction LR
-    subgraph Card1[Fibre Channel card]
+    subgraph Card1[Fibre Channel]
         direction RL
         card1port1[port1]
         card1port2[port2]
@@ -257,10 +253,10 @@ linkStyle 5 stroke:#5CB85C,stroke-width:2px;
 
 #### 1. Prepare XCP-ng hosts
 1. On one of the host servers, make sure that the multipath.conf configuration includes your storage equipment.
-   
+
    This can be found in the file `/etc/multipath.xenserver/multipath.conf`
 2. If your equipment is not present, ask the manufacturer for the multipath configuration for GNU/Linux otherwise move on to the [next step (Prepare the pool)](../../storage/multipathing/#2-prepare-the-pool-1)
-   
+
    Add it to the file ```/etc/multipath/conf.d/custom.conf```
 
    For example:
@@ -288,7 +284,7 @@ linkStyle 5 stroke:#5CB85C,stroke-width:2px;
    :::info
    In this case, the configuration will be kept after updates.
    :::
-   
+
 3. If necessary, migrate the VMs active on the XCP-ng host in question to another one
 4. Reboot the current XCP-ng host on the affected pool
 5. Do the same for all servers in the pool
@@ -360,4 +356,4 @@ If you get an error, usually ```ping: sendmsg: Message too long```, your MTU set
 
 :::tip
 If your storage vendor allows it, feel free to use 1500 for MTU.
-:::
+:::%
