@@ -102,23 +102,43 @@ A comprehensive list of updates is available on our build system's web interface
 
 ### From command line
 
-#### 1. Check prerequisites and precautions above
+#### 1. Before install
 
-#### 2. Install the updates
+Check prerequisites and precautions above.
+
+#### 2. Additional steps regarding XOSTOR SRs
+
+LINSTOR expects that we always use satellites and controllers with the same version.
+Without precautions and after a reboot of a just updated host, it's possible that a machine can no longer communicate with other hosts through LINSTOR satellites. In fact LINSTOR expects that we always use satellites and controllers with the same version.
+
+To avoid problems, it is strongly recommended to update all satellites, controllers packages of each host without rebooting:
+```
+yum update linstor-satellite linstor-controller
+```
+
+After updating all hosts without reboot:
+```
+systemctl stop linstor-controller # "stop" is not a typo, it will auto restart the controller.
+systemctl restart linstor-satellite
+```
+
+Then you can follow the next CLI instructions to manually update the pool.
+
+#### 3. Install the updates
 
 Run this on each server, starting with the pool master:
 ```
 yum update
 ```
 
-#### 3. Restart the XAPI toolstack on every host
+#### 4. Restart the XAPI toolstack on every host
 
 ```
 xe-toolstack-restart
 ```
 This way some changes are taken into account without even rebooting. Even if you plan to reboot, it's good to do this first to avoid live migration issues that could happen in some cases during the update process. Start with the pool master. Check that no task is currently running (`xe task-list`) before restarting the toolstack. Any running task would be interrupted and cancelled.
 
-#### 4. Consider rebooting the hosts, starting with the pool master
+#### 5. Consider rebooting the hosts, starting with the pool master
 
 See below "[When to reboot?](#-when-to-reboot)".
 
@@ -134,23 +154,6 @@ Also known as RPU, **this is the advised way to update your pool**. By just clic
 
 :::info
 This powerful and fully automated mechanism requires some prerequisites: all your VMs disks must be on a one (or more) shared storage. Also, high-availability will be automatically disabled, as the XO load balancer plugin and backup jobs. Everything will be enabled back when it's done!
-:::
-
-:::warning
-RPU is disabled for pools with XOSTOR SRs. The reason is that after a reboot of a just updated host, it's possible that it can no longer communicate with other hosts through LINSTOR satellites. In fact LINSTOR expects that we always use satellites and controllers with the same version.
-
-To avoid problems, it is strongly recommended to update the satellites, controllers packages of each host without rebooting:
-```
-yum update linstor-satellite linstor-controller
-```
-
-After updating all hosts without reboot:
-```
-systemctl stop linstor-controller # "stop" is not a typo, it will auto restart the controller.
-systemctl restart linstor-satellite
-```
-
-Then you can follow the instructions in the documentation to manually update the pool.
 :::
 
 ![](../../assets/img/rpu1.png)
