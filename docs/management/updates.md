@@ -109,7 +109,7 @@ Check prerequisites and precautions above.
 #### 2. Additional steps regarding XOSTOR SRs
 
 LINSTOR expects that we always use satellites and controllers with the same version.
-Without precautions and after a reboot of a just updated host, it's possible that a machine can no longer communicate with other hosts through LINSTOR satellites. In fact LINSTOR expects that we always use satellites and controllers with the same version.
+Without precautions and after a reboot of a just updated host, it's possible that a machine can no longer communicate with other hosts through LINSTOR satellites.
 
 To avoid problems, it is strongly recommended to update all satellites, controllers packages of each host without rebooting:
 ```
