@@ -120,6 +120,11 @@ In Xen Orchestra, you can switch the "Manage Citrix PV drivers via Windows Updat
 
 ... So the "Manage Citrix PV drivers via Windows Update" option is not a complete solution if you need the guest metrics from the management agent. However it may be a convenient way to get future driver updates if you wish so.
 
+:::warning
+If the "Manage Citrix PV drivers via Windows Update" option is enabled, the XenServer VM Tools package may defer driver installation to Windows Update instead.
+Make sure to check **Install I/O Drivers Now** during tools installation if you want to explicitly update the current drivers.
+:::
+
 ##### Switching from XCP-ng tools to Citrix tools
 If your VM already has XCP-ng tools and you wish to switch to Citrix tools, then you need to perform a clean-up as decribed in [Fully removing Xen PV drivers with XenClean](#fully-removing-xen-pv-drivers-with-xenclean).
 
@@ -281,7 +286,10 @@ First, create backups and snapshot your VMs before updating.
 Refer to the [I can't patch now, what should I do?](#i-cant-patch-now-what-should-i-do) section for an alternative solution.
 :::
 
-If you're using *XenServer Windows PV drivers* or have enabled the option *Manage Citrix PV drivers via Windows Update*: Upgrade to *XenServer VM Tools* 9.4.1 or later.
+If you're using *XenServer Windows PV drivers*: Upgrade to *XenServer VM Tools* 9.4.1 or later.
+
+If you have enabled the option *Manage Citrix PV drivers via Windows Update*: Install new drivers via Windows Update, or install *XenServer VM Tools* 9.4.1 or later with the option **Install I/O Drivers Now** selected.
+
 Follow Citrix's guidance in [CTX678047](https://support.citrix.com/s/article/CTX678047-static-ip-loss-when-updating-to-vm-tools-for-windows-933-or-earlier) to avoid losing your static IP settings during an upgrade.
 
 If you're using *XCP-ng Windows PV drivers* 8.2.x, you should use [XenClean](#fully-removing-xen-pv-drivers-with-xenclean) to remove the existing drivers, then choose one of the following:
@@ -304,6 +312,11 @@ For older operating systems (Windows 7 up to Windows 8.1/Server 2012 R2), use ou
 Note that this mitigation script only covers vulnerabilities in the *Xen PV Interface* driver.
 
 You should run the mitigation script in Scan mode afterwards to make sure the vulnerability is effectively mitigated.
+
+:::tip
+The mitigation script will not remove the vulnerability alert from Xen Orchestra.
+Once you have ensured that the mitigation was successful, you can set the `HIDE_XSA468` VM tag in Xen Orchestra (5.107.2 and later) to hide the alert.
+:::
 
 ##### How is Vates helping to fix this vulnerability?
 This issue was discovered by Vates as part of our investment into upstream Xen development. Vates VMS provides multiple facilities to help users affected by the issue:

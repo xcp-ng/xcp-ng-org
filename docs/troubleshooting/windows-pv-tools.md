@@ -175,3 +175,11 @@ This is a known issue when updating XenServer VM Tools from versions older than 
 Refer to Citrix KB entry [CTX678047: Static IP loss when updating to VM Tools for Windows 9.3.3 or earlier](https://support.citrix.com/s/article/CTX678047-static-ip-loss-when-updating-to-vm-tools-for-windows-933-or-earlier).
 
 Future updates from XenServer VM Tools 9.3.3 to a later version will not encounter this issue.
+
+## XenServer VM Tools not upgrading drivers after installation
+
+This is due to the "Manage Citrix PV drivers via Windows Update" feature being enabled on that VM.
+
+If this feature is enabled, XenServer VM Tools will automatically uncheck the "Install I/O Drivers Now" checkbox and defer the driver update to Windows Update.
+
+Make sure to either check this checkbox, specify `ALLOWDRIVERINSTALL=YES` on the Msiexec command line (if installing via command line) or install driver updates via Windows Update.
