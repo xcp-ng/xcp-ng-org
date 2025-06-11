@@ -178,7 +178,7 @@ Future updates from XenServer VM Tools 9.3.3 to a later version will not encount
 
 ## XenServer VM Tools not upgrading drivers after installation
 
-This is due to the "Manage Citrix PV drivers via Windows Update" feature being enabled on that VM.
+This can be due to the "Manage Citrix PV drivers via Windows Update" feature being enabled on that VM.
 
 If this feature is enabled, XenServer VM Tools will automatically uncheck the "Install I/O Drivers Now" checkbox and defer the driver update to Windows Update.
 
