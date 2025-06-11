@@ -13,7 +13,7 @@ But that's not the only one. If you lose the network link but not the shared sto
 We'll see how to protect your precious VM in multiple cases, and we'll illustrate that with real examples.
 
 :::info
-You can have high availability with as few as 2 hosts, but we strongly recommended to do it with 3 at the minimum, for obvious split-brains issues you might encounter.
+You can have high availability with as few as 2 hosts, but we strongly recommended to do it with 3 at the minimum, for obvious split-brain issues you might encounter.
 :::
 
 :::warning
@@ -44,7 +44,7 @@ Here are the possible cases and how they are dealt with:
 Enabling HA in XCP-ng requires thorough planning and validation of several prerequisites:
 
 - **Pool-Level HA only**: HA can only be configured at the pool level, not across different pools.
-- **Minimum of 3 hosts recommended**: While HA can function with just 2 XCP-ng servers in a pool, we recommend using **at least 3** to prevent issues such as a split-brain scenario. With only 2 hosts, an equal split could result in one host being randomly fenced.
+- **Minimum of 3 hosts recommended**: While HA can function with just 2 XCP-ng servers in a pool, we recommend using **at least 3** to prevent issues such as a split-brain scenario. With only 2 hosts, they risk getting fenced if the connection between them is lost.
 - **Shared storage requirements**: You must have shared storage available, including at least one iSCSI, NFS, XOSTOR or Fiber Channel LUN with a minimum size of **356 MB for the heartbeat Storage Repository (SR)**. The HA mechanism creates two volumes on this SR:
     - A **4 MB heartbeat volume** for monitoring host status.
     - A **256 MB metadata volume** to store pool master information for master failover situations.
@@ -191,15 +191,15 @@ If you have enough memory to put one host in maintenance (migrating all its VMs 
 
 If you shut the VM down with `Xen Orchestra` or `xe`, the VM will be stopped normally, because XCP-ng knows that's what you want.
 
-However, if you halt the VM directly in the guest OS (via the console or in SSH), XCP-ng is NOT aware of what's going on. The system will think the VM is down and will consider that an anomaly. As a result, the VM will be **started automatically!**. This behavior prevents operators from shutting down the system, and leaves the VM unavailable for a long time.
+However, if you halt the VM directly in the guest OS (via the console or in SSH), XCP-ng is NOT aware of what's going on. The system will think the VM is down and will consider that an anomaly. As a result, the VM will be **started automatically!**. This behavior prevents an operator from shutting down the system and leaving the VM unavailable for a long time.
 
 ### Host failure
 
 We'll see 3 different scenarios for the host, with an example on 2 hosts, **lab1** and **lab2**:
 
 * Physically power off the server.
-* Physically remove the **storage** connection
-* Physically remove the **network** connection
+* Physically remove the **storage** connection.
+* Physically remove the **network** connection.
 
 **lab1** is not the *Pool Master*, but the results would be the same (just longer to test because of time to the other host becoming the master itself).
 
@@ -209,7 +209,7 @@ After each test, **Minion 1** go back to **lab1** to start in the exact same con
 
 #### Pull the power plug
 
-Now, we will decide to pull the plug for my host **lab1**:  this is exactly where my VM currently runs. After some time (when XAPI detects and reports that the host is lost, which usually takes 2 minutes), we can see that **lab1** is reported as **Halted**. In the same time, the VM **Minion 1** is booted on the other running host - **lab 2**:
+Now, we will decide to pull the plug for my host **lab1**: this is exactly where my VM currently runs. After some time (when XAPI detects and reports that the host is lost, which usually takes 2 minutes), we can see that **lab1** is reported as **Halted**. In the same time, the VM **Minion 1** is booted on the other running host - **lab 2**:
 
 If you decide to re-plug the **lab1** host, it will be back online, without any VM on it, which is normal.
 
@@ -231,4 +231,4 @@ Immediatly after fencing, **Minion 1** will be booted on the other host.
 
 #### Pull the network cable
 
-Finally, the worst case: keep the storage operational, but "cut" the (management) network interface. Same procedure: unplug the cable physically and wait... Because **lab1** cannot contact any other host in the pool (in this case, **lab2**), it starts the fencing procedure. The result is exaclty the same as the previous test. It's gone for the pool master, displayed as **Halted** until we re-plug the cable.
+Finally, the worst case: keep the storage operational, but "cut" the (management) network interface. Same procedure: unplug the cable physically and wait... Because **lab1** cannot contact any other host in the pool (in this case, **lab2**), it starts the fencing procedure. The result is exactly the same as the previous test. It's gone for the pool master, displayed as **Halted** until we re-plug the cable.
