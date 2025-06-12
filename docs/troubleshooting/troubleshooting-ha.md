@@ -4,7 +4,7 @@ High Availability (HA) is designed to automatically restart protected virtual ma
 
 This page provides guidance on how to understand and resolve common HA-related issues.
 
-To know more on high availability in general and how to set it up with XCP-ng, see the general [High availability](/management/ha) section.
+To know more on high availability in general and how to set it up with XCP-ng, see the general [High availability](/management/ha/) section.
 
 ---
 
