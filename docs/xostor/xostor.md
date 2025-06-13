@@ -323,6 +323,78 @@ Only XCP-ng 8.2.1 is currently supported and with a maximum of 7 machines per po
 
 See this documentation: [RPU](/management/updates/#rolling-pool-update-rpu).
 
+## Upgrade
+
+If you are reading this documentation, we assume that you want to upgrade a pool on which XOSTOR is deployed, i.e. change the version of XCP-ng, for example from 8.2 to 8.3.
+For updates that don't change the version number of XCP-ng (bugfixes, security fixes), see [the update section](#update).
+
+### 1. Prerequisites
+
+- All hosts must be up to date on the version of XCP-ng you are currently using. For this refer to [the update section](#update).
+- HA must be disabled on your pool.
+- Ensure all nodes are reachable and resources are in "OK" state via XO's XOSTOR view. Alternatively, you can use the CLI:
+```
+linstor n l
+linstor r l
+linstor adv r
+linstor sp l
+```
+
+### 2. Upgrade steps
+
+From this point we can proceed to upgrade your XOSTOR-enabled pool.
+
+An upgrade can take quite a long time so we recommend disabling the auto-evict mechanism during this procedure to avoid bad behavior.
+On the host where the controller is running:
+```
+linstor controller set-property DrbdOptions/AutoEvictAllowEviction False
+```
+
+For each host of the pool (starting with the master), follow the instructions given in [this guide](../installation/upgrade/#-upgrade-via-installation-iso-recommended). Just one important thing: don't try to upgrade using CLI or network ISO installer. Always use the latest full ISO that can be found [here](https://xcp-ng.org/download/).
+
+:::warning
+If you have this error during upgrade, you must download the latest full ISO version as documented above:
+```
+Cannot upgrade host with LINSTOR using a package source that does not have LINSTOR.  Please use as package source the repository on the dedicated ISO.
+```
+:::
+
+If you want to make sure that everything is going well so as not to impact your production, we recommend these manual checks after each host reboot:
+
+- Check if there is an issue with the resources:
+```
+linstor r list
+linstor advise r # Give possible fix commands in case of problems.
+```
+
+- Check in XOA that the PBD of the SR of this host is connected. If not, do so.
+
+:::warning
+Very important, if you don't want to break the quorum or your production environment. You must execute the commands given above after upgrading a host and do not reboot/upgrade the others until the host's satellite is operational and its PBD is plugged.
+:::
+
+### 3. After pool upgrade
+
+- If you have deactivated auto eviction as recommended, it's necessary to reactivate it. On the host where the controller resides, execute this command:
+```
+linstor controller set-property DrbdOptions/AutoEvictAllowEviction True
+```
+
+If a node was evicted because the recommendation was not followed, read this [topic](#what-to-do-when-a-node-is-in-an-evicted-state).
+
+- Check the resource states with:
+```
+linstor r l
+```
+
+In case of bad sync between volumes, execute on each machine:
+```
+systemctl stop linstor-controller
+systemctl restart linstor-satellite
+```
+
+- In case of a bad node (missing, without storage pool or inaccessible via `linstor n l`/`linstor sp l`) due to a failed upgrade or if the documentation was not followed correctly, you can read this [documentation](#how-to-add-a-new-host-or-fix-a-bad-configured-host) to recover.
+
 ## Global questions
 
 ### The linstor command does not work!?
@@ -519,6 +591,95 @@ Consider the following:
 - It's not possible to create a VDI greater than 200 GiB because the replication is not block-based but volume-based.
 - If you create a volume of 200 GiB it means that 400 of the 600 GiB are physically used. However, the remaining disk of 200 GiB cannot be used because it cannot be replicated on two different disks.
 - If you create 3 volumes of 100 GiB: the SR is filled. In this case, you have 300 GiB of unique data and a replication of 300 GiB.
+
+### How to add a new host or fix a bad configured host?
+
+:::warning
+For a new host, make sure you have the required packages by running these commands on it:
+```
+yum install -y xcp-ng-release-linstor
+yum install -y xcp-ng-linstor
+```
+
+And then restart the toolstack to detect the LINSTOR driver:
+```
+xe-toolstack-restart
+```
+:::
+
+First ensure you have the same configuration on each PBD of your XOSTOR SR using this command. Replace `<UUID>` with the correct one:
+```
+xe pbd-list sr-uuid=<UUID>
+```
+
+Example output where the group-name is `linstor_group/thin_device`:
+```
+uuid ( RO)                  : 06d10e9e-c7ad-2ed6-a901-53ac1c2c7486
+             host-uuid ( RO): 4bac16be-b25b-4d0b-a159-8f5bda930640
+               sr-uuid ( RO): d5f990f6-abca-0ebf-8582-b7e55901fb50
+         device-config (MRO): group-name: linstor_group/thin_device; redundancy: 2; provisioning: thin
+    currently-attached ( RO): true
+
+
+uuid ( RO)                  : 06b5e263-8ec1-74e9-3162-d39785be6ba7
+             host-uuid ( RO): f7737f79-ad49-491c-a303-95ac37fb6a13
+               sr-uuid ( RO): d5f990f6-abca-0ebf-8582-b7e55901fb50
+         device-config (MRO): group-name: linstor_group/thin_device; redundancy: 2; provisioning: thin
+    currently-attached ( RO): true
+
+
+uuid ( RO)                  : 1d872d5b-fb60-dbd7-58fc-555a211f18fa
+             host-uuid ( RO): ef942670-e37d-49e6-81d0-d2a484b0cd10
+               sr-uuid ( RO): d5f990f6-abca-0ebf-8582-b7e55901fb50
+         device-config (MRO): group-name: linstor_group/thin_device; redundancy: 2; provisioning: thin
+    currently-attached ( RO): true
+```
+
+Then if you want to fix an incorrect group name value or even add a new host, use this command with the correct `<GROUP_NAME>` and `<HOST_UUID>`:
+```
+xe host-call-plugin host-uuid=<HOST_UUID> plugin=linstor-manager fn=addHost args:groupName=<GROUP_NAME>
+```
+For a short description, this command (re)create a PBD, open DRBD/LINSTOR ports, start specific services and add the node in the LINSTOR database.
+
+A storage layer is not directly added to this node. You can verify the storage state like this:
+```
+linstor sp list
+```
+
+Small example:
+
+A `LVM_THIN` entry is missing for `hpmc17` in this context:
+```
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+┊ StoragePool                      ┊ Node   ┊ Driver   ┊ PoolName                  ┊ FreeCapacity ┊ TotalCapacity ┊ CanSnapshots ┊ State ┊ SharedName                              ┊
+╞══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╡
+┊ DfltDisklessStorPool             ┊ hpmc15 ┊ DISKLESS ┊                           ┊              ┊               ┊ False        ┊ Ok    ┊ hpmc15;DfltDisklessStorPool             ┊
+┊ DfltDisklessStorPool             ┊ hpmc16 ┊ DISKLESS ┊                           ┊              ┊               ┊ False        ┊ Ok    ┊ hpmc16;DfltDisklessStorPool             ┊
+┊ DfltDisklessStorPool             ┊ hpmc17 ┊ DISKLESS ┊                           ┊              ┊               ┊ False        ┊ Ok    ┊ hpmc17;DfltDisklessStorPool             ┊
+┊ xcp-sr-linstor_group_thin_device ┊ hpmc15 ┊ LVM_THIN ┊ linstor_group/thin_device ┊   476.66 GiB ┊    476.70 GiB ┊ True         ┊ Ok    ┊ hpmc15;xcp-sr-linstor_group_thin_device ┊
+┊ xcp-sr-linstor_group_thin_device ┊ hpmc16 ┊ LVM_THIN ┊ linstor_group/thin_device ┊   476.66 GiB ┊    476.70 GiB ┊ True         ┊ Ok    ┊ hpmc16;xcp-sr-linstor_group_thin_device ┊
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
+
+If VG/LV is missing on `hpmc17`, connect to this machine and use `vgcreate` with the wanted disks to create `linstor_group`. For `thick` configuration it's enough, for `thin` additional commands are required. Replace `linstor_group/thin_device` by your pool name if it's different in your configuration.
+```
+lvcreate -l 100%FREE -T linstor_group/thin_device
+lvchange -ay linstor_group/thin_device
+```
+
+Run the correct command where the controller is running to add the volume group in the LINSTOR database:
+```
+# For thin:
+linstor storage-pool create lvmthin <NODE_NAME> <SP_NAME> <VG_NAME>
+
+# For thick:
+linstor storage-pool create lvm <NODE_NAME> <SP_NAME> <VG_NAME>
+```
+
+In this situation:
+```
+linstor storage-pool create lvm hpmc17 xcp-sr-linstor_group_thin_device linstor_group/thin_device
+```
 
 ### How to use a specific network for DRBD requests?
 
