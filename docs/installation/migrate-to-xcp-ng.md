@@ -227,9 +227,9 @@ As soon you did scan the SR, the new disk is visible in the SR/disk view. Don't 
 If you lost ability to extend migrated volume (opening journal failed: -2) You need to move disk to another storage, VM should be ON during moving process. This issue can occur when vhd files was directly copied to storage folder.
 :::
 
-## 🇰 From KVM (Libvirt, Proxmox and other)
+## 🇰 From KVM (Libvirt, Proxmox and others)
 
-First, shut down the virtual machine. If you don’t already have the `qemu-img` command available, you can install it by installing the `qemu-utils` package on your computer or server.
+First, shut down the virtual machine. If the `qemu-img` command is not available, you can install it as part of the the `qemu-utils` package on your computer or server.
 
 Next, run this command to convert the QCOW2 disk to a VHD format:
 
@@ -255,7 +255,7 @@ To skip Windows activation in case system is already activated, collect informat
 
 :::warning
 
-- **Downtime**: The OVA can only be exported while the VM is off (except if you export a clone, but all blocks written after the clone won't be on the imported VM. If you can sync after, it's fine!). This can take a while, and your VMs won't be reachable until it's fully exported AND imported on destination.
+- **Downtime**: The OVA can only be exported while the VM is off, except if you export a clone. However, all blocks written after the clone won't be on the imported VM. If you can sync after, it's fine!). This can take a while, and your VMs won't be reachable until it's fully exported AND imported on destination.
 - **Storage**: You need an intermediary storage where you can export then import the OVA file. If your VMs are small, it's OK.
 - **Manual process**: Even if it's simple to do, it can be cumbersome if you have a lot of VMs to migrate.
 :::
