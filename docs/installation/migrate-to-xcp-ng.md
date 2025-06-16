@@ -284,7 +284,7 @@ Clonezilla is a free and open-source disk imaging and cloning tool used for syst
 
 ### With Xen Orchestra
 
-In the left menu, go for "Import" then "Disk". Select the destination SR, and then add your VHD file into it. Depending on the VHD file size, it might take some time. The upload progress can be tracked in another XO tab, in the "Task" menu.
+In the left menu, go for **Import** then **Disk**. Select the destination SR, and then add your VHD file into it. Depending on the VHD file size, it might take some time. The upload progress can be tracked in another XO tab, in the **Task** menu.
 
 ![](../assets/img/import-disk.png)
 
