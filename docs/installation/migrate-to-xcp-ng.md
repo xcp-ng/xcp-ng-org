@@ -248,7 +248,7 @@ You can also export an OVA from your hypervisor (VirtualBox, VMWare...) and impo
 An OVA is a big, single file using the standard Open Virtualization Format. The OVA contains an XML describing the metadata (VM name, description, etc.) and your disks in the VMDK format.
 
 :::tip
-To skip Windows activation if the system was already activated, collect info about the network cards used in the Windows VM (ipconfig /all) and use the same MAC address(es) when creating interfaces in XCP-ng.
+To skip Windows activation in case system is already activated, collect information on the network cards used in the Windows VM (ipconfig /all) and use the same MAC address(es) when creating interfaces in XCP-ng.
 :::
 
 ![](../assets/img/import-ova.png)
