@@ -6,7 +6,7 @@ sidebar_position: 1
 
 We are proud to present XCP-ng 8.3, which will be the last release of the 8.x platform.
 
-[Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0.iso?https=1).
+[Download the latest installation ISO](https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.iso?https=1).
 
 SHA256 checksums, GPG signatures, and the net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
@@ -21,17 +21,18 @@ SHA256 checksums, GPG signatures, and the net-install ISO are available [here](h
 
 ## Release information
 
-For this release, the product lifecycle has changed to match that of XenServer 8, with which we share many open-source components:
+For this release, the product lifecycle has changed:
 * A longer preview phase, enabling broad user feedback, now ended.
-* After the General Availability release, XCP-ng 8.3 will continue to receive updates, allowing us to introduce new features while maintaining platform stability through improved testing processes.
-* After some time, XCP-ng 8.3 will transition to a Long-Term Support (LTS) release, where only bug and security fixes will be applied to ensure maximum stability.
+* After the General Availability release, XCP-ng 8.3 continued to receive updates, allowing us to introduce new features while maintaining platform stability through improved testing processes.
+* On 2025-06-16, XCP-ng 8.3 transitioned to a Long-Term Support (LTS) release model, with a more conservative approach to updates.
 
 Key details:
 * Released on 2024-10-07.
 * Partly based on XenServer 8 (which succeeded Citrix Hypervisor 8.2 CU1) + updates.
 * Base version of CentOS in the control domain (dom0): 7 + security fixes backported by XCP-ng's Security Team.
-* Xen version: 4.17.4 + patches.
+* Xen version: 4.17.5 + patches.
 * Linux kernel version in the control domain (dom0): 4.19 + patches + additional drivers.
+* LTS since 2025-06-16.
 * Supported until 2028-11-30.
 
 ## Install
@@ -73,6 +74,8 @@ Interested readers can also review all blog announcements related to XCP-ng 8.3 
 * [XCP-ng 8.3 Release Candidate 2](https://xcp-ng.org/blog/2024/09/17/xcp-ng-8-3-release-candidate-2/)
 
 However, things changed during the development of XCP-ng 8.3, so if you come across anything that contradicts the release notes, trust the release notes.
+
+More changed after the initial release. Check the update announcements on the official blog for further changes brought to XCP-ng 8.3 after the initial release.
 
 ### New visual theme
 
@@ -346,9 +349,11 @@ We've also invested heavily in test automation to improve coverage. Nevertheless
 
 ## Status of XOSTOR in XCP-ng 8.3
 
-As of release, XOSTOR (our hyperconverged storage solution based on LINSTOR) is available in XCP-ng 8.3 but is still considered **beta**.
+As of the initial release, XOSTOR (our hyperconverged storage solution based on LINSTOR) was available in XCP-ng 8.3 but was still considered **beta**.
 
-Therefore, upgrading from XCP-ng 8.2.1 with XOSTOR to XCP-ng 8.3 is **not yet supported**. We will provide upgrade instructions once XOSTOR reaches a stable release on XCP-ng 8.3.
+Since 2025-06-16, XOSTOR is officially supported on XCP-ng 8.3, as long as it is up to date.
+
+A [specific upgrade process](../../xostor/#upgrade) is available for pools running XCP-ng 8.2.1 with XOSTOR.
 
 ## Deprecations and removals
 
