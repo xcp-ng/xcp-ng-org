@@ -318,7 +318,7 @@ In Xen Orchestra, create a new VM without a disk, and make sure to uncheck the "
 
 ### My imported VM is not booting 
 
-- Check if the Boot firmware (in advanced setting) is on the correct type (BIOS or UEFI)
+- Check if the Boot firmware (in advanced setting) is on the correct type (BIOS or UEFI).
 - Check if the boot disk is the first in the VM disk tab
 - Check [here](../../installation/migrate-to-xcp-ng/#error-dracut-initqueue227-warning-devmapperol-root-does-not-exist-or-no-bootable-device)
 
