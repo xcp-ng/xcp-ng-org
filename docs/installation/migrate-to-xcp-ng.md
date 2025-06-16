@@ -311,7 +311,11 @@ You can generate one with the command `uuidgen` on Linux.
 
 You need to rescan the SR where you new VHD file is, so it can be detected. It will appear in the disk list, without a name or description though. You can use `xe sr-scan` or use the scan button on the storage in Xen Orchestra.
 
-In Xen Orchestra, create a new VM without a disk, and make sure to uncheck the "Boot VM after creation" option under advanced settings. Then, go to the "Disks" tab, click on "Attach disk", select the VHD you just uploaded, and attach it.
+In Xen Orchestra:
+1. Create a new VM without a disk. Go to **Advanced settings** and uncheck the option called **Boot VM after creation** under **Advanced settings**. 
+2. Go to the **Disks** tab
+3. Click **Attach disk**.
+4. Select the VHD you just uploaded, and attach it.
 
 
 ## 🛠️ Troubleshooting
