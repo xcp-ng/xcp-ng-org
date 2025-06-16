@@ -346,4 +346,4 @@ Then add the xen drivers:
 dracut --kver <version> -f /boot/initrd<version> --add-drivers "xen-blkfront xen-netfront" --force
 ```
 Exit the chroot, unmount all your partition, and you can reboot, or detach the disk if you used your XO
-You VM should be booting now !
+You VM should be booting now!
