@@ -113,6 +113,8 @@ A vTPM can be created for any UEFI VM in XCP-ng, but since the most common use c
 
 :::warning
 As of the XCP-ng 8.3 release, Xen Orchestra's incremental backups and incremental replication do not include vTPM data, unlike full backups. We are working on resolving this issue.
+
+**Update:** Xen Orchestra was shortly updated to support it.
 :::
 
 :::warning
