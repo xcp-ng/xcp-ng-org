@@ -17,10 +17,8 @@ All our updates are explained in details inside a dedicated blog post. Don't for
 ## ♻️ Support cycle
 
 We maintain one or several releases in parallel:
-* LTS releases (currently `8.2`).
-* Non-LTS releases, which receive rolling updates (currently `8.3`, though this specific release is planned to turn into a LTS too after some time).
-
-More about the current releases [here](../../releases).
+* LTS releases (currently `8.2` and `8.3`).
+* Non-LTS releases, which receive rolling updates (currently none, as `8.3` is now a LTS).
 
 If your version is lower than `8.2`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [upgrade](../../installation/upgrade).
 

@@ -65,7 +65,7 @@ There are storage types that are officially supported, and others that are provi
     <td>XOSTOR</td>
     <td>X</td>
     <td>X</td>
-    <td>X (8.2 LTS only)</td>
+    <td>X</td>
   </tr>
   <tr>
     <td>ZFS</td>

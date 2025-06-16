@@ -92,7 +92,7 @@ The maximum number of supported logical processors may vary depending on the CPU
 
 - Up to 448 logical processors (theoretical, untested: 512).
 
-#### XCP-ng 8.3
+#### XCP-ng 8.3 LTS
 
 - Up to 960 logical processors, depending on CPU support (theoretical, untested: 1024).
 
@@ -116,7 +116,7 @@ Below are the supported limits for virtual machines on XCP-ng.
 
 Ensure that your guest OS supports this configuration.
 
-#### XCP-ng 8.3
+#### XCP-ng 8.3 LTS
 
 - **Virtual CPUs (vCPUs) per VM**:
   - For untrusted VMs, the security-supported limit is **32 vCPUs**.
@@ -134,7 +134,7 @@ Guest OS support is also an important factor to consider.
 
 - **Maximum RAM per VM**: **1.5 TiB**.
 
-#### XCP-ng 8.3
+#### XCP-ng 8.3 LTS
 
 - **Maximum RAM per VM**:
   - With memory snapshot support: **1.5 TiB**.

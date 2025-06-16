@@ -316,7 +316,7 @@ RemainAfterExit=true
 :::
 
 :::important
-Only XCP-ng 8.2.1 is currently supported and with a maximum of 7 machines per pool.
+The maximum number of machines per pool is 7.
 :::
 
 ## Update

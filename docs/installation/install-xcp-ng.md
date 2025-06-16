@@ -12,16 +12,19 @@ If you want to use the netinstall ISO, see the [Netinstall section](#-netinstall
 
 ### Download and create media
 
-You can download the latest installer for XCP-ng 8.2 LTS from here: [https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1) and the latest installer for XCP-ng 8.3 from here: [https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0.iso?https=1](https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0.iso?https=1).
+You can download the latest installer for XCP-ng 8.2 LTS from here: [https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1) and the latest installer for XCP-ng 8.3 LTS from here: [https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.iso?https=1](https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.iso?https=1).
 
 SHA256 checksums, GPG signatures and net-install ISOs are available [here](https://xcp-ng.org/#easy-to-install).
 
+:::tip
+XCP-ng 8.2 LTS will soon reach its end of life. Better deploy XCP-ng 8.3 LTS.
+:::
 
 Then, create the install media (e.g. a USB key 1GB or larger should work):
 
 ```
-# example with XCP-ng 8.2
-dd if=xcp-ng-8.2.1-20231130.iso of=/dev/sdX bs=8M oflag=direct
+# example with XCP-ng 8.3
+dd if=xcp-ng-8.3.0-20250606.iso of=/dev/sdX bs=8M oflag=direct
 ```
 
 Finally, boot on that media and go to the next section.
@@ -171,12 +174,12 @@ It means the system is correctly installed! Enjoy XCP-ng 🚀
 
 The netinstall image is a lightweight ISO (around 150MiB) that will only contain the installer, but no actual RPM packages. Sometimes, it's more convenient/faster when your ISO is on a slow connection (e.g. a virtual media using a server IPMI).
 
-You can download it on this URL: [https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130-netinstall.iso?https=1](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130-netinstall.iso?https=1).
+You can download it on this URL: [https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606-netinstall.iso?https=1](https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606-netinstall.iso?https=1).
 
 As with the regular installation ISO, write it on a USB media:
 
 ```
-dd if=xcp-ng-8.2.1-20231130-netinstall.iso of=/dev/sdX bs=8M oflag=direct
+dd if=xcp-ng-8.3.0-20250606-netinstall.iso of=/dev/sdX bs=8M oflag=direct
 ```
 
 Everything else is like the [regular install](#start-the-host), except that it will not offer to install from local media, only from distant ones.
