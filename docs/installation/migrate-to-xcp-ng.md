@@ -333,7 +333,7 @@ mount <boot device> /mnt/boot/
 
 for x in sys proc run dev tmp; do mount --bind /$x /mnt/$x; done
 ```
-Check your fstab to see the exact layout of your partition !
+Check your fstab to see the exact layout of your partition!
 If you have LVM partition, you can enable them with `vgchange -ay`
 
 Chroot in your mounted partition 
