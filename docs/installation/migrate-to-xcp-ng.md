@@ -231,7 +231,7 @@ If you lost ability to extend migrated volume (opening journal failed: -2) You n
 
 First, shut down the virtual machine. If you don’t already have the `qemu-img` command available, you can install it by installing the `qemu-utils` package on your computer or server.
 
-Next, convert the QCOW2 disk to a VHD format using the following command:
+Next, run this command to convert the QCOW2 disk to a VHD format:
 
 ```
 qemu-img convert -O vpc disk.qcow2 `uuidgen`.vhd
