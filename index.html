@@ -231,7 +231,7 @@
                             <img src="assets/img/xodashboard.png" alt="" class="img-fluid">
                             <div class="carousel-caption d-none d-md-block">
                                 <h5>With Xen Orchestra Web UI</h5>
-                                <p>A glance on your whole XCP-ng infrastructure on a dashboard page!</p>
+                                <p>Your whole XCP-ng infrastructure on a dashboard page!</p>
                             </div>
                         </div>
 
@@ -306,10 +306,10 @@
                    role="tab" aria-controls="v-pills-download-latest" aria-selected="false">Download 8.3 Latest</a>
                 <a class="nav-link" id="v-pills-from-xo-tab" data-toggle="pill" href="#v-pills-from-xo"
                     role="tab" aria-controls="v-pills-from-xo" aria-selected="false">Web UI</a>
-                <a class="nav-link" id="v-pills-upgrade-tab" data-toggle="pill" href="#v-pills-upgrade"
-                    role="tab" aria-controls="v-pills-upgrade" aria-selected="false">Upgrade from XenServer</a>
                 <a class="nav-link" id="v-pills-vmware-tab" data-toggle="pill" href="#v-pills-vmware"
                     role="tab" aria-controls="v-pills-vmware" aria-selected="false">Migrate from VMware</a>
+                <a class="nav-link" id="v-pills-upgrade-tab" data-toggle="pill" href="#v-pills-upgrade"
+                    role="tab" aria-controls="v-pills-upgrade" aria-selected="false">Upgrade from XenServer</a>
                 <a class="nav-link" id="v-pills-security-tab" data-toggle="pill" href="#v-pills-security"
                     role="tab" aria-controls="v-pills-security" aria-selected="false">Security and mirrors</a>
                 <a class="nav-link" id="v-pills-old-tab" data-toggle="pill" href="#v-pills-old"
@@ -352,8 +352,16 @@
                          You can also download the <a href="https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-netinstall.iso?https=1" onclick="_paq.push(['trackEvent', 'Download', 'netinstall']);">Net install ISO</a> (163MiB), then create your bootable USB key in the same fashion. SHA256 netinstall ISO:
                      </p>
                      <pre>de6c6c9d699fd9185ca295e0c30cee705efaad4df05ae3910584bb880e51fab2</pre>
-                 </div>
-
+                </div>
+                <div class="tab-pane fade" id="v-pills-vmware" role="tabpanel"
+                 aria-labelledby="v-pills-vmware-tab">
+                    <h4 style="text-align: center; font-weight: bold;">Easy migration out of Broadcom VMware</h4>
+                    <p style="text-align: center; font-style: italic; font-size: 0.9em;">Join the exodus with simple tools to assist on your VMware migration</p>
+                    <p>Leverage Xen Orchestra to seamlessly migrate your VMware VMs to XCP-ng. This tool supports migration from any accessible ESXi host, including those at remote locations, by directly streaming the VMs to XCP-ng.</p>
+                    <p>Learn more about the process by exploring our step-by-step guide on <a href="https://xcp-ng.org/blog/2022/10/19/migrate-from-vmware-to-xcp-ng?utm_campaign=migrate">how to migrate from VMware to XCP-ng with just a few clicks.</a></p>
+                    <h4>Need further assistance?</h4>
+                    <p><a href="https://vates.tech/contact">Contact us</a> for a personalized and dedicated migration plan tailored to your existing VMware infrastructure's transition to XCP-ng.</p>
+                </div>
                 <div class="tab-pane fade" id="v-pills-upgrade" role="tabpanel"
                      aria-labelledby="v-pills-upgrade-tab">
                     <h4 style="text-align: center; font-weight: bold;">Upgrade from XenServer</h4>
@@ -363,15 +371,6 @@
                     <img src="assets/img/upgradexs.png"><br/><br/>
                     <h4>No physical access to the XenServer host?</h4>
                     <p>Please <a href="https://docs.xcp-ng.org/installation/upgrade/#-upgrade-from-xenserver">check our documentation</a> for advanced upgrade cases.</p>
-                </div>
-                <div class="tab-pane fade" id="v-pills-vmware" role="tabpanel"
-                     aria-labelledby="v-pills-vmware-tab">
-                    <h4 style="text-align: center; font-weight: bold;">Easy migration out of Broadcom VMware</h4>
-                    <p style="text-align: center; font-style: italic; font-size: 0.9em;">Join the exodus with simple tools to assist on your VMware migration</p>
-                    <p>Leverage Xen Orchestra to seamlessly migrate your VMware VMs to XCP-ng. This tool supports migration from any accessible ESXi host, including those at remote locations, by directly streaming the VMs to XCP-ng.</p>
-                    <p>Learn more about the process by exploring our step-by-step guide on <a href="https://xcp-ng.org/blog/2022/10/19/migrate-from-vmware-to-xcp-ng?utm_campaign=migrate">how to migrate from VMware to XCP-ng with just a few clicks.</a></p>
-                    <h4>Need further assistance?</h4>
-                    <p><a href="https://vates.tech/contact">Contact us</a> for a personalized and dedicated migration plan tailored to your existing VMware infrastructure's transition to XCP-ng.</p>
                 </div>
                 <div class="tab-pane fade" id="v-pills-security" role="tabpanel"
                      aria-labelledby="v-pills-security-tab">
