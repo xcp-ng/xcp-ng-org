@@ -304,7 +304,7 @@ scp thegenerateduuid.vhd ip.xcp-ng.server:/run/sr-mount/uuid-of-your-SR
 ```
 
 :::warning
-The name of your VHD MUST BE an uuid (e.g. 44ad36fc-e9f1-4d74-9090-2d9bffddbee2.vhd).
+The name of your VHD MUST BE a uuid (e.g. `44ad36fc-e9f1-4d74-9090-2d9bffddbee2.vhd`).
 
 You can generate one with the command `uuidgen` on Linux.
 :::
