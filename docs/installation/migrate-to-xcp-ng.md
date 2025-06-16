@@ -290,7 +290,7 @@ In the left menu, go for "Import" then "Disk". Select the destination SR, and th
 
 When the disk is imported, you can:
 
--  Create a VM with the appropriate template, **without any disk in it**
+- Create a VM with the appropriate template, **without any disk in it**
 - Attach the previously imported disk (VM/Disk/Attach an existing disk)
 - Boot the VM
 - Install the tools
