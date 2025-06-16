@@ -326,7 +326,7 @@ In Xen Orchestra, create a new VM without a disk, and make sure to uncheck the "
 
 This error means Xen driver are not present in the kernel (see [here](../../installation/migrate-to-xcp-ng/#install-xen-drivers))
 
-You can boot an live CD, and mount root and boot partition
+You can boot a live CD, and mount root and boot partition
 ```
 mount <root device> /mnt/
 mount <boot device> /mnt/boot/
