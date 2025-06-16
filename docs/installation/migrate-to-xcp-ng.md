@@ -20,7 +20,7 @@ To avoid conflicts with XCP-ng guest tools, uninstall any existing VM tools (suc
 
 On some systems (especially RHEL-based and SLES distributions) Xen drivers are not installed by default. Migrating a VM without these drivers can prevent the OS from detecting disks and network interfaces.
 
-Before shutting down the VM, install the drivers with:
+Before shutting down the VM, run this command to install the drivers:
 
 ```
 dracut --add-drivers "xen-blkfront xen-netfront" --force
