@@ -136,8 +136,8 @@ This is often caused by the Windows boot loader failing to find the Windows part
 From the recovery menu, open Command Prompt, then use `diskpart` to assign drive letters to the EFI system partition:
 
 ```
-list vol
-sel vol N  # N = number of volume with info = "System"
+list volume
+select volume N  # N = number of volume with info = "System"
 assign letter=S
 exit
 ```
@@ -145,8 +145,8 @@ exit
 After exiting Diskpart, use the following commands:
 
 ```bat
-bcdedit /store S:\EFI\Microsoft\Boot /set {default} device=partition=C:
-bcdedit /store S:\EFI\Microsoft\Boot /set {default} osdevice=partition=C:
+bcdedit /store S:\EFI\Microsoft\Boot\BCD /set {default} device=partition=C:
+bcdedit /store S:\EFI\Microsoft\Boot\BCD /set {default} osdevice=partition=C:
 ```
 
 After exiting to Windows, your system should boot successfully.
