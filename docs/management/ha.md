@@ -193,6 +193,17 @@ If you shut the VM down with `Xen Orchestra` or `xe`, the VM will be stopped nor
 
 However, if you halt the VM directly in the guest OS (via the console or in SSH), XCP-ng is NOT aware of what's going on. The system will think the VM is down and will consider that an anomaly. As a result, the VM will be **started automatically!**. This behavior prevents an operator from shutting down the system and leaving the VM unavailable for a long time.
 
+:::tip
+
+Starting with XAPI 25.16.0, VM restart behavior can be changed. To do this, run this command:
+
+```
+xe pool-param-set uuid=... ha-reboot-vm-on-internal-shutdown=false
+```
+As a result, VMs that are shut down internally or through the API will restart the exact same way.
+
+:::
+
 ### Host failure
 
 We'll see 3 different scenarios for the host, with an example on 2 hosts, **lab1** and **lab2**:
