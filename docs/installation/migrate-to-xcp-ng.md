@@ -330,7 +330,7 @@ In Xen Orchestra:
 
 This error means Xen driver are not present in the kernel (see [here](../../installation/migrate-to-xcp-ng/#install-xen-drivers))
 
-You can boot a live CD, and mount root and boot partition
+You can boot a live CD and mount the `root` and `boot` partitions.
 ```
 mount <root device> /mnt/
 mount <boot device> /mnt/boot/
