@@ -248,7 +248,7 @@ You can also export an OVA from your hypervisor (VirtualBox, VMWare...) and impo
 An OVA is a big, single file using the standard Open Virtualization Format. The OVA contains an XML describing the metadata (VM name, description, etc.) and your disks in the VMDK format.
 
 :::tip
-To skip Windows activation in case system is already activated, collect information on the network cards used in the Windows VM (ipconfig /all) and use the same MAC address(es) when creating interfaces in XCP-ng.
+To skip Windows activation in case the system is already activated, run `ipconfig /all` to collect information on the network cards used in the Windows VM, and use the same MAC address(es) when creating interfaces in XCP-ng.
 :::
 
 ![](../assets/img/import-ova.png)
@@ -273,7 +273,7 @@ Clonezilla is a free and open-source disk imaging and cloning tool used for syst
 
 2. From the VM console, you can tell the source VM running CloneZilla to send all the blocks to the destination VM, also running CloneZilla. 
 
-3. As soon it's done, you can safely shut down the original VM and boot the copy on destination!
+3. Once done, you can safely shut down the original VM and boot the copy on destination!
 
 :::warning
 - **Downtime**: Even if the downtime will be reduced compared to using OVA, you still need to run the export/import process while the VM is off.
@@ -304,7 +304,7 @@ scp thegenerateduuid.vhd ip.xcp-ng.server:/run/sr-mount/uuid-of-your-SR
 ```
 
 :::warning
-The name of your VHD MUST BE a uuid (e.g. `44ad36fc-e9f1-4d74-9090-2d9bffddbee2.vhd`).
+The name of your VHD **must be** a uuid (e.g. `44ad36fc-e9f1-4d74-9090-2d9bffddbee2.vhd`).
 
 You can generate one with the command `uuidgen` on Linux.
 :::
@@ -312,7 +312,7 @@ You can generate one with the command `uuidgen` on Linux.
 You need to rescan the SR where you new VHD file is, so it can be detected. It will appear in the disk list, without a name or description though. You can use `xe sr-scan` or use the scan button on the storage in Xen Orchestra.
 
 In Xen Orchestra:
-1. Create a new VM without a disk. Go to **Advanced settings** and uncheck the option called **Boot VM after creation** under **Advanced settings**. 
+1. Create a new VM without a disk. Go to **Advanced settings** and uncheck the option called **Boot VM after creation**. 
 2. Go to the **Disks** tab
 3. Click **Attach disk**.
 4. Select the VHD you just uploaded, and attach it.
@@ -322,13 +322,13 @@ In Xen Orchestra:
 
 ### My imported VM is not booting 
 
-- Check if the Boot firmware (in advanced setting) is on the correct type (BIOS or UEFI).
+- Check if the Boot firmware (in Advanced settings) is on the correct type (BIOS or UEFI).
 - Check if the boot disk is the first in the VM disk tab
 - Check [here](../../installation/migrate-to-xcp-ng/#error-dracut-initqueue227-warning-devmapperol-root-does-not-exist-or-no-bootable-device)
 
 ### Error "dracut-initqueue[227]: Warning: /dev/mapper/ol-root does not exist" (or no bootable device)
 
-This error means Xen driver are not present in the kernel (see [here](../../installation/migrate-to-xcp-ng/#install-xen-drivers))
+This error means Xen drivers are missing from the kernel (see [here](../../installation/migrate-to-xcp-ng/#install-xen-drivers))
 
 You can boot a live CD and mount the `root` and `boot` partitions.
 ```
@@ -338,7 +338,7 @@ mount <boot device> /mnt/boot/
 for x in sys proc run dev tmp; do mount --bind /$x /mnt/$x; done
 ```
 Check your fstab to see the exact layout of your partition!
-If you have LVM partition, you can enable them with `vgchange -ay`
+If you have an LVM partition, you can enable them with `vgchange -ay`.
 
 Chroot in your mounted partition 
 ```
