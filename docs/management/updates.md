@@ -162,7 +162,16 @@ Starting with XCP-ng 8.3, Rolling Pool Updates (RPUs) now handle pools that util
 
 :::warning
 
-On XCP-ng 8.2, RPU is disabled for pools with XOSTOR SRs. The reason is that after a reboot of a just updated host, it's possible that it can no longer communicate with other hosts through LINSTOR satellites. In fact LINSTOR expects that we always use satellites and controllers with the same version.
+**Prerequisites**
+
+On XCP-ng 8.2, Rolling Pool Updates (RPUs) can handle pools that utilize XOSTOR if the following conditions are met:
+
+- your host uses `xcp-ng-xapi-plugins-1.12.0` or a later version
+- XO is on version 5.105 or later
+
+**What about older versions?**
+
+What happens with older versions of the XAPI plugins is that, after rebooting a recently updated host, it might no longer be able to communicate with other hosts through LINSTOR satellites. In fact, LINSTOR expects that we always use satellites and controllers with the same version.
 
 To avoid problems, it is strongly recommended to update the satellites, controllers packages of each host without rebooting:
 ```
