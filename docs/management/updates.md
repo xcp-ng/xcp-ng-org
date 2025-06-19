@@ -166,7 +166,8 @@ Starting with XCP-ng 8.3, Rolling Pool Updates (RPUs) now handle pools that util
 
 On XCP-ng 8.2, Rolling Pool Updates (RPUs) can handle pools that utilize XOSTOR if the following conditions are met:
 
-- your host uses `xcp-ng-xapi-plugins-1.12.0` or a later version
+- your host uses `xcp-ng-xapi-plugins-1.12.0` or a later version.\
+    To verify your XAPI plugins version, run `rpm -q xcp-ng-xapi-plugins` on your host.
 - XO is on version 5.105 or later
 
 **What about older versions?**
