@@ -154,6 +154,38 @@ Also known as RPU, **this is the advised way to update your pool**. By just clic
 This powerful and fully automated mechanism requires some prerequisites: all your VMs disks must be on a one (or more) shared storage. Also, high-availability will be automatically disabled, as the XO load balancer plugin and backup jobs. Everything will be enabled back when it's done!
 :::
 
+##### XOSTOR support
+
+Rolling Pool Updates (RPUs) can now handle pools that utilize XOSTOR. If there is no LINSTOR Storage Repository (SR), the RPU proceeds as usual. However, if a LINSTOR SR is present, and the prerequisites below are met, the update process includes additional steps to ensure compatibility before performing the standard rolling update.
+
+:::warning
+
+**Prerequisites**
+
+Rolling Pool Updates (RPUs) can handle pools that utilize XOSTOR, if:
+
+- your host uses `xcp-ng-xapi-plugins-1.12.0` or a later version.\
+    To verify your XAPI plugins version, run `rpm -q xcp-ng-xapi-plugins` on your host.
+- XO is on version 5.105 or later
+
+**What about older versions?**
+
+What happens with older versions of the XAPI plugins is that, after rebooting a recently updated host, it might no longer be able to communicate with other hosts through LINSTOR satellites. In fact, LINSTOR expects that we always use satellites and controllers with the same version.
+
+To avoid problems, it is strongly recommended to update the satellites, controllers packages of each host without rebooting:
+```
+yum update linstor-satellite linstor-controller
+```
+
+After updating all hosts without reboot:
+```
+systemctl stop linstor-controller # "stop" is not a typo, it will auto restart the controller.
+systemctl restart linstor-satellite
+```
+
+Then you can follow the instructions in the documentation to manually update the pool.
+:::
+
 ![](../../assets/img/rpu1.png)
 
 #### Pool updates
