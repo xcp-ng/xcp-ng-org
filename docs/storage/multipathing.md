@@ -46,7 +46,7 @@ This could have an impact on expected performance.
 ```mermaid
 ---
 config:
-  look: handDrawn
+  look: normal
   theme: default
 ---
 flowchart LR
@@ -203,7 +203,7 @@ Make sure not to mix Fibre Channel speeds.
 ```mermaid
 ---
 config:
-  look: handDrawn
+  look: normal
   theme: default
 ---
 flowchart LR
