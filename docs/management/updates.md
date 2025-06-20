@@ -154,17 +154,15 @@ Also known as RPU, **this is the advised way to update your pool**. By just clic
 This powerful and fully automated mechanism requires some prerequisites: all your VMs disks must be on a one (or more) shared storage. Also, high-availability will be automatically disabled, as the XO load balancer plugin and backup jobs. Everything will be enabled back when it's done!
 :::
 
-**XCP-ng 8.3**
+##### XOSTOR support
 
-Starting with XCP-ng 8.3, Rolling Pool Updates (RPUs) now handle pools that utilize XOSTOR. If there is no LINSTOR Storage Repository (SR), the RPU proceeds as usual. However, if a LINSTOR SR is present, the update process includes additional steps to ensure compatibility before performing the standard rolling update.
-
-**XCP-ng 8.2**
+Rolling Pool Updates (RPUs) can now handle pools that utilize XOSTOR. If there is no LINSTOR Storage Repository (SR), the RPU proceeds as usual. However, if a LINSTOR SR is present, and the prerequisites below are met, the update process includes additional steps to ensure compatibility before performing the standard rolling update.
 
 :::warning
 
 **Prerequisites**
 
-On XCP-ng 8.2, Rolling Pool Updates (RPUs) can handle pools that utilize XOSTOR if the following conditions are met:
+Rolling Pool Updates (RPUs) can handle pools that utilize XOSTOR, if:
 
 - your host uses `xcp-ng-xapi-plugins-1.12.0` or a later version.\
     To verify your XAPI plugins version, run `rpm -q xcp-ng-xapi-plugins` on your host.
