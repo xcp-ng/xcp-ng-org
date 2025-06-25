@@ -153,7 +153,7 @@ There exists no easy way to convert an existing storage repository from a given 
 
 Plans are laid out for simpler installation and maintenance of Windows guest tools. Unfortunately, we haven't found people yet to implement them so the current state remains that of 8.1. ***If you're a developer on the Windows platforms, we're hiring! (full time or part time, contracts or hires) - Contact us.***
 
-Using the Windows guest tools is [documented here](../../../vms#windows).
+Using the Windows guest tools is [documented here](/vms#windows-guest-tools).
 
 ## Update: what's new in XCP-ng 8.2.1
 

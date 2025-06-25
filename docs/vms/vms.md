@@ -161,7 +161,7 @@ xe vm-param-get param-name=has-vendor-device uuid={VM-UUID}
 ###### Install the XCP-ng drivers
 0. Snapshot your VM before installing (just in case)
 1. Check the above prerequisite about the "Manage Citrix PV drivers via Windows Update" option
-2. [Verify that no other guest tools are currently installed](#how-to-know-if-tools-are-already-installed-and-working). Our installer will block installation when other Xen tools are already present anyway. Use [XenClean](#Fully-removing-Xen-PV-drivers-with-XenClean) to remove any tools present. Do not uninstall the drivers in any other way: it may lead to BSOD at reboot (at least when uninstalling XCP-ng 8.2.2 tools)
+2. [Verify that no other guest tools are currently installed](#how-to-know-if-tools-are-already-installed-and-working). Our installer will block installation when other Xen tools are already present anyway. Use [XenClean](#fully-removing-xen-pv-drivers-with-xenclean) to remove any tools present. Do not uninstall the drivers in any other way: it may lead to BSOD at reboot (at least when uninstalling XCP-ng 8.2.2 tools)
 3. Unpack the ZIP file
 4. Start the installation MSI
 5. Follow the install wizard
@@ -506,8 +506,6 @@ The likeliness for the installation to work correctly will depend on how much th
 ##### Other Linux distributions
 
 For the remaining Linux distributions, mount the guest tools ISO as described above, then look for the `xe-guest-utilities_*_all.tgz` archive. Copy its contents on the system in `/etc` and `/usr`. It contains a System V init script by default but there's also a systemd unit file available on the ISO (`xe-linux-distribution.service`).
-
-See also [Contributing](#contributing) below.
 
 ##### Specific cases
 

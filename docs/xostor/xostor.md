@@ -364,7 +364,7 @@ linstor controller set-property DrbdOptions/AutoEvictAllowEviction False
 For each host of the pool (starting with the master), follow the instructions given in [this guide](../installation/upgrade/#-upgrade-via-installation-iso-recommended).
 
 :::warning
-If you have this error during upgrade, you must download the right ISO version as documented in [this section](#2-download-xcp-ng-iso-with-linstor-support):
+If you have this error during upgrade, you must download the right ISO version as documented in [this section](#2-xcp-ng-iso-with-linstor-support):
 ```
 Cannot upgrade host with LINSTOR using a package source that does not have LINSTOR.  Please use as package source the repository on the dedicated ISO.
 ```
