@@ -36,84 +36,84 @@ At the end of this step, the result will be essentially the same, and both solut
 
 ### From an ISO file
 
-* Download an ISO file of Ubuntu 22.04.04 LTS version: [https://ubuntu.com/download/server](https://ubuntu.com/download/server)
+1. Download an ISO file of Ubuntu 22.04.04 LTS version: [https://ubuntu.com/download/server](https://ubuntu.com/download/server)
 
 In order to access the ISO file during the virtual machine creation step, it needs to be placed in an ISO storage repository. There are several types available (Local, NFS, or SMB). For this post, the first type will be used. Feel free to browse through this [post](https://xcp-ng.org/blog/2022/05/05/how-to-create-a-local-iso-repository-in-xcp-ng/) to learn how to create a local ISO storage repository. In the following, I assume that there is a local ISO storage repository on the XCP-NG host.
 
-* From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **Import** option and choose the **Disk** sub-option.
+2. From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **Import** option and choose the **Disk** sub-option.
 
-* Select the ISO repository from the SR dropdown where the ISO file will be uploaded.
+3. Select the ISO repository from the SR dropdown where the ISO file will be uploaded.
 
-* Drag and drop or select the file *ubuntu-22.04.4-live-server-amd64.iso*, click on **Import**, and wait for the import to finish.
+4. Drag and drop or select the file *ubuntu-22.04.4-live-server-amd64.iso*, click on **Import**, and wait for the import to finish.
 
 > You can also directly upload the ISO file to the server where the local ISO storage repository is located using the **scp** tool.
 
-* From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **New** option and choose the **VM** sub-option to create a new virtual machine.
+5. From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **New** option and choose the **VM** sub-option to create a new virtual machine.
 
-* Select the Ubuntu Jammy Jellyfish 22.04 template (which is more of a loading profile than a template) and enter the following values for the parameters: custom-ubuntu22.04 for the name, 1 CPU, 4 GB of RAM, 10 GB of disk space, and choose the ISO file ubuntu-22.04.4-live-server-amd64.iso from the previously created local storage.
+6. Select the Ubuntu Jammy Jellyfish 22.04 template (which is more of a loading profile than a template) and enter the following values for the parameters: custom-ubuntu22.04 for the name, 1 CPU, 4 GB of RAM, 10 GB of disk space, and choose the ISO file ubuntu-22.04.4-live-server-amd64.iso from the previously created local storage.
 
-* During the Ubuntu installation steps, please ensure 1) to create only one partition to allow resizing later and 2) to install the OpenSSH server.
+7. During the Ubuntu installation steps, please ensure 1) to create only one partition to allow resizing later and 2) to install the OpenSSH server:
 
 ![One single partition on the local disk](../../assets/img/screenshots/templatexcpng-ubuntu-partition.png)
 
-* Once the installation is complete, restart the system while removing the drive containing the ISO file.
+8. Once the installation is complete, restart the system while removing the drive containing the ISO file.
 
-* Connect via the console provided by [Xen Orchestra](https://xen-orchestra.com) or via SSH and update the repositories and the system.
+9. Connect via the console provided by [Xen Orchestra](https://xen-orchestra.com) or via SSH and update the repositories and the system:
 
 ```
 $ sudo apt update 
 $ sudo apt dist-upgrade
 ```
 
-* Install the package *xe-guest-utilities-latest* to improve communication between the XCP-NG hypervisor and the virtual machine ([Guest tools](https://docs.xcp-ng.org/vms/#%EF%B8%8F-guest-tools)).
+10. Install the package *xe-guest-utilities-latest* to improve communication between the XCP-NG hypervisor and the virtual machine ([Guest tools](https://docs.xcp-ng.org/vms/#%EF%B8%8F-guest-tools)):
 
 ```
 $ sudo apt install xe-guest-utilities
 ```
 
-* Update the *cloud-init* package.
+11. Update the *cloud-init* package:
 
 ```
 $ sudo apt install cloud-init
 ```
 
-* Install the package *cloud-initramfs-growroot* to automatically resize the root partition of the disk upon virtual machine startup.
+12. Install the package *cloud-initramfs-growroot* to automatically resize the root partition of the disk upon virtual machine startup:
 
 ```
 $ sudo apt install cloud-initramfs-growroot
 ```
 
-* Configure the [Cloud-init](https://cloud-init.io/) data sources by selecting *NoCloud*, *ConfigDrive*, and *OpenStack*.
+13. Configure the [Cloud-init](https://cloud-init.io/) data sources by selecting *NoCloud*, *ConfigDrive*, and *OpenStack*:
 
 ```
 $ sudo dpkg-reconfigure cloud-init
 ```
 
-* Delete the file */etc/cloud/cloud.cfg.d/99-installer.cfg* to reset certain default [Cloud-init](https://cloud-init.io/) configurations when starting a virtual machine.
+14. Delete the file */etc/cloud/cloud.cfg.d/99-installer.cfg* to reset certain default [Cloud-init](https://cloud-init.io/) configurations when starting a virtual machine:
 
 ```
 $ sudo rm -f /etc/cloud/cloud.cfg.d/99-installer.cfg
 ```
 
-* Delete the file */etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg* to allow modification of network settings.
+15. Delete the file */etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg* to allow modification of network settings:
 
 ```
 $ sudo rm -f /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg
 ```
 
-* Delete the directory */var/lib/cloud/instance* which contains default settings related to the ongoing installation.
+16. Delete the directory */var/lib/cloud/instance* which contains default settings related to the ongoing installation:
 
 ```
 $ sudo rm -rf /var/lib/cloud/instance
 ```
 
-* Delete the file */etc/netplan/00-installer-config.yaml* which is the current network configuration so that the new configuration can be applied after reboot.
+17. Delete the file */etc/netplan/00-installer-config.yaml* which is the current network configuration so that the new configuration can be applied after reboot:
 
 ```
 $ sudo rm -f /etc/netplan/00-installer-config.yaml
 ```
 
-* Before shutting down the virtual machine, you can install any additional repositories you want. Once this step is completed, you can shut down the virtual machine.
+18. Before shutting down the virtual machine, you can install any additional repositories you want. Once this step is completed, you can shut down the virtual machine:
 
 ```
 $ sudo shutdown now
@@ -127,13 +127,13 @@ The creation of the virtual image *custom-ubuntu22.04* from an ISO file is compl
 
 Canonical (the Ubuntu company) provides Ubuntu images that have been configured to run on cloud systems. The [website](https://cloud-images.ubuntu.com) provides all versions of Ubuntu. XCP-NG supports the open virtual machine format OVA used by VMWare and VirtualBox systems.
 
-* Download an OVA file of [Ubuntu 22.04 version](https://cloud-images.ubuntu.com/jammy).
+1. Download an OVA file of [Ubuntu 22.04 version](https://cloud-images.ubuntu.com/jammy).
 
-* From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **Import** option and choose the **VM** sub-option.
+2. From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **Import** option and choose the **VM** sub-option.
 
-* Drag and drop or select the file *jammy-server-cloudimg-amd64.ova* and if necessary, modify the parameters for creating the virtual machine by naming it *custom-cloud-ubuntu22.04*.
+3. Drag and drop or select the file *jammy-server-cloudimg-amd64.ova* and if necessary, modify the parameters for creating the virtual machine by naming it *custom-cloud-ubuntu22.04*.
 
-* Click on **Import** and wait for the import to finish.
+4. Click on **Import** and wait for the import to finish.
 
 The creation of the virtual image from a cloud image in OVA format is complete. A template can now be created.
 
@@ -141,9 +141,9 @@ The creation of the virtual image from a cloud image in OVA format is complete. 
 
 The template creation step involves converting an existing virtual machine into the format used for templates. This step is irreversible in the sense that the virtual machine will no longer appear in the list of virtual machines in [Xen Orchestra](https://xen-orchestra.com).
 
-* Select one of the two virtual machines created earlier (in this section, it's the virtual machine created from the ISO that was chosen) and click on the **Advanced** tab.
+1. Select one of the two virtual machines created earlier (in this section, it's the virtual machine created from the ISO that was chosen) and click on the **Advanced** tab.
 
-* Click on **Convert to template** and confirm the creation.
+2. Click on **Convert to template** and confirm the creation.
 
 The template has been created and added to the list of existing templates. The created template is named after the virtual machine *custom-ubuntu22.04*.
 
