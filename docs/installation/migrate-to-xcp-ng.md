@@ -160,7 +160,7 @@ If you were not using the `latest` channel previously:
 
 :::tip
 - **Backup method:** The migration will use the default backup migration. Check if the XOA VM can access it.
-- **Task timeout:** Note that XAPI tasks are limited to 24 hours by default. To increase that limitation, refer to the **24h task timeout** section of [this page](/management/manage-locally/api#_24h-task-timeout).
+- **Task timeout:** Note that XAPI tasks are limited to 24 hours by default. To increase that limitation, refer to the **24h task timeout** section of [this page](/management/manage-locally/api#24h-task-timeout).
 :::
 
 From this point onward, the process varies depending on the type of datastore you're using.
