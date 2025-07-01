@@ -660,7 +660,7 @@ xe host-call-plugin host-uuid=<HOST_UUID> plugin=linstor-manager fn=addHost args
 For a short description, this command (re)creates a PBD, opens DRBD/LINSTOR ports, starts specific services and adds the node to the LINSTOR database.
 
 If you have storage devices to use on the host, a LINSTOR storage layer is not directly added to the corresponding node.
-You can follow [this documentation](#how-to-add-storage-on-a-new-host) to add storage to this new node.
+You can follow the section below to add storage to this new node.
 
 ### How to add storage on a new host
 
