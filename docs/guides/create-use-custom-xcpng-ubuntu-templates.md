@@ -38,7 +38,7 @@ At the end of this step, the result will be essentially the same, and both solut
 
 1. Download an ISO file of Ubuntu 22.04.04 LTS version: [https://ubuntu.com/download/server](https://ubuntu.com/download/server)
 
-In order to access the ISO file during the virtual machine creation step, it needs to be placed in an ISO storage repository. There are several types available (Local, NFS, or SMB). For this post, the first type will be used. Feel free to browse through this [post](https://xcp-ng.org/blog/2022/05/05/how-to-create-a-local-iso-repository-in-xcp-ng/) to learn how to create a local ISO storage repository. In the following, I assume that there is a local ISO storage repository on the XCP-NG host.
+    In order to access the ISO file during the virtual machine creation step, it needs to be placed in an ISO storage repository. There are several types available (Local, NFS, or SMB). For this post, the first type will be used. Feel free to browse through this [post](https://xcp-ng.org/blog/2022/05/05/how-to-create-a-local-iso-repository-in-xcp-ng/) to learn how to create a local ISO storage repository. In the following, I assume that there is a local ISO storage repository on the XCP-NG host.
 
 2. From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **Import** option and choose the **Disk** sub-option.
 
@@ -46,48 +46,50 @@ In order to access the ISO file during the virtual machine creation step, it nee
 
 4. Drag and drop or select the file *ubuntu-22.04.4-live-server-amd64.iso*, click on **Import**, and wait for the import to finish.
 
-> You can also directly upload the ISO file to the server where the local ISO storage repository is located using the **scp** tool.
+    > You can also directly upload the ISO file to the server where the local ISO storage repository is located using the **scp** tool.
 
 5. From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **New** option and choose the **VM** sub-option to create a new virtual machine.
 
 6. Select the Ubuntu Jammy Jellyfish 22.04 template (which is more of a loading profile than a template) and enter the following values for the parameters: custom-ubuntu22.04 for the name, 1 CPU, 4 GB of RAM, 10 GB of disk space, and choose the ISO file ubuntu-22.04.4-live-server-amd64.iso from the previously created local storage.
 
-7. During the Ubuntu installation steps, please ensure 1) to create only one partition to allow resizing later and 2) to install the OpenSSH server:
+7. During the Ubuntu installation steps, please ensure:
+    1. to create only one partition to allow resizing later
+    2. to install the OpenSSH server:
 
-![One single partition on the local disk](../../assets/img/screenshots/templatexcpng-ubuntu-partition.png)
+    ![One single partition on the local disk](../../assets/img/screenshots/templatexcpng-ubuntu-partition.png)
 
 8. Once the installation is complete, restart the system while removing the drive containing the ISO file.
 
 9. Connect via the console provided by [Xen Orchestra](https://xen-orchestra.com) or via SSH and update the repositories and the system:
 
-```
-$ sudo apt update 
-$ sudo apt dist-upgrade
-```
+    ```
+    $ sudo apt update 
+    $ sudo apt dist-upgrade
+    ```
 
 10. Install the package *xe-guest-utilities-latest* to improve communication between the XCP-NG hypervisor and the virtual machine ([Guest tools](https://docs.xcp-ng.org/vms/#%EF%B8%8F-guest-tools)):
 
-```
-$ sudo apt install xe-guest-utilities
-```
+    ```
+    $ sudo apt install xe-guest-utilities
+    ```
 
 11. Update the *cloud-init* package:
 
-```
-$ sudo apt install cloud-init
-```
+    ```
+    $ sudo apt install cloud-init
+    ```
 
 12. Install the package *cloud-initramfs-growroot* to automatically resize the root partition of the disk upon virtual machine startup:
 
-```
-$ sudo apt install cloud-initramfs-growroot
-```
+    ```
+    $ sudo apt install cloud-initramfs-growroot
+    ```
 
 13. Configure the [Cloud-init](https://cloud-init.io/) data sources by selecting *NoCloud*, *ConfigDrive*, and *OpenStack*:
 
-```
-$ sudo dpkg-reconfigure cloud-init
-```
+    ```
+    $ sudo dpkg-reconfigure cloud-init
+    ```
 
 14. Prevent Cloud-init from removing */etc/cloud/ds-identify.cfg*.
 
@@ -125,62 +127,61 @@ $ sudo dpkg-reconfigure cloud-init
 
 16. **If using an Ubuntu version older than 24.04**, delete the file */etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg* to allow modification of network settings:
 
-```
-$ sudo rm -f /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg
-```
+    ```
+    $ sudo rm -f /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg
+    ```
 
 17. Clean runtime cloud-init leftovers and logs:
 
-```
-$ cloud-init clean --logs --seed
-```
+    ```
+    $ cloud-init clean --logs --seed
+    ```
 
 18. Delete the file */etc/netplan/00-installer-config.yaml* which is the current network configuration so that the new configuration can be applied after reboot:
 
-```
-$ sudo rm -f /etc/netplan/00-installer-config.yaml
-```
-
+    ```
+    $ sudo rm -f /etc/netplan/00-installer-config.yaml
+    ```
 
 19. To ensure the template correctly generates a new machine ID, applies the static IP address when deploying a VM, and clears existing cloud-init logs to facilitate  troubleshooting in case something goes wrong, run the following commands:
 
-```
-sudo rm -rf /var/lib/cloud/instances /var/lib/cloud/instance
-sudo rm -rf /var/log/cloud-init.log /var/log/cloud-init*
-sudo rm -f /etc/netplan/50-cloud-init.yaml
-sudo rm -f /etc/cloud/cloud.cfg.d/90-installer-network.cfg
-sudo truncate -s 0 /etc/machine-id
-```
+    ```
+    sudo rm -rf /var/lib/cloud/instances /var/lib/cloud/instance
+    sudo rm -rf /var/log/cloud-init.log /var/log/cloud-init*
+    sudo rm -f /etc/netplan/50-cloud-init.yaml
+    sudo rm -f /etc/cloud/cloud.cfg.d/90-installer-network.cfg
+    sudo truncate -s 0 /etc/machine-id
+    ```
 
 20. Clean up the APT cache. It's useful for two reasons:
 - Saving some storage space
 - Prevent future problems in installing packages, due to the cache growing stale
 
-To clean up the APT cache, run the following command:
+    To clean up the APT cache, run the following command:
 
-```
-apt-get clean
-```
-
+    ```
+    apt-get clean
+    ```
+    
 21. Remove SSH host keys, so they can be regenerated when first booting a of newly provisioned VM.
 
-To do this, run this command:
+    To do this, run this command:
 
-```
-find /etc/ssh/ -type f -name 'ssh_host_*' -delete
-```
+    ```
+    find /etc/ssh/ -type f -name 'ssh_host_*' -delete
+    ```
 
-:::warning
+    :::warning
 
-Not removing the SSH host keys will cause all your VMs to have same the host keys, which could be considered a security issue.
+    Not removing the SSH host keys will cause all your VMs to have same the host keys, which could be considered a security issue.
 
-:::
+    :::
 
 22. Before shutting down the virtual machine, you can install any additional repositories you want. Once this step is completed, you can shut down the virtual machine:
 
-```
-$ sudo shutdown now
-```
+    ```
+    $ sudo shutdown now
+    ```
 
 The creation of the virtual image *custom-ubuntu22.04* from an ISO file is complete, and a template can now be created.
 
