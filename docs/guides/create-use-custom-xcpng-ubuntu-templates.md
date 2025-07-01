@@ -89,31 +89,94 @@ $ sudo apt install cloud-initramfs-growroot
 $ sudo dpkg-reconfigure cloud-init
 ```
 
-14. Delete the file */etc/cloud/cloud.cfg.d/99-installer.cfg* to reset certain default [Cloud-init](https://cloud-init.io/) configurations when starting a virtual machine:
+14. Prevent Cloud-init from removing */etc/cloud/ds-identify.cfg*.
 
-```
-$ sudo rm -f /etc/cloud/cloud.cfg.d/99-installer.cfg
-```
+    Since we're going to override the default */etc/cloud/ds-identify.cfg*, we need to prevent *cloud-init clean* from deleting it, which it does by default.
 
-15. Delete the file */etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg* to allow modification of network settings:
+    To do this, run the following command:
+
+    ```
+    chmod a-x /etc/cloud/clean.d/99-installer
+    ```
+
+    :::info
+
+    */etc/cloud/clean.d/99-installer* is part of the cloud-init package and will reappear on cloud-init package update. It should not be removed, which is why we recommend to apply a *chmod a-x* on it.
+
+    :::
+
+15. To reset certain default [Cloud-init](https://cloud-init.io/) configurations when starting a virtual machine:
+
+    **If using an Ubuntu version older than 24.04**
+
+    Delete the file */etc/cloud/cloud.cfg.d/99-installer.cfg*:
+
+    ```
+    sudo rm -f /etc/cloud/cloud.cfg.d/99-installer.cfg
+    ```
+
+    **If using Ubuntu 24.04 or a later version**
+    
+    Delete the file */etc/cloud/cloud.cfg.d/90-installer-network.cfg*:
+    
+    ```
+    sudo rm -f /etc/cloud/cloud.cfg.d/90-installer-network.cfg
+    ```
+
+16. **If using an Ubuntu version older than 24.04**, delete the file */etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg* to allow modification of network settings:
 
 ```
 $ sudo rm -f /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg
 ```
 
-16. Delete the directory */var/lib/cloud/instance* which contains default settings related to the ongoing installation:
+17. Clean runtime cloud-init leftovers and logs:
 
 ```
-$ sudo rm -rf /var/lib/cloud/instance
+$ cloud-init clean --logs --seed
 ```
 
-17. Delete the file */etc/netplan/00-installer-config.yaml* which is the current network configuration so that the new configuration can be applied after reboot:
+18. Delete the file */etc/netplan/00-installer-config.yaml* which is the current network configuration so that the new configuration can be applied after reboot:
 
 ```
 $ sudo rm -f /etc/netplan/00-installer-config.yaml
 ```
 
-18. Before shutting down the virtual machine, you can install any additional repositories you want. Once this step is completed, you can shut down the virtual machine:
+
+19. To ensure the template correctly generates a new machine ID, applies the static IP address when deploying a VM, and clears existing cloud-init logs to facilitate  troubleshooting in case something goes wrong, run the following commands:
+
+```
+sudo rm -rf /var/lib/cloud/instances /var/lib/cloud/instance
+sudo rm -rf /var/log/cloud-init.log /var/log/cloud-init*
+sudo rm -f /etc/netplan/50-cloud-init.yaml
+sudo rm -f /etc/cloud/cloud.cfg.d/90-installer-network.cfg
+sudo truncate -s 0 /etc/machine-id
+```
+
+20. Clean up the APT cache. It's useful for two reasons:
+- Saving some storage space
+- Prevent future problems in installing packages, due to the cache growing stale
+
+To clean up the APT cache, run the following command:
+
+```
+apt-get clean
+```
+
+21. Remove SSH host keys, so they can be regenerated when first booting a of newly provisioned VM.
+
+To do this, run this command:
+
+```
+find /etc/ssh/ -type f -name 'ssh_host_*' -delete
+```
+
+:::warning
+
+Not removing the SSH host keys will cause all your VMs to have same the host keys, which could be considered a security issue.
+
+:::
+
+22. Before shutting down the virtual machine, you can install any additional repositories you want. Once this step is completed, you can shut down the virtual machine:
 
 ```
 $ sudo shutdown now
@@ -121,7 +184,31 @@ $ sudo shutdown now
 
 The creation of the virtual image *custom-ubuntu22.04* from an ISO file is complete, and a template can now be created.
 
-**Note:** for Ubuntu 24.04, you will need to delete the */etc/cloud/cloud-init.disabled* file, which disables Cloud-Init by default, and the */etc/netplan/50-cloud-init.yaml* file for network configuration.
+:::tip
+
+* For Ubuntu 24.04, you will need to delete the */etc/cloud/cloud-init.disabled* file, which disables Cloud-Init by default, and the */etc/netplan/50-cloud-init.yaml* file for network configuration.
+* For your network configuration YAML:
+    * Use the following format:
+
+    ```yaml
+    #cloud-config
+    network:
+        version: 2
+        ethernets:
+            eth0:
+                dhcp4: false
+                addresses:
+                    - 10.0.2.6/27
+                gateway4: 10.0.2.1
+                nameservers:
+                    addresses:
+                        - 10.0.2.1
+                        - 1.1.1.1
+    ```
+    * Make sure your IP address uses the [Classless Inter-Domain Routing (CIDR)](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation) notation.\
+      CIDR notation specifies an IP address, a slash ('/') character, and a decimal number (for instance: `198.51.100.14/24`).
+* If a problem occurs when creating or using your template, go to `/var/log` and look for `cloud-init.log` to troubleshoot the issue.
+:::
 
 ### From a cloud image in OVA format
 
