@@ -34,6 +34,20 @@ Two approaches for creating a virtual machine will be presented in this post:
 
 At the end of this step, the result will be essentially the same, and both solutions can be used for creating the template.
 
+### From a cloud image in OVA format
+
+Canonical (the Ubuntu company) provides Ubuntu images that have been configured to run on cloud systems. The [website](https://cloud-images.ubuntu.com) provides all versions of Ubuntu. XCP-NG supports the open virtual machine format OVA used by VMWare and VirtualBox systems.
+
+1. Download an OVA file of [Ubuntu 22.04 version](https://cloud-images.ubuntu.com/jammy).
+
+2. From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **Import** option and choose the **VM** sub-option.
+
+3. Drag and drop or select the file *jammy-server-cloudimg-amd64.ova* and if necessary, modify the parameters for creating the virtual machine by naming it *custom-cloud-ubuntu22.04*.
+
+4. Click on **Import** and wait for the import to finish.
+
+The creation of the virtual image from a cloud image in OVA format is complete. A template can now be created.
+
 ### From an ISO file
 
 1. Download an ISO file of Ubuntu 22.04.04 LTS version: [https://ubuntu.com/download/server](https://ubuntu.com/download/server)
@@ -210,20 +224,6 @@ The creation of the virtual image *custom-ubuntu22.04* from an ISO file is compl
       CIDR notation specifies an IP address, a slash ('/') character, and a decimal number (for instance: `198.51.100.14/24`).
 * If a problem occurs when creating or using your template, go to `/var/log` and look for `cloud-init.log` to troubleshoot the issue.
 :::
-
-### From a cloud image in OVA format
-
-Canonical (the Ubuntu company) provides Ubuntu images that have been configured to run on cloud systems. The [website](https://cloud-images.ubuntu.com) provides all versions of Ubuntu. XCP-NG supports the open virtual machine format OVA used by VMWare and VirtualBox systems.
-
-1. Download an OVA file of [Ubuntu 22.04 version](https://cloud-images.ubuntu.com/jammy).
-
-2. From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **Import** option and choose the **VM** sub-option.
-
-3. Drag and drop or select the file *jammy-server-cloudimg-amd64.ova* and if necessary, modify the parameters for creating the virtual machine by naming it *custom-cloud-ubuntu22.04*.
-
-4. Click on **Import** and wait for the import to finish.
-
-The creation of the virtual image from a cloud image in OVA format is complete. A template can now be created.
 
 ## Template creation
 
