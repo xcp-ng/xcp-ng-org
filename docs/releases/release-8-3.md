@@ -2,13 +2,16 @@
 sidebar_position: 1
 ---
 
-# XCP-ng 8.3
+# XCP-ng 8.3 LTS
 
-We are proud to present XCP-ng 8.3, which will be the last release of the 8.x platform.
 
-[Download the latest installation ISO](https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.iso?https=1).
+XCP-ng 8.3 is an [LTS Release](../#-lts-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.iso?https=1).
 
 SHA256 checksums, GPG signatures, and the net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
+
+:::info
+LTS means **Long Term Support**: more informations on [this section](../#-lts-releases).
+:::
 
 ## Structure of the document
 
