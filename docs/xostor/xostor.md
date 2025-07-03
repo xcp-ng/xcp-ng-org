@@ -800,6 +800,78 @@ linstor sp list
 
  Use `linstor advise r` to see the commands to execute.
 
+### How can I delete an unreadable or unusable resource?
+
+In certain situations, a volume may no longer be usable.
+For example, a LINSTOR resource containing a VHD whose header/footer has been overwritten and is unreadable. Here, we're talking about a situation where a VHD isn't just simply corrupted and where `vhd-util repair -n <PATH>` is useless like this output in `SMlog`:
+```
+Jun 22 10:50:13 r620-s3 SM: [23871] ['/usr/bin/vhd-util', 'query', '--debug', '-vsfpu', '-n', '/dev/drbd/by-res/xcp-volume-83da35c4-dd18-47fb-9d2b-68bd5b92fcaa/0']
+Jun 22 10:50:13 r620-s3 SM: [23871] FAILED in util.pread: (rc 22) stdout: 'error opening /dev/drbd/by-res/xcp-volume-83da35c4-dd18-47fb-9d2b-68bd5b92fcaa/0: -22
+```
+
+The problem with this error is that it's generic and can occur in other situations. If you're not sure what you're doing, contact us on [support](https://vates.tech) or the [forum](https://xcp-ng.org/forum). Alternatively you can confirm that a resource is indeed unusable, execute this command by connecting to a host where the volume is marked `InUse`:
+```
+vhd-util check -n <DRBD_PATH>
+```
+In this example, `<DRBD_PATH>` is `/dev/drbd/by-res/xcp-volume-83da35c4-dd18-47fb-9d2b-68bd5b92fcaa/0`
+Two cases here:
+- If the volume is marked as `InUse` in the LINSTOR database, run this command on the host that is using it.
+- Otherwise, you can run this same command on the master that has the resource path on its filesystem (so a DRBD diskless or diskful).
+
+If the volume is unusable and prevents an SR PBD-plug command, any action, or cannot be deleted via xe or XO, you can follow the instructions below.
+
+:::warning
+Again, if you're unsure of the situation, the procedure below is risky. There is only one major case where we consider that's useful to run these commands: A program like `dd` was executed on a resource, which destroyed the VHD headers/footers. Another similar scenario is deleting the replicas then recreating the resources.
+
+Additionally, we assume that if you destroy a resource, you have a recent backup of the corresponding VM or VDI and you want to restore it if the data is important.
+:::
+
+1. Retrieve the SR's storage pool name using this command:
+```
+linstor sp list
+```
+
+Example output where the storage pool name is `xcp-sr-linstor_group_thin_device` in the `StoragePool` column:
+```
+╭────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+┊ StoragePool                      ┊ Node    ┊ Driver   ┊ PoolName                  ┊ FreeCapacity ┊ TotalCapacity ┊ CanSnapshots ┊ State ┊ SharedName                               ┊
+╞════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╡
+┊ DfltDisklessStorPool             ┊ r620-s1 ┊ DISKLESS ┊                           ┊              ┊               ┊ False        ┊ Ok    ┊ r620-s1;DfltDisklessStorPool             ┊
+┊ DfltDisklessStorPool             ┊ r620-s2 ┊ DISKLESS ┊                           ┊              ┊               ┊ False        ┊ Ok    ┊ r620-s2;DfltDisklessStorPool             ┊
+┊ DfltDisklessStorPool             ┊ r620-s3 ┊ DISKLESS ┊                           ┊              ┊               ┊ False        ┊ Ok    ┊ r620-s3;DfltDisklessStorPool             ┊
+┊ xcp-sr-linstor_group_thin_device ┊ r620-s1 ┊ LVM_THIN ┊ linstor_group/thin_device ┊   925.60 GiB ┊    931.28 GiB ┊ True         ┊ Ok    ┊ r620-s1;xcp-sr-linstor_group_thin_device ┊
+┊ xcp-sr-linstor_group_thin_device ┊ r620-s2 ┊ LVM_THIN ┊ linstor_group/thin_device ┊   925.60 GiB ┊    931.28 GiB ┊ True         ┊ Ok    ┊ r620-s2;xcp-sr-linstor_group_thin_device ┊
+┊ xcp-sr-linstor_group_thin_device ┊ r620-s3 ┊ LVM_THIN ┊ linstor_group/thin_device ┊   930.25 GiB ┊    931.28 GiB ┊ True         ┊ Ok    ┊ r620-s3;xcp-sr-linstor_group_thin_device ┊
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
+
+2. If you don't know what the corresponding VDI UUID for the DRBD resource is, you can deduce it via this command:
+```
+linstor-kv-tool --dump-volumes -g <SP_NAME> | grep volume-name | grep <RES_UUID>
+```
+As a reminder, `<RES_UUID>` is the UUID used in the naming of DRBD resources after the prefix `xcp-volume-`. For example: `xcp-volume-83da35c4-dd18-47fb-9d2b-68bd5b92fcaa`. And `<SP_NAME>` is the value obtained in the previous point.
+
+:::tip
+For more explanation between `RES_UUID` and `VDI_UUID` link, check out [this section](#map-linstor-resource-names-to-xapi-vdi-uuids):
+:::
+
+Example result by replacing `<RES_UUID>` with `83da35c4-dd18-47fb-9d2b-68bd5b92fcaa`:
+```
+linstor-kv-tool --dump-volumes -g xcp-sr-linstor_group_thin_device | grep volume-name | grep 83da35c4-dd18-47fb-9d2b-68bd5b92fcaa
+  "xcp/volume/6b9046a2-8ef9-47ef-baa9-a4c533ca848a/volume-name": "83da35c4-dd18-47fb-9d2b-68bd5b92fcaa",
+```
+Here, the XAPI UUID of the VDI to delete is `6b9046a2-8ef9-47ef-baa9-a4c533ca848a`.
+
+3. You can remove the VDI reference from the `kv-store` via the following command, replace `<VDI_UUID>` with the one obtained previously:
+```
+linstor-kv-tool -g xcp-sr-linstor_group_thin_device --remove-volume <VDI_UUID>
+```
+
+The previous command does not delete the LINSTOR volume itself, only the kv-store reference that is used by the driver. It's necessary to manually delete the resource definition that still exists under the name `xcp-volume-<RES_UUID>`. Replace `<RES_UUID>` with the one used during the previous step:
+```
+linstor rd delete xcp-volume-<RES_UUID>
+```
+
 ### How to use a specific network for satellites?
 
 Doing this is not recommended. To guarantee a certain robustness of the pool, the best choice is to use the XAPI management interface.  
