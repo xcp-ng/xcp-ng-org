@@ -660,15 +660,13 @@ xe host-call-plugin host-uuid=<HOST_UUID> plugin=linstor-manager fn=addHost args
 For a short description, this command (re)creates a PBD, opens DRBD/LINSTOR ports, starts specific services and adds the node to the LINSTOR database.
 
 If you have storage devices to use on the host, a LINSTOR storage layer is not directly added to the corresponding node.
-You can follow the section below to add storage to this new node.
+You can follow the [section](#how-to-add-storage-on-a-new-host) below to add storage to this new node.
 
-### How to add storage on a new host
-
-On a existing host without storage, you can easily add storage by adding a new Linstor Storage Pool for the Linstor node.
+### How to add storage on a new host?
 
 There are two simple steps:
 1. Create a VG (and LV for thin) with all the host disks
-2. Create a Linstor SP for the host pointing to this new VG
+2. Create a SP for the host pointing to this new VG
 
 You can verify the storage state like this:
 ```
@@ -690,13 +688,14 @@ A `LVM_THIN` entry is missing for `hpmc17` in this context, meaning it has no lo
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
-1. Creating VG/LV
+1. Creating a LVM volume group and/or thin device
 
-To add disks to the linstor SR, you will need to create VG.
+To add disks to the linstor SR, you will need to create a LVM volume group.
 Connect to the machine to modify and use `vgcreate` with the wanted disks to create a VG group on the host:
 ```
 vgcreate <GROUP_NAME> <DEVICES>
 ```
+
 In our example where we want to use `/dev/nvme0n1` with the group `linstor_group`:
 ```
 vgcreate linstor_group /dev/nvme0n1
@@ -713,9 +712,9 @@ Most of the time and in our example, we will have:
 - `<LV_THIN_VOLUME>`: `thin_device`.
 - `<SP_NAME>`: `xcp-sr-linstor_group_thin_device`.
 
-2. Add a new SP for the node
+2. Create a new storage pool attached to the node
 
-Run the corresponding command on the host where the controller is running to add the Volume Group in the LINSTOR database:
+Run the corresponding command on the host where the controller is running to add the volume group in the LINSTOR database:
 ```
 # For thin:
 linstor storage-pool create lvmthin <NODE_NAME> <SP_NAME> <VG_NAME>/<LV_THIN_VOLUME>
