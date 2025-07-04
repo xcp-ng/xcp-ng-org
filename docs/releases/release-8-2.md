@@ -13,7 +13,7 @@ LTS means **Long Term Support**: this version is supported for 5 years, and even
 :::
 
 :::warning
-XCP-ng 8.2 LTS: end of support estimated for Q3 2025. For more specific informations, please visit the [Release section](../#xcp-ng-release-history).
+XCP-ng 8.2 LTS: end of support estimated for Q3 2025. For more specific information, please visit the [Release section](../#xcp-ng-release-history).
 :::
 
 ## Release information
