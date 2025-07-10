@@ -9,11 +9,11 @@ XCP-ng 8.2 is an [LTS Release](../#xcp-ng-release-history). [Download the instal
 SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
 :::info
-LTS means **Long Term Support**: more informations on [this section](../#-lts-releases).
+LTS means **Long Term Support**: more information in [this section](../#-lts-releases).
 :::
 
 :::warning
-XCP-ng 8.2 LTS: end of support announced. For more specific information, please visit the [Release section](../#xcp-ng-release-history).
+Support for XCP-ng 8.2 LTS ends on September 16th, 2025. Upgrade to XCP-ng 8.3 LTS.
 :::
 
 ## Release information
@@ -23,7 +23,7 @@ XCP-ng 8.2 LTS: end of support announced. For more specific information, please 
 * Base version of CentOS in dom0: 7.5
 * Xen 4.13.1 + patches
 * Kernel 4.19 + patches
-* Supported until 2025-06-25
+* Supported until 2025-09-16 (The initial EOL date was 2025-06-05, and we extended it to provide more time to upgrade to XCP-ng 8.3 LTS)
 
 ## Install
 

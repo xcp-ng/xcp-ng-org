@@ -10,7 +10,7 @@ XCP-ng 8.3 is an [LTS Release](../#-lts-releases). [Download the installation IS
 SHA256 checksums, GPG signatures, and the net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
 :::info
-LTS means **Long Term Support**: more informations on [this section](../#-lts-releases).
+LTS means **Long Term Support**: more information in [this section](../#-lts-releases).
 :::
 
 ## Structure of the document
