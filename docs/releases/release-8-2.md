@@ -4,12 +4,16 @@ sidebar_position: 2
 
 # XCP-ng 8.2 LTS
 
-XCP-ng 8.2 is an [LTS Release](../#-lts-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1).
+XCP-ng 8.2 is an [LTS Release](../#xcp-ng-release-history). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1).
 
 SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
 :::info
-LTS means **Long Term Support**: this version is supported for 5 years, and even more for specific Extended Lifetime Support.
+LTS means **Long Term Support**: more information in [this section](../#-lts-releases).
+:::
+
+:::warning
+Support for XCP-ng 8.2 LTS ends on September 16th, 2025. Upgrade to XCP-ng 8.3 LTS.
 :::
 
 ## Release information
@@ -19,7 +23,7 @@ LTS means **Long Term Support**: this version is supported for 5 years, and even
 * Base version of CentOS in dom0: 7.5
 * Xen 4.13.1 + patches
 * Kernel 4.19 + patches
-* Supported until 2025-06-25
+* Supported until 2025-09-16 (The initial EOL date was 2025-06-05, and we extended it to provide more time to upgrade to XCP-ng 8.3 LTS)
 
 ## Install
 

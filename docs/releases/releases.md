@@ -4,7 +4,7 @@
 
 | Version                   | Released   | Status               | Support until                                | Release notes                        |
 | ---                       | ---        | ---                  | ---                                          | ---                                  |
-| [8.3](release-8-3.md)     | 2024-10-07 | Full support, LTS    | 2028-11-30                                   | [8.3 Release notes](release-8-3.md)  |
+| [8.3 LTS](release-8-3.md)     | 2024-10-07 | Full support, LTS    | 2028-11-30                                   | [8.3 Release notes](release-8-3.md)  |
 | [8.2 LTS](release-8-2.md) | **8.2.0**:&nbsp;2020-11-18<br/>**8.2.1**:&nbsp;2022-02-28 | Full support, LTS    | ~~2025-06-25~~ 2025-09-16 (*)           | [8.2 Release notes](release-8-2.md)  |
 | [8.1](release-8-1.md)     | 2020-03-31 | EOL                  | 2021-03-31                                   | [8.1 Release notes](release-8-1.md)  |
 | 8.0                       | 2019-07-25 | EOL                  | 2020-11-13                                   |                                      |
