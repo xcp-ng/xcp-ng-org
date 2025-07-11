@@ -183,3 +183,47 @@ This can be due to the "Manage Citrix PV drivers via Windows Update" feature bei
 If this feature is enabled, XenServer VM Tools will automatically uncheck the "Install I/O Drivers Now" checkbox and defer the driver update to Windows Update.
 
 Make sure to either check this checkbox, specify `ALLOWDRIVERINSTALL=YES` on the Msiexec command line (if installing via command line) or install driver updates via Windows Update.
+
+## PV devices not getting updates with the "Manage Citrix PV drivers via Windows Update" option enabled
+
+### Cause
+
+This can be due to the "Manage Citrix PV drivers via Windows Update" option being enabled after installing matching drivers, which causes the PV Bus driver to lock onto the non-vendor device and prevent updates from coming in.
+
+### Diagnosis
+
+First, check in Device Manager which PV Bus device is active, i.e. the one that contains child devices (use View - Devices by connection).
+
+![](../assets/img/winpv-wrong-device.png)
+
+If either of the non-vendor devices ("**0001**" or "**0002**") is active then you can continue with fixing this issue.
+
+:::note
+You will see only one of "0001" or "0002", not both.
+:::
+
+![](../assets/img/winpv-correct-device.png)
+
+If the vendor device ("**C000**" in this example) is active then you don't have this problem.
+You should check your Windows Update settings instead.
+
+### Solution
+
+XenClean fixes this situation.
+See the [XenClean guide](/vms/#fully-removing-xen-pv-drivers-with-xenclean) for instructions.
+
+:::note
+You will need to reinstall the management agent.
+:::
+
+### Alternative solution
+
+**If XenClean fails to fix the situation** (the vendor device is still inactive), or if you want to fix things manually, you can follow this procedure instead:
+
+1. Take a snapshot/backup of your VM.
+2. Keep a note of static IP addresses (if you have any; there's a chance those will be lost). You can also use our script [Copy-XenVifSettings.ps1](https://github.com/xcp-ng/win-pv-drivers/blob/xcp-ng-9.1/XenDriverUtils/Copy-XenVifSettings.ps1).
+3. Reboot to Safe Mode and **disable** the non-vendor device ("0001" or "0002"). The vendor device should be the only active device.
+4. Go back to normal mode; reboot again if prompted by the PV drivers.
+
+After the procedure, the vendor device should now be active.
+You should get driver updates from Windows Update again.
