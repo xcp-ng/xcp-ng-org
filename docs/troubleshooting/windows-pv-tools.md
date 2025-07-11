@@ -215,15 +215,3 @@ See the [XenClean guide](/vms/#fully-removing-xen-pv-drivers-with-xenclean) for 
 :::note
 You will need to reinstall the management agent.
 :::
-
-### Alternative solution
-
-**If XenClean fails to fix the situation** (the vendor device is still inactive), or if you want to fix things manually, you can follow this procedure instead:
-
-1. Take a snapshot/backup of your VM.
-2. Keep a note of static IP addresses (if you have any; there's a chance those will be lost). You can also use our script [Copy-XenVifSettings.ps1](https://github.com/xcp-ng/win-pv-drivers/blob/xcp-ng-9.1/XenDriverUtils/Copy-XenVifSettings.ps1).
-3. Reboot to Safe Mode and **disable** the non-vendor device ("0001" or "0002"). The vendor device should be the only active device.
-4. Go back to normal mode; reboot again if prompted by the PV drivers.
-
-After the procedure, the vendor device should now be active.
-You should get driver updates from Windows Update again.
