@@ -16,7 +16,7 @@ The tools are made of two main components:
 
 Linux: see [Linux Guest Tools](#linux-guest-tools) \
 Windows: see [Windows Guest Tools](#windows-guest-tools) \
-FreeBSD, OpenBSD, FreeNAS/TrueNAS: see [*BSD Guest Tools](#bsd-guest-tools)
+FreeBSD, OpenBSD, zVault (fork of discontinued FreeNAS / TrueNAS CORE): see [*BSD Guest Tools](#bsd-guest-tools)
 
 ## 🏘️ All VMs
 
@@ -565,7 +565,7 @@ We have split this section into several, see below.
 
 ### FreeBSD Guest Tools
 
-FreeBSD is a 30-year-old operating system used widely to run all sorts of systems and has served as the basis for a number of operating systems, including MacOS, pfSense, and FreeNAS. The Xen kernel modules are built and distributed in the GENERIC kernel, so if you haven't customised or recompiled your kernel, the drivers will be present.
+FreeBSD is a 30-year-old operating system used widely to run all sorts of systems and has served as the basis for a number of operating systems, including MacOS, pfSense, and zVault (fork of discontinued FreeNAS / TrueNAS CORE). The Xen kernel modules are built and distributed in the GENERIC kernel, so if you haven't customised or recompiled your kernel, the drivers will be present.
 
 To communicate with the hypervisor, you need to install two [ports](https://www.freebsd.org/ports/):
 * [sysutils/xe-guest-utilities](https://www.freshports.org/sysutils/xe-guest-utilities/)
@@ -591,11 +591,11 @@ On OpenBSD, the xen drivers are also already part of the kernel. The `install.sh
 For OpenBSD search [the forum](https://xcp-ng.org/forum). See for example [this thread](https://xcp-ng.org/forum/topic/2582/guest-tools-for-openbsd).
 :::
 
-### FreeNAS/TrueNAS Guest Tools
+### zVault (fork of discontinued FreeNAS / TrueNAS CORE) Guest Tools
 
-FreeNAS is a locked-down version of FreeBSD, with many packages disabled to ensure a more stable environment for the fileserver. `xe-guest-utilities` is part of the packages that are **not** available in FreeNAS. But because it's based on FreeBSD, the packages from that OS can be installed, at your own risk. This is not a big issue for this particular package, because it's a _leaf_ in the chain of dependencies - nothing in FreeNAS depends on it.
+zVault is a locked-down version of FreeBSD, with many packages disabled to ensure a more stable environment for the fileserver. `xe-guest-utilities` is part of the packages that are **not** available in zVault. But because it's based on FreeBSD, the packages from that OS can be installed, at your own risk. This is not a big issue for this particular package, because it's a _leaf_ in the chain of dependencies - nothing in zVault depends on it.
 
-Versions 12.0-U1 and higher of TrueNAS include the package by default, to install it on older versions (versions 11 or higher), follow these steps:
+Versions 12.0-U1 and higher of TrueNAS included the package by default, to install it on older versions (versions 11 or higher), follow these steps:
 
 1. Enable the FreeBSD repo first:
    ```bash
@@ -632,7 +632,7 @@ Versions 12.0-U1 and higher of TrueNAS include the package by default, to instal
    ```
    A restart of the VM will perform a reset of these files to their original settings too.
 
-6. Once the package is installed, you need to tell FreeNAS to start the `xe-daemon` process when starting:
+6. Once the package is installed, you need to tell zVault to start the `xe-daemon` process when starting:
    1. Go to _Tasks -> Init/Shutdown Script_
    2. Create a new task with the following settings:
       * Type: _Command_
