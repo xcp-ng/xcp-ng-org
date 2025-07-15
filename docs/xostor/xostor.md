@@ -316,7 +316,7 @@ RemainAfterExit=true
 :::
 
 :::important
-The maximum number of machines per pool is 7.
+The maximum number of machines per pool is 31.
 :::
 
 ## Update
