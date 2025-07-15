@@ -255,14 +255,14 @@ To skip Windows activation in case the system is already activated, run `ipconfi
 
 :::warning
 
-- **Downtime**: The OVA can only be exported while the VM is off, except if you export a clone. However, all blocks written after the clone won't be on the imported VM. If you can sync after, it's fine!). This can take a while, and your VMs won't be reachable until it's fully exported AND imported on destination.
+- **Downtime**: The OVA can only be exported while the VM is off, except if you export a clone. However, all blocks written after the clone won't be on the imported VM. If you can sync after, it's fine!. This can take a while, and your VMs won't be reachable until it's fully exported AND imported on destination.
 - **Storage**: You need an intermediary storage where you can export then import the OVA file. If your VMs are small, it's OK.
 - **Manual process**: Even if it's simple to do, it can be cumbersome if you have a lot of VMs to migrate.
 :::
 
 
 :::note
-OVA import method will miss the information if the VM is running BIOS or UEFI mode. Double check your settings on your original system, and then enable (or not) UEFI on XCP-ng side for the destination VM. You can do so in VM advanced tab in Xen Orchestra.
+The OVA import process does not retain whether the VM was using BIOS or UEFI. Be sure to check this setting on the source system, then configure the destination VM accordingly. You can enable or disable UEFI in the Advanced tab of the VM settings in Xen Orchestra.
 :::
 
 ### CloneZilla
@@ -349,5 +349,5 @@ Then add the xen drivers:
 ```
 dracut --kver <version> -f /boot/initrd<version> --add-drivers "xen-blkfront xen-netfront" --force
 ```
-Exit the chroot, unmount all your partition, and you can reboot, or detach the disk if you used your XO
+Exit the chroot and unmount all your partitions. Now you can reboot or detach the disk if you used your XO.
 You VM should be booting now!
