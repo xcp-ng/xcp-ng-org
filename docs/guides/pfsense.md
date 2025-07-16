@@ -26,8 +26,8 @@ service xenguest start
 
 Option 2 is via the Web GUI (only available on OPNsense):
 Open the web UI on `http(s)://your-configured-ip` and go to:
-*System -> Firmware -> Plugins*
-Scroll down to **os-xen** and click the plus sign next to it to install them.  
+*System -> Firmware -> Plugins*, 
+above the list header (in center) tick **Show (Tier 3) community plugins** (otherwise it will not be shown even via search box), scroll down to / search **os-xen** and click the plus sign next to it to install them.  
 Next: Reboot the system to have the guest tools started (installer doesn't do this the first time):
 *Power -> Reboot*
 
