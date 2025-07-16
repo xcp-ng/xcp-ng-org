@@ -26,7 +26,7 @@ You may also receive a browser certificate for the connection to Koji's web inte
 You need to import it into your web browser's certificate store and then use it when you log in to [https://koji.xcp-ng.org/](https://koji.xcp-ng.org/)
 
 ## Installing koji
-If your Linux distribution provides `koji` in its repositories (e.g. Fedora, CentOS or Mageia), simply install it from there. Else you can either run it from a container, or clone it from [https://pagure.io/koji](https://pagure.io/koji), then run it from there with something like `PYTHONPATH=$(realpath .):/usr/lib/python3.5/site-packages/ cli/koji help`. If it fails, you probably need to install additional python dependencies.
+The preferred, distro-independent way is to install it from PyPi with `pip`, `uv` or your preferred tool. Alternatively, your distro might provide the `koji` client as a package you can install from its repositories. You could also run it from a Fedora container, but that's mostly a last resort option if anything else fails for some reason.
 
 ## Configuring koji
 Put this in `~/.koji/config`:
@@ -37,10 +37,10 @@ Put this in `~/.koji/config`:
 server = https://kojihub.xcp-ng.org
 
 ;url of web interface
-weburl = http://koji.xcp-ng.org
+weburl = https://koji.xcp-ng.org
 
 ;url of package download site
-topurl = http://koji.xcp-ng.org/kojifiles
+topurl = https://koji.xcp-ng.org/kojifiles
 
 ;path to the koji top directory
 topdir = /mnt/koji
@@ -57,14 +57,19 @@ serverca = ~/.koji/serverca.crt
 authtype = ssl
 ```
 
-In some cases, we've found that the `cert` directive in `~/.koji/config ` was not used if there was no such directive in `/etc/koji.conf`. Workaround: add a `cert = ~/.koji/client.crt` to `/etc/koji.conf`, or possibly even `cp ~/.koji/config /etc/koji.conf`.
+In some cases (with older versions of koji), we've found that the `cert` directive in `~/.koji/config ` was not used if there was no such directive in `/etc/koji.conf`. Workaround: add a `cert = ~/.koji/client.crt` to `/etc/koji.conf`, or possibly even `cp ~/.koji/config /etc/koji.conf`.
 
 ## Test your connection
 `koji moshimoshi`. If it greats you (in any language), then your connection to the server works.
 
+## Get more permissions
+After your first connection, your user gets added by koji to its database. Now you need permissions to be able to tag builds. Ask an administrator for the `build` permission.
+
 ## Koji in Docker container
 
-When your Linux distribution doesn't have a useable `koji`, you can always run it in a container.
+This used to be useful when our koji server was a bit too old for recent crypto, but now **installing from `PyPi` is probably the best choice**.
+
+However, if you really want to run the `koji` client from a container, here's a small guide.
 
 Prepare an image:
 ```
