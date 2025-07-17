@@ -595,15 +595,17 @@ For OpenBSD search [the forum](https://xcp-ng.org/forum). See for example [this 
 
 #### pfSense / OPNsense
 
-See this [section](/guides/pfsense/#2-install-guest-utilities) in dedicated guide.
+See this [section](../guides/pfsense/#2-install-guest-utilities) in dedicated guide.
 
-#### zVault
-A fork of TrueNAS CORE (formerly FreeNAS), created when development stopped on TrueNAS CORE.
+#### FreeNAS/TrueNAS
 
-Note 1: iXsystems' 13.3 is [final release](https://www.truenas.com/docs/core/13.3/gettingstarted/corereleasenotes/#133-u12-changelog), in (some) [maintenace](https://www.truenas.com/blog/truenas-core-13-3-plans/) only mode, limited by EoL of FreeBSD 13.x on [April 30, 2026](https://www.freebsd.org/security/#sup) (please don't confuse with TrueNAS CORE Enterprise, which have [different EoL](https://www.truenas.com/docs/core/13.0/gettingstarted/corereleasenotes/), but as tied to hardware, is irelevant to virtualization).
+Note: iXsystems' TrueNAS Legacy 13.3 is [final release](https://www.truenas.com/docs/core/13.3/gettingstarted/corereleasenotes/#133-u12-changelog) of their FreeBSD based line, being in (some) [maintenace](https://www.truenas.com/blog/truenas-core-13-3-plans/) only mode, but limited by EoL of FreeBSD 13.x on [April 30, 2026](https://www.freebsd.org/security/#sup) (please don't confuse with TrueNAS CORE Enterprise, which have [different EoL](https://www.truenas.com/docs/core/13.0/gettingstarted/corereleasenotes/), but as tied to hardware, thus irelevant to virtualization).
 
-Note 2: by users of traditional NAS (as oposite to hyperconverged solution), there emerged fork [zVault](https://zvault.io/).
-
-Since versions 12.0-U1 of this OS, the package is preinstaled by default (see this [comment](https://github.com/xcp-ng/xcp/issues/446#issuecomment-720632737)). Just enable starting necessary daemon at boot by setting `xenguest_enable` sysctl property (see [documentation](https://www.truenas.com/docs/core/13.3/coretutorials/systemconfiguration/configuringtunables/)) - then either reboot or, if you do not plan to reboot the VM now, you can start the daemon manually running the command `/usr/local/sbin/xe-daemon -p /var/run/xe-daemon.pid &`). After you'll see a FreeBSD icon in your VM list on Xen Orchestra. Since then you can (among other things) restart/shutdown the VM properly from the XO (Lite) Web UI.
+Since versions 12.0-U1 of this OS, the package is preinstaled by default (see this [comment](https://github.com/xcp-ng/xcp/issues/446#issuecomment-720632737)). In more recent releases is even starting necessary daemon at boot preconfigured - so everything is working out of box. In case of older (but since 12.0-U1) releases, just create rc.conf item `xenguest_enable` set to YES (see [documentation](https://www.truenas.com/docs/core/13.3/coretutorials/systemconfiguration/configuringtunables/)) - then either reboot or, if you do not plan to reboot the VM now, you can start the daemon manually running the command `/usr/local/sbin/xe-daemon -p /var/run/xe-daemon.pid &`). After you'll see a FreeBSD icon in your VM list on Xen Orchestra. Since then you can (among other things) restart/shutdown the VM properly from the XO (Lite) Web UI.
 
 More insights and options (for older versions) are available in [this issue](https://github.com/xcp-ng/xcp/issues/172#issuecomment-548181589) or [this issue](https://github.com/xcp-ng/xcp/issues/446).
+
+#### zVault
+A [fork](https://zvault.io/) of TrueNAS CORE (formerly FreeNAS), created when development stopped on TrueNAS CORE.
+
+As zVault started as fork of TrueNAS Legacy 13.x, all is working out of box, as stated in FreeNAS/TrueNAS section above (and this probably won't change even in upcoming major releases).
