@@ -565,7 +565,7 @@ We have split this section into several, see below.
 
 ### FreeBSD Guest Tools
 
-FreeBSD is a 30-year-old operating system used widely to run all sorts of systems and has served as the basis for a number of operating systems, including MacOS, pfSense / OPNsense and FreeNAS->TrueNAS->zVault (see appliances further bellow). The Xen kernel modules are built and distributed in the GENERIC kernel, so if you haven't customised or recompiled your kernel, the drivers will be present.
+FreeBSD is a 30-year-old operating system used widely to run all sorts of systems and has served as the basis for a number of operating systems, including MacOS, pfSense / OPNsense and FreeNAS->TrueNAS->zVault (see appliances further below). The Xen kernel modules are built and distributed in the GENERIC kernel, so if you haven't customised or recompiled your kernel, the drivers will be present.
 
 To communicate with the hypervisor, you need to install two [ports](https://www.freebsd.org/ports/):
 * [sysutils/xe-guest-utilities](https://www.freshports.org/sysutils/xe-guest-utilities/)
