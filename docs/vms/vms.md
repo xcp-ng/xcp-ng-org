@@ -597,7 +597,8 @@ For OpenBSD search [the forum](https://xcp-ng.org/forum). See for example [this 
 
 See this [section](/guides/pfsense/#2-install-guest-utilities) in dedicated guide.
 
-#### (formerly) FreeNAS (then) TrueNAS CORE (now) TrueNAS Legacy and (possible continuation) zVault
+#### zVault
+A fork of TrueNAS CORE (formerly FreeNAS), created when development stopped on TrueNAS CORE.
 
 Note 1: iXsystems' 13.3 is [final release](https://www.truenas.com/docs/core/13.3/gettingstarted/corereleasenotes/#133-u12-changelog), in (some) [maintenace](https://www.truenas.com/blog/truenas-core-13-3-plans/) only mode, limited by EoL of FreeBSD 13.x on [April 30, 2026](https://www.freebsd.org/security/#sup) (please don't confuse with TrueNAS CORE Enterprise, which have [different EoL](https://www.truenas.com/docs/core/13.0/gettingstarted/corereleasenotes/), but as tied to hardware, is irelevant to virtualization).
 
