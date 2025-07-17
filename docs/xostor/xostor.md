@@ -544,11 +544,11 @@ To better understand the mapping of UUIDs, we developed a tool called `linstor-k
 
 Usage:
 ```
-linstor-kv-tool --dump-volumes -u <HOSTNAME> -g <GROUP_NAME> | grep '/volume-name":'
+linstor-kv-tool --dump-volumes -u <HOSTNAME> -g <SP_NAME> | grep '/volume-name":'
 ```
 
 - `<HOSTNAME>` is the IP of the host on which the controller is running. If you are currently connected to it, you can use `localhost`.
-- `<GROUP_NAME>` is the LINSTOR group used by the pool.
+- `<SP_NAME>` is the LINSTOR storage pool used by the pool.
 
 To know which group to specify, you can use the command:
 ```
