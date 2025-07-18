@@ -597,7 +597,7 @@ For OpenBSD search [the forum](https://xcp-ng.org/forum). See for example [this 
 
 See this [section](../guides/pfsense/#2-install-guest-utilities) in dedicated guide.
 
-#### FreeNAS/TrueNAS
+#### FreeNAS/TrueNAS Guest Tools
 
 Note: iXsystems' TrueNAS Legacy 13.3 is [final release](https://www.truenas.com/docs/core/13.3/gettingstarted/corereleasenotes/#133-u12-changelog) of their FreeBSD based line, being in (some) [maintenace](https://www.truenas.com/blog/truenas-core-13-3-plans/) only mode, but limited by EoL of FreeBSD 13.x on [April 30, 2026](https://www.freebsd.org/security/#sup) (please don't confuse with TrueNAS CORE Enterprise, which have [different EoL](https://www.truenas.com/docs/core/13.0/gettingstarted/corereleasenotes/), but as tied to hardware, thus irelevant to virtualization).
 
