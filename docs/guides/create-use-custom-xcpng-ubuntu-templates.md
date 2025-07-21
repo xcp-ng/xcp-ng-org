@@ -50,7 +50,7 @@ The creation of the virtual image from a cloud image in OVA format is complete. 
 
 ### From an ISO file
 
-1. Download an ISO file of Ubuntu 22.04.04 LTS version: [https://ubuntu.com/download/server](https://ubuntu.com/download/server)
+1. Download an ISO file of Ubuntu 22.04 LTS version: [https://ubuntu.com/download/server](https://ubuntu.com/download/server)
 
     In order to access the ISO file during the virtual machine creation step, it needs to be placed in an ISO storage repository. There are several types available (Local, NFS, or SMB). For this post, the first type will be used. Feel free to browse through this [post](https://xcp-ng.org/blog/2022/05/05/how-to-create-a-local-iso-repository-in-xcp-ng/) to learn how to create a local ISO storage repository. In the following, I assume that there is a local ISO storage repository on the XCP-NG host.
 
