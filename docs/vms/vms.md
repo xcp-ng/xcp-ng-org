@@ -591,7 +591,7 @@ On OpenBSD, the xen drivers are also already part of the kernel. The `install.sh
 For OpenBSD search [the forum](https://xcp-ng.org/forum). See for example [this thread](https://xcp-ng.org/forum/topic/2582/guest-tools-for-openbsd).
 :::
 
-### FreeBSD based appliances
+### FreeBSD-based appliances
 
 #### pfSense / OPNsense Guest Tools
 
