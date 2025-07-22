@@ -608,4 +608,4 @@ More insights and options (for older versions) are available in [this issue](htt
 #### zVault
 A [fork](https://zvault.io/) of TrueNAS CORE (formerly FreeNAS), created when development stopped on TrueNAS CORE.
 
-As zVault started as fork of TrueNAS Legacy 13.x, all is working out of box, as stated in FreeNAS/TrueNAS section above (and this probably won't change even in upcoming major releases).
+Since zVault started as a fork of TrueNAS Legacy 13.x, everything works out of the box, as stated in the FreeNAS/TrueNAS section above. This probably won't change, even in upcoming major releases.
