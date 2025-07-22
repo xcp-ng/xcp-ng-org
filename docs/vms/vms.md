@@ -595,7 +595,7 @@ For OpenBSD search [the forum](https://xcp-ng.org/forum). See for example [this 
 
 #### pfSense/OPNsense Guest Tools
 
-See this [section](../guides/pfsense/#2-install-guest-utilities) in dedicated guide.
+See [this section](../guides/pfsense/#2-install-guest-utilities) in the dedicated guide.
 
 #### FreeNAS/TrueNAS Guest Tools
 
