@@ -37,7 +37,7 @@ First, let's emphasize that XO Lite is merely an XAPI client. While it is made r
 However, you might still want to prevent XCP-ng from offering XO Lite altogether. To do so, simply add the following line to a new file in `/etc/xapi.conf.d/`:
 
 ```
-disable-webserver=1
+disable-webserver=true
 ```
 
 Here's a one-liner to do that:
