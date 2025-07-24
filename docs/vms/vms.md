@@ -16,7 +16,7 @@ The tools are made of two main components:
 
 Linux: see [Linux Guest Tools](#linux-guest-tools) \
 Windows: see [Windows Guest Tools](#windows-guest-tools) \
-FreeBSD, OpenBSD, FreeNAS/TrueNAS: see [*BSD Guest Tools](#bsd-guest-tools)
+FreeBSD, OpenBSD and some appliances based on them: see [*BSD Guest Tools](#bsd-guest-tools)
 
 ## 🏘️ All VMs
 
@@ -565,7 +565,7 @@ We have split this section into several, see below.
 
 ### FreeBSD Guest Tools
 
-FreeBSD is a 30-year-old operating system used widely to run all sorts of systems and has served as the basis for a number of operating systems, including MacOS, pfSense, and FreeNAS. The Xen kernel modules are built and distributed in the GENERIC kernel, so if you haven't customised or recompiled your kernel, the drivers will be present.
+FreeBSD is a 30+ year-old operating system. It is widely used to run all sorts of systems and has served as the basis for multiple OSes, such as: MacOS, pfSense/OPNsense and FreeNAS → TrueNAS → zVault (see appliances further below). The Xen kernel modules are built and distributed in the GENERIC kernel, so if you haven't customised or recompiled your kernel, the drivers will be present.
 
 To communicate with the hypervisor, you need to install two [ports](https://www.freebsd.org/ports/):
 * [sysutils/xe-guest-utilities](https://www.freshports.org/sysutils/xe-guest-utilities/)
@@ -591,55 +591,21 @@ On OpenBSD, the xen drivers are also already part of the kernel. The `install.sh
 For OpenBSD search [the forum](https://xcp-ng.org/forum). See for example [this thread](https://xcp-ng.org/forum/topic/2582/guest-tools-for-openbsd).
 :::
 
-### FreeNAS/TrueNAS Guest Tools
+### FreeBSD-based appliances
 
-FreeNAS is a locked-down version of FreeBSD, with many packages disabled to ensure a more stable environment for the fileserver. `xe-guest-utilities` is part of the packages that are **not** available in FreeNAS. But because it's based on FreeBSD, the packages from that OS can be installed, at your own risk. This is not a big issue for this particular package, because it's a _leaf_ in the chain of dependencies - nothing in FreeNAS depends on it.
+#### pfSense/OPNsense Guest Tools
 
-Versions 12.0-U1 and higher of TrueNAS include the package by default, to install it on older versions (versions 11 or higher), follow these steps:
+See [this section](../guides/pfsense/#2-install-guest-utilities) in the dedicated guide.
 
-1. Enable the FreeBSD repo first:
-   ```bash
-   # sed -i '' 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/FreeBSD.conf
-   ```
-   If you are using FreeNAS v11.2 or higher, you also have to disable the local package repository to avoid an issue in that particular release and that may affect later versions before running `pkg install`:
-   ```bash
-   # sed -i '' 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/local.conf
-   ```
+#### FreeNAS/TrueNAS Guest Tools
 
-2. Create a temporary directory and move into it:
-   ```bash
-   # mkdir /tmp/repo
-   # cd /tmp/repo
-   ```
+Note: iXsystems' TrueNAS Legacy 13.3 is the [final release](https://www.truenas.com/docs/core/13.3/gettingstarted/corereleasenotes/#133-u12-changelog) of their FreeBSD based line. It is in (some) [maintenance](https://www.truenas.com/blog/truenas-core-13-3-plans/)-only mode, but limited by EoL of FreeBSD 13.x on [April 30, 2026](https://www.freebsd.org/security/#sup). Please don't confuse with TrueNAS CORE Enterprise, which has a [different EoL](https://www.truenas.com/docs/core/13.0/gettingstarted/corereleasenotes/), but since it is tied to hardware, it is irrelevant to virtualization.
 
-3. Fetch the required packages. A directory **All** will be created and you will find the packages with their current versions under there:
-   ```bash
-   # pkg fetch -o /tmp/repo/ xen-guest-tools
-   # pkg fetch -o /tmp/repo/ xe-guest-utilities
-   ```
+Since versions 12.0-U1 of this OS, the package is preinstalled by default (see this [comment](https://github.com/xcp-ng/xcp/issues/446#issuecomment-720632737)). In more recent releases, the necessary daemon starts automatically when the system boots, so everything works out of the box. In case of older (but since 12.0-U1) releases, just create the rc.conf item `xenguest_enable` and set it to YES (see the [TrueNAS documentation](https://www.truenas.com/docs/core/13.3/coretutorials/systemconfiguration/configuringtunables/)) - then reboot or, if you do not plan to reboot the VM now, you can start the daemon manually by running the command `/usr/local/sbin/xe-daemon -p /var/run/xe-daemon.pid &`). After, you'll see a FreeBSD icon in your VM list on Xen Orchestra. Then, you can properly restart or shut down the VM from the XO (Lite) Web UI, among other actions.
 
-4. Add the downloaded packages, without their dependencies:
-   ```bash
-   # pkg add -M All/xen-guest-tools-4.14.0.txz
-   # pkg add -M All/xe-guest-utilities-6.2.0_3.txz
-   ```
-   The versions reported here are just the current version and they maybe different in your installation.
+For older releases, you will find more insights and options in [this issue](https://github.com/xcp-ng/xcp/issues/172#issuecomment-548181589) or [this issue](https://github.com/xcp-ng/xcp/issues/446).
 
-5. Revert the repos to their original settings to avoid surprises down the road. The second command should be run just if you disabled the local repo in step 1:
-   ```bash
-   # sed -i '' 's/enabled: yes/enabled: no/' /usr/local/etc/pkg/repos/FreeBSD.conf
-   # sed -i '' 's/enabled: no/enabled: yes/' /usr/local/etc/pkg/repos/local.conf
-   ```
-   A restart of the VM will perform a reset of these files to their original settings too.
+#### zVault
+A [fork](https://zvault.io/) of TrueNAS CORE (formerly FreeNAS), created when development stopped on TrueNAS CORE.
 
-6. Once the package is installed, you need to tell FreeNAS to start the `xe-daemon` process when starting:
-   1. Go to _Tasks -> Init/Shutdown Script_
-   2. Create a new task with the following settings:
-      * Type: _Command_
-      * Command: `/usr/local/sbin/xe-daemon -p /var/run/xe-daemon.pid &`
-      * When: _Pre Init_
-      * Enabled: Checked
-
-7. Reboot. If you do not plan to reboot the VM, you can start the daemon manually running the command `/usr/local/sbin/xe-daemon -p /var/run/xe-daemon.pid &`. After you'll see a FreeBSD icon in your VM list on Xen Orchestra, and you can restart/shutdown the VM properly from the Web UI.
-
-More insights and options are available in [this issue](https://github.com/xcp-ng/xcp/issues/172#issuecomment-548181589) or [this issue](https://github.com/xcp-ng/xcp/issues/446).
+Since zVault started as a fork of TrueNAS Legacy 13.x, everything works out of the box, as stated in the FreeNAS/TrueNAS section above. This probably won't change, even in upcoming major releases.
