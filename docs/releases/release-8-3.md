@@ -231,6 +231,11 @@ To close port 80, run the following command:
 xe pool-param-set uuid=<pool-uuid> https-only=true
 ```
 
+If the pool wide settings don't close port 80, you may need to run the below command on each host to restrict the use of HTTP
+```
+xe host-param-set https-only=true uuid=<uuid of the host>
+```
+
 ### Improvements in the installer
 
 Two years ago, development around XenServer's (and XCP-ng's) installer [was opened](https://github.com/xenserver/host-installer), allowing us to introduce several improvements and fixes (while previously we could modify the installer, contributing upstream reduces the long-term maintenance burden of divergence between our version and theirs).
