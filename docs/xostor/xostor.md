@@ -268,7 +268,7 @@ It is configured using:
 ```
 > cat /etc/systemd/system/linstor-satellite.service.d/override.conf
 [Service]
-Environment=LS_KEEP_RES=^xcp-persistent*
+Environment=LS_KEEP_RES=^xcp-persistent.*
 
 [Unit]
 After=drbd.service
