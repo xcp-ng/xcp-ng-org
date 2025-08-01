@@ -18,6 +18,7 @@ You can configure four different types of networks in XCP-ng:
 
 * Default Networks have an association with a physical network interface. Those are also called "External networks" provide a bridge between a virtual machine and the physical network interface connected to the network. External networks enable a virtual machine to connect to resources available through the server’s physical NIC.
 * Bonded networks create a bond between two or more NICs to create a single, high-performing channel between the virtual machine and the network.
+* Private networks are used to connect VMs internally, without sending traffic outside the host
 * Global Private Networks extend the single server private network concept to allow VMs on different pools and/or hosts to communicate with each other by using the XOA SDN controller.
 
 ### Network objects
