@@ -4,12 +4,44 @@ How to configure UEFI Secure boot?
 
 Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute trusted binaries at boot. In practice, these are the binaries released by the operating system (OS) vendor for the OS running in the VM (Microsoft Windows, Debian, RHEL, Alpine, etc.).
 
+## Upcoming changes in Secure Boot
+
+The default Secure Boot keys in XCP-ng are changing.
+
+Previously, XCP-ng only shipped with the PK included by default; Secure Boot variables had to be installed using `secureboot-certs`.
+New versions of XCP-ng's `varstored` (from version 1.2.0-2.4 and newer) now come with a complete set of Secure Boot variables (PK/KEK/db/dbx) by default, meaning that guest Secure Boot will now work for new VMs without needing further pool configuration.
+
+Our defaults now include the 2023 Microsoft KEK and db certificates, ensuring Secure Boot updates beyond 2026 (which is when the previous 2011 certificates expire).
+
+### What this change means for you
+
+You will not be affected in most cases.
+
+* Existing VMs will not be affected unless you use the [Propagate certificates](#propagate-pool-certificates-to-a-vm) feature in Xen Orchestra (which has always had the effect of resetting VM Secure Boot variables to that of the pool).
+* If you followed our previous guides and used `secureboot-certs install` to install the default Secure Boot variables into your pool, these variables will not be changed.
+
+Here are the changes in detail:
+
+* If you haven't used `secureboot-certs install` on your pool, your pool now supports guest Secure Boot by default.
+* We now include the 2023 Microsoft KEK certificate for guest-initiated security updates to the db and dbx variables.
+  * If you have used `secureboot-certs install` on your pool before, install these certificates manually by running this command again.
+  * After updating the pool variables, you can add this certificate to existing VMs using the [Propagate certificates](#propagate-pool-certificates-to-a-vm) procedure.
+
+    :warning: **Danger**, risk of data loss: Propagating certificates to an existing VM will change its Secure Boot vTPM measurements. If you depend on these measurements (e.g. BitLocker with TPM protector), you must carefully read the [Preparing for Secure Boot Variable Changes](#preparing-for-secure-boot-variable-changes) procedure.
+* **Newly created VMs** will change their behavior with Secure Boot enabled, running on pools where `secureboot-certs install` have not been executed.
+  Previously, these VMs would execute revoked UEFI binaries even with Secure Boot enabled (due to an empty dbx variable); however, going forward, revoked UEFI binaries (e.g. from an outdated media) will no longer boot on such VMs with Secure Boot enabled.
+  Note that this does not apply to VMs cloned from another already-installed VM or template.
+
+  To continue booting outdated media on these VMs, you can either:
+
+  * Disable Secure Boot;
+  * Or, if the VM has booted at least once, erase its dbx variable with the command `varstore-rm <vm uuid> d719b2cb-3d3a-4596-a3bc-dad00e67656f dbx`. Once your VM has completed installing, it should manage its Secure Boot variables (db/dbx) via its own update mechanism.
+
 ## Requirements
 
 * XCP-ng >= 8.2.1.
 * UEFI Secure Boot Certificates installed on the pool (this is detailed below).
 * A UEFI guest VM.
-* For Windows, ensure the VM has at least 2 vCPUs.
 
 :::warning
 Until we can re-sign XCP-ng's PV drivers for Windows, you will need the PV drivers from XenServer before enabling Secure Boot for a Windows VM. See [Setup Secure Boot for Windows VMs](#setup-secure-boot-for-windows-vms).
@@ -17,7 +49,13 @@ Until we can re-sign XCP-ng's PV drivers for Windows, you will need the PV drive
 
 Note: it's not necessary that the XCP-ng host boots in UEFI mode for Secure Boot to be enabled on VMs.
 
-## Quick Start
+## 8.3 with varstored >= 1.2.0-2.4
+
+Secure Boot is ready to use on new VMs without extra configuration. Simply activate Secure Boot on your VMs, and they will be provided with an appropriate set of default Secure Boot variables.
+
+We will keep updating the default Secure Boot variables with future updates from Microsoft. If you don't want this behavior, you can lock in these variables by using the [Install the Default UEFI Certificates](#install-the-default-uefi-certificates) procedure.
+
+## Quick Start (8.2.1 and 8.3 with varstored < 1.2.0-2.4)
 
 We believe that reading this guide will provide you with useful knowledge about the way Guest Secure Boot is handled in XCP-ng, and let you avoid mistakes.
 
@@ -91,24 +129,46 @@ For custom certificates (advanced use), see [Install Custom UEFI Certificates](#
 
 ### Install the Default UEFI Certificates
 
+:::info
+This procedure is not necessary if you're using varstored 1.2.0-2.4 and newer. However, you can use the procedure anyway to lock in the default variables per pool and avoid further default changes.
+:::
+
 `secureboot-certs` supports installing a default set of certificates across the pool.
 
 Except the `PK` key which is already provided by XCP-ng, all certificates are downloaded from official sources (`microsoft.com` and `uefi.org`).
 
 The default certificates are sourced as follows:
 
+**With varstored < 1.2.0-2.4:**
+
 | Certificate |                                                   Source                                                          |  CLI Arg  |
 |-------------|-------------------------------------------------------------------------------------------------------------------|-----------|
 | PK          |  Provided by XCP-ng, already present on disk.                                                                     | `default` |
-| KEK         |  [Microsoft Corporation UEFI KEK CA 2011](https://www.microsoft.com/pkiops/certs/MicCorKEKCA2011_2011-06-24.crt)  | `default` |
+| KEK         |  [Microsoft Corporation KEK CA 2011](https://www.microsoft.com/pkiops/certs/MicCorKEKCA2011_2011-06-24.crt)       | `default` |
 | db          |  [Microsoft Corporation UEFI CA 2011](https://www.microsoft.com/pkiops/certs/MicCorUEFCA2011_2011-06-27.crt) and [Microsoft Windows Production PCA 2011](https://www.microsoft.com/pkiops/certs/MicWinProPCA2011_2011-10-19.crt) | `default` |
 | dbx         |  [UEFI Revocation List](https://uefi.org/sites/default/files/resources/dbxupdate_x64.bin)                         | `latest`  |
 
-To install these certificates from the command line interface:
+**With varstored >= 1.2.0-2.4:**
+
+All keys are built into varstored-tools and present on disk. There's no need to configure them except for custom Secure Boot scenarios.
+
+Certificate and revocation lists provided by [microsoft/secureboot_objects](https://github.com/microsoft/secureboot_objects).
+
+| Certificate |                                                   Source                                                          |  CLI Arg  |
+|-------------|-------------------------------------------------------------------------------------------------------------------|-----------|
+| PK          |  Provided by XCP-ng.                                                                                              | `default` |
+| KEK         |  Microsoft Corporation KEK CA 2011 and Microsoft Corporation KEK 2K CA 2023                                       | `default` |
+| db          |  Microsoft Windows Production PCA 2011, Windows UEFI CA 2023, Microsoft Corporation UEFI CA 2011, Microsoft UEFI CA 2023 and Microsoft Option ROM UEFI CA 2023 | `default` |
+| dbx         |  Image hashes provided by microsoft/secureboot_objects (can specify `latest` to download latest dbx instead)      | `default` |
+
+To install these variables from the command line interface:
 
 ```
-# Download and install PK/KEK/db/dbx certificates
+# Download and install PK/KEK/db/dbx certificates (varstored < 1.2.0-2.4)
 secureboot-certs install default default default latest
+
+# Reinstall built-in PK/KEK/db/dbx variables (varstored >= 1.2.0-2.4)
+secureboot-certs install default default default default
 ```
 
 This can be shortened to:
@@ -162,20 +222,23 @@ Advanced use, not needed by most users.
 For example, to install a custom PK you may do the following:
 
 ```
-# Enroll it, along with the default certificates, with secureboot-certs
-secureboot-certs install PK.cer default default latest
+# Enroll a custom PK along with the default KEK/db/dbx
+secureboot-certs install PK.cer
 ```
 
-The same procedure may be used to install custom KEK, db, or dbx certs.
+The same procedure may be used to install custom KEK, db, or dbx variables.
 
 To use multiple certificates in one variable (that is, have multiple certificates stored as a single KEK, db, or dbx), the certs must be packaged together into a .auth file, see [Use two or more certificates for a Secure Boot variable](#use-two-or-more-certificates-for-a-secure-boot-variable). Note that multiple certificates in the PK is not supported. If an auth file with multiple certs is loaded as the PK, only the first one found will be used.
 
 Note that the virtual firmware, as is allowed by the specification, does not mandate that these default certificates be signed by their parent (i.e., the KEK doesn't need to be signed by PK) if they're installed via `secureboot-certs`. This verification *does* occur, however, when trying to enroll new certificates from inside the guest after boot. This is designed to give the host administrator full control over the certificates from the control domain.
 
-If necessary for your use case you may omit the `dbx` entirely. Note that this basically **renders secure boot useless** from a security perspective, as any binary signed with a revoked certificate will still pass Secure Boot checks! This may be done by using the following command:
+You can also omit the dbx variable entirely.
+This is the most compatible option for old installation media that may not include the newest Secure Boot fixes.
+Once installed, the guest can still update the dbx variable on its own to revoke vulnerable bootloaders as long as the default KEK is included.
+Omitting the dbx variable can be done using the following command:
 
 ```
-# Download and install PK/KEK/db certificates, omit the dbx
+# Install default PK/KEK/db variables, omit the dbx
 secureboot-certs install default default default none
 ```
 
