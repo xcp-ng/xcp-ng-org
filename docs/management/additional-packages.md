@@ -61,6 +61,10 @@ The controller domain is not an all-purpose Linux system. It must remain minimal
 
 ### 5. Known Security Risks in additional packages
 
+:::tip
+Additional packages are not meant to be in the base installation. They are only present for convenience. Unless considered truly critical, the security updates on these packages is best effort.
+:::
+
 #### Libreswan
 
 If you are using encrypted tunnels on an 8.2 host using `openvswitch-ipsec` and `libreswan`, for example through [Xen Orchestra's SDN Controller](https://xen-orchestra.com/docs/sdn_controller.html) there are security advisories you need to know about, there are 3 CVEs that are affecting our current libreswan version:
@@ -82,6 +86,22 @@ Various point regarding how critical this is:
 - these packages are not installed by default, and only required for encrypted tunnels
 - no privilege escalation
 - `pluto` will only process these packets if they are coming from an authenticated peer, limiting the possible sources
+
+#### wpa_supplicant
+
+The `wpa_supplicant` package is provided for homelab and testing purposes only. Wi-Fi is not supported for production environments, therefore vulnerabilities in `wpa_supplicant` are not treated as critical. If you are using Wi-Fi anyway, be aware of these known, unpatched vulnerabilities:
+
+- [CVE-2023-52160](https://www.cvedetails.com/cve/CVE-2023-52160): A configuration that does not verify the TLS certificate when using PEAP can allow authentication bypass.
+- [CVE-2019-9494](https://www.cvedetails.com/cve/CVE-2019-9494),[CVE-2019-9495](https://www.cvedetails.com/cve/CVE-2019-9495), [CVE-2022-23303](https://www.cvedetails.com/cve/CVE-2022-23303), [CVE-2022-23304](https://www.cvedetails.com/cve/CVE-2022-23304): SAE and EAP-PWD are vulnerable to side channel attacks as a result of cache access patterns leakage.
+- [CVE-2021-27803](https://www.cvedetails.com/cve/CVE-2021-27803): Improper handling of P2P provision discovery requests may lead to security issues, including Denial of Service, and possibly arbitrary code execution.
+- [CVE-2019-16275](https://www.cvedetails.com/cve/CVE-2019-16275): An attacker can send specially crafted 802.11 frames to trigger a Denial of Service (DoS) condition.
+- [CVE-2019-11555](https://www.cvedetails.com/cve/CVE-2019-11555): Improper validation of EAP-PWD fragmentation reassembly could lead to a Denial of Service.
+- [CVE-2019-9496](https://www.cvedetails.com/cve/CVE-2019-9496):  An invalid authentication sequence could result in Denial of Service.
+- [CVE-2019-9497](https://www.cvedetails.com/cve/CVE-2019-9497), [CVE-2019-9498](https://www.cvedetails.com/cve/CVE-2019-9498), [CVE-2019-9499](https://www.cvedetails.com/cve/CVE-2019-9499):  These vulnerabilities may allow an attacker to complete EAP-PWD authentication without knowing the password.
+
+#### mc ((Midnight Commander)
+
+- [CVE-2021-36370](https://www.cvedetails.com/cve/CVE-2021-36370): When establishing an SFTP connection, the fingerprint of the server is neither checked nor displayed, therefore a user will not be able to verify its authenticity.
 
 ### 6. Ask before
 
