@@ -298,6 +298,10 @@ An alternative to using OVA.
 
 ### Local migration (same host)
 
+:::warning
+This method uses the `vmfs6-tools` package, which is provided as-is, is very old and has no upstream support. Please consider other options first.
+:::
+
 :::tip
 This method is helpful if you just install XCP-ng on an extra/dedicated drive on the same hardware, removing the need for a new server to migrate.
 :::
