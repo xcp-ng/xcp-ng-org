@@ -298,6 +298,10 @@ An alternative to using OVA.
 
 ### Local migration (same host)
 
+:::warning
+This method uses the `vmfs6-tools` package, which is provided as-is, is very old and has no upstream support. Please consider other options first.
+:::
+
 :::tip
 This method is helpful if you just install XCP-ng on an extra/dedicated drive on the same hardware, removing the need for a new server to migrate.
 :::
@@ -312,8 +316,7 @@ This method use external packages to install in XCP-ng directly (the Dom0), and 
 
 ```
 yum install qemu-img --enablerepo=base,updates
-wget https://forensics.cert.org/centos/cert/7/x86_64/vmfs6-tools-0.2.1-1.el7.x86_64.rpm
-yum localinstall vmfs6-tools-0.2.1-1.el7.x86_64.rpm
+yum install vmfs6-tools --enablerepo=xcp-ng-lab
 ```
 
 #### Mount the VMware storage repository
