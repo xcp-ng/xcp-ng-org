@@ -316,8 +316,7 @@ This method use external packages to install in XCP-ng directly (the Dom0), and 
 
 ```
 yum install qemu-img --enablerepo=base,updates
-wget https://forensics.cert.org/centos/cert/7/x86_64/vmfs6-tools-0.2.1-1.el7.x86_64.rpm
-yum localinstall vmfs6-tools-0.2.1-1.el7.x86_64.rpm
+yum install vmfs6-tools --enablerepo=xcp-ng-lab
 ```
 
 #### Mount the VMware storage repository
