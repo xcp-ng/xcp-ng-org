@@ -36,11 +36,7 @@ const config = {
 
   scripts: [
     {
-      src: '/js/mautic.js',
-      async: true,
-    },
-    {
-      src: '/js/matomo.js',
+      src: 'https://cdn.vates.tech/rgpd/doc-xcp-ng-org.js',
       async: true,
     },
   ],

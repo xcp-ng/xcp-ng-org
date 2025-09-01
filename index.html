@@ -24,23 +24,6 @@
 </div>
 
 <div class="xcp-ng-content">
-    <!-- Matomo -->
-    <script type="text/javascript">
-        var _paq = _paq || [];
-        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-        _paq.push(['addDownloadExtensions', "iso"]);
-        _paq.push(['trackPageView']);
-        (function() {
-        var u="//piwik.vates.fr/";
-        _paq.push(['setTrackerUrl', u+'piwik.php']);
-        _paq.push(['setSiteId', '11']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-        })();
-    </script>
-    <!-- End Matomo Code -->
 
     <nav id="xcp-ng-navbar" class="navbar navbar-expand-sm fixed-top bg-light">
         <div id="xcp-ng-menu" class="container-fluid">
@@ -322,7 +305,7 @@
                      <h4 style="text-align: center; font-weight: bold;">XCP-ng 8.3 LTS</h4>
                      <p style="text-align: center; font-style: italic; font-size: 0.9em;">The current LTS release</p>
                      <p>
-                         Grab the latest <a href="https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.iso?https=1" onclick="_paq.push(['trackEvent', 'Download', 'full']);">8.3 LTS full ISO</a> (661MiB), then create your bootable USB key with:
+                         Grab the latest <a href="https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.iso?https=1" class="track-download" data-download-type="full">8.3 LTS full ISO</a> (661MiB), then create your bootable USB key with:
                      </p>
                      <div class="code p-1 m-1 p-sm-3 m-sm-3">
                          dd if=xcp-ng-8.3.0-20250606.iso of=/dev/sdX bs=8M oflag=direct
@@ -332,7 +315,7 @@
                      <p>On Windows, you can use <a href="https://rufus.akeo.ie/">Rufus</a> to create the bootable USB stick. SHA256 full ISO: </p>
                      <pre>4d6f5a99da0d70920bc313470ad2b14decab66038f0863ca68a2b81126ee2977</pre>
                      <p>
-                         We also offer a smaller <a href="https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606-netinstall.iso?https=1" onclick="_paq.push(['trackEvent', 'Download', 'netinstall']);">Net install ISO</a> (172MiB). SHA256 netinstall ISO:
+                         We also offer a smaller <a href="https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606-netinstall.iso?https=1" class="track-download" data-download-type="netinstall">Net install ISO</a> (172MiB). SHA256 netinstall ISO:
                      </p>
                      <pre>9a5dcc8d98949ee207d28307b8b94320d1ffd24841e34ca74e1c0f0422e5ecab</pre>
                  </div>
@@ -342,7 +325,7 @@
                     <h4 style="text-align: center; font-weight: bold;">XCP-ng 8.2 LTS</h4>
                     <p style="text-align: center; font-style: italic; font-size: 0.9em;">The previous LTS release. Soon to reach EOL.</p>
                     <p>
-                        Grab the latest <a href="https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1" onclick="_paq.push(['trackEvent', 'Download', 'full']);">8.2 LTS full ISO</a> (590MiB), then create your bootable USB key with:
+                        Grab the latest <a href="https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1" class="track-download" data-download-type="full">8.2 LTS full ISO</a> (590MiB), then create your bootable USB key with:
                     </p>
                     <div class="code p-1 m-1 p-sm-3 m-sm-3">
                         dd if=xcp-ng-8.2.1-20231130.iso of=/dev/sdX bs=8M oflag=direct
@@ -351,7 +334,7 @@
                     <p>On Windows, you can use <a href="https://rufus.akeo.ie/">Rufus</a> to create the bootable USB stick. SHA256 full ISO: </p>
                     <pre>108aa7144d1f5dd169a1b99ca70b510527136c549f2e3c3c1707b619e17ee1b6</pre>
                     <p>
-                        You can also download the <a href="https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130-netinstall.iso?https=1" onclick="_paq.push(['trackEvent', 'Download', 'netinstall']);">Net install ISO</a> (160MiB), then create your bootable USB key in the same fashion. SHA256 netinstall ISO:
+                        You can also download the <a href="https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130-netinstall.iso?https=1" class="track-download" data-download-type="netinstall">Net install ISO</a> (160MiB), then create your bootable USB key in the same fashion. SHA256 netinstall ISO:
                     </p>
                     <pre>6d5e221ac56d318436105e20513197cecfc8fa29eee4d9bf72b5fd52db345a02</pre>
                 </div>
@@ -574,14 +557,8 @@ $(document).ready(function() {
   });
 });
 </script>
-<script>
-    (function(w,d,t,u,n,a,m){w['MauticTrackingObject']=n;
-        w[n]=w[n]||function(){(w[n].q=w[n].q||[]).push(arguments)},a=d.createElement(t),
-        m=d.getElementsByTagName(t)[0];a.async=1;a.src=u;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://campaign.vates.tech/mtc.js','mt');
-
-    mt('send', 'pageview');
-</script>
+<!-- Rgpd & Tracking -->
+<script src="https://cdn.vates.tech/rgpd/xcp-ng-org.js"></script>
 </body>
 
 </html>
