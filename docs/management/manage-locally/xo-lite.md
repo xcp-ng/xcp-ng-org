@@ -15,7 +15,7 @@ XO Lite is bundled by default in XCP-ng 8.3. If you want to use it on an older r
 :::
 
 :::warning
-XO Lite uses a self-signed certificate. You need to accept the certificate (follow your web browser's instructions) to get  access to the login page.
+XO Lite uses a self-signed certificate. You need to accept the certificate (follow your web browser's instructions) to access the login page.
 :::
 
 :::note
