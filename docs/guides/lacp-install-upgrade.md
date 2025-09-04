@@ -32,7 +32,7 @@ Network access is not required for:
 During an upgrade, the installer will not detect your existing bond configuration. In XCP-ng, network settings are managed by XAPI and applied to Open vSwitch, but the installation process operates independently of these components.
 :::
 
-1. Boot from your installation media. You'll reach the **Select Keymap** screen, at this stage, the network interfaces still have their original names, such as `side-XXXX-ethY`
+1. Boot from your installation media. You'll reach the **Select Keymap** screen, at this stage, the network interfaces still have their original names, such as `side-XXXX-ethY`.
 
 :::warning
 Do not attempt to configure the bond yet. Doing so would mislead the installer into thinking you have no network interfaces, which would block the installation or upgrade process.
@@ -40,7 +40,7 @@ Do not attempt to configure the bond yet. Doing so would mislead the installer i
 
 ![keymap screen](../assets/img/installer-keymap-screen.png)
 
-2. Select your keymap, and proceed to the next screen: **Welcome to XCP-ng Setup**
+2. Select your keymap and proceed to the next screen (**Welcome to XCP-ng Setup**).
 3. You can now change to the second terminal using either `alt+F2` on `alt+right`
 4. Check the interfaces are named `ethX` using `ip link`. If that's the case, you can proceed with the next steps.
 5. Now we can configure a bond using standard linux tools.
