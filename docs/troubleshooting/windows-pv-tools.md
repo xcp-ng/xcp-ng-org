@@ -133,23 +133,21 @@ This is often caused by the Windows boot loader failing to find the Windows part
 
 ### Workaround
 
-From the recovery menu, open Command Prompt, then use `diskpart` to assign drive letters to the EFI system partition:
-
-```
-list volume
-select volume N  # N = number of volume with info = "System"
-assign letter=S
-exit
-```
-
-After exiting Diskpart, use the following commands:
+From the recovery menu, open Command Prompt. If `C:` is the path to your Windows partition, run the following command:
 
 ```bat
-bcdedit /store S:\EFI\Microsoft\Boot\BCD /set {default} device=partition=C:
-bcdedit /store S:\EFI\Microsoft\Boot\BCD /set {default} osdevice=partition=C:
+bcdboot C:\Windows
 ```
 
 After exiting to Windows, your system should boot successfully.
+
+## Windows Server 2019 crashes on AMD Zen hosts without showing a BSOD
+
+First, try disabling Viridian from Xen Orchestra. Note that this value may reset itself after reboot.
+
+If this fixes the problem, remove the Registry value `Enabled` at `HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\SystemGuard` and reboot.
+
+You can now enable Viridian again for better VM performance.
 
 ## Data drives showing as removable in Windows
 
