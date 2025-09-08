@@ -23,24 +23,6 @@
 </div>
 
 <div class="xcp-ng-content">
-    <!-- Matomo -->
-    <script type="text/javascript">
-        var _paq = _paq || [];
-        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-        _paq.push(['addDownloadExtensions', "iso"]);
-        _paq.push(['trackPageView']);
-        (function() {
-        var u="//piwik.vates.fr/";
-        _paq.push(['setTrackerUrl', u+'piwik.php']);
-        _paq.push(['setSiteId', '11']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-        })();
-    </script>
-    <!-- End Matomo Code -->
-
 
     <nav id="xcp-ng-navbar" class="navbar navbar-expand-sm fixed-top bg-light">
         <div id="xcp-ng-menu" class="container-fluid">
@@ -295,14 +277,8 @@ $(document).ready(function() {
   });
 });
 </script>
-<script>
-    (function(w,d,t,u,n,a,m){w['MauticTrackingObject']=n;
-        w[n]=w[n]||function(){(w[n].q=w[n].q||[]).push(arguments)},a=d.createElement(t),
-        m=d.getElementsByTagName(t)[0];a.async=1;a.src=u;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://campaign.vates.tech/mtc.js','mt');
-
-    mt('send', 'pageview');
-</script>
+<!-- Rgpd & Tracking -->
+<script src="https://cdn.vates.tech/rgpd/xcp-ng-org.js"></script>
 </body>
 
 </html>
