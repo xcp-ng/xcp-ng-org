@@ -35,6 +35,29 @@ This section uses three types of server-side software objects to represent netwo
 
 Each XCP-ng server has one or more networks, which are virtual Ethernet switches. Networks that are not associated with a PIF are considered internal. Internal networks can be used to provide connectivity only between VMs on a given XCP-ng server, with no connection to the outside world. Networks associated with a PIF are considered external. External networks provide a bridge between VIFs and the PIF connected to the network, enabling connectivity to resources available through the PIF’s NIC.
 
+### MTUs
+
+#### Definition
+
+The **Maximum Transmission Unit (MTU)** represents the largest packet size, measured in bytes, that a network layer—such as Ethernet or TCP/IP—can transmit without fragmenting the data. It effectively sets the upper limit for the payload size of a single network packet.
+
+#### Typical MTU values
+
+In most Ethernet networks, the default MTU is **1500 bytes**, though this value can differ depending on the infrastructure. For instance, high-performance environments often use **Jumbo frames**, which support MTU sizes up to 9000 bytes to reduce overhead and improve throughput. When a packet exceeds the MTU, it is split into smaller fragments, which can increase latency and processing overhead.
+
+#### MTUs and virtualized environments
+
+In virtualized environments like XCP-ng, maintaining consistent MTU settings across physical and virtual network interfaces is critical. Mismatched MTU values can lead to connectivity problems or degraded performance, particularly in storage or high-bandwidth scenarios.
+
+For example, if a virtual machine (VM) in XCP-ng communicates over a network with a non-standard MTU, administrators should ensure the VM’s network interface MTU aligns with the physical network’s configuration to prevent packet loss or inefficiencies.
+
+#### Support in XCP-ng
+
+:::warning
+Using **non-standard MTUs** (such as jumbo frames) on management interfaces is **not supported**. This can lead to serious issues, including failed pool member joins or unexpected network outages.
+While this behavior may not be intentional, it could be addressed in future updates. For now, stick to the default MTU settings on management interfaces to avoid operational instability.
+:::
+
 ## 🏷️ VLANs
 
 VLANs, as defined by the IEEE 802.1Q standard, allow a single physical network to support multiple logical networks. XCP-ng hosts support VLANs in multiple ways.
