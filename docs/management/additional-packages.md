@@ -11,7 +11,6 @@ It may be useful to add more packages to it, with precaution. The XCP-ng project
 :::note
 Best effort support is provided for additional packages provided by the XCP-ng project. No support is provided for other additional packages, even if installed from our repositories, as they contain build dependencies not supposed to be installed in production.
 * [supported list for XCP-ng 8.3](http://reports.xcp-ng.org/8.3/extra_installable.txt)
-* [supported list for XCP-ng 8.2](http://reports.xcp-ng.org/8.2/extra_installable.txt)
 :::
 
 ## 📜 Rules
@@ -34,7 +33,7 @@ To disable a repository, edit `/etc/yum.repos.d/name_of_repo.repo` and set `enab
 
 We offer a number of additional packages ranging from ZFS support, [newer drivers](../../installation/hardware#-alternate-drivers) or [newer kernel](../../installation/hardware#-alternate-kernel), to small utilities such as `vim`, `joe`, `iperf`, `mc`, etc.).
 
-A regularly updated list of such utilities for XCP-ng 8.2 is available at [http://reports.xcp-ng.org/8.2/extra_installable.txt](http://reports.xcp-ng.org/8.2/extra_installable.txt), and at [http://reports.xcp-ng.org/8.3/extra_installable.txt](http://reports.xcp-ng.org/8.3/extra_installable.txt) for XCP-ng 8.3.
+A regularly updated list of such utilities is available at [http://reports.xcp-ng.org/8.3/extra_installable.txt](http://reports.xcp-ng.org/8.3/extra_installable.txt) for XCP-ng 8.3.
 
 The packages from this list are supported on a best-effort basis.
 
@@ -64,28 +63,6 @@ The controller domain is not an all-purpose Linux system. It must remain minimal
 :::tip
 Additional packages are not meant to be in the base installation. They are only present for convenience. Unless considered truly critical, the security updates on these packages is best effort.
 :::
-
-#### Libreswan
-
-If you are using encrypted tunnels on an 8.2 host using `openvswitch-ipsec` and `libreswan`, for example through [Xen Orchestra's SDN Controller](https://xen-orchestra.com/docs/sdn_controller.html) there are security advisories you need to know about, there are 3 CVEs that are affecting our current libreswan version:
-- [CVE-2023-38712](https://libreswan.org/security/CVE-2023-38712/CVE-2023-38712.txt): Invalid IKEv1 repeat IKE SA delete causes crash and libreswan to restart
-- [CVE-2023-38710](https://libreswan.org/security/CVE-2023-38710/CVE-2023-38710.txt): Invalid IKEv2 REKEY proposal causes libreswan to restart
-- [CVE-2024-3652](https://libreswan.org/security/CVE-2024-3652/CVE-2024-3652.txt): IKEv1 default AH/ESP responder can crash and restart
-
-Patches for these are not really backportable, we therefore kept it as is and target updating packages in the next major release.
-
-You can find information about all Libreswan CVEs on their [security page](https://libreswan.org/security/).
-
-##### Resulting security issue
-
-The `pluto` daemon may be crashed by malformed IKE (both v1 and v2) delete/notify requests, resulting in a DoS on the keying service. If the daemon is restarted in loop quickly enough, this could as well lead to a DoS of the whole host.
-
-##### Vulnerability Perimeter
-
-Various point regarding how critical this is:
-- these packages are not installed by default, and only required for encrypted tunnels
-- no privilege escalation
-- `pluto` will only process these packets if they are coming from an authenticated peer, limiting the possible sources
 
 #### wpa_supplicant
 

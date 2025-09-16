@@ -17,10 +17,10 @@ All our updates are explained in details inside a dedicated blog post. Don't for
 ## ♻️ Support cycle
 
 We maintain one or several releases in parallel:
-* LTS releases (currently `8.2` and `8.3`).
+* LTS releases (currently `8.3`).
 * Non-LTS releases, which receive rolling updates (currently none, as `8.3` is now a LTS).
 
-If your version is lower than `8.2`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [upgrade](../../installation/upgrade).
+If your version is lower than `8.3`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [upgrade](../../installation/upgrade).
 
 ## ℹ️ Prerequisites
 
@@ -64,9 +64,8 @@ More at [Additional packages](../../management/additional-packages).
 
 ## 💡 Get information about the updates
 
-Every update is first tested and discussed on a forum thread. We highly recommend to subscribe to these threads (activate e-mail notifications in your forum settings if you want to be notified of new messages). You will thus know about coming updates in advance and be able to help us validate them. No one would like updates to be delayed because of lack of feedback there.
+Every update is first tested and discussed on a forum thread dedicated to update candidates for a given XCP-ng release. We highly recommend to subscribe to these threads (activate e-mail notifications in your forum settings if you want to be notified of new messages). You will thus know about coming updates in advance and be able to help us validate them. No one would like updates to be delayed because of lack of feedback there.
 
-* [XCP-ng 8.2 updates announcements and testing](https://xcp-ng.org/forum/topic/365/xcp-ng-8-2-updates-announcements-and-testing)
 * [XCP-ng 8.3 updates announcements and testing](https://xcp-ng.org/forum/topic/9964/xcp-ng-8-3-updates-announcements-and-testing)
 
 Important updates - especially security updates - are announced [on the blog](https://xcp-ng.org/blog/) and the most important ones are also announced through [the newsletter](https://xcp-ng.us13.list-manage.com/subscribe?u=f1ab72021fb8816f4d5e72773&id=4d17393549).
@@ -80,6 +79,10 @@ A comprehensive list of updates is available on our build system's web interface
 * [List of **testing** packages prepared for a future update](https://koji.xcp-ng.org/builds?inherited=0&tagID=66&order=-build_id&latest=1)
 
 #### Updates for XCP-ng 8.2
+
+:::note
+XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
+:::
 
 * [List of official **updates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=42&order=-build_id&latest=1)
 * [List of immediate **update candidates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=89&order=-build_id&latest=1)

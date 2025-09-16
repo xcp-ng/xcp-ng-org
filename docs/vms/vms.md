@@ -270,7 +270,7 @@ We developed two features to help you handle these vulnerabilities.
 * A warning :warning: sign next to affected VMs and a `vulnerable?` filter in Xen Orchestra. These features are available in Xen Orchestra 5.107.0 (latest channel) and 5.106.4 (stable channel).
 
 :::note
-This detection depends on XAPI accurately reporting PV driver versions. Prior to the recent XCP-ng 8.2 and 8.3 updates released in May 2025, this was not the case. As a result, the detection tools cannot assess VMs that have not been run since the updates were applied. If no driver information is available, a warning will be displayed.
+This detection depends on XAPI accurately reporting PV driver versions. Prior to the XCP-ng 8.2 and 8.3 updates released in May 2025, this was not the case. As a result, the detection tools cannot assess VMs that have not been run since the updates were applied. If no driver information is available, a warning will be displayed.
 :::
 
 :::warning

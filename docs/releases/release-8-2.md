@@ -1,8 +1,14 @@
 ---
-sidebar_position: 2
+sidebar_class_name: hidden
 ---
 
 # XCP-ng 8.2 LTS
+
+:::danger
+XCP-ng 8.2 is EOL (End Of Life) since September 16th, 2025. Please check the [currently supported release(s)](releases.md).
+
+XCP-ng 8.2.1 is EOL too. It's the same release: XCP-ng 8.2 LTS was first released as 8.2.0, then the version number was updated to 8.2.1 in 2022 when we released a signficant maintenance update, but it's all XCP-ng 8.2 LTS in the end.
+:::
 
 XCP-ng 8.2 is an [LTS Release](../#xcp-ng-release-history). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1).
 
@@ -10,10 +16,6 @@ SHA256 checksums, GPG signatures and net-install ISO are available [here](https:
 
 :::info
 LTS means **Long Term Support**: more information in [this section](../#-lts-releases).
-:::
-
-:::warning
-Support for XCP-ng 8.2 LTS ends on September 16th, 2025. Upgrade to XCP-ng 8.3 LTS.
 :::
 
 ## Release information

@@ -64,6 +64,10 @@ Similarly, installing XCP-ng on SD cards is highly discouraged. A basic SSD offe
 
 XCP-ng 8.2 requires an IPv4 network for management and storage traffic. Starting from XCP-ng 8.3, the management network supports IPv6.
 
+:::note
+XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
+:::
+
 :::info
 Set the server's BIOS clock to the current UTC time. For debugging support cases, serial console access may be required. Consider configuring serial console access for XCP-ng. For systems without physical serial ports, explore embedded management devices like Dell DRAC or HP iLO. See [CTX228930 - How to Configure Serial Console Access on XenServer 7.0 and later](https://support.citrix.com/article/CTX228930).
 :::
@@ -88,13 +92,17 @@ In XCP-ng 8.3, Xen theoretically supports up to 12 TiB with security support, an
 The maximum number of supported logical processors may vary depending on the CPU. For more information, see the [Hardware Compatibility List (HCL)](../../installation/hardware).
 :::
 
+#### XCP-ng 8.3 LTS
+
+:::note
+XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
+:::
+
+- Up to 960 logical processors, depending on CPU support (theoretical, untested: 1024).
+
 #### XCP-ng 8.2 LTS
 
 - Up to 448 logical processors (theoretical, untested: 512).
-
-#### XCP-ng 8.3 LTS
-
-- Up to 960 logical processors, depending on CPU support (theoretical, untested: 1024).
 
 ### Virtual Network Interface Cards (vNICs)
 
@@ -110,12 +118,6 @@ Below are the supported limits for virtual machines on XCP-ng.
 
 ### CPU
 
-#### XCP-ng 8.2 LTS
-
-- **Virtual CPUs (vCPUs) per VM**: Up to **32 vCPUs**.
-
-Ensure that your guest OS supports this configuration.
-
 #### XCP-ng 8.3 LTS
 
 - **Virtual CPUs (vCPUs) per VM**:
@@ -124,15 +126,21 @@ Ensure that your guest OS supports this configuration.
 
 Guest OS support is also an important factor to consider.
 
+#### XCP-ng 8.2 LTS
+
+:::note
+XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
+:::
+
+- **Virtual CPUs (vCPUs) per VM**: Up to **32 vCPUs**.
+
+Ensure that your guest OS supports this configuration.
+
 ### GPU
 
 - **Virtual GPUs per VM**: Up to **8**.
 
 ### Memory
-
-#### XCP-ng 8.2 LTS
-
-- **Maximum RAM per VM**: **1.5 TiB**.
 
 #### XCP-ng 8.3 LTS
 
@@ -142,6 +150,14 @@ Guest OS support is also an important factor to consider.
   - Theoretical limit without security support: **16 TiB** (minus the RAM allocated to Xen and the controller domain).
 
 Keep in mind that the actual usable memory depends on the guest OS limits. In some cases, going beyond what the OS can manage efficiently may lead to performance drops.
+
+#### XCP-ng 8.2 LTS
+
+:::note
+XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
+:::
+
+- **Maximum RAM per VM**: **1.5 TiB**.
 
 ### Storage
 

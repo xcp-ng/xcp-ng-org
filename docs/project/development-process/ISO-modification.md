@@ -135,7 +135,7 @@ To achieve this:
 From the `iso/` directory:
 ```
 OUTPUT=/path/to/destination/iso/file # change me
-VERSION=8.2 # change me
+VERSION=8.3 # change me
 genisoimage -o $OUTPUT -v -r -J --joliet-long -V "XCP-ng $VERSION" -c boot/isolinux/boot.cat -b boot/isolinux/isolinux.bin \
             -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/efiboot.img -no-emul-boot .
 isohybrid --uefi $OUTPUT

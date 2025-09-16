@@ -6,7 +6,7 @@ sidebar_position: 4
 
 Discover how to upgrade from an older release.
 
-We assume your goal is to get to the latest version of XCP-ng from a previous release, e.g. 8.0 to 8.2.1 or 8.2.1 to 8.3.
+We assume your goal is to get to a newer version of XCP-ng from a previous release, e.g. 8.0 to 8.2.1 or 8.2.1 to 8.3.
 
 For updates that don't change the version numbers (bugfixes, security fixes), see [the updates section](../../management/updates).
 
@@ -103,6 +103,10 @@ A.k.a. yum-style upgrade.
 
 :::warning
 This upgrade procedure is **not** supported to upgrade to XCP-ng 8.3.
+:::
+
+:::note
+This information about EOL releases is retained solely to assist with the transition to a supported release, for example an upgrade to 8.2.1 (now EOL) as an intermediary step towards release 8.3.
 :::
 
 Though it's been successfully tested by numerous people, this method is still considered *riskier* than using the installation ISO:

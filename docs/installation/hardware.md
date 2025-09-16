@@ -75,8 +75,6 @@ There are several USB 5Gbps NICs based on this chipset available on the market. 
 
 The kernel module is just a repackage for XCP-ng of [the AQC111U drivers available for Linux Kernel 3.10 on the Marvell website](https://www.marvell.com/support/downloads.html).
 
-The kernel module has been tested in a homelab environment with XCP-ng version `8.2`.
-
 To install the driver follow the instructions provided in the [**Alternate drivers** section below](#-alternate-drivers) and use `aqc111u-module` as `package-name` _(`module-name` would be `aqc111u`)_.
 
 Known compatible NICs are [^1]:

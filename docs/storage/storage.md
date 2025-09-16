@@ -298,8 +298,6 @@ Local, thin-provisioned storage.
 
 :::tip
 [Additional package](../management/additional-packages) required and available in our repositories: `xfsprogs`.
-
-On XCP-ng before 8.2, you also need `sm-additional-drivers`.
 :::
 
 Works in the same way as the Local EXT storage driver: you hand it a device and it will format it and prepare it for your VMs automatically.
