@@ -33,6 +33,10 @@ Done! Visit your XCP-ng host ip using a browser and validate the certificate is 
 
 ## Install the certificate chain (for XCP-ng up to v8.1)
 
+:::note
+This information about deprecated releases is retained solely to assist with the transition to a supported release.
+:::
+
 The certificate, intermediate certificates (if needed), certificate authority and private key are stored in `/etc/xensource/xapi-ssl.pem`, in that order. You have to replace all lines before `-----BEGIN RSA PRIVATE KEY----` with the certificate and the chain you got from your provider, using your favorite editor (`nano` is present on XCP-ng by default).
 
 Then, you have to restart xapi :

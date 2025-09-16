@@ -26,6 +26,8 @@ Internal error: xenopsd internal error: Device.PCI.Cannot_add(_, _)
 
 :::warning
 You may not be able to passthrough USB controllers on XCP-ng 8.2
+
+Note: XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
 :::
 
 When attempting to enable PCI passthrough on USB controllers on XCP-ng 8.2, you may see an error when starting the VM in your logs similar to
@@ -77,7 +79,19 @@ Run `xe pci-list`.
 
 To hide the device from dom0:
 
+##### XCP-ng 8.3
+
+Run the following XAPI command:
+
+```
+xe pci-disable-dom0-access uuid=<pci uuid>
+```
+
 ##### XCP-ng 8.2
+
+:::note
+XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
+:::
 
 Add the **`xen-pciback.hide`** parameter to the kernel boot parameters:
 ```bash
@@ -87,20 +101,9 @@ Add the **`xen-pciback.hide`** parameter to the kernel boot parameters:
 >
 > `/opt/xensource/libexec/xen-cmdline --set-dom0 "xen-pciback.hide=(0000:04:01.0)(0000:00:19.0)"`
 
-##### XCP-ng 8.3
-
-Run the following XAPI command:
-
-```
-xe pci-disable-dom0-access uuid=<pci uuid>
-```
-
 #### Enabling the device
 
 To unhide the device from dom0:
-
-##### XCP-ng 8.2
-`/opt/xensource/libexec/xen-cmdline --delete-dom0 xen-pciback.hide`
 
 ##### XCP-ng 8.3
 
@@ -111,6 +114,14 @@ Run the following XAPI command:
 :::warning
 This kernel parameter is not retained when you upgrade an XCP-ng host [using the installation ISO](../installation/upgrade#-upgrade-via-installation-iso-recommended). Remember to re-do this step after the upgrade.
 :::
+
+##### XCP-ng 8.2
+
+:::note
+XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
+:::
+
+`/opt/xensource/libexec/xen-cmdline --delete-dom0 xen-pciback.hide`
 
 
 :::tip

@@ -47,7 +47,7 @@ Can be a `yum` update process interrupted while rebuilding the `initrd`, such as
 3. Reboot on the latest kernel, it works!
 
 :::tip
-Here is an example of `dracut` command on a 8.2 host: `dracut -f /boot/initrd-4.19.0+1.img 4.19.0+1`
+Here is an example of `dracut` command on a 8.3 host: `dracut -f /boot/initrd-4.19.0+1.img 4.19.0+1`
 :::
 
 ---

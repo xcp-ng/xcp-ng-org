@@ -88,4 +88,4 @@ This might happen for various reasons. If you haven't backed-up the contents of 
 
 It has been reported to us that some non-enterprise motherboards may have limited UEFI firmware that does not cope well with disk changes.
 
-In most cases, you should be able to restore the bootloader by upgrading your host to the same version it is already running (e.g upgrade 8.2 to 8.2 using the 8.2 install ISO). Check [the upgrade docs](../../installation/upgrade.md) for the usual instructions and warnings. Another, custom solution is to run the appropriate `efibootmgr` commands from the installer's shell. Refer to [its documentation](https://linux.die.net/man/8/efibootmgr).
+In most cases, you should be able to restore the bootloader by upgrading your host to the same version it is already running (e.g upgrade 8.3 to 8.3 using the 8.3 install ISO). Check [the upgrade docs](../../installation/upgrade.md) for the usual instructions and warnings. Another, custom solution is to run the appropriate `efibootmgr` commands from the installer's shell. Refer to [its documentation](https://linux.die.net/man/8/efibootmgr).
