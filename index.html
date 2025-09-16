@@ -285,8 +285,6 @@
             <div class="col col-sm-3 nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="padding-top:5em;">
                 <a class="nav-link active" id="v-pills-download-lts-tab" data-toggle="pill" href="#v-pills-download-lts"
                    role="tab" aria-controls="v-pills-download-lts" aria-selected="true">Download 8.3 LTS</a>
-                <a class="nav-link" id="v-pills-download-old-lts-tab" data-toggle="pill" href="#v-pills-download-old-lts"
-                   role="tab" aria-controls="v-pills-download-old-lts" aria-selected="false">Download 8.2 LTS</a>
                 <a class="nav-link" id="v-pills-from-xo-tab" data-toggle="pill" href="#v-pills-from-xo"
                     role="tab" aria-controls="v-pills-from-xo" aria-selected="false">Web UI</a>
                 <a class="nav-link" id="v-pills-vmware-tab" data-toggle="pill" href="#v-pills-vmware"
@@ -319,25 +317,6 @@
                      </p>
                      <pre>9a5dcc8d98949ee207d28307b8b94320d1ffd24841e34ca74e1c0f0422e5ecab</pre>
                  </div>
-
-                <div class="tab-pane fade" id="v-pills-download-old-lts" role="tabpanel"
-                     aria-labelledby="v-pills-download-old-lts-tab">
-                    <h4 style="text-align: center; font-weight: bold;">XCP-ng 8.2 LTS</h4>
-                    <p style="text-align: center; font-style: italic; font-size: 0.9em;">The previous LTS release. Soon to reach EOL.</p>
-                    <p>
-                        Grab the latest <a href="https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1" class="track-download" data-download-type="full">8.2 LTS full ISO</a> (590MiB), then create your bootable USB key with:
-                    </p>
-                    <div class="code p-1 m-1 p-sm-3 m-sm-3">
-                        dd if=xcp-ng-8.2.1-20231130.iso of=/dev/sdX bs=8M oflag=direct
-                    </div>
-                    <p>Then just boot on it. Don't forget to always read <a href="https://docs.xcp-ng.org/releases/release-8-2">the release notes!</a></p>
-                    <p>On Windows, you can use <a href="https://rufus.akeo.ie/">Rufus</a> to create the bootable USB stick. SHA256 full ISO: </p>
-                    <pre>108aa7144d1f5dd169a1b99ca70b510527136c549f2e3c3c1707b619e17ee1b6</pre>
-                    <p>
-                        You can also download the <a href="https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130-netinstall.iso?https=1" class="track-download" data-download-type="netinstall">Net install ISO</a> (160MiB), then create your bootable USB key in the same fashion. SHA256 netinstall ISO:
-                    </p>
-                    <pre>6d5e221ac56d318436105e20513197cecfc8fa29eee4d9bf72b5fd52db345a02</pre>
-                </div>
                 <div class="tab-pane fade" id="v-pills-vmware" role="tabpanel"
                  aria-labelledby="v-pills-vmware-tab">
                     <h4 style="text-align: center; font-weight: bold;">Easy migration out of Broadcom VMware</h4>
@@ -372,7 +351,7 @@
                      aria-labelledby="v-pills-old-tab">
                     <h4 style="text-align: center; font-weight: bold;">Old releases</h4>
                     <p style="text-align: center; font-style: italic; font-size: 0.9em;">In case you want to track regressions or for the fun of it</p>
-                    <p>We strongly suggest to download only the current releases (8.2 LTS or 8.3 Latest).</p>
+                    <p>We strongly suggest to download only the current release (8.3 LTS).</p>
                     <p>This is kept only for historical purpose.</p>
                     <div>
                         <p>You can find all previous XCP-ng releases here:</p>
