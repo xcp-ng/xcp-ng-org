@@ -12,13 +12,17 @@ If you want to use the netinstall ISO, see the [Netinstall section](#-netinstall
 
 ### Download and create media
 
-You can download the latest installer for XCP-ng 8.2 LTS from here: [https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1) and the latest installer for XCP-ng 8.3 LTS from here: [https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.iso?https=1](https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.iso?https=1).
+:::warning
+XCP-ng 8.2 is EOL (End Of Life) since September 16th, 2025. Please check the [currently supported release(s)](../releases/).
+
+XCP-ng 8.2.1 is EOL too. It's the same release: XCP-ng 8.2 LTS was first released as 8.2.0, then the version number was updated to 8.2.1 in 2022 when we released a signficant maintenance update, but it's all XCP-ng 8.2 LTS in the end.
+:::
+
+You can download :
+- the latest installer for XCP-ng 8.2 LTS from here: [https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1) 
+- the latest installer for XCP-ng 8.3 LTS from here: [https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.iso?https=1](https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.iso?https=1).
 
 SHA256 checksums, GPG signatures and net-install ISOs are available [here](https://xcp-ng.org/#easy-to-install).
-
-:::tip
-XCP-ng 8.2 LTS will soon reach its end of life. Better deploy XCP-ng 8.3 LTS.
-:::
 
 Then, create the install media (e.g. a USB key 1GB or larger should work):
 
