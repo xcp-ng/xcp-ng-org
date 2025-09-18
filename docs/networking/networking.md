@@ -53,10 +53,15 @@ For example, if a virtual machine (VM) in XCP-ng communicates over a network wit
 
 #### Support in XCP-ng
 
-:::warning
-Using **non-standard MTUs** (such as jumbo frames) on management interfaces is **not supported**. This can lead to serious issues, including failed pool member joins or unexpected network outages.
-While this behavior may not be intentional, it could be addressed in future updates. For now, stick to the default MTU settings on management interfaces to avoid operational instability.
+:::danger
+Non-standard MTUs (such as jumbo frames) are not supported on **management interfaces**. Using them can lead to serious issues, including failed pool member joins or unexpected network outages.
 :::
+
+:::warning
+Non-standard MTUs are supported on **storage interfaces**. However, jumbo frames are unnecessary for most modern workloads, and can introduce more issues than benefits. Use them with caution.
+:::
+
+While these limitations may be addressed in future updates, **stick to default MTU settings on management interfaces** to ensure **operational stability**.
 
 ## 🏷️ VLANs
 
