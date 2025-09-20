@@ -49,6 +49,17 @@ This configuration will become default in a few months, with a future update to 
 
 There's more work to be done to improve performance on AMD EPYC servers, but it is significant progress!
 
+### How to validate the fix on Linux guests
+
+Use the [`check_grant_table_cacheability.py`](https://github.com/xcp-ng/xcp/blob/master/scripts/amd_perf/check_grant_table_cacheability.py) script:
+
+```
+$ wget https://raw.githubusercontent.com/xcp-ng/xcp/refs/heads/master/scripts/amd_perf/check_grant_table_cacheability.py
+$ sudo python3 ./check_grant_table_cacheability.py
+'xen-platform-pci' PCI IO mem address is 0xFB000000
+Grant table cacheability fix is ACTIVE.
+```
+
 ### OS support
 
 **Ready:**
@@ -110,7 +121,7 @@ The real cause was fixed upstream. Don't hesitate to read the full [commit messa
 This issue occurred only on the front-end side. This means that the only way to improve network bandwidth is to upgrade the guest kernel, which limits spurious interrupts.
 
 Fix 1 (on grant-tables) and fix 2 work independently from each other. You can apply them both.
-The fixes don't guarantee better performance for every processor model (See [Future improvements below](#future-improvments-and-leads)) but we didn't detect any regression when applying them. 
+The fixes don't guarantee better performance for every processor model (See [Future improvements below](#future-improvments-and-leads)) but we didn't detect any regression when applying them.
 The fix is not specific to AMD —it can improve internal network performance on Intel processors too.
 
 ### OS support
