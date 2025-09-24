@@ -64,7 +64,7 @@ On the host, run `efibootmgr`.
 
 ## Installation logs
 
-The installer writes in `/var/log/installer/`.
+On the installed system, installer logs are kept in `/var/log/installer/`.
 
 The main log file is `/var/log/installer/install-log`.
 
