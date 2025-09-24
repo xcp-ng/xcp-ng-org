@@ -29,6 +29,34 @@ When asking for help about installation errors, providing this file increases yo
 
 The target installation partition is mounted in `/tmp/root`.
 
+### Getting remote access to host during installation
+
+While the console access method described above may be sufficient for simple issues, collecting full logs (install logs, kernel logs, etc.) often requires copying large amounts of data, which is impractical without direct file access.
+
+To enable SSH/SCP access during installation, you can use the Linux kernel command line to:
+
+- Activate the network
+- Enable the sshd service with a root password of your choice
+
+For the most common case (setting up the network via DHCP), add the following parameters to the Linux boot section:
+
+```
+network_device=all sshpassword=YOURCHOICE
+```
+
+You can also use the `network_config` parameter (which defaults to `dhcp`) to define an alternative network setup. Below are some template examples — just replace the capitalized values with your actual settings. Optional parameters are marked with square brackets (`[]`).
+
+```
+network_config=dhcp[:vlan=VLAN]
+network_config=static:ip=IP;netmask=NETMASK[;gateway=GW][;dns=DNS1[,DNS2]][;domain=DOMAIN][;vlan=VLAN]
+```
+
+:::note
+You can specify an interface name such as `eth1` instead of `all` if necessary, which can be useful when you need to setup a static IP address.
+:::
+
+The ssh server will be available once the network is up. If you are unsure which DHCP address was obtained, you can use the shell console as described above to look it up using `ip a`. You can then connect as `root` using the password you provided on the commandline.
+
 ## The ISO installer does not offer to upgrade the existing install (XCP-ng or XenServer)
 
 :::note
