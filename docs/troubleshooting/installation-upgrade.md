@@ -31,7 +31,7 @@ The target installation partition is mounted in `/tmp/root`.
 
 ## Installation logs
 
-The installer writes in `/var/log/installer/`.
+On the installed system, installer logs are kept in `/var/log/installer/`.
 
 The main log file is `/var/log/installer/install-log`.
 
