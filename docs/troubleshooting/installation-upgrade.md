@@ -29,9 +29,40 @@ When asking for help about installation errors, providing this file increases yo
 
 The target installation partition is mounted in `/tmp/root`.
 
+### Getting remote access to host during installation
+
+While for simple problems access through the console as described
+above can be sufficient, it can be necessary to collect the full
+install log, kernel log and such large amount of data, which is quite
+impractical unless you can just copy the files.
+
+To enable ssh/scp access during installation, you can request on the
+linux kernel command line the activation of the network, and enabling
+of sshd service with a root password of your choice. For the common
+case of setting up the network with DHCP, add the following to the
+linux boot parameters:
+
+```
+network_device=all sshpassword=YOURCHOICE
+```
+
+You may select an alternative setup using `network_config` (which
+defaults to `dhcp`). Its usage summary is as follows (values you need
+to provide are the ones in capital, brackets denote optional
+parameters:
+
+```
+network_config=dhcp[:vlan=VLAN]
+network_config=static:ip=IP;netmask=NETMASK[;gateway=GW][;dns=DNS1[,DNS2]][;domain=DOMAIN][;vlan=VLAN]
+```
+
+Note you can specify an interface name such as `eth1` instead of `all`
+if necessary, which can be useful when you need to setup a static IP
+address.
+
 ## Installation logs
 
-The installer writes in `/var/log/installer/`.
+On the installed system, the installer logs are kept in `/var/log/installer/`.
 
 The main log file is `/var/log/installer/install-log`.
 
