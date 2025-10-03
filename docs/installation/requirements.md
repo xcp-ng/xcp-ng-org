@@ -122,7 +122,7 @@ Below are the supported limits for virtual machines on XCP-ng.
 
 - **Virtual CPUs (vCPUs) per VM**:
   - For untrusted VMs, the security-supported limit is **32 vCPUs**.
-  - For trusted VMs, the theoretical limit is **254 vCPUs**. Linux VMs with **128 vCPUs** have been successfully tested.
+  - For trusted VMs, the tested limits are **128 vCPUs** in BIOS mode and **96 vCPUs** in UEFI mode. Developments are planned to increase these limits.
 
 Guest OS support is also an important factor to consider.
 
