@@ -10,10 +10,10 @@ This practice is not recommended for production, nested virtualization has only 
 
 Here is the list of hypervisors on which you can try XCP-ng :
 
-* [XCP-ng](https://github.com/xcp-ng/xcp/wiki/Testing-XCP-ng-in-Virtual-Machine-%28Nested-Virtualization%29/#nested-xcp-ng-using-xcp-ng)
-* [VMware ESXi & Workstation](https://github.com/xcp-ng/xcp/wiki/Testing-XCP-ng-in-Virtual-Machine-(Nested-Virtualization)#nested-xcp-ng-using-vmware-esxi-and-workstation)
-* [Hyper-V 2016](https://github.com/xcp-ng/xcp/wiki/Testing-XCP-ng-in-Virtual-Machine-(Nested-Virtualization)#nested-xcp-ng-using-microsoft-hyper-v-windows-10---windows-server-2016)
-* [QEMU/KVM](https://github.com/xcp-ng/xcp/wiki/Testing-XCP-ng-in-Virtual-Machine-(Nested-Virtualization)#nested-xcp-ng-using-qemukvm)
+* [XCP-ng](https://docs.xcp-ng.org/guides/xcpng-in-a-vm/#nested-xcp-ng-using-xcp-ng)
+* [VMware ESXi & Workstation](https://docs.xcp-ng.org/guides/xcpng-in-a-vm/#nested-xcp-ng-using-vmware-esxi-and-workstation)
+* [Hyper-V 2016](https://docs.xcp-ng.org/guides/xcpng-in-a-vm/#nested-xcp-ng-using-microsoft-hyper-v-windows-10---windows-server-2016)
+* [QEMU/KVM](https://docs.xcp-ng.org/guides/xcpng-in-a-vm/#nested-xcp-ng-using-qemukvm)
 * [Virtualbox](https://www.virtualbox.org) (Nested Virtualisation implemented only in v6.1.x and above - [https://www.virtualbox.org/ticket/4032](https://www.virtualbox.org/ticket/4032))
 
 ## Nested XCP-ng using XCP-ng
