@@ -145,8 +145,6 @@ Check them carefully.
 
 #### Upgrade instructions
 
-If for some reason you want to upgrade to the unsupported XCP-ng 7.6 from an earlier release, see [Yum Upgrade towards XCP ng 7.6](https://github.com/xcp-ng/xcp/wiki/Yum-Upgrade-towards-XCP-ng-7.6).
-
 :warning: **Proceed one host at a time. Do not `yum update` all hosts at once to "save time".** :warning:
 
 :warning: **ALWAYS START WITH THE POOL MASTER.** :warning:
