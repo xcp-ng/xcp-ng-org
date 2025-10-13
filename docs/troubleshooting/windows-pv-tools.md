@@ -33,7 +33,7 @@ Consult your motherboard manual for details; for example, on Dell systems with i
 </div>
 
 
-## Windows fails to boot (hanging at boot or BSOD with Stop code `INACCESSIBLE_BOOT_DEVICE`)
+## Windows fails to boot (hangs, `INACCESSIBLE_BOOT_DEVICE`)
 
 In some situations (failed uninstallation, major Windows version upgrades), Xen PV drivers (whether Citrix or XCP-ng) may cause Windows to fail to start (hanging at boot, BSOD with Stop code `INACCESSIBLE_BOOT_DEVICE`).
 The XenBootFix utility included with XCP-ng Windows PV Tools 9.0 and above helps you disable any active Xen PV drivers and get your system to a bootable state before running XenClean.
@@ -85,7 +85,7 @@ You can use the following procedure:
   Connect using [WinDbg](https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/) using the `Attach to kernel` option with a connection string: `com:ipport=7001,port=<host IP>`
 * To undo the changes and remove the serial setting, use `xe vm-param-remove uuid=<uuid> param-name=platform param-key=hvm_serial`
 
-## Windows bug check 0x3B (SYSTEM_SERVICE_EXCEPTION) on systems with newer Intel CPUs
+## BSOD 0x3B (SYSTEM_SERVICE_EXCEPTION) on newer Intel CPUs
 
 ### Cause
 
@@ -100,7 +100,7 @@ Stop the VM, run the following command on the host then restart the VM:
 xe vm-param-add uuid=<VM's UUID> param-name=platform msr-relaxed=true
 ```
 
-## Windows fails to boot, keeps exiting to Startup Repair/recovery menu after updating
+## Windows fails to boot after updating
 
 ### Cause
 
@@ -116,7 +116,7 @@ bcdboot C:\Windows
 
 After exiting to Windows, your system should boot successfully.
 
-## Windows Server 2019 crashes on AMD Zen hosts without showing a BSOD
+## Windows Server 2019 crashes on AMD Zen without BSOD
 
 First, try disabling Viridian from Xen Orchestra. Note that this value may reset itself after reboot.
 
@@ -157,7 +157,7 @@ If this feature is enabled, XenServer VM Tools will automatically uncheck the "I
 
 Make sure to either check this checkbox, specify `ALLOWDRIVERINSTALL=YES` on the Msiexec command line (if installing via command line) or install driver updates via Windows Update.
 
-## When using the Citrix XenServer drivers, PV devices are not getting updates with the "Manage Citrix PV drivers via Windows Update" option enabled
+## XenServer drivers not receiving updates via Windows Update
 
 ### Cause
 
