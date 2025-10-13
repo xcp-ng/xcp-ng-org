@@ -96,12 +96,12 @@ Windows guests need both the device drivers and the management agent.
 
 #### XCP-ng vs XenServer tools
 
-There are two sets of Windows guest tools compatible with XCP-ng: **XCP-ng Windows PV Drivers** and **Citrix XenServer VM Tools for Windows**.
+There are two sets of Windows guest tools compatible with XCP-ng: **XCP-ng Windows Guest Tools** and **Citrix XenServer VM Tools for Windows**.
 
-We recommend using the XCP-ng Windows PV Drivers.
+We recommend using the XCP-ng Windows Guest Tools.
 However, both sets of guest tools remain supported for Windows guests running on XCP-ng.
 
-#### XCP-ng Windows PV Drivers
+#### XCP-ng Windows Guest Tools
 
 The XCP-ng driver package contains the drivers and guest agents for Windows VMs running on XCP-ng.
 It supports the following operating systems:
@@ -112,8 +112,8 @@ It supports the following operating systems:
 **Download**: [https://github.com/xcp-ng/win-pv-drivers/releases](https://github.com/xcp-ng/win-pv-drivers/releases)
 
 ##### Prerequisite: Disable "Manage Citrix PV drivers via Windows Update"
-The first step before installing XCP-ng's Windows PV Drivers — before the VM creation and first start — is to make sure that Windows Update is not going to install Citrix tools automatically at first boot.
-This behaviour is governed by the **Manage Citrix PV drivers via Windows Update** parameter in a VM's Advanced view. Make sure it is off, or installation of the XCP-ng Windows PV Drivers will be blocked.
+The first step before installing XCP-ng Windows Guest Tools — before the VM creation and first start — is to make sure that Windows Update is not going to install Citrix tools automatically at first boot.
+This behaviour is governed by the **Manage Citrix PV drivers via Windows Update** parameter in a VM's Advanced view. Make sure it is off, or installation of the XCP-ng Windows Guest Tools will be blocked.
 
 Before creating the VM:
 * Make sure you are not creating it from a custom template than has the "Manage Citrix PV drivers via Windows Update" option enabled.
@@ -130,7 +130,7 @@ xe vm-param-get param-name=has-vendor-device uuid={VM-UUID}
 ```
 `True` means that it's active, `False` that it isn't. It needs to be `False`.
 
-##### Install the XCP-ng drivers
+##### Install the XCP-ng tools
 1. Snapshot your VM before installing.
 2. Check the above prerequisite about the "Manage Citrix PV drivers via Windows Update" option.
 3. Unpack the ZIP file.
@@ -187,11 +187,11 @@ More detailed information can also be found in the Advanced tab.
 
 XenClean is an utility for cleanly removing Xen PV drivers and management agents of the following products:
 
-* XCP-ng Windows PV Tools, versions 8.2 to 9.1
+* XCP-ng Windows Guest Tools, versions 8.2 to 9.1
 * XenServer VM Tools for Windows, versions 7.1 to 9.4
 * Other Xen drivers
 
-It is included in the installation ISO of XCP-ng Windows PV Tools 9.0 and above.
+It is included in the installation ISO of XCP-ng Windows Guest Tools 9.0 and above.
 You'll find the ISO download in the Assets section.
 [See the newest releases here.](https://github.com/xcp-ng/win-pv-drivers/releases)
 
@@ -283,11 +283,11 @@ First, create backups and snapshot your VMs before updating.
 Refer to the [I can't patch now, what should I do?](#i-cant-patch-now-what-should-i-do) section for an alternative solution.
 :::
 
-If you're using **XCP-ng Windows PV drivers** 8.2.x:
+If you're using **XCP-ng Windows PV Tools** 8.2.x:
 1. Use [XenClean](#fully-removing-xen-pv-drivers-with-xenclean) to remove the existing drivers.
-2. Install [XCP-ng Windows PV Drivers 9.0.9137 or later](https://github.com/xcp-ng/win-pv-drivers/releases) or [XenServer VM Tools 9.4.1 or later](https://www.xenserver.com/downloads).
+2. Install [XCP-ng Windows Guest Tools 9.0.9137 or later](https://github.com/xcp-ng/win-pv-drivers/releases) or [XenServer VM Tools 9.4.1 or later](https://www.xenserver.com/downloads).
 
-If you're already using **XCP-ng Windows PV drivers 9.0**, install XCP-ng driver version 9.0.9137 or later.
+If you're already using **XCP-ng Windows Guest Tools 9.0**, install XCP-ng driver version 9.0.9137 or later.
 
 If you're using *XenServer Windows PV drivers*: Upgrade to *XenServer VM Tools* 9.4.1 or later.
 

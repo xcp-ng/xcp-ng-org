@@ -1,6 +1,6 @@
-# Windows PV Tools
+# Windows Guest Tools
 
-Common issues and topics related to Windows PV tools.
+Common issues and topics related to Windows Guest Tools.
 
 ## Not all PV drivers are correctly installed
 
@@ -36,7 +36,7 @@ Consult your motherboard manual for details; for example, on Dell systems with i
 ## Windows fails to boot (hangs, `INACCESSIBLE_BOOT_DEVICE`)
 
 In some situations (failed uninstallation, major Windows version upgrades), Xen PV drivers (whether Citrix or XCP-ng) may cause Windows to fail to start (hanging at boot, BSOD with Stop code `INACCESSIBLE_BOOT_DEVICE`).
-The XenBootFix utility included with XCP-ng Windows PV Tools 9.0 and above helps you disable any active Xen PV drivers and get your system to a bootable state before running XenClean.
+The XenBootFix utility included with XCP-ng Windows Guest Tools 9.0 and above helps you disable any active Xen PV drivers and get your system to a bootable state before running XenClean.
 
 :::note
 The utility only runs in Windows Preinstallation Environment (PE) or Windows Recovery Environment (RE). It will not run from Safe Mode.
@@ -59,8 +59,8 @@ Below is a procedure for using XenBootFix to recover a non-booting VM:
     * If your Windows partition does not have a drive letter, type `sel vol N` where `N` is the volume number shown in Diskpart, then type `assign letter=W`. Your Windows partition will be assigned the drive letter `W:`.
     * Finally, at the `DISKPART>` prompt, type `exit` to exit Diskpart.
 5. Obtain XenBootFix.
-  * The easiest way is to download and use the [latest release ISO](https://github.com/xcp-ng/win-pv-drivers/releases) of XCP-ng Windows PV Tools, which includes a copy of XenBootFix at `package\XenBootFix\XenBootFix.exe`.
-  * If you're using XCP-ng Windows PV Tools 9.0 or later, it is also located at `W:\Program Files\XCP-ng\Windows PV Drivers\XenBootFix\XenBootFix.exe` where `W:` is your Windows drive letter.
+  * The easiest way is to download and use the [latest release ISO](https://github.com/xcp-ng/win-pv-drivers/releases) of XCP-ng Windows Guest Tools, which includes a copy of XenBootFix at `package\XenBootFix\XenBootFix.exe`.
+  * If you're using XCP-ng Windows Guest Tools 9.0 or later, it is also located at `W:\Program Files\XCP-ng\Windows PV Drivers\XenBootFix\XenBootFix.exe` where `W:` is your Windows drive letter.
   * **Note**: If using Windows PE, do not remove its CD image when it's running. You may encounter unexpected errors otherwise.
 6. Run the command `<path to XenBootFix.exe> W:\Windows` where `W:` is your Windows drive letter.
   * **Note**: Make sure the drive letter belongs to your actual Windows installation and not Windows PE/RE. By default, Windows PE/RE use the drive letter **X:**.
