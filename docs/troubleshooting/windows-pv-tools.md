@@ -1,31 +1,6 @@
 # Windows PV Tools
 
-Common issues with Windows PV tools.
-
-## PV-Drivers missing in the Device Manager
-
-### Cause
-
-If despite running the Windows tools installer, there's no devices visible in the device manager, it's likely because there's some leftovers from old Citrix XenServer Client Tools.
-
-### Solutions
-
-#### Leftovers from old Citrix XenServer Client Tools.
-
-See the [XenClean guide](/vms/#fully-removing-xen-pv-drivers-with-xenclean) for instructions.
-
-## Network PV drivers aren't working.
-
-### Cause
-
-If the tools are installed, while XCP-ng Center says that I/O is optimized, but the network card is not correctly installed and the Management Agent is also not working. There was an issue with the installing of the drivers certificate, so the drivers did not load silently.
-
-### Possible Solutions
-
-* Clean your system from `Citrix Client Tools` _AND_ `XCP-ng Client Tools` to create a clean state.
-* Then install the Client Tools from scratch.
-
-See the [XenClean guide](/vms/#fully-removing-xen-pv-drivers-with-xenclean) for instructions.
+Common issues and topics related to Windows PV tools.
 
 ## Not all PV drivers are correctly installed
 
@@ -182,7 +157,7 @@ If this feature is enabled, XenServer VM Tools will automatically uncheck the "I
 
 Make sure to either check this checkbox, specify `ALLOWDRIVERINSTALL=YES` on the Msiexec command line (if installing via command line) or install driver updates via Windows Update.
 
-## PV devices not getting updates with the "Manage Citrix PV drivers via Windows Update" option enabled
+## When using the Citrix XenServer drivers, PV devices are not getting updates with the "Manage Citrix PV drivers via Windows Update" option enabled
 
 ### Cause
 
