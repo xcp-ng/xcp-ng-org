@@ -147,15 +147,15 @@ The installer will install both the management agent and the device drivers.
 :::tip
 You will also find present and past releases of the tools at: [https://support.citrix.com/article/CTX235403](https://support.citrix.com/article/CTX235403), but this may require a Citrix account.
 
-For security reasons, we do not recommend using past releases. However, it may prove useful for old, unsupported, Windows releases.
+For security reasons, we do not recommend using past releases. However, it may prove useful for old, unsupported Windows releases.
 :::
 
 ##### Automated installation via Windows Update: device drivers alone (XenServer VM Tools only)
-In Xen Orchestra, Go to the **Advanced** tab of the VM view to switch on the parameter called **Manage Citrix PV drivers via Windows Update**\
+In Xen Orchestra, Go to the **Advanced** tab of the VM view to switch on the parameter called **Manage Citrix PV drivers via Windows Update**.\
 This will install the device drivers automatically at next reboot.
 
 :::warning
-This procedure will **not** install the management agent. You will to install them using the XenServer tools installer.
+This procedure will **not** install the management agent. You will need to install them using the XenServer tools installer.
 :::
 
 The **Manage Citrix PV drivers via Windows Update** option is therefore not a complete solution if you need the guest metrics from the management agent. However, it may be a convenient way to get future driver updates if you wish so.
