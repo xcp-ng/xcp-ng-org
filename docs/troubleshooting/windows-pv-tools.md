@@ -1,31 +1,6 @@
-# Windows PV Tools
+# Windows Guest Tools
 
-Common issues with Windows PV tools.
-
-## PV-Drivers missing in the Device Manager
-
-### Cause
-
-If despite running the Windows tools installer, there's no devices visible in the device manager, it's likely because there's some leftovers from old Citrix XenServer Client Tools.
-
-### Solutions
-
-#### Leftovers from old Citrix XenServer Client Tools.
-
-See the [XenClean guide](/vms/#fully-removing-xen-pv-drivers-with-xenclean) for instructions.
-
-## Network PV drivers aren't working.
-
-### Cause
-
-If the tools are installed, while XCP-ng Center says that I/O is optimized, but the network card is not correctly installed and the Management Agent is also not working. There was an issue with the installing of the drivers certificate, so the drivers did not load silently.
-
-### Possible Solutions
-
-* Clean your system from `Citrix Client Tools` _AND_ `XCP-ng Client Tools` to create a clean state.
-* Then install the Client Tools from scratch.
-
-See the [XenClean guide](/vms/#fully-removing-xen-pv-drivers-with-xenclean) for instructions.
+Common issues and topics related to Windows Guest Tools.
 
 ## Not all PV drivers are correctly installed
 
@@ -58,10 +33,10 @@ Consult your motherboard manual for details; for example, on Dell systems with i
 </div>
 
 
-## Windows fails to boot (hanging at boot or BSOD with Stop code `INACCESSIBLE_BOOT_DEVICE`)
+## Windows fails to boot (hangs, `INACCESSIBLE_BOOT_DEVICE`)
 
 In some situations (failed uninstallation, major Windows version upgrades), Xen PV drivers (whether Citrix or XCP-ng) may cause Windows to fail to start (hanging at boot, BSOD with Stop code `INACCESSIBLE_BOOT_DEVICE`).
-The XenBootFix utility included with XCP-ng Windows PV Tools 9.0 and above helps you disable any active Xen PV drivers and get your system to a bootable state before running XenClean.
+The XenBootFix utility included with XCP-ng Windows Guest Tools 9.0 and above helps you disable any active Xen PV drivers and get your system to a bootable state before running XenClean.
 
 :::note
 The utility only runs in Windows Preinstallation Environment (PE) or Windows Recovery Environment (RE). It will not run from Safe Mode.
@@ -84,8 +59,8 @@ Below is a procedure for using XenBootFix to recover a non-booting VM:
     * If your Windows partition does not have a drive letter, type `sel vol N` where `N` is the volume number shown in Diskpart, then type `assign letter=W`. Your Windows partition will be assigned the drive letter `W:`.
     * Finally, at the `DISKPART>` prompt, type `exit` to exit Diskpart.
 5. Obtain XenBootFix.
-  * The easiest way is to download and use the [latest release ISO](https://github.com/xcp-ng/win-pv-drivers/releases) of XCP-ng Windows PV Tools, which includes a copy of XenBootFix at `package\XenBootFix\XenBootFix.exe`.
-  * If you're using XCP-ng Windows PV Tools 9.0 or later, it is also located at `W:\Program Files\XCP-ng\Windows PV Drivers\XenBootFix\XenBootFix.exe` where `W:` is your Windows drive letter.
+  * The easiest way is to download and use the [latest release ISO](https://github.com/xcp-ng/win-pv-drivers/releases) of XCP-ng Windows Guest Tools, which includes a copy of XenBootFix at `package\XenBootFix\XenBootFix.exe`.
+  * If you're using XCP-ng Windows Guest Tools 9.0 or later, it is also located at `W:\Program Files\XCP-ng\Windows PV Drivers\XenBootFix\XenBootFix.exe` where `W:` is your Windows drive letter.
   * **Note**: If using Windows PE, do not remove its CD image when it's running. You may encounter unexpected errors otherwise.
 6. Run the command `<path to XenBootFix.exe> W:\Windows` where `W:` is your Windows drive letter.
   * **Note**: Make sure the drive letter belongs to your actual Windows installation and not Windows PE/RE. By default, Windows PE/RE use the drive letter **X:**.
@@ -110,7 +85,7 @@ You can use the following procedure:
   Connect using [WinDbg](https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/) using the `Attach to kernel` option with a connection string: `com:ipport=7001,port=<host IP>`
 * To undo the changes and remove the serial setting, use `xe vm-param-remove uuid=<uuid> param-name=platform param-key=hvm_serial`
 
-## Windows bug check 0x3B (SYSTEM_SERVICE_EXCEPTION) on systems with newer Intel CPUs
+## BSOD 0x3B (SYSTEM_SERVICE_EXCEPTION) on newer Intel CPUs
 
 ### Cause
 
@@ -125,7 +100,7 @@ Stop the VM, run the following command on the host then restart the VM:
 xe vm-param-add uuid=<VM's UUID> param-name=platform msr-relaxed=true
 ```
 
-## Windows fails to boot, keeps exiting to Startup Repair/recovery menu after updating
+## Windows fails to boot after updating
 
 ### Cause
 
@@ -141,7 +116,7 @@ bcdboot C:\Windows
 
 After exiting to Windows, your system should boot successfully.
 
-## Windows Server 2019 crashes on AMD Zen hosts without showing a BSOD
+## Windows Server 2019 crashes on AMD Zen without BSOD
 
 First, try disabling Viridian from Xen Orchestra. Note that this value may reset itself after reboot.
 
@@ -182,7 +157,7 @@ If this feature is enabled, XenServer VM Tools will automatically uncheck the "I
 
 Make sure to either check this checkbox, specify `ALLOWDRIVERINSTALL=YES` on the Msiexec command line (if installing via command line) or install driver updates via Windows Update.
 
-## PV devices not getting updates with the "Manage Citrix PV drivers via Windows Update" option enabled
+## XenServer drivers not receiving updates via Windows Update
 
 ### Cause
 
