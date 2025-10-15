@@ -243,3 +243,55 @@ Immediatly after fencing, **Minion 1** will be booted on the other host.
 #### Pull the network cable
 
 Finally, the worst case: keep the storage operational, but "cut" the (management) network interface. Same procedure: unplug the cable physically and wait... Because **lab1** cannot contact any other host in the pool (in this case, **lab2**), it starts the fencing procedure. The result is exactly the same as the previous test. It's gone for the pool master, displayed as **Halted** until we re-plug the cable.
+
+## 🤓 Architecture
+
+### General
+
+The diagram below shows how HA is managed on a pool.
+
+![](../../assets/img/xha-shared-sr.png)
+
+As you can see, a `XHA daemon` is running on each host and two main paths are used: one for the network, another for storage.
+For HA to operate properly, two communication paths are used: one over the network and another reserved for storage.
+There are two paths because this is the solution chosen to distinguish a network problem between hosts and a storage issue.
+In both cases, data is constantly transmitted through these paths to ensure proper HA operation:
+- UDP packets are exchanged over the network management interface so that each server can indicate it is alive.
+- Disk data is written to and read by the hosts through a volume called `ha-statefile`. In this example, the volume resides on an NFS SR, which is shared and accessible by the entire pool. It’s a standard SR containing VHD files used by VMs.
+The only difference is that `ha-statefile` is a raw volume in which data is written directly.
+
+Regarding the structure of this SR heartbeat volume:
+
+![](../../assets/img/xha-statefile-structure.png)
+
+- As the picture shows, this volume contains a single entry for each host, where each host writes to its own dedicated area AND can also read the state of other hosts. In other words, each host writes a “heartbeat” value indicating that it’s alive at a given time, which is verified by the whole pool.
+
+- There is no write lock; each host can write at any time. It's why there is one entry for each host.
+
+### XOSTOR
+
+For DRBD/LINSTOR experts, and with the general architecture explanation, you can understand what happens when we replace the NFS hearbeat volume by a DRBD device.
+
+We must change our architecture because — basically — a DRBD volume can only be opened in one place at a time. We cannot easily write in each volume at the same time, because we would have to open or close the heartbeat volume several times per second. Or, we would have to set up a mechanism in the xha daemon so that each one writes in turn. Since this is complex to set up, we chose another approach.
+
+![](../../assets/img/xha-xostor-sr.png)
+
+To support the fact that only one DRBD volume can be PRIMARY, and to avoid making significant changes to the xha/XHAPI modules, we had to be a bit creative. Instead of writing to or reading directly from the heartbeat volume on all hosts, we use an `NBD HTTP server` daemon. It's a process that listens through an NBD device, which is seen as the heartbeat volume by the XHA daemon.
+
+As a result, each read and write request from the XHA daemon goes through an NBD device. It is then transmitted via the HTTP protocol to another daemon called `HTTP disk server`, which is responsible for writing to the DRBD heartbeat volume.
+This whole new path acts as a proxy, hiding direct access to the actual heartbeat volume of the SR.
+
+Now, what happens if the host running the active `HTTP disk server` daemon crashes?
+In that case, the heartbeat volume loses its PRIMARY status on that host. Among the surviving hosts, another server daemon will then attempt to become PRIMARY in its place.
+Then, the one that successfully becomes PRIMARY will start receiving the heartbeat requests from the `NBD HTTP server` daemons.
+
+For those curious about the LINSTOR/DRBD options used behind the heartbeat volume, these are the ones used by LINBIT in their LINSTOR guide for creating a Highly Available LINSTOR cluster:
+
+```
+'DrbdOptions/auto-quorum': 'disabled',
+'DrbdOptions/Resource/auto-promote': 'no',
+'DrbdOptions/Resource/on-no-data-accessible': 'io-error',
+'DrbdOptions/Resource/on-no-quorum': 'io-error',
+'DrbdOptions/Resource/on-suspended-primary-outdated': 'force-secondary',
+'DrbdOptions/Resource/quorum': 'majority'
+```
