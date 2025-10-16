@@ -217,11 +217,111 @@ To be able to encrypt the networks, `openvswitch-ipsec` package must be installe
 
 More information available on [XO official documentation for SDN controller](https://xen-orchestra.com/docs/sdn_controller.html).
 
-### OpenFlow rules
+### OpenFlow Rules
 
 :::tip
-This feature is coming very soon!
+`xcp-ng-xapi-plugins` >= 0.15.0 is required. To check the version, run  `yum info xcp-ng-xapi-plugins`.
 :::
+
+Using Open vSwitch OpenFlow rules, you can setup traffic rules limiting some network accesses directly at the hypervisor vswitch level. No need for an additional layer of firewalling or filtering setup or equipment.
+
+There are 3 ways to configure OpenFlow rules:
+- Through [Xen Orchestra](https://docs.xen-orchestra.com/sdn_controller#openflow-rules)'s web UI (currently only available for per VIF rules)
+- Using `xo-cli` as explained in the [Xen Orchestra documentation](https://docs.xen-orchestra.com/sdn_controller#xapi-plugin)
+- Manually, by using the `xe` command on your hosts
+
+We recommend using Xen Orchestra or `xo-cli`, depending on your use case. This documentation will focus on how to set up rules manually.
+
+:::warning
+The procedure below explains how to set up rules temporarily, but the rules won't persist after reboot.
+:::
+
+Keep in mind that these steps must be performed on every host where you want the rules applied. For non-cross-pool private networks, you can run the commands from one host for each host UUID in your pool. For cross-pool private networks, repeat the process for each pool involved.
+
+To set rules manually, you can call the plugin using `xe`:
+
+```
+xe host-call-plugin host-uuid<uuid> plugin=sdncontroller.py \
+  fn=<function> \
+  args:<key>="<value>" [args:…] …`
+```
+
+The `<fuction>` parameter can be:
+- `add-rule` to add a new rule
+- `del-rule` to delete an existing rule
+- `dump-flows` to dump the current flow table from Open vSwitch
+
+#### Adding a rule
+
+Parameters for adding a rule:
+- *bridge*: The name of the bridge to add rule to
+- *priority* (optional): A number between 0 and 65535 for the rule priority
+- *mac* (optional): The MAC address of the VIF to create the rule for (if not specified, a network-wide rule will be created)
+- *ipRange*: An IP or range of IPs in CIDR notation (for example `192.168.1.0/24`)
+- *direction*: can be **from**, **to** or **from/to**
+  - *to*: means the parameters for **port** and **ipRange** are to be used as destination
+  - *from*: means they will be use as source
+  - *from/to*: 2 rules will be created, one per direction
+- *protocol*: IP, TCP, UDP, ICMP or ARP
+- *port*: required for TCP/UDP protocol
+- *allow*: If set to false, the packets are dropped.
+
+Example to block SSH access to/from the 192.168.1.0/24 subnet, for a VM with MAC address `6e:0b:9e:72:ab:c6` on bridge `xenbr0`:
+
+```
+$ xe host-call-plugin host-uuid<uuid> plugin=sdncontroller.py \
+  fn=add-rule                   \
+  args:bridge="xenbr0"          \
+  args:mac="6e:0b:9e:72:ab:c6"  \
+  args:ipRange="192.168.1.0/24" \
+  args:direction="from/to"      \
+  args:protocol="tcp"           \
+  args:port="22"                \
+  args:allow="false"
+```
+
+
+#### Deleting a rule
+
+Parameters for removing a rule:
+- *bridge* :  The name of the bridge to delete the rule from
+- *mac* (optional): The MAC address of the VIF to delete the rule for
+- *ipRange*: An IP or range of IPs in CIDR notation, for example `192.168.1.0/24`
+- *direction*: can be **from**, **to** or **from/to**
+  - *to*: means the parameters for **port** and **ipRange** are to be used as destination
+  - *from*: means they will be use as source
+  - *from/to*: 2 rules will be created, one per direction
+- *protocol*: IP, TCP, UDP, ICMP or ARP
+- *port*: required for TCP/UDP protocol
+
+Example to remove the rule created in the previous section:
+
+```
+$ xe host-call-plugin host-uuid<uuid> plugin=sdncontroller.py \
+  fn=del-rule                   \
+  args:bridge="xenbr0"          \
+  args:mac="6e:0b:9e:72:ab:c6"  \
+  args:ipRange="192.168.1.0/24" \
+  args:direction="from/to"      \
+  args:protocol="tcp"           \
+  args:port="22"
+```
+#### Dumping the flow table
+
+This command will return all flows entries in the bridge passed as a parameter.
+```
+$ xe host-call-plugin host-uuid=<uuid> plugin=sdncontroller.py fn=dump-flows args:bridge=xenbr0 | jq .
+{
+  "returncode": 0,
+  "command": [
+    "ovs-ofctl",
+    "dump-flows",
+    "xenbr0"
+  ],
+  "stderr": "",
+  "stdout": "NXST_FLOW reply (xid=0x4):\n cookie=0x0, duration=248977.339s, table=0, n_packets=24591786, n_bytes=3278442075, idle_age=0, hard_age=65534, priority=0 actions=NORMAL\n"
+}
+```
 
 ### Common errors
 
