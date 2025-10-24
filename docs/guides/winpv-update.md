@@ -87,7 +87,7 @@ Once the update finishes, you should no longer see the vulnerability warning in 
 ## Useful links
 
 - If you want to remove existing Xen drivers, refer to the [XenClean guide](/vms/#fully-removing-xen-pv-drivers-with-xenclean).
-- Refer to the [XenBootFix guide](/troubleshooting/windows-pv-tools/#windows-fails-to-boot-hanging-at-boot-or-bsod-with-stop-code-inaccessible_boot_device) if you encounter VM boot issues after the update.
+- Refer to the [XenBootFix guide](/troubleshooting/windows-pv-tools/#windows-fails-to-boot-hangs-inaccessible_boot_device) if you encounter VM boot issues after the update.
 
 ## Appendix: Blocking vulnerable Xen drivers with Application Control for Windows
 
