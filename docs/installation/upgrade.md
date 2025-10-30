@@ -252,6 +252,10 @@ XCP-NG installation follows roughly the same workflow as a XenServer installatio
 
 Then boot on the ISO!
 
+:::warning
+You must boot the ISO in the firmware mode that was used for initial installation : UEFI or BIOS. Otherwise, the installer won't detect the existing XenServer installation and offer to upgrade.
+:::
+
 ![](https://xcp-ng.org/assets/img/screenshots/install1bis.png)
 
 Eventually, you will reach a screen offering to upgrade your XenServer to XCP-ng:
