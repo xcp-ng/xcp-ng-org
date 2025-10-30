@@ -54,7 +54,7 @@ Steps:
 Then, for every host of the pool, starting with the pool master:
 
 3. Move all VMs off the host if your setup allows it, or turn them off.
-4. Follow the installation procedure on the [download page](https://xcp-ng.org/download/).
+4. Follow the installation procedure on the [installation page](../install-xcp-ng#start-the-host).
 5. When offered the choice, choose to upgrade your existing XCP-ng installation.
 6. After the upgrade completed, reboot your host.
 7. [Install the updates](../../management/updates) that have been released after the installation ISO was created. They can fix bugs and/or security issues.
