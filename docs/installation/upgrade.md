@@ -57,7 +57,7 @@ Then, for every host of the pool, starting with the pool master:
 4. Follow the installation procedure on the [installation page](../install-xcp-ng#start-the-host).
 
 :::warning
-You must boot the ISO in the firmware mode that was used for initial installation : UEFI or BIOS. Otherwise, the installer won't detect the existing installation and offer to upgrade.
+You must boot the ISO in the firmware mode that was used for initial installation: UEFI or BIOS. Otherwise, the installer won't detect the existing installation and offer to upgrade.
 :::
 
 5. When offered the choice, choose to upgrade your existing XCP-ng installation.
@@ -258,7 +258,7 @@ XCP-NG installation follows roughly the same workflow as a XenServer installatio
 Then boot on the ISO!
 
 :::warning
-You must boot the ISO in the firmware mode that was used for initial installation : UEFI or BIOS. Otherwise, the installer won't detect the existing XenServer installation and offer to upgrade.
+You must boot the ISO in the firmware mode that was used for initial installation: UEFI or BIOS. Otherwise, the installer won't detect the existing XenServer installation and offer to upgrade.
 :::
 
 ![](https://xcp-ng.org/assets/img/screenshots/install1bis.png)
