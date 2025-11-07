@@ -65,6 +65,12 @@ In some cases (with older versions of koji), we've found that the `cert` directi
 ## Get more permissions
 After your first connection, your user gets added by koji to its database. Now you need permissions to be able to tag builds. Ask an administrator for the `build` permission.
 
+You can verify the permissions for a given user `$USER` with:
+```
+koji list-users # Check if $USER is listed
+koji list-permissions --user=$USER # Adapt $USER if needed
+```
+
 ## Koji in Docker container
 
 This used to be useful when our koji server was a bit too old for recent crypto, but now **installing from `PyPi` is probably the best choice**.
