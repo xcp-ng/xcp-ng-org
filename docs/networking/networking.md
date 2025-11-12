@@ -142,10 +142,14 @@ ifconfig eth4 down
 ifconfig eth8 down
 ```
 
-The most common use will be an update statement like the following:
-```
-interface-rename --update eth4=00:24:81:80:19:63 eth8=00:24:81:7f:cf:8b
-```
+The most common use will be an update statement like:
+
+`interface-rename --update eth4=00:24:81:80:19:63 eth8=00:24:81:7f:cf:8b`
+
+or:
+
+`interface-rename --rename eth4=00:24:81:80:19:63 eth8=00:24:81:7f:cf:8b`
+
 This example will set the mac-address for eth4 & eth8, switching them in the process.
 
 The XAPI database needs the old PIFs removed. First list your PIFs for the affected NICs:
