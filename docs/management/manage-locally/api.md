@@ -32,6 +32,10 @@ Restarting XAPI won't affect any running VMs. However, all backup/export tasks w
 Those changes aren't officially supported, and will be also wiped after an ISO upgrade.
 :::
 
+:::warning
+Do NOT modify `/etc/xapi.conf` directly: any changes to this file may be overwritten in future XCP-ng updates.
+:::
+
 #### 24h task timeout
 
 Create a new configuration file in `/etc/xapi.conf.d/`. Files in this directory are automatically loaded by XAPI when it starts.
@@ -46,7 +50,54 @@ Example:
 pending_task_timeout = 172800
 ```
 
+After changing the configuration, restart the toolstack with `xe-toolstack-restart`. 
 
-After changing the configuration, restart the toolstack with `xe-toolstack-restart`.
+#### Enable/Disable HSTS
 
-⚠️ Do NOT modify `/etc/xapi.conf` directly: any changes to this file may be overwritten in future XCP-ng updates.
+If you want to enable HTTP Strict Transport Security: 
+- Create a new configuration file in `/etc/xapi.conf.d/`.
+- You can name it `/etc/xapi.conf.d/hsts.conf`.
+- Define the new value for `hsts_max_age`, in seconds.
+
+Example:
+```ini
+# Set HSTS retained for 1y
+hsts_max_age = 31536000
+```
+:::tip
+Common values are:
+- 1 year --> 31536000
+- 2 years --> 63072000
+:::
+After changing the configuration, restart the toolstack with `xe-toolstack-restart`. 
+
+Example with one command to enable HSTS and restart XAPI (example sets 1 year = 31536000):
+```bash
+echo "hsts_max_age = 31536000" > /etc/xapi.conf.d/hsts.conf' && sudo xe-toolstack-restart
+```
+
+:::note
+Please wait (~30s) for the service to become fully available before issuing further XAPI requests.
+:::
+
+Automatic OK/KO result:
+```bash
+curl -skD- https://localhost/ -o /dev/null | grep -iq '^Strict-Transport-Security:.*max-age=[1-9]' && echo "HSTS: OK" || echo "HSTS: KO"
+```
+
+To disable HSTS, set `hsts_max_age` to `0` in your XAPI config file:
+
+```ini
+# Disable HSTS
+hsts_max_age = 0
+```
+
+After changing the file, restart XAPI:
+```bash
+xe-toolstack-restart
+```
+
+:::warning
+Setting `hsts_max_age = 0` disables the HSTS but does not revert to the package default.
+The explicit presence of this key overrides the default value. To restore the default configuration, remove the key or the configuration file, then restart XAPI.
+:::
