@@ -569,6 +569,21 @@ For the full discussion about Ceph in XCP-ng, see this forum thread: [https://xc
 * Do not use admin keyring for production, but make a separate key with only necessary privileges [https://docs.ceph.com/en/latest/rados/operations/user-management/](https://docs.ceph.com/en/latest/rados/operations/user-management/)
 :::
 
+### LargeBlock SR
+
+:::warning
+Largeblock SR is a workaround for 4KiB disks not working on VDI creation with normal SR types.
+:::
+
+To create a LargeBlock SR, the same parameters needed for a EXT SR are needed with the SR type changed to `largeblock`.
+
+```
+xe sr-create host-uuid=<host UUID> type=largeblock content-type=user name-label="Local largeblock" device-config:device=/dev/sdaX
+```
+
+The largeblock SR creates a translation layer to align the device on 512 sector size using a loop device and creates a EXT SR on this emulated device.
+It's needed to work around an issue with VHD alignment that creates an error on VHD creation on the native 4KiB device.
+
 ## 💿 ISO SR
 
 You might be wondering how to upload an ISO. Unlike other solutions, you need to create a dedicated "space" for these, a specific ISO SR. To create an ISO SR, you have 2 possibilities:
