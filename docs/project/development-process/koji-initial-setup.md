@@ -28,6 +28,15 @@ You need to import it into your web browser's certificate store and then use it 
 ## Installing koji
 The preferred, distro-independent way is to install it from PyPi with `pip`, `uv` or your preferred tool. Alternatively, your distro might provide the `koji` client as a package you can install from its repositories. You could also run it from a Fedora container, but that's mostly a last resort option if anything else fails for some reason.
 
+Example on Ubuntu 24.04+:
+```bash
+# Install dependencies
+sudo apt install -y build-essential python3-dev libkrb5-dev krb5-user libssl-dev libffi-dev python3-requests-gssapi
+
+# Install koji
+pipx install koji
+```
+
 ## Configuring koji
 Put this in `~/.koji/config`:
 ```
