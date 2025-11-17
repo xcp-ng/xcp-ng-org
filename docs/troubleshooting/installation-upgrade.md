@@ -31,7 +31,11 @@ The target installation partition is mounted in `/tmp/root`.
 
 ## The ISO installer does not offer to upgrade the existing install (XCP-ng or XenServer)
 
-For the installer to detect your current install (XCP-ng or XenServer), the ISO must be booted in the same firmware context.\
+:::note
+This section details how to deal with the most frequent cause for the installer not detecting your current installation. There can be other, rarer cases which are not detailed here.
+:::
+
+For the installer to detect your current install (XCP-ng or XenServer), the ISO must be booted in the same firmware context.
 The difference is how you pick the drive at boot. This applies to physical and virtual CD/DVD/USB drives.
 
 If your existing installation is in legacy BIOS mode, boot the ISO in BIOS mode.
