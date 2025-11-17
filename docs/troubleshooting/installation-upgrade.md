@@ -29,6 +29,39 @@ When asking for help about installation errors, providing this file increases yo
 
 The target installation partition is mounted in `/tmp/root`.
 
+## The ISO installer does not offer to upgrade the existing install (XCP-ng or XenServer)
+
+:::note
+This section details how to deal with the most frequent cause for the installer not detecting your current installation. There can be other, rarer cases which are not detailed here.
+:::
+
+For the installer to detect your current install (XCP-ng or XenServer), the ISO must be booted in the same firmware context.
+The difference is how you pick the drive at boot. This applies to physical and virtual CD/DVD/USB drives.
+
+If your existing installation is in legacy BIOS mode, boot the ISO in BIOS mode.
+
+If your existing installation is in UEFI mode, boot the ISO in UEFI mode.
+
+In your server boot menu, you might see something like this: 
+
+```
+Please select boot device:
+---------------------------------
+UEFI: Virtual CDROM Device   <<<<<< This one is in UEFI mode
+Virtual CDROM Device         <<<<<< This one is the same device, in legacy BIOS mode
+...
+ other boot entries
+...
+---------------------------------
+```
+
+### How to check if a running install is using UEFI or legacy BIOS?
+
+On the host, run `efibootmgr`.
+
+- If you see `EFI variables are not supported on this system.` you're running on legacy BIOS.
+- If you see some EFI boot entries, you’re running on UEFI.
+
 ## Installation logs
 
 The installer writes in `/var/log/installer/`.

@@ -54,7 +54,12 @@ Steps:
 Then, for every host of the pool, starting with the pool master:
 
 3. Move all VMs off the host if your setup allows it, or turn them off.
-4. Follow the installation procedure on the [download page](https://xcp-ng.org/download/).
+4. Follow the installation procedure on the [installation page](../install-xcp-ng#start-the-host).
+
+:::warning
+You must boot the ISO in the firmware mode that was used for initial installation: UEFI or BIOS. Otherwise, the installer won't detect the existing installation and offer to upgrade.
+:::
+
 5. When offered the choice, choose to upgrade your existing XCP-ng installation.
 6. After the upgrade completed, reboot your host.
 7. [Install the updates](../../management/updates) that have been released after the installation ISO was created. They can fix bugs and/or security issues.
@@ -251,6 +256,10 @@ XCP-NG installation follows roughly the same workflow as a XenServer installatio
 * Follow the [website instructions](https://xcp-ng.org/#easy-to-install) to put the ISO into a USB key or a CD
 
 Then boot on the ISO!
+
+:::warning
+You must boot the ISO in the firmware mode that was used for initial installation: UEFI or BIOS. Otherwise, the installer won't detect the existing XenServer installation and offer to upgrade.
+:::
 
 ![](https://xcp-ng.org/assets/img/screenshots/install1bis.png)
 
