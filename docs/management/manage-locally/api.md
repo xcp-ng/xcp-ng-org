@@ -54,6 +54,10 @@ After changing the configuration, restart the toolstack with `xe-toolstack-resta
 
 #### Enable/Disable HSTS
 
+:::warning
+Do not enable HSTS if you are using the default self‑signed certificate or if the full certificate chain cannot be verified.
+:::
+
 If you want to enable HTTP Strict Transport Security: 
 - Create a new configuration file in `/etc/xapi.conf.d/`.
 - You can name it `/etc/xapi.conf.d/hsts.conf`.
@@ -77,27 +81,23 @@ echo "hsts_max_age = 31536000" > /etc/xapi.conf.d/hsts.conf' && sudo xe-toolstac
 ```
 
 :::note
-Please wait (~30s) for the service to become fully available before issuing further XAPI requests.
+You can then type `xapi-wait-init-complete 30` to ensure that XAPI has fully started.
 :::
 
-Automatic OK/KO result:
+### Verify HSTS header and max-age
+
+This checks whether the response from https://localhost/ contains a Strict-Transport-Security header with a positive max-age and prints "HSTS: OK" or "HSTS: KO".
+
+Recommended one-liner (Won't work with self-signed certs):
 ```bash
-curl -skD- https://localhost/ -o /dev/null | grep -iq '^Strict-Transport-Security:.*max-age=[1-9]' && echo "HSTS: OK" || echo "HSTS: KO"
+curl -sI https://localhost/ \
+    | grep -iE '^Strict-Transport-Security:.*max-age=[1-9][0-9]*' \
+    && echo "HSTS: OK" || echo "HSTS: KO"
 ```
 
-To disable HSTS, set `hsts_max_age` to `0` in your XAPI config file:
-
-```ini
-# Disable HSTS
-hsts_max_age = 0
-```
-
-After changing the file, restart XAPI:
-```bash
-xe-toolstack-restart
-```
-
-:::warning
-Setting `hsts_max_age = 0` disables the HSTS but does not revert to the package default.
-The explicit presence of this key overrides the default value. To restore the default configuration, remove the key or the configuration file, then restart XAPI.
+:::note
+- The regex was tightened to match any positive integer (not just a single digit).
+- max-age=0 means HSTS is disabled.
 :::
+
+To undo the change, remove the previously added configuration file (e.g. `/etc/xapi.conf.d/hsts.conf`) and restart the toolstack.
