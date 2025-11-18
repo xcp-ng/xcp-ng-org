@@ -1204,3 +1204,79 @@ This data block is moved later, and the process caller (here tapdisk) is only no
 This algorithm is efficient in not having to wait for writes to be flushed to the local disk as well as to other DRBDs replicated on other nodes.
 However, if a power outage occurs on a machine using a cache that contains data, the data will be lost.
 You don't have this issue with writethrough, but this mode is only used for read performance.
+
+### How to fix a LINSTOR database corruption?
+
+:::warning
+If you are in a situation where you don't know what you're doing, contact [Vates Pro Support](https://vates.tech/pricing-and-support) for guidance that applies to your specific situation. This repair may not be sufficient. It depends on what error the SMAPI indicates.
+:::
+
+After a total network outage or a critical crash of an entire XOSTOR pool, in very rare situations a transaction to the LINSTOR H2 database may not proceed as expected. This can lead to LINSTOR logs similar to this one:
+```
+Caused by:
+==========
+
+Category:                           Exception
+Class name:                         JdbcSQLException
+Class canonical name:               org.h2.jdbc.JdbcSQLException
+Generated at:                       Method 'getJdbcSQLException', Source file 'DbException.java', Line #357
+
+Error message:                      General error: "java.lang.IllegalStateException: File corrupted in chunk 128080, expected page length 4..768, got 1869573198 [1.4.197/6]"; SQL statement:
+DELETE FROM PROPS_CONTAINERS WHERE PROPS_INSTANCE = ? AND PROP_KEY = ?  [50000-197]
+```
+
+The interesting part for recognizing database corruption is simply this message: "File corrupted in chunk XXX...".
+
+In this situation, the XCP-ng driver cannot function correctly because it relies heavily on this database.
+To repair the driver, follow these steps:
+
+1. Disconnect the SR from each host in the pool via XOA. If this fails, proceed to the next step.
+
+2. Stop the satellites on each host:
+```
+systemctl stop linstor-satellite
+```
+
+3. Log in to the host where the controller is running. The `/var/lib/linstor` folder should be mounted. You can verify this using the `mountpoint` command:
+```
+mountpoint /var/lib/linstor
+/var/lib/linstor is a mountpoint
+```
+
+Copy these files from the database folder: `linstordb.mv.db` and `linstordb.trace.db` ​​into another folder:
+```
+mkdir linstor.bak
+cp /var/lib/linstor/*.db linstor.bak/
+```
+
+4. Download the `H2` tool from [the official website](https://www.h2database.com/html/download-archive.html). The version to download corresponds to the one used by the installed version of LINSTOR. This information can be found on the LINSTOR server [git repository](https://github.com/LINBIT/linstor-server/blob/master/build.gradle).
+
+5. Extract the H2 archive, replace the `<H2_FOLDER>` and `<H2_VERSION>` and run the recovery tool in the copied database folder:
+```
+java -cp <H2_FOLDER>/bin/h2-<H2_VERSION>.jar org.h2.tools.Recover -dir linstor.bak
+```
+
+The recovery tool generates a SQL file. The contents of `linstor.bak` should look like this:
+```
+ls linstor.bak/
+linstordb.h2.sql  linstordb.mv.db  linstordb.mv.txt  linstordb.trace.db
+```
+
+6. Generate a new database in a temporary folder:
+```
+java -cp <H2_FOLDER>/bin/h2-<H2_VERSION>.jar org.h2.tools.RunScript -url jdbc:h2:/tmp/linstordb -user linstor -password linstor -script linstor.bak/linstordb.h2.sql
+```
+
+7. Replace the corrupted database with the temporary one:
+```
+mv /tmp/linstordb.mv.db /var/lib/linstor/linstordb.mv.db
+```
+
+8. Stop the controller:
+```
+systemctl stop linstor-controller
+```
+
+9. Reconnect the SR to each host via XOA.
+
+The database should work fine now, but — as mentioned in the introduction — there might still be a few issues to fix (like corrupted or blocked resources).
