@@ -64,6 +64,33 @@ On the host, run `efibootmgr`.
 - If you see `EFI variables are not supported on this system.` you're running on legacy BIOS.
 - If you see some EFI boot entries, you’re running on UEFI.
 
+### First-boot service won't complete
+
+During the first boot, several tasks finalize the installation. Each task logs a "done" stamp upon completion, and if any critical task fails, the system will block future upgrades.
+
+This can happen if the host was never fully booted after installation or upgrade, or if a specific first-boot service failed to execute properly.
+
+To diagnose, check the installation log. See [During installation or upgrade](#during-installation-or-upgrade) to access the log file.
+
+In this case, you would see one or two log lines like the ones below. If the system never booted, both messages typically appear:
+
+```
+Cannot upgrade nvme0n1, expected file missing: var/lib/misc/ran-storage-init (installation never booted?)
+Cannot upgrade nvme0n1, expected file missing: var/lib/misc/ran-network-init (installation never booted?)
+```
+
+If you only see the "storage-init" line, error line, check the logs of `storage-init.service` in `/var/log/daemon.log` on the host (after rebooting into the original XCP-ng version you’re upgrading from).
+
+If upgrading from an older release, you may instead get logs showing:
+
+```
+Upgradeability test failed:
+  Firstboot:     ...
+  Missing state: ...
+```
+
+The "Missing state" line indicates which required first-boot service failed to complete.
+
 ## Installation logs
 
 The installer writes in `/var/log/installer/`.
