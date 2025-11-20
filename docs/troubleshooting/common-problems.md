@@ -271,3 +271,37 @@ It should be empty, but if you have the bug, you got `check_update`.
 Remove `/var/lib/xcp-ng-xapi-plugins/updater.py.lock` and that should fix it.
 
 ---
+
+## Yum update fails after fresh install
+
+### Symptoms
+
+After installing XCP-ng 8.3, `yum update` or yum upgrade``  may fail with:
+
+```
+HTTPS Error 301 - Moved Permanently
+failure: repodata/repomd.xml from xcp-ng-base: [Errno 256] No more mirrors to try.
+```
+
+:::note
+The same URL might work fine from another machine, making the issue seem random.
+:::
+
+### Root cause
+
+The problem is usually caused by an **incorrect system clock**. If the host’s date is way off (e.g., stuck in 2019), SSL certificates for XCP-ng mirrors appear invalid or "not yet valid," causing YUM to reject HTTPS connections.
+
+This happens when the host hasn’t synced its time via NTP (e.g., missing or incorrect NTP settings from DHCP).
+
+### Solution
+
+1. Open XSConsole.
+2. Set NTP sync (not using DHCP).
+4. Apply changes and verify the system time updates correctly.
+5. Run `yum update`.
+
+Updates should now work without modifying repository URLs.
+
+### Recommendation
+
+Configure NTP properly right after installation, especially if DHCP does not provide NTP information. A correct system clock avoids SSL errors and repository access issues.
