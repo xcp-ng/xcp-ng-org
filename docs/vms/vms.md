@@ -340,20 +340,15 @@ Viridian extensions —referred to as "Viridian enlightenments" by Microsoft— 
 
 Viridian enlightenments are enabled by default on Windows VM templates included with XCP-ng.
 
-To enable Viridian enlightenments for other non-Windows VM templates, you need to:
+To enable Viridian enlightenments for other non-Windows VM templates, simply run the following command:
 
-1. **Enable Viridian**. To do this, run `xe vm-param-set uuid=<vm uuid> platform:viridian=true` in your VM.
-2. **Enable the extra Viridian parameters** necessary for your template to run optimally with Windows. To do this, run the same `xe` command in your VM, but change the arguments with the following:
+```
+xe vm-param-set uuid=<vm-uuid> platform:device_id=0002 platform:viridian=true platform:viridian_time_ref_count=true platform:viridian_reference_tsc=true platform:viridian_apic_assist=true platform:viridian_crash_ctl=true platform:viridian_stimer=true
+```
 
-    ```
-    "device_id": "0002", // ID used by XCP-ng to detect Windows VMs
-    "viridian": "true",
-    "viridian_time_ref_count": "true",
-    "viridian_reference_tsc": "true",
-    "viridian_apic_assist": "true",
-    "viridian_crash_ctl": "true",
-    "viridian_stimer": "true"
-    ```
+:::warning
+Do not set the device ID on VMs with Xen PV drivers installed. Changing the device ID may cause old Xen PV drivers to fail booting.
+:::
 
 :::
 

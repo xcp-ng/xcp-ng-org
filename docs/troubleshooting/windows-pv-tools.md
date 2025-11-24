@@ -188,3 +188,19 @@ See the [XenClean guide](/vms/#fully-removing-xen-pv-drivers-with-xenclean) for 
 :::note
 You will need to reinstall the management agent.
 :::
+
+## Windows Server 2025 hangs randomly with 0% CPU
+
+### Cause
+
+This can be due to the Viridian synthetic timer feature being disabled on the guest.
+
+### Solution
+
+First, check that [Viridian extensions are all enabled on your VM](/vms/#enabling-viridian-extensions).
+If you've set boot parameters to disable the synthetic timer, they need to be reverted:
+
+```
+bcdedit /deletevalue "{current}" useplatformclock
+bcdedit /deletevalue "{current}" useplatformtick
+```
