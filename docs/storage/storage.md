@@ -228,10 +228,14 @@ Due to the variety of parameters of ZFS, the SR driver does not automate everyth
 zpool create -o ashift=12 -m /mnt/zfs tank /dev/sda4
 ```
 
+```
+ zfs create tank/zfssr
+```
+
 Now you can create the SR on top of it:
 
 ```
-xe sr-create host-uuid=<HOST_UUID> type=zfs content-type=user name-label=LocalZFS device-config:location=/mnt/zfs/
+xe sr-create host-uuid=<HOST_UUID> type=zfs content-type=user name-label=LocalZFS device-config:location=/mnt/zfs/zfssr
 ```
 
 :::tip
