@@ -25,8 +25,14 @@ You can configure four different types of networks in XCP-ng:
 
 This section uses three types of server-side software objects to represent networking entities. These objects are:
 
-* A PIF, which represents a physical NIC on a host. PIF objects have a name and description, a UUID, the parameters of the NIC they represent, and the network and server they are connected to.
-* A VIF, which represents a virtual NIC on a virtual machine. VIF objects have a name and description, a UUID, and the network and VM they are connected to.
+* A PIF: a mean to connect outside of a host. PIF objects have a name and description, a UUID, the parameters of the NIC they represent, and the network and server they are connected to. They can represent:
+  * A physical NIC
+  * A VLAN on top of a physical NIC
+  * A bond of multiple NICs
+  * A tunnel interface (GRE/VXLAN)
+* A VIF, which represents a virtual NIC on a virtual machine. VIF objects have a name and description, a UUID, and the network and VM they are connected to. They can be:
+  * A PV driver backed device
+  * An emulated device
 * A network, which is a virtual Ethernet switch on a host. Network objects have a name and description, a UUID, and the collection of VIFs and PIFs connected to them.
 
 `xe` CLI, Xen Orchestra or XCP-ng center allow you to configure networking options. You can control the NIC used for management operations, and create advanced networking features such as VLANs and NIC bonds.
