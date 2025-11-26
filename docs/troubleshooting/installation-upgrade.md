@@ -92,7 +92,7 @@ On the host, run `efibootmgr`.
 - If you see `EFI variables are not supported on this system.` you're running on legacy BIOS.
 - If you see some EFI boot entries, you’re running on UEFI.
 
-### First-boot service won't complete
+### First-boot services won't complete
 
 During the first boot, several tasks finalize the installation. Each task logs a "done" stamp upon completion, and if any critical task fails, the system will block future upgrades.
 
