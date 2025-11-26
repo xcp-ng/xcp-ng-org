@@ -25,20 +25,22 @@ The system requirements for XCP-ng are:
 ### CPUs
 
 - One or more 64-bit x86 CPUs, minimum 1.5 GHz; 2 GHz or faster multicore CPUs are recommended.
-- To run Windows VMs or recent Linux versions, an Intel VT or AMD-V 64-bit x86-based system with one or more CPUs is required.
+- Hardware virtualization must be enabled (Intel VT-x or AMD-V).
+- Since XCP-ng 8.3, CPU must support SLAT (Intel EPT or AMD RVI/NPT).
+- For stability and proper support of some features, enabling IOMMU (Intel VT-d or AMD-Vi) is recommended.
 
-> **Note**: For Windows VMs or newer Linux distributions, enable hardware virtualization in the BIOS. It may be disabled by default—consult your BIOS documentation for guidance.
-
-- For VMs running supported paravirtualized Linux, a standard 64-bit x86-based system with one or more CPUs is required.
+:::tip
+Depending on your BIOS, hardware virtualization may be disabled by default, so make sure to double-check and enable it. Refer to your BIOS documentation for guidance.
+:::
 
 ### Memory
 
-- Minimum 2 GB, recommended 4 GB or more.
+- Minimum: 2 GB (Recommended: 8 GB or more).
 - A fixed amount of RAM is allocated to the control domain (dom0). Optimal allocation depends on your workload.
 
 ### Disk Space
 
-- Local storage (PATA, SATA, SCSI) with a minimum of 46 GB, recommended 70 GB or more.
+- Local storage (PATA, SATA, SCSI, NVMe) with a minimum of 46 GB. Recommended: 70 GB or more.
 - SAN access via HBA (not software) when installing with multipath boot from SAN.
 
 For more details, refer to the [Hardware Compatibility List (HCL)](../../installation/hardware).
@@ -98,7 +100,7 @@ The maximum number of supported logical processors may vary depending on the CPU
 XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
 :::
 
-- Up to 960 logical processors, depending on CPU support (theoretical, untested: 1024).
+- Up to 960 logical processors, depending on CPU support. **Note**: The theoretical, untested limit is 2,048 logical processors.
 
 #### XCP-ng 8.2 LTS
 
@@ -183,7 +185,7 @@ A resource pool is a collection of one or more servers (up to 64), which can be 
 
 ### Hardware Requirements
 
-- All servers must have compatible CPUs (same vendor — Intel or AMD). To run HVM VMs, CPUs must support virtualization.
+- All servers must have compatible CPUs (same vendor — Intel or AMD).
 
 ### Additional Pool Requirements
 
