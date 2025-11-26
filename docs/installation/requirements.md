@@ -166,9 +166,9 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 - **Virtual Disk Images per VM (including CD-ROMs)**: Up to **241**. This is also influenced by the limits of your guest OS; refer to its documentation to ensure compatibility.
 - **Virtual CD-ROM drives per VM**: **1**.
 - **Maximum Virtual Disk Size**:
-  - **2,040 GiB** using storage drivers with the VHD format (`Local EXT`, `Local LVM`, `NFS`, `LVM over iSCSI`, `XOSTOR`, etc.).
+  - **2 TiB** using storage drivers with the VHD format (`Local EXT`, `Local LVM`, `NFS`, `LVM over iSCSI`, `XOSTOR`, etc.).
   - Nearly unlimited when using the `raw` storage driver or disk pass-through to the VM (note: snapshots and live migration are not supported in these cases).
-  - New storage drivers are under active development to overcome the **2,040 GiB** VHD limit while retaining features like snapshots and live migration.
+  - New storage drivers are under active development to overcome the **2 TiB** VHD limit while retaining features like snapshots and live migration.
 
 ### Networking
 
