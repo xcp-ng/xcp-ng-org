@@ -119,7 +119,7 @@ Then you can either read the next section or jump to "Build a new ISO image with
 
 You may want the installer to install more packages, or updated packages.
 
-Read [the usual warnings about the installation of third party RPMs on XCP-ng.](https://github.com/xcp-ng/xcp/wiki/Updates-Howto#be-cautious-with-third-party-repositories-and-packages)
+Read [the usual warnings about the installation of third party RPMs on XCP-ng.](../../management/updates.md#be-cautious-with-third-party-repositories-and-packages)
 
 To achieve this:
 * Change the RPMs in the `Packages/` directory. If you add new packages, be careful about dependencies, else they'll fail to install and the whole installation process will fail.

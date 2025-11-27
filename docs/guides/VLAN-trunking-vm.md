@@ -26,7 +26,7 @@ This document is about the alternative approach, but a quick summary of how this
 * Make sure the pif connected to your xcp-ng server is carrying all the required tagged vlans
 * Within XO or XCP Center, create multiple networks off of the pif, adding the VLAN tag as needed for each VLAN
 * For each VLAN you want your router to route for, add a vif for that specific VLAN to the VM
-* For pfSense, disable TX offloading for each vif added and reboot the VM. This [page](https://github.com/xcp-ng/xcp/wiki/pfSense-in-a-VM) will fully explain all of the config changes required when running pfSense in xcp-ng.
+* For pfSense, disable TX offloading for each vif added and reboot the VM. This [page](pfsense.md) will fully explain all of the config changes required when running pfSense in xcp-ng.
 
 ## Adding VLAN Trunk to VM
 
