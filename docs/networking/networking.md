@@ -77,15 +77,15 @@ To use VLANs for your network logical isolation, it's really easy. You'll create
 
 First step, go in Xen Orchestra menu, "New" then "Network":
 
-![](../../assets/img/screenshots/newnetwork1.png)
+![XO's New submenu, with VM, Storage, Network and Server.](../../assets/img/screenshots/newnetwork1.png)
 
 Then, select a pool where you want to create this network, and fill what's required, like physical interface selection, name and description and also VLAN number:
 
-![](../../assets/img/screenshots/newnetwork2.png)
+![XO's network creation interface with toggle options for Bonded and Private networks, a dropdown for the Interface and text fields for Interface, Name, Description, MTU and VLAN.](../../assets/img/screenshots/newnetwork2.png)
 
 Finally, click on "Create network":
 
-![](../../assets/img/screenshots/newnetwork3.png)
+![XO's "Create network" button with a Play icon.](../../assets/img/screenshots/newnetwork3.png)
 
 That's it!
 
@@ -99,7 +99,7 @@ It's same as previous section, just check the "Bonded Network" and select multip
 
 Once a NIC is physically installed, in Xen Orchestra, go to your host's networking tab and click refresh.
 
-![](../../assets/img/screenshots/PIFs-refresh.png)
+![XO's Network tab with the refresh button highlighted.](../../assets/img/screenshots/PIFs-refresh.png)
 
 This can also be done on the command line. After physically installing a new NIC, you'll need to run a `xe pif-scan` command on the host to get this NIC added as an available PIF.
 ```
@@ -199,11 +199,11 @@ So we want a network that is:
 
 That's exactly what you can have thanks to XO SDN controller (here via GRE tunnels):
 
-![](https://xen-orchestra.com/blog/content/images/2019/06/sdn-controller-1.png)
+![Diagram of SDN Controller and it's interactions with the hosts of a pool. It talks to the master using XAPI, to each hosts including master through OVSDB protocol, and the GRE tunnels connects hosts together.](https://xen-orchestra.com/blog/content/images/2019/06/sdn-controller-1.png)
 
 To create a private network, go in Xen Orchestra, New/Network and select "Private Network":
 
-![](../../assets/img/screenshots/sdn-controller.png)
+![XO's network creation interface with Private network and encrypted enabled.](../../assets/img/screenshots/sdn-controller.png)
 
 #### Encryption
 
@@ -377,7 +377,7 @@ Meshed network requires no physical network switches, the 3 physical nodes are i
 
 Example with 3 nodes that each has 3 NIC, 1 is for WAN connection and 2 are used to interlink with remaining 2 nodes:
 
-![Meshed network example](https://petr.insw.cz/mesh.png)
+![Meshed network example.](https://petr.insw.cz/mesh.png)
 
 :::warning
 Right now only known-to-work option is to use bridge network backend, but hopefully in future it should be possible to setup meshed network using Open vSwitch as well (should you know how, please update this wiki)

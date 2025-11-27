@@ -45,7 +45,7 @@ curl -b \
 
 You can create a token from Xen Orchestra UI, inside your user space:
 
-![](../../../assets/img/newxotoken.png)
+![The "New token" button with a plus sign.](../../../assets/img/newxotoken.png)
 
 Alternatively, you can use `xo-cli` to create an authentication token:
 

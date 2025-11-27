@@ -11,7 +11,7 @@ Because XCP-ng is made of a lot of various components, we are relying on multipl
 XCP-ng project is member of the Xen Predisclosure list since 2018, which is including a lot of huge cloud players, but also companies working in critical IT security, industries and so on. The whole list is public and [available here](https://xenproject.org/developers/security-policy/#organizations-on-the-pre-disclosure-list), where you can see our name.
 
 <div style={{textAlign: 'center'}}>
-![](../../assets/img/xen_logo.png)
+![Xen Project Logo.](../../assets/img/xen_logo.png)
 </div>
 
 We strongly suggest that you go read the [Xen Security Policy](https://xenproject.org/developers/security-policy/) web page. At this time, it's one of the best Open Source security processes, with very clear documentation and actions to make. **This is one of the big reasons Xen is trusted in the IT security world**.
@@ -33,7 +33,7 @@ A quick recap of the key steps involved in this security process:
 XSAs are "Xen Security Advisory". They are -in general- linked to a CVE. You can see the list of all XSAs at this place: [https://xenbits.xen.org/xsa/](https://xenbits.xen.org/xsa/)
 
 <div style={{textAlign: 'center'}}>
-![](../../assets/img/xenpanda.png)
+![Xen Fu Panda, sitting, with a straw hat and a bamboo stick.](../../assets/img/xenpanda.png)
 </div>
 
 ## 🚀 Platform security

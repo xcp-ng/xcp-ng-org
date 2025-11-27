@@ -151,7 +151,7 @@ If you are using a pool with at least 2 hosts and a shared storage, you can rely
 
 Also known as RPU, **this is the advised way to update your pool**. By just clicking on one button, Xen Orchestra will automatically move VMs around, apply updates and reboot the hosts, without any service interruption. The following button is available in the Pool view, on "Patches" tab:
 
-![](../../assets/img/rpubutton.png)
+![XO's Rolling Pull Update button.](../../assets/img/rpubutton.png)
 
 :::info
 This powerful and fully automated mechanism requires some prerequisites: all your VMs disks must be on a one (or more) shared storage. Also, high-availability will be automatically disabled, as the XO load balancer plugin and backup jobs. Everything will be enabled back when it's done!
@@ -189,13 +189,13 @@ systemctl restart linstor-satellite
 Then you can follow the instructions in the documentation to manually update the pool.
 :::
 
-![](../../assets/img/rpu1.png)
+![XO's pool Patches tab showing the Rolling pool update button being clicked on.](../../assets/img/rpu1.png)
 
 #### Pool updates
 
 If you can't use RPU (Rolling Pool Updates), you can still use "Install pool patches" button. This will simply install updates on all hosts on your pool and restart the toolstack, **without doing any host reboot**:
 
-![](../../assets/img/updatebutton.png)
+![XO's Install pool patches buton.](../../assets/img/updatebutton.png)
 
 :::info
 Restarting the toolstack won't have any impact on your running VMs. However, **most updates will require a reboot** to be applied, that you should execute during a scheduled maintenance.
@@ -203,7 +203,7 @@ Restarting the toolstack won't have any impact on your running VMs. However, **m
 
 You can see hosts that will require a reboot via a small blue triangle:
 
-![](../../assets/img/xo5patching.png)
+![Hosts list, some with an exclamation mark icon, mouse over one of them showing the popup "Reboot to apply updates".](../../assets/img/xo5patching.png)
 
 #### Host updates
 

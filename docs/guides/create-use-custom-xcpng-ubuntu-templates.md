@@ -70,7 +70,7 @@ The creation of the virtual image from a cloud image in OVA format is complete. 
     1. to create only one partition to allow resizing later
     2. to install the OpenSSH server:
 
-    ![One single partition on the local disk](../../assets/img/screenshots/templatexcpng-ubuntu-partition.png)
+    ![Ubuntu installer showing a single partition on the local disk.](../../assets/img/screenshots/templatexcpng-ubuntu-partition.png)
 
 8. Once the installation is complete, restart the system while removing the drive containing the ISO file.
 
@@ -296,7 +296,7 @@ From these configurations and the template built earlier, a virtual machine will
 
 * Select the previously built template *custom-ubuntu22.04*. A specific configuration for [Cloud-init](https://cloud-init.io/) is displayed in the Install settings area. Select the *Custom Config* option and enter the previous configurations (to be adapted according to your settings) in *User config* and *Network config*.
 
-![Cloud-Init Proposed Configurations](../../assets/img/screenshots/templatexcpng-ubuntu-customconfig.png)
+![XO offering Cloud-Init with suggested configurations.](../../assets/img/screenshots/templatexcpng-ubuntu-customconfig.png)
 
 * Also, modify the disk size to 20 GB.
 

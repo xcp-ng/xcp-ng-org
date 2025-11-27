@@ -256,7 +256,7 @@ First, [ensure your pool was setup for UEFI SecureBoot](#configure-the-pool).
 
 During VM creation in Xen Orchestra, go to the *Advanced* section and select **uefi** as the **Boot firmware**. This will display a **Secure boot** toggle that can be clicked to enable Secure Boot.
 
-![](../../assets/img/screenshots/xo_uefi_sb_create_option.png)
+![VM creation interface showing Boot firmware set to UEFI and Secure boot enabled.](../../assets/img/screenshots/xo_uefi_sb_create_option.png)
 
 ### Enable Secure Boot for an Existing UEFI VM
 
@@ -270,7 +270,7 @@ Warning: it is not recommended changing an existing VM's firmware type from BIOS
 2. Go to the *Advanced* tab of the VM and click the **Secure boot** toggle
 to enable Secure Boot.
 
-![](../../assets/img/screenshots/xo_uefi_sb_post_install_option.png)
+![VM advanced tab showing Boot firmware set to UEFI and Secure boot enabled.](../../assets/img/screenshots/xo_uefi_sb_post_install_option.png)
 
 #### Enable Secure Boot for an Existing UEFI VM using `xe`
 
@@ -542,7 +542,7 @@ Changes to the UEFI secure boot state in the UEFI menu will be ignored in favor 
 
 If disabling Secure Boot by removing keys via Custom Mode is attempted in the UEFI firmware menu, an error will display stating **Only Physical Presence User could delete NAME_OF_KEY in custom mode!** For example, if attempting to remove the **PK**:
 
-![](../../assets/img/screenshots/guest_sb_only_physically_present_user.png)
+![Guest UEFI firmware menu showing "Only Physical Presence User could delete PK in custom mode!" error when trying to delete PK.](../../assets/img/screenshots/guest_sb_only_physically_present_user.png)
 
 ### Check whether a VM runs on UEFI firmware from command line
 

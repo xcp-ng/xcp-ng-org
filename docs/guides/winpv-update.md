@@ -12,22 +12,22 @@ This procedure is only recommended if you're sure all VMs are using drivers from
 
 To contextualize the update process, we will test it on a VM vulnerable to XSA-468, using Xen Orchestra's new Windows PV vulnerability warning feature.
 
-![](../assets/img/winpv-update/vuln1.png)
+![A banner indicating that some of the VMs are vulnerable with a link to check them.](../assets/img/winpv-update/vuln1.png)
 
 ## Setting up automatic installation
 
 Create a new GPO in your desired OU and edit it:
 
-![](../assets/img/winpv-update/gpo1.png)
-![](../assets/img/winpv-update/gpo2.png)
+![The New GPO dialog box.](../assets/img/winpv-update/gpo1.png)
+![The contextual menu to edit newly created GPO.](../assets/img/winpv-update/gpo2.png)
 
 In **Computer Configuration** → **Policies** → **Software Settings** → **Software Installation**, add a new package:
 
-![](../assets/img/winpv-update/gpo3.png)
+![The Group Policy Management Editor showing how to add a new "Software Installation".](../assets/img/winpv-update/gpo3.png)
 
 Select the installation MSI you want to install and click **OK**:
 
-![](../assets/img/winpv-update/gpo4.png)
+![The Open dialog box showing the XenDrivers msi file.](../assets/img/winpv-update/gpo4.png)
 
 :::warning
 The MSI package must be located on a network share accessible to all machines.
@@ -35,7 +35,7 @@ The MSI package must be located on a network share accessible to all machines.
 
 In **Select deployment method**, select **Assigned**. You can change this later.
 
-![](../assets/img/winpv-update/gpo5.png)
+![The Deploy Software dialog with "Assigned" selected.](../assets/img/winpv-update/gpo5.png)
 
 The targeted VMs will now pick up and install the driver package you selected.
 
@@ -53,7 +53,7 @@ You can delete the autoreboot settings once your update campaign is complete.
 Come back to the GPO you created and navigate to **Computer Configuration** → **Preferences** → **Windows Settings** → **Registry**.
 Create a new registry item:
 
-![](../assets/img/winpv-update/gpo6.png)
+![The Group Policy Management Editor in the Registry section showing how to add a new Registry Item.](../assets/img/winpv-update/gpo6.png)
 
 Specify the following settings:
 
@@ -65,7 +65,7 @@ Specify the following settings:
 - **Base**: Decimal
 - **Value data**: 3 (The number of automatic reboots you want to allow)
 
-![](../assets/img/winpv-update/gpo8.png)
+![The New Registry Properties, showing the previously described settings.](../assets/img/winpv-update/gpo8.png)
 
 Click **OK** to save the changes.
 
@@ -74,15 +74,15 @@ Click **OK** to save the changes.
 You'll need to reboot your VMs to apply the updates.
 After reboot, the VMs will pick up on your new GPO and install the linked driver package.
 
-![](../assets/img/winpv-update/install1.png)
+![The windows bootup showing "Installing managed software XCP-ng Windows PV Drivers…".](../assets/img/winpv-update/install1.png)
 
 The VM will restart several times as the new drivers are installed.
 
-![](../assets/img/winpv-update/install2.png)
+![Dialog: You're about to be signed out, XCP-ng PV Storage Host Adapter needs to restart the system to complete installation.](../assets/img/winpv-update/install2.png)
 
 Once the update finishes, you should no longer see the vulnerability warning in Xen Orchestra.
 
-![](../assets/img/winpv-update/vuln2.png)
+![Hosts list showing no banner and no warning icon now that everything is installed.](../assets/img/winpv-update/vuln2.png)
 
 ## Useful links
 
@@ -132,7 +132,7 @@ You should review the policy and make sure it's working as expected before enfor
 Look for **Event 3076** in the `Microsoft-Windows-CodeIntegrity/Operational` log to look for blocked drivers.
 Make sure that no unintended drivers were targeted by your policy.
 
-![](../assets/img/winpv-update/wdac1.png)
+![Event Viewer interface showing event 3076.](../assets/img/winpv-update/wdac1.png)
 
 ### Enforcement
 
@@ -154,8 +154,8 @@ The update takes effect immediately, but you may have to reboot to unload the cu
 
 Look for Event 3077 to confirm that the vulnerable drivers were blocked from loading.
 
-![](../assets/img/winpv-update/wdac2.png)
+![Event Vewier interface showing event 3077.](../assets/img/winpv-update/wdac2.png)
 
 Devices using a blocked driver will also show a Code 39 error in Device Manager.
 
-![](../assets/img/winpv-update/wdac3.png)
+![Device Manager interface showing the XenServer Interface Properties reporting Code 39 error.](../assets/img/winpv-update/wdac3.png)

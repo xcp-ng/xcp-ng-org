@@ -41,11 +41,11 @@ Boot screens are just slightly different on start between BIOS and UEFI mode:
 
 BIOS splash screen:
 
-![](https://xcp-ng.org/assets/img/screenshots/install1bis.png)
+![XCP-ng 8.2 installer splash screen in BIOS mode.](https://xcp-ng.org/assets/img/screenshots/install1bis.png)
 
 UEFI splash screen:
 
-![](https://xcp-ng.org/assets/img/screenshots/install1.png)
+![Grub interface for the installer in UEFI mode.](https://xcp-ng.org/assets/img/screenshots/install1.png)
 
 :::warning
 NEVER switch from UEFI to BIOS (or vice-versa) **after** you installed XCP-ng. Stick to the mode that you chose during the install.
@@ -53,15 +53,15 @@ NEVER switch from UEFI to BIOS (or vice-versa) **after** you installed XCP-ng. S
 
 #### 2. Language selection
 
-![](https://xcp-ng.org/assets/img/screenshots/install2.png)
+![Select Keymap screen, with qwerty us selected.](https://xcp-ng.org/assets/img/screenshots/install2.png)
 
 #### 3. Welcome
 
-![](https://xcp-ng.org/assets/img/screenshots/install3.png)
+![Welcome screen, reminding to have backed up any data, and showing F9 can be used to load device drivers or F10 for avanced storage classes.](https://xcp-ng.org/assets/img/screenshots/install3.png)
 
 #### 4. EULA/license
 
-![](https://xcp-ng.org/assets/img/screenshots/install4.png)
+![EULA screen, providing information about licenses and allowing to accept EULA or go back.](https://xcp-ng.org/assets/img/screenshots/install4.png)
 
 
 #### 5. Disk selection
@@ -69,11 +69,11 @@ NEVER switch from UEFI to BIOS (or vice-versa) **after** you installed XCP-ng. S
 <a name="_5-disk-selection"></a>
 This is the screen where you'll select where XCP-ng system will be installed. **XCP-ng is a specialized Linux distribution**, so you need to dedicate a physical disk to it. Partitioning is done automatically.
 
-![](https://xcp-ng.org/assets/img/screenshots/install5.png)
+![Primary disk selection screen, showing 2 NVMEs, allowing to select one of them, or go to the Software Raid configuration.](https://xcp-ng.org/assets/img/screenshots/install5.png)
 
 Alternatively, if you have two identical disks, you can use Software RAID (`mdadm`) :
 
-![](https://xcp-ng.org/assets/img/screenshots/install6.png)
+![Software RAID configuration screen, showing the 2 NVMEs selected.](https://xcp-ng.org/assets/img/screenshots/install6.png)
 
 :::tip
 If only one disk is found suitable for the installation, this step is skipped. The name of the device will be displayed to you [in the "Confirm Installation" step, later in the process](#12-installation).
@@ -83,7 +83,7 @@ If only one disk is found suitable for the installation, this step is skipped. T
 
 This is the place where your VM disks will be stored. It's called a **Storage Repository** (SR). It can use the same disk you installed the system on. It will automatically use the free space after system partitions.
 
-![](https://xcp-ng.org/assets/img/screenshots/install7.png)
+![Local storage screen, select the disk and type of storage: EXT for thin provisioning, or LVM for thick provisioning.](https://xcp-ng.org/assets/img/screenshots/install7.png)
 
 
 :::tip
@@ -98,29 +98,29 @@ When the installer skips [step 5](#5-disk-selection) automatically, users someti
 
 If you use the default ISO, just select "Local media":
 
-![](https://xcp-ng.org/assets/img/screenshots/install9.png)
+![Source selection: Local media, HTTP or FTP, NFS.](https://xcp-ng.org/assets/img/screenshots/install9.png)
 
 Then, you can verify your media or not:
 
-![](https://xcp-ng.org/assets/img/screenshots/install10.png)
+![Verify installation source allows to verify the installation source or skip the verification.](https://xcp-ng.org/assets/img/screenshots/install10.png)
 
 #### 8. Host password
 
 This will be the **root** password, used to connect to the host with SSH and XAPI.
 
-![](https://xcp-ng.org/assets/img/screenshots/install11.png)
+![Dialog to set the host password with a confiramtion field.](https://xcp-ng.org/assets/img/screenshots/install11.png)
 
 #### 9. Networking
 
 Here you can select between DHCP and static network, even using a VLAN:
 
-![](https://xcp-ng.org/assets/img/screenshots/install12.png)
+![Network configuration: DHCP, static with ip, netmask and gateway, and the ability to add a VLAN.](https://xcp-ng.org/assets/img/screenshots/install12.png)
 
 #### 10. Hostname and DNS
 
 Configure the hostname of your server and the DNS resolvers.
 
-![](https://xcp-ng.org/assets/img/screenshots/install13.png)
+![Hostname: automatic hostname via DHCP or manually setting it. DNS: automatic via DHCP, or manually with up to 3 DNS servers.](https://xcp-ng.org/assets/img/screenshots/install13.png)
 
 #### 11. Timezone and time
 
@@ -128,11 +128,11 @@ Configure the hostname of your server and the DNS resolvers.
 ALWAYS use a NTP server. It's a critical component to manage your host(s). If you don't know any NTP server, you can use `pool.ntp.org`.
 :::
 
-![](https://xcp-ng.org/assets/img/screenshots/install14.png)
+![Timezone selection: showing region selection, will enter a finer list inside that region if any.](https://xcp-ng.org/assets/img/screenshots/install14.png)
 
-![](https://xcp-ng.org/assets/img/screenshots/install15.png)
+![System Time: NTP or Manual time.](https://xcp-ng.org/assets/img/screenshots/install15.png)
 
-![](https://xcp-ng.org/assets/img/screenshots/install16.png)
+![NTP Configuration: can be automatic via DHCP, or manually with 3 to 3 NTP servers.](https://xcp-ng.org/assets/img/screenshots/install16.png)
 
 #### 12. Installation
 
@@ -140,29 +140,29 @@ ALWAYS use a NTP server. It's a critical component to manage your host(s). If yo
 After this step, data will be written on the disk(s)! Check the listed device(s) one last time.
 :::
 
-![](https://xcp-ng.org/assets/img/screenshots/install17.png)
+![Installation confirmation screen that will start the installation process, allows to go back to previous steps.](https://xcp-ng.org/assets/img/screenshots/install17.png)
 
-![](https://xcp-ng.org/assets/img/screenshots/install19.png)
+![Installation progress dialog with a progress bar and a percentage.](https://xcp-ng.org/assets/img/screenshots/install19.png)
 
 #### 13. Supplemental packs and end of install
 
 Not relevant in almost all cases. Skip it:
 
-![](https://xcp-ng.org/assets/img/screenshots/install20.png)
+![Supplemental packs: Asks for installation of supplemental packs, yes/no choice.](https://xcp-ng.org/assets/img/screenshots/install20.png)
 
-![](https://xcp-ng.org/assets/img/screenshots/install21.png)
+![Installation progress: Completing installation… with a progress bar and a percentage.](https://xcp-ng.org/assets/img/screenshots/install21.png)
 
 :::tip
 "Completing installation" is in fact installing the bootloader and building the initramfs. It can take time.
 :::
 
-![](https://xcp-ng.org/assets/img/screenshots/install22.png)
+![Installation complete, with a reminder to remove any media before rebooting. Ok button will reboot the host.](https://xcp-ng.org/assets/img/screenshots/install22.png)
 
 #### 14. Reboot
 
 After a reboot, you should see the GRUB menu:
 
-![](https://xcp-ng.org/assets/img/screenshots/install23.png)
+![XCP-ng GRUB menu, with entries for XCP-ng, a serial console, Safe Mode and 2 fallback option for console and serial using xen and linux fallback images.](https://xcp-ng.org/assets/img/screenshots/install23.png)
 
 It means the system is correctly installed! Enjoy XCP-ng 🚀
 

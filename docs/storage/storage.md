@@ -151,7 +151,7 @@ As XCP-ng will handle everything for you, be aware that the device or partition 
 
 In [Xen Orchestra](../management#%EF%B8%8F-manage-at-scale):
 
-![](https://xcp-ng.org/assets/img/screenshots/createSRlocal.png)
+![Adding a new local ext SR in XO.](https://xcp-ng.org/assets/img/screenshots/createSRlocal.png)
 
 Via `xe` CLI for a local EXT SR (where `sdaX` is a partition, but it can be the entire device e.g. `sdc`):
 
@@ -598,7 +598,7 @@ You can find some tutorials on the internet to create an NFS Server, for exemple
 
 Then, in Xen Orchestra go into "New/Storage" and select "ISO SR":
 
-![](https://xcp-ng.org/assets/img/screenshots/createSRISO.png)
+![Adding a shared ISO SR to a host via XO.](https://xcp-ng.org/assets/img/screenshots/createSRISO.png)
 
 ### Create a Local ISO SR
 
@@ -630,7 +630,7 @@ On Xen Orchestra, go into "New/Storage" and select "ISO SR"
 * Enter the path created before
 * Upload ISOs on your host to the same path
 
-![](https://xcp-ng.org/assets/img/screenshots/createLocalSRISO.png)
+![Adding a local ISO SR to a host via XO.](https://xcp-ng.org/assets/img/screenshots/createLocalSRISO.png)
 
 :::warning
 A local ISO SR will only be available on the host where it was created. Also, the dom0 filesystem is small with only about 15gb of space free for extra storage!
@@ -687,19 +687,19 @@ Coalesce process is an operation happening in your hosts as soon a snapshot is r
 
 When you make a snapshot, a "base copy" is created (in read only), the "active" disk will live its own life, same for the freshly created snapshot. Example here: A is the parent, B the current/active disk and C is the snapshot:
 
-![](https://xen-orchestra.com/blog/content/images/2017/05/legendsnap.png)
+![Legend of parent (solid line), active (dotted line) and snapshot (dashed line).](https://xen-orchestra.com/blog/content/images/2017/05/legendsnap.png)
 
-![](https://xen-orchestra.com/blog/content/images/2017/05/snapshot1.png)
+![Active and Snapshot points to parent.](https://xen-orchestra.com/blog/content/images/2017/05/snapshot1.png)
 
 That's OK. But what about creating a new snapshot on B after some data are written?
 
 You got this:
 
-![](https://xen-orchestra.com/blog/content/images/2017/05/beforemerge.png)
+![Previous active (B), becomes a parent, and an active (D) and snapshot (E) are now pointing to B.](https://xen-orchestra.com/blog/content/images/2017/05/beforemerge.png)
 
 When you make XO backup on regular basis, old/unused snapshots will be removed automatically. This will also happen if you create/delete snapshots manually. So in our case, C will disappear. And without this snapshot, XCP-ng will coalesce A and B:
 
-![](https://xen-orchestra.com/blog/content/images/2017/05/parent.png)
+![On the left (before coalesce), C has been removed, an arrow in the middle indicates the change happening through coalesce, and on the right (after coalesce), parent becomes A+B with active (D) and snapshot (E) points to it.](https://xen-orchestra.com/blog/content/images/2017/05/parent.png)
 
 This process will take some time to finish (especially if you VM stays up and worst if you have a lot of writes on its disks).
 
