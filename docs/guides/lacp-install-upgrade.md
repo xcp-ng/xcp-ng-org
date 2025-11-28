@@ -38,7 +38,7 @@ During an upgrade, the installer will not detect your existing bond configuratio
 Do not attempt to configure the bond yet. Doing so would mislead the installer into thinking you have no network interfaces, which would block the installation or upgrade process.
 :::
 
-![keymap screen](../assets/img/installer-keymap-screen.png)
+![Installer's keymap selection.](../assets/img/installer-keymap-screen.png)
 
 2. Select your keymap, and proceed to the next screen: **Welcome to XCP-ng Setup**
 3. You can now switch to the second terminal. To do this, use `alt+F2` or `alt+right`.
@@ -70,13 +70,13 @@ ip link set bond0 up
 ```
 
 For example:\
-![configure LACP](../assets/img/installer-creating-lacp-bond.png)
+![Terminal capture showing the output of previous commands.](../assets/img/installer-creating-lacp-bond.png)
 
 ### Upgrading a supporting host
 
 1. Follow the standard installation procedure. When you reach the networking configuration step, you’ll see an option labeled **Use existing configuration**. Select this option and complete your upgrade.
 
-![use existing configuration](../assets/img/installer-use-existing-configuration.png)
+![Networking configuration screen with a new option: Use existing configuration.](../assets/img/installer-use-existing-configuration.png)
 
 2. Reboot your host.
 
@@ -91,11 +91,11 @@ During a network installation, you’ll encounter 2 steps related to network con
 
 1. During the first step, you can pick the **Use existing configuration** option, so the installer can reach the repository and move on to the next steps.
 
-![net install use existing configuration](../assets/img/netinstall-repo-network.png)
+![Networking configuration with "Use existing configuratio" option that will allow the installer to reach the repository for netinstall.](../assets/img/netinstall-repo-network.png)
 
 2. During the second step, the **Use existing configuration** option won’t be available. Instead, you’ll need to select one of the interfaces provided by the installer. While you can still configure the hostname and other basic network settings, you won’t be able to set up your bond at this stage.
 
-![net install management network](../assets/img/netinstall-management-network.png)
+![Networking configuration not offering the "Use existing configuration" option.](../assets/img/netinstall-management-network.png)
 
 3. Proceed with the installation.
 4. Reboot your host.

@@ -4,7 +4,7 @@ Common issues and topics related to Windows Guest Tools.
 
 ## Not all PV drivers are correctly installed
 
-![](https://xcp-ng.org/forum/assets/uploads/files/1713455051057-02dc1378-09e6-4600-a1b3-9a1be2cbdecc-image.png)
+![Console tab view of a windows device manager showing not working PV drivers.](../../assets/img/win-pv-incorrect-install.png)
 
 ### Cause
 
@@ -29,7 +29,7 @@ Set your BIOS power profile to "Performance" or "Performance Per Watt (OS)".
 Consult your motherboard manual for details; for example, on Dell systems with iDRAC Enterprise, this setting may be found at Configuration - BIOS Settings - System Profile Settings - System Profile:
 
 <div style={{textAlign: 'center'}}>
-![](../../static/img/performance-setting.png)
+![System Profile Settings interface showing "Performance" being selected in the System Profile dropdown.](../../static/img/performance-setting.png)
 </div>
 
 
@@ -167,7 +167,7 @@ This can be due to the "Manage Citrix PV drivers via Windows Update" option bein
 
 First, check in Device Manager which PV Bus device is active, i.e. the one that contains child devices (use View - Devices by connection).
 
-![](../assets/img/winpv-wrong-device.png)
+![Device Manager with menus to sort Devices by connection.](../assets/img/winpv-wrong-device.png)
 
 If either of the non-vendor devices ("**0001**" or "**0002**") is active then you can continue with fixing this issue.
 
@@ -175,7 +175,7 @@ If either of the non-vendor devices ("**0001**" or "**0002**") is active then yo
 You will see only one of "0001" or "0002", not both.
 :::
 
-![](../assets/img/winpv-correct-device.png)
+![Device Manager both 0001 and 0002.](../assets/img/winpv-correct-device.png)
 
 If the vendor device ("**C000**" in this example) is active then you don't have this problem.
 You should check your Windows Update settings instead.

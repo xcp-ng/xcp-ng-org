@@ -31,7 +31,7 @@ So it means very easily customizing your VM when you create it from a compatible
 ACLs can be used to allow some XO users to only see some resources. See more about ACLs [on the official documentation](https://xen-orchestra.com/docs/acls.html).
 
 <div style={{textAlign: 'center'}}>
-![](../../static/img/xoacl.png)
+![XO ACL view, showing a devs group that is Operator of a host "pe1", and an Admin of a VM "taist".](../../static/img/xoacl.png)
 </div>
 
 ### Self-service
@@ -39,13 +39,13 @@ ACLs can be used to allow some XO users to only see some resources. See more abo
 The self-service feature allows users to create new VMs within a **limited amount of resources** (quotas). This is different from delegating existing resources (VMs) to them, and it leads to a lot of possibilities. [Read XO official doc on it](https://xen-orchestra.com/docs/users.html#self-service-portal) to know more.
 
 <div style={{textAlign: 'center'}}>
-![](../../static/img/xoself.png)
+![XO dashboard of the available ressources to the devs group, with vCPUs, Memory and Storage, showing their usage and total available ressources.](../../static/img/xoself.png)
 </div>
 
 ## ☁️ CloudStack
 
 <div style={{textAlign: 'center'}}>
-![](../../static/img/cloudstack_logo.png)
+![The CloudStack logo.](../../static/img/cloudstack_logo.png)
 </div>
 
 Apache CloudStack is open source software designed to deploy and manage large networks of virtual machines, as a highly available, highly scalable Infrastructure as a Service (IaaS) cloud computing platform. CloudStack is used by a number of service providers to offer public cloud services, and by many companies to provide an on-premises (private) cloud offering, or as part of a hybrid cloud solution.

@@ -12,7 +12,7 @@ We strongly encourage to build applications on top of XO API and not XAPI. In fa
 
 XAPI is using a database (Read/write on the master, replicated to slaves in read only). It's an XML file located at `/var/lib/xcp/state.db`. All the metadata and settings of your pool, hosts, VMs and so on are stored there.
 
-![](../../../static/img/xapiclasses.png)
+![Diagram of the XAPI classes (too complex to describe here).](../../../static/img/xapiclasses.png)
 
 ## 🧑‍⚕️ Troubleshooting
 

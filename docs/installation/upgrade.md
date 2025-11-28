@@ -261,19 +261,19 @@ Then boot on the ISO!
 You must boot the ISO in the firmware mode that was used for initial installation: UEFI or BIOS. Otherwise, the installer won't detect the existing XenServer installation and offer to upgrade.
 :::
 
-![](https://xcp-ng.org/assets/img/screenshots/install1bis.png)
+![XCP-ng 8.2 installer boot screen, showing F1 for standard option and F2 for advanced.](https://xcp-ng.org/assets/img/screenshots/install1bis.png)
 
 Eventually, you will reach a screen offering to upgrade your XenServer to XCP-ng:
 
-![](https://xcp-ng.org/assets/img/screenshots/upgrade-xs1.png)
+![Installer screen offering an upgrade from XenServer 8.4 or to perform a clean installation.](https://xcp-ng.org/assets/img/screenshots/upgrade-xs1.png)
 
 The installer will ask you to confirm the installation of XCP-ng over XenServer while preserving the existing VMs:
 
-![](https://xcp-ng.org/assets/img/screenshots/upgrade-xs2.png)
+![The installer screen asking for confirmation to start the installation process with the ability to go back.](https://xcp-ng.org/assets/img/screenshots/upgrade-xs2.png)
 
 Once the installation process is complete, reboot your host:
 
-![](https://xcp-ng.org/assets/img/screenshots/install22.png)
+![Final installation screen, installation is complete and suggest to remove any local media before rebooting.](https://xcp-ng.org/assets/img/screenshots/install22.png)
 
 Boot on your new XCP-ng and [install the updates](../../management/updates).
 

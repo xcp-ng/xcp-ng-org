@@ -79,7 +79,7 @@ You can check if your pool has HA enabled or not.
 * In Xen Orchestra, for each pool where HA has been enabled, go to the **Home → Pool** view and you'll see a small "cloud" icon with a green check.
 * In the **Pool → Advanced** tab, you'll see a **High Availability** switch that shows if HA is enabled or not:
 
-![](../assets/img/xo-ha-enabled-disabled.png)
+![Pool's advanced tab showing the heartbeat SR and the High Availability option.](../assets/img/xo-ha-enabled-disabled.png)
 
 To enable HA, just toggle it on, which gives you a SR selector as Heartbeat SR. 
 
@@ -131,7 +131,7 @@ This attempt will only occur after all VMs set to the "restart" mode have been s
 
 This is pretty straightforward with Xen Orchestra. Go to the **Advanced** panel of your VM page and use the **HA** dropdown menu:
 
-![](../assets/img/xo-ha-selector.png)
+![The HA dropdown has the 3 HA modes previously described.](../assets/img/xo-ha-selector.png)
 
 You can also do that configuration with *xe CLI*:
 
@@ -250,7 +250,7 @@ Finally, the worst case: keep the storage operational, but "cut" the (management
 
 The diagram below shows how HA is managed on a pool.
 
-![](../../assets/img/xha-shared-sr.png)
+![Shared SR has an ha-statefile queried by the XHA daemons running on each hosts. These daemons also talk to each other.](../../assets/img/xha-shared-sr.png)
 
 As you can see, a `XHA daemon` is running on each host and two main paths are used: one for the network, another for storage.
 For HA to operate properly, two communication paths are used: one over the network and another reserved for storage.
@@ -262,7 +262,7 @@ The only difference is that `ha-statefile` is a raw volume in which data is writ
 
 Regarding the structure of this SR heartbeat volume:
 
-![](../../assets/img/xha-statefile-structure.png)
+![The ha-statefile has info about each alive hosts in the pool.](../../assets/img/xha-statefile-structure.png)
 
 - As the picture shows, this volume contains a single entry for each host, where each host writes to its own dedicated area AND can also read the state of other hosts. In other words, each host writes a “heartbeat” value indicating that it’s alive at a given time, which is verified by the whole pool.
 
@@ -274,7 +274,7 @@ For DRBD/LINSTOR experts, and with the general architecture explanation, you can
 
 We must change our architecture because — basically — a DRBD volume can only be opened in one place at a time. We cannot easily write in each volume at the same time, because we would have to open or close the heartbeat volume several times per second. Or, we would have to set up a mechanism in the xha daemon so that each one writes in turn. Since this is complex to set up, we chose another approach.
 
-![](../../assets/img/xha-xostor-sr.png)
+![In XOSTOR case, each hosts have an HTTP DISK server, only one is active. It checks the ha-statefile, talk to each hosts NBD HTTP server which talks to their host XHA daemon.](../../assets/img/xha-xostor-sr.png)
 
 To support the fact that only one DRBD volume can be PRIMARY, and to avoid making significant changes to the xha/XHAPI modules, we had to be a bit creative. Instead of writing to or reading directly from the heartbeat volume on all hosts, we use an `NBD HTTP server` daemon. It's a process that listens through an NBD device, which is seen as the heartbeat volume by the XHA daemon.
 

@@ -27,7 +27,7 @@ Using Dynamic Memory Control (DMC) can be a good way to reduce your memory consu
 We recommand you check your VM settings to verify if dynamic memory has been enabled.
 In Xen Orchestra, the *Advanced* tab of your VM will display the memory limits, in the "VM limits" section:
 
-![](../../assets/img/screenshots/Dynamic_mem.png)
+![XO's memory limits with Static set to 2GiB/16GiB and Dynamic set to 16GiB/16GiB.](../../assets/img/screenshots/Dynamic_mem.png)
 
 If dynamic min is equal to dynamic max - as displayed in the screenshot - then dynamic memory is disabled.
 If dynamic min < dynamic max, then make sure your VM is able to fully function with as little RAM as defined in *dynamic min*.
@@ -367,18 +367,20 @@ For a UEFI VM, you will need to set up your resolution in the UEFI settings of t
 For that you first will need to enter the VM UEFI setup:
 - At VM start, during Tiano firmware logo display, press ESC.
 
-![](../../assets/img/screenshots/VM_Tiano.png)
+![Tiano Firmware splash screen.](../../assets/img/screenshots/VM_Tiano.png)
+
 - You will enter the UEFI firmware management interface. Navigating with keyboard arrows, select *Device Manager* and press Enter.
 
-![](../../assets/img/screenshots/VM_Tiano_1.png)
+![Tiano management interface main screen with Device Manager selected.](../../assets/img/screenshots/VM_Tiano_1.png)
 
 - In  the next screen select *OVMF platform configuration*.
 
-![](../../assets/img/screenshots/VM_Tiano_2.png)
+![Tiano Device Manager, with OVMF Platform configuration selected.](../../assets/img/screenshots/VM_Tiano_2.png)
 
 - In the OVMF settings, select *Change Preferred* then the resolution you want.
 
-![](../../assets/img/screenshots/VM_Tiano_3.png)
+![Tiano OVMF platform configuration showing the prefered resolution set to 640x480.](../../assets/img/screenshots/VM_Tiano_3.png)
+
 - Press F10 and save the changes.
 - Restart your VM by sending a CTRL+ALT+DEL.
 - After reboot your VM will display the selected resolution.

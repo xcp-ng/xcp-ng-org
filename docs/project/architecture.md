@@ -6,7 +6,7 @@ This page contains advanced info regarding XCP-ng architecture.
 
 ### Virtual disks on HVMs and PV guests
 
-![](../../assets/img/tapdisk-architecture.jpg)
+![Diagram of virtual disk inner working, explained in the following paragraphs.](../../assets/img/tapdisk-architecture.jpg)
 
 #### `qemu-dm` and `tapdisk` at startup
 
@@ -415,7 +415,7 @@ If you want to build an application on top of XCP-ng, we strongly suggest the Xe
 
 XAPI is a toolstack split in two parts: `xenopsd` and XAPI itself (see the diagram below):
 
-![](https://xcp-ng.org/assets/img/Xenstack.png)
+![Diagram comparing XCP-ng, Xen + libvirt and Xen. XCP-ng uses the XAPI to expose its management to xe, XCP-ng Center, Xen Orchestra and CloudStack.](https://xcp-ng.org/assets/img/Xenstack.png)
 
 :::warning
 XCP-ng is meant to use XAPI. Don't use it with `xl` or anything else!
@@ -423,12 +423,12 @@ XCP-ng is meant to use XAPI. Don't use it with `xl` or anything else!
 
 #### General design
 
-![](https://xapi-project.github.io/xapi/xapi.png)
+![Diagram presenting the interaction of various part inside XCP-ng, too complex to be describe in a few sentences unfortunately.](https://xapi-project.github.io/xapi/xapi.png)
 
 #### Objects
 
-![](https://xapi-project.github.io/xen-api/classes.png)
+![Diagram of XAPI objects and their interactions.](https://xapi-project.github.io/xen-api/classes.png)
 
 #### Pool design
 
-![](https://xapi-project.github.io/getting-started/pool.png)
+![How a pool is managed, a shared storage in the center, XAPI on each host. The pool master creates a disk, xapi from another host uses the disk. The various XAPIs talk to each other to handle configuration and VM migrations.](https://xapi-project.github.io/getting-started/pool.png)

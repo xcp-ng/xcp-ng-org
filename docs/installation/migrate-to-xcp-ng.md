@@ -73,19 +73,19 @@ This method doesn't require any direct access to the VMware storage, only an HTT
 
 The initial situation: a running VM on ESXi on the left, your Xen Orchestra in the middle, and your Vates XCP-ng host on the right:
 
-![](../../assets/img/xoa-v2v-1.png)
+![Diagram with ESXi Host on the left, with a running VM, XOA V2V in the middle, and an empty XCP-ng host on the right.](../../assets/img/xoa-v2v-1.png)
 
 The initial sync: the empty VM is created on XCP-ng, and after a snapshot, the content is transferred from VMware side to the new VM disk on XCP-ng. This takes time, but your original VM is up all along (no service interruption):
 
-![](../../assets/img/xoa-v2v-2.png)
+![Now the ESXi Host has a snapshot of the running VM, an arrow runs from it, through V2V and to a VM disk on XCP-ng Host. That disk is linked to a stopped VM on XCP-ng.](../../assets/img/xoa-v2v-2.png)
 
 After the initial sync, the original VM is shutdown, another snapshot is done and only the diff is sent to the VM on XCP-ng side. Since it's a small amount of data, the downtime will be minimal:
 
-![](../../assets/img/xoa-v2v-3.png)
+![VM on ESXi is stopped, a second snapshot is created, the diff is sent by V2V to the VM disk on XCP-ng.](../../assets/img/xoa-v2v-3.png)
 
 After the transfer, the VM on XCP-ng side is started:
 
-![](../../assets/img/xoa-v2v-4.png)
+![Finally, the VM on XCP-ng is running using the fully synced disk.](../../assets/img/xoa-v2v-4.png)
 
 This process is fully automated, without any human intervention after it starts on step 1.
 
@@ -109,11 +109,11 @@ This process is fully automated, without any human intervention after it starts 
 
 In your Xen Orchestra UI, go to the main menu on the left, on **Import** click **From VMware**:
 
-![](../../assets/img/v2v1.png)
+![XO import view, with the "From VMware" tab selected showing the dialog to provide credential in order to connect to vCenter.](../../assets/img/v2v1.png)
 
 After giving the vCenter credentials, click **Connect** and go to the next step:
 
-![](../../assets/img/v2v2.png)
+![XO import view showing how to choose the pool, SR and network for the imported VM, and the VM selected for import from VMware.](../../assets/img/v2v2.png)
 
 On this screen, you will basically select which VM to replicate, and to which pool, storage and network. When it's done, just click on "Import" and there you go!
 
@@ -148,11 +148,11 @@ Here is a comprehensive checklist of steps to take when encountering issues duri
 
 1. Make sure you can go to this screen in XOA:
 
-![](../../assets/img/check-update-xoa.png)
+![Selecting XOA in the sidebar, and  Updates in the submenu.](../../assets/img/check-update-xoa.png)
 
 2. Check your version of XOA. You should be usng the `latest` channel:
 
-![](../../assets/img/check-xoa-version.png)
+![Release channel selected to "latest".](../../assets/img/check-xoa-version.png)
 
 If you were not using the `latest` channel previously:
     1. Switch to that channel.
@@ -461,7 +461,7 @@ _Due the fact I have only server here, I have setup a "buffer" machine on my des
 
 * Boot the VM and find a way to enter in the virtual UEFI of the VM. Here, I type the Escape and F9,F10,F11,F12 keys like crazy. Select Boot Manager, you should see this window :
 
-![](../../assets/img/migrate-to-xcp-ng_bootloader.png)
+![The virtual UEFI boot manager showing the QEMU HARDDISK selected.](../../assets/img/migrate-to-xcp-ng_bootloader.png)
 
 * Select `UEFI QEMU HARDDISK`, the screen should be black for seconds and you should see the GRUB. Let the machine worked for minutes and you should see the prompt finally 👍
 

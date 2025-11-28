@@ -86,15 +86,15 @@ After the release of XCP-ng 8.2.1, Vates' visual identity was updated, and XCP-n
 
 New start and shutdown screens:
 
-![](../assets/img/8_3-bootscreen.png)
+![XCP-ng boot splash screen with a red rocket and purple-ish star background.](../assets/img/8_3-bootscreen.png)
 
 New `xsconsole` theme:
 
-![](../assets/img/8_3-xsconsolenew.png)
+![xsconsole showing the vates identity colors.](../assets/img/8_3-xsconsolenew.png)
 
 New prompt colors:
 
-![](../assets/img/8_3-newprompt.png)
+![shell showing the vates identity colors in the prompt.](../assets/img/8_3-newprompt.png)
 
 These are aligned with XO Lite's colors (see below), creating real coherence: you always know where you are and what tools you are using.
 
@@ -102,9 +102,9 @@ These are aligned with XO Lite's colors (see below), creating real coherence: yo
 
 XO Lite, a work-in-progress web client for XCP-ng, is eventually going to provide all the basic features needed to manage a simple pool of XCP-ng hosts when the full [Xen Orchestra](../../management/manage-at-scale/xo-web-ui/) management Web UI is not yet installed or temporarily unavailable. It is accessible directly by querying XCP-ng's IP address over HTTPS.
 
-![](../assets/img/xo-lite-login.png)
+![XO Lite login page.](../assets/img/xo-lite-login.png)
 
-![](../assets/img/xo-lite-dashboard.png)
+![XO lite dashboard view.](../assets/img/xo-lite-dashboard.png)
 
 Its feature set is currently limited, but we are improving it regularly, and it will automatically fetch the latest version for you in your web browser whenever a new one is available.
 
@@ -128,7 +128,7 @@ BitLocker is not officially supported: **it works**, but it involves *Measured B
 
 If you need to manually create a vTPM for a VM, you can from its *Advanced* tab.
 
-![](../assets/img/xo-create-vtpm.png)
+![VM advanced tab, showing the "Create VTPM" button.](../assets/img/xo-create-vtpm.png)
 
 ### IPv6 support
 
@@ -266,7 +266,7 @@ For more information, refer to [XenServer's documentation](https://docs.xenserve
 
 We expanded the XAPI API by adding endpoints to manage PCI passthrough devices. Xen Orchestra developers added corresponding UI elements, enabling users to add or remove devices from the passthrough list. After a reboot of the host, these devices are released by dom0 (the control domain) and become available for assignment to VMs.
 
-![PCI Passthrough in Xen Orchestra](../assets/img/8_3-xopassthrough.png)
+![PCI Passthrough in Xen Orchestra.](../assets/img/8_3-xopassthrough.png)
 
 ### Custom multipath configuration
 
@@ -298,17 +298,17 @@ This feature was enabled through API enhancements and is already functional in t
 
 Thanks to improvements in the storage API reporting, Xen Orchestra can now display more details, such as whether an SR is performing a coalesce operation (Gear⚙️ icon).
 
-![](../assets/img/xo-coalesce.png)
+![XO storage tab showing a coalesce in progress by a gear icon next to the SR.](../assets/img/xo-coalesce.png)
 
 It also shows the coalesce progress percentage within the task view.
 
-![](../assets/img/xo-taskcoalesce.png)
+![XO task view showing the progress of a coalesce.](../assets/img/xo-taskcoalesce.png)
 
 ### Migration stream compression [XS + Xen Orchestra]
 
 For environments with slow network connections between hosts, you can now enable compression on the migration stream during live VM migrations. This feature, already available in Xen Orchestra, uses additional resources on the involved hosts, but can significantly speed up the migration process if your network bandwidth is limited. However, since the effectiveness of this feature can vary, we recommend testing it in your environment before deciding to keep it enabled.
 
-![](../assets/img/xo-stream-compression.png)
+![Migration compression option enabled.](../assets/img/xo-stream-compression.png)
 
 ### `host.evacuate` max limit
 

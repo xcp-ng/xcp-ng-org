@@ -8,7 +8,7 @@ A VM can be started at XCP-ng boot itself, it's called **Auto power on**. We hav
 
 In Xen Orchestra we can just enable a toggle in VM "Advanced" view, called **Auto power on**. Everything will be set accordingly.
 
-![](../../assets/img/autopoweron1.png)
+![XO's VM advanced tab showing the Auto power on option.](../../assets/img/autopoweron1.png)
 
 
 ## With the CLI

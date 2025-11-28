@@ -17,17 +17,17 @@ So the first objective is to adapt your VM placement in live (without service in
 
 Let's take a simple example, with these 2 hosts running 6 VMs:
 
-![](../../static/img/loadbalance1.png)
+![Host 1 has 2 VMs, host 2 has 4 VMs.](../../static/img/loadbalance1.png)
 
 Let's say both hosts are using only 5% of all their CPUs. Suddenly, one of your VM starts to have a very high CPU load (in yellow): performance of other VMs on this same host could be impacted negatively (in pink):
 
-![](../../static/img/loadbalance3.png)
+![Host 2 with the loaded VM highlighted.](../../static/img/loadbalance3.png)
 
 `Host 1` still using 5% of its CPUs, but `Host 2` is now a 95%.
 
 We are detecting it and now move others VM to the other host, like this:
 
-![](../../static/img/loadbalance4.png)
+![The 3 less loaded VMs are moved to host 1.](../../static/img/loadbalance4.png)
 
 `Host 1` has a slightly increased load, but `Host 2` can be fully used for the "problematic" VM without disrupting service of other VMs.
 
@@ -105,7 +105,7 @@ This way, you can avoid having pairs of redundant VMs or similar running on the 
 
 Let's look at a simple example: you have multiple VMs running MySQL and PostgreSQL with high availability/replication. Obviously, you don't want to lose the replicated database inside the VMs on the same physical host. Just create your plan like this:
 
-![](../../static/img/antiaffinity.png)
+![XO's load balancer interface shows the "Simple mode" selected and the "Anti-affinity" field listing MySQL-HA and PGSQL-HA tags.](../../static/img/antiaffinity.png)
 
 - Simple plan: means no active load balancing mechanism used
 - Anti-affinity: we added our 2x tags, meaning any VMs with one of these tags will never run on the same host (if possible) with another VM having the same tag
