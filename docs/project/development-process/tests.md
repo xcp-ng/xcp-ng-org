@@ -14,9 +14,9 @@ For every release it's important to check if everything works correctly on diffe
 
 Not everyone can test everything, but everything must get tested in the end.
 
-If anything goes wrong, try to isolate [the logs](https://github.com/xcp-ng/xcp/wiki/Logfiles) related to that failure (and what happened just before), and try to identify a way to reproduce if possible. You can also [create a full status report](https://github.com/xcp-ng/xcp/wiki/Logfiles#produce-a-status-report) to let someone else try to identify the issue.
+If anything goes wrong, try to isolate [the logs](../../troubleshooting/log-files.md) related to that failure (and what happened just before), and try to identify a way to reproduce if possible. You can also [create a full status report](../../troubleshooting/log-files.md#produce-a-status-report) to let someone else try to identify the issue.
 
-Give priority to tests on actual hardware, but if you don't have any hardware available for those, then [testing in a nested environment](https://github.com/xcp-ng/xcp/wiki/Testing-XCP-ng-in-Virtual-Machine-%28Nested-Virtualization%29) is useful too.
+Give priority to tests on actual hardware, but if you don't have any hardware available for those, then [testing in a nested environment](../compute.md#-nested-virtualization) is useful too.
 
 ## Basic tests
 
@@ -30,7 +30,7 @@ Give priority to tests on actual hardware, but if you don't have any hardware av
 - verify migration of a VM from an old host to (this) release one
 - verify migration of a VM from a newest host to the old one (this test should be fail)
 - verify change of the pool master from an host to another
-- [check your logs](https://github.com/xcp-ng/xcp/wiki/Logfiles) for uncommon info or warnings.
+- [check your logs](../../troubleshooting/log-files.md) for uncommon info or warnings.
 - (add more here...)
 
 ## Installer
@@ -86,9 +86,9 @@ and
 This one is the most important and not the easiest to test. During a pool upgrade, the hosts of your pool have heterogeneous versions of XAPI, Xen and other components, and many features are disabled. This is a situation that is meant to be as short as possible. When live migration fails at this stage, it is never a nice situation.
 **That's why this is the kind of live migration that requires the most testing**.
 
-Note: if you don't have the hardware and VMs to test this, you can create a virtual pool using [nested virtualization](https://github.com/xcp-ng/xcp/wiki/Testing-XCP-ng-in-Virtual-Machine-%28Nested-Virtualization%29).
+Note: if you don't have the hardware and VMs to test this, you can create a virtual pool using [nested virtualization](../../compute.md#-nested-virtualization).
 
-If anything fails and you absolutely need to move forward, we advise to produce and save a full [status report](https://github.com/xcp-ng/xcp/wiki/Logfiles#produce-a-status-report) on both hosts involved before continuing.
+If anything fails and you absolutely need to move forward, we advise to produce and save a full [status report](../../troubleshooting/log-files.md#produce-a-status-report) on both hosts involved before continuing.
 
 Testing the upgrade from the N-1 release is very important. Testing from older releases is important too because the likeliness of a breakage is higher.
 
