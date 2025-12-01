@@ -271,3 +271,28 @@ It should be empty, but if you have the bug, you got `check_update`.
 Remove `/var/lib/xcp-ng-xapi-plugins/updater.py.lock` and that should fix it.
 
 ---
+
+## Unable to live migrate VDI between SRs
+
+### Cause
+
+Upgrading from 8.2 to 8.3 can cause an issue where `/etc/stunnel/xapi-pool-ca-bundle.pem` is empty or missing
+You can check this with `ls -l /etc/stunnel/xapi-pool-ca-bundle.pem` on the host.
+It will cause issues when live-migrating VDIs between SRs (even if the VM remains on the same host).
+The migration fails with:
+```
+Xenops_interface.Xenopsd_error([S(Internal_error);S(Sys_error(\"Connection reset by peer\"))])
+```
+
+### Solution
+
+To fix this, create the file with the following command:
+```
+xe host-refresh-server-certificate host=<host name>
+```
+This will create the correct file on the host.
+You will need to run the command on all hosts of the pool.
+
+To know more about certificates in XAPI, check out the [XAPI documentation](https://xapi-project.github.io/new-docs/design/pool-certificates/index.html)
+
+---
