@@ -67,17 +67,10 @@ _The following steps can be performed under VMware Workstation Pro, the settings
 The first step, and without a doubt the most important step, will be to modify the virtual network configuration of our ESXi host. Without this configuration, the network will not work for your virtual machines running on your nested XCP-ng.
 
    * Start by going to the network settings of your ESXi host.
-
-     ![ESXi Networking Panel](https://image.noelshack.com/fichiers/2018/36/3/1536147884-1.png)
-
    * Then select the **port group** on which your XCP-ng virtual machine will be connected. By default, this concerns the
      vSwitch0 and the '**VM Network**' group port.
 
      Click on the "Edit Settings" button to edit the parameters of this port group.
-
-     **Here is the default settings** :
-
-     ![ESXi Port Group Settings](https://image.noelshack.com/fichiers/2018/36/3/1536148176-2.png)
 
    * Click on the **Accept** checkbox for Promiscuous mode.
    * Save this settings by using the Save button at the bottom of the window.
@@ -91,14 +84,9 @@ The first step, and without a doubt the most important step, will be to modify t
 
 Once your host's network is set up, we'll look at configuring the XCP-ng virtual machine.
 
-   * Create a virtual machine and move to the "Customize settings" section. Here a possible virtual machine configuration :
-
-     ![XCP-ng VM settings](https://image.noelshack.com/fichiers/2018/36/3/1536149747-4.png)
-
+   * Create a virtual machine and move to the "Customize settings" section.
    * Then edit the CPU settings and check the "**Expose hardware assisted virtualization to the guest OS**" box in the
      "**Hardware Virtualization**" line.
-
-     ![CPU Advanced settings - XCP-ng VM](https://image.noelshack.com/fichiers/2018/36/3/1536150139-5.png)
 
      _Enable virtualized CPU performance counters can be checked if necessary_ : [VMware CPU Performance Counters ](https://kb.vmware.com/s/article/2030221)
 
@@ -112,18 +100,12 @@ Once your host's network is set up, we'll look at configuring the XCP-ng virtual
 
    * Finally, install XCP-ng as usual, everything should work as expected. After installation, your XCP-ng virtual machine
      is manageable from XCP-ng Center or Xen Orchestra.
-
-     ![XCP-ng Center Final](https://image.noelshack.com/fichiers/2018/36/3/1536152208-6.png)
-
    * You can then create a virtual machine and test how it works (network especially).
 
 ### Configuration under VMware Workstation Pro 14/15
 
    * Create a XCP-ng virtual machine like in ESXi.
    * Check the following CPU setting : **Virtualize Intel VT-x/EPT or AMD-V/RVI**
-
-     ![Workstation Pro CPU Settings](https://image.noelshack.com/fichiers/2018/36/3/1536153480-8-1.png)
-
    * An additional option is to be added to the virtual machine's .vmx file. You will also add the option to enable
      promiscuous mode for the virtual machine.
 
@@ -228,5 +210,3 @@ The VM settings :
 * **Network** : E1000
 
 Finally, install/use XCP-ng !
-
-![XOA on KVM](http://image.noelshack.com/fichiers/2018/44/7/1541350058-xoa.png)

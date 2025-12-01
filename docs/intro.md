@@ -5,7 +5,7 @@ title: XCP-ng documentation
 sidebar_position: 1
 ---
 
-![](../assets/img/bannerxcp.png)
+![XCP-ng banner.](../assets/img/bannerxcp.png)
 
 # Introduction
 
@@ -24,7 +24,7 @@ Discover the growing network around XCP-ng and Xen Orchestra, collectively known
 XCP-ng contains multiple components, built around the Xen Hypervisor. It's meant to run on top of bare-metal machines.
 
 <div style={{textAlign: 'center'}}>
-![](../assets/img/archoverview.png)
+![XCP-ng architecture overview.](../assets/img/archoverview.png)
 </div>
 
 ## 📚 Stack overview
@@ -32,7 +32,7 @@ XCP-ng contains multiple components, built around the Xen Hypervisor. It's meant
 The main goal of XCP-ng is to be a fully integrated and dedicated virtualization platform, without requiring any deep Linux or system knowledge. It's meant to be managed in a centralized manner via [Xen Orchestra](management/#%EF%B8%8F-manage-at-scale), regardless the fact you have only one host or thousand of them. Backup is also included inside Xen Orchestra.
 
 <div style={{textAlign: 'center'}}>
-![](../assets/img/vates-vms.png)
+![Vates VMS stack overview.](../assets/img/vates-vms.png)
 </div>
 
 ## 🎓 Concepts
@@ -48,7 +48,7 @@ XCP-ng is distributed as an ISO file you can [download here](installation/instal
 In terms of general architecture, XCP-ng and Xen Orchestra are relatively close. See for yourself:
 
 <div style={{textAlign: 'center'}}>
-![](../assets/img/vsvmware.png)
+![Comparison to VMware.](../assets/img/vsvmware.png)
 </div>
 
 ### Managing XCP-ng

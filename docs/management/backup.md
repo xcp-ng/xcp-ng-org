@@ -17,7 +17,7 @@ Xen Orchestra is the most advanced backup solution and 100% integrated with XCP-
 * Cloud enabled XO Metadata backup
 
 <div style={{textAlign: 'center'}}>
-![](../../assets/img/schema-new-wording-backup.png)
+![Backups target backup repositories and replications target storage repositories. The options are full backup, full replication, incremental backup and incremental replication.](../../assets/img/schema-new-wording-backup.png)
 </div>
 
 And they come with different features:

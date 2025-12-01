@@ -64,7 +64,7 @@ Known Issues (with old firmware; also on XenServer 7.2 with current firmware)
 
 On XCP-ng \<= 8.0, using default `bnx2x` driver triggers a kernel Oops on XCP-ng (no ping and freezing the host):
 
-![](https://i.imgur.com/0FB7qVp.png)
+![Kernel boot logs showing the bnx2x driver creating an Oops in the kernel.](../../assets/img/bnx2x-oops.png)
 
 Fixed drivers have been released as official [updates](../../management/updates).
 

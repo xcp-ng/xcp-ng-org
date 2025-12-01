@@ -8,7 +8,7 @@ If you see for a central console to manage all your hosts at a single point, Xen
 
 Xen Orchestra is the **officially supported client for XCP-ng**. It's currently developed by the same team as the XCP-ng project ([Vates](https://vates.tech)).
 
-![](https://xen-orchestra.com/assets/featuresadmin.png)
+![XO VMs list view, with the "New" submenu opened.](https://xen-orchestra.com/assets/featuresadmin.png)
 
 It's also far more than just a client: because it runs 24/7 in a daemon, a lot of extra cool stuff is possible:
 * Various reports
@@ -61,8 +61,8 @@ XO from the sources doesn't have QA and there's no stable version. It's great fo
 
 You have access to all XCP-ng possibilities (and more!) from a web UI:
 
-![](https://xen-orchestra.com/assets/main_view.jpg)
+![Zoomed in view of the VMs list in XO.](https://xen-orchestra.com/assets/main_view.jpg)
 
-![](https://xen-orchestra.com/assets/stats.png)
+![Stats view of the Network througput in XO.](https://xen-orchestra.com/assets/stats.png)
 
 Please report to [XO official documentation](https://xen-orchestra.com/docs) for more!
