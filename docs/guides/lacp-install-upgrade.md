@@ -67,6 +67,8 @@ dhclient bond0
 ip addr add aaa.bbb.ccc.ddd/NN dev bond0
 ip route add default via aaa.bbb.ccc.1
 ip link set bond0 up
+# if doing a netinstall, set DNS too
+echo "nameserver aaa.bbb.ccc.1" > /etc/resolv.conf
 ```
 
 For example:\
@@ -128,7 +130,11 @@ xe bond-create mode=lacp network-uuid=<network_uuid> pif-uuids=<pif_uuid#1>,<pif
 3. Set the previously created bond as your management interface:
 
 ```bash
-xe pif-reconfigure-ip uuid=<bond_pif_uuid> netmask=255.255.255.0 gateway=192.168.1.1 IP=192.168.1.5 mode=static
+# for example, to set a static IP:
+xe pif-reconfigure-ip uuid=<bond_pif_uuid> netmask=255.255.255.0 gateway=192.168.1.1 IP=192.168.1.5 DNS=192.168.1.1 mode=static
+# or, for DHCP:
+xe pif-reconfigure-ip uuid=<bond_pif_uuid> mode=dhcp
+# then set it as management interface:
 xe host-management-reconfigure pif-uuid=<bond_pif_uuid>
 ```
 
