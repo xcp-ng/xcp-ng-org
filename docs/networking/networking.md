@@ -8,7 +8,7 @@ Even if one NIC can be enough for your host, having a dedicated NIC for storage 
 
 ## 🎓 Concepts
 
-This section describes the general concepts of networking in XCP-ng.
+This section describes the general concepts of networking in XCP-ng. For a deeper dive, check the [Network Architecture section](../../project/architecture/#%EF%B8%8F-network).
 
 XCP-ng creates a network for each physical NIC during installation. When you add a server to a pool, the default networks **are merged**. This is meant to be sure that all physical NICs with the same device name are attached to the same network, authorizing seamless VM flexibility on any host of the pool.
 
@@ -25,7 +25,13 @@ You can configure four different types of networks in XCP-ng:
 
 This section uses three types of server-side software objects to represent networking entities. These objects are:
 
-* A PIF: a mean to connect outside of a host. PIF objects have a name and description, a UUID, the parameters of the NIC they represent, and the network and server they are connected to. They can represent:
+* A PIF, which is a way to connect outside of a host. PIF objects have:
+    -  * a name
+    -  * a description
+    -  * a UUID
+    -  * the parameters of the NIC they represent
+    -  * the network and server they are connected to. 
+PIFs can represent:
   * A physical NIC
   * A VLAN on top of a physical NIC
   * A bond of multiple NICs
