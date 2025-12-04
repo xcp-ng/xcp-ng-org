@@ -161,9 +161,22 @@ const config = {
             barHeight: 70,
           }
         },
-      }
+      },
+      zoom: {
+        selector: '.markdown :not(em) > img',
+        background: {
+          light: 'rgb(255, 255, 255)',
+          dark: 'rgb(50, 50, 50)'
+        },
+        config: {
+          // options you can specify via https://github.com/francoischalifour/medium-zoom#usage
+        }
+      },
     }),
-  plugins: [require.resolve('docusaurus-lunr-search')],
+  plugins: [
+    require.resolve('docusaurus-plugin-image-zoom'),
+    require.resolve('docusaurus-lunr-search')
+  ],
 };
 
 module.exports = config;
