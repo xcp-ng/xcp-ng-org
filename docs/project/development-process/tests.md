@@ -16,7 +16,7 @@ Not everyone can test everything, but everything must get tested in the end.
 
 If anything goes wrong, try to isolate [the logs](../../troubleshooting/log-files.md) related to that failure (and what happened just before), and try to identify a way to reproduce if possible. You can also [create a full status report](../../troubleshooting/log-files.md#produce-a-status-report) to let someone else try to identify the issue.
 
-Give priority to tests on actual hardware, but if you don't have any hardware available for those, then [testing in a nested environment](../compute.md#-nested-virtualization) is useful too.
+Give priority to tests on actual hardware, but if you don't have any hardware available for those, then [testing in a nested environment](../../compute.md#-nested-virtualization) is useful too.
 
 ## Basic tests
 
