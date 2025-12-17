@@ -9,27 +9,33 @@ Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute t
 The default guest Secure Boot keys in XCP-ng are changing.
 
 Previously, XCP-ng only shipped with the PK included by default; Secure Boot variables had to be installed using `secureboot-certs`.
-New versions of XCP-ng's `varstored` (from version 1.2.0-2.4 and newer) now come with a complete set of Secure Boot variables (PK/KEK/db/dbx) by default, meaning that guest Secure Boot will now work for new VMs without needing further pool configuration.
+New versions of XCP-ng's `varstored` (from version 1.2.0-3.4 and newer) now come with a complete set of Secure Boot variables (PK/KEK/db/dbx) by default, meaning that guest Secure Boot will now work for new VMs without needing further pool configuration.
 
-Our defaults now include the 2023 Microsoft KEK and db certificates, ensuring Secure Boot updates beyond 2026 (which is when the previous 2011 certificates expire). These defaults will also be automatically kept up-to-date as XCP-ng is updated.
+The previous Secure Boot settings only included the 2011 Microsoft KEK and db certificates.
+Our defaults now include the 2023 Microsoft certificates, ensuring Secure Boot updates beyond 2026 (which is when the previous 2011 certificates expire).
+These defaults will also be automatically kept up-to-date as XCP-ng is updated.
 
-### What this change means for you
-
-You will not be affected in most cases.
+Existing installations will not be automatically changed by this update:
 
 * Existing VMs will not be affected unless you use the [Propagate certificates](#propagate-pool-certificates-to-a-vm) feature in Xen Orchestra (which has always had the effect of resetting VM Secure Boot variables to that of the pool).
-* If you followed our previous guides and used `secureboot-certs install` to install the default Secure Boot variables into your pool, these variables will not be changed.
+* If you followed our previous guides and used `secureboot-certs install` to install the default Secure Boot variables into your pool, these variables will not be changed. However, we recommend clearing the pool variables and receiving the latest ones from XCP-ng updates instead.
 
-Here are the changes in detail:
+### Recommended actions
 
-* If you haven't manually configured Secure Boot variables on your pool, your pool now supports guest Secure Boot by default.
-* From now on, we recommend keeping the pool Secure Boot variables default so that XCP-ng updates could keep them up-to-date.
-  * If you have installed your pool SB variables using `secureboot-certs install`, use `secureboot-certs clear` to reset them.
-  * Existing VMs will not be affected.
-* We now include the 2023 Microsoft KEK certificate for guest-initiated security updates to the db and dbx variables.
-  * After updating the pool variables, you can add this certificate to existing VMs using the [Propagate certificates](#propagate-pool-certificates-to-a-vm) procedure.
+Our defaults will not be applied automatically on existing systems that have been set up for guest Secure Boot.
+Follow the steps below to reset pool Secure Boot configuration to defaults and update existing VMs:
 
-    :warning: **Danger**, risk of data loss: Propagating certificates to an existing VM will change its Secure Boot vTPM measurements. If you depend on these measurements (e.g. BitLocker with TPM protector), you must carefully read the [Preparing for Secure Boot Variable Changes](#preparing-for-secure-boot-variable-changes) procedure.
+1. If you have installed your pool Secure Boot variables using `secureboot-certs install`, use `secureboot-certs clear` to reset them to the XCP-ng-managed defaults.
+  * If you haven't done so, no action is required; your pool now supports guest Secure Boot by default.
+  * Existing VMs will not be affected by this step.
+  * This step is only needed once per pool.
+2. Install the 2023 Microsoft KEK certificate for guest-initiated security updates to the db and dbx variables.
+  * This certificate is **required** on VMs with Secure Boot enabled (Windows **and** Linux) for future Secure Boot updates to succeed.
+  * After clearing the pool variables using the above command, replace VM Secure Boot variables using the [Propagate certificates](#propagate-pool-certificates-to-a-vm) procedure.
+
+:::danger
+**Risk of data loss:** Propagating certificates to an existing VM will change its Secure Boot vTPM measurements. If you depend on these measurements (e.g. BitLocker with TPM protector), you must carefully read the [Preparing for Secure Boot Variable Changes](#preparing-for-secure-boot-variable-changes) procedure.
+:::
 
 ## Requirements
 
@@ -39,13 +45,13 @@ Here are the changes in detail:
 
 Note: it's not necessary that the XCP-ng host boots in UEFI mode for Secure Boot to be enabled on VMs.
 
-## 8.3 with varstored >= 1.2.0-2.4
+## 8.3 with varstored >= 1.2.0-3.4
 
 Secure Boot is ready to use on new VMs without extra configuration. Simply activate Secure Boot on your VMs, and they will be provided with an appropriate set of default Secure Boot variables.
 
 We will keep updating the default Secure Boot variables with future updates from Microsoft. If you don't want this behavior, you can lock in these variables by using the [Manually Install the Default UEFI Certificates](#manually-install-the-default-uefi-certificates) procedure.
 
-## 8.2.1 and 8.3 with varstored < 1.2.0-2.4
+## 8.2.1 and 8.3 with varstored < 1.2.0-3.4
 
 These versions of XCP-ng require manual configuration to enable Secure Boot.
 
@@ -114,9 +120,9 @@ At the VM level:
 
 ## Configure the Pool
 
-For pools with varstored version >= 1.2.0-2.4, no action is required.
+For pools with varstored version >= 1.2.0-3.4, no action is required.
 
-For pools with varstored < 1.2.0-2.4, before enabling UEFI Secure Boot for guest VMs, you need to install a set of certificates to the pool using the `secureboot-certs` script on the pool master. This tool downloads, formats, and installs UEFI certificates for the `PK`, `KEK`, `db`, and `dbx` certificates in the XCP-ng pool.
+For pools with varstored < 1.2.0-3.4, before enabling UEFI Secure Boot for guest VMs, you need to install a set of certificates to the pool using the `secureboot-certs` script on the pool master. This tool downloads, formats, and installs UEFI certificates for the `PK`, `KEK`, `db`, and `dbx` certificates in the XCP-ng pool.
 
 To download and install XCP-ng's default certificates (what almost all users will want), see [Manually Install the Default UEFI Certificates](#manually-install-the-default-uefi-certificates).
 
@@ -125,7 +131,7 @@ For custom certificates (advanced use), see [Install Custom UEFI Certificates](#
 ### Manually Install the Default UEFI Certificates
 
 :::info
-This procedure is not necessary if you're using varstored 1.2.0-2.4 and newer. However, you can use the procedure anyway to lock in the default variables per pool and avoid further default changes.
+This procedure is not necessary if you're using varstored 1.2.0-3.4 and newer. However, you can use the procedure anyway to lock in the default variables per pool and avoid further default changes.
 :::
 
 `secureboot-certs` supports installing a default set of certificates across the pool.
@@ -134,7 +140,7 @@ Except the `PK` key which is already provided by XCP-ng, all certificates are do
 
 The default certificates are sourced as follows:
 
-**With varstored < 1.2.0-2.4:**
+**With varstored < 1.2.0-3.4:**
 
 | Certificate |                                                   Source                                                          |  CLI Arg  |
 |-------------|-------------------------------------------------------------------------------------------------------------------|-----------|
@@ -143,7 +149,7 @@ The default certificates are sourced as follows:
 | db          |  [Microsoft Corporation UEFI CA 2011](https://www.microsoft.com/pkiops/certs/MicCorUEFCA2011_2011-06-27.crt) and [Microsoft Windows Production PCA 2011](https://www.microsoft.com/pkiops/certs/MicWinProPCA2011_2011-10-19.crt) | `default` |
 | dbx         |  [UEFI Revocation List](https://uefi.org/sites/default/files/resources/dbxupdate_x64.bin)                         | `latest`  |
 
-**With varstored >= 1.2.0-2.4:**
+**With varstored >= 1.2.0-3.4:**
 
 All keys are built into varstored-tools and present on disk. There's no need to configure them except for custom Secure Boot scenarios.
 
@@ -159,14 +165,14 @@ Certificate and revocation lists provided by [microsoft/secureboot_objects](http
 To install these variables from the command line interface:
 
 ```
-# Download and install PK/KEK/db/dbx certificates (varstored < 1.2.0-2.4)
+# Download and install PK/KEK/db/dbx certificates (varstored < 1.2.0-3.4)
 secureboot-certs install default default default latest
 # or simply: secureboot-certs install
 
-# Reinstall and lock built-in PK/KEK/db/dbx variables (varstored >= 1.2.0-2.4)
+# Reinstall and lock built-in PK/KEK/db/dbx variables (varstored >= 1.2.0-3.4)
 secureboot-certs install
 
-# Go back to XCP-ng-managed defaults (varstored >= 1.2.0-2.4)
+# Go back to XCP-ng-managed defaults (varstored >= 1.2.0-3.4)
 secureboot-certs clear
 ```
 
@@ -178,7 +184,7 @@ secureboot-certs install --user-agent="Mozilla/5.0 My custom user agent"
 
 If this still fails, check the next section which explains how to install them manually.
 
-### Install the Default UEFI Certificates Manually (varstored < 1.2.0-2.4)
+### Install the Default UEFI Certificates Manually (varstored < 1.2.0-3.4)
 
 * Using your web browser, download the certificates listed in the table above (`KEK`, CA and PCA which will allow us to build `db`, and `dbx`).
 * Transfer the files to your master host.
@@ -238,7 +244,7 @@ secureboot-certs install default default default none
 
 For help with the tool's install functionality, call `secureboot-certs install -h`.
 
-### Resetting Pool UEFI Certificates (varstored >= 1.2.0-2.4)
+### Resetting Pool UEFI Certificates (varstored >= 1.2.0-3.4)
 
 If you want to revert to the XCP-ng pool Secure Boot defaults, simply issue the following command:
 
@@ -457,7 +463,7 @@ If the relevant certs are installed, their names will be in the output (i.e., `P
 
 #### Preparing for Secure Boot Variable Changes
 
-:::warning
+:::danger
 Changing existing Secure Boot certificates on a vTPM-enabled VM will invalidate its PCR7 measurements.
 Any encryption keys bound to the TPM (e.g. disk encryption keys) will become inaccessible.
 Make sure to take a backup of your disk encryption key (e.g. BitLocker recovery key) before making any changes to Secure Boot.
