@@ -336,9 +336,9 @@ Viridian is a codename for [Hyper-V](https://learn.microsoft.com/en-us/windows-s
 
 Viridian extensions —referred to as "Viridian enlightenments" by Microsoft— are used by any "recent" Windows OS to work properly. Make sure they are enabled for your VM.
 
-:::warning
-
+:::tip
 Viridian enlightenments are enabled by default on Windows VM templates included with XCP-ng.
+:::
 
 To enable Viridian enlightenments for other non-Windows VM templates, simply run the following command:
 
@@ -348,8 +348,6 @@ xe vm-param-set uuid=<vm-uuid> platform:device_id=0002 platform:viridian=true pl
 
 :::warning
 Do not set the device ID on VMs with Xen PV drivers installed. Changing the device ID may cause old Xen PV drivers to fail booting.
-:::
-
 :::
 
 ### Manage screen resolution
