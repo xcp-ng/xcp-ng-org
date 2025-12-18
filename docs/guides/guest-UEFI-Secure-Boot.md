@@ -4,7 +4,7 @@ How to configure UEFI Secure boot?
 
 Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute trusted binaries at boot. In practice, these are the binaries released by the operating system (OS) vendor for the OS running in the VM (Microsoft Windows, Debian, RHEL, Alpine, etc.).
 
-## Upcoming changes in guest Secure Boot
+## Recent changes in guest Secure Boot configuration
 
 The default guest Secure Boot keys in XCP-ng are changing.
 
@@ -12,26 +12,33 @@ Previously, XCP-ng only shipped with the PK included by default; Secure Boot var
 New versions of XCP-ng's `varstored` (from version 1.2.0-3.4 and newer) now come with a complete set of Secure Boot variables (PK/KEK/db/dbx) by default, meaning that guest Secure Boot will now work for new VMs without needing further pool configuration.
 
 The previous Secure Boot settings only included the 2011 Microsoft KEK and db certificates.
-Our defaults now include the 2023 Microsoft certificates, ensuring Secure Boot updates beyond 2026 (which is when the previous 2011 certificates expire).
-These defaults will also be automatically kept up-to-date as XCP-ng is updated.
+Our defaults now include the 2023 Microsoft certificates, ensuring Secure Boot updates beyond 2026 (which is when the previous 2011 certificates expire), while ensuring compatibility with VMs migrated from VMware using XO V2V.
+These defaults will be automatically kept up-to-date as XCP-ng is updated.
 
-Existing installations will not be automatically changed by this update:
-
-* Existing VMs will not be affected unless you use the [Propagate certificates](#propagate-pool-certificates-to-a-vm) feature in Xen Orchestra (which has always had the effect of resetting VM Secure Boot variables to that of the pool).
-* If you followed our previous guides and used `secureboot-certs install` to install the default Secure Boot variables into your pool, these variables will not be changed. However, we recommend clearing the pool variables and receiving the latest ones from XCP-ng updates instead.
+Existing Secure Boot installations will not be automatically updated.
 
 ### Recommended actions
 
-Our defaults will not be applied automatically on existing systems that have been set up for guest Secure Boot.
-Follow the steps below to reset pool Secure Boot configuration to defaults and update existing VMs:
+#### 1. On your XCP-ng pool
 
-1. If you have installed your pool Secure Boot variables using `secureboot-certs install`, use `secureboot-certs clear` to reset them to the XCP-ng-managed defaults.
-  * If you haven't done so, no action is required; your pool now supports guest Secure Boot by default.
+Our defaults will not be applied automatically on existing systems that have been set up for guest Secure Boot.
+If you have installed your pool Secure Boot variables using `secureboot-certs install`, use `secureboot-certs clear` to reset them to the XCP-ng-managed defaults.
+  * If you haven't run `secureboot-certs install` before, no action is required; your pool now supports guest Secure Boot by default.
   * Existing VMs will not be affected by this step.
+  * You can run `secureboot-certs clear` again if unsure.
   * This step is only needed once per pool.
-2. Install the 2023 Microsoft KEK certificate for guest-initiated security updates to the db and dbx variables.
-  * This certificate is **required** on VMs with Secure Boot enabled (Windows **and** Linux) for future Secure Boot updates to succeed.
-  * After clearing the pool variables using the above command, replace VM Secure Boot variables using the [Propagate certificates](#propagate-pool-certificates-to-a-vm) procedure.
+
+#### 2. On newly V2V-migrated VMs and new VMs created from default templates
+
+No action is required once the pool is reconfigured with the new defaults.
+
+#### 3. On existing VMs and new VMs cloned from custom templates
+
+These VMs will not be automatically updated.
+
+The updated Secure Boot certificates are **required** on VMs with Secure Boot enabled (Windows **and** Linux) for future guest-initiated updates to the db and dbx Secure Boot variables to succeed.
+After configuring the pool, install the new certificates using the [Propagate certificates](#propagate-pool-certificates-to-a-vm) procedure.
+This step is also required for Secure Boot support on previously V2V-migrated VMs.
 
 :::danger
 **Risk of data loss:** Propagating certificates to an existing VM will change its Secure Boot vTPM measurements. If you depend on these measurements (e.g. BitLocker with TPM protector), you must carefully read the [Preparing for Secure Boot Variable Changes](#preparing-for-secure-boot-variable-changes) procedure.
