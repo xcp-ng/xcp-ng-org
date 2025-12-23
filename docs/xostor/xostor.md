@@ -312,7 +312,7 @@ RemainAfterExit=true
 - The replication/place count must be equal to 1, 2 or 3.
 - 
 :::warning
-Changing the replication factor after creating Xostor is not possible, as it can lead to significant issues and is therefore not supported.
+Changing the replication factor after creating XOSTOR is not possible, as it can lead to significant issues and is therefore not supported.
 :::
 
 :::warning
