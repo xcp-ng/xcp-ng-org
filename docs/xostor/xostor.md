@@ -310,6 +310,10 @@ RemainAfterExit=true
 - A dedicated 10G or higher network interface for DRBD. It's possible to use the same interface used for host management (XAPI) but it's recommended to use a dedicated interface.
 - At least 1 disk on any machine of the pool (case without replication). Otherwise, any number of disks can be used on a machine. However, to be consistent, we recommend using the same model and number for each machine that has disks.
 - The replication/place count must be equal to 1, 2 or 3.
+- 
+:::warning
+Changing the replication factor after creating XOSTOR is not possible, as it can lead to significant issues and is therefore not supported.
+:::
 
 :::warning
 - LINSTOR services like satellites and controller can use a lot of memory resources. It is therefore more than necessary to have sufficient RAM allocated to the Dom-0, 16 GiB can be enough for average pools with around a hundred volumes. But it may be essential to increase the dedicated memory for more intensive use. So make sure to monitor the memory usage of your pool to prevent the OOM Killer from being triggered.
