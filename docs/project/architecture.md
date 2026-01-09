@@ -432,3 +432,401 @@ XCP-ng is meant to use XAPI. Don't use it with `xl` or anything else!
 #### Pool design
 
 ![How a pool is managed, a shared storage in the center, XAPI on each host. The pool master creates a disk, xapi from another host uses the disk. The various XAPIs talk to each other to handle configuration and VM migrations.](https://xapi-project.github.io/getting-started/pool.png)
+
+## 🕸️ Network
+
+### Overview
+
+![Network architecture diagram showing the interaction between Dom0, DomU, Open vSwitch, its bridges and physical network interfaces.](../../assets/img/networking/Network-overview.png)
+
+At the highest level, Xen Orchestra and `xe` commands interact with XAPI to manage network configuration. The `xapi` daemon provides the main API, receiving requests and passing them to `message-switch`, which dispatches commands to the appropriate daemon. For networking, this is `xcp-networkd`, which applies the required configuration using Open vSwitch (OVS) commands.
+
+In XCP-ng, all networking is managed by OVS:
+- The `openvswitch.ko` kernel module handles bridges, bonds, and actual network traffic.
+- `ovsdb-server` stores and applies OVS configuration.
+- `ovs-vswitchd` is the main OVS daemon, managing each bridge’s backend and flow table.
+
+The bonds and bridges are all OVS ones. XCP-ng does not use linux bridges or bonds. For example, a `bond0` device won't appear in `ip link` as it only exists as a port of an OVS bridge. To have an ip used for it, it will have to be set on the matching bridge interface.
+
+Almost all configuration is handled through XAPI, ensuring pool-wide consistency. Only Xen Orchestra’s SDN Controller plugin interacts directly with `ovsdb-server`, `ovs-vswitchd` for Global private network and traffic rules respectively. These exceptions are detailed in later sections.
+
+### XAPI Objects
+
+The core concepts are introduced on the [Networking](../../networking) page. Here, we explain their operation and underlying mechanisms. XAPI stores the configuration and relationships for these objects, then configures OVS on each host in the pool.
+
+:::tip
+Configuration is stored on the master’s XAPI, which then propagates it to pool members.
+:::
+
+#### Networks
+
+A Network in XCP-ng is a layer 2 segment that VMs can join, providing flexible infrastructure options. Networks are created at the pool level and backed by an [OVS Bridge](#bridges) on each host in the pool (or across pools for Global Private Networks). Each Network is then available to VMs running on that pool.
+
+Network types include:
+- Default Networks: A NIC provides external connectivity.
+- Bonded Networks: Multiple NICs are bonded for redundancy or increased throughput.
+- VLAN Networks: VLANs layered on Default or Bonded networks (can be implicitly created).
+- Private Networks: Internal-only, with no external connectivity.
+- Global Private Networks: Layer 3 tunnels (GRE or VXLAN) connect multiple hosts, even across pools as long as they have IP connectivity.
+
+At the XAPI level, Networks are associated with PIFs for external access and VIFs for VM traffic.
+
+#### PIFs
+
+PIF stands for Physical Interface, but it can represent more than just a physical NIC. A PIF is any network interface that provides external connectivity for a host:
+
+- Physical Interfaces: Standard NICs (e.g., `eth0`), mapped directly to hardware.
+- Bonds: Aggregations of multiple physical interfaces for redundancy or throughput.
+- Tunnels: Used for Global Private Networks (GRE or VXLAN), creating overlays across hosts.
+- VLANs: Layered on other PIF types, supporting 802.1Q VLAN tagging.
+
+#### VIFs
+
+VIFs are virtual network interfaces attached to VMs. Each VIF has an interface inside the VM (e.g., `eth0`, `enp1s0`) and another on the host (`vifX.Y`, `tapX.Y` where X = domain ID, Y = VIF number). At a high level (as shown in Xen Orchestra), each VIF connects to a Network. Internally, the VM uses its interface as a normal NIC, while the host-side interface is bound to the bridge for that Network. The following sections describe the two VIF models.
+
+##### Emulated NICs
+
+When booting an HVM VM, an emulated NIC (typically Intel E1000 or Realtek RTL8139) is used. These are fully emulated by `qemu-dm`, with a tap device created on the host. The tap device is bound to the appropriate bridge. Emulated NICs are widely supported by guest OS drivers but offer lower performance than para-virtualized NICs.
+
+##### Para-virtualized NICs
+
+Para-virtualized NICs use Xen’s PV drivers (`xen-netfront` in the guest and `xen-netback` in the host). They are mostly interesting for offering improved performance over emulated devices.
+
+If the VM has the necessary drivers, it replaces the emulated device once loaded. On the host, a `vifX.Y` interface is created and bound to the bridge. The VM and host negotiate the connection via XenBus and XenStore, using Xen’s grant tables and event channels for packet exchange.
+
+:::tip
+Although Xen Orchestra’s **Advanced** tab shows Intel e1000 or Realtek RTL8139, once para-virtualized drivers are loaded, the emulated device is no longer used.
+:::
+
+### OVS
+
+#### Key Elements
+
+Here’s a glossary of main OVS elements (details follow):
+- Bridges: Configurable virtual switches.
+- Datapath: Packet processing component of a bridge.
+- Flow Table: List of OpenFlow rules for packet handling.
+- Flow Cache: Matched flows within the datapath.
+- Ports: Logical bridge ports, each with one or more interfaces.
+- Interfaces: Actual devices in dom0 (e.g., `eth0`, `vif1.0`, `tap2.0`, `xenbr0`, `xapi1`).
+
+#### Bridges
+
+Networking in XCP-ng centers on “networks”, each backed by an OVS bridge on relevant hosts.
+
+:::warning
+Two key points:
+- If no VM on a host uses a network, its bridge is not created, and the PIF appears “Disconnected” in Xen Orchestra.
+- The PIF is not forcibly disconnected if no more VMs use it.
+This is expected and causing any issue.
+:::
+
+A bridge consists of:
+- Configuration in `ovsdb-server`.
+- Flow table in `ovs-vswitchd`.
+- Datapath in `openvswitch.ko`.
+- Ports matching XAPI’s PIFs and VIFs.
+- One or more interfaces per port.
+- An “internal port” with a matching interface of type “internal.”
+
+The `ovs-vsctl show` command displays all bridges, ports, and interfaces currently configured in OVS. For example:
+
+```
+    Bridge xenbr0
+        fail_mode: standalone
+        Port vif1.0
+            Interface vif1.0
+        Port eth0
+            Interface eth0
+        Port xenbr0
+            Interface xenbr0
+                type: internal
+```
+
+#### VLANs
+
+The way we handle VLAN in OVS is somewhat unique. When you create a network in XOA, you select a PIF to back it. On the OVS side, if a bridge without VLAN tagging does not already exist (e.g., `xenbrX` for standard networks), it will be created. Then, an additional "fake bridge" is created (typically named `xapiX`, where X is a number). The ports of this fake bridge are assigned a VLAN tag and are added to the `xenbrX` bridge. This setup allows OVS to:
+
+- Create OpenFlow rules that tag or untag VLAN IDs as packets leave the bridge.
+- Control which ports can communicate with each other, even though they appear on the same `xenbrX` bridge.
+
+VMs are unaware of the VLAN they are on; traffic remains untagged as long as it stays within the bridge. For example, two VMs on the same host and VLAN network can communicate without VLAN tags ever being applied. However, they cannot reach VMs connected to `xenbrX` without a tag. When a VM sends traffic outside the host, the VLAN tag is added before the packet leaves through the appropriate NIC. Conversely, incoming tagged frames are untagged when entering the bridge. This means OpenFlow rules cannot match on VLAN tags for internal traffic, as the tag is only present when the frame exits the bridge.
+
+Although the fake bridge exists as a bridge, not all bridge-related commands work on it. For example, after adding a VLAN network on `eth0`, `ovs-vsctl list-br` shows:
+
+```
+xapi0
+xenbr0
+```
+
+Here, `xapi0` is a bridge, but as a fake bridge, it lacks its own datapath or flow table:
+
+```
+# ovs-ofctl dump-flows xapi0
+ovs-ofctl: xapi0 is not a bridge or a socket
+```
+
+Additionally, `ovs-vsctl show` does not display it as a separate bridge, but instead shows all its ports under `xenbr0` with their respective VLAN tags:
+
+```
+    Bridge xenbr0
+        fail_mode: standalone
+        Port xapi0
+            tag: 2121
+            Interface xapi0
+                type: internal
+        Port vif1.0
+            Interface vif1.0
+        Port eth0
+            Interface eth0
+        Port xenbr0
+            Interface xenbr0
+                type: internal
+        Port xapi9
+            tag: 2142
+            Interface xapi9
+                type: internal
+        Port vif20.1
+            tag: 2121
+            Interface vif20.1
+```
+
+Although its ports are added to `xenbr0` it does have a list of its own ports:
+```
+# ovs-vsctl list-ports xapi9
+vif20.1
+```
+
+This makes it easier to identify its ports and interfaces than trying to match the tags to a port.
+
+#### Bonds
+
+Bonds aggregate multiple interfaces into a single port within a bridge. OVS manages this entirely. To list bonds:
+
+```
+# ovs-appctl bond/show
+---- bond0 ----
+bond_mode: balance-tcp
+bond may use recirculation: no, Recirc-ID : -1
+bond-hash-basis: 0
+updelay: 31000 ms
+downdelay: 200 ms
+lacp_status: configured
+active slave mac: 12:60:84:5c:1f:74(eth0)
+
+slave eth0: enabled
+        active slave
+        may_enable: true
+
+slave eth1: enabled
+        may_enable: true
+```
+
+For LACP bonds, use the `ovs-appctl lacp/show` command for more details.
+
+To see the overall organization, use `ovs-vsctl show`:
+
+```
+    Bridge xapi1
+        fail_mode: standalone
+        Port bond0
+            Interface eth0
+            Interface eth1
+        Port xapi1
+            Interface xapi1
+                type: internal
+```
+
+#### Global Private Networks (tunnels)
+
+Global private networks are managed by Xen Orchestra's [SDN Controller plugin](https://docs.xen-orchestra.com/sdn_controller), also documented in the [XCP-ng SDN Controller documentation](../../networking/#-sdn-controller). Here, we explain their setup within OVS.
+
+A network is created, and its associated bridge is created on the required hosts. Unlike other network types, these can span multiple pools, which is why the SDN Controller plugin is needed as XAPI is not aware of other pools. After the bridge is created, tunnels (GRE or VXLAN, encrypted or not) are established between the center host and all hosts in the included pools. For encrypted tunnels, libreswan is used for IPsec, establishing routes at the kernel level. This currently limits you to one encrypted tunnel per protocol, as multiple tunnels would attempt to set the same route.
+
+:::tip
+In cross-pool setups, networks created on each pool have the same name, but their XAPI UUIDs will differ, as UUIDs are unique per pool.
+:::
+
+These networks create their own bridges, and you can identify them by a port name `<bridge>_portX`, which will have a type indicating the protocol and a `remote_ip` field. This is visible in the `ovs-vsctl show` output:
+
+```
+    Bridge xapi7
+        Controller "pssl:"
+        fail_mode: standalone
+        Port xapi7_port5
+            Interface xapi7_iface5
+                type: gre
+                options: {key="11", remote_ip="192.168.1.220"}
+        Port xapi7
+            Interface xapi7
+                type: internal
+        Port vif28.3
+            Interface vif28.3
+```
+
+On the central host, there will be one interface with a `remote_ip` per host, and each remote host will have a single interface pointing to the center's IP, as shown above.
+
+### Configuration flow
+
+#### Network creation
+
+Network creation is triggered via XO or `xe`, passing through XAPI, which instructs OVS to create the corresponding bridge. The following diagrams illustrate the process at a high level and then zoom in on the XAPI and OVS components.
+
+High level flow:
+```mermaid
+sequenceDiagram
+    participant XO
+    participant XAPI
+    participant OVS
+
+    XO->>XAPI: create a new network
+    XAPI->>OVS: create a new bridge
+    OVS->>OVS: creating a bridge
+    OVS->>XAPI: bridge created
+    XAPI->>XAPI: store network information
+    XAPI->>XO: return network information
+```
+
+XAPI flow:
+```mermaid
+sequenceDiagram
+   participant xapi master
+   participant xapi supporter
+   participant xapi-db
+   participant message-switch
+   participant xcp-networkd
+
+   Note left of xapi master: API call received
+   xapi master->>message-switch: request to create network
+   message-switch->>xcp-networkd: forward request
+   Note right of xcp-networkd: OVS commands
+   xcp-networkd->>message-switch: network created
+   message-switch->>xapi master: network created
+   xapi master->>xapi-db: store network information
+   xapi master->>xapi supporter: replicate network
+   Note right of xapi supporter: local msg-switch&networkd
+   xapi supporter->>xapi master: network created
+   xapi master->>xapi-db: store information
+   
+```
+
+OVS flow:
+```mermaid
+sequenceDiagram
+   participant ovs-cli
+   participant ovsdb-server
+   participant netlink
+   participant openvswitch.ko
+
+   Note left of ovs-cli: OVS command received
+   ovs-cli->>ovsdb-server: create a bridge in DB
+   ovsdb-server-)netlink: DB update trigger bridge creation
+   netlink->>openvswitch.ko: create bridge and its datapath
+```
+
+#### Global Private Networks creation
+
+To simplify the diagram, names have been shortened:
+- XO SDN refers to XO and its SDN Controller plugin.
+- XAPI center is the master XAPI on the central host.
+- XAPIs are the master XAPI instances on other pools.
+- OVS refers to OVS on each host.
+
+```mermaid
+sequenceDiagram
+    participant XO SDN
+    participant XAPI center
+    participant XAPIs
+    participant OVS
+
+    XO SDN->>XAPI center: create a new network
+    XAPI center->>OVS: create a new bridge
+    OVS->>OVS: creating a bridge
+    OVS->>XAPI center: bridge created
+    XAPI center->>XO SDN: return network information
+    XO SDN->>XAPIs: create a new network
+    XAPIs->>OVS: create a new bridge
+    OVS->>OVS: creating a bridge
+    OVS->>XAPIs: bridge created
+    XAPIs->>XO SDN: return network information
+    XO SDN->>OVS: create tunnels between center and hosts
+    OVS->>XO SDN: tunnels created
+    XO SDN->>XAPI center: Store tunnel information
+    XO SDN->>XAPIs: Store tunnel information
+```
+
+#### OpenFlow rules
+
+There are currently two ways to manage traffic rules:
+
+- The legacy method, where the SDN Controller plugin communicates directly with `ovs-vswitchd` to add or remove flows.
+- The new (BETA) method, which uses a XAPI plugin to manage OpenFlow rules locally by running OVS commands.
+
+The legacy approach is simpler but limited: `ovs-vswitchd` only listens for a single datapath, making it difficult to configure multiple networks or fake bridges (used for [VLANs](#vlans)). The new approach, using a XAPI plugin, overcomes these limitations by allowing each host to define rules locally, with full access to all datapaths, ports, and interfaces.
+
+##### OpenFlow protocol
+
+```mermaid
+sequenceDiagram
+    participant XO SDN
+    participant XAPI
+    participant ovs-vswitchd
+
+    XO SDN->>XAPI: request network and vif information
+    XAPI->>XO SDN: return information
+    XO SDN->>XO SDN: build flow rules
+    XO SDN->>ovs-vswitchd: send OpenFlow rules
+```
+##### XAPI plugin
+
+```mermaid
+sequenceDiagram
+    participant XO SDN
+    participant XAPI
+    participant XAPI plugin
+    participant OVS
+
+    XO SDN->>XAPI: request network and vif information
+    XAPI->>XO SDN: return information
+    XO SDN->>XAPI: request to plugin
+    XAPI->>XAPI plugin: forward request
+    XAPI plugin->>OVS: query information
+    Note right of OVS: multiple calls
+    OVS->>XAPI plugin: return information
+    XAPI plugin->>XAPI plugin: build rules
+    XAPI plugin->>OVS: apply OpenFlow rules
+    XAPI plugin->>XAPI: return status
+    XAPI->>XO SDN: return status
+```
+
+### Packet flow
+
+This section traces the path of packets arriving from outside to reach a VM. The same principles apply to VM-to-VM traffic.
+
+:::tip
+NL stands for netlink. OVS uses Netlink almost exclusively, to communicate between the kernel and userland, through Generic Netlink commands.
+:::
+
+```mermaid
+sequenceDiagram
+    participant NIC
+    participant datapath
+    participant ovs-vswitchd
+    participant vif
+
+    Note left of NIC: 1st packet
+    NIC->>datapath: incoming packet
+    datapath->>datapath: flow cache lookup (miss)
+    datapath->>ovs-vswitchd: (NL) forward packet headers
+    ovs-vswitchd->>ovs-vswitchd: lookup flow table
+    ovs-vswitchd->>datapath: (NL) send flow command to process packet
+    datapath->>vif: send packet to the right port
+    ovs-vswitchd->>datapath: send flow cache update
+    datapath->>datapath: update flow cache
+    Note left of NIC: 2nd packet
+    NIC->>datapath: process packet
+    datapath->>datapath: matching flow cache lookup
+    datapath->>vif: send packet to the right port
+    Note left of NIC: no packets
+    datapath->>datapath: remove flow cache entry
+``` 

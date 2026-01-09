@@ -8,7 +8,7 @@ Even if one NIC can be enough for your host, having a dedicated NIC for storage 
 
 ## 🎓 Concepts
 
-This section describes the general concepts of networking in XCP-ng.
+This section describes the general concepts of networking in XCP-ng. For a deeper dive, check the [Network Architecture section](../../project/architecture/#%EF%B8%8F-network).
 
 XCP-ng creates a network for each physical NIC during installation. When you add a server to a pool, the default networks **are merged**. This is meant to be sure that all physical NICs with the same device name are attached to the same network, authorizing seamless VM flexibility on any host of the pool.
 
@@ -25,8 +25,20 @@ You can configure four different types of networks in XCP-ng:
 
 This section uses three types of server-side software objects to represent networking entities. These objects are:
 
-* A PIF, which represents a physical NIC on a host. PIF objects have a name and description, a UUID, the parameters of the NIC they represent, and the network and server they are connected to.
-* A VIF, which represents a virtual NIC on a virtual machine. VIF objects have a name and description, a UUID, and the network and VM they are connected to.
+* A PIF, which is a way to connect outside of a host. PIF objects have:
+    -  * a name
+    -  * a description
+    -  * a UUID
+    -  * the parameters of the NIC they represent
+    -  * the network and server they are connected to. 
+PIFs can represent:
+  * A physical NIC
+  * A VLAN on top of a physical NIC
+  * A bond of multiple NICs
+  * A tunnel interface (GRE/VXLAN)
+* A VIF, which represents a virtual NIC on a virtual machine. VIF objects have a name and description, a UUID, and the network and VM they are connected to. They can be:
+  * A PV driver backed device
+  * An emulated device
 * A network, which is a virtual Ethernet switch on a host. Network objects have a name and description, a UUID, and the collection of VIFs and PIFs connected to them.
 
 `xe` CLI, Xen Orchestra or XCP-ng center allow you to configure networking options. You can control the NIC used for management operations, and create advanced networking features such as VLANs and NIC bonds.
