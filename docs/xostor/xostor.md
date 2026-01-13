@@ -750,8 +750,30 @@ Repeat this command for every node.
 
 ### How to change a hostname/node name?
 
-:::tip
+:::warning
 The node name should _always_ be the same as the hostname. If the hostname is changed, the node name must be modified and vice versa.
+
+If not, volumes risk being inconsistent and outdated. Replicas may not be found, and you may not be able to execute certain actions on hosts (VM.start, snap, etc.).
+:::
+
+:::tip
+If you changed your hostname without this guide and now got errors, revert the hostname to its previous value and make sure all `*.res` files at `/var/lib/linstor.d/` on all machines of the pool are using the old hostname. Then reload linstor config on all machines.
+
+This can be done as follows:
+
+```bash
+# On all hosts
+MODIFIED_NAME='<MODIFIED_NAME>' # Hostname after changes, the one we want to revert
+ORIGINAL_NAME='<ORIGINAL_NAME>' # Hostname we want to go back to
+
+# On the incriminated host
+xe host-set-hostname-live host-uuid=<HOST_UUID> host-name=$ORIGINAL_NAME
+
+# On all hosts
+sed -i -e "s/$MODIFIED_NAME/$ORIGINAL_NAME/g" /var/lib/linstor.d/*.res
+systemctl restart linstor-satellite.service
+systemctl restart linstor-monitor.service
+```
 :::
 
 There is no easy way to do this, the trick is to create a new node and remove the old one. Here are the steps to follow:
