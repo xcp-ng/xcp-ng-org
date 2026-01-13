@@ -1154,6 +1154,11 @@ On each host, create a new PV and VG using your cache devices:
 vgcreate linstor_group_cache <CACHE_DEVICES>
 ```
 
+Using `linstor`, create new storage pools for all nodes:
+```
+linstor storage-pool create lvm <NODE_NAME> linstor_group_cache linstor_group_cache
+```
+
 Then you can enable the cache with a few commands using the linstor controller.
 
 Verify the group to modify, it must start with "xcp-sr-" (generally `linstor_group_thin_device` for thin):
