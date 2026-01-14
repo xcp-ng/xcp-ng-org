@@ -1673,10 +1673,11 @@ Attempt to bring up the specified physical interface.
 ### `pif-reconfigure-ip`
 
 ```
-pif-reconfigure-ip uuid=uuid_of_pif [mode=dhcp|mode=static] gateway=network_gateway_address IP=static_ip_for_this_pif netmask=netmask_for_this_pif [DNS=dns_address]
+pif-reconfigure-ip uuid=uuid_of_pif [mode=dhcp|mode=static|mode=none] gateway=network_gateway_address IP=static_ip_for_this_pif netmask=netmask_for_this_pif [DNS=dns_address]
 ```
 
 Modify the IP address of the PIF. For static IP configuration, set the `mode` parameter to `static`, with the `gateway`, `IP`, and `netmask` parameters set to the appropriate values. To use DHCP, set the `mode` parameter to `DHCP` and leave the static parameters undefined.
+If you set the `mode` to `none`, XXXXXXX will happen.
 
 :::tip
 Using static IP addresses on physical network interfaces connected to a port on a switch using Spanning Tree Protocol with STP Fast Link turned off (or unsupported) results in a period during which there is no traffic.
