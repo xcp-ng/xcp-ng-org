@@ -1180,6 +1180,19 @@ The previous and following commands are only valid for a thin configuration. For
 You can list caches on a host using `dmsetup ls`. Also one important thing, a cache is only created on diskful resources.
 :::
 
+### How to disable dm-cache (Device mapper cache)?
+
+Execute these commands:
+```
+linstor vg set-property xcp-sr-linstor_group_thin_device 0 Cache/CachePool
+linstor rg modify xcp-sr-linstor_group_thin_device --layer-list ""
+```
+
+And for each node:
+```
+linstor sp delete <NODE_NAME> linstor_group_cache
+```
+
 #### How to configure the cache size?
 
 By default, a VDI uses a cache size of 1% of its volume size. But it can be changed globally for all VDIs:
