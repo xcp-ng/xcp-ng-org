@@ -138,6 +138,11 @@ If for some reason the NIC order between hosts doesn't match up, you can fix it 
 These commands are meant to be done on non-active interfaces. Typically this will be done directly after install, before even joining a pool.
 :::
 
+:::warning
+Always reboot the host after applying these changes.
+Using the commands below without rebooting can cause errors, as many system components will still be tied to the old interface names.
+:::
+
 ```
 interface-rename --help
 ```
@@ -154,10 +159,10 @@ ifconfig eth4 down
 ifconfig eth8 down
 ```
 
-The most common use will be an update statement like the following:
-```
-interface-rename --update eth4=00:24:81:80:19:63 eth8=00:24:81:7f:cf:8b
-```
+The most common use will be an update statement like:
+
+`interface-rename --update eth4=00:24:81:80:19:63 eth8=00:24:81:7f:cf:8b`
+
 This example will set the mac-address for eth4 & eth8, switching them in the process.
 
 The XAPI database needs the old PIFs removed. First list your PIFs for the affected NICs:
