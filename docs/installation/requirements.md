@@ -25,20 +25,22 @@ The system requirements for XCP-ng are:
 ### CPUs
 
 - One or more 64-bit x86 CPUs, minimum 1.5 GHz; 2 GHz or faster multicore CPUs are recommended.
-- To run Windows VMs or recent Linux versions, an Intel VT or AMD-V 64-bit x86-based system with one or more CPUs is required.
+- Hardware virtualization must be enabled (Intel VT-x or AMD-V).
+- Since XCP-ng 8.3, CPU must support SLAT (Intel EPT or AMD RVI/NPT).
+- For stability and proper support of some features, enabling IOMMU (Intel VT-d or AMD-Vi) is recommended.
 
-> **Note**: For Windows VMs or newer Linux distributions, enable hardware virtualization in the BIOS. It may be disabled by default—consult your BIOS documentation for guidance.
-
-- For VMs running supported paravirtualized Linux, a standard 64-bit x86-based system with one or more CPUs is required.
+:::tip
+Depending on your BIOS, hardware virtualization may be disabled by default, so make sure to double-check and enable it. Refer to your BIOS documentation for guidance.
+:::
 
 ### Memory
 
-- Minimum 2 GB, recommended 4 GB or more.
+- Minimum: 2 GB (Recommended: 8 GB or more).
 - A fixed amount of RAM is allocated to the control domain (dom0). Optimal allocation depends on your workload.
 
 ### Disk Space
 
-- Local storage (PATA, SATA, SCSI) with a minimum of 46 GB, recommended 70 GB or more.
+- Local storage (PATA, SATA, SCSI, NVMe) with a minimum of 46 GB. Recommended: 70 GB or more.
 - SAN access via HBA (not software) when installing with multipath boot from SAN.
 
 For more details, refer to the [Hardware Compatibility List (HCL)](../../installation/hardware).
@@ -98,7 +100,7 @@ The maximum number of supported logical processors may vary depending on the CPU
 XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
 :::
 
-- Up to 960 logical processors, depending on CPU support (theoretical, untested: 1024).
+- Up to 960 logical processors, depending on CPU support. **Note**: The theoretical, untested limit is 2,048 logical processors.
 
 #### XCP-ng 8.2 LTS
 
@@ -122,9 +124,13 @@ Below are the supported limits for virtual machines on XCP-ng.
 
 - **Virtual CPUs (vCPUs) per VM**:
   - For untrusted VMs, the security-supported limit is **32 vCPUs**.
-  - For trusted VMs, the tested limits are **128 vCPUs** in BIOS mode and **96 vCPUs** in UEFI mode. Developments are planned to increase these limits.
+  - For trusted VMs, the upper limits are **128 vCPUs** in BIOS mode and **96 vCPUs** in UEFI mode. Developments are planned to increase these limits.
 
-Guest OS support is also an important factor to consider.
+Guest OS may limit the amount of usable vCPUs.
+
+:::warning
+VMs with more than 32 vCPU may cause major system-wide performance degradation under very specific circumstances. Use with caution.
+:::
 
 #### XCP-ng 8.2 LTS
 
@@ -164,14 +170,14 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 - **Virtual Disk Images per VM (including CD-ROMs)**: Up to **241**. This is also influenced by the limits of your guest OS; refer to its documentation to ensure compatibility.
 - **Virtual CD-ROM drives per VM**: **1**.
 - **Maximum Virtual Disk Size**:
-  - **2,040 GiB** using storage drivers with the VHD format (`Local EXT`, `Local LVM`, `NFS`, `LVM over iSCSI`, `XOSTOR`, etc.).
+  - **2 TiB** using storage drivers with the VHD format (`Local EXT`, `Local LVM`, `NFS`, `LVM over iSCSI`, `XOSTOR`, etc.).
   - Nearly unlimited when using the `raw` storage driver or disk pass-through to the VM (note: snapshots and live migration are not supported in these cases).
-  - New storage drivers are under active development to overcome the **2,040 GiB** VHD limit while retaining features like snapshots and live migration.
+  - New storage drivers are under active development to overcome the **2 TiB** VHD limit while retaining features like snapshots and live migration.
 
 ### Networking
 
 - **Virtual Network Interface Controllers (NICs) per VM**: Up to **7**.
-  Note: Some guest operating systems may have stricter limits, or you may need to install XCP-ng Guest Tools to reach this maximum.
+  We recommend using paravirtualized devices is recommended. Support depends on guest operating system and whether or not XCP-ng Guest Tools are installed.
 
 ### Other
 
@@ -183,7 +189,7 @@ A resource pool is a collection of one or more servers (up to 64), which can be 
 
 ### Hardware Requirements
 
-- All servers must have compatible CPUs (same vendor — Intel or AMD). To run HVM VMs, CPUs must support virtualization.
+- All servers must have compatible CPUs (same vendor — Intel or AMD).
 
 ### Additional Pool Requirements
 
