@@ -24,6 +24,12 @@ Because a file must be rotated if a log exceeds 100 MiB, the `rsyslog` daemon is
 
 ## Specific config: `xensource.log`
 
+:::tip No longer applicable since update released in June 2024 for XCP-ng 8.2 LTS. 
+
+The `xensource.log` file is still rotated but the `config+script+cron` files mentioned bellow are deleted during this update process.
+It is now part of the normal log rotation, with its configuration moved to `/etc/logrotate.d/xapi` (and without the cron task).
+:::
+
 `xensource.log` has many particular and different configuration parameters, so another `logrotate` config is used: `/etc/xensource/xapi-logrotate.conf` in a shell script `/opt/xensource/libexec/xapi-logrotate.sh` that executes `logrotate` with this specific config.
 
 There is normally no need to run it manually, a cron task `/etc/cron.d/xapi-logrotate.cron` is present to schedule it each hour.
