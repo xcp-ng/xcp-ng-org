@@ -1176,6 +1176,11 @@ On each host, create a new PV and VG using your cache devices:
 vgcreate linstor_group_cache <CACHE_DEVICES>
 ```
 
+Using `linstor`, create new storage pools for all nodes:
+```
+linstor storage-pool create lvm <NODE_NAME> linstor_group_cache linstor_group_cache
+```
+
 Then you can enable the cache with a few commands using the linstor controller.
 
 Verify the group to modify, it must start with "xcp-sr-" (generally `linstor_group_thin_device` for thin):
@@ -1196,6 +1201,19 @@ The previous and following commands are only valid for a thin configuration. For
 :::tip
 You can list caches on a host using `dmsetup ls`. Also one important thing, a cache is only created on diskful resources.
 :::
+
+### How to disable dm-cache (Device mapper cache)?
+
+Execute these commands:
+```
+linstor vg set-property xcp-sr-linstor_group_thin_device 0 Cache/CachePool
+linstor rg modify xcp-sr-linstor_group_thin_device --layer-list ""
+```
+
+And for each node:
+```
+linstor sp delete <NODE_NAME> linstor_group_cache
+```
 
 #### How to configure the cache size?
 
