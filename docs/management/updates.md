@@ -223,7 +223,7 @@ Else base your decision on an educated guess. Look at the list of the updated pa
 * Other low-level packages may require a reboot too, for example `glibc`.
 * If you don't reboot, check that no task is currently running and restart the XAPI toolstack (`xe-toolstack-restart`).
 
-All updates are announced on [https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing](https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing) along with information about what steps are required after installing the update (reboot, toolstack restart, service restart...).
+All updates are announced on [https://xcp-ng.org/forum/topic/9964/xcp-ng-8-3-updates-announcements-and-testing](https://xcp-ng.org/forum/topic/9964/xcp-ng-8-3-updates-announcements-and-testing) along with information about what steps are required after installing the update (reboot, toolstack restart, service restart...).
 
 ## 🔥 XCP-ng 7.5/7.6 and live migrations
 
