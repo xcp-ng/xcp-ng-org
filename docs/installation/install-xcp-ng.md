@@ -12,7 +12,7 @@ If you want to use the netinstall ISO, see the [Netinstall section](#-netinstall
 
 ### Download and create media
 
-You can download the latest installer for XCP-ng 8.3 LTS from here: [https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.iso?https=1](https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.iso?https=1).
+You can download the latest installer for XCP-ng 8.3 LTS from here: [https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.2.iso?https=1](https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.2.iso?https=1).
 
 SHA256 checksums, GPG signatures and net-install ISOs are available [here](https://xcp-ng.org/#easy-to-install).
 
@@ -20,7 +20,7 @@ Then, create the install media (e.g. a USB key 1GB or larger should work):
 
 ```
 # example with XCP-ng 8.3
-dd if=xcp-ng-8.3.0-20250606.iso of=/dev/sdX bs=8M oflag=direct
+dd if=xcp-ng-8.3.0-20250606.2.iso of=/dev/sdX bs=8M oflag=direct
 ```
 
 Finally, boot on that media and go to the next section.
