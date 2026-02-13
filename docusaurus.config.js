@@ -14,6 +14,8 @@ const config = {
   favicon: 'img/xcpcrop128.png',
   trailingSlash: true,
   markdown: {
+    // Mermaid graphs
+    mermaid: true,
     hooks: {
       onBrokenMarkdownLinks: 'warn',
     },
@@ -32,10 +34,6 @@ const config = {
     locales: ['en'],
   },
 
-  // Mermaid graphs
-  markdown: {
-    mermaid: true,
-  },
   themes: ['@docusaurus/theme-mermaid'],
 
   scripts: [
