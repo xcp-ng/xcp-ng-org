@@ -366,6 +366,10 @@ linstor controller set-property DrbdOptions/AutoEvictAllowEviction False
 ```
 
 For each host of the pool (starting with the master), follow the instructions given in [this guide](../installation/upgrade/#-upgrade-via-installation-iso-recommended).
+:::warning
+Do not update the host following an upgrade until all hosts in the XOSTOR pool have been upgraded.
+Otherwise, it could pull more recent versions of the LINSTOR packages on the newly upgraded hosts. LINSTOR packages versions need to be aligned on the whole pool.
+:::
 
 :::warning
 If you have this error during upgrade, you must download the right ISO version as documented in [this section](#2-xcp-ng-iso-with-linstor-support):
