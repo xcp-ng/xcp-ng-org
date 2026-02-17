@@ -6,91 +6,29 @@ sidebar_position: 5
 
 All about the hardware supported by XCP-ng
 
+
+XCP-ng comes with a large range of hardware support.
+
+A given device may be supported at one of two levels:
+
+1. Presence on the [Hardware Compatibility List](#-hardware-compatibility-list-hcl) guarantees support by XCP-ng. With some exceptions described in the next section.
+2. Many devices outside the HCL are also supported, but are not tested routinely. See [Supported hardware outside the HCL](#-supported-hardware-outside-the-hcl).
+
 ## 📖 Hardware Compatibility List (HCL)
 
-Devices listed on [XenServer's Hardware Compatibility List](http://hcl.xenserver.com/) are supported.
+XCP-ng 8.3 shares a compatibility list with XenServer 8.4. Thus, devices listed on [XenServer's Hardware Compatibility List](http://hcl.xenserver.com/) are supported, with rare exceptions.
 
-For other hardware, see [Unlisted Hardware](#-unlisted-hardware).
+Exceptions include devices which require *proprietary* software components to operate (closed source drivers, for example). Such devices do not impede the use of XCP-ng, but their features cannot be exploited.
 
-## 🚫 Unlisted Hardware
+## ♻️ Supported hardware outside the HCL
 
-Many devices outside the HCL in fact work very well with XCP-ng. Being outside the HCL means that there have been not tests to ensure that they work. Most of the hardware support depends on the Linux kernel and thus support for hardware outside the HCL depends on how well the drivers are supported by the Linux kernel included in XCP-ng.
+Many devices outside the HCL actually work perfectly with XCP-ng. Contrarily to some hypervisors, XCP-ng does not demand the use of servers from a curated short list. Most of the hardware support depends on the Linux kernel drivers plus vendor drivers covering a very large range of devices.
 
-This section is a community-enriched list of pieces of hardware that do not belong to the HCL, along with information about how well they work (or not), workarounds, etc.
+What being absent from the HCL actually means is that we do not perform systematic tests on it, so we cannot offer the same level of guarantee as that offered for devices in the HCL. However, our large user community runs XCP-ng on a hardware range far beyond that of the official HCL, and we support them.
 
-### Supermicro / AMD EPYC CPU
+Concretely, if your hardware is not on the HCL, there's still a very high chance that you can use XCP-ng and benefit from professionnal support from Vates. And even if your testing uncovers an issue, don't give up immediately: we're willing to fix them, HCL or not.
 
-Reference: [https://xcp-ng.org/forum/topic/350/amd-epyc-compatible](https://xcp-ng.org/forum/topic/350/amd-epyc-compatible)
-
-EPYC CPUs are working well on XCP-ng, but people with SuperMicro motherboard saw random reboot sometimes. Turning off the C-state control solved the issue:
-
-In BIOS:
- - Advanced -> CPU Configuration -> Global C-state Control: Disabled
- - Advanced -> North Bridge -> Determinism Slider: Performance
-
-### Network Cards
-
-
-#### Emulex Corporation OneConnect NIC (Skyhawk) (rev 10) - 10Gbps NIC "OCe14102-NT"
-
-**Current State:** Works, but sporadic card/port lockups - avoid in production!
-
-- PCI-Vendor-ID: 10df (Emulex Corporation)
-- PCI-Device-ID: 0720
-- Downloads (long loading times, wait a bit!): [https://www.broadcom.com/support/download-search/?pg=Legacy+Products&pf=Legacy+Products&pn=OCe14102-NT+Ethernet+Network+Adapter&pa=All&po=&dk=](https://www.broadcom.com/support/download-search/?pg=Legacy+Products&pf=Legacy+Products&pn=OCe14102-NT+Ethernet+Network+Adapter&pa=All&po=&dk=)
-
-
-Known to work (relatively stable) with latest Firmware 11.2.1153.23 on XCP-ng 7.5
-* Bootable Upgrade ISO: [https://docs.broadcom.com/docs/12378839](https://docs.broadcom.com/docs/12378839)
-    * If you are coming from firmware below 10.0.803.37 -> "You must perform the firmware
-update procedure twice to ensure that the flash regions are properly configured, and
-you must reboot the system after each firmware update." (from Release Notes)
-* Firmware Release Notes: [https://docs.broadcom.com/docs/12378898](https://docs.broadcom.com/docs/12378898)
-* Linux Driver Release Notes: [https://docs.broadcom.com/docs/1211170215974](https://docs.broadcom.com/docs/1211170215974)
-
-Known Issues (with old firmware; also on XenServer 7.2 with current firmware)
-
-* Card Lockup
-    * pulling the network cable puts the card in a locked state, LED's keeps flashing; putting the cable back does nothing; network connection stays lost
-    * Solutions
-        * Short Term: power off the host and pull power cords (the card needs to be completely powerless!, just switching the host OFF is not enough)
-        * Mid Term: Upgrade Firmware to match XCP-ng Driver version (for XCP-ng 7.5 -> 11.2.XXXXX)
-        * Long Term: Avoid Emulex cards!
-
-
-#### Broadcom Netxtreme II BCM57711E
-
-(or BCM5709 or ...)
-
-On XCP-ng \<= 8.0, using default `bnx2x` driver triggers a kernel Oops on XCP-ng (no ping and freezing the host):
-
-![Kernel boot logs showing the bnx2x driver creating an Oops in the kernel.](../../assets/img/bnx2x-oops.png)
-
-Fixed drivers have been released as official [updates](../../management/updates).
-
-
-#### Marvell/Aquantia AQC111U
-
-There are several USB 5Gbps NICs based on this chipset available on the market. A [dedicated kernel module driver](https://github.com/xcp-ng-rpms/aqc111u-module) is available to add support to XCP-ng for _(supposedly)_ all NICs based on Marvell _(originally Aquantia)_ AQC111U over USB3. The driver should not be confused with the generic AQC111 that supports the whole family of NICs based on the AQC111 chipset, but NOT the ones connected over USB3. The kernel module provides support only for AQC111U-based NICs.
-
-The kernel module is just a repackage for XCP-ng of [the AQC111U drivers available for Linux Kernel 3.10 on the Marvell website](https://www.marvell.com/support/downloads.html).
-
-To install the driver follow the instructions provided in the [**Alternate drivers** section below](#-alternate-drivers) and use `aqc111u-module` as `package-name` _(`module-name` would be `aqc111u`)_.
-
-Known compatible NICs are [^1]:
-
-[^1]: There might be other NICs compatible as long as they are based on the Marvell AQC111U chip.
-
-| Brand    | Model      | Tested             |
-|----------|:----------:|:------------------:|
-| QNAP     | QNA-UC5G1T | :white_check_mark: |
-| Sabrent  | NT-SS5G    | :white_check_mark: |
-| StarTech | US5GA30    |                    |
-| StarTech | US5GC30    |                    |
-| Trendnet | TUC-ET5G   |                    |
-
-Despite the AQC111U-based adapters support the IEEE 802.3bz standard _(AKA 5BASE-T)_ and will correctly negotiate with compatible peripherals the communication at 5Gbps, the actual bandwidth will not exceed 3.5Gbps due to the overhead of the incapsulation of the ethernet protocol over the 5Gbps connection via USB 3.0 _(AKA USB 3.1 Gen 1)_.
-
+Let's mention one particular kind of exceptions to support, though. **Security on older hardware having hardware vulnerabilities.** Older hardware, while usually still running very well - and we're all for using existing hardware while it lasts rather than buying new machines - may not receive hardware-related security updates from their very vendor. In particular those related to side-channel attacks (Spectre, Meltdown, and everything that ensued). In this case, you can use XCP-ng, but without expecting protection against this kind of vulnerablity, because it simply doesn't depend on XCP-ng (or any other hypervisor): it depends on the hardware vendor.
 
 ## 🧰 Alternate drivers
 
@@ -188,3 +126,82 @@ yum remove kernel-alt
 ```
 
 This will remove the added grub entry automatically too and set default boot to main kernel if needed.
+
+## 🛠️ Tips related to specific hardware
+
+Below is a non-exhaustive list of server models or devices for which the XCP-ng community provided extra tips.
+
+This list is incomplete. A lot more can be found on our forum.
+
+### Supermicro / AMD EPYC CPU
+
+Reference: [https://xcp-ng.org/forum/topic/350/amd-epyc-compatible](https://xcp-ng.org/forum/topic/350/amd-epyc-compatible)
+
+EPYC CPUs are working well on XCP-ng, but people with SuperMicro motherboard saw random reboot sometimes. Turning off the C-state control solved the issue:
+
+In BIOS:
+ - Advanced -> CPU Configuration -> Global C-state Control: Disabled
+ - Advanced -> North Bridge -> Determinism Slider: Performance
+
+### Network Cards
+
+
+#### Emulex Corporation OneConnect NIC (Skyhawk) (rev 10) - 10Gbps NIC "OCe14102-NT"
+
+**Current State:** Works, but sporadic card/port lockups - avoid in production!
+
+- PCI-Vendor-ID: 10df (Emulex Corporation)
+- PCI-Device-ID: 0720
+- Downloads (long loading times, wait a bit!): [https://www.broadcom.com/support/download-search/?pg=Legacy+Products&pf=Legacy+Products&pn=OCe14102-NT+Ethernet+Network+Adapter&pa=All&po=&dk=](https://www.broadcom.com/support/download-search/?pg=Legacy+Products&pf=Legacy+Products&pn=OCe14102-NT+Ethernet+Network+Adapter&pa=All&po=&dk=)
+
+
+Known to work (relatively stable) with latest Firmware 11.2.1153.23 on XCP-ng 7.5
+* Bootable Upgrade ISO: [https://docs.broadcom.com/docs/12378839](https://docs.broadcom.com/docs/12378839)
+    * If you are coming from firmware below 10.0.803.37 -> "You must perform the firmware
+update procedure twice to ensure that the flash regions are properly configured, and
+you must reboot the system after each firmware update." (from Release Notes)
+* Firmware Release Notes: [https://docs.broadcom.com/docs/12378898](https://docs.broadcom.com/docs/12378898)
+* Linux Driver Release Notes: [https://docs.broadcom.com/docs/1211170215974](https://docs.broadcom.com/docs/1211170215974)
+
+Known Issues (with old firmware; also on XenServer 7.2 with current firmware)
+
+* Card Lockup
+    * pulling the network cable puts the card in a locked state, LED's keeps flashing; putting the cable back does nothing; network connection stays lost
+    * Solutions
+        * Short Term: power off the host and pull power cords (the card needs to be completely powerless!, just switching the host OFF is not enough)
+        * Mid Term: Upgrade Firmware to match XCP-ng Driver version (for XCP-ng 7.5 -> 11.2.XXXXX)
+        * Long Term: Avoid Emulex cards!
+
+
+#### Broadcom Netxtreme II BCM57711E
+
+(or BCM5709 or ...)
+
+On XCP-ng \<= 8.0, using default `bnx2x` driver triggers a kernel Oops on XCP-ng (no ping and freezing the host):
+
+![Kernel boot logs showing the bnx2x driver creating an Oops in the kernel.](../../assets/img/bnx2x-oops.png)
+
+Fixed drivers have been released as official [updates](../../management/updates).
+
+
+#### Marvell/Aquantia AQC111U
+
+There are several USB 5Gbps NICs based on this chipset available on the market. A [dedicated kernel module driver](https://github.com/xcp-ng-rpms/aqc111u-module) is available to add support to XCP-ng for _(supposedly)_ all NICs based on Marvell _(originally Aquantia)_ AQC111U over USB3. The driver should not be confused with the generic AQC111 that supports the whole family of NICs based on the AQC111 chipset, but NOT the ones connected over USB3. The kernel module provides support only for AQC111U-based NICs.
+
+The kernel module is just a repackage for XCP-ng of [the AQC111U drivers available for Linux Kernel 3.10 on the Marvell website](https://www.marvell.com/support/downloads.html).
+
+To install the driver follow the instructions provided in the [**Alternate drivers** section below](#-alternate-drivers) and use `aqc111u-module` as `package-name` _(`module-name` would be `aqc111u`)_.
+
+Known compatible NICs are [^1]:
+
+[^1]: There might be other NICs compatible as long as they are based on the Marvell AQC111U chip.
+
+| Brand    | Model      | Tested             |
+|----------|:----------:|:------------------:|
+| QNAP     | QNA-UC5G1T | :white_check_mark: |
+| Sabrent  | NT-SS5G    | :white_check_mark: |
+| StarTech | US5GA30    |                    |
+| StarTech | US5GC30    |                    |
+| Trendnet | TUC-ET5G   |                    |
+
+Despite the AQC111U-based adapters support the IEEE 802.3bz standard _(AKA 5BASE-T)_ and will correctly negotiate with compatible peripherals the communication at 5Gbps, the actual bandwidth will not exceed 3.5Gbps due to the overhead of the incapsulation of the ethernet protocol over the 5Gbps connection via USB 3.0 _(AKA USB 3.1 Gen 1)_.
