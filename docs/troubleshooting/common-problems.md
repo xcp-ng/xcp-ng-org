@@ -296,3 +296,17 @@ You will need to run the command on all hosts of the pool.
 To know more about certificates in XAPI, check out the [XAPI documentation](https://xapi-project.github.io/new-docs/design/pool-certificates/index.html)
 
 ---
+
+## Installation hanging at "Select Keymap"
+
+### Issue
+
+When installing XCP-ng, at the screen displaying **Please select the keymap you would like to use**, the installer appears to freeze or stop accepting keyboard inputs. 
+
+### Cause
+
+This issue is often caused by keyboard being on **Scroll Lock** mode. 
+
+### Solution
+
+Disable **Scroll Lock** on your keyboard (physical or virtual). Input should resume immediately.
