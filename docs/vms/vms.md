@@ -91,7 +91,7 @@ Certain applications, such as Oracle ASM, require a unique identifier for disk d
 ### Windows Guest Tools
 
 Windows guests need both the device drivers and the management agent.
-* The **device drivers** bring optimized I/O performances.
+* The **device drivers** bring optimized I/O performance, as well as support for VM migration, suspend and power controls.
 * The **management agent** brings more manageability of the VM from XCP-ng, and guest metrics reporting to the host.
 
 #### XCP-ng vs XenServer tools
@@ -106,10 +106,16 @@ However, both sets of guest tools remain supported for Windows guests running on
 The XCP-ng driver package contains the drivers and guest agents for Windows VMs running on XCP-ng.
 It supports the following operating systems:
 
-- Windows 10 1607 and later
-- Windows Server 2016 and later
+- Windows 10 x64, version 1607 and later
+- Windows Server 2016 x64 and later
 
 **Download**: [https://github.com/xcp-ng/win-pv-drivers/releases](https://github.com/xcp-ng/win-pv-drivers/releases)
+
+:::warning
+As a reminder, operating systems that have reached their End of Life (EOL) are not supported by XCP-ng, nor by the XCP-ng guest tools.
+However, if you still have critical workloads that require these unsupported OSes, we recommend using them without guest tools.
+Note that this will cause migration and suspending of UEFI VMs to stop working.
+:::
 
 ##### Prerequisite: Disable "Manage Citrix PV drivers via Windows Update"
 The first step before installing XCP-ng Windows Guest Tools — before the VM creation and first start — is to make sure that Windows Update is not going to install Citrix tools automatically at first boot.
@@ -306,13 +312,11 @@ If you absolutely cannot update, apply the mitigation script provided by Vates a
 
 For older operating systems (Windows 7 up to Windows 8.1/Server 2012 R2), use our [legacy mitigation script](https://github.com/xcp-ng/win-pv-drivers/blob/xcp-ng-9.1/extras/Install-XSA468Workaround-Win7.ps1) instead.
 
-Note that this mitigation script only covers vulnerabilities in the *Xen PV Interface* driver.
-
-You should run the mitigation script in Scan mode afterwards to make sure the vulnerability is effectively mitigated.
-
-:::tip
-The mitigation script will not remove the vulnerability alert from Xen Orchestra.
-Once you have ensured that the mitigation was successful, you can set the `HIDE_XSA468` VM tag in Xen Orchestra (5.107.2 and later) to hide the alert.
+:::warning
+- This mitigation script only covers vulnerabilities in the *Xen PV Interface* driver.
+- Always run the mitigation script in Scan mode afterwards to make sure the vulnerability is effectively mitigated.
+- The mitigation script will not remove the vulnerability alert from Xen Orchestra.
+  Once you have ensured that the mitigation was successful, you can set the `HIDE_XSA468` VM tag in Xen Orchestra (5.107.2 and later) to hide the alert.
 :::
 
 ##### How is Vates helping to fix this vulnerability?
