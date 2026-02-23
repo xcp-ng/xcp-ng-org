@@ -125,23 +125,37 @@ systemctl restart linstor-satellite
 
 Then you can follow the next CLI instructions to manually update the pool.
 
-#### 3. Install the updates
+#### 3. Understand what kind of update is needed
 
-Run this on each server, starting with the pool master:
+Depending on the packages being updated, only the control plane might need to be restarted, or the whole host might need a restart.
+Please consult the [updates tag](https://xcp-ng.org/blog/tag/update/) in the XCP-ng blog for more information on whether restarting the control plane is enough or not to apply the update. If in doubt, follow the procedure to restart the hosts, there's more information in the section "[When to reboot?](#-when-to-reboot)".
+
+#### 4. Updating with host reboot
+
+To update each of the hosts, they need to be disabled, evacuated, updated and finally restarted, one host at a time, and starting with the pool coordinator:
 ```
+xe host-disable uuid=<uuid>
+xe host-evacuate uuid=<uuid>
 yum update
 ```
 
-#### 4. Restart the XAPI toolstack on every host
+Instead of being evacuated, you may choose to shut down the VMs if interrupting the services that the VM provides is acceptable.
+This might be desirable if the VM is using local storage and migrating will take too long, there's not enough storage in other servers, or it's the only host in the pool.
 
+Once you've made sure that there are no tasks happening in the host by running `xe task-list`, you can reboot the host. If the reboot happens while any task on the host is running, it will be interrupted and cancelled.
+
+Once the host has restarted, it should be enabled back again. If it hasn't enabled itself, enable it with `xe host-enable uuid=<uuid>`, and repeat the procedure with another host of the pool, until all are updated.
+
+### 5. Updating with a control plane restart
+
+To update each of the hosts, they need to be disabled, updated and finally the control plane needs to be restarted, one host at a time, and starting with the pool coordinator:
 ```
-xe-toolstack-restart
+xe host-disable uuid=<uuid>
+yum update
 ```
-This way some changes are taken into account without even rebooting. Even if you plan to reboot, it's good to do this first to avoid live migration issues that could happen in some cases during the update process. Start with the pool master. Check that no task is currently running (`xe task-list`) before restarting the toolstack. Any running task would be interrupted and cancelled.
+Once you've made sure that there are no tasks happening in the host by running `xe task-list`, you can restart the control plane with `xe-toolstack-restart`.
 
-#### 5. Consider rebooting the hosts, starting with the pool master
-
-See below "[When to reboot?](#-when-to-reboot)".
+Once the control plane has been fully restarted, it should be enabled back again. If it hasn't enabled itself, enable it with `xe host-enable uuid=<uuid>`, and repeat the procedure with another host of the pool, until all are updated.
 
 ### From Xen Orchestra
 
