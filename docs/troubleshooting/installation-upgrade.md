@@ -48,7 +48,7 @@ You can also use the `network_config` parameter (which defaults to `dhcp`) to de
 
 ```
 network_config=dhcp[:vlan=VLAN]
-network_config=static:ip=IP;netmask=NETMASK[;gateway=GW][;dns=DNS1[,DNS2]][;domain=DOMAIN][;vlan=VLAN]
+network_config=static:"ip=IP;netmask=NETMASK[;gateway=GW][;dns=DNS1[,DNS2]][;domain=DOMAIN][;vlan=VLAN]"
 ```
 
 :::note
