@@ -518,7 +518,7 @@ Networking in XCP-ng centers on “networks”, each backed by an OVS bridge on 
 Two key points:
 - If no VM on a host uses a network, its bridge is not created, and the PIF appears “Disconnected” in Xen Orchestra.
 - The PIF is not forcibly disconnected if no more VMs use it.
-This is expected and causing any issue.
+This is expected and does not cause any issue.
 :::
 
 A bridge consists of:
