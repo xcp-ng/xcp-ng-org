@@ -309,13 +309,7 @@ Windows VMs do not require extra installation packages because the Windows Loade
 
 :::warning
 If your VMs have any unsigned drivers, they will fail to load after enabling Secure Boot.
-:::
-
-:::warning Currently, only the PV drivers from Citrix work with Secure Boot.
-
-Enabling Secure Boot on a Windows VM that has XCP-ng drivers will render the VM unbootable.
-
-The key that signed XCP-ng drivers has expired and we are still in the process of getting a new one from Microsoft... Which is taking longer than expected (process started in August 2021).
+Be sure to use the latest XCP-ng or Citrix tools package.
 :::
 
 ### Setup Secure Boot for Linux VMs
