@@ -231,8 +231,11 @@ More information available on [XO official documentation for SDN controller](htt
 
 ### OpenFlow Rules
 
-:::tip
-`xcp-ng-xapi-plugins` >= 0.15.0 is required. To check the version, run  `yum info xcp-ng-xapi-plugins`.
+This section describes the new implementation (currently available in BETA). For the previous implementation, see the [Xen Orchestra documentation](https://docs.xen-orchestra.com/sdn_controller#openflow-protocol).
+
+:::warning
+- This is still in BETA. Do not use in production!
+- `xcp-ng-xapi-plugins` >= 0.15.0 is required. To check the version, run  `yum info xcp-ng-xapi-plugins`.
 :::
 
 Using Open vSwitch OpenFlow rules, you can setup traffic rules limiting some network accesses directly at the hypervisor vswitch level. No need for an additional layer of firewalling or filtering setup or equipment.
