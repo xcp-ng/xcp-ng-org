@@ -187,20 +187,17 @@ If working on a pool, you can set this for all the PIFs of the pool from a singl
 
 ### Cause
 
-If you need to modify your XCP-ng root password, you may follow the steps below.
+The root credentials of a pool are believed to be compromised and need to be changed.
 
 ### Solution
 
-The full prodecure can also be found on [this page](https://linuxconfig.org/how-to-reset-an-administrative-root-password-on-xenserver-7-linux).
+To change the password of all hosts in a pool, SSH into the coordinator host and create a file. Write the password as its contents, then run:
 
-* Reboot your XCP-ng into Grub boot menu.
-* Select XCP-ng boot menu entry and press <kbd>e</kbd> key to edit boot options.
-* Locate the read-only parameter ```ro``` and replace it with ```rw init=/sysroot/bin/sh```.
-* Press <kbd>Ctrl</kbd> + <kbd>X</kbd> to boot into single-mode.
-* From the Emergency Mode prompt, execute the command **chroot /sysroot**.
-* Once in single-mode, use ```passwd``` command to reset your XCP-ng root password.
-* Reboot XCP-ng by sending <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Suppr</kbd>.
-* If everything went well, you should now be able to login with your new XCP-ng password.
+```bash
+xe user-password-change new="$(< /path/to/password_file)"
+```
+
+After the password has been set, please place a copy somewhere safe and delete the password file.
 
 ---
 
