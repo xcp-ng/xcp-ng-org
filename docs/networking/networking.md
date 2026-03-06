@@ -349,7 +349,7 @@ It means the TLS certificate, used to identify an SDN controller, on the host do
 
 The issue should be fixed.
 
-## 🚏 Static routes
+## Static routes
 
 Sometimes you need to add extra routes to an XCP-ng host. It can be done manually with an `ip route add 10.88.0.0/14 via 10.88.113.193` (for example). But it won't persist after a reboot.
 
@@ -362,10 +362,10 @@ xe network-param-set uuid=<network UUID> other-config:static-routes=10.88.0.0/14
 ```
 
 :::tip
-You **must** restart the toolstack on the host for the new route to be added!
+You **must** restart the toolstack on **every host in the pool** for the new route to be added!
 :::
 
-You can check the result with a `route -n` afterwards to see if the route is now present. If you must add multiple static routes, it must be in one command, and the routes separated by commas. For example, to add both 10.88.0.0/14 via 10.88.113.193 *and* 10.0.0.0/24 via 192.168.1.1, you would use this:
+You can check the result with a `route -n` afterwards on each host to see if the route is now present. It may take a short time to appear. If you must add multiple static routes, it must be in one command, and the routes separated by commas. For example, to add both 10.88.0.0/14 via 10.88.113.193 *and* 10.0.0.0/24 via 192.168.1.1, you would use this:
 ```
 xe network-param-set uuid=<network UUID> other-config:static-routes=10.88.0.0/14/10.88.113.193,10.0.0.0/24/192.168.1.1
 ```
