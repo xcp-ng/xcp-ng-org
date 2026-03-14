@@ -40,6 +40,12 @@ You can deploy Xen Orchestra from a web UI, using:
 * [Web deploy directly](https://vates.tech/deploy/) (fastest & recommended)
 * Using [XO Lite](../manage-locally/xo-lite.md)
 
+:::info
+The deployment process may take some time, as it involves importing an XOA VM.
+You can check the progress in [XO Lite](../manage-locally/xo-lite.md)
+(Pool -> Host -> Tasks)
+:::
+
 ### Alternative way to deploy XOA
 
 From the CLI using a deploy script, by running this in your XCP-ng host:
