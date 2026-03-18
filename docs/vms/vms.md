@@ -197,8 +197,7 @@ XenClean is an utility for cleanly removing Xen PV drivers and management agents
 * XenServer VM Tools for Windows, versions 7.1 to 9.4
 * Other Xen drivers
 
-It is included in the installation ISO of XCP-ng Windows Guest Tools 9.0 and above.
-You'll find the ISO download in the Assets section.
+It is available as a standalone EXE program, and is included in the installation ISO of XCP-ng Windows Guest Tools 9.0 and above.
 [See the newest releases here.](https://github.com/xcp-ng/win-pv-drivers/releases)
 
 :::note
@@ -207,14 +206,14 @@ Before running XenClean:
 * Take a snapshot of your VM..
 * You should always use the latest version of XenClean regardless of your Windows PV driver version. The same applies to XenBootFix.
 * You should disable the "Manage Citrix PV drivers via Windows Update" option on your VM. Otherwise, Windows may reinstall PV drivers from Windows Update after rebooting.
-* If you downloaded XenClean from the internet, you may need to unblock the script file before running it. This can be done by right-clicking the file, then choosing **Properties** - **Unblock** - **OK**.
 * There is no need to uninstall the tools manually, as XenClean will also take care of that.
 :::
 
-To use XenClean, simply run the `Invoke-XenClean.ps1` script **as Administrator**. Your system will automatically reboot.
+To use XenClean, simply run the `XenClean.exe` program, which requires Administrator privileges. Your system will automatically reboot.
 
 :::tip
-XenClean leaves its log files at the current directory and at `%TEMP%\xenclean-<time>`. Please provide these logs in case of uninstallation failure.
+XenClean leaves its log file at the root of the system drive.
+Please provide this log file in case of uninstallation failure.
 :::
 
 ### Windows Guest Tools security
