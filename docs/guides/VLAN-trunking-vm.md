@@ -8,13 +8,17 @@ With some help from others in the [forums](https://xcp-ng.org/forum/topic/729/ho
 
 ## Two Approaches
 
-There are two approaches to vlans in xcp-ng. The first is to create a vif for each VLAN you want your router to route traffic for then attach the vif to your VM. The second is to pass through a trunk port from dom0 onto your router VM.
+There are two approaches to VLANs in XCP-ng. The first is to create a VIF for each VLAN you want your router to route traffic for then attach the VIF to your VM. The second is to pass through a trunk port from dom0 onto your router VM.
 
 ### Multiple VIFs
 
-By far, this is the easiest solution and perhaps the "officially supported" approach for xcp-ng. When you do this, dom0 handles all the VLAN tagging for you and each vif is just presented to your router VM as a separate virtual network interface. It's like you have a bunch of separate network cards installed on your router where each represents a different VLAN and is essentially attached to a VLAN access (untagged) port on your switch. There is nothing special for you to do, this _just works_. If you require 7 vifs or less for your router then this might be the easiest approach.
+:::note
+The guide below was written by an external contributor and we're leaving it as-is. However, as of XCP-ng 8.3, Xen Orchestra and XCP-ng support up to **16 VIFs per VM**, instead of 7 as stated in the guide. 
+:::
 
-The problem with this approach is when you have many vlans you want to configure on your router. If you read through the thread I linked to at the top of this page you'll notice the discussion about where I was unable to attach more than 7 vifs to my pfSense VM. XO nor XCP-ng Center allow you to attach more than seven. This appears to be some kind of limit somewhere in Xen. Other users have been able to attach more than 7 vifs via CLI, however when I tried to do this myself my pfSense VM became unresponsive once I added the 8th vif. More details on that problem are discussed in the thread.
+By far, this is the easiest solution and perhaps the "officially supported" approach for XCP-ng. When you do this, dom0 handles all the VLAN tagging for you and each VIF is just presented to your router VM as a separate virtual network interface. It's like you have a bunch of separate network cards installed on your router, where each represents a different VLAN and is essentially attached to a VLAN access (untagged) port on your switch. There is nothing special for you to do, this _just works_. If you require 7 VIFs or less for your router, then this might be the easiest approach.
+
+The problem with this approach is when you have many VLANs you want to configure on your router. If you read through the thread I linked to at the top of this page you'll notice the discussion about where I was unable to attach more than 7 vifs to my pfSense VM. XO nor XCP-ng Center allow you to attach more than seven. This appears to be some kind of limit somewhere in Xen. Other users have been able to attach more than 7 vifs via CLI, however when I tried to do this myself my pfSense VM became unresponsive once I added the 8th vif. More details on that problem are discussed in the thread.
 
 Another problem with this approach, perhaps only specific to pfSense, is that when you attach many vifs, you must disable TX offloading on each and every vif otherwise you'll have all kinds of problems. This was definitely a red flag for me. Initially I'm starting with 7 vlans and 9 networks total with short term requirements for at least another 3 vlans for sure and then who knows how many down the road. In this approach, every time you have to create a new VLAN by adding a vif to the VM, you will have to reboot the VM.
 
