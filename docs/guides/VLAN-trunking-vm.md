@@ -2,95 +2,147 @@
 
 How to configure a VLAN trunk?
 
-This document will describe how to configure a VLAN trunk port for use in a VM running on xcp-ng. The typical use case for this is you want to run your network's router as a VM and your network has multiple vlans.
-
-With some help from others in the [forums](https://xcp-ng.org/forum/topic/729/how-to-connect-vlan-trunk-to-vm/11), I was able to get a satisfactory solution implemented using [pfSense](https://pfsense.org) and so this document will discuss how to implement this solution using pfSense as your router. In theory, the same solution should apply to other router solutions, but it is untested. Feel free to update this document with your results.
-
-## Two Approaches
-
-There are two approaches to VLANs in XCP-ng. The first is to create a VIF for each VLAN you want your router to route traffic for then attach the VIF to your VM. The second is to pass through a trunk port from dom0 onto your router VM.
-
-### Multiple VIFs
+This document describes how to configure a VLAN trunk port for use in a VM running on XCP-ng.
+The typical use case for this is you want to run your network's gateway as a VM and your network has multiple vlans.
 
 :::note
-The guide below was written by an external contributor and we're leaving it as-is. However, as of XCP-ng 8.3, Xen Orchestra and XCP-ng support up to **16 VIFs per VM**, instead of 7 as stated in the guide. 
+This document is based on previous work from [@Slugger](https://xcp-ng.org/forum/user/slugger).
+See the [history](https://github.com/xcp-ng/xcp-ng-org/commits/master/docs/guides/VLAN-trunking-vm.md)
+or the [original version](https://github.com/xcp-ng/xcp-ng-org/blob/e829aab3dad9c487b8925cef221b65bd27014604/docs/guides/VLAN-trunking-vm.md).
 :::
 
-By far, this is the easiest solution and perhaps the "officially supported" approach for XCP-ng. When you do this, dom0 handles all the VLAN tagging for you and each VIF is just presented to your router VM as a separate virtual network interface. It's like you have a bunch of separate network cards installed on your router, where each represents a different VLAN and is essentially attached to a VLAN access (untagged) port on your switch. There is nothing special for you to do, this _just works_. If you require 7 VIFs or less for your router, then this might be the easiest approach.
+The guide will document how to:
+- install [OPNsense](https://opnsense.org/) router on a VM
+- attach the VLAN trunk port directly to it
+- handle the VLANs in OPNsense directly
 
-The problem with this approach is when you have many VLANs you want to configure on your router. If you read through the thread I linked to at the top of this page you'll notice the discussion about where I was unable to attach more than 7 vifs to my pfSense VM. XO nor XCP-ng Center allow you to attach more than seven. This appears to be some kind of limit somewhere in Xen. Other users have been able to attach more than 7 vifs via CLI, however when I tried to do this myself my pfSense VM became unresponsive once I added the 8th vif. More details on that problem are discussed in the thread.
+The configuration needs at least 2 different physical interfaces on XCP-ng.
+One for the management network, and a second for traffic network.
+This is because the VLAN trunk needs its interface MTU to 1504,
+and XCP-ng requires MTU 1500 on the management network for Xen to operate properly.
 
-Another problem with this approach, perhaps only specific to pfSense, is that when you attach many vifs, you must disable TX offloading on each and every vif otherwise you'll have all kinds of problems. This was definitely a red flag for me. Initially I'm starting with 7 vlans and 9 networks total with short term requirements for at least another 3 vlans for sure and then who knows how many down the road. In this approach, every time you have to create a new VLAN by adding a vif to the VM, you will have to reboot the VM.
+For this scenario, we are assuming a configuration of 3 physical interfaces:
+- `eth0`: management network - ethernet
+- `eth1`: WAN side - ethernet
+- `eth2`: LAN side - VLAN trunk
 
-Having to reboot my network's router every time I need to create a new VLAN is not ideal for the environment I'm working in; especially because in the current production environment running VMware, we do not need to reboot the router VM to create new vlans. (FWIW, I've come to xcp-ng as the IT department has asked me to investigate possibly replacing our VMware env with XCP-ng. I started my adventures with xcp-ng by diving in head first at home and replacing my home environment, previously ESXi, with xcp-ng. Now I'm in the early phases of working with xcp-ng in the test lab at work.)
+## MTU configuration
 
-In conclusion, if you have seven or fewer vifs and you're fairly confident that you'll never need to exceed seven vifs then this approach is probably the path of least resistance. On the other hand, if you know you'll need more than seven or fairly certain you will some day. Or you're in an environment where you need to be able to create vlans on the fly then you'll probably want to proceed with the alternative below.
+The [MTU](https://en.wikipedia.org/wiki/Maximum_transmission_unit) needs to be the same on all the switch's ports carrying 802.1Q packets.
+As the VLAN header adds 4-byte overhead, a standard 1500 ethernet MTU should be configured with MTU 1504.
 
-This document is about the alternative approach, but a quick summary of how this solution works in xcp-ng:
-* Make sure the pif connected to your xcp-ng server is carrying all the required tagged vlans
-* Within XO or XCP Center, create multiple networks off of the pif, adding the VLAN tag as needed for each VLAN
-* For each VLAN you want your router to route for, add a vif for that specific VLAN to the VM
-* For pfSense, disable TX offloading for each vif added and reboot the VM. This [page](pfsense.md) will fully explain all of the config changes required when running pfSense in xcp-ng.
+1. Modify the MTU setting of **the port** on the switch carrying the trunk to be 1504.
+To change this setting, consult the documentation of your switch.
 
-## Adding VLAN Trunk to VM
+2. Apply the same setting on XCP-ng **PIF** for this interface.
+You can achieve the same result using Xen-Orchestra, or directly on the XCP-ng host (via `xe` utility).
 
-The alternative approach involves attaching the VLAN trunk port directly to your router VM, and handling the VLANs in pfSense directly. This has the biggest advantage of not requiring a VM reboot each time you need to setup a new VLAN. However note you will need to manually edit a configuration file in pfSense every time it is upgraded. The physical interface you are using to trunk VLANs into the pfSense VM should also not be the same physical interface that your xcp-ng management interface is on. This is because one of the steps required is setting the physical interface MTU to 1504, and this will potentially cause MTU mismatches if xen is using this same physical interface for management traffic (1504-byte sized packets being sent from the xen management interface to your MTU 1500 network).
+With Xen-Orchestra:
+- Select the right *Pool*
+- Go to *Network* panel
+- Modify the MTU of the **Pool-wide network associated with eth2**:
+    - Associated PIF is `eth2`, which is the LAN side used for VLAN trunking in your example.
+    - The VLAN property is `None`: if it is `0` or another number,
+      it isn't the right network and this network couldn't be used for VLAN trunking
+      (802.1Q tagged packets would be dropped).
+    - Finally, you can click on the MTU to modify it to `1504` (it will disconnect and reconnect the PIF on the host).
+- On the *Host* configuration, check that the *eth2* network is properly reconnected,
+  or do it if it isn't the case
+  (it could happens if some host on the pool aren't fully up).
 
-The problem we face with this solution is that, at least in pfSense, the xn driver used for the paravirtualization in FreeBSD does not support 802.1q tagging. So we have to account for this ourselves both in dom0 and in the pfSense VM. Once you're aware of this limitation, it actually isn't a big deal to get it all working but it just never occurred to me that a presumably relatively modern network driver would not support 802.1q.
+As an alternative to using XO,
+you can see the network list using `xe network-list`,
+directly on the master host:
 
-Anyway, the first step is to modify the MTU setting of the **pif** that is carrying your tagged vlans into the xcp-ng server from 1500 to 1504. The extra 4 bytes is, of course, the size of the VLAN tagging within each frame. **Warning:** You're going to have to detach or shutdown any VMs that are currently using this interface. For this example, let's say it's `eth1` that is the pif carrying all our tagged traffic.
-
-
-1. List all your networks
 ```
-xe network-list
+# xe network-list params=uuid,name-label,MTU
+uuid ( RO)          : e1012298-fdd6-595a-c81f-dae5c3a6d4f6
+    name-label ( RW): Host internal management network
+           MTU ( RW): 1500
+
+uuid ( RO)          : 027fab18-e3b6-8bc9-7e9c-281b040d2897
+    name-label ( RW): Pool-wide network associated with eth0
+           MTU ( RW): 1500
+
+uuid ( RO)          : ea1a8810-43ba-0f8c-499a-22442ad5ea11
+    name-label ( RW): Pool-wide network associated with eth1
+           MTU ( RW): 1500
+
+uuid ( RO)          : 015bda3e-830b-d33d-ab91-098632ef61a3
+    name-label ( RW): Pool-wide network associated with eth2
+           MTU ( RW): 1500
 ```
-2. Set MTU on the relevant network(s)
-```
-xe network-param-set uuid=xxx MTU=1504
-```
-3. Reboot your XCP-ng host to apply the MTU change on the physical network cards
 
-
-Once this is done, attach a new vif to your pfSense VM and select `eth1` as the network. This will attach the VLAN trunk to pfSense. Boot up pfSense and disable TX offloading, etc. on the vif, reboot as necessary then login to pfSense.
-
-Configure the interface within pfSense by also increasing the MTU value to 1504. Again, the xn driver does not support VLAN tagging, so we have to deal with it ourselves. **NOTE:** You only increase the MTU on the **parent interface** only in both xcp-ng **and** pfSense. The MTU for vlans will always be 1500.
-
-Finally, along the same lines, since the xn driver does not support 802.1q, pfSense will not allow you to create vlans on any interface using the xn driver. We have to modify pfSense to allow us to do this.
-
-From a shell in pfSense, edit `/etc/inc/interfaces.inc` and modify the `is_jumbo_capable` function at around line 6761. Edit it so it reads like so:
+choose the LAN network that will have the VLAN trunk,
+and modify it:
 
 ```
-function is_jumbo_capable($iface) {
-        $iface = trim($iface);
-        $capable = pfSense_get_interface_addresses($iface);
+# xe network-param-set uuid=015bda3e-830b-d33d-ab91-098632ef61a3 MTU=1504
+# xe network-list params=uuid,name-label,MTU
+uuid ( RO)          : e1012298-fdd6-595a-c81f-dae5c3a6d4f6
+    name-label ( RW): Host internal management network
+           MTU ( RW): 1500
 
-        if (isset($capable['caps']['vlanmtu'])) {
-                return true;
-        }
+uuid ( RO)          : 027fab18-e3b6-8bc9-7e9c-281b040d2897
+    name-label ( RW): Pool-wide network associated with eth0
+           MTU ( RW): 1500
 
-        // hack for some lagg modes missing vlanmtu, but work fine w/VLANs
-        if (substr($iface, 0, 4) == "lagg") {
-                return true;
-        }
+uuid ( RO)          : ea1a8810-43ba-0f8c-499a-22442ad5ea11
+    name-label ( RW): Pool-wide network associated with eth1
+           MTU ( RW): 1500
 
-        // hack for Xen xn interfaces
-        if (substr($iface, 0, 2) == "xn")
-                return true;
+uuid ( RO)          : 015bda3e-830b-d33d-ab91-098632ef61a3
+    name-label ( RW): Pool-wide network associated with eth2
+           MTU ( RW): 1504
 
-        return false;
-}
 ```
+
+You need to unplug and plug each PIF of the changed network to properly apply the setting on the underlying physical interface,
+or more simply, just reboot the host.
+
+```
+# xe network-param-get uuid=015bda3e-830b-d33d-ab91-098632ef61a3 param-name=PIF-uuids 
+50594040-3b64-6a1c-2dff-d607d6ac5b35; 0683c09f-f241-b66e-a98b-92e1a54a7e86
+# xe pif-unplug uuid=50594040-3b64-6a1c-2dff-d607d6ac5b35
+# xe pif-plug uuid=50594040-3b64-6a1c-2dff-d607d6ac5b35
+# xe pif-unplug uuid=0683c09f-f241-b66e-a98b-92e1a54a7e86
+# xe pif-plug uuid=0683c09f-f241-b66e-a98b-92e1a54a7e86
+
+```
+
+## VM interfaces
+
+Once the MTU is properly configured, create a new VM for OPNsense with several VIFs:
+- `VIF #0` - the management interface (MTU 1500)
+- `VIF #1` - the WAN interface (MTU 1500)
+- `VIF #2` - the LAN interface (MTU 1504): `Pool-wide network associated with eth2`
+
+The MTU isn't configurable here and the value is taken from the underlying network.
+If the MTU isn't 1504 for your trunk network,
+please go back and review the configuration.
+
+## OPNsense installation
+
+Once you've booted OPNsense, start the manual interface assignment and configure VLANs.
+
+The interfaces are shown as `xn0`, `xn1`, `xn2` etc...
+The order is the same as the VIF ordering.
+
+You can create a first set of VLANs on top of the third interface (`xn2`).
+Next, choose the *WAN interface* (`xn1`).
+For the *LAN interface*,
+we recommend you select an interface that you will be able to use,
+to connect to OPNsense webgui interface.
+You can select other interfaces as *Optional interface*.
+
+In the webgui interface,
+configure the MTU of `xn2`.
+To do that, go to menu *Interfaces → Assignments*,
+and assign a new interface with the device `xn2` and the name `trunk`.
+Edit the `trunk` interface, enable it, and set MTU to 1504.
+
 :::tip
-This modification is based on pfSense 2.4.4p1, ymmv. However, I copied this mod from [here](https://eliasmoraispereira.wordpress.com/2016/10/05/pfsense-virtualizacao-com-xenserver-criando-vlans/), which was based on pfSense 2.3.x, so this code doesn't change often.
+Ensure that **Disable hardware checksum offload** is checked
+under the menu *Interfaces → Settings*.
+It is documented in [`xnb(4)`](https://man.freebsd.org/cgi/man.cgi?query=xnb&apropos=0&sektion=4&manpath=FreeBSD+14.2-RELEASE&format=html#end) as workaround for interface driver bug.
 :::
-
-Keep in mind that you will need to reapply this mod anytime you upgrade pfSense.
-
-That's it, you're good to go!  Go to your interfaces > assignments in pfSense, select the VLANs tab and create your vlans. Everything should work as expected.
-
-## Links/References
-
-* [Forums: My initial question and discussion about VLAN trunk support](https://xcp-ng.org/forum/topic/729/how-to-connect-vlan-trunk-to-vm)
-* [pfSense interface does not support VLANs](https://forum.netgate.com/topic/112359/xenserver-vlan-doesn-t-supporting-eth-device-for-vlan)
-* [pfSense: Adding VLAN support for Xen xn interfaces](https://eliasmoraispereira.wordpress.com/2016/10/05/pfsense-virtualizacao-com-xenserver-criando-vlans/)
