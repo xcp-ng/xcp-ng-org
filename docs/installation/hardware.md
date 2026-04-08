@@ -12,7 +12,7 @@ XCP-ng comes with a large range of hardware support.
 A given device may be supported at one of two levels:
 
 1. Presence on the [Hardware Compatibility List](#-hardware-compatibility-list-hcl) guarantees support by XCP-ng. With some exceptions described in the next section.
-2. Many devices outside the HCL are also supported, but are not tested routinely. See [Supported hardware outside the HCL](#-supported-hardware-outside-the-hcl).
+2. Many devices outside the HCL are also supported, but are not tested routinely. See [Supported hardware outside the HCL](#%EF%B8%8F-supported-hardware-outside-the-hcl).
 
 ## 📖 Hardware Compatibility List (HCL)
 
