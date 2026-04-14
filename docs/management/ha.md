@@ -208,13 +208,7 @@ As a result, VMs that are shut down internally or through the API will restart t
 
 #### Configure VM shutdown behavior
 
-If you don't want a VM to reboot automatically when it has been shut down from the guest OS:
-1. Disable its HA protection.
-2. Adjust the VM reboot behavior with the parameter called `Pool.ha_reboot_vm_on_internal_shutdown` (see below).
-
-:::warning
-Applying these changes on your entire VM pool means that your VMs will stay off after they have been shut down, until you restart them yourself. Your VMs will no longer be protected from accidental shutdowns. 
-:::
+If you don't want a VM to reboot automatically when it has been shut down from the guest OS: disable its HA protection, then adjust the VM reboot behavior with the parameter called `Pool.ha_reboot_vm_on_internal_shutdown` (see below).
 
 ##### Disabling HA on specific VMs
 
@@ -225,6 +219,10 @@ You can adjust the reboot behavior for a specific HA-protected VM:
     - To (re-)enable HA features, run `xe vm-param-set uuid=<vm_uuid> ha-restart-priority=restart` or `xe vm-param-set uuid=<vm_uuid> ha-restart-priority=best-effort`.
 - **Using Xen Orchestra**:
     To change the VM reboot behavior from Xen Orchestra, check out the instructions in the [Xen Orchestra documentation](https://docs.xen-orchestra.com/manage_infrastructure#vm-high-availability-ha).
+
+:::warning
+Applying these changes means that your VMs will stay off after they have been shut down, until you restart them yourself.
+:::
 
 :::tip
 Once HA features have been disabled on your VM, shut the VM down. Once you have started the VM again, feel free to enable HA again.
@@ -237,6 +235,10 @@ You can prevent automatic reboots on your entire pool. To do this, use the `xe` 
 `xe pool-param-set uuid=$UUID ha-reboot-vm-on-internal-shutdown=false`.
 
 To enable automatic reboots again, set the parameter to `true` instead of `false`.
+
+:::warning
+By applying these changes to your entire pool, you disable the protection that prevents VMs from being shut down by their own guest OS.
+:::
 
 ### Host failure
 
