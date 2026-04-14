@@ -85,7 +85,7 @@ You can use the following procedure:
   Connect using [WinDbg](https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/) using the `Attach to kernel` option with a connection string: `com:ipport=7001,port=<host IP>`
 * To undo the changes and remove the serial setting, use `xe vm-param-remove uuid=<uuid> param-name=platform param-key=hvm_serial`
 
-## BSOD 0x3B (SYSTEM_SERVICE_EXCEPTION) on newer Intel CPUs
+## BSOD 0x3B (SYSTEM_SERVICE_EXCEPTION) or 0x7E (SYSTEM_THREAD_EXCEPTION_NOT_HANDLED) on newer Intel CPUs
 
 ### Cause
 
