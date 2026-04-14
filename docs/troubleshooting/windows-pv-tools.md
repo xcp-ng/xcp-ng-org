@@ -85,7 +85,7 @@ You can use the following procedure:
   Connect using [WinDbg](https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/) using the `Attach to kernel` option with a connection string: `com:ipport=7001,port=<host IP>`
 * To undo the changes and remove the serial setting, use `xe vm-param-remove uuid=<uuid> param-name=platform param-key=hvm_serial`
 
-## BSOD 0x3B (SYSTEM_SERVICE_EXCEPTION) on newer Intel CPUs
+## BSOD 0x3B (SYSTEM_SERVICE_EXCEPTION) or 0x7E (SYSTEM_THREAD_EXCEPTION_NOT_HANDLED) on newer Intel CPUs
 
 ### Cause
 
@@ -99,6 +99,28 @@ Stop the VM, run the following command on the host then restart the VM:
 ```
 xe vm-param-add uuid=<VM's UUID> param-name=platform msr-relaxed=true
 ```
+
+## BSOD 0x109 (CRITICAL_STRUCTURE_CORRUPTION) after migrating VMs on Intel platforms
+
+### Cause
+
+The most common cause is a bug in Xen that causes some MSRs (e.g. `IA32_MISC_ENABLE`) to not be virtualized properly.
+
+The virtual register uses values straight from hardware, which might unexpectedly change when the VM is migrated.
+This goes against Windows's assumptions and causes it to crash.
+
+### Workaround
+
+If you encounter this issue, ensure that all hosts in the pool have the same CPU settings.
+These settings are often found in the processor and power settings pages of your hosts' BIOS.
+Focus on the following settings (naming depends on BIOS vendor):
+
+- Fast String
+- Prefetchers
+- MONITOR/MWAIT
+- C-states (C1, C2, C3 etc.)
+- Power and thermal controls
+- Event counters
 
 ## Windows fails to boot after updating
 
