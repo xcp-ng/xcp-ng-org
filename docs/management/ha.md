@@ -175,6 +175,8 @@ The **default timeout is 60 seconds**, but you can adjust this value using the f
 xe pool-param-set uuid=<pool UUID> other-config:default_ha_timeout=<timeout in seconds>
 ```
 
+
+
 ## 🔧 Updates/maintenance
 
 Before any update or host maintenance, planned reboot and so on, **ALWAYS** put your host in maintenance mode. If you don't do that, XAPI will think it's an unplanned failure, and will act accordingly.
@@ -203,6 +205,38 @@ xe pool-param-set uuid=... ha-reboot-vm-on-internal-shutdown=false
 As a result, VMs that are shut down internally or through the API will restart the exact same way.
 
 :::
+
+#### Configure VM shutdown behavior
+
+If you don't want a VM to reboot automatically when it has been shut down from the guest OS:
+1. Disable its HA protection.
+2. Adjust the VM reboot behavior with the parameter called `Pool.ha_reboot_vm_on_internal_shutdown` (see below).
+
+:::warning
+Applying these changes on your entire VM pool means that your VMs will stay off after they have been shut down, until you restart them yourself. Your VMs will no longer be protected from accidental shutdowns. 
+:::
+
+##### Disabling HA on specific VMs
+
+You can adjust the reboot behavior for a specific HA-protected VM:
+
+- **Using the `xe` cli:** :
+    - To disable HA features, run `xe vm-param-set uuid=<vm_uuid> ha-restart-priority=`.
+    - To (re-)enable HA features, run `xe vm-param-set uuid=<vm_uuid> ha-restart-priority=restart` or `xe vm-param-set uuid=<vm_uuid> ha-restart-priority=best-effort`.
+- **Using Xen Orchestra**:
+    To change the VM reboot behavior from Xen Orchestra, check out the instructions in the [Xen Orchestra documentation](https://docs.xen-orchestra.com/manage_infrastructure#vm-high-availability-ha).
+
+:::tip
+Once HA features have been disabled on your VM, shut the VM down. Once you have started the VM again, feel free to enable HA again.
+:::
+
+##### Disabling HA on the whole pool
+
+You can prevent automatic reboots on your entire pool. To do this, use the `xe` CLI to run this command:
+
+`xe pool-param-set uuid=$UUID ha-reboot-vm-on-internal-shutdown=false`.
+
+To enable automatic reboots again, set the parameter to `true` instead of `false`.
 
 ### Host failure
 
