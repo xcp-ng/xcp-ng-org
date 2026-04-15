@@ -175,8 +175,6 @@ The **default timeout is 60 seconds**, but you can adjust this value using the f
 xe pool-param-set uuid=<pool UUID> other-config:default_ha_timeout=<timeout in seconds>
 ```
 
-
-
 ## 🔧 Updates/maintenance
 
 Before any update or host maintenance, planned reboot and so on, **ALWAYS** put your host in maintenance mode. If you don't do that, XAPI will think it's an unplanned failure, and will act accordingly.
@@ -195,9 +193,13 @@ If you shut the VM down with `Xen Orchestra` or `xe`, the VM will be stopped nor
 
 However, if you halt the VM directly in the guest OS (via the console or in SSH), XCP-ng is NOT aware of what's going on. The system will think the VM is down and will consider that an anomaly. As a result, the VM will be **started automatically!**. This behavior prevents an operator from shutting down the system and leaving the VM unavailable for a long time.
 
+#### Configure VM shutdown behavior
+
+##### For an entire pool
+
 :::tip
 
-Starting with XAPI 25.16.0, VM restart behavior can be changed. To do this, run this command:
+Starting with XAPI 25.16.0, VM restart behavior can be changed on a pool-wide basis. To do this, run this command:
 
 ```
 xe pool-param-set uuid=... ha-reboot-vm-on-internal-shutdown=false
@@ -206,39 +208,21 @@ As a result, VMs that are shut down internally or through the API will restart t
 
 :::
 
-#### Configure VM shutdown behavior
+##### For specific VMs
 
-If you don't want a VM to reboot automatically when it has been shut down from the guest OS: disable its HA protection, then adjust the VM reboot behavior with the parameter called `Pool.ha_reboot_vm_on_internal_shutdown` (see below).
-
-##### Disabling HA on specific VMs
-
-You can adjust the reboot behavior for a specific HA-protected VM:
-
-- **Using the `xe` cli:** :
-    - To disable HA features, run `xe vm-param-set uuid=<vm_uuid> ha-restart-priority=`.
-    - To (re-)enable HA features, run `xe vm-param-set uuid=<vm_uuid> ha-restart-priority=restart` or `xe vm-param-set uuid=<vm_uuid> ha-restart-priority=best-effort`.
-- **Using Xen Orchestra**:
-    To change the VM reboot behavior from Xen Orchestra, check out the instructions in the [Xen Orchestra documentation](https://docs.xen-orchestra.com/manage_infrastructure#vm-high-availability-ha).
+If you don't want a VM to reboot automatically when it has been shut down from the guest OS, adjust the VM reboot behavior with the parameter called `Pool.ha_reboot_vm_on_internal_shutdown`.
 
 :::warning
 Applying these changes means that your VMs will stay off after they have been shut down, until you restart them yourself.
 :::
 
-:::tip
-Once HA features have been disabled on your VM, shut the VM down. Once you have started the VM again, feel free to enable HA again.
-:::
+- **Using the `xe` cli:** :
+    - To disable automatic reboots, run `xe vm-param-set uuid=<vm_uuid> ha-restart-priority=`.
+    - To (re-)enable automatic reboots, run `xe vm-param-set uuid=<vm_uuid> ha-restart-priority=restart` or `xe vm-param-set uuid=<vm_uuid> ha-restart-priority=best-effort`.
+- **Using Xen Orchestra**:
+    To change the VM reboot behavior from Xen Orchestra, check out the instructions in the [Xen Orchestra documentation](https://docs.xen-orchestra.com/manage_infrastructure#vm-high-availability-ha).
 
-##### Disabling HA on the whole pool
-
-You can prevent automatic reboots on your entire pool. To do this, use the `xe` CLI to run this command:
-
-`xe pool-param-set uuid=$UUID ha-reboot-vm-on-internal-shutdown=false`.
-
-To enable automatic reboots again, set the parameter to `true` instead of `false`.
-
-:::warning
-By applying these changes to your entire pool, you disable the protection that prevents VMs from being shut down by their own guest OS.
-:::
+Once you've changed the reboot parameter, shut the VM down. After you have started the VM again, feel free to re-enable automatic reboots.
 
 ### Host failure
 
