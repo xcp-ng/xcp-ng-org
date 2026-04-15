@@ -101,6 +101,20 @@ Finally, click on "Create network":
 
 That's it!
 
+### Trunk link for VMs
+
+It is also possible to directly expose the trunk link to the VM.
+The VIF should be configured to use the raw network (named by default "Pool-wide network associated with ethN").
+It will get all the 802.1Q packets on the wire, and be able to send tagged packets for any VLAN.
+
+In Xen-Orchestra, such networks have their VLAN property set to `None` (as opposed to `0` for untagged ports and `1` to `4095` for tagged ports, where  802.1Q tagged packets are dropped).
+
+:::warning
+Be careful with the link's [MTU](https://en.wikipedia.org/wiki/Maximum_transmission_unit), since VLAN tagging adds a small overhead (4 bytes).
+Otherwise, packets may be fragmented or even dropped.
+It needs to be properly configured on the switch, within the XCP-ng network, and on the VM's network interface.
+:::
+
 ## 🔗 Bonds
 
 It's same as previous section, just check the "Bonded Network" and select multiple PIFs in the Interface selector. You can either use VLANs or not, it doesn't matter!
