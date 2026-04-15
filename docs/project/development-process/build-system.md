@@ -153,7 +153,7 @@ In order not to overload this section with information, the instructions are ava
 Then, if it is an **update candidate** for an existing package:
 * If the update targets several releases (for example `8.x` and `8.x+1`), test for each release.
 * Announce the update candidate and ask for testers:
-  * Message to [https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing](https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing)
+  * Message to [https://xcp-ng.org/forum/topic/9964/xcp-ng-8-3-updates-announcements-and-testing](https://xcp-ng.org/forum/topic/9964/xcp-ng-8-3-updates-announcements-and-testing)
     * Why the update
     * List of updated RPMs
     * Command to install them.
