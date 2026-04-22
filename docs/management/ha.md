@@ -195,8 +195,6 @@ However, if you halt the VM directly in the guest OS (via the console or in SSH)
 
 #### Configure VM shutdown behavior
 
-##### For an entire pool
-
 :::tip
 
 Starting with XAPI 25.16.0, VM restart behavior can be changed on a pool-wide basis. To do this, run this command:
@@ -204,25 +202,22 @@ Starting with XAPI 25.16.0, VM restart behavior can be changed on a pool-wide ba
 ```
 xe pool-param-set uuid=... ha-reboot-vm-on-internal-shutdown=false
 ```
-As a result, VMs that are shut down internally or through the API will restart the exact same way.
+
+The `ha-reboot-vm-on-internal-shutdown` parameter indicates whether an HA-protected VM that is shut down from inside (not through the API) should be automatically rebooted when HA is enabled.
 
 :::
-
-##### For specific VMs
-
-If you don't want a VM to reboot automatically when it has been shut down from the guest OS, adjust the VM reboot behavior with the parameter called `Pool.ha_reboot_vm_on_internal_shutdown`.
 
 :::warning
-Applying these changes means that your VMs will stay off after they have been shut down, until you restart them yourself.
+Setting the `ha-reboot-vm-on-internal-shutdown` to `false` means that your VMs will stay off after they have been shut down from the guest OS, until you restart them yourself.
+
+If you want to restore the default behavior (i.e. HA-protected VMs restart automatically after getting shut down from the guest OS), you will have to set the parameter to `true` again.
 :::
 
-- **Using the `xe` cli:** :
-    - To disable automatic reboots, run `xe vm-param-set uuid=<vm_uuid> ha-restart-priority=`.
-    - To (re-)enable automatic reboots, run `xe vm-param-set uuid=<vm_uuid> ha-restart-priority=restart` or `xe vm-param-set uuid=<vm_uuid> ha-restart-priority=best-effort`.
-- **Using Xen Orchestra**:
-    To change the VM reboot behavior from Xen Orchestra, check out the instructions in the [Xen Orchestra documentation](https://docs.xen-orchestra.com/manage_infrastructure#vm-high-availability-ha).
+:::note
+If you don't want a specific VM to reboot automatically, you can also disable HA protection for that VM entirely. To do so, read the instructions at the [Troubleshooting HA section](../troubleshooting/troubleshooting-ha.md#disabling-ha).
 
-Once you've changed the reboot parameter, shut the VM down. After you have started the VM again, feel free to re-enable automatic reboots.
+Once you have disabled HA for the VM, shut the VM down. After you start the VM again, feel free to re-enable HA.
+:::
 
 ### Host failure
 
