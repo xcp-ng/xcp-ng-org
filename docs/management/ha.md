@@ -193,15 +193,30 @@ If you shut the VM down with `Xen Orchestra` or `xe`, the VM will be stopped nor
 
 However, if you halt the VM directly in the guest OS (via the console or in SSH), XCP-ng is NOT aware of what's going on. The system will think the VM is down and will consider that an anomaly. As a result, the VM will be **started automatically!**. This behavior prevents an operator from shutting down the system and leaving the VM unavailable for a long time.
 
+#### Configure VM shutdown behavior
+
 :::tip
 
-Starting with XAPI 25.16.0, VM restart behavior can be changed. To do this, run this command:
+Starting with XAPI 25.16.0, VM restart behavior can be changed on a pool-wide basis. To do this, run this command:
 
 ```
 xe pool-param-set uuid=... ha-reboot-vm-on-internal-shutdown=false
 ```
-As a result, VMs that are shut down internally or through the API will restart the exact same way.
 
+The `ha-reboot-vm-on-internal-shutdown` parameter indicates whether an HA-protected VM that is shut down from inside (not through the API) should be automatically rebooted when HA is enabled.
+
+:::
+
+:::warning
+Setting the `ha-reboot-vm-on-internal-shutdown` to `false` means that your VMs will stay off after they have been shut down from the guest OS, until you restart them yourself.
+
+If you want to restore the default behavior (i.e. HA-protected VMs restart automatically after getting shut down from the guest OS), you will have to set the parameter to `true` again.
+:::
+
+:::note
+If you don't want a specific VM to reboot automatically, you can also disable HA protection for that VM entirely. To do so, read the instructions at the [Troubleshooting HA section](../troubleshooting/troubleshooting-ha.md#disabling-ha).
+
+Once you have disabled HA for the VM, shut the VM down. After you start the VM again, feel free to re-enable HA.
 :::
 
 ### Host failure
