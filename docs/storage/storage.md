@@ -537,7 +537,7 @@ Create `/etc/ceph/keyring` with your access secret for Ceph.
 ```
 # cat /etc/ceph/keyring 
 [client.admin]
-key = AQBX21dfVMJtJhAA2qthmLyp7Wxz+T5YgoxzeQ==
+key = YOUR-SECRET-KEY
 ```
 
 Create `/etc/ceph/ceph.conf` as your matching setup.
@@ -545,22 +545,62 @@ Create `/etc/ceph/ceph.conf` as your matching setup.
 ```
 # cat /etc/ceph/ceph.conf 
 [global]
-mon_host = 10.10.10.10:6789
+mon_host = mon-ip-1:6789,mon-ip-2:6789,mon-ip-3:6789
 
 [client.admin]
 keyring = /etc/ceph/keyring
 ```
 
+Create the RBD image.
+
 ```
 rbd create --size 300G --image-feature layering pool/xen1
+```
 
+Mount the RBD image on your host.
+
+```
 # Map it to all xen hosts in your pool
 rbd map pool/xen1
+```
 
-# edit /etc/lvm/lvm.conf and /etc/lvm/master/lvm.conf on all nodes and add this option
-# otherwise LVM will ignore the rbd block device
-types = [ "rbd", 1024 ]
+To automatically mount the RBD image, you can configure the `/etc/rbdmap` ( see [RBDMap documentation ](https://docs.ceph.com/en/reef/man/8/rbdmap/) ) as follows:
 
+```
+cat /etc/ceph/rbdmap
+# RbdDevice		Parameters
+pool/xen1
+```
+
+And then, enable the `rbdmap` service to mount automatically the image at boot.
+
+```
+systemctl enable --now rbdmap
+```
+
+The CEPH RBD SR is built on top of an LVM Block device (your RBD image). You need to adapt the LVM configuration in order to be able to detect the newly created LVM VG created by XCP-NG.
+
+You need to place this `devices` configuration for both:
+- /etc/lvm/lvmlocal.conf
+- /etc/lvm/master/lvmlocal.conf
+
+```
+...
+devices {
+	types = [ "scini", 16, "rbd", 1024 ]
+	scan = [ "/dev/disk/by-id", "/dev/rbd" ]
+}
+...
+```
+
+:::warning
+This configuration must be re-applied after each [XCP-NG Upgrade]("https://docs.xcp-ng.org/installation/upgrade/") / reinstall.
+
+[Updates](https://docs.xcp-ng.org/management/updates/) should not affect the LVM configuration.
+:::
+
+Create the CephRBD SR.
+```
 # create a shared LVM
 xe sr-create name-label='CEPH' shared=true device-config:device=/dev/rbd/rbd/xen1 type=lvm content-type=user
 ```
