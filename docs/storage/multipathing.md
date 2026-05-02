@@ -186,6 +186,154 @@ If this is not the case:
 #### 3. Configure the SR
 Proceed with the iSCSI SR configuration as indicated in the [storage documentation](../../storage/#iscsi).
 
+### Single-subnet iSCSI multipathing
+
+Use this configuration when your storage array exposes all its target ports on a **single subnet**, for example when separate VLANs or switches are not available. The standard multi-subnet setup described above does not apply here.
+
+:::warning
+This configuration is only supported for storage arrays that expose multiple iSCSI targets through a single subnet. Check your vendor documentation to confirm this is the case before proceeding.
+:::
+
+#### Requirements
+
+* Two different network interfaces on the XCP-ng host, both connected to the same subnet.
+* Multiple target ports on your storage array on the same subnet.
+* Multipathing enabled on the pool (see [Prepare the pool](#2-prepare-the-pool) above).
+
+#### Target architecture
+
+##### Configuration example
+
+| Path | Subnet | XCP-ng Host PIF address | Storage Controller 1 address | Storage Controller 2 address |
+| :---: | :---: | :---: | :---: | :---: |
+| 🔵 | 10.42.1.0/24 | 10.42.1.11 | 10.42.1.101 | 10.42.1.102 |
+| 🟢 | 10.42.1.0/24 | 10.42.1.12 | 10.42.1.101 | 10.42.1.102 |
+
+:::info
+Both paths share the same subnet. Redundancy comes from separate physical NICs and separate storage ports, not from network isolation.
+:::
+
+##### Target architecture diagram
+
+```mermaid
+---
+config:
+  look: normal
+  theme: default
+---
+flowchart LR
+  classDef blueNode fill:#A7C8F0,stroke:#2C6693,color:#000000;
+  classDef greenNode fill:#A8E6A2,stroke:#3E8E41,color:#000000;
+  classDef grayNode fill:#D6D6D6,stroke:#8C8C8C,color:#000000;
+
+  subgraph server[XCP-ng host]
+    direction LR
+    subgraph nics[Network cards]
+      pif1[pif1]
+      pif2[pif2]
+    end
+  end
+
+  subgraph switch[Switch - 10.42.1.0/24]
+    sw[ ]:::grayNode
+  end
+
+  subgraph storage[Storage unit]
+    direction LR
+    subgraph ctrl1[Controller 1]
+      port1[port1]
+    end
+    subgraph ctrl2[Controller 2]
+      port2[port1]
+    end
+    lun1@{ shape: lin-cyl, label: "LUN" }
+  end
+
+  pif1:::blueNode <--> sw
+  pif2:::greenNode <--> sw
+  sw <--> port1:::blueNode
+  sw <--> port2:::greenNode
+  ctrl1 <--> lun1
+  ctrl2 <--> lun1
+
+linkStyle 0 stroke:#4A90E2,stroke-width:2px;
+linkStyle 1 stroke:#5CB85C,stroke-width:2px;
+linkStyle 2 stroke:#4A90E2,stroke-width:2px;
+linkStyle 3 stroke:#5CB85C,stroke-width:2px;
+```
+
+#### Operating procedure
+
+##### 1. Create custom iSCSI interfaces
+
+Connect to the XCP-ng host via SSH and create two custom iSCSI interfaces.
+
+:::warning
+Interface names **must** start with `c_`. Without this prefix, open-iSCSI falls back to single-interface mode and only one path will be used, regardless of how many NICs are configured.
+:::
+
+```bash
+iscsiadm -m iface --op new -I c_iface1
+iscsiadm -m iface --op new -I c_iface2
+```
+
+##### 2. Bind each interface to a network bridge
+
+Replace `xenbr1` and `xenbr2` with the bridge names corresponding to your two iSCSI NICs. You can list available bridges with `ovs-vsctl list-br`.
+
+```bash
+iscsiadm -m iface --op update -I c_iface1 -n iface.net_ifacename -v xenbr1
+iscsiadm -m iface --op update -I c_iface2 -n iface.net_ifacename -v xenbr2
+```
+
+##### 3. Discover targets
+
+Run discovery against one of the storage target IP addresses. This populates the node database for both interfaces.
+
+```bash
+iscsiadm -m discovery -t st -p <IP of storage target>
+```
+
+##### 4. Log in to all targets
+
+```bash
+iscsiadm -m node -L all
+```
+
+Verify that two sessions are established per target:
+
+```bash
+iscsiadm -m session
+```
+
+You should see one session per interface per target portal. Example with two interfaces and two target portals:
+
+```
+tcp: [1] 10.42.1.101:3260,1 iqn.2024-02.com.acme:ultrasan.lun01 (non-flash)
+tcp: [2] 10.42.1.102:3260,1 iqn.2024-02.com.acme:ultrasan.lun01 (non-flash)
+tcp: [3] 10.42.1.101:3260,2 iqn.2024-02.com.acme:ultrasan.lun01 (non-flash)
+tcp: [4] 10.42.1.102:3260,2 iqn.2024-02.com.acme:ultrasan.lun01 (non-flash)
+```
+
+##### 5. Reattach the SR
+
+For multipathing changes to take effect on an existing SR, unplug and replug the PBD. In Xen Orchestra, go to **Storage, your SR, Advanced, Unplug**, then **Plug**. From the host:
+
+```bash
+xe pbd-unplug uuid=<PBD_UUID>
+xe pbd-plug uuid=<PBD_UUID>
+```
+
+Verify multipathing is active:
+
+```bash
+multipath -ll
+```
+
+:::info
+The custom interface definitions are stored in `/var/lib/iscsi/ifaces/` and persist across reboots. If paths do not come back after a reboot, confirm that the bridge names (`xenbr1`, `xenbr2`) still match your current network configuration.
+:::
+
 ## Fibre Channel (HBA)
 ### Requirements
 * Check that the Fibre Channel cards model(s) is supported via the [HCL](../../installation/hardware/#-hardware-compatibility-list-hcl).
