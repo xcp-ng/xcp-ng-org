@@ -1,0 +1,5 @@
+{
+    "label": "Migrate to XCP-ng",
+    "position": 5,
+    "link": {"type": "doc", "id": "migrate-to-xcp-ng"}
+}
