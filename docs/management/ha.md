@@ -203,7 +203,7 @@ Starting with XAPI 25.16.0, VM restart behavior can be changed on a pool-wide ba
 xe pool-param-set uuid=... ha-reboot-vm-on-internal-shutdown=false
 ```
 
-The `ha-reboot-vm-on-internal-shutdown` parameter indicates whether an HA-protected VM that is shut down from inside (not through the API) should be automatically rebooted when HA is enabled.
+The `ha-reboot-vm-on-internal-shutdown` parameter indicates whether VM-initiated shudotwns will trigger a restart for HA-protected VMs, for example, when a user clicks the shutdown in Windows.
 
 :::
 
