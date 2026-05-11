@@ -57,7 +57,7 @@ To tell an existing SR that it must prefer the `qcow2` image format for new disk
 
 In order to unplug the PBD, any VMs with a VDI on the SR will have to be stopped, or the VDI moved temporarily to another SR.
 
-This operation will not affect the contents of the SR. The PDB object represents the connection to the SR, not its contents.
+This operation will not affect the contents of the SR. The PBD object represents the connection to the SR, not its contents.
 
 
 ## FAQ
