@@ -11,7 +11,7 @@ This page details how to keep your XCP-ng system updated (bug fixes and security
 If you want to manage your XCP-ng updates, we suggest that you use Xen Orchestra. It's the fastest & easiest way to keep your infrastructure up-to-date. See the [dedicated section](updates.md#from-xen-orchestra). If you want to learn more about Xen Orchestra, also check the [management section](management.md).
 
 :::info
-All our updates are explained in details inside a dedicated blog post. Don't forget to visit https://xcp-ng.org/blog or to directly explore all articles with the tag updates: https://xcp-ng.org/blog/tag/update/
+Each update is covered by a dedicated blog post. Browse all update posts at https://xcp-ng.org/blog/tag/update/
 :::
 
 ## ♻️ Support cycle
@@ -68,7 +68,7 @@ Every update is first tested and discussed on a forum thread dedicated to update
 
 * [XCP-ng 8.3 updates announcements and testing](https://xcp-ng.org/forum/topic/9964/xcp-ng-8-3-updates-announcements-and-testing)
 
-Important updates - especially security updates - are announced [on the blog](https://xcp-ng.org/blog/) and the most important ones are also announced through [the newsletter](https://xcp-ng.us13.list-manage.com/subscribe?u=f1ab72021fb8816f4d5e72773&id=4d17393549).
+Important updates - especially security updates - are announced [on the blog](https://xcp-ng.org/blog/tag/update/) and the most important ones are also announced through [the newsletter](https://xcp-ng.us13.list-manage.com/subscribe?u=f1ab72021fb8816f4d5e72773&id=4d17393549).
 
 A comprehensive list of updates is available on our build system's web interface. Click the package names for details:
 
