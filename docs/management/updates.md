@@ -90,6 +90,12 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 
 ## 🚸 Precautions
 
+:::warning
+**Always update the pool master first. Other pool members must never run a higher version than the master.**
+
+If you update any other host before the pool master, **it will lose the ability to connect to the pool master and will become completely unusable**.
+:::
+
 * Disable HA during the whole update process to avoid accidental fencing (automatically handled by [Xen Orchestra RPU](updates.md#from-xen-orchestra))
 * Avoid applying updates while XAPI tasks are running (`xe task-list`).
 * Some updates may probe SCSI devices. If your devices are sensitive to that kind of thing, plug them off before updating (see [this unfortunate story](https://github.com/xcp-ng/xcp/issues/232) of dead tape robots).
