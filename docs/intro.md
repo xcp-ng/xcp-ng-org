@@ -29,7 +29,7 @@ XCP-ng contains multiple components, built around the Xen Hypervisor. It's meant
 
 ## 📚 Stack overview
 
-The main goal of XCP-ng is to be a fully integrated and dedicated virtualization platform, without requiring any deep Linux or system knowledge. It's meant to be managed in a centralized manner via [Xen Orchestra](management/#%EF%B8%8F-manage-at-scale), regardless the fact you have only one host or thousand of them. Backup is also included inside Xen Orchestra.
+The main goal of XCP-ng is to be a fully integrated and dedicated virtualization platform, without requiring any deep Linux or system knowledge. It's meant to be managed in a centralized manner via [Xen Orchestra](management/#%EF%B8%8F-manage-at-scale), whether you have only one host or thousands of them. Backup is also included inside Xen Orchestra.
 
 <div style={{textAlign: 'center'}}>
 ![Vates VMS stack overview.](../assets/img/vates-vms.png)
@@ -37,7 +37,7 @@ The main goal of XCP-ng is to be a fully integrated and dedicated virtualization
 
 ## 🎓 Concepts
 
-There's few concepts to grasp in order to get a clear picture about what is XCP-ng.
+There are a few concepts to grasp in order to get a clear picture about what XCP-ng is.
 
 ### Turnkey appliance
 
@@ -53,13 +53,13 @@ In terms of general architecture, XCP-ng and Xen Orchestra are relatively close.
 
 ### Managing XCP-ng
 
-Now you have your hosts running, the next step is to manage it. You have various options to do so, choose the one that fits best! See the dedicated [management section](management).
+Now you have your hosts running, the next step is to manage them. You have various options to do so, choose the one that fits best! See the dedicated [management section](management).
 
 #### Host API architecture
 
-All XCP-ng clients are communicating with the pool master, through the Xen API ([XAPI](management/manage-locally/api.md)). You only need to open a connection to the master, even if there's multiple hosts.
+All XCP-ng clients are communicating with the pool master, through the Xen API ([XAPI](management/manage-locally/api.md)). You only need to open a connection to the master, even if there are multiple hosts.
 
-Some clients are stateless (only running when you open or use them) and others are stateful (running in a daemon, often in a dedicated VM). For very basic management tasks, stateless clients are fine. However, for more advanced features, you need stateful clients. The default choice is to use Xen Orchestra, but a list of solution is available in our [management section](management).
+Some clients are stateless (only running when you open or use them) and others are stateful (running in a daemon, often in a dedicated VM). For very basic management tasks, stateless clients are fine. However, for more advanced features, you need stateful clients. The default choice is to use Xen Orchestra, but a list of solutions is available in our [management section](management).
 
 ### Backup
 
