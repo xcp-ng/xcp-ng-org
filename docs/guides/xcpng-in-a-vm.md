@@ -198,7 +198,7 @@ On recent kernels, when enabling AMD virtualization in the BIOS, it should enabl
 
 ### XCP-ng virtual machine settings
 
-The configuration of the virtual machine will use mostly emulated components for disks and network. VirtIO drivers are not include in the XS/XCP-ng kernel.
+The configuration of the virtual machine will use mostly emulated components for disks and network. VirtIO drivers are not included in the XS/XCP-ng kernel.
 
 The VM settings :
 
