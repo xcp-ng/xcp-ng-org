@@ -69,7 +69,8 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 :::
 
 :::info
-Set the server's BIOS clock to the current UTC time. For debugging support cases, serial console access may be required. Consider configuring serial console access for XCP-ng. For systems without physical serial ports, explore embedded management devices like Dell DRAC or HP iLO. See [CTX228930 - How to Configure Serial Console Access on XenServer 7.0 and later](https://support.citrix.com/article/CTX228930).
+- Set the server's BIOS clock to the current UTC time. Key signatures can only be verified if your BIOS time is set correctly. Failing to do so may result in "Signature Key Import Failed" errors when configuring IPv4.
+- For debugging support cases, serial console access may be required. Consider configuring serial console access for XCP-ng. For systems without physical serial ports, explore embedded management devices like Dell DRAC or HP iLO. See [Advanced troubleshooting - Configure serial console access](https://docs.xenserver.com/en-us/xenserver/8/troubleshoot/advanced.html#configure-serial-console-access).
 :::
 
 ## 📋 XCP-ng Configuration Limits
