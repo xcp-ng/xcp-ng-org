@@ -23,7 +23,7 @@ This file is an XML, here is an example:
 ```
 
 :::tip
-In order to use thin provisionned local disks, you need to add an `srtype` attribute to `ext`. Without this, it will create a local LVM SR by default.
+In order to use thin provisionned local disks, you need to add an `srtype` attribute to `ext`. Without this, it will create a local <abbr title="Logical Volume Manager">LVM</abbr> <abbr title="Storage Repository">SR</abbr> by default.
 :::
 
 ## Answer file values
@@ -91,7 +91,7 @@ Where type is one of:
 
 `source` defines the location of the installation repository or a Supplemental Pack. There may be multiple 'source' elements.
 
-`driver-source` defines the source of a Supplemental Pack containing device drivers to be loaded by  the installer and included after installation of the main repository. It can be 
+`driver-source` defines the source of a Supplemental Pack containing device drivers to be loaded by  the installer and included after installation of the main repository. It can be
 
 Repository formats:
 
@@ -190,8 +190,8 @@ Specifies the target disk for installation.
 ```
 
 Optional attribute:
-* `guest-storage`=bool. Include the remaining space of the primary disk in the local SR. `True` by default.
-* `sr-at-end`=bool. Location of SR partition on the physical disk. Used by XenRT to simulate a host that has been migrated from an OEM release. Default: `True`.
+* `guest-storage`=bool. Include the remaining space of the primary disk in the local <abbr title="Storage Repository">SR</abbr>. `True` by default.
+* `sr-at-end`=bool. Location of <abbr title="Storage Repository">SR</abbr> partition on the physical disk. Used by XenRT to simulate a host that has been migrated from an OEM release. Default: `True`.
 * `preserve-first-partition`=`true|yes|false|no|if-utility`. Defines the action to perform on detecting a non-XS partition at the start of the disk. Default : if-utility. Values:
   * `true`|`yes`: Unconditionally preserve
   * `false`|`no`: Unconditionally destroy
@@ -199,7 +199,7 @@ Optional attribute:
 
 #### Guest disks
 
-Specifies additional devices to be included in the local SR.
+Specifies additional devices to be included in the local <abbr title="Storage Repository">SR</abbr>.
 
 ```xml
   <guest-disks>
@@ -214,7 +214,7 @@ Specifies the initial management interface.
 ```xml
   <admin-interface name="eth"/> | <admin-interface hwaddr="mac"/>
 ```
-    
+
 Mandatory attributes:
 * `proto`="static|dhcp|none"
 
@@ -254,11 +254,11 @@ $6$Vv6DgmVWmbZ.SdRl$AUWzbpE5luuNQIyW.CUEztWLKEJkSrBhfTKFdMaX1eJhPrtXworF4RIG.GQ9
 #### Name Server
 
 Specifies one or more DNS entries.
-    
+
 ```xml
   <name-server>ip</name-server>
 ```
-    
+
 #### Hostname
 
 Specifies the hostname. Default: `localhost.localdomain`.
@@ -293,9 +293,9 @@ Specifies the console keymap. Default: `us`.
 
 ### (Re)Install Attributes
 
-#### SR type
+#### <abbr title="Storage Repository">SR</abbr> type
 
-Local SR type. Default: `lvm`.
+Local <abbr title="Storage Repository">SR</abbr> type. Default: `lvm`.
 
 ```xml
   <installation sr-type="lvm|ext"?>

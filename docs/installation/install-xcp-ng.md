@@ -67,7 +67,7 @@ NEVER switch from UEFI to BIOS (or vice-versa) **after** you installed XCP-ng. S
 #### 5. Disk selection
 
 <a name="_5-disk-selection"></a>
-This is the screen where you'll select where XCP-ng will be installed. **XCP-ng is a specialized Linux distribution**, so you need to dedicate a physical disk to it. Partitioning is done automatically.
+This is the screen where you'll select where XCP-ng system will be installed. **XCP-ng is a specialized Linux distribution**, so you need to dedicate a physical disk to it. Partitioning is done automatically.
 
 ![Primary disk selection screen, showing 2 NVMEs, allowing to select one of them, or go to the Software Raid configuration.](https://xcp-ng.org/assets/img/screenshots/install5.png)
 
@@ -76,14 +76,14 @@ Alternatively, if you have two identical disks, you can use Software RAID (`mdad
 ![Software RAID configuration screen, showing the 2 NVMEs selected.](https://xcp-ng.org/assets/img/screenshots/install6.png)
 
 :::tip
-If only one disk is deemed suitable for the installation, this step is skipped. The name of the device will be displayed [in the "Confirm Installation" step, later in the process](#12-installation).
+If only one disk is found suitable for the installation, this step is skipped. The name of the device will be displayed to you [in the "Confirm Installation" step, later in the process](#12-installation).
 :::
 
 #### 6. VM storage selection
 
-This is the place where your VM disks will be stored. It's called a **Storage Repository** (SR). It can use the same disk you installed the system on. It will automatically use the free space after system partitions.
+This is the place where your VM disks will be stored. It's called a **Storage Repository** (<abbr title="Storage Repository">SR</abbr>). It can use the same disk you installed the system on. It will automatically use the free space after system partitions.
 
-![Local storage screen, select the disk and type of storage: EXT for thin provisioning, or LVM for thick provisioning.](https://xcp-ng.org/assets/img/screenshots/install7.png)
+![Local storage screen, select the disk and type of storage: EXT for thin provisioning, or <abbr title="Logical Volume Manager">LVM</abbr> for thick provisioning.](https://xcp-ng.org/assets/img/screenshots/install7.png)
 
 
 :::tip
@@ -91,7 +91,7 @@ EXT instead of LVM? We advise to use EXT to benefit from thin provisioning!
 :::
 
 :::warning
-When the installer skips [step 5](#5-disk-selection), users sometimes mistake this step with the selection of the system disk.
+When the installer skips [step 5](#5-disk-selection) automatically, users sometimes mistake this step with the selection of the system disk.
 :::
 
 #### 7. Installation source
@@ -542,7 +542,7 @@ See [the Troubleshooting page](../../troubleshooting/after-upgrade).
 
 :::danger
 We **strongly discourage** the installation of XCP-ng on USB drives. The frequent writing actions required by XCP-ng can rapidly degrade a USB drive due to:
-* XAPI: This is the XenServer API database, which undergoes constant changes. This results in significant write operations, which are detrimental to the longevity of USB drives. Note: The XAPI database maintains the state of all XCP-ng operations and is replicated across each host (from the slave).
+* <abbr title="Xen Project Management API">XAPI</abbr>: This is the XenServer API database, which undergoes constant changes. This results in significant write operations, which are detrimental to the longevity of USB drives. Note: The <abbr title="Xen Project Management API">XAPI</abbr> database maintains the state of all XCP-ng operations and is replicated across each host (from the slave).
 * Logs: XCP-ng generates a substantial amount of debug logs. A possible solution is to use a remote syslog.
 :::
 

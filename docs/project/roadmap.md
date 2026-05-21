@@ -23,7 +23,7 @@ _Technology that is here, but not officially released for production usage._
 * [DPU Support](https://xcp-ng.org/blog/2021/07/12/dpus-and-the-future-of-virtualization/) (storage/platform)
 * Reporting hardware info on hosts (with our certified hardware partners)
 * SPDK-based `blkif` backend (platform)
-* SMAPIv3 evolution (storage)
+* <abbr title="Storage Manager API">SMAPI</abbr>v3 evolution (storage)
 
 ## 👷 In progress
 
@@ -49,7 +49,7 @@ _Features that are being discussed or designed, but not even partly coded._
 
 ## 🏁 Done
 
-* SMAPIv3 full ZFS driver
+* <abbr title="Storage Manager API">SMAPI</abbr>v3 full ZFS driver
 * Faster Xen Motion (compression in `xenops`?)
 * Soft RAID status/alerting (via XAPI plugin)
 * Intel `igc` driver support (dom0 drivers)
@@ -66,12 +66,12 @@ _Features that are being discussed or designed, but not even partly coded._
 * Cross/multi pools private network in GRE/VxLAN (2020)
 * Netdata dedicated RPM (2019)
 * Citrix DVSC replacement by XO plugin (2019)
-* Full SMAPIv1 SR stack ZFS support, done with ZoL 0.8.1 (2019)
+* Full <abbr title="Storage Manager API">SMAPI</abbr>v1 <abbr title="Storage Repository">SR</abbr> stack ZFS support, done with ZoL 0.8.1 (2019)
 * Netinstaller checking GPG (2019)
 * Netdata in XCP-ng with [Xen metrics](https://github.com/netdata/netdata/pull/5660) (2019)
 * `zstd` support for VM export/import (2019)
-* `xfs` local SR support SMAPIv1 (2019)
-* `ext4` local SR support SMAPIv1 (2019)
+* `xfs` local <abbr title="Storage Repository">SR</abbr> support <abbr title="Storage Manager API">SMAPI</abbr>v1 (2019)
+* `ext4` local <abbr title="Storage Repository">SR</abbr> support <abbr title="Storage Manager API">SMAPI</abbr>v1 (2019)
 * Terraform support (2019)
 * More recent (4.9) kernel usage in dom0 (2018)
 * Signed Windows PV tools (2018)
@@ -94,14 +94,14 @@ _This is a kind of wish list, without any priorities, where we try to put some i
 
 ### Storage
 
-* SMAPIv3 qcow2 export/import
-* SMAPIv3 new drivers
+* <abbr title="Storage Manager API">SMAPI</abbr>v3 qcow2 export/import
+* <abbr title="Storage Manager API">SMAPI</abbr>v3 new drivers
 * VDI export with compression (including `zstd`)
-* SMAPIv3 Ceph support
+* <abbr title="Storage Manager API">SMAPI</abbr>v3 Ceph support
 * Coalesce process improvement (raw speed, rewrite, multicore?) [#127](https://github.com/xcp-ng/xcp/issues/127)
 * NVMe driver for near bare metal perfs (specification in progress)
 * General storage perf improvement
-* Thin pro on block based SR (architectural review needed)
+* Thin pro on block based <abbr title="Storage Repository">SR</abbr> (architectural review needed)
 
 ### Network
 
@@ -116,7 +116,7 @@ _This is a kind of wish list, without any priorities, where we try to put some i
 
 * Installer using `ext4` for dom0
 * Installer allow join pool directly during install
-* Expose repo URL/modification from XAPI (possibility to use XOA with `apt-cacher-ng`)
+* Expose repo URL/modification from XAPI (possibility to use <abbr title="Xen Orchestra Appliance">XOA</abbr> with `apt-cacher-ng`)
 * Improved provisioning support (Ansible…)
 * Automated tests
 * new RPM tracking in CentOS (Anitya)

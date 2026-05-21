@@ -17,7 +17,7 @@ LTS means **Long Term Support**: more information in [this section](../#-lts-rel
 
 * [Release information](#release-information)
 * [What's new](#whats-new)
-* [Status of XOSTOR in XCP-ng 8.3](#status-of-xostor-in-xcp-ng-83) - A must-read for XOSTOR users.
+* [Status of <abbr title="Xen Orchestra Storage">XOSTOR</abbr> in XCP-ng 8.3](#status-of-xostor-in-xcp-ng-83) - A must-read for <abbr title="Xen Orchestra Storage">XOSTOR</abbr> users.
 * [Deprecations and removals](#deprecations-and-removals)
 * [Attention points](#attention-points) - Highly recommended read before upgrading.
 * [Known issues](#known-issues)
@@ -170,7 +170,7 @@ Other hardware drivers have also been updated.
 
 Another change backported to XCP-ng 8.2.1 is support for 4K native disks.
 
-We added a new `largeblock` storage driver, which is a local SR driver that works around the current limitation in our storage stack with 4K native devices by transparently emulating a 512B block size (with some performance cost, of course).
+We added a new `largeblock` storage driver, which is a local <abbr title="Storage Repository">SR</abbr> driver that works around the current limitation in our storage stack with 4K native devices by transparently emulating a 512B block size (with some performance cost, of course).
 
 ### Guest UEFI Secure Boot
 
@@ -240,9 +240,9 @@ However, despite good intentions on both sides, not every change we submitted wa
 Key improvements made to the installer include:
 - `memtest86+` has been updated to version 6 with EFI support.
 - The `xen-pciback.hide` boot parameter (useful for PCI passthrough) will now persist when upgrading XCP-ng (merged upstream).
-- The default SR type now defaults to `ext`, and users are presented with radio buttons instead of a checkbox for the choice (not contributed upstream as it’s irrelevant for XenServer).
+- The default <abbr title="Storage Repository">SR</abbr> type now defaults to `ext`, and users are presented with radio buttons instead of a checkbox for the choice (not contributed upstream as it’s irrelevant for XenServer).
 - The "Do you want to install any supplemental packs?" dialog was removed at the end of installation (submitted upstream to make it optional, so we can disable it while maintaining upstream consistency). Exception: it still appears if a driver disk was loaded during installation.
-- The primary disk selection screen always appears, even if only one disk is available. Previously, if only one disk met the prerequisites, the screen was skipped, leading users to mistake the Local SR creation screen for the primary disk selection (merged upstream).
+- The primary disk selection screen always appears, even if only one disk is available. Previously, if only one disk met the prerequisites, the screen was skipped, leading users to mistake the Local <abbr title="Storage Repository">SR</abbr> creation screen for the primary disk selection (merged upstream).
 - Better error message granularity when installations fail due to incorrect system dates, signature issues, etc. (merged upstream).
 - Improved robustness when installing on used disks that contain ZFS metadata.
 - Earlier warnings if attempting to upgrade a system with a different BIOS type (Legacy BIOS vs. UEFI), preventing issues later in the process.
@@ -296,13 +296,13 @@ This feature was enabled through API enhancements and is already functional in t
 
 ### Enhanced coalesce detection [XS + Xen Orchestra]
 
-Thanks to improvements in the storage API reporting, Xen Orchestra can now display more details, such as whether an SR is performing a coalesce operation (Gear⚙️ icon).
+Thanks to improvements in the storage API reporting, Xen Orchestra can now display more details, such as whether an <abbr title="Storage Repository">SR</abbr> is performing a coalesce operation (Gear⚙️ icon).
 
-![XO storage tab showing a coalesce in progress by a gear icon next to the SR.](../assets/img/xo-coalesce.png)
+![Xen Orchestra (XO) storage tab showing a coalesce in progress by a gear icon next to the Storage Repository (SR).](../assets/img/xo-coalesce.png)
 
 It also shows the coalesce progress percentage within the task view.
 
-![XO task view showing the progress of a coalesce.](../assets/img/xo-taskcoalesce.png)
+![Xen Orchestra (XO) task view showing the progress of a coalesce.](../assets/img/xo-taskcoalesce.png)
 
 ### Migration stream compression [XS + Xen Orchestra]
 
@@ -352,13 +352,13 @@ We've also invested heavily in test automation to improve coverage. Nevertheless
 - `netdata` updated to version 1.44.3.
 - `lsscsi` added to the XCP-ng repositories.
 
-## Status of XOSTOR in XCP-ng 8.3
+## Status of <abbr title="Xen Orchestra Storage">XOSTOR</abbr> in XCP-ng 8.3
 
-As of the initial release, XOSTOR (our hyperconverged storage solution based on LINSTOR) was available in XCP-ng 8.3 but was still considered **beta**.
+As of the initial release, <abbr title="Xen Orchestra Storage">XOSTOR</abbr> (our hyperconverged storage solution based on LINSTOR) was available in XCP-ng 8.3 but was still considered **beta**.
 
-Since 2025-06-16, XOSTOR is officially supported on XCP-ng 8.3, as long as it is up to date.
+Since 2025-06-16, <abbr title="Xen Orchestra Storage">XOSTOR</abbr> is officially supported on XCP-ng 8.3, as long as it is up to date.
 
-A [specific upgrade process](../../xostor/#upgrade) is available for pools running XCP-ng 8.2.1 with XOSTOR.
+A [specific upgrade process](../../xostor/#upgrade) is available for pools running XCP-ng 8.2.1 with <abbr title="Xen Orchestra Storage">XOSTOR</abbr>.
 
 ## Deprecations and removals
 
@@ -370,7 +370,7 @@ Official support for PV guests stopped with the release of XCP-ng 8.1, on 2020-0
 
 In XCP-ng 8.3, they won't run at all.
 
-If you still have PV guests, you need to convert them to HVM, and fix the bootloader because the boot process differs between PV and HVM.
+If you still have PV guests, you need to convert them to <abbr title="Hardware Virtual Machine">HVM</abbr>, and fix the bootloader because the boot process differs between PV and <abbr title="Hardware Virtual Machine">HVM</abbr>.
 
 [This blog post](https://xcp-ng.org/blog/2022/01/17/removing-support-for-32-bit-pv-guests/) from early 2022 when we announced the removal of 32-bit PV support may still contain information useful for users needing to make the transition.
 
@@ -419,7 +419,7 @@ In case you still want to try it, see [this forum thread](https://xcp-ng.org/for
 
 ### GlusterFS untested
 
-A while ago, we added GlusterFS to our repositories, as well as GlusterFS SR drivers. They are still present, but we don't test GlusterFS thoroughly. It might still be useful in some use cases despite its low performance in XCP-ng's VM virtualization context, but users need to be aware that there may be bugs or security vulnerabilities.
+A while ago, we added GlusterFS to our repositories, as well as GlusterFS <abbr title="Storage Repository">SR</abbr> drivers. They are still present, but we don't test GlusterFS thoroughly. It might still be useful in some use cases despite its low performance in XCP-ng's VM virtualization context, but users need to be aware that there may be bugs or security vulnerabilities.
 
 ### Legacy BIOS
 
@@ -433,7 +433,7 @@ Converting an existing Legacy BIOS installation of XCP-ng into a UEFI one is not
 
 So here it's not really a removal. XenServer replaced the component used for Active Directory support, `pbis`, by `winbind`. However, the script handling the transition is kept proprietary by XenServer, so we couldn't embed it into XCP-ng. This means it's likely that an existing setup would break after an upgrade and need to be done again. In any case, we have never been fans of this way to leverage Active Directory directly inside XCP-ng. We strongly advise relying on Xen Orchestra to manage users (which is AD and OpenLDAP compatible) and leave your host far from this.
 
-### Removal of the old experimental `ext4` SR driver
+### Removal of the old experimental `ext4` <abbr title="Storage Repository">SR</abbr> driver
 
 We deleted the old, unsupported since XCP-ng 8.1, experimental EXT4 driver, superseded by the regular EXT driver (which also uses `ext4`). We're talking about an old experimental driver that you never used unless you installed the experimental packages in the XCP-ng 7.x era, so this removal is painless for the vast majority of XCP-ng users, if not all!
 
@@ -456,9 +456,9 @@ On the other hand, if you installed a custom host certificate and its key is too
 
 This must be done on every host of the pool, one after the other.
 
-### XOSTOR and XCP-ng 8.3
+### <abbr title="Xen Orchestra Storage">XOSTOR</abbr> and XCP-ng 8.3
 
-See [Status of XOSTOR in XCP-ng 8.3](#status-of-xostor-in-xcp-ng-83).
+See [Status of <abbr title="Xen Orchestra Storage">XOSTOR</abbr> in XCP-ng 8.3](#status-of-xostor-in-xcp-ng-83).
 
 ### PV VMs cannot be live migrated to an 8.3 host
 
@@ -466,7 +466,7 @@ As a consequence of the complete [removal of PV support](#pv-virtualization-mode
 
 The error message will not be very helpful, mentioning "shadow paging". What it really means is that it's impossible to run a VM in PV mode.
 
-Note: we still use paravirtualized (PV) drivers in HVM guests, so the old PV mode still has a legacy. But the original, old, PV mode itself is now history.
+Note: we still use paravirtualized (PV) drivers in <abbr title="Hardware Virtual Machine">HVM</abbr> guests, so the old PV mode still has a legacy. But the original, old, PV mode itself is now history.
 
 ### "TLS verification feature mismatch" when adding a host to an upgraded pool
 

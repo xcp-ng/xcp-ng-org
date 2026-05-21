@@ -34,18 +34,18 @@ As the VLAN header adds 4-byte overhead, a standard 1500 ethernet MTU should be 
 1. Modify the MTU setting of **the port** on the switch carrying the trunk to be 1504.
 To change this setting, consult the documentation of your switch.
 
-2. Apply the same setting on XCP-ng **PIF** for this interface.
+2. Apply the same setting on XCP-ng **<abbr title="Physical Interface">PIF</abbr>** for this interface.
 You can achieve the same result using Xen-Orchestra, or directly on the XCP-ng host (via `xe` utility).
 
 With Xen-Orchestra:
 - Select the right *Pool*
 - Go to *Network* panel
 - Modify the MTU of the **Pool-wide network associated with eth2**:
-    - Associated PIF is `eth2`, which is the LAN side used for VLAN trunking in your example.
+    - Associated <abbr title="Physical Interface">PIF</abbr> is `eth2`, which is the LAN side used for VLAN trunking in your example.
     - The VLAN property is `None`: if it is `0` or another number,
       it isn't the right network and this network couldn't be used for VLAN trunking
       (802.1Q tagged packets would be dropped).
-    - Finally, you can click on the MTU to modify it to `1504` (it will disconnect and reconnect the PIF on the host).
+    - Finally, you can click on the MTU to modify it to `1504` (it will disconnect and reconnect the <abbr title="Physical Interface">PIF</abbr> on the host).
 - On the *Host* configuration, check that the *eth2* network is properly reconnected,
   or do it if it isn't the case
   (it could happens if some host on the pool aren't fully up).
@@ -97,11 +97,11 @@ uuid ( RO)          : 015bda3e-830b-d33d-ab91-098632ef61a3
 
 ```
 
-You need to unplug and plug each PIF of the changed network to properly apply the setting on the underlying physical interface,
+You need to unplug and plug each <abbr title="Physical Interface">PIF</abbr> of the changed network to properly apply the setting on the underlying physical interface,
 or more simply, just reboot the host.
 
 ```
-# xe network-param-get uuid=015bda3e-830b-d33d-ab91-098632ef61a3 param-name=PIF-uuids 
+# xe network-param-get uuid=015bda3e-830b-d33d-ab91-098632ef61a3 param-name=PIF-uuids
 50594040-3b64-6a1c-2dff-d607d6ac5b35; 0683c09f-f241-b66e-a98b-92e1a54a7e86
 # xe pif-unplug uuid=50594040-3b64-6a1c-2dff-d607d6ac5b35
 # xe pif-plug uuid=50594040-3b64-6a1c-2dff-d607d6ac5b35

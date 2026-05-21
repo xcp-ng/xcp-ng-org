@@ -125,7 +125,7 @@ xe audit-log-get since=2009-09-24T17:56:20.530Z filename=/tmp/auditlog-pool-acti
 
 Commands for working with network bonds, for resilience with physical interface failover. For more information, see the [Networking](../../networking/) section.
 
-The bond object is a reference object which glues together *master* and *member* PIFs. The master PIF is the bonding interface which must be used as the overall PIF to refer to the bond. The member PIFs are a set of two or more physical interfaces that have been combined into the high-level bonded interface.
+The bond object is a reference object which glues together *master* and *member* <abbr title="Physical Interface">PIF</abbr>. The master <abbr title="Physical Interface">PIF</abbr> is the bonding interface which must be used as the overall <abbr title="Physical Interface">PIF</abbr> to refer to the bond. The member <abbr title="Physical Interface">PIF</abbr> are a set of two or more physical interfaces that have been combined into the high-level bonded interface.
 
 ## Bond parameters
 
@@ -143,12 +143,12 @@ Bonds have the following parameters:
 bond-create network-uuid=network_uuid pif-uuids=pif_uuid_1,pif_uuid_2,...
 ```
 
-Create a bonded network interface on the network specified from a list of existing PIF objects. The command fails in any of the following cases:
+Create a bonded network interface on the network specified from a list of existing <abbr title="Physical Interface">PIF</abbr> objects. The command fails in any of the following cases:
 
--   If PIFs are in another bond already
+-   If <abbr title="Physical Interface">PIF</abbr> are in another bond already
 -   If any member has a VLAN tag set
--   If the referenced PIFs are not on the same XCP-ng server
--   If fewer than 2 PIFs are supplied
+-   If the referenced <abbr title="Physical Interface">PIF</abbr> are not on the same XCP-ng server
+-   If fewer than 2 <abbr title="Physical Interface">PIF</abbr> are supplied
 
 ### `bond-destroy`
 
@@ -181,18 +181,18 @@ CDs have the following parameters:
 |`name-description`|Description text for the CD|Read/write|
 |`allowed-operations`|A list of the operations that can be performed on this CD|Read only set parameter|
 |`current-operations`|A list of the operations that are currently in progress on this CD|Read only set parameter|
-|`sr-uuid`|The unique identifier/object reference for the SR this CD is part of|Read only|
-|`sr-name-label`|The name for the SR this CD is part of|Read only|
-|`vbd-uuids`|A list of the unique identifiers for the VBDs on VMs that connect to this CD|Read only set parameter|
+|`sr-uuid`|The unique identifier/object reference for the <abbr title="Storage Repository">SR</abbr> this CD is part of|Read only|
+|`sr-name-label`|The name for the <abbr title="Storage Repository">SR</abbr> this CD is part of|Read only|
+|`vbd-uuids`|A list of the unique identifiers for the <abbr title="Virtual Block Device">VBD</abbr> on VMs that connect to this CD|Read only set parameter|
 |`crashdump-uuids`|Not used on CDs. Because crashdumps cannot be written to CDs|Read only set parameter|
 |`virtual-size`|Size of the CD as it appears to VMs (in bytes)|Read only|
-|`physical-utilisation`|Amount of physical space that the CD image takes up on the SR (in bytes)|Read only|
+|`physical-utilisation`|Amount of physical space that the CD image takes up on the <abbr title="Storage Repository">SR</abbr> (in bytes)|Read only|
 |`type`|Set to User for CDs|Read only|
 |`sharable`|Whether or not the CD drive is shareable. Default is `false`.|Read only|
 |`read-only`|Whether the CD is read-only, if `false`, the device is writable. Always true for CDs.|Read only|
 |`storage-lock`|Value is `true` if this disk is locked at the storage level.|Read only|
 |`parent`|Reference to the parent disk, if this CD is part of a chain.|Read only|
-|`missing`|Value is `true` if SR scan operation reported this CD as not present on disk|Read only|
+|`missing`|Value is `true` if <abbr title="Storage Repository">SR</abbr> scan operation reported this CD as not present on disk|Read only|
 |`other-config`|A list of key/value pairs that specify extra configuration parameters for the CD|Read/write map parameter|
 |`location`|The path on which the device is mounted|Read only|
 |`managed`|Value is `true` if the device is managed|Read only|
@@ -322,7 +322,7 @@ Query the locking and sharing status of a VDI.
 diagnostic-vm-status uuid=vm_uuid
 ```
 
-Query the hosts on which the VM can boot, check the sharing/locking status of all VBDs.
+Query the hosts on which the VM can boot, check the sharing/locking status of all <abbr title="Virtual Block Device">VBD</abbr>.
 
 ## Disaster recovery commands
 
@@ -334,14 +334,14 @@ Commands for recovering VMs after a disaster
 drtask-create type=type sr-whitelist=sr-white-list device-config=device-config
 ```
 
-Creates a disaster recovery task. For example, to connect to an iSCSI SR in preparation for Disaster Recovery:
+Creates a disaster recovery task. For example, to connect to an iSCSI <abbr title="Storage Repository">SR</abbr> in preparation for Disaster Recovery:
 
 ```
 xe drtask-create type=lvmoiscsi device-config:target=target-ip-address device-config:targetIQN=targetIQN device-config:SCSIid=SCSIid sr-whitelist=sr-uuid-list
 ```
 
 :::tip
-The command `sr-whitelist` lists SR UUIDs. The `drtask-create` command only introduces and connects to an SR which has one of the whitelisted UUIDs
+The command `sr-whitelist` lists <abbr title="Storage Repository">SR</abbr> UUIDs. The `drtask-create` command only introduces and connects to an <abbr title="Storage Repository">SR</abbr> which has one of the whitelisted UUIDs
 :::
 
 ### `drtask-destroy`
@@ -350,7 +350,7 @@ The command `sr-whitelist` lists SR UUIDs. The `drtask-create` command only intr
 drtask-destroy uuid=dr-task-uuid
 ```
 
-Destroys a disaster recovery task and forgets the introduced SR.
+Destroys a disaster recovery task and forgets the introduced <abbr title="Storage Repository">SR</abbr>.
 
 ### `vm-assert-can-be-recovered`
 
@@ -390,7 +390,7 @@ Recovers a VM from the database contained in the supplied VDI.
 sr-enable-database-replication uuid=sr_uuid
 ```
 
-Enables XAPI database replication to the specified (shared) SR.
+Enables <abbr title="Xen Project Management API">XAPI</abbr> database replication to the specified (shared) <abbr title="Storage Repository">SR</abbr>.
 
 ### `sr-disable-database-replication`
 
@@ -398,7 +398,7 @@ Enables XAPI database replication to the specified (shared) SR.
 sr-disable-database-replication uuid=sr_uuid
 ```
 
-Disables XAPI database replication to the specified SR.
+Disables <abbr title="Xen Project Management API">XAPI</abbr> database replication to the specified <abbr title="Storage Repository">SR</abbr>.
 
 #### Example usage
 
@@ -410,13 +410,13 @@ On the primary site, enable database replication:
 xe sr-database-replication uuid=sr=uuid
 ```
 
-After a disaster, on the secondary site, connect to the SR. The `device-config` command has the same fields as `sr-probe`.
+After a disaster, on the secondary site, connect to the <abbr title="Storage Repository">SR</abbr>. The `device-config` command has the same fields as `sr-probe`.
 
 ```
 xe drtask-create type=lvmoiscsi device-config:target=target ip address device-config:targetIQN=target-iqn device-config:SCSIid=scsi-id sr-whitelist=sr-uuid
 ```
 
-Look for database VDIs on the SR:
+Look for database VDIs on the <abbr title="Storage Repository">SR</abbr>:
 
 ```
 xe vdi-list sr-uuid=sr-uuid type=Metadata
@@ -677,8 +677,8 @@ XCP-ng servers have the following parameters:
 |`API-version-vendor`|Identification of API vendor|Read only|
 |`API-version-vendor-implementation`|Details of vendor implementation|Read only map parameter|
 |`logging`|Logging configuration|Read/write map parameter|
-|`suspend-image-sr-uuid`|The unique identifier/object reference for the SR where suspended images are put|Read/write|
-|`crash-dump-sr-uuid`|The unique identifier/object reference for the SR where crash dumps are put|Read/write|
+|`suspend-image-sr-uuid`|The unique identifier/object reference for the <abbr title="Storage Repository">SR</abbr> where suspended images are put|Read/write|
+|`crash-dump-sr-uuid`|The unique identifier/object reference for the <abbr title="Storage Repository">SR</abbr> where crash dumps are put|Read/write|
 |`software-version`|List of versioning parameters and their values|Read only map parameter|
 |`capabilities`|List of Xen versions that the XCP-ng server can run|Read only set parameter|
 |`other-config`|A list of key/value pairs that specify extra configuration parameters for the XCP-ng server|Read/write map parameter|
@@ -929,7 +929,7 @@ The hosts on which this operation should be performed are selected using the sta
 host-forget uuid=host_uuid
 ```
 
-The XAPI agent forgets about the specified XCP-ng server without contacting it explicitly.
+The <abbr title="Xen Project Management API">XAPI</abbr> agent forgets about the specified XCP-ng server without contacting it explicitly.
 
 Use the `--force` parameter to avoid being prompted to confirm that you really want to perform this operation.
 
@@ -1094,7 +1094,7 @@ Reconfigures the XCP-ng server to use the specified network interface as its man
 
 If the device name of an interface (which must have an IP address) is specified, the XCP-ng server immediately rebinds. This command works both in normal and emergency mode.
 
-If the UUID of a PIF object is specified, the XCP-ng server determines which IP address to rebind to itself. It must not be in emergency mode when this command is executed.
+If the UUID of a <abbr title="Physical Interface">PIF</abbr> object is specified, the XCP-ng server determines which IP address to rebind to itself. It must not be in emergency mode when this command is executed.
 
 :::warning
 Be careful when using this CLI command off-host and ensure that you have network connectivity on the new interface. Use `xe pif-reconfigure` to set one up first. Otherwise, subsequent CLI commands are unable to reach the XCP-ng server.
@@ -1353,7 +1353,7 @@ Networks have the following parameters:
 |`name-label`|The name of the network|Read/write|
 |`name-description`|The description text of the network|Read/write|
 |`VIF-uuids`|A list of unique identifiers of the VIFs (virtual network interfaces) that are attached from VMs to this network|Read only set parameter|
-|`PIF-uuids`|A list of unique identifiers of the PIFs (physical network interfaces) that are attached from XCP-ng servers to this network|Read only set parameter|
+|`PIF-uuids`|A list of unique identifiers of the <abbr title="Physical Interface">PIF</abbr> that are attached from XCP-ng servers to this network|Read only set parameter|
 |`bridge`|Name of the bridge corresponding to this network on the local XCP-ng server|Read only|
 |`default-locking-mode`|A network object used with VIF objects for ARP filtering. Set to `unlocked` to remove all the filtering rules associated with the VIF. Set to `disabled` so the VIF drops all traffic.|Read/write|
 |`purpose`|Set of purposes for which the XCP-ng server uses this network. Set to `nbd` to use the network to make NBD connections.|Read/write|
@@ -1395,8 +1395,8 @@ SR-IOV has the following parameters:
 
 |Parameter Name|Description|Type|
 |:-------------|:----------|:---|
-|`physical-PIF`|The PIF to enable SR-IOV.|Read only|
-|`logical-PIF`|An SR-IOV logical PIF. Users can use this parameter to create an SR-IOV VLAN network.|Read only|
+|`physical-PIF`|The <abbr title="Physical Interface">PIF</abbr> to enable SR-IOV.|Read only|
+|`logical-PIF`|An SR-IOV logical <abbr title="Physical Interface">PIF</abbr>. Users can use this parameter to create an SR-IOV VLAN network.|Read only|
 |`requires-reboot`|If set to True, used to reboot host to bring SR-IOV enabling into effect.|Read only|
 |`remaining-capacity`|Number of available VFs remaining.|Read only|
 
@@ -1406,7 +1406,7 @@ SR-IOV has the following parameters:
 network-sriov-create network-uuid=network_uuid pif-uuid=physical_pif_uuid
 ```
 
-Creates an SR-IOV network object for a given physical PIF and enables SR-IOV on the physical PIF.
+Creates an SR-IOV network object for a given physical <abbr title="Physical Interface">PIF</abbr> and enables SR-IOV on the physical <abbr title="Physical Interface">PIF</abbr>.
 
 ### `network-sriov-destroy`
 
@@ -1414,7 +1414,7 @@ Creates an SR-IOV network object for a given physical PIF and enables SR-IOV on 
 network-sriov-destroy uuid=network_sriov_uuid
 ```
 
-Removes a network SR-IOV object and disables SR-IOV on its physical PIF.
+Removes a network SR-IOV object and disables SR-IOV on its physical <abbr title="Physical Interface">PIF</abbr>.
 
 ## Assign an SR-IOV VF
 
@@ -1529,23 +1529,23 @@ patch-upload file-name=file_name
 
 Upload a patch file to the server.
 
-## PBD commands
+## <abbr title="Physical Block Device">PBD</abbr> commands
 
-Commands for working with PBDs (Physical Block Devices). PBDs are the software objects through which the XCP-ng server accesses storage repositories (SRs).
+Commands for working with <abbr title="Physical Block Device">PBD</abbr>. <abbr title="Physical Block Device">PBD</abbr> are the software objects through which the XCP-ng server accesses storage repositories (SRs).
 
-The PBD objects can be listed with the standard object listing command (`xe pbd-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
+The <abbr title="Physical Block Device">PBD</abbr> objects can be listed with the standard object listing command (`xe pbd-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
-### PBD parameters
+### <abbr title="Physical Block Device">PBD</abbr> parameters
 
-PBDs have the following parameters:
+<abbr title="Physical Block Device">PBD</abbr> have the following parameters:
 
 |Parameter Name|Description|Type|
 |:-------------|:----------|:---|
-|`uuid`|The unique identifier/object reference for the PBD.|Read only|
-|`sr-uuid`|The storage repository that the PBD points to|Read only|
+|`uuid`|The unique identifier/object reference for the <abbr title="Physical Block Device">PBD</abbr>.|Read only|
+|`sr-uuid`|The storage repository that the <abbr title="Physical Block Device">PBD</abbr> points to|Read only|
 |`device-config`|Extra configuration information that is provided to the SR-backend-driver of a host|Read only map parameter|
-|`currently-attached`|True if the SR is attached on this host, False otherwise|Read only|
-|`host-uuid`|UUID of the physical machine on which the PBD is available|Read only|
+|`currently-attached`|True if the <abbr title="Storage Repository">SR</abbr> is attached on this host, False otherwise|Read only|
+|`host-uuid`|UUID of the physical machine on which the <abbr title="Physical Block Device">PBD</abbr> is available|Read only|
 |`host`|The host field is deprecated. Use host\_uuid instead.|Read only|
 |`other-config`|Extra configuration information.|Read/write map parameter|
 
@@ -1555,11 +1555,11 @@ PBDs have the following parameters:
 pbd-create host-uuid=uuid_of_host sr-uuid=uuid_of_sr [device-config:key=corresponding_value]
 ```
 
-Create a PBD on your XCP-ng server. The read-only `device-config` parameter can only be set on creation.
+Create a <abbr title="Physical Block Device">PBD</abbr> on your XCP-ng server. The read-only `device-config` parameter can only be set on creation.
 
 To add a mapping from ‘path’ to ‘/tmp’, the command line should contain the argument `device-config:path=/tmp`
 
-For a full list of supported device-config key/value pairs on each SR type, see [Storage](../../storage).
+For a full list of supported device-config key/value pairs on each <abbr title="Storage Repository">SR</abbr> type, see [Storage](../../storage).
 
 ### `pbd-destroy`
 
@@ -1567,7 +1567,7 @@ For a full list of supported device-config key/value pairs on each SR type, see 
 pbd-destroy uuid=uuid_of_pbd
 ```
 
-Destroy the specified PBD.
+Destroy the specified <abbr title="Physical Block Device">PBD</abbr>.
 
 ### `pbd-plug`
 
@@ -1575,7 +1575,7 @@ Destroy the specified PBD.
 pbd-plug uuid=uuid_of_pbd
 ```
 
-Attempts to plug in the PBD to the XCP-ng server. If this command succeeds, the referenced SR (and the VDIs contained within) should then become visible to the XCP-ng server.
+Attempts to plug in the <abbr title="Physical Block Device">PBD</abbr> to the XCP-ng server. If this command succeeds, the referenced <abbr title="Storage Repository">SR</abbr> (and the VDIs contained within) should then become visible to the XCP-ng server.
 
 ### `pbd-unplug`
 
@@ -1583,17 +1583,17 @@ Attempts to plug in the PBD to the XCP-ng server. If this command succeeds, the 
 pbd-unplug uuid=uuid_of_pbd
 ```
 
-Attempt to unplug the PBD from the XCP-ng server.
+Attempt to unplug the <abbr title="Physical Block Device">PBD</abbr> from the XCP-ng server.
 
-## PIF commands
+## <abbr title="Physical Interface">PIF</abbr> commands
 
-Commands for working with PIFs (objects representing the physical network interfaces).
+Commands for working with <abbr title="Physical Interface">PIF</abbr> (objects representing the physical network interfaces).
 
-The PIF objects can be listed with the standard object listing command (`xe pif-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
+The <abbr title="Physical Interface">PIF</abbr> objects can be listed with the standard object listing command (`xe pif-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
-### PIF parameters
+### <abbr title="Physical Interface">PIF</abbr> parameters
 
-PIFs have the following parameters:
+<abbr title="Physical Interface">PIF</abbr> have the following parameters:
 
 |Parameter Name|Description|Type|
 |:-------------|:----------|:---|
@@ -1643,7 +1643,7 @@ PIFs have the following parameters:
 |`disallow-unplug`|True if this PIF is a dedicated storage NIC, false otherwise|Read/write|
 
 :::tip
-Changes made to the `other-config` fields of a PIF will only take effect after a reboot. Alternately, use the `xe pif-unplug` and `xe pif-plug` commands to cause the PIF configuration to be rewritten.
+Changes made to the `other-config` fields of a <abbr title="Physical Interface">PIF</abbr> will only take effect after a reboot. Alternately, use the `xe pif-unplug` and `xe pif-plug` commands to cause the <abbr title="Physical Interface">PIF</abbr> configuration to be rewritten.
 :::
 
 ### `pif-forget`
@@ -1652,7 +1652,7 @@ Changes made to the `other-config` fields of a PIF will only take effect after a
 pif-forget uuid=uuid_of_pif
 ```
 
-Destroy the specified PIF object on a particular host.
+Destroy the specified <abbr title="Physical Interface">PIF</abbr> object on a particular host.
 
 ### `pif-introduce`
 
@@ -1660,7 +1660,7 @@ Destroy the specified PIF object on a particular host.
 pif-introduce host-uuid=host_uuid mac=mac_address_for_pif device=interface_name
 ```
 
-Create a PIF object representing a physical interface on the specified XCP-ng server.
+Create a <abbr title="Physical Interface">PIF</abbr> object representing a physical interface on the specified XCP-ng server.
 
 ### `pif-plug`
 
@@ -1676,7 +1676,7 @@ Attempt to bring up the specified physical interface.
 pif-reconfigure-ip uuid=uuid_of_pif [mode=dhcp|mode=static|mode=none] gateway=network_gateway_address IP=static_ip_for_this_pif netmask=netmask_for_this_pif [DNS=dns_address]
 ```
 
-Modify the IP address of the PIF. For static IP configuration, set the `mode` parameter to `static`, with the `gateway`, `IP`, and `netmask` parameters set to the appropriate values. To use DHCP, set the `mode` parameter to `DHCP` and leave the static parameters undefined.
+Modify the IP address of the <abbr title="Physical Interface">PIF</abbr>. For static IP configuration, set the `mode` parameter to `static`, with the `gateway`, `IP`, and `netmask` parameters set to the appropriate values. To use DHCP, set the `mode` parameter to `DHCP` and leave the static parameters undefined.
 If you set the `mode` parameter to `none`, then all the above mentioned parameters will be unset.
 
 :::tip
@@ -1689,7 +1689,7 @@ Using static IP addresses on physical network interfaces connected to a port on 
 pif-reconfigure-ipv6 uuid=uuid_of_pif mode=mode [gateway=network_gateway_address] [IPv6=static_ip_for_this_pif] [DNS=dns_address]
 ```
 
-Reconfigure the IPv6 address settings on a PIF.
+Reconfigure the IPv6 address settings on a <abbr title="Physical Interface">PIF</abbr>.
 
 ### `pif-scan`
 
@@ -1705,7 +1705,7 @@ Scan for new physical interfaces on your XCP-ng server.
 pif-set-primary-address-type  uuid=uuid primary_address_type=address_type
 ```
 
-Change the primary address type used by this PIF.
+Change the primary address type used by this <abbr title="Physical Interface">PIF</abbr>.
 
 ### `pif-unplug`
 
@@ -1731,12 +1731,12 @@ Pools have the following parameters:
 |`name-label`|The name of the pool|Read/write|
 |`name-description`|The description string of the pool|Read/write|
 |`master`|The unique identifier/object reference of XCP-ng server designated as the pool’s master|Read only|
-|`default-SR`|The unique identifier/object reference of the default SR for the pool|Read/write|
-|`crash-dump-SR`|The unique identifier/object reference of the SR where any crash dumps for pool members are saved|Read/write|
+|`default-SR`|The unique identifier/object reference of the default <abbr title="Storage Repository">SR</abbr> for the pool|Read/write|
+|`crash-dump-SR`|The unique identifier/object reference of the <abbr title="Storage Repository">SR</abbr> where any crash dumps for pool members are saved|Read/write|
 |`metadata-vdis`|All known metadata VDIs for the pool|Read only|
-|`suspend-image-SR`|The unique identifier/object reference of the SR where suspended VMs on pool members are saved|Read/write|
+|`suspend-image-SR`|The unique identifier/object reference of the <abbr title="Storage Repository">SR</abbr> where suspended VMs on pool members are saved|Read/write|
 |`other-config`|A list of key/value pairs that specify extra configuration parameters for the pool|Read/write map parameter|
-|`supported-sr-types`|SR types that this pool can use|Read only|
+|`supported-sr-types`|<abbr title="Storage Repository">SR</abbr> types that this pool can use|Read only|
 |`ha-enabled`|True if HA is enabled for the pool, false otherwise|Read only|
 |`ha-configuration`|Reserved for future use.|Read only|
 |`ha-statefiles`|Lists the UUIDs of the VDIs being used by HA to determine storage health|Read only|
@@ -1890,7 +1890,7 @@ Enable local storage caching across the pool.
 pool-enable-redo-log sr-uuid=sr_uuid
 ```
 
-Enable the redo log on the given SR if in use, unless HA is enabled.
+Enable the redo log on the given <abbr title="Storage Repository">SR</abbr> if in use, unless HA is enabled.
 
 ### `pool-enable-ssl-legacy`
 
@@ -1932,7 +1932,7 @@ If the host password has been modified since the host joined the pool, this comm
 pool-ha-enable heartbeat-sr-uuids=uuid_of_heartbeat_sr
 ```
 
-Enable high availability on the resource pool, using the specified SR UUID as the central storage heartbeat repository.
+Enable high availability on the resource pool, using the specified <abbr title="Storage Repository">SR</abbr> UUID as the central storage heartbeat repository.
 
 ### `pool-ha-disable`
 
@@ -1980,7 +1980,7 @@ Reconfigures the management interface of all the hosts in the pool to use the sp
 
 If the device name of an interface (which must have an IP address) is specified, the XCP-ng master host immediately rebinds. This command works both in normal and emergency mode.
 
-From the network UUID specified, UUID of the PIF object is identified and mapped to the XCP-ng server, which determines which IP address to rebind to itself. It must not be in emergency mode when this command is executed.
+From the network UUID specified, UUID of the <abbr title="Physical Interface">PIF</abbr> object is identified and mapped to the XCP-ng server, which determines which IP address to rebind to itself. It must not be in emergency mode when this command is executed.
 
 :::warning
 Be careful when using this CLI command off-host and ensure that you have network connectivity on the new interface. Use `xe pif-reconfigure` to set one up first. Otherwise, subsequent CLI commands are unable to reach the XCP-ng server.
@@ -2077,7 +2077,7 @@ Commands for working with the PVS Accelerator.
 pvs-cache-storage-create sr-uuid=sr_uuid pvs-site-uuid=pvs_site_uuid size=size
 ```
 
-Configure a PVS cache on a given SR for a given host.
+Configure a PVS cache on a given <abbr title="Storage Repository">SR</abbr> for a given host.
 
 ### `pvs-cache-storage-destroy`
 
@@ -2150,13 +2150,13 @@ SMs have the following parameters:
 |`uuid`|The unique identifier/object reference for the SM plug-in|Read only|
 |`name-label`|The name of the SM plug-in|Read only|
 |`name-description`|The description string of the SM plug-in|Read only|
-|`type`|The SR type that this plug-in connects to|Read only|
+|`type`|The <abbr title="Storage Repository">SR</abbr> type that this plug-in connects to|Read only|
 |`vendor`|Name of the vendor who created this plug-in|Read only|
 |`copyright`|Copyright statement for this SM plug-in|Read only|
 |`required-api-version`|Minimum SM API version required on the XCP-ng server|Read only|
 |`configuration`|Names and descriptions of device configuration keys|Read only|
 |`capabilities`|Capabilities of the SM plug-in|Read only|
-|`driver-filename`|The file name of the SR driver.|Read only|
+|`driver-filename`|The file name of the <abbr title="Storage Repository">SR</abbr> driver.|Read only|
 
 ## Snapshot commands
 
@@ -2226,34 +2226,34 @@ snapshot-uninstall [uuid=uuid] [snapshot-uuid=snapshot_uuid] [--force]
 
 Uninstall a snapshot. This operation will destroy those VDIs that are marked RW and connected to this snapshot only. To simply destroy the VM record, use snapshot-destroy.
 
-## SR commands
+## <abbr title="Storage Repository">SR</abbr> commands
 
 Commands for controlling SRs (storage repositories).
 
-The SR objects can be listed with the standard object listing command (`xe sr-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
+The <abbr title="Storage Repository">SR</abbr> objects can be listed with the standard object listing command (`xe sr-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
-## SR parameters
+## <abbr title="Storage Repository">SR</abbr> parameters
 
 SRs have the following parameters:
 
 |Parameter Name|Description|Type|
 |:-------------|:----------|:---|
-|`uuid`|The unique identifier/object reference for the SR|Read only|
-|`name-label`|The name of the SR|Read/write|
-|`name-description`|The description string of the SR|Read/write|
-|`allowed-operations`|List of the operations allowed on the SR in this state|Read only set parameter|
-|`current-operations`|List of the operations that are currently in progress on this SR|Read only set parameter|
-|`VDIs`|Unique identifier/object reference for the virtual disks in this SR|Read only set parameter|
-|`PBDs`|Unique identifier/object reference for the PBDs attached to this SR|Read only set parameter|
-|`physical-utilisation`|Physical space currently utilized on this SR, in bytes. For thin provisioned disk formats, physical utilization may be less than virtual allocation|Read only|
-|`physical-size`|Total physical size of the SR, in bytes|Read only|
-|`type`|Type of the SR, used to specify the SR back-end driver to use|Read only|
-|`introduced-by`|The drtask (if any) which introduced the SR|Read only|
-|`content-type`|The type of the SR’s content. Used to distinguish ISO libraries from other SRs. For storage repositories that store a library of ISOs, the content-type must be set to iso. In other cases, we recommend that you set this parameter either to empty, or the string user.|Read only|
-|`shared`|True if this SR can be shared between multiple XCP-ng servers; False otherwise|Read/write|
-|`other-config`|List of key/value pairs that specify extra configuration parameters for the SR|Read/write map parameter|
+|`uuid`|The unique identifier/object reference for the <abbr title="Storage Repository">SR</abbr>|Read only|
+|`name-label`|The name of the <abbr title="Storage Repository">SR</abbr>|Read/write|
+|`name-description`|The description string of the <abbr title="Storage Repository">SR</abbr>|Read/write|
+|`allowed-operations`|List of the operations allowed on the <abbr title="Storage Repository">SR</abbr> in this state|Read only set parameter|
+|`current-operations`|List of the operations that are currently in progress on this <abbr title="Storage Repository">SR</abbr>|Read only set parameter|
+|`VDIs`|Unique identifier/object reference for the virtual disks in this <abbr title="Storage Repository">SR</abbr>|Read only set parameter|
+|`PBDs`|Unique identifier/object reference for the <abbr title="Physical Block Device">PBD</abbr> attached to this <abbr title="Storage Repository">SR</abbr>|Read only set parameter|
+|`physical-utilisation`|Physical space currently utilized on this <abbr title="Storage Repository">SR</abbr>, in bytes. For thin provisioned disk formats, physical utilization may be less than virtual allocation|Read only|
+|`physical-size`|Total physical size of the <abbr title="Storage Repository">SR</abbr>, in bytes|Read only|
+|`type`|Type of the <abbr title="Storage Repository">SR</abbr>, used to specify the <abbr title="Storage Repository">SR</abbr> back-end driver to use|Read only|
+|`introduced-by`|The drtask (if any) which introduced the <abbr title="Storage Repository">SR</abbr>|Read only|
+|`content-type`|The type of the <abbr title="Storage Repository">SR</abbr>’s content. Used to distinguish ISO libraries from other SRs. For storage repositories that store a library of ISOs, the content-type must be set to iso. In other cases, we recommend that you set this parameter either to empty, or the string user.|Read only|
+|`shared`|True if this <abbr title="Storage Repository">SR</abbr> can be shared between multiple XCP-ng servers; False otherwise|Read/write|
+|`other-config`|List of key/value pairs that specify extra configuration parameters for the <abbr title="Storage Repository">SR</abbr>|Read/write map parameter|
 |`host`|The storage repository host name|Read only|
-|`virtual-allocation`|Sum of virtual-size values of all VDIs in this storage repository (in bytes)|Read only|
+|`virtual-allocation`|Sum of virtual-size values of all <abbr title="VirtualBox Disk Image">VDI</abbr> in this storage repository (in bytes)|Read only|
 |`sm-config`|SM dependent data|Read only map parameter|
 |`blobs`|Binary data store|Read only|
 
@@ -2263,7 +2263,7 @@ SRs have the following parameters:
 sr-create name-label=name physical-size=size type=type content-type=content_type device-config:config_name=value [host-uuid=host_uuid] [shared=true|false]
 ```
 
-Creates an SR on the disk, introduces it into the database, and creates a PBD attaching the SR to the XCP-ng server. If `shared` is set to `true`, a PBD is created for each XCP-ng server in the pool. If `shared` is not specified or set to `false`, a PBD is created only for the XCP-ng server specified with `host-uuid`.
+Creates an <abbr title="Storage Repository">SR</abbr> on the disk, introduces it into the database, and creates a <abbr title="Physical Block Device">PBD</abbr> attaching the <abbr title="Storage Repository">SR</abbr> to the XCP-ng server. If `shared` is set to `true`, a <abbr title="Physical Block Device">PBD</abbr> is created for each XCP-ng server in the pool. If `shared` is not specified or set to `false`, a <abbr title="Physical Block Device">PBD</abbr> is created only for the XCP-ng server specified with `host-uuid`.
 
 The exact `device-config` parameters differ depending on the device `type`. For details of these parameters across the different storage back-ends, see [Storage](../../storage/).
 
@@ -2273,7 +2273,7 @@ The exact `device-config` parameters differ depending on the device `type`. For 
 sr-data-source-forget data-source=data_source
 ```
 
-Stop recording the specified data source for a SR, and forget all of the recorded data.
+Stop recording the specified data source for a <abbr title="Storage Repository">SR</abbr>, and forget all of the recorded data.
 
 ### `sr-data-source-list`
 
@@ -2281,7 +2281,7 @@ Stop recording the specified data source for a SR, and forget all of the recorde
 sr-data-source-list"
 ```
 
-List the data sources that can be recorded for a SR.
+List the data sources that can be recorded for a <abbr title="Storage Repository">SR</abbr>.
 
 ### `sr-data-source-query`
 
@@ -2289,7 +2289,7 @@ List the data sources that can be recorded for a SR.
 sr-data-source-query data-source=data_source
 ```
 
-Query the last value read from a SR data source.
+Query the last value read from a <abbr title="Storage Repository">SR</abbr> data source.
 
 ### `sr-data-source-record`
 
@@ -2297,7 +2297,7 @@ Query the last value read from a SR data source.
 sr-data-source-record  data-source=data_source
 ```
 
-Record the specified data source for a SR.
+Record the specified data source for a <abbr title="Storage Repository">SR</abbr>.
 
 ### `sr-destroy`
 
@@ -2305,7 +2305,7 @@ Record the specified data source for a SR.
 sr-destroy uuid=sr_uuid
 ```
 
-Destroys the specified SR on the XCP-ng server.
+Destroys the specified <abbr title="Storage Repository">SR</abbr> on the XCP-ng server.
 
 ### `sr-enable-database-replication`
 
@@ -2313,7 +2313,7 @@ Destroys the specified SR on the XCP-ng server.
 sr-enable-database-replication uuid=sr_uuid
 ```
 
-Enables XAPI database replication to the specified (shared) SR.
+Enables <abbr title="Xen Project Management API">XAPI</abbr> database replication to the specified (shared) <abbr title="Storage Repository">SR</abbr>.
 
 ### `sr-disable-database-replication`
 
@@ -2321,7 +2321,7 @@ Enables XAPI database replication to the specified (shared) SR.
 sr-disable-database-replication uuid=sr_uuid
 ```
 
-Disables XAPI database replication to the specified SR.
+Disables <abbr title="Xen Project Management API">XAPI</abbr> database replication to the specified <abbr title="Storage Repository">SR</abbr>.
 
 ### `sr-forget`
 
@@ -2329,7 +2329,7 @@ Disables XAPI database replication to the specified SR.
 sr-forget uuid=sr_uuid
 ```
 
-The XAPI agent forgets about a specified SR on the XCP-ng server. When the XAPI agent forgets an SR, the SR is detached and you cannot access VDIs on it, but it remains intact on the source media (the data is not lost).
+The <abbr title="Xen Project Management API">XAPI</abbr> agent forgets about a specified <abbr title="Storage Repository">SR</abbr> on the XCP-ng server. When the <abbr title="Xen Project Management API">XAPI</abbr> agent forgets an <abbr title="Storage Repository">SR</abbr>, the <abbr title="Storage Repository">SR</abbr> is detached and you cannot access VDIs on it, but it remains intact on the source media (the data is not lost).
 
 ### `sr-introduce`
 
@@ -2337,14 +2337,14 @@ The XAPI agent forgets about a specified SR on the XCP-ng server. When the XAPI 
 sr-introduce name-label=name physical-size=physical_size type=type content-type=content_type uuid=sr_uuid
 ```
 
-Just places an SR record into the database. Use `device-config` to specify additional parameters in the form `device-config:parameter_key=parameter_value`, for example:
+Just places an <abbr title="Storage Repository">SR</abbr> record into the database. Use `device-config` to specify additional parameters in the form `device-config:parameter_key=parameter_value`, for example:
 
 ```
 xe sr-introduce device-config:device=/dev/sdb1
 ```
 
 :::tip
-This command is never used in normal operation. This advanced operation might be useful when an SR must be reconfigured as shared after it was created or to help recover from various failure scenarios.
+This command is never used in normal operation. This advanced operation might be useful when an <abbr title="Storage Repository">SR</abbr> must be reconfigured as shared after it was created or to help recover from various failure scenarios.
 :::
 
 ### `sr-probe`
@@ -2353,7 +2353,7 @@ This command is never used in normal operation. This advanced operation might be
 sr-probe type=type [host-uuid=host_uuid] [device-config:config_name=value]
 ```
 
-Performs a backend-specific scan, using the provided `device-config` keys. If the `device-config` is complete for the SR back-end, this command returns a list of the SRs present on the device, if any. If the `device-config` parameters are only partial, a back-end-specific scan is performed, returning results that guide you in improving the remaining `device-config` parameters. The scan results are returned as backend-specific XML, printed on the CLI.
+Performs a backend-specific scan, using the provided `device-config` keys. If the `device-config` is complete for the <abbr title="Storage Repository">SR</abbr> back-end, this command returns a list of the SRs present on the device, if any. If the `device-config` parameters are only partial, a back-end-specific scan is performed, returning results that guide you in improving the remaining `device-config` parameters. The scan results are returned as backend-specific XML, printed on the CLI.
 
 The exact `device-config` parameters differ depending on the device `type`. For details of these parameters across the different storage back-ends, see [Storage](../../storage).
 
@@ -2363,7 +2363,7 @@ The exact `device-config` parameters differ depending on the device `type`. For 
 sr-probe-ext type=type [host-uuid=host_uuid] [device-config:=config] [sm-config:-sm_config]
 ```
 
-Perform a storage probe. The device-config parameters can be specified by for example device-config:devs=/dev/sdb1. Unlike sr-probe, this command returns results in the same human-readable format for every SR type.
+Perform a storage probe. The device-config parameters can be specified by for example device-config:devs=/dev/sdb1. Unlike sr-probe, this command returns results in the same human-readable format for every <abbr title="Storage Repository">SR</abbr> type.
 
 ### `sr-scan`
 
@@ -2371,7 +2371,7 @@ Perform a storage probe. The device-config parameters can be specified by for ex
 sr-scan uuid=sr_uuid
 ```
 
-Force an SR scan, syncing the XAPI database with VDIs present in the underlying storage substrate.
+Force an <abbr title="Storage Repository">SR</abbr> scan, syncing the <abbr title="Xen Project Management API">XAPI</abbr> database with VDIs present in the underlying storage substrate.
 
 ### `sr-update`
 
@@ -2379,7 +2379,7 @@ Force an SR scan, syncing the XAPI database with VDIs present in the underlying 
 sr-update uuid=uuid
 ```
 
-Refresh the fields of the SR object in the database.
+Refresh the fields of the <abbr title="Storage Repository">SR</abbr> object in the database.
 
 ### `lvhd-enable-thin-provisioning`
 
@@ -2387,7 +2387,7 @@ Refresh the fields of the SR object in the database.
 lvhd-enable-thin-provisioning  sr-uuid=sr_uuid initial-allocation=initial_allocation allocation-quantum=allocation_quantum
 ```
 
-Enable thin-provisioning on an LVHD SR.
+Enable thin-provisioning on an LVHD <abbr title="Storage Repository">SR</abbr>.
 
 ## Subject commands
 
@@ -2553,19 +2553,19 @@ The cap optionally fixes the maximum amount of CPU a VM based on this template c
 - `console-uuids` (read only set parameter) virtual console devices
 - `platform` (read/write map parameter) platform specific configuration
 
-To disable the emulation of a parallel port for HVM guests (for example, Windows guests):
+To disable the emulation of a parallel port for <abbr title="Hardware Virtual Machine">HVM</abbr> guests (for example, Windows guests):
 
 ```
 xe vm-param-set uuid=<vm_uuid> platform:parallel=none
 ```
 
-To disable the emulation of a serial port for HVM guests:
+To disable the emulation of a serial port for <abbr title="Hardware Virtual Machine">HVM</abbr> guests:
 
 ```
 xe vm-param-set uuid=<vm_uuid> platform:hvm_serial=none
 ```
 
-To disable the emulation of a USB controller and a USB tablet device for HVM guests:
+To disable the emulation of a USB controller and a USB tablet device for <abbr title="Hardware Virtual Machine">HVM</abbr> guests:
 
 ```
 xe vm-param-set uuid=<vm_uuid> platform:usb=false
@@ -2574,10 +2574,10 @@ xe vm-param-set uuid=<vm_uuid> platform:usb_tablet=false
 
 - `allowed-operations` (read only set parameter) list of the operations allowed in this state
 - `current-operations` (read only set parameter) list of the operations that are currently in progress on this template
-- `allowed-VBD-devices` (read only set parameter) list of VBD identifiers available for use, represented by integers of the range 0–15. This list is informational only, and other devices may be used (but may not work).
+- `allowed-VBD-devices` (read only set parameter) list of <abbr title="Virtual Block Device">VBD</abbr> identifiers available for use, represented by integers of the range 0–15. This list is informational only, and other devices may be used (but may not work).
 - `allowed-VIF-devices` (read only set parameter) list of VIF identifiers available for use, represented by integers of the range 0–15. This list is informational only, and other devices may be used (but may not work).
-- `HVM-boot-policy` (read/write) the boot policy for HVM guests. Either BIOS Order or an empty string.
-- `HVM-boot-params` (read/write map parameter) the order key controls the HVM guest boot order, represented as a string where each character is a boot method: d for the CD/DVD, c for the root disk, and n for network PXE boot. The default is dc.
+- `HVM-boot-policy` (read/write) the boot policy for <abbr title="Hardware Virtual Machine">HVM</abbr> guests. Either BIOS Order or an empty string.
+- `HVM-boot-params` (read/write map parameter) the order key controls the <abbr title="Hardware Virtual Machine">HVM</abbr> guest boot order, represented as a string where each character is a boot method: d for the CD/DVD, c for the root disk, and n for network PXE boot. The default is dc.
 - `PV-kernel` (read/write) path to the kernel
 - `PV-ramdisk` (read/write) path to the initrd
 - `PV-args` (read/write) string of kernel command line arguments
@@ -2655,7 +2655,7 @@ XCP-ng server updates have the following parameters:
 |`name-description`|The description string of the update|Read only|
 |`applied`|Whether or not the update has been applied; true or false|Read only|
 |`installation-size`|The size of the update in bytes|Read only|
-|`after-apply-guidance`|Whether the XAPI toolstack or the host requires a restart|Read only|
+|`after-apply-guidance`|Whether the <abbr title="Xen Project Management API">XAPI</abbr> toolstack or the host requires a restart|Read only|
 |`version`|The version of the update|Read only|
 
 ### `update-upload`
@@ -2724,43 +2724,43 @@ user-password-change old=old_password new=new_password
 
 Changes the password of the logged-in user. The old password field is not checked because you require supervisor privilege to use this command.
 
-## VBD commands
+## <abbr title="Virtual Block Device">VBD</abbr> commands
 
-Commands for working with VBDs (Virtual Block Devices).
+Commands for working with <abbr title="Virtual Block Device">VBD</abbr> (Virtual Block Devices).
 
-A VBD is a software object that connects a VM to the VDI, which represents the contents of the virtual disk. The VBD has the attributes which tie the VDI to the VM (is it bootable, its read/write metrics, and so on). The VDI has the information on the physical attributes of the virtual disk (which type of SR, whether the disk is sharable, whether the media is read/write or read only, and so on).
+A <abbr title="Virtual Block Device">VBD</abbr> is a software object that connects a VM to the VDI, which represents the contents of the virtual disk. The <abbr title="Virtual Block Device">VBD</abbr> has the attributes which tie the VDI to the VM (is it bootable, its read/write metrics, and so on). The VDI has the information on the physical attributes of the virtual disk (which type of <abbr title="Storage Repository">SR</abbr>, whether the disk is sharable, whether the media is read/write or read only, and so on).
 
-The VBD objects can be listed with the standard object listing command (`xe vbd-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
+The <abbr title="Virtual Block Device">VBD</abbr> objects can be listed with the standard object listing command (`xe vbd-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
-### VBD parameters
+### <abbr title="Virtual Block Device">VBD</abbr> parameters
 
-VBDs have the following parameters:
+<abbr title="Virtual Block Device">VBD</abbr> have the following parameters:
 
 |Parameter Name|Description|Type|
 |:-------------|:----------|:---|
-|`uuid`|The unique identifier/object reference for the VBD|Read only|
-|`vm-uuid`|The unique identifier/object reference for the VM this VBD is attached to|Read only|
-|`vm-name-label`|The name of the VM this VBD is attached to|Read only|
-|`vdi-uuid`|The unique identifier/object reference for the VDI this VBD is mapped to|Read only|
-|`vdi-name-label`|The name of the VDI this VBD is mapped to|Read only|
-|`empty`|If `true`, this VBD represents an empty drive|Read only|
+|`uuid`|The unique identifier/object reference for the <abbr title="Virtual Block Device">VBD</abbr>|Read only|
+|`vm-uuid`|The unique identifier/object reference for the VM this <abbr title="Virtual Block Device">VBD</abbr> is attached to|Read only|
+|`vm-name-label`|The name of the VM this <abbr title="Virtual Block Device">VBD</abbr> is attached to|Read only|
+|`vdi-uuid`|The unique identifier/object reference for the VDI this <abbr title="Virtual Block Device">VBD</abbr> is mapped to|Read only|
+|`vdi-name-label`|The name of the VDI this <abbr title="Virtual Block Device">VBD</abbr> is mapped to|Read only|
+|`empty`|If `true`, this <abbr title="Virtual Block Device">VBD</abbr> represents an empty drive|Read only|
 |`device`|The device seen by the guest, for example `hda`|Read only|
 |`userdevice`|Device number specified by the device parameter during `vbd-create`, for example, 0 for `hda`, 1 for `hdb`, and so on|Read/write|
-|`bootable`|True if this VBD is bootable|Read/write|
-|`mode`|The mode the VBD should be mounted with|Read/write|
-|`type`|How the VBD appears to the VM, for example disk or CD|Read/write|
-|`currently-attached`|True if the VBD is attached on this host, false otherwise|Read only|
+|`bootable`|True if this <abbr title="Virtual Block Device">VBD</abbr> is bootable|Read/write|
+|`mode`|The mode the <abbr title="Virtual Block Device">VBD</abbr> should be mounted with|Read/write|
+|`type`|How the <abbr title="Virtual Block Device">VBD</abbr> appears to the VM, for example disk or CD|Read/write|
+|`currently-attached`|True if the <abbr title="Virtual Block Device">VBD</abbr> is attached on this host, false otherwise|Read only|
 |`storage-lock`|True if a storage-level lock was acquired|Read only|
 |`status-code`|Error/success code associated with the last attach operation|Read only|
 |`status-detail`|Error/success information associated with the last attach operation status|Read only|
 |`qos_algorithm_type`|The QoS algorithm to use|Read/write|
 |`qos_algorithm_params`|Parameters for the chosen QoS algorithm|Read/write map parameter|
-|`qos_supported_algorithms`|Supported QoS algorithms for this VBD|Read only set parameter|
-|`io_read_kbs`|Average read rate in kB per second for this VBD|Read only|
-|`io_write_kbs`|Average write rate in kB per second for this VBD|Read only|
+|`qos_supported_algorithms`|Supported QoS algorithms for this <abbr title="Virtual Block Device">VBD</abbr>|Read only set parameter|
+|`io_read_kbs`|Average read rate in kB per second for this <abbr title="Virtual Block Device">VBD</abbr>|Read only|
+|`io_write_kbs`|Average write rate in kB per second for this <abbr title="Virtual Block Device">VBD</abbr>|Read only|
 |`allowed-operations`|List of the operations allowed in this state. This list is advisory only and the server state may have changed by the time this field is read by a client.|Read only set parameter|
 |`current-operations`|Links each of the running tasks using this object (by reference) to a current\_operation enum which describes the nature of the task.|Read only set parameter|
-|`unpluggable`|True if this VBD supports hot unplug|Read/write|
+|`unpluggable`|True if this <abbr title="Virtual Block Device">VBD</abbr> supports hot unplug|Read/write|
 |`attachable`|True if the device can be attached|Read only|
 |`other-config`|Extra configuration|Read/write map parameter|
 
@@ -2770,13 +2770,13 @@ VBDs have the following parameters:
 vbd-create vm-uuid=uuid_of_the_vm device=device_value vdi-uuid=uuid_of_vdi_to_connect_to [bootable=true] [type=Disk|CD] [mode=RW|RO]
 ```
 
-Create a VBD on a VM.
+Create a <abbr title="Virtual Block Device">VBD</abbr> on a VM.
 
 The allowable values for the `device` field are integers 0–15, and the number must be unique for each VM. The current allowable values can be seen in the `allowed-VBD-devices` parameter on the specified VM. This is seen as `userdevice` in the `vbd` parameters.
 
 If the `type` is `Disk`, `vdi-uuid` is required. Mode can be `RO` or `RW` for a Disk.
 
-If the `type` is `CD`, `vdi-uuid` is optional. If no VDI is specified, an empty VBD is created for the CD. Mode must be `RO` for a CD.
+If the `type` is `CD`, `vdi-uuid` is optional. If no VDI is specified, an empty <abbr title="Virtual Block Device">VBD</abbr> is created for the CD. Mode must be `RO` for a CD.
 
 ### `vbd-destroy`
 
@@ -2784,9 +2784,9 @@ If the `type` is `CD`, `vdi-uuid` is optional. If no VDI is specified, an empty 
 vbd-destroy uuid=uuid_of_vbd
 ```
 
-Destroy the specified VBD.
+Destroy the specified <abbr title="Virtual Block Device">VBD</abbr>.
 
-If the VBD has its `other-config:owner` parameter set to `true`, the associated VDI is also destroyed.
+If the <abbr title="Virtual Block Device">VBD</abbr> has its `other-config:owner` parameter set to `true`, the associated VDI is also destroyed.
 
 ### `vbd-eject`
 
@@ -2794,7 +2794,7 @@ If the VBD has its `other-config:owner` parameter set to `true`, the associated 
 vbd-eject uuid=uuid_of_vbd
 ```
 
-Remove the media from the drive represented by a VBD. This command only works if the media is of a removable type (a physical CD or an ISO). Otherwise, an error message `VBD_NOT_REMOVABLE_MEDIA` is returned.
+Remove the media from the drive represented by a <abbr title="Virtual Block Device">VBD</abbr>. This command only works if the media is of a removable type (a physical CD or an ISO). Otherwise, an error message `VBD_NOT_REMOVABLE_MEDIA` is returned.
 
 ### `vbd-insert`
 
@@ -2802,7 +2802,7 @@ Remove the media from the drive represented by a VBD. This command only works if
 vbd-insert uuid=uuid_of_vbd vdi-uuid=uuid_of_vdi_containing_media
 ```
 
-Insert new media into the drive represented by a VBD. This command only works if the media is of a removable type (a physical CD or an ISO). Otherwise, an error message `VBD_NOT_REMOVABLE_MEDIA` is returned.
+Insert new media into the drive represented by a <abbr title="Virtual Block Device">VBD</abbr>. This command only works if the media is of a removable type (a physical CD or an ISO). Otherwise, an error message `VBD_NOT_REMOVABLE_MEDIA` is returned.
 
 ### `vbd-plug`
 
@@ -2810,7 +2810,7 @@ Insert new media into the drive represented by a VBD. This command only works if
 vbd-plug uuid=uuid_of_vbd
 ```
 
-Attempt to attach the VBD while the VM is in the running state.
+Attempt to attach the <abbr title="Virtual Block Device">VBD</abbr> while the VM is in the running state.
 
 ### `vbd-unplug`
 
@@ -2818,13 +2818,13 @@ Attempt to attach the VBD while the VM is in the running state.
 vbd-unplug uuid=uuid_of_vbd
 ```
 
-Attempts to detach the VBD from the VM while it is in the running state.
+Attempts to detach the <abbr title="Virtual Block Device">VBD</abbr> from the VM while it is in the running state.
 
 ## VDI commands
 
 Commands for working with VDIs (Virtual Disk Images).
 
-A VDI is a software object that represents the contents of the virtual disk seen by a VM. This is different to the VBD, which is an object that ties a VM to the VDI. The VDI has the information on the physical attributes of the virtual disk (which type of SR, whether the disk is sharable, whether the media is read/write or read only, and so on). The VBD has the attributes that tie the VDI to the VM (is it bootable, its read/write metrics, and so on).
+A VDI is a software object that represents the contents of the virtual disk seen by a VM. This is different to the <abbr title="Virtual Block Device">VBD</abbr>, which is an object that ties a VM to the VDI. The VDI has the information on the physical attributes of the virtual disk (which type of <abbr title="Storage Repository">SR</abbr>, whether the disk is sharable, whether the media is read/write or read only, and so on). The <abbr title="Virtual Block Device">VBD</abbr> has the attributes that tie the VDI to the VM (is it bootable, its read/write metrics, and so on).
 
 The VDI objects can be listed with the standard object listing command (`xe vdi-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#-low-level-parameter-commands)
 
@@ -2839,17 +2839,17 @@ VDIs have the following parameters:
 |`name-description`|The description string of the VDI|Read/write|
 |`allowed-operations`|A list of the operations allowed in this state|Read only set parameter|
 |`current-operations`|A list of the operations that are currently in progress on this VDI|Read only set parameter|
-|`sr-uuid`|SR in which the VDI resides|Read only|
-|`vbd-uuids`|A list of VBDs that refer to this VDI|Read only set parameter|
+|`sr-uuid`|<abbr title="Storage Repository">SR</abbr> in which the VDI resides|Read only|
+|`vbd-uuids`|A list of <abbr title="Virtual Block Device">VBD</abbr> that refer to this VDI|Read only set parameter|
 |`crashdump-uuids`|List of crash dumps that refer to this VDI|Read only set parameter|
 |`virtual-size`|Size of disk as presented to the VM, in bytes. Depending on the storage back-end type, the size may not be respected exactly|Read only|
-|`physical-utilisation`|Amount of physical space that the VDI is taking up on the SR, in bytes|Read only|
+|`physical-utilisation`|Amount of physical space that the VDI is taking up on the <abbr title="Storage Repository">SR</abbr>, in bytes|Read only|
 |`type`|Type of VDI, for example, System or User|Read only|
 |`sharable`|True if this VDI may be shared|Read only|
 |`read-only`|True if this VDI can only be mounted read-only|Read only|
 |`storage-lock`|True if this VDI is locked at the storage level|Read only|
 |`parent`|References the parent VDI when this VDI is part of a chain|Read only|
-|`missing`|True if SR scan operation reported this VDI as not present|Read only|
+|`missing`|True if <abbr title="Storage Repository">SR</abbr> scan operation reported this VDI as not present|Read only|
 |`other-config`|Extra configuration information for this VDI|Read/write map parameter|
 |`sr-name-label`|Name of the containing storage repository|Read only|
 |`location`|Location information|Read only|
@@ -2880,7 +2880,7 @@ Use the optional `driver-params` map parameter to pass extra vendor-specific con
 vdi-copy uuid=uuid_of_the_vdi sr-uuid=uuid_of_the_destination_sr
 ```
 
-Copy a VDI to a specified SR.
+Copy a VDI to a specified <abbr title="Storage Repository">SR</abbr>.
 
 ### `vdi-create`
 
@@ -2893,8 +2893,8 @@ Create a VDI.
 The `virtual-size` parameter can be specified in bytes or using the IEC standard suffixes KiB, MiB, GiB, and TiB.
 
 :::tip
-SR types that support thin provisioning of disks (such as Local VHD and NFS) do not enforce virtual allocation of disks. Take great care when over-allocating virtual disk space on an SR. If an over-allocated SR becomes full, disk space must be made available either on the SR target substrate or by deleting unused VDIs in the SR.
-Some SR types might round up the `virtual-size` value to make it divisible by a configured block size.
+<abbr title="Storage Repository">SR</abbr> types that support thin provisioning of disks (such as Local VHD and NFS) do not enforce virtual allocation of disks. Take great care when over-allocating virtual disk space on an <abbr title="Storage Repository">SR</abbr>. If an over-allocated <abbr title="Storage Repository">SR</abbr> becomes full, disk space must be made available either on the <abbr title="Storage Repository">SR</abbr> target substrate or by deleting unused VDIs in the <abbr title="Storage Repository">SR</abbr>.
+Some <abbr title="Storage Repository">SR</abbr> types might round up the `virtual-size` value to make it divisible by a configured block size.
 :::
 
 ### `vdi-data-destroy`
@@ -2919,7 +2919,7 @@ Destroy the specified VDI.
 
 :::tip
 If you use changed block tracking to take incremental backups of the VDI, ensure that you use the `vdi-data-destroy` command to delete snapshots but keep the metadata. Do not use `vdi-destroy` on snapshots of VDIs that have changed block tracking enabled.
-For Local VHD and NFS SR types, disk space is not immediately released on `vdi-destroy`, but periodically during a storage repository scan operation. If you must force deleted disk space to be made available, call [`sr-scan`](#sr-scan) manually.
+For Local VHD and NFS <abbr title="Storage Repository">SR</abbr> types, disk space is not immediately released on `vdi-destroy`, but periodically during a storage repository scan operation. If you must force deleted disk space to be made available, call [`sr-scan`](#sr-scan) manually.
 :::
 
 ### `vdi-disable-cbt`
@@ -2998,7 +2998,7 @@ Compare two VDIs and return the list of blocks that have changed between the two
 vdi-pool-migrate uuid=VDI_uuid sr-uuid=destination-sr-uuid
 ```
 
-Migrate a VDI to a specified SR, while the VDI is attached to a running guest. (Storage live migration)
+Migrate a VDI to a specified <abbr title="Storage Repository">SR</abbr>, while the VDI is attached to a running guest. (Storage live migration)
 
 ### `vdi-resize`
 
@@ -3173,7 +3173,7 @@ vif-configure-ipv6 uuid=uuid_of_vif mode=none
 
 ## VLAN commands
 
-Commands for working with VLANs (virtual networks). To list and edit virtual interfaces, refer to the PIF commands, which have a VLAN parameter to signal that they have an associated virtual network. For more information, see [PIF commands](#pif-commands). For example, to list VLANs, use `xe pif-list`.
+Commands for working with VLANs (virtual networks). To list and edit virtual interfaces, refer to the <abbr title="Physical Interface">PIF</abbr> commands, which have a VLAN parameter to signal that they have an associated virtual network. For more information, see [<abbr title="Physical Interface">PIF</abbr> commands](#pif-commands). For example, to list VLANs, use `xe pif-list`.
 
 ### `vlan-create`
 
@@ -3189,7 +3189,7 @@ Create a VLAN on your XCP-ng server.
 pool-vlan-create pif-uuid=uuid_of_pif vlan=vlan_number network-uuid=uuid_of_network
 ```
 
-Create a VLAN on all hosts on a pool, by determining which interface (for example, `eth0`) the specified network is on (on each host) and creating and plugging a new PIF object one each host accordingly.
+Create a VLAN on all hosts on a pool, by determining which interface (for example, `eth0`) the specified network is on (on each host) and creating and plugging a new <abbr title="Physical Interface">PIF</abbr> object one each host accordingly.
 
 ### `vlan-destroy`
 
@@ -3197,7 +3197,7 @@ Create a VLAN on all hosts on a pool, by determining which interface (for exampl
 vlan-destroy uuid=uuid_of_pif_mapped_to_vlan
 ```
 
-Destroy a VLAN. Requires the UUID of the PIF that represents the VLAN.
+Destroy a VLAN. Requires the UUID of the <abbr title="Physical Interface">PIF</abbr> that represents the VLAN.
 
 ## VM commands
 
@@ -3281,10 +3281,10 @@ xe vm-param-get uuid=<vm_uuid> param-name=platform param-key=acpi_laptop_slate
 
 - `allowed-operations` (read only set parameter) list of the operations allowed in this state
 - `current-operations` (read only set parameter) a list of the operations that are currently in progress on the VM
-- `allowed-VBD-devices` (read only set parameter) list of VBD identifiers available for use, represented by integers of the range 0–15. This list is informational only, and other devices may be used (but might not work).
+- `allowed-VBD-devices` (read only set parameter) list of <abbr title="Virtual Block Device">VBD</abbr> identifiers available for use, represented by integers of the range 0–15. This list is informational only, and other devices may be used (but might not work).
 - `allowed-VIF-devices` (read only set parameter) list of VIF identifiers available for use, represented by integers of the range 0–15. This list is informational only, and other devices may be used (but might not work).
-- `HVM-boot-policy` (read/write) the boot policy for HVM guests. Either BIOS Order or an empty string.
-- `HVM-boot-params` (read/write map parameter) the order key controls the HVM guest boot order, represented as a string where each character is a boot method: d for the CD/DVD, c for the root disk, and n for network PXE boot. The default is dc.
+- `HVM-boot-policy` (read/write) the boot policy for <abbr title="Hardware Virtual Machine">HVM</abbr> guests. Either BIOS Order or an empty string.
+- `HVM-boot-params` (read/write map parameter) the order key controls the <abbr title="Hardware Virtual Machine">HVM</abbr> guest boot order, represented as a string where each character is a boot method: d for the CD/DVD, c for the root disk, and n for network PXE boot. The default is dc.
 - `HVM-shadow-multiplier` (read/write) Floating point value which controls the amount of shadow memory overhead to grant the VM. Defaults to 1.0 (the minimum value), and only advanced users should change this value.
 - `PV-kernel` (read/write) path to the kernel
 - `PV-ramdisk` (read/write) path to the initrd
@@ -3359,7 +3359,7 @@ The VM or VMs on which this operation is performed are selected using the standa
 vm-cd-eject [vm-selector=vm_selector_value...]
 ```
 
-Eject a CD from the virtual CD drive. This command only works if exactly one CD is attached to the VM. When there are two or more CDs, use the command `xe vbd-eject` and specify the UUID of the VBD.
+Eject a CD from the virtual CD drive. This command only works if exactly one CD is attached to the VM. When there are two or more CDs, use the command `xe vbd-eject` and specify the UUID of the <abbr title="Virtual Block Device">VBD</abbr>.
 
 The VM or VMs on which this operation is performed are selected using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section.
 
@@ -3369,7 +3369,7 @@ The VM or VMs on which this operation is performed are selected using the standa
 vm-cd-insert cd-name=name_of_cd [vm-selector=vm_selector_value...]
 ```
 
-Insert a CD into the virtual CD drive. This command only works if there is exactly one empty CD device attached to the VM. When there are two or more empty CD devices, use the `xe vbd-insert` command and specify the UUIDs of the VBD and of the VDI to insert.
+Insert a CD into the virtual CD drive. This command only works if there is exactly one empty CD device attached to the VM. When there are two or more empty CD devices, use the `xe vbd-insert` command and specify the UUIDs of the <abbr title="Virtual Block Device">VBD</abbr> and of the VDI to insert.
 
 The VM or VMs on which this operation is performed are selected using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section.
 
@@ -3383,7 +3383,7 @@ Lists CDs attached to the specified VMs.
 
 The VM or VMs on which this operation is performed are selected using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section.
 
-You can also select which VBD and VDI parameters to list.
+You can also select which <abbr title="Virtual Block Device">VBD</abbr> and VDI parameters to list.
 
 ### `vm-cd-remove`
 
@@ -3449,7 +3449,7 @@ Copy an existing VM, but without using storage-level fast disk clone operation (
 
 Specify the name and the optional description for the resulting copied VM using the `new-name-label` and `new-name-description` arguments.
 
-Specify the destination SR for the resulting copied VM using the `sr-uuid`. If this parameter is not specified, the destination is the same SR that the original VM is in.
+Specify the destination <abbr title="Storage Repository">SR</abbr> for the resulting copied VM using the `sr-uuid`. If this parameter is not specified, the destination is the same <abbr title="Storage Repository">SR</abbr> that the original VM is in.
 
 The VM or VMs on which this operation is performed are selected using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section.
 
@@ -3577,9 +3577,9 @@ The VM or VMs on which this operation is performed are selected using the standa
 vm-import filename=export_filename [metadata=true|false] [preserve=true|false][sr-uuid=destination_sr_uuid]
 ```
 
-Import a VM from a previously exported file. If `preserve` is set to `true`, the MAC address of the original VM is preserved. The `sr-uuid` determines the destination SR to import the VM into. If this parameter is not specified, the default SR is used.
+Import a VM from a previously exported file. If `preserve` is set to `true`, the MAC address of the original VM is preserved. The `sr-uuid` determines the destination <abbr title="Storage Repository">SR</abbr> to import the VM into. If this parameter is not specified, the default <abbr title="Storage Repository">SR</abbr> is used.
 
-If the `metadata` is `true`, you can import a previously exported set of metadata without their associated disk blocks. Metadata-only import fails if any VDIs cannot be found (named by SR and `VDI.location`) unless the `--force` option is specified, in which case the import proceeds regardless. If disks can be mirrored or moved out-of-band, metadata import/export is a fast way of moving VMs between disjoint pools. For example, as part of a disaster recovery plan.
+If the `metadata` is `true`, you can import a previously exported set of metadata without their associated disk blocks. Metadata-only import fails if any VDIs cannot be found (named by <abbr title="Storage Repository">SR</abbr> and `VDI.location`) unless the `--force` option is specified, in which case the import proceeds regardless. If disks can be mirrored or moved out-of-band, metadata import/export is a fast way of moving VMs between disjoint pools. For example, as part of a disaster recovery plan.
 
 :::tip
 Multiple VM imports are performed faster in serial that in parallel.
@@ -3591,11 +3591,11 @@ Multiple VM imports are performed faster in serial that in parallel.
 vm-install new-name-label=name [template-uuid=uuid_of_desired_template] [template=template_uuid_or_name] [sr-uuid=sr_uuid | sr-name-label=name_of_sr][copy-bios-strings-from=host_uuid]
 ```
 
-Install or clone a VM from a template. Specify the template name using either the `template-uuid` or `template` argument. Specify an SR using either the `sr-uuid` or `sr-name-label` argument. Specify to install BIOS-locked media using the `copy-bios-strings-from` argument.
+Install or clone a VM from a template. Specify the template name using either the `template-uuid` or `template` argument. Specify an <abbr title="Storage Repository">SR</abbr> using either the `sr-uuid` or `sr-name-label` argument. Specify to install BIOS-locked media using the `copy-bios-strings-from` argument.
 
 :::tip
-When installing from a template that has existing disks, by default, new disks are created in the same SR as these existing disks. Where the SR supports it, these disks are fast copies. If a different SR is specified on the command line, the new disks are created there. In this case, a fast copy is not possible and the disks are full copies.
-When installing from a template that doesn’t have existing disks, any new disks are created in the SR specified, or the pool default SR when an SR is not specified.
+When installing from a template that has existing disks, by default, new disks are created in the same <abbr title="Storage Repository">SR</abbr> as these existing disks. Where the <abbr title="Storage Repository">SR</abbr> supports it, these disks are fast copies. If a different <abbr title="Storage Repository">SR</abbr> is specified on the command line, the new disks are created there. In this case, a fast copy is not possible and the disks are full copies.
+When installing from a template that doesn’t have existing disks, any new disks are created in the <abbr title="Storage Repository">SR</abbr> specified, or the pool default <abbr title="Storage Repository">SR</abbr> when an <abbr title="Storage Repository">SR</abbr> is not specified.
 :::
 
 ### `vm-is-bios-customized`
@@ -3696,7 +3696,7 @@ To move VMs between hosts in the same pool, which do not share storage (storage 
 xe vm-migrate uuid=vm_uuid remote-master=12.34.56.78 remote-username=username remote-password=password host-uuid=desination_host_uuid vdi=vdi_uuid
 ```
 
-You can choose the SR where each VDI gets stored:
+You can choose the <abbr title="Storage Repository">SR</abbr> where each VDI gets stored:
 
 ```
 xe vm-migrate uuid=vm_uuid host-uuid=destination_host_uuid vdi1:vdi_1_uuid=destination_sr_uuid vdi2:vdi_2_uuid=destination_sr2_uuid vdi3:vdi_3_uuid=destination_sr3_uuid
@@ -3774,7 +3774,7 @@ Resume the specified VMs.
 
 The VM or VMs on which this operation is performed are selected using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section.
 
-If the VM is on a shared SR in a pool of hosts, use the `on` argument to specify which pool member to start it on. By default the system determines an appropriate host, which might be any of the members of the pool.
+If the VM is on a shared <abbr title="Storage Repository">SR</abbr> in a pool of hosts, use the `on` argument to specify which pool member to start it on. By default the system determines an appropriate host, which might be any of the members of the pool.
 
 ### `vm-retrieve-wlb-recommendations`
 
@@ -3796,7 +3796,7 @@ The VM or VMs on which this operation is performed are selected using the standa
 
 Use the `force` argument to cause an ungraceful shutdown, similar to pulling the plug on a physical server.
 
-An HVM mode VM requires `force=true` to be shutdown, unless [Guest Tools](../../vms#%EF%B8%8F-guest-tools) have been installed.
+An <abbr title="Hardware Virtual Machine">HVM</abbr> mode VM requires `force=true` to be shutdown, unless [Guest Tools](../../vms#%EF%B8%8F-guest-tools) have been installed.
 
 ### `vm-snapshot`
 
@@ -3816,7 +3816,7 @@ Start the specified VMs.
 
 The VM or VMs on which this operation is performed are selected using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section.
 
-If the VMs are on a shared SR in a pool of hosts, use the `on` argument to specify which pool member to start the VMs on. By default the system determines an appropriate host, which might be any of the members of the pool.
+If the VMs are on a shared <abbr title="Storage Repository">SR</abbr> in a pool of hosts, use the `on` argument to specify which pool member to start the VMs on. By default the system determines an appropriate host, which might be any of the members of the pool.
 
 ### `vm-suspend`
 

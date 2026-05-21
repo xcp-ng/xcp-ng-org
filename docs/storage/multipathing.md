@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Multipathing
 
-How to properly setup a new SR with multipathing on Xen Orchestra and XCP-ng.
+How to properly setup a new <abbr title="Storage Repository">SR</abbr> with multipathing on Xen Orchestra and XCP-ng.
 
 :::warning
 Do not attempt to enable multipathing on a production pool with existing and active iSCSI and/or HBA and/or FC SRs.
@@ -17,13 +17,13 @@ You can activate it on the "fly", per XCP-ng host (Advanced tab), but it is reco
 ### Requirements
 * Two different network interfaces.
 * Two different switches.
-* Multiple targets per LUN on your storage unit.
+* Multiple targets per <abbr title="Logical Unit Number">LUN</abbr> on your storage unit.
 * iSCSI target ports are operating in portal mode.
 
 :::info
 If the storage vendor recommends using Jumbo Frames, you will need to implement them.
 
-Since each architecture is unique, feel free to check with the storage vendor if it’s possible to stay with an MTU of 1500 (e.g., using storage dedicated PIF at 10Gb/s or 25Gb/s).
+Since each architecture is unique, feel free to check with the storage vendor if it’s possible to stay with an MTU of 1500 (e.g., using storage dedicated <abbr title="Physical Interface">PIF</abbr> at 10Gb/s or 25Gb/s).
 :::
 
 :::warning
@@ -180,18 +180,18 @@ linkStyle 13 stroke:#8C8C8C,stroke-width:2px;
 Make sure that multipathing is enabled on the pool. To do this, go to the advanced configuration of the pool.
 
 If this is not the case:
-1. Make sure there are **no VMs running** on an iSCSI and/or HBA SR in the pool.
+1. Make sure there are **no VMs running** on an iSCSI and/or HBA <abbr title="Storage Repository">SR</abbr> in the pool.
 2. Activate "Enable multipathing for all XCP-ng hosts.
 
-#### 3. Configure the SR
-Proceed with the iSCSI SR configuration as indicated in the [storage documentation](../../storage/#iscsi).
+#### 3. Configure the <abbr title="Storage Repository">SR</abbr>
+Proceed with the iSCSI <abbr title="Storage Repository">SR</abbr> configuration as indicated in the [storage documentation](../../storage/#iscsi).
 
 ## Fibre Channel (HBA)
 ### Requirements
 * Check that the Fibre Channel cards model(s) is supported via the [HCL](../../installation/hardware/#-hardware-compatibility-list-hcl).
 * Two different Fibre Channel ports.
 * Two different SAN switches.
-* Multiple targets per LUN on your storage unit.
+* Multiple targets per <abbr title="Logical Unit Number">LUN</abbr> on your storage unit.
 * Zoning performed.
 
 :::warning
@@ -305,11 +305,11 @@ linkStyle 5 stroke:#5CB85C,stroke-width:2px;
 Make sure that multipathing is enabled on the pool. To do this, go to the advanced configuration of the pool.
 
 If this is not the case:
-1. Make sure there are **no VMs running** on an iSCSI and/or HBA SR in the pool.
+1. Make sure there are **no VMs running** on an iSCSI and/or HBA <abbr title="Storage Repository">SR</abbr> in the pool.
 2. Activate "Enable multipathing for all XCP-ng hosts.
 
-#### 3. Configure the SR
-Proceed with the HBA SR configuration as indicated in the [storage documentation](../../storage/#hba).
+#### 3. Configure the <abbr title="Storage Repository">SR</abbr>
+Proceed with the HBA <abbr title="Storage Repository">SR</abbr> configuration as indicated in the [storage documentation](../../storage/#hba).
 
 
 ## Maintenance operations
@@ -320,7 +320,7 @@ Do not add the new XCP-ng host to the pool without completing these steps.
 :::
 
 1. Prepare the XCP-ng host as specified in this [operating procedure for iSCSI](../../storage/multipathing/#operating-procedure) or this [operating procedure for FC](../../storage/multipathing/#operating-procedure-1).
-2. Ensure that the iSCSI PIF configuration is completed if you are using iSCSI.
+2. Ensure that the iSCSI <abbr title="Physical Interface">PIF</abbr> configuration is completed if you are using iSCSI.
 3. Add the new XCP-ng host to the pool.
 
 ## Troubleshooting
@@ -353,7 +353,7 @@ tcp: [3] 10.42.2.101:3260,2 iqn.2024-02.com.acme:ultrasan.lun01 (non-flash)
 tcp: [4] 10.42.2.102:3260,2 iqn.2024-02.com.acme:ultrasan.lun01 (non-flash)
 ```
 :::info
-In this example, we have four iSCSI sessions with one LUN.
+In this example, we have four iSCSI sessions with one <abbr title="Logical Unit Number">LUN</abbr>.
 :::
 
 #### iSCSI: Verify Jumbo Frame configuration

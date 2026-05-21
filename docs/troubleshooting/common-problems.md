@@ -56,7 +56,7 @@ Here is an example of `dracut` command on a 8.3 host: `dracut -f /boot/initrd-4.
 
 ### Cause
 
-The XAPI database thinks that the VM is On / Off. But this is fake news ;-)
+The <abbr title="Xen Project Management API">XAPI</abbr> database thinks that the VM is On / Off. But this is fake news ;-)
 
 ### Solution
 
@@ -68,7 +68,7 @@ Restart toolstack on CLI with the command `xe-toolstack-restart`. This just rest
 
 ### Cause
 
-You may get this error when attempting to add a new host to an existing pool. This occurs when you mix products, for instance adding a XenServer/Citrix Hypervisor host to an XCP-ng pool, or vice versa. 
+You may get this error when attempting to add a new host to an existing pool. This occurs when you mix products, for instance adding a XenServer/Citrix Hypervisor host to an XCP-ng pool, or vice versa.
 
 ### Solution
 
@@ -150,7 +150,7 @@ Example: `# tcpdump -i eth0 -v -nn |grep incorrect`
      then try running
      `# xe pif-param-set uuid=$PIFUUID other-config:ethtool-gro="off"` where $PIFUUID is the UUID of the physical interface.
 
-The PIF UUID can be found by executing:
+The <abbr title="Physical Interface">PIF</abbr> UUID can be found by executing:
 
 `# xe pif-list`
 
@@ -166,9 +166,9 @@ In some cases, at least observed on XCP-ng 8.2.1 with Intel I219-V NICs, having 
 
 **NOTE**: This change does not guarantee improved network performance, please use iperf3 to check before and after the change.
 
-- Identify your PIF UUID using `# xe pif-list`
+- Identify your <abbr title="Physical Interface">PIF</abbr> UUID using `# xe pif-list`
 - Disable TSO: `# xe pif-param-set uuid=$PIFUUID other-config:ethtool-tso="off"`
-- Either unplug/plug the PIF for the change to be taken into account, or reboot your host
+- Either unplug/plug the <abbr title="Physical Interface">PIF</abbr> for the change to be taken into account, or reboot your host
 
 :::warning
 If running the unplug/plug commands through ssh, make sure you're not doing so over the network that will be unplugged. Ideally it is recommended to do such changes through your machine IPMI interface or on via physical access
@@ -269,13 +269,13 @@ Remove `/var/lib/xcp-ng-xapi-plugins/updater.py.lock` and that should fix it.
 
 ---
 
-## Unable to live migrate VDI between SRs
+## Unable to live migrate <abbr title="VirtualBox Disk Image">VDI</abbr> between <abbr title="Storage Repository">SR</abbr>
 
 ### Cause
 
 Upgrading from 8.2 to 8.3 can cause an issue where `/etc/stunnel/xapi-pool-ca-bundle.pem` is empty or missing
 You can check this with `ls -l /etc/stunnel/xapi-pool-ca-bundle.pem` on the host.
-It will cause issues when live-migrating VDIs between SRs (even if the VM remains on the same host).
+It will cause issues when live-migrating <abbr title="VirtualBox Disk Image">VDI</abbr> between <abbr title="Storage Repository">SR</abbr> (even if the VM remains on the same host).
 The migration fails with:
 ```
 Xenops_interface.Xenopsd_error([S(Internal_error);S(Sys_error(\"Connection reset by peer\"))])
@@ -290,7 +290,7 @@ xe host-refresh-server-certificate host=<host name>
 This will create the correct file on the host.
 You will need to run the command on all hosts of the pool.
 
-To know more about certificates in XAPI, check out the [XAPI documentation](https://xapi-project.github.io/new-docs/design/pool-certificates/index.html)
+To know more about certificates in <abbr title="Xen Project Management API">XAPI</abbr>, check out the [<abbr title="Xen Project Management API">XAPI</abbr> documentation](https://xapi-project.github.io/new-docs/design/pool-certificates/index.html)
 
 ---
 
@@ -298,11 +298,11 @@ To know more about certificates in XAPI, check out the [XAPI documentation](http
 
 ### Issue
 
-When installing XCP-ng, at the screen displaying **Please select the keymap you would like to use**, the installer appears to freeze or stop accepting keyboard inputs. 
+When installing XCP-ng, at the screen displaying **Please select the keymap you would like to use**, the installer appears to freeze or stop accepting keyboard inputs.
 
 ### Cause
 
-This issue is often caused by keyboard being on **Scroll Lock** mode. 
+This issue is often caused by keyboard being on **Scroll Lock** mode.
 
 ### Solution
 

@@ -107,15 +107,15 @@ In this guide, we often refer to those 4 UEFI variables as **the Secure Boot cer
 
 The certificates are stored at several levels:
 * **bundled** in the varstored package and managed by XCP-ng updates,
-* **pool** level (in the XAPI database),
-* host **disk** (it basically mirrors the certificates in the XAPI database),
+* **pool** level (in the <abbr title="Xen Project Management API">XAPI</abbr> database),
+* host **disk** (it basically mirrors the certificates in the <abbr title="Xen Project Management API">XAPI</abbr> database),
 * **VM** level (in the VM's UEFI variable store).
 
-To install or modify the certificates on the **pool**, use the `secureboot-certs` command line utility. See [Configure the Pool](#configure-the-pool). Once `secureboot-certs` is called, the XAPI DB entry for the pool is populated with a base64-encoded tarball of the UEFI certificates. Note: on XCP-ng 8.2.x, at this stage, *the certificates are still not installed on disk*: they only exist in the XAPI DB*. See "Host disk certificates synchronisation" below.
+To install or modify the certificates on the **pool**, use the `secureboot-certs` command line utility. See [Configure the Pool](#configure-the-pool). Once `secureboot-certs` is called, the <abbr title="Xen Project Management API">XAPI</abbr> DB entry for the pool is populated with a base64-encoded tarball of the UEFI certificates. Note: on XCP-ng 8.2.x, at this stage, *the certificates are still not installed on disk*: they only exist in the <abbr title="Xen Project Management API">XAPI</abbr> DB*. See "Host disk certificates synchronisation" below.
 
 Host disk certificate synchronization:
 - On XCP-ng 8.2.x, the certificates are updated on the host's **disk** (in `/var/lib/uefistored/`) each time a UEFI VM starts on the host, if needed.
-- On any more recent release (8.3 or above), the disk certificates (now in `/var/lib/varstored/`) are updated directly when `secureboot-certs install` is run, and again at every XAPI startup afterwards if needed. New hosts joining a pool also directly get a copy of the pool's UEFI certificates, without user intervention.
+- On any more recent release (8.3 or above), the disk certificates (now in `/var/lib/varstored/`) are updated directly when `secureboot-certs install` is run, and again at every <abbr title="Xen Project Management API">XAPI</abbr> startup afterwards if needed. New hosts joining a pool also directly get a copy of the pool's UEFI certificates, without user intervention.
 
 Pool-level and host-level certificates are here to serve only one purpose: be available for initializing a UEFI VM's EFI variable store with these certificates, so that Secure Boot can be enabled on this VM at the user's convenience. Once the VM is initialized, changes made to the pool's UEFI certificates will **not** be automatically propagated to VMs.
 

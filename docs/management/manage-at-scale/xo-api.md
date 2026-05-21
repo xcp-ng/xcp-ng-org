@@ -145,7 +145,7 @@ curl \
   'https://xo.example.org/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237cac'
 ```
 
-### VM and VDI destruction
+### VM and <abbr title="VirtualBox Disk Image">VDI</abbr> destruction
 
 For a VM:
 
@@ -156,7 +156,7 @@ curl \
   'https://xo.example.org/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237cac'
 ```
 
-For a VDI:
+For a <abbr title="VirtualBox Disk Image">VDI</abbr>:
 
 ```sh
 curl \
@@ -165,9 +165,9 @@ curl \
   'https://xo.example.org/rest/v0/vdis/1a269782-ea93-4c4c-897a-475365f7b674'
 ```
 
-### VM and VDI export
+### VM and <abbr title="VirtualBox Disk Image">VDI</abbr> export
 
-VDI export and VM export are supported by the API. Below is a simple example to export a VM with `zstd` compression into a `myVM.xva` file:
+<abbr title="VirtualBox Disk Image">VDI</abbr> export and VM export are supported by the API. Below is a simple example to export a VM with `zstd` compression into a `myVM.xva` file:
 
 ```sh
 curl \
@@ -176,7 +176,7 @@ curl \
   > myVM.xva
 ```
 
-A VDI can be exported in VHD format at `/rest/v0/vdis/<uuid>.vhd` or the raw content at `/rest/v0/vdis/<uuid>.raw`.
+A <abbr title="VirtualBox Disk Image">VDI</abbr> can be exported in <abbr title="Virtual Hard Disk">VHD</abbr> format at `/rest/v0/vdis/<uuid>.vhd` or the raw content at `/rest/v0/vdis/<uuid>.raw`.
 
 ```sh
 curl \
@@ -185,9 +185,9 @@ curl \
   > myDisk.vhd
 ```
 
-### VDI Import
+### <abbr title="VirtualBox Disk Image">VDI</abbr> Import
 
-A VHD or a raw export can be imported on an SR to create a new VDI at `/rest/v0/srs/<sr uuid>/vdis`.
+A <abbr title="Virtual Hard Disk">VHD</abbr> or a raw export can be imported on an <abbr title="Storage Repository">SR</abbr> to create a new <abbr title="VirtualBox Disk Image">VDI</abbr> at `/rest/v0/srs/<sr uuid>/vdis`.
 
 ```sh
 curl \
@@ -200,13 +200,13 @@ curl \
 
 > Note: the final `| cat` ensures cURL's standard output is not a TTY, which is necessary for upload stats to be dislayed.
 
-This request returns the UUID of the created VDI.
+This request returns the UUID of the created <abbr title="VirtualBox Disk Image">VDI</abbr>.
 
-The following query parameters are supported to customize the created VDI:
+The following query parameters are supported to customize the created <abbr title="VirtualBox Disk Image">VDI</abbr>:
 
 - `name_label`
 - `name_description`
-- `raw`: this parameter must be used if importing a raw export instead of a VHD
+- `raw`: this parameter must be used if importing a raw export instead of a <abbr title="Virtual Hard Disk">VHD</abbr>
 
 ### Actions
 

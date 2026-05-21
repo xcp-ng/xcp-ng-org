@@ -19,33 +19,33 @@ You can configure four different types of networks in XCP-ng:
 * Default Networks have an association with a physical network interface. Those are also called "External networks" provide a bridge between a virtual machine and the physical network interface connected to the network. External networks enable a virtual machine to connect to resources available through the server’s physical NIC.
 * Bonded networks create a bond between two or more NICs to create a single, high-performing channel between the virtual machine and the network.
 * Private networks are used to connect VMs internally, without sending traffic outside the host
-* Global Private Networks extend the single server private network concept to allow VMs on different pools and/or hosts to communicate with each other by using the XOA SDN controller.
+* Global Private Networks extend the single server private network concept to allow VMs on different pools and/or hosts to communicate with each other by using the <abbr title="Xen Orchestra Appliance">XOA</abbr> SDN controller.
 
 ### Network objects
 
 This section uses three types of server-side software objects to represent networking entities. These objects are:
 
-* A PIF, which is a way to connect outside of a host. PIF objects have:
-    -  * a name
-    -  * a description
-    -  * a UUID
-    -  * the parameters of the NIC they represent
-    -  * the network and server they are connected to. 
-PIFs can represent:
+* A <abbr title="Physical Interface">PIF</abbr>, which is a way to connect outside of a host. <abbr title="Physical Interface">PIF</abbr> objects have:
+  * a name
+  * a description
+  * a UUID
+  * the parameters of the NIC they represent
+  * the network and server they are connected to.
+<abbr title="Physical Interface">PIF</abbr> can represent:
   * A physical NIC
   * A VLAN on top of a physical NIC
   * A bond of multiple NICs
   * A tunnel interface (GRE/VXLAN)
 * A VIF, which represents a virtual NIC on a virtual machine. VIF objects have a name and description, a UUID, and the network and VM they are connected to. They can be:
-  * A PV driver backed device
+  * A <abbr title="Para-Virtualization">PV</abbr> driver backed device
   * An emulated device
-* A network, which is a virtual Ethernet switch on a host. Network objects have a name and description, a UUID, and the collection of VIFs and PIFs connected to them.
+* A network, which is a virtual Ethernet switch on a host. Network objects have a name and description, a UUID, and the collection of VIFs and <abbr title="Physical Interface">PIF</abbr> connected to them.
 
-`xe` CLI, Xen Orchestra or XCP-ng center allow you to configure networking options. You can control the NIC used for management operations, and create advanced networking features such as VLANs and NIC bonds.
+`xe` CLI, <abbr title="Xen Orchestra">XO</abbr> or XCP-ng center allow you to configure networking options. You can control the NIC used for management operations, and create advanced networking features such as VLANs and NIC bonds.
 
 ### Networks
 
-Each XCP-ng server has one or more networks, which are virtual Ethernet switches. Networks that are not associated with a PIF are considered internal. Internal networks can be used to provide connectivity only between VMs on a given XCP-ng server, with no connection to the outside world. Networks associated with a PIF are considered external. External networks provide a bridge between VIFs and the PIF connected to the network, enabling connectivity to resources available through the PIF’s NIC.
+Each XCP-ng server has one or more networks, which are virtual Ethernet switches. Networks that are not associated with a <abbr title="Physical Interface">PIF</abbr> are considered internal. Internal networks can be used to provide connectivity only between VMs on a given XCP-ng server, with no connection to the outside world. Networks associated with a <abbr title="Physical Interface">PIF</abbr> are considered external. External networks provide a bridge between VIFs and the <abbr title="Physical Interface">PIF</abbr> connected to the network, enabling connectivity to resources available through the <abbr title="Physical Interface">PIF</abbr>’s NIC.
 
 ### MTUs
 
@@ -83,21 +83,21 @@ VLANs, as defined by the IEEE 802.1Q standard, allow a single physical network t
 
 Switch ports configured as 802.1Q VLAN trunk ports can be used with XCP-ng VLAN features to connect guest virtual network interfaces (VIFs) to specific VLANs. In this case, XCP-ng server performs the VLAN tagging/untagging functions for the guest, which is unaware of any VLAN configuration.
 
-XCP-ng VLANs are represented by additional PIF objects representing VLAN interfaces corresponding to a specified VLAN tag. You can connect XCP-ng networks to the PIF representing the physical NIC to see all traffic on the NIC. Alternatively, connect networks to a PIF representing a VLAN to see only the traffic with the specified VLAN tag. You can also connect a network such that it only sees the native VLAN traffic, by attaching it to VLAN 0.
+XCP-ng VLANs are represented by additional <abbr title="Physical Interface">PIF</abbr> objects representing VLAN interfaces corresponding to a specified VLAN tag. You can connect XCP-ng networks to the <abbr title="Physical Interface">PIF</abbr> representing the physical NIC to see all traffic on the NIC. Alternatively, connect networks to a <abbr title="Physical Interface">PIF</abbr> representing a VLAN to see only the traffic with the specified VLAN tag. You can also connect a network such that it only sees the native VLAN traffic, by attaching it to VLAN 0.
 
 To use VLANs for your network logical isolation, it's really easy. You'll create a new network with a VLAN ID, and all virtual interfaces created on this network will transparently have traffic tagged in this VLAN. No need to configure anything inside your VM.
 
-First step, go in Xen Orchestra menu, "New" then "Network":
+First step, go in <abbr title="Xen Orchestra">XO</abbr> menu, "New" then "Network":
 
-![XO's New submenu, with VM, Storage, Network and Server.](../../assets/img/screenshots/newnetwork1.png)
+![Xen Orchestra (XO) new submenu, with VM, Storage, Network and Server.](../../assets/img/screenshots/newnetwork1.png)
 
 Then, select a pool where you want to create this network, and fill what's required, like physical interface selection, name and description and also VLAN number:
 
-![XO's network creation interface with toggle options for Bonded and Private networks, a dropdown for the Interface and text fields for Interface, Name, Description, MTU and VLAN.](../../assets/img/screenshots/newnetwork2.png)
+![Xen Orchestra (XO) network creation interface with toggle options for Bonded and Private networks, a dropdown for the Interface and text fields for Interface, Name, Description, MTU and VLAN.](../../assets/img/screenshots/newnetwork2.png)
 
 Finally, click on "Create network":
 
-![XO's "Create network" button with a Play icon.](../../assets/img/screenshots/newnetwork3.png)
+![Xen Orchestra (XO) "Create network" button with a Play icon.](../../assets/img/screenshots/newnetwork3.png)
 
 That's it!
 
@@ -117,7 +117,7 @@ It needs to be properly configured on the switch, within the XCP-ng network, and
 
 ## 🔗 Bonds
 
-It's same as previous section, just check the "Bonded Network" and select multiple PIFs in the Interface selector. You can either use VLANs or not, it doesn't matter!
+It's same as previous section, just check the "Bonded Network" and select multiple <abbr title="Physical Interface">PIF</abbr> in the Interface selector. You can either use VLANs or not, it doesn't matter!
 
 ## 🌐 Manage physical NICs
 
@@ -125,9 +125,9 @@ It's same as previous section, just check the "Bonded Network" and select multip
 
 Once a NIC is physically installed, in Xen Orchestra, go to your host's networking tab and click refresh.
 
-![XO's Network tab with the refresh button highlighted.](../../assets/img/screenshots/PIFs-refresh.png)
+![Xen Orchestra (XO) network tab with the refresh button highlighted.](../../assets/img/screenshots/PIFs-refresh.png)
 
-This can also be done on the command line. After physically installing a new NIC, you'll need to run a `xe pif-scan` command on the host to get this NIC added as an available PIF.
+This can also be done on the command line. After physically installing a new NIC, you'll need to run a `xe pif-scan` command on the host to get this NIC added as an available <abbr title="Physical Interface">PIF</abbr>.
 ```
 xe pif-scan host-uuid=<HOST UUID>
 ```
@@ -174,7 +174,7 @@ interface-rename --update eth4=00:24:81:80:19:63 eth8=00:24:81:7f:cf:8b
 ```
 This example will set the mac-address for eth4 & eth8, switching them in the process.
 
-The XAPI database needs the old PIFs removed. First list your PIFs for the affected NICs:
+The <abbr title="Xen Project Management API">XAPI</abbr> database needs the old <abbr title="Physical Interface">PIF</abbr> removed. First list your <abbr title="Physical Interface">PIF</abbr> for the affected NICs:
 ```
 xe pif-list
 xe pif-forget uuid=<uuid of eth4>
@@ -188,7 +188,7 @@ ifconfig eth4 up
 ifconfig eth8 up
 ```
 
-The new interfaces need to be introduced to the PIF database:
+The new interfaces need to be introduced to the <abbr title="Physical Interface">PIF</abbr> database:
 ```
 xe host-list
 ```
@@ -204,11 +204,11 @@ By renaming/updating interfaces like this, you can assure all your hosts have th
 ### Remove a physical NIC
 
 Before removing a physical NIC, ensure that no VMs are using the interface. Shutdown the host, physically remove the NIC and boot.
-After boot, the PIF will need to be removed. You can do it this way:
+After boot, the <abbr title="Physical Interface">PIF</abbr> will need to be removed. You can do it this way:
 ```
 xe pif-forget uuid=<PIF UUID>
 ```
-The `<PIF UUID>` can be obtained with either `xe pif-list` or with Xen Orchestra. This command only needs to be ran once on the pool. 
+The `<PIF UUID>` can be obtained with either `xe pif-list` or with Xen Orchestra. This command only needs to be ran once on the pool.
 
 ## 🛞 SDN controller
 
@@ -221,11 +221,11 @@ Private network (using tunnels) are very handy when you want to access resources
 So we want a network that is:
 - reachable by all the hosts in a pool or **even between different pools!**
 - unreachable by anything outside the network
-- reactive when the pool changes (new host, host ejected, `PIF` unplugged etc):
+- reactive when the pool changes (new host, host ejected, <abbr title="Physical Interface">PIF</abbr> unplugged etc):
 
 That's exactly what you can have thanks to XO SDN controller (here via GRE tunnels):
 
-![Diagram of SDN Controller and it's interactions with the hosts of a pool. It talks to the master using XAPI, to each hosts including master through OVSDB protocol, and the GRE tunnels connects hosts together.](https://xen-orchestra.com/blog/content/images/2019/06/sdn-controller-1.png)
+![Diagram of SDN Controller and it's interactions with the hosts of a pool. It talks to the master using Xen Project Management API (XAPI), to each hosts including master through OVSDB protocol, and the GRE tunnels connects hosts together.](https://xen-orchestra.com/blog/content/images/2019/06/sdn-controller-1.png)
 
 To create a private network, go in Xen Orchestra, New/Network and select "Private Network":
 
@@ -305,7 +305,7 @@ xe network-param-remove uuid=<network UUID> param-key=static-routes param-name=o
 A toolstack restart is needed as before.
 
 :::tip
-XAPI might not remove the already-installed route until the host is rebooted. If you need to remove it ASAP,  you can use `ip route del 10.88.0.0/14 via 10.88.113.193`. Check that it's gone with `route -n`.
+<abbr title="Xen Project Management API">XAPI</abbr> might not remove the already-installed route until the host is rebooted. If you need to remove it ASAP,  you can use `ip route del 10.88.0.0/14 via 10.88.113.193`. Check that it's gone with `route -n`.
 :::
 
 ## 🕸️ Full mesh network
@@ -405,7 +405,7 @@ This setup will save you costs of 2 network switches you would otherwise have to
 
 When XCP-ng is configured for static IP configuration there are no DNS search domains added. It is possible to add search domains into `/etc/resolv.conf`, however those won't persist across reboots. Use `xe pif-param-set` to add search domains that should persist across reboots.
 
-* First identify the PIF used as management interface.
+* First identify the <abbr title="Physical Interface">PIF</abbr> used as management interface.
 ```
 # xe pif-list host-name-label=xcpng-srv01 management=true
 uuid ( RO)                  : 76608ca2-e099-9344-af36-5b63c0022913
@@ -459,7 +459,7 @@ Incorrect settings that cause a loss of network connectivity include renaming ne
 If a Pool master or host in a resource pool is unable to contact with other hosts.
 :::
 
-Use the `xe-reset-networking` utility only in an emergency because it deletes the configuration for all PIFs, bonds, VLANs, and tunnels associated with the host. Guest Networks and VIFs are preserved. As part of this utility, VMs are shut down forcefully. Before running this command, cleanly shut down the VMs where possible. Before you apply a reset, you can change the management interface and specify which IP configuration, DHCP, or Static can be used.
+Use the `xe-reset-networking` utility only in an emergency because it deletes the configuration for all <abbr title="Physical Interface">PIF</abbr>, bonds, VLANs, and tunnels associated with the host. Guest Networks and VIFs are preserved. As part of this utility, VMs are shut down forcefully. Before running this command, cleanly shut down the VMs where possible. Before you apply a reset, you can change the management interface and specify which IP configuration, DHCP, or Static can be used.
 
 If the pool master requires a network reset, reset the network on the pool master first before applying a network reset on pool members. Apply the network reset on all remaining hosts in the pool to ensure that the pool’s networking configuration is homogeneous. Network homogeneity is an important factor for live migration.
 

@@ -2,7 +2,7 @@
 
 How to create and use custom XCP-NG templates for Ubuntu?
 
-[Xen Orchestra](https://xen-orchestra.com) offers free templates via the XOA Hub (for users of Xen Orchestra Virtual Appliance). However, if you don't find what you need and wish to create your own templates with support for [Cloud-init](https://cloud-init.io/), this post is for you. 
+[Xen Orchestra](https://xen-orchestra.com) offers free templates via the [<abbr title="Xen Orchestra Appliance">XOA</abbr> Hub](https://xen-orchestra.com/#!/featuresmatrix) (for users of <abbr title="Xen Orchestra Appliance">XOA</abbr>). However, if you don't find what you need and wish to create your own templates with support for [Cloud-init](https://cloud-init.io/), this post is for you.
 
 [Cloud-init](https://cloud-init.io/) is a tool used in cloud environments, developed to automate the configuration and initialization of virtual machines at first boot. It allows for various configurations to be applied to a virtual machine without manual intervention. Here is an overview of its main functions:
 
@@ -20,7 +20,7 @@ All experiments will be conducted using the graphical virtual machine manager [X
 ## Prerequisites
 
 * [XCP-NG](https://xcp-ng.org/)
-* [Xen Orchestra](https://xen-orchestra.com) from the sources or Xen Orchestra virtual Appliance (XOA)
+* [Xen Orchestra](https://xen-orchestra.com) from the sources or <abbr title="Xen Orchestra Appliance">XOA</abbr>
 * [XO-CLI](https://www.npmjs.com/package/xo-cli) (for the last part of this post)
 * [JQ](https://jqlang.github.io/jq/) (for the last part of this post)
 * Ubuntu 22.04.04 Server LTS under ISO and OVA formats
@@ -56,7 +56,7 @@ The creation of the virtual image from a cloud image in OVA format is complete. 
 
 2. From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **Import** option and choose the **Disk** sub-option.
 
-3. Select the ISO repository from the SR dropdown where the ISO file will be uploaded.
+3. Select the ISO repository from the <abbr title="Storage Repository">SR</abbr> dropdown where the ISO file will be uploaded.
 
 4. Drag and drop or select the file *ubuntu-22.04.4-live-server-amd64.iso*, click on **Import**, and wait for the import to finish.
 
@@ -77,7 +77,7 @@ The creation of the virtual image from a cloud image in OVA format is complete. 
 9. Connect via the console provided by [Xen Orchestra](https://xen-orchestra.com) or via SSH and update the repositories and the system:
 
     ```
-    $ sudo apt update 
+    $ sudo apt update
     $ sudo apt dist-upgrade
     ```
 
@@ -132,9 +132,9 @@ The creation of the virtual image from a cloud image in OVA format is complete. 
     ```
 
     **If using Ubuntu 24.04 or a later version**
-    
+
     Delete the file */etc/cloud/cloud.cfg.d/90-installer-network.cfg*:
-    
+
     ```
     sudo rm -f /etc/cloud/cloud.cfg.d/90-installer-network.cfg
     ```
@@ -176,7 +176,7 @@ The creation of the virtual image from a cloud image in OVA format is complete. 
     ```
     apt-get clean
     ```
-    
+
 21. Remove SSH host keys, so they can be regenerated when first booting a of newly provisioned VM.
 
     To do this, run this command:
@@ -239,7 +239,7 @@ The template has been created and added to the list of existing templates. The c
 
 Using the previously created template will allow you to rely on an existing virtual machine on which it will be possible to add configurations supported by Cloud-init. The [documentation](https://cloudinit.readthedocs.io/en/latest/index.html) for [Cloud-init](https://cloud-init.io/) regarding configurations is not user friendly. This [GitHub repository](https://github.com/number5/cloud-init/tree/main/doc/examples) associated with the official documentation makes it easier to understand the complexity of [Cloud-init](https://cloud-init.io/).
 
-Two configurations are available: one that describes the content of *cloud-config* and one that describes the content of *network-config*. In the following, we provide examples of these configurations. I encourage readers to use these examples and the official documentation to tailor them to their needs. 
+Two configurations are available: one that describes the content of *cloud-config* and one that describes the content of *network-config*. In the following, we provide examples of these configurations. I encourage readers to use these examples and the official documentation to tailor them to their needs.
 
 The following configuration allows you to change the hostname of the virtual machine and define a single user *admin* with an SSH key. Please note the presence of the password which is useful for accessing the virtual machine from the [Xen Orchestra](https://xen-orchestra.com) console.
 
@@ -318,7 +318,7 @@ XO-CLI (Xen Orchestra CLI) is a command-line solution that allows for the admini
 $ xo-cli --register http://URL_XEN_ORCHESTRA user@email.fr
 ```
 
-In the following example, we will detail the creation of a virtual machine based on the template named *custom-ubuntu22.04*, the storage disk called *VS5 - LVM storage (RAID 0)*, and the network named *eth0 - Public VLAN*. We will need to use a function called `xo.getAllObjects` to retrieve the identifiers for the template, storage disk, and network.
+In the following example, we will detail the creation of a virtual machine based on the template named *custom-ubuntu22.04*, the storage disk called *VS5 - <abbr title="Logical Volume Manager">LVM</abbr> storage (RAID 0)*, and the network named *eth0 - Public VLAN*. We will need to use a function called `xo.getAllObjects` to retrieve the identifiers for the template, storage disk, and network.
 
 ```
 $ TEMPLATE_ID=$(xo-cli xo.getAllObjects --json filter=json:'{"type":"VM-template", "name_label":"custom-ubuntu22.04"}' | jq -r '.[].id')

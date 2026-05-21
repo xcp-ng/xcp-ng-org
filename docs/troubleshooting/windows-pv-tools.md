@@ -158,7 +158,7 @@ HKLM\System\CurrentControlSet\Services\XenBus\Parameters\VBD\AllowPdoRemove = 0
 HKLM\System\CurrentControlSet\Services\XenBus\Parameters\VBD\AllowPdoEject = 0
 ```
 
-Next, set each VBD's property to non-unpluggable:
+Next, set each <abbr title="Virtual Block Device">VBD</abbr> property to non-unpluggable:
 
 ```
 xe vbd-param-set uuid=<vbd-uuid> unpluggable=false

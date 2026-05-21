@@ -67,7 +67,7 @@ _This method works best for finding the device ID by class. The example below th
 ../../devices/pci0000:00/0000:04:01.0/net/eth1
 ```
 
-**Method 3: List PCI devices using XAPI**
+**Method 3: List PCI devices using <abbr title="Xen Project Management API">XAPI</abbr>**
 
 _This method works since XCP-ng 8.3._
 
@@ -81,7 +81,7 @@ To hide the device from dom0:
 
 ##### XCP-ng 8.3
 
-Run the following XAPI command:
+Run the following <abbr title="Xen Project Management API">XAPI</abbr> command:
 
 ```
 xe pci-disable-dom0-access uuid=<pci uuid>
@@ -107,7 +107,7 @@ To unhide the device from dom0:
 
 ##### XCP-ng 8.3
 
-Run the following XAPI command:
+Run the following <abbr title="Xen Project Management API">XAPI</abbr> command:
 
 `xe pci-enable-dom0-access uuid=<pci uuid>`
 
@@ -186,7 +186,7 @@ If you want to get the PCI device accessible again in the Dom0, you also need to
 It will be back in the Dom0 after a reboot.
 
 ## 🎮 GPU Passthrough
-To passthrough a complete graphics card to a VM (not virtualize it into multiple virtual vGPUs, which is different, see the vGPU section below), just follow the regular PCI passthrough instructions, no special steps are needed. Most Nvidia and AMD video cards should work without issue.  
+To passthrough a complete graphics card to a VM (not virtualize it into multiple virtual vGPUs, which is different, see the vGPU section below), just follow the regular PCI passthrough instructions, no special steps are needed. Most Nvidia and AMD video cards should work without issue.
 
 :::tip
 Previously, Nvidia would block the use of gaming/consumer video cards for passthrough (the Nvidia installer would throw an **Error 43** when installing the driver inside your VM). They lifted this restriction in 2021 with driver R465 and above, so be sure to use the latest driver. [Details from Nvidia here.](https://nvidia.custhelp.com/app/answers/detail/a_id/5173/)
@@ -202,7 +202,7 @@ Due to a proprietary piece of code in XenServer, XCP-ng doesn't have (yet) suppo
 
 ### MxGPU (AMD vGPU)
 
-AMD GPU are trivial using industry standard.  
+AMD GPU are trivial using industry standard.
 Version 2.0 of the mxgpu iso should work on any 8.X version of XCP-ng
 
 1. Enable SR-IOV in the server's BIOS
@@ -248,7 +248,7 @@ Find your USB device there, and note the `uuid`. Then use that uuid to enable pa
 ```
 [root@xenserver ~]# xe pusb-param-set uuid=10fbec89-4472-c215-5d55-17969b473ee6 passthrough-enabled=true
 ```
-This will create a `usb-group` containing this USB device. We need to find the uuid of that group, so we use the `usb-group-list` command, specifying the physical USB uuid we got in step one: 
+This will create a `usb-group` containing this USB device. We need to find the uuid of that group, so we use the `usb-group-list` command, specifying the physical USB uuid we got in step one:
 ```
 [root@xenserver ~]# xe usb-group-list PUSB-uuids=10fbec89-4472-c215-5d55-17969b473ee6
 uuid ( RO)                : 1f731f6a-6025-8858-904d-c98548f8bb23

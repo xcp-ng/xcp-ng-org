@@ -51,8 +51,8 @@ Other changes:
 * **PV guests are not supported anymore**
   * Templates for creating PV guests have been removed
   * Existing guests will still run... For now...
-  * It is advised to convert them to HVM guests
-  * A compatibility layer should be provided in the future for PV guests that really can't be converted. But really anyone who can convert to HVM, should
+  * It is advised to convert them to <abbr title="Hardware Virtual Machine">HVM</abbr> guests
+  * A compatibility layer should be provided in the future for PV guests that really can't be converted. But really anyone who can convert to <abbr title="Hardware Virtual Machine">HVM</abbr>, should
   * Due to how 32-bit PV guests work, keeping them functioning on newer hardware with newer features comes with an increasing performance cost, and the Linux kernel is also about to drop support for 32-bit PV guests
   * **Security issues related to PV guests may be or not be fixed. There is no guarantee about fixes.**
 * Dynamic Memory Control (DMC) is deprecated and will be removed in the future.
@@ -109,13 +109,13 @@ However we have updated the [documentation about the guest tools](../../../vms),
 
 ## Misc
 
-### Announcement about our former experimental ext4 SR driver
+### Announcement about our former experimental ext4 <abbr title="Storage Repository">SR</abbr> driver
 
 It is now deprecated in 8.1. For a good reason: in XCP-ng 8.1 and above, following upstream changes, the ext driver now formats new SRs as EXT4. Existing SRs are untouched (so remain formatted as EXT3).
 
-There is no easy way to convert an existing SR created with our driver, so those using it will need to move the VDIs out (to another SR or to export them), destroy the SR and create an EXT SR instead. Make sure to do this on XCP-ng 8.1. See instructions below.
+There is no easy way to convert an existing <abbr title="Storage Repository">SR</abbr> created with our driver, so those using it will need to move the VDIs out (to another <abbr title="Storage Repository">SR</abbr> or to export them), destroy the <abbr title="Storage Repository">SR</abbr> and create an EXT <abbr title="Storage Repository">SR</abbr> instead. Make sure to do this on XCP-ng 8.1. See instructions below.
 
-The sm-additional-drivers package remains available in XCP-ng 8.1 in order to ease the transition. However We've broken the sr-create command on purpose. Any attempt to create a SR of type ext4 will result in an error with a message that explains that you need to use the ext type instead.
+The sm-additional-drivers package remains available in XCP-ng 8.1 in order to ease the transition. However We've broken the sr-create command on purpose. Any attempt to create a <abbr title="Storage Repository">SR</abbr> of type ext4 will result in an error with a message that explains that you need to use the ext type instead.
 
 Our experimental driver will be completely removed in a later release, possibly XCP-ng 8.2.
 
@@ -125,31 +125,31 @@ Our former experimental `ext4` storage driver is deprecated, because the officia
 * In a future release, that driver will be removed and associated SRs will not work anymore.
 * In XCP-ng 8.1, the driver will refuse to create new `ext4` storage repositories.
 
-It is highly recommended to convert any existing storage repository that uses the `ext4` experimental storage driver. This is done by moving the VMs out of the SR, destroying it and recreating it with the `ext` type.
+It is highly recommended to convert any existing storage repository that uses the `ext4` experimental storage driver. This is done by moving the VMs out of the <abbr title="Storage Repository">SR</abbr>, destroying it and recreating it with the `ext` type.
 
-See "Destroy and re-create a local SR" below.
+See "Destroy and re-create a local <abbr title="Storage Repository">SR</abbr>" below.
 
 #### Convert an existing EXT3 storage repository to EXT4
 
-The safest option to convert an EXT3 local storage repository to EXT4 is to move the VMs out, destroy the SR and re-create it on XCP-ng 8.1 with the `ext` type.
+The safest option to convert an EXT3 local storage repository to EXT4 is to move the VMs out, destroy the <abbr title="Storage Repository">SR</abbr> and re-create it on XCP-ng 8.1 with the `ext` type.
 
-See "Destroy and re-create a local SR" below.
+See "Destroy and re-create a local <abbr title="Storage Repository">SR</abbr>" below.
 
-#### Destroy and re-create a local SR
+#### Destroy and re-create a local <abbr title="Storage Repository">SR</abbr>
 
 * Upgrade the pool to XCP-ng 8.1
 * Then for each host with a local storage that needs being re-created, starting with the pool master:
-  * If the local SR to be destroyed is using the experimental `ext4` driver, install the `sm-additional-drivers` package on the host and restart the toolstack: `yum install sm-additional-drivers -y && xe-toolstack-restart`.
+  * If the local <abbr title="Storage Repository">SR</abbr> to be destroyed is using the experimental `ext4` driver, install the `sm-additional-drivers` package on the host and restart the toolstack: `yum install sm-additional-drivers -y && xe-toolstack-restart`.
   * Back-up your VMs.
-  * Move the VMs from that local SR towards another SR, or export them then delete them (Note: an export will not retain the snapshots).
-  * Check that the SR is now empty.
-  * Note the *SR uuid* (visible in Xen Orchestra, or in the output of `xe sr-list`).
-  * Find the associated PBD: `xe pbd-list sr-uuid={SR-UUID}`
-    * Note the *PBD uuid*.
+  * Move the VMs from that local <abbr title="Storage Repository">SR</abbr> towards another <abbr title="Storage Repository">SR</abbr>, or export them then delete them (Note: an export will not retain the snapshots).
+  * Check that the <abbr title="Storage Repository">SR</abbr> is now empty.
+  * Note the *<abbr title="Storage Repository">SR</abbr> uuid* (visible in Xen Orchestra, or in the output of `xe sr-list`).
+  * Find the associated <abbr title="Physical Block Device">PBD</abbr>: `xe pbd-list sr-uuid={SR-UUID}`
+    * Note the *<abbr title="Physical Block Device">PBD</abbr> uuid*.
     * Note the associated device (e.g. `/dev/sdb`).
-  * Unplug the PBD: `xe pbd-unplug uuid={PBD-UUID}`
-  * Destroy the SR: `xe sr-destroy uuid={SR-UUID}`
-  * Create the new SR:
+  * Unplug the <abbr title="Physical Block Device">PBD</abbr>: `xe pbd-unplug uuid={PBD-UUID}`
+  * Destroy the <abbr title="Storage Repository">SR</abbr>: `xe sr-destroy uuid={SR-UUID}`
+  * Create the new <abbr title="Storage Repository">SR</abbr>:
     * `xe sr-create type=ext name-label="Local EXT storage" host-uuid={HOST-UUID} device-config:device={DEVICE}`
     * Example: `xe sr-create type=ext name-label="Local EXT storage" host-uuid=c9800783-5202-4ccb-87fd-ff8ced6c935f device-config:device=/dev/sdb`
 * When you have handled all the servers of the pool, then for each host, if you had installed the `sm-additional-drivers` package, remove it (unless you also have XFS SRs): `yum remove sm-additional-drivers xfsprogs`.

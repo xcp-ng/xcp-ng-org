@@ -6,14 +6,14 @@
 
 Storage in XCP-ng is quite a large topic. This section is dedicated to it. Keywords are:
 
-* SR: Storage Repository, the place for your VM disks (VDI SR)
+* <abbr title="Storage Repository">SR</abbr>: Storage Repository, the place for your VM disks (VDI <abbr title="Storage Repository">SR</abbr>)
 * VDI: a virtual disk
-* ISO SR: special SR only for ISO files (in read only)
+* ISO <abbr title="Storage Repository">SR</abbr>: special <abbr title="Storage Repository">SR</abbr> only for ISO files (in read only)
 
-Please take into consideration, that Xen API (XAPI) via their storage module (`SMAPI`) is doing all the heavy lifting on your storage. **You don't need to format drives manually**.
+Please take into consideration, that Xen API (XAPI) via their storage module (<abbr title="Storage Manager API">SMAPI</abbr>) is doing all the heavy lifting on your storage. **You don't need to format drives manually**.
 
 :::tip
-We encourage people to use file based SR (local ext, NFS, XOSTOR…) because it's easier to deal with. If you want to know more, read the rest.
+We encourage people to use file based <abbr title="Storage Repository">SR</abbr> (local ext, NFS, <abbr title="Xen Orchestra Storage">XOSTOR</abbr>…) because it's easier to deal with. If you want to know more, read the rest.
 :::
 
 ## 📑 Storage types
@@ -99,7 +99,7 @@ There are storage types that are officially supported, and others that are provi
   </tr>
   <tr>
     <td rowspan="6">block based</td>
-    <td>Local LVM</td>
+    <td>Local <abbr title="Logical Volume Manager">LVM</abbr></td>
     <td></td>
     <td></td>
     <td>X</td>
@@ -136,7 +136,7 @@ Cost of thick provisioning is relatively high when you do snapshots (used for ba
 
 ### Local
 
-A local SR is using a disk or a partition of your local disk, to create a space for your VM disks. Local LVM will use logical volumes, whereas Local EXT will create an `ext4` filesystem and put `.vhd` files in it.
+A local <abbr title="Storage Repository">SR</abbr> is using a disk or a partition of your local disk, to create a space for your VM disks. Local <abbr title="Logical Volume Manager">LVM</abbr> will use logical volumes, whereas Local EXT will create an `ext4` filesystem and put `.vhd` files in it.
 
 :::tip
 The concept is simple: tell XCP-ng which disk or partition you want to use, and it will do everything for you! Don't do anything yourself (no need to create a logical volume or a filesystem).
@@ -145,21 +145,21 @@ The concept is simple: tell XCP-ng which disk or partition you want to use, and 
 :::warning
 As XCP-ng will handle everything for you, be aware that the device or partition will be formatted.
 
-* Don't create a SR over a device or partition that contains important data.
-* If you want to attach an existing SR to your pool, don't create a new local SR over it, else your virtual disks will be deleted. Instead, use the `xe sr-introduce` command. Further explanation can be found in the official XenServer documentation: https://support.citrix.com/external/article?articleUrl=CTX121896-how-to-introduce-a-local-storage-repository-in-xenserver
+* Don't create a <abbr title="Storage Repository">SR</abbr> over a device or partition that contains important data.
+* If you want to attach an existing <abbr title="Storage Repository">SR</abbr> to your pool, don't create a new local <abbr title="Storage Repository">SR</abbr> over it, else your virtual disks will be deleted. Instead, use the `xe sr-introduce` command. Further explanation can be found in the official XenServer documentation: https://support.citrix.com/external/article?articleUrl=CTX121896-how-to-introduce-a-local-storage-repository-in-xenserver
 :::
 
 In [Xen Orchestra](../management#%EF%B8%8F-manage-at-scale):
 
-![Adding a new local ext SR in XO.](https://xcp-ng.org/assets/img/screenshots/createSRlocal.png)
+![Adding a new local ext storage repository (SR) in Xen Orchestra (XO)](https://xcp-ng.org/assets/img/screenshots/createSRlocal.png)
 
-Via `xe` CLI for a local EXT SR (where `sdaX` is a partition, but it can be the entire device e.g. `sdc`):
+Via `xe` CLI for a local EXT <abbr title="Storage Repository">SR</abbr> (where `sdaX` is a partition, but it can be the entire device e.g. `sdc`):
 
 ```
 xe sr-create host-uuid=<host UUID> type=ext content-type=user name-label="Local Ext" device-config:device=/dev/sdaX
 ```
 
-In addition to the two main, rock-solid, local storages (EXT and LVM), XCP-ng offers storage drivers for other types of local storage (ZFS, XFS, etc.).
+In addition to the two main, rock-solid, local storages (EXT and <abbr title="Logical Volume Manager">LVM</abbr>), XCP-ng offers storage drivers for other types of local storage (ZFS, XFS, etc.).
 
 ### Software RAID
 
@@ -181,30 +181,30 @@ We do not provide support for issues resulting from the choice of software RAID 
 
 Shared, thin-provisioned storage. Efficient, recommended for ease of maintenance and space savings.
 
-In Xen Orchestra, go in the "New" menu entry, then Storage, and select NFS. Follow instructions from there.  
+In Xen Orchestra, go in the "New" menu entry, then Storage, and select NFS. Follow instructions from there.
 
 :::tip
-Your host will mount the top-level NFS share you provide initially (example: /share/xen), then create folder(s) inside of that, then mount those directly instead (example: /share/xen/515982ab-476e-17b7-0e61-e68fef8d7d31). This means your NFS server or appliance must be set to allow sub-directory mounts, or adding the SR will fail. In FreeNAS or TrueNAS, this checkbox is called "All dirs" in the NFS share properties.
+Your host will mount the top-level NFS share you provide initially (example: /share/xen), then create folder(s) inside of that, then mount those directly instead (example: /share/xen/515982ab-476e-17b7-0e61-e68fef8d7d31). This means your NFS server or appliance must be set to allow sub-directory mounts, or adding the <abbr title="Storage Repository">SR</abbr> will fail. In FreeNAS or TrueNAS, this checkbox is called "All dirs" in the NFS share properties.
 :::
 
 ### File
 
 Local, thin-provisioned. Not recommended.
 
-The `file` storage driver allows you to use any local directory as storage. 
+The `file` storage driver allows you to use any local directory as storage.
 
 Example:
 ```
 xe sr-create host-uuid=<host UUID> type=file content-type=user name-label="Local File SR" device-config:location=/path/to/storage
 ```
 
-Avoid using it with mountpoints for remote storage: if for some reason the filesystem is not mounted when the SR is scanned for virtual disks, the `file` driver will believe that the SR is empty and drop all VDI metadata for that storage.
+Avoid using it with mount points for remote storage: if for some reason the file system is not mounted when the <abbr title="Storage Repository">SR</abbr> is scanned for virtual disks, the `file` driver will believe that the <abbr title="Storage Repository">SR</abbr> is empty and drop all VDI metadata for that storage.
 
-### XOSTOR
+### <abbr title="Xen Orchestra Storage">XOSTOR</abbr>
 
 Shared, thin-provisioned storage.
 
-XOSTOR is an hyperconvergence solution. In short, your local storage are combined into a big shared storage.
+<abbr title="Xen Orchestra Storage">XOSTOR</abbr> is an hyper-convergence solution. In short, your local storage are combined into a big shared storage.
 
 The detailed documentation is available on [this dedicated page](../xostor/xostor.md).
 
@@ -222,7 +222,7 @@ Local, thin-provisioned. Available since XCP-ng 8.2.
 Then either reboot or run `modprobe -v zfs` to load the kernel module.
 :::
 
-Due to the variety of parameters of ZFS, the SR driver does not automate everything. You need to create your ZFS pool and volumes yourself, e.g. on partition `sda4`:
+Due to the variety of parameters of ZFS, the <abbr title="Storage Repository">SR</abbr> driver does not automate everything. You need to create your ZFS pool and volumes yourself, e.g. on partition `sda4`:
 
 ```
 zpool create -o ashift=12 -m /mnt/zfs tank /dev/sda4
@@ -232,7 +232,7 @@ zpool create -o ashift=12 -m /mnt/zfs tank /dev/sda4
  zfs create tank/zfssr
 ```
 
-Now you can create the SR on top of it:
+Now you can create the <abbr title="Storage Repository">SR</abbr> on top of it:
 
 ```
 xe sr-create host-uuid=<HOST_UUID> type=zfs content-type=user name-label=LocalZFS device-config:location=/mnt/zfs/zfssr
@@ -283,7 +283,7 @@ echo 10 > /sys/module/zfs/parameters/zfs_txg_timeout
 
 #### Better performance (advanced options)
 
-There are many options to increase the performance of ZFS SRs:
+There are many options to increase the performance of ZFS <abbr title="Storage Repository">SR</abbr>:
 
 * Modify the module parameter `zfs_txg_timeout`: Flush dirty data to disk at least every N seconds (maximum txg duration). By default 5.
 * Disable sync to disk: `zfs set sync=disabled tank/zfssr`
@@ -306,7 +306,7 @@ Local, thin-provisioned storage.
 
 Works in the same way as the Local EXT storage driver: you hand it a device and it will format it and prepare it for your VMs automatically.
 
-Via `xe` CLI for a local XFS SR (where `sdaX` is a partition, but it can be the entire device e.g. `sdc`):
+Via `xe` CLI for a local XFS <abbr title="Storage Repository">SR</abbr> (where `sdaX` is a partition, but it can be the entire device e.g. `sdc`):
 
 ```
 xe sr-create host-uuid=<host UUID> type=xfs content-type=user name-label="Local XFS" device-config:device=/dev/sdaX
@@ -324,7 +324,7 @@ Shared, thin-provisioned storage. Available since XCP-ng 8.2.
 [Additional package](../management/additional-packages) required and available in our repositories: `glusterfs-server`.
 :::
 
-You can use this driver to connect to an existing [Gluster storage](https://docs.gluster.org/en/latest/) volume and configure it as a shared SR for all your hosts in the pool. For example, a Gluster storage with 3 nodes (`192.168.1.11`, `192.168.1.12` and `192.168.1.13`) and a volume name called `glustervolume` will be thin provisioned with the command:
+You can use this driver to connect to an existing [Gluster storage](https://docs.gluster.org/en/latest/) volume and configure it as a shared <abbr title="Storage Repository">SR</abbr> for all your hosts in the pool. For example, a Gluster storage with 3 nodes (`192.168.1.11`, `192.168.1.12` and `192.168.1.13`) and a volume name called `glustervolume` will be thin provisioned with the command:
 
 ```
 xe sr-create content-type=user type=glusterfs name-label=GlusterSharedStorage shared=true device-config:server=192.168.1.11:/glustervolume device-config:backupservers=192.168.1.12:192.168.1.13
@@ -339,7 +339,7 @@ Shared, thin-provisioned storage. Available since XCP-ng 8.2.
 - This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](../management/additional-packages)). You will also need to be careful about system updates and upgrades.
 :::
 
-You can use this driver to connect to an existing Ceph storage filesystem, and configure it as a shared SR for all your hosts in the pool. This driver uses `mount.ceph` from `ceph-common` package of `centos-release-ceph-nautilus` repo. So user needs to install it before creating the SR. Without it, the SR creation would fail with an error like below
+You can use this driver to connect to an existing Ceph storage filesystem, and configure it as a shared <abbr title="Storage Repository">SR</abbr> for all your hosts in the pool. This driver uses `mount.ceph` from `ceph-common` package of `centos-release-ceph-nautilus` repo. So user needs to install it before creating the <abbr title="Storage Repository">SR</abbr>. Without it, the <abbr title="Storage Repository">SR</abbr> creation would fail with an error like below
 ```
 Error code: SR_BACKEND_FAILURE_47
 Error parameters: , The SR is not available [opterr=ceph is not installed],
@@ -391,7 +391,7 @@ Create `/etc/ceph/admin.secret` with your access secret for CephFS.
 AQBX21dfVMJtBhAA2qthmLyp7Wxz+T5YgoxzeQ==
 ```
 
-Now you can create the SR where `server` is your mon ip.
+Now you can create the <abbr title="Storage Repository">SR</abbr> where `server` is your monitor IP.
 ```
 # xe sr-create type=cephfs name-label=ceph device-config:server=172.16.10.10 device-config:serverpath=/xcpsr device-config:options=name=admin,secretfile=/etc/ceph/admin.secret
 ```
@@ -406,8 +406,7 @@ Now you can create the SR where `server` is your mon ip.
 
 Shared, thin-provisioned storage. Available since XCP-ng 8.2.
 
-MooseFS is a fault-tolerant, highly available, highly performing, scaling-out, network distributed file system.  It is POSIX compliant and acts like any other Unix-like file system.
-SR driver was contributed directly by MooseFS Development Team.
+MooseFS is a fault-tolerant, highly available, highly performing, scaling-out, network distributed file system. It is POSIX compliant and acts like any other _Unix-like_ file system. <abbr title="Storage Repository">SR</abbr> driver was contributed directly by MooseFS Development Team.
 
 :::warning
 - **MooseFS storage integration is provided as-is** and does not come with official support.
@@ -427,7 +426,7 @@ yum install moosefs-client
 - ⚠️ XAPI only takes the last definition of `sm-plugins` it reads into account. Files are read in alphabetical order. If there's already a configuration file in `/etc/xapi.conf.d` (to enable another additional storage driver), take it into consideration when you write your new definition of `sm-plugins`.
 :::
 
-Now when the MooseFS client is installed you can connect to an existing [MooseFS cluster](https://moosefs.com/support/#documentation) and create a shared SR for all hosts in the pool.
+Now when the MooseFS client is installed you can connect to an existing [MooseFS cluster](https://moosefs.com/support/#documentation) and create a shared <abbr title="Storage Repository">SR</abbr> for all hosts in the pool.
 ```
 
 # xe sr-create type=moosefs name-label=MooseFS-SR content-type=user shared=True device-config:masterhost=mfsmaster.host.name device-config:masterport=9421 device-config:rootpath=/xcp-ng
@@ -475,7 +474,7 @@ xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage 
 
 This is at this moment the only way to connect to Ceph with no modifications of dom0, it's possible to create multiple Ceph iSCSI gateways following this: [https://docs.ceph.com/docs/master/rbd/iscsi-target-cli/](https://docs.ceph.com/docs/master/rbd/iscsi-target-cli/)
 
-Ceph iSCSI gateway node(s) sits outside dom0, probably another Virtual or Physical machine. The packages referred in the URL are to be installed on iSCSI gateway node(s). For XCP-ng dom0, no modifications are needed as it would use LVMoISCSISR (lvmoiscsi) driver to access the iSCSI LUN presented by these gateways.
+Ceph iSCSI gateway node(s) sits outside dom0, probably another virtual or physical machine. The packages referred in the URL are to be installed on iSCSI gateway node(s). For XCP-ng dom0, no modifications are needed as it would use [LVMoISCSISR](https://github.com/mcclurmc/xcp-storage-managers/blob/master/drivers/LVMoISCSISR.py) (LVM over ISCSI software initiator <abbr title="Storage Repository">SR</abbr>) driver to access the iSCSI <abbr title="Logical Unit Number">LUN</abbr> presented by these gateways.
 
 For some reason the chap authentication between gwcli and XCP-ng doesn't seem to be working, so it's recommended to disable it (in case you use no authentication a dedicated network for storage should be used to ensure some security).
 
@@ -488,9 +487,9 @@ IMPORTANT: User had many weird glitches with iSCSI connection via ceph gateway i
 - This way of using Ceph requires installing `ceph-common` inside dom0 from outside the official XCP-ng repositories. It is reported to be working by some users, but isn't recommended officially (see [Additional packages](../management/additional-packages)). You will also need to be careful about system updates and upgrades.
 :::
 
-You can use this to connect to an existing Ceph storage over RBD, and configure it as a shared SR for all your hosts in the pool. This driver uses LVM (lvm) as generic driver and expects that the Ceph RBD volume is already connected to one or more hosts.
+You can use this to connect to an existing Ceph storage over <abbr title="RADOS Block Device">RBD</abbr>, and configure it as a shared <abbr title="Storage Repository">SR</abbr> for all your hosts in the pool. This driver uses <abbr title="Logical Volume Manager">LVM</abbr> as generic driver and expects that the Ceph <abbr title="RADOS Block Device">RBD</abbr> volume is already connected to one or more hosts.
 
-Known issue: this SR is not allowed to be used for HA state metadata due to LVM backend restrictions within XAPI drivers, so if you want to use HA, you will need to create another type of storage for HA metadata
+Known issue: this <abbr title="Storage Repository">SR</abbr> is not allowed to be used for HA state metadata due to <abbr title="Logical Volume Manager">LVM</abbr> backend restrictions within XAPI drivers, so if you want to use HA, you will need to create another type of storage for HA metadata
 
 Since most of the Centos repositories have been deprecated, you need to add the Vault repository before installing.
 
@@ -535,7 +534,7 @@ yum install ceph-common --enablerepo=centos-ceph-nautilus,Vault-base
 Create `/etc/ceph/keyring` with your access secret for Ceph.
 
 ```
-# cat /etc/ceph/keyring 
+# cat /etc/ceph/keyring
 [client.admin]
 key = YOUR-SECRET-KEY
 ```
@@ -543,7 +542,7 @@ key = YOUR-SECRET-KEY
 Create `/etc/ceph/ceph.conf` as your matching setup.
 
 ```
-# cat /etc/ceph/ceph.conf 
+# cat /etc/ceph/ceph.conf
 [global]
 mon_host = mon-ip-1:6789,mon-ip-2:6789,mon-ip-3:6789
 
@@ -578,7 +577,7 @@ And then, enable the `rbdmap` service to mount automatically the image at boot.
 systemctl enable --now rbdmap
 ```
 
-The CEPH RBD SR is built on top of an LVM Block device (your RBD image). You need to adapt the LVM configuration in order to be able to detect the newly created LVM VG created by XCP-NG.
+The <abbr title="RADOS Block Device">RBD</abbr> <abbr title="Storage Repository">SR</abbr> is built on top of an <abbr title="Logical Volume Manager">LVM</abbr> Block device (your <abbr title="RADOS Block Device">RBD</abbr> image). You need to adapt the <abbr title="Logical Volume Manager">LVM</abbr> configuration in order to be able to detect the newly created <abbr title="Logical Volume Manager">LVM</abbr> VG created by XCP-NG.
 
 You need to place this `devices` configuration for both:
 - /etc/lvm/lvmlocal.conf
@@ -596,10 +595,10 @@ devices {
 :::warning
 This configuration must be re-applied after each [XCP-NG Upgrade]("https://docs.xcp-ng.org/installation/upgrade/") / reinstall.
 
-[Updates](https://docs.xcp-ng.org/management/updates/) should not affect the LVM configuration.
+[Updates](https://docs.xcp-ng.org/management/updates/) should not affect the <abbr title="Logical Volume Manager">LVM</abbr> configuration.
 :::
 
-Create the CephRBD SR.
+Create the CephRBD <abbr title="Storage Repository">SR</abbr>.
 ```
 # create a shared LVM
 xe sr-create name-label='CEPH' shared=true device-config:device=/dev/rbd/rbd/xen1 type=lvm content-type=user
@@ -613,28 +612,28 @@ For the full discussion about Ceph in XCP-ng, see this forum thread: [https://xc
 * Do not use admin keyring for production, but make a separate key with only necessary privileges [https://docs.ceph.com/en/latest/rados/operations/user-management/](https://docs.ceph.com/en/latest/rados/operations/user-management/)
 :::
 
-### LargeBlock SR
+### LargeBlock <abbr title="Storage Repository">SR</abbr>
 
 :::warning
-Largeblock SR is a workaround for 4KiB disks not working on VDI creation with normal SR types.
+Largeblock <abbr title="Storage Repository">SR</abbr> is a workaround for 4KiB disks not working on VDI creation with normal <abbr title="Storage Repository">SR</abbr> types.
 :::
 
-To create a LargeBlock SR, the same parameters needed for a EXT SR are needed with the SR type changed to `largeblock`.
+To create a LargeBlock <abbr title="Storage Repository">SR</abbr>, the same parameters needed for a EXT <abbr title="Storage Repository">SR</abbr> are needed with the <abbr title="Storage Repository">SR</abbr> type changed to `largeblock`.
 
 ```
 xe sr-create host-uuid=<host UUID> type=largeblock content-type=user name-label="Local largeblock" device-config:device=/dev/sdaX
 ```
 
-The largeblock SR creates a translation layer to align the device on 512 sector size using a loop device and creates a EXT SR on this emulated device.
+The largeblock <abbr title="Storage Repository">SR</abbr> creates a translation layer to align the device on 512 sector size using a loop device and creates a EXT <abbr title="Storage Repository">SR</abbr> on this emulated device.
 It's needed to work around an issue with VHD alignment that creates an error on VHD creation on the native 4KiB device.
 
-## 💿 ISO SR
+## 💿 ISO <abbr title="Storage Repository">SR</abbr>
 
-You might be wondering how to upload an ISO. Unlike other solutions, you need to create a dedicated "space" for these, a specific ISO SR. To create an ISO SR, you have 2 possibilities:
-- Shared: A shared ISO SR is on a VM or on a dedicated storage server. It's accessible with an IP address, like 192.168.1.100 via SMB or NFS.
-- Local (not recommended for production): A local ISO SR is a directory created directly on the dom0 host. It's only accessible on the host where the directory was created.
+You might be wondering how to upload an ISO. Unlike other solutions, you need to create a dedicated "space" for these, a specific ISO <abbr title="Storage Repository">SR</abbr>. To create an ISO <abbr title="Storage Repository">SR</abbr>, you have 2 possibilities:
+- Shared: A shared ISO <abbr title="Storage Repository">SR</abbr> is on a VM or on a dedicated storage server. It's accessible with an IP address, like 192.168.1.100 via SMB or NFS.
+- Local (not recommended for production): A local ISO <abbr title="Storage Repository">SR</abbr> is a directory created directly on the dom0 host. It's only accessible on the host where the directory was created.
 
-### Create a Shared ISO SR
+### Create a Shared ISO <abbr title="Storage Repository">SR</abbr>
 
 First, you need to create the NFS or SMB Share. There are plenty of options: from dedicated NAS hardware solutions and dedicated software solutions such as TrueNAS, to manual administration on any Linux/unix or Windows system.
 
@@ -642,19 +641,19 @@ You can find some tutorials on the internet to create an NFS Server, for exemple
 
 Then, in Xen Orchestra go into "New/Storage" and select "ISO SR":
 
-![Adding a shared ISO SR to a host via XO.](https://xcp-ng.org/assets/img/screenshots/createSRISO.png)
+![Adding a shared ISO storage repository (SR) to a host via Xen Orchestra (XO).](https://xcp-ng.org/assets/img/screenshots/createSRISO.png)
 
-### Create a Local ISO SR
+### Create a Local ISO <abbr title="Storage Repository">SR</abbr>
 
 From the CLI:
 
 1. Create a directory on the local filesystem to storage your ISOs
 2. Copy/move ISOs to this new location
-3. Create the ISO SR using xe sr-create
+3. Create the ISO <abbr title="Storage Repository">SR</abbr> using xe sr-create
 4. You can add or update ISOs later by placing them into the directory you created in step 1
-5. Rescan the SR if you change the files stored in the ISO directory
+5. Rescan the <abbr title="Storage Repository">SR</abbr> if you change the files stored in the ISO directory
 
-Here's an example of how to create a Local ISO SR named "ISO Repository" that will be stored in /opt/var/iso_repository:
+Here's an example of how to create a Local ISO <abbr title="Storage Repository">SR</abbr> named "ISO Repository" that will be stored in /opt/var/iso_repository:
 
 ```
 mkdir -p /opt/var/iso_repository
@@ -674,21 +673,21 @@ On Xen Orchestra, go into "New/Storage" and select "ISO SR"
 * Enter the path created before
 * Upload ISOs on your host to the same path
 
-![Adding a local ISO SR to a host via XO.](https://xcp-ng.org/assets/img/screenshots/createLocalSRISO.png)
+![Adding a local ISO storage repository (SR) to a host via Xen Orchestra (XO).](https://xcp-ng.org/assets/img/screenshots/createLocalSRISO.png)
 
 :::warning
-A local ISO SR will only be available on the host where it was created. Also, the dom0 filesystem is small with only about 15gb of space free for extra storage!
+A local ISO <abbr title="Storage Repository">SR</abbr> will only be available on the host where it was created. Also, the dom0 filesystem is small with only about 15gb of space free for extra storage!
 :::
 
 That's it!
 
 :::tip
-Don't forget to rescan your SR after adding, changing, or deleting ISO files. Rescan is done automatically every 10 minutes otherwise.
+Don't forget to rescan your <abbr title="Storage Repository">SR</abbr> after adding, changing, or deleting ISO files. Rescan is done automatically every 10 minutes otherwise.
 :::
 
 ## 📡 Storage API
 
-Current storage stack on XCP-ng is called `SMAPIv1`. The VHD format is used, which has a maximum file size limitation of 2TiB. This means that when using this format your VM disk can't be larger than 2TiB.
+Current storage stack on XCP-ng is called <abbr title="Storage Manager API">SMAPI</abbr>v1. The VHD format is used, which has a maximum file size limitation of 2TiB. This means that when using this format your VM disk can't be larger than 2TiB.
 
 ### Why use VHD format?
 
@@ -703,7 +702,7 @@ Mostly for historical reasons. When standardization on [VHD](https://en.wikipedi
 
 Alternatively, you can decide to use a disk without 2TiB limitation, thanks to RAW format. However, the price to pay is to lose all VHD features.
 
-To create a large VDI on a file based SR, it's trivial, for example:
+To create a large VDI on a file based <abbr title="Storage Repository">SR</abbr>, it's trivial, for example:
 
 ```
 xe vdi-create type=user sm-config:type=raw virtual-size=5TiB sr-uuid=<SR_UUID> name-label=test
@@ -713,17 +712,17 @@ On a block based storage, it's a bit more complicated:
 
 1. Create a small disk first: `xe vdi-create type=user sm-config:type=raw virtual-size=1GiB sr-uuid=<SR_UUID> name-label=test`
 2. Extend it with `lvextend -L+5T /dev/VG_<whateverUUID>/LV-<VDI_UUID>`
-3. Rescan SR
+3. Rescan <abbr title="Storage Repository">SR</abbr>
 
 :::warning
 You won't be able to live migrate storage on this disk or snapshot it anymore. Outside of this, it will work very well.
 :::
 
-### SMAPIv3: the future
+### <abbr title="Storage Manager API">SMAPI</abbr>v3: the future
 
-`SMAPIv1` is the historical storage interface, and now a big spaghetti monster. That's why Citrix decided to create a new one, called `SMAPIv3`: it's far more flexible, and also support (partially) the `qcow2` format. This format has the same concepts as VHD, but without its limitations.
+<abbr title="Storage Manager API">SMAPI</abbr>v1 is the historical storage interface, and now a big spaghetti monster. That's why Citrix decided to create a new one, called <abbr title="Storage Manager API">SMAPI</abbr>v3: it's far more flexible, and also support (partially) the `qcow2` format. This format has the same concepts as VHD, but without its limitations.
 
-Also, the storage API is far more agnostic and the code is better. So what's the catch? Problem is there's no Open Source implementation of `SMAPIv3`, also the current API state isn't really complete (doesn't support a lot of features). However, XCP-ng team is working on it too, because it's clearly the future!
+Also, the storage API is far more agnostic and the code is better. So what's the catch? Problem is there's no Open Source implementation of <abbr title="Storage Manager API">SMAPI</abbr>v3, also the current API state isn't really complete (doesn't support a lot of features). However, XCP-ng team is working on it too, because it's clearly the future!
 
 ## 🪄 Coalesce
 
@@ -752,28 +751,28 @@ This process will take some time to finish (especially if you VM stays up and wo
 You will hit a wall, 2 options here:
 
 * if your VM disks are small enough, you could reach the max chain length (30).
-* if your VM disks are big, you'll hit the SR space limit before.
+* if your VM disks are big, you'll hit the <abbr title="Storage Repository">SR</abbr> space limit before.
 
 ### Xen Orchestra protection
 
 Luckily, Xen Orchestra is able to detect an uncoalesced chain. It means it won't trigger a backup job for a VM if its disks are not coalesced yet: it will be skipped.
 
-But more than that, Xen Orchestra is also able to show you uncoalesced disk in the SR view, in the Advanced tab.
+But more than that, Xen Orchestra is also able to show you uncoalesced disk in the <abbr title="Storage Repository">SR</abbr> view, in the Advanced tab.
 
 More about this exclusive feature on [https://xen-orchestra.com/blog/xenserver-coalesce-detection-in-xen-orchestra/](https://xen-orchestra.com/blog/xenserver-coalesce-detection-in-xen-orchestra/)
 
-## 🦮 How to modify an existing SR connection
+## 🦮 How to modify an existing <abbr title="Storage Repository">SR</abbr> connection
 
-The link between a host and an SR is called the `PBD`. A PBD basically stores **how** to access a storage repository (like the path to the drive or to an NFS share).
+The link between a host and an <abbr title="Storage Repository">SR</abbr> is called the _Physical Block Device_ (<abbr title="Physical Block Device">PBD</abbr>). A <abbr title="Physical Block Device">PBD</abbr> basically stores **how** to access a storage repository (like the path to the drive or to an NFS share).
 
-If you want to change how an SR is accessed (for example, if your NFS SR changed its IP), you must destroy and recreate the `PBD` with the new values. Let's use our example where an NFS SR has changed to a new IP:
+If you want to change how an <abbr title="Storage Repository">SR</abbr> is accessed (for example, if your NFS <abbr title="Storage Repository">SR</abbr> changed its IP), you must destroy and recreate the <abbr title="Physical Block Device">PBD</abbr> with the new values. Let's use our example where an NFS <abbr title="Storage Repository">SR</abbr> has changed to a new IP:
 
-0. Double check you don't have running VMs on this SR. This is crucial as this operation cannot be performed live.
-1. Get the SR UUID (in XO, SR view, click on your NFS SR, the UUID is visible then)
-2. On your host console/terminal, find all the `PBD` UUIDs for this SR:
+0. Double check you don't have running VMs on this <abbr title="Storage Repository">SR</abbr>. This is crucial as this operation cannot be performed live.
+1. Get the <abbr title="Storage Repository">SR</abbr> UUID (in XO: "SR view", click on your "NFS SR", the UUID is visible then)
+2. On your host console/terminal, find all the <abbr title="Physical Block Device">PBD</abbr> UUIDs for this <abbr title="Storage Repository">SR</abbr>:
 `xe sr-param-get param-name=PBDs uuid=<SR UUID>`
-3. For each `PBD` UUID, run  `xe pbd-param-list uuid=<PBD UUID>` and copy the output to a text editor so you have them "saved" elsewhere. Each record has the host UUID and SR UUID, which will be needed to recreate them. It will also contain the `device-config`, which is required to indicate how to access it (the NFS path).
+3. For each <abbr title="Physical Block Device">PBD</abbr> UUID, run  `xe pbd-param-list uuid=<PBD UUID>` and copy the output to a text editor so you have them "saved" elsewhere. Each record has the "host UUID" and "SR UUID", which will be needed to recreate them. It will also contain the `device-config`, which is required to indicate how to access it (the NFS path).
 4. Now you need to edit this `device-config` field with the new values. In our example, I will change my `device-config` from `serverpath: /mnt/xen; server: 192.168.1.2` to `serverpath: /mnt/xen; server: 192.168.1.5` to reflect the new NFS IP. Have this text ready for the next commands.
-5. Remove each of these old PBDs with `xe pbd-destroy uuid=<PBD UUID>`.
-6. Recreate each of them using your new `device-config`, for example here: `xe pbd-create host-uuid=<HOST UUID> sr-uuid=<SR UUID> device-config:server=192.168.1.5 device-config:serverpath=/mnt/xen`. Note the new IP address entered vs the previous PBD configuration.
-7. When you're done and all PBDs are recreated, you can reconnect (in XO, SR view, "reconnect to all hosts" or do a `xe pbd-plug uuid=<PBD UUID` for each of them). Once reconnected, you can start your VMs as if nothing happened.
+5. Remove each of these old <abbr title="Physical Block Device">PBD</abbr> with `xe pbd-destroy uuid=<PBD UUID>`.
+6. Recreate each of them using your new `device-config`, for example here: `xe pbd-create host-uuid=<HOST UUID> sr-uuid=<SR UUID> device-config:server=192.168.1.5 device-config:serverpath=/mnt/xen`. Note the new IP address entered vs the previous <abbr title="Physical Block Device">PBD</abbr> configuration.
+7. When you're done and all <abbr title="Physical Block Device">PBD</abbr> are recreated, you can reconnect (in XO: "SR view", "reconnect to all hosts" or do a `xe pbd-plug uuid=<PBD UUID` for each of them). Once reconnected, you can start your VMs as if nothing happened.
