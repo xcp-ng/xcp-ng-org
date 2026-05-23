@@ -532,6 +532,109 @@ echo 0 > /proc/sys/dev/raid/speed_limit_min
 
 Upon server reboot, normal `md` resync will take place.
 
+## Advanced installation options (installer command-line parameters)
+
+The XCP-ng installer can be further parameterized to support advanced installation environments. The command line options are passed as parameters to the ```vmlinuz``` kernel of the installer.
+
+### Definitions
+
+#### "scriptlocation"
+
+An URL pointing at a script. All URLs except for file:// trigger initialization of networking during the installer execution.
+
+* file:/// - file inside the filesystem of the installer environment (i.e. ```install.img```)
+* ftp:// - file on an FTP server, fetched with urllib2
+* http:// - file on an HTTP server, fetched with urllib2
+* https:// - file on an HTTPS server, fetched with urllib2
+* nfs:// - file on an NFS server, the directory is mounted and the file accessed
+
+A script is either XML (for ```answerfile=``` or ```rt_answerfile=```) or an executable script expected to begin with a shebang. The following interpreters are recognized.
+
+* /bin/sh
+* /bin/bash
+* /usr/bin/python
+* /usr/bin/env python
+
+### Environment
+
+#### sshpassword="password"
+
+Start an ssh server during installation allowing root to log-on interactively with the given password.
+
+### Behaviour
+
+#### atexit=reboot|poweroff|shell
+
+Action to perform when the installer is finished.
+
+* poweroff - power off the system
+* **reboot** (default) - reboot the sytem
+* shell - drop to shell **after** running the installer. NB: The installation target is already unmounted.
+
+#### bash-shell
+
+See ```shell```.
+
+#### console="devicename"
+
+Use the named console device for the installer. Can be given multiple times.  
+E.g. ```console=hvc0 console=tty0```
+
+#### reboot
+
+See ```atexit=reboot```.
+
+#### shell
+
+Start a shell **before** running the installer.
+
+### Networking
+
+If networking is required (e.g. to fetch an answerfile or access a repository) the installer will configure the detected network cards.
+
+#### network_config=dhcp[:vlan="id"]
+
+configure interface using DHCP optionally using a VLAN.
+
+* vlan="id" - create a virtual interface tagging with vlan id backed by the underlying interfance.
+
+#### network_config=static:"network configuration"
+
+configure interface with provided static information. The configuration is a ; separated list of stanzas.
+
+* **ip** (mandatory)="IP address"
+* **netmask** (mandatory)="netmask"
+* vlan="id" - create a virtual interface tagging with vlan id backed by the underlying interfance.
+* gateway="gateway address" - use specified address as default route
+* dns="DNS resolver address"[,"additional DNS resolver address"] -- use specified address(es) as resolvers 
+* domain="domain name" - use specified domain name as search domain
+
+#### network_device="eth"|"mac"|all
+
+Bring up networking on the given interface(s) to allow installer to fetch network resources.
+
+* "eth" - the name of a network interface
+* "mac"-  the MAC address of a network interface
+* **all** (default) - all network interfaces available to the installer's kernel environment 
+
+### Automation
+
+#### answerfile="scriptlocation"
+
+Read the scriptlocation and perform non-interactive installation reporting status using screens interface. Cannot be used together with ```answerfile_generator=```.
+
+#### rt_answerfile="scriptlocation"
+
+Read the scriptlocation and perform non-interactive installation reporting status using simple text to the console. Cannot be used together with ```answerfile_generator=```.
+
+#### answerfile_generator="scriptlocation"
+
+Read the scriptlocation execute it and use its standard output as an answerfile to perform non-interactive installation. Cannot be used together with ```answerfile=``` or ```rt_answerfile=```.
+
+#### answerfile_device=
+
+See ```network_device=```.
+
 ## 🧑‍⚕️ Troubleshooting
 
 See [the Troubleshooting page](../../troubleshooting/after-upgrade).
