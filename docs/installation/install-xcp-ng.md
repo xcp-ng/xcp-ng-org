@@ -67,7 +67,7 @@ NEVER switch from UEFI to BIOS (or vice-versa) **after** you installed XCP-ng. S
 #### 5. Disk selection
 
 <a name="_5-disk-selection"></a>
-This is the screen where you'll select where XCP-ng system will be installed. **XCP-ng is a specialized Linux distribution**, so you need to dedicate a physical disk to it. Partitioning is done automatically.
+This is the screen where you'll select where XCP-ng will be installed. **XCP-ng is a specialized Linux distribution**, so you need to dedicate a physical disk to it. Partitioning is done automatically.
 
 ![Primary disk selection screen, showing 2 NVMEs, allowing to select one of them, or go to the Software Raid configuration.](https://xcp-ng.org/assets/img/screenshots/install5.png)
 
@@ -76,7 +76,7 @@ Alternatively, if you have two identical disks, you can use Software RAID (`mdad
 ![Software RAID configuration screen, showing the 2 NVMEs selected.](https://xcp-ng.org/assets/img/screenshots/install6.png)
 
 :::tip
-If only one disk is found suitable for the installation, this step is skipped. The name of the device will be displayed to you [in the "Confirm Installation" step, later in the process](#12-installation).
+If only one disk is deemed suitable for the installation, this step is skipped. The name of the device will be displayed [in the "Confirm Installation" step, later in the process](#12-installation).
 :::
 
 #### 6. VM storage selection
@@ -91,7 +91,7 @@ EXT instead of LVM? We advise to use EXT to benefit from thin provisioning!
 :::
 
 :::warning
-When the installer skips [step 5](#5-disk-selection) automatically, users sometimes mistake this step with the selection of the system disk.
+When the installer skips [step 5](#5-disk-selection), users sometimes mistake this step with the selection of the system disk.
 :::
 
 #### 7. Installation source
@@ -114,7 +114,7 @@ This will be the **root** password, used to connect to the host with SSH and XAP
 
 Here you can select between DHCP and static network, even using a VLAN:
 
-![Network configuration: DHCP, static with ip, netmask and gateway, and the ability to add a VLAN.](https://xcp-ng.org/assets/img/screenshots/install12.png)
+![Network configuration: DHCP, static with IP, netmask and gateway, and the ability to add a VLAN.](https://xcp-ng.org/assets/img/screenshots/install12.png)
 
 #### 10. Hostname and DNS
 
@@ -132,7 +132,7 @@ ALWAYS use a NTP server. It's a critical component to manage your host(s). If yo
 
 ![System Time: NTP or Manual time.](https://xcp-ng.org/assets/img/screenshots/install15.png)
 
-![NTP Configuration: can be automatic via DHCP, or manually with 3 to 3 NTP servers.](https://xcp-ng.org/assets/img/screenshots/install16.png)
+![NTP Configuration: can be automatic via DHCP, or manually with 1 to 3 NTP servers.](https://xcp-ng.org/assets/img/screenshots/install16.png)
 
 #### 12. Installation
 
@@ -162,7 +162,7 @@ Not relevant in almost all cases. Skip it:
 
 After a reboot, you should see the GRUB menu:
 
-![XCP-ng GRUB menu, with entries for XCP-ng, a serial console, Safe Mode and 2 fallback option for console and serial using xen and linux fallback images.](https://xcp-ng.org/assets/img/screenshots/install23.png)
+![XCP-ng GRUB menu, with entries for XCP-ng, a serial console, Safe Mode and 2 fallback options for console and serial using xen and linux fallback images.](https://xcp-ng.org/assets/img/screenshots/install23.png)
 
 It means the system is correctly installed! Enjoy XCP-ng 🚀
 
@@ -235,7 +235,7 @@ If you want to make an installation in UEFI mode, you need to have a slightly di
 
 1. In your TFTP root folder, create a directory called `EFI/xcp-ng`
 2. Configure your DHCP server to provide `/EFI/xcp-ng/grubx64.efi` as the boot file
-3. Create a `grub.cfg` as follow:
+3. Create a `grub.cfg` as follows:
 ```
  menuentry "XCP-ng Install (serial)" {
     multiboot2 /EFI/xcp-ng/xen.gz dom0_mem=2048M,max:2048M watchdog \
@@ -244,8 +244,8 @@ If you want to make an installation in UEFI mode, you need to have a slightly di
     module2 /EFI/xcp-ng/install.img
  }
 ```
-4. Copy this `grub.cfg` file to `EFI/xenserver` folder on the TFTP server
-5. Get the following files from XCP-ng ISO: `grubx64.efi`, `install.img` (from the root directory), `vmlinuz`, and `xen.gz` (from the /boot directory) to the new `EFI/xcp-ng` directory on the TFTP server.
+4. Copy this `grub.cfg` file to the `EFI/xenserver` folder on the TFTP server
+5. Copy the following files from the XCP-ng ISO: `grubx64.efi`, `install.img` (from the root directory), `vmlinuz`, and `xen.gz` (from the /boot directory) to the new `EFI/xcp-ng` directory on the TFTP server.
 
 How TFTP folder looks like when configured
 ```
@@ -263,7 +263,7 @@ srv/tftp
 
 On the FTP, NFS or HTTP server, get all the installation media content in there.
 
-For layout example check the [official repository](https://mirrors.xcp-ng.org/netinstall/latest).
+For a layout example check the [official repository](https://mirrors.xcp-ng.org/netinstall/latest).
 
 :::tip
 When you do copy the installation files, **DO NOT FORGET** the `.treeinfo` file. Double check your webserver isn't blocking it (like Microsoft IIS does).
@@ -284,8 +284,8 @@ This guide is for UEFI boot, using iPXE over an HTTP server to serve files neede
 
 To get XCP-ng installed from iPXE over HTTP, you need:
 
-* An HTTP server to host XCP-ng installation files
-* A iPXE compatible network card and iPXE firmware on your host
+* An HTTP server to host the XCP-ng installation files
+* An iPXE-compatible network card and firmware on your host
 
 1. In your HTTP root directory copy the contents of the net install ISO.
 
@@ -318,12 +318,12 @@ Sometimes grub takes a very long time to load after displaying "Welcome to Grub"
 4. Once the grub prompt loads, set the root to http and load the config file.
 
 ```
-# Replace with your server's ip
+# Replace with your server's IP
 set root=(http,SERVER_IP)
 configfile /EFI/xenserver/grub.cfg
 ```
 
-5. Select the "install" menu entry.
+5. Select the "Install" menu entry.
 6. Wait for grub to load the necessary binaries.  This may take a minute.  If you look at your http server log you should see something like:
 
 ```
@@ -346,7 +346,7 @@ Unattended installation requires what is called an answer file, often spelled *a
 
 It is an XML file that contains the answers to questions the installer would ask during a manual installation.
 
-Here's an example:
+Here is an example:
 
 ```xml
 <?xml version="1.0"?>
@@ -391,7 +391,7 @@ Any SYSLINUX configuration style file will be valid. [Find more on the syslinux 
 
 #### PXE unattended install - UEFI boot
 
-Add `answerfile=http://your_server/path/to/answerfile.xml install` to the parameters passed to `vmlinuz` (the linux kernel of the installer).
+Add `answerfile=http://your_server/path/to/answerfile.xml install` to the parameters passed to `vmlinuz` (the Linux kernel of the installer).
 
 Example:
 ```
@@ -449,7 +449,7 @@ Your ISO is ready for installation.
 
 #### Unattended installation ISO with embedded config
 
-If can't either setup PXE or serve a file (the answerfile) from a server that will be available to the hosts during installation, you can create an automated installation image that will embed its own configuration. It's a bit more work and will need to be done again every time you want to modify the answerfile.
+If you can neither setup PXE nor serve the answerfile from a server that will be available to the hosts during installation, you can create an automated installation image that will embed its own configuration. It's a bit more work and will need to be done again every time you want to modify the answerfile.
 
 1. [Prepare an answerfile](../../appendix/answerfile)
 2. [Extract the XCP-NG ISO file](../../project/development-process/ISO-modification#extract-an-existing-iso-image)
@@ -543,7 +543,7 @@ See [the Troubleshooting page](../../troubleshooting/after-upgrade).
 :::danger
 We **strongly discourage** the installation of XCP-ng on USB drives. The frequent writing actions required by XCP-ng can rapidly degrade a USB drive due to:
 * XAPI: This is the XenServer API database, which undergoes constant changes. This results in significant write operations, which are detrimental to the longevity of USB drives. Note: The XAPI database maintains the state of all XCP-ng operations and is replicated across each host (from the slave).
-* Logs: XCP-ng generates a substantial amount of debug logs. A possible solution is to utilize a remote syslog.
+* Logs: XCP-ng generates a substantial amount of debug logs. A possible solution is to use a remote syslog.
 :::
 
 ### Installation on SD cards
