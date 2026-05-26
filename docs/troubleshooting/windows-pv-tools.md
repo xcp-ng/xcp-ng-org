@@ -76,6 +76,7 @@ You can use the following procedure:
 * On your host, run the following command: `xe vm-param-set uuid=<uuid> platform:hvm_serial=tcp::<port>,server,nodelay,nowait` where `<uuid>` is the VM's UUID and `<port>` is the TCP port on the host that exposes the VM's serial port, e.g. 7001.
 * You need to open the selected port on the host's firewall: `/etc/xapi.d/plugins/firewall-port open 7001`
   * Note that any host running the VM will need this command.
+* Start your VM again. Then, and only then:
 * Connecting to port 7001 on the host will connect to your VM's serial port. You can use Telnet, PuTTY or any similar tools.
 * To configure kernel debugging on Windows, disable Secure Boot and BitLocker then run the following commands within the VM:
   ```
