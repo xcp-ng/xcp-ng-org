@@ -2545,7 +2545,7 @@ xe template-param-set uuid=<template_uuid> VCPUs-params:weight=512 xe template-p
 
 A VM based on this template with a weight of 512 get twice as much CPU as a domain with a weight of 256 on a contended host. Legal weights range from 1 to 65535 and the default is 256.
 
-The cap optionally fixes the maximum amount of CPU a VM based on this template can consume, even if the XCP-ng server has idle CPU cycles. The cap is expressed in percentage of one physical CPU: 100 is 1 physical CPU, 50 is half a CPU, 400 is 4 CPUs, and so on The default, 0, means that there is no upper cap.
+The cap optionally fixes the maximum amount of CPU a VM based on this template can consume, even if the XCP-ng server has idle CPU cycles. The cap is expressed in percentage of one physical CPU: 100 is 1 physical CPU, 50 is half a CPU, 400 is 4 CPUs, and so on. The default, 0, means that there is no upper cap.
 
 - `VCPUs-max` (read/write) maximum number of vCPUs
 - `VCPUs-at-startup` (read/write) boot number of vCPUs
