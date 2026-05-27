@@ -45,7 +45,7 @@ Enabling HA in XCP-ng requires thorough planning and validation of several prere
 
 - **Pool-Level HA only**: HA can only be configured at the pool level, not across different pools.
 - **Minimum of 3 hosts recommended**: While HA can function with just 2 XCP-ng servers in a pool, we recommend using **at least 3** to prevent issues such as a split-brain scenario. With only 2 hosts, they risk getting fenced if the connection between them is lost.
-- **Shared storage requirements**: You must have shared storage available, including at least one iSCSI, NFS, XOSTOR or Fiber Channel LUN with a minimum size of **356 MB for the heartbeat Storage Repository (SR)**. The HA mechanism creates two volumes on this SR:
+- **Shared storage requirements**: You must have shared storage available, including at least one iSCSI, NFS, XOSTOR or Fiber Channel LUN with a minimum size of **4 GiB for the heartbeat Storage Repository (SR)**. The HA mechanism creates two volumes on this SR:
     - A **4 MB heartbeat volume** for monitoring host status.
     - A **256 MB metadata volume** to store pool master information for master failover situations.
 - **Dedicated heartbeat SR optional**: While it's not necessary to dedicate a separate SR for the heartbeat, you can choose to do so. Alternatively, you can use the same SR that hosts your VMs.
