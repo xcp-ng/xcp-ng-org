@@ -5,7 +5,7 @@
 
 ### What is LINSTOR?
 
-`LINSTOR` is an open-source software developed by `LINBIT`. It was designed to manipulate a set of resources on several machines and to replicate them via `DRBD` block devices while allowing high performance. `XOSTOR` is a `LinstorSR` SMAPI driver developed by Vates, which allows volume replication in an XCP-ng pool and provides a web UI in XOA.
+`LINSTOR` is an open-source software developed by `LINBIT`. It was designed to manipulate a set of resources on several machines and to replicate them via <abbr title="Distributed Replicated Block Device">DRBD</abbr> block devices while allowing high performance. `XOSTOR` is a `LinstorSR` <abbr title="Storage Manager API">SMAPI</abbr> driver developed by Vates, which allows volume replication in an XCP-ng pool and provides a web UI in XOA.
 
 ### How does it work?
 
@@ -13,52 +13,52 @@ LINSTOR is made of two main components:
 - A controller, declared on a machine of the XCP-ng pool. There is only one per pool and it can run on a master or a slave. The controller is a daemon that receives commands across the pool's network to manipulate the volumes, network, configuration...
 - Satellites which are the other machines of the pool. They send commands to the controller and the controller's state to the host.
 
-Communication between the satellites and the controller is done via the TCP/IP protocol. A newly created LINSTOR SR will use the XAPI management interface by default.
+Communication between the satellites and the controller is done via the TCP/IP protocol. A newly created LINSTOR SR will use the <abbr title="Xen Project Management API">XAPI</abbr> interface by default.
 
 A Python API is available to communicate with LINSTOR and is used in the driver. Otherwise, a CLI tool is available: `linstor`.
 
-### DRBD
+### <abbr title="Distributed Replicated Block Device">DRBD</abbr>
 
 Earlier, we have described what constituted an XCP-ng pool with LINSTOR: a controller and its satellites. Now, let's explain what the volumes are based on.
-Each volume created via a LINSTOR command appears as a `DRBD` (Distributed Replicated Block Device). Like LINSTOR, this tool is also developed by LINBIT and is officially available in the Linux kernel.
+Each volume created via a LINSTOR command appears as a <abbr title="Distributed Replicated Block Device">DRBD</abbr>. Like LINSTOR, this tool is also developed by LINBIT and is officially available in the Linux kernel.
 
-DRBD is a solution to share a resource across multiple machines, using a replication parameter. In XCP-ng, it's a `/dev/drbdXXX` volume accessible on several hosts where `XXXX` is the `device minor number`. For each XCP-ng VDI (Virtual Disk Image), there is a DRBD volume.
+<abbr title="Distributed Replicated Block Device">DRBD</abbr> is a solution to share a resource across multiple machines, using a replication parameter. In XCP-ng, it's a `/dev/drbdXXX` volume accessible on several hosts where `XXXX` is the `device minor number`. For each XCP-ng <abbr title="VirtualBox Disk Image">VDI</abbr>, there is a <abbr title="Distributed Replicated Block Device">DRBD</abbr> volume.
 
 #### Resources & Volumes
 
-DRBD has a `device minor number`, but also a `resource name` which helps to understand what the resource corresponds to.
+<abbr title="Distributed Replicated Block Device">DRBD</abbr> has a `device minor number`, but also a `resource name` which helps to understand what the resource corresponds to.
 
-The path to a DRBD resource follows this pattern:
+The path to a <abbr title="Distributed Replicated Block Device">DRBD</abbr> resource follows this pattern:
 ```
 > realpath /dev/drbd/by-res/<RESOURCE_NAME>/<VOLUME_ID>
 /dev/drbd<DRBD_MINOR>
 ```
 
 You may notice the use of a `<VOLUME_ID>` here.
-A DRBD is a set of volumes that form a group. Within the same DRBD resource, each volume will share the same attributes. Several volumes can be useful for breaking down information while sharing the context of the same DRBD resource. In our case, we only use one volume per DRBD resource, meaning that the `VOLUME_ID` will always be 0. By abuse of language, it's therefore possible that we use the terms resource and volume interchangeably in this documentation.
+A <abbr title="Distributed Replicated Block Device">DRBD</abbr> is a set of volumes that form a group. Within the same <abbr title="Distributed Replicated Block Device">DRBD</abbr> resource, each volume will share the same attributes. Several volumes can be useful for breaking down information while sharing the context of the same <abbr title="Distributed Replicated Block Device">DRBD</abbr> resource. In our case, we only use one volume per <abbr title="Distributed Replicated Block Device">DRBD</abbr> resource, meaning that the `VOLUME_ID` will always be 0. By abuse of language, it's therefore possible that we use the terms resource and volume interchangeably in this documentation.
 
 #### Roles/Locks
 
-The ability of a machine to access a DRBD path `/dev/drbdXXX` depends on the role of the DRBD resource. A resource can be `Primary` or `Secondary`:
+The ability of a machine to access a <abbr title="Distributed Replicated Block Device">DRBD</abbr> path `/dev/drbdXXX` depends on the role of the <abbr title="Distributed Replicated Block Device">DRBD</abbr> resource. A resource can be `Primary` or `Secondary`:
 - A `Primary` resource is accessible on a host for READ and WRITE operations.
-- A `Secondary` resource only receives requests from the `Primary`. It's used to replicate the data and improve reading performance simultaneously. Only the DRBD kernel module can access this volume's data and it can't be written or read by any other process.
+- A `Secondary` resource only receives requests from the `Primary`. It's used to replicate the data and improve reading performance simultaneously. Only the <abbr title="Distributed Replicated Block Device">DRBD</abbr> kernel module can access this volume's data and it can't be written or read by any other process.
 
-A DRBD Primary can be seen as a lock on a resource. This lock is global to a machine, not specific to a process.
-At first, all instances of a DRBD are in the Secondary role. There are two main ways for a DRBD to become Primary:
+A <abbr title="Distributed Replicated Block Device">DRBD</abbr> Primary can be seen as a lock on a resource. This lock is global to a machine, not specific to a process.
+At first, all instances of a <abbr title="Distributed Replicated Block Device">DRBD</abbr> are in the Secondary role. There are two main ways for a <abbr title="Distributed Replicated Block Device">DRBD</abbr> to become Primary:
 - By taking the Primary role if the resource is indeed Secondary on all machines with the command `drbdadm primary <RESOURCE_NAME>`. Change the parameter and run the command `drbdadm secondary <RESOURCE_NAME>` when you no longer want to read or write on this resource.
-- By using the default configuration of a DRBD resource: a call to a C function like `fopen("/dev/drbd1001", "r+")` gives `Primary` access to a resource. If the resource is opened on another machine, an `EROFS` errno code is returned. If the resource contains a partition, a call to the `mount` command also allows to obtain a lock.
+- By using the default configuration of a <abbr title="Distributed Replicated Block Device">DRBD</abbr> resource: a call to a C function like `fopen("/dev/drbd1001", "r+")` gives `Primary` access to a resource. If the resource is opened on another machine, an `EROFS` errno code is returned. If the resource contains a partition, a call to the `mount` command also allows to obtain a lock.
 
 TLDR, when a volume is primary, it's like a lock: other instances of this same volume cannot be opened on other machines. The volume/lock must be released to give access to other hosts.
 
 #### Diskless and Diskful
 
-Usually, when a resource is replicated through DRBD, we assume that it only exists in 1, 2 or 3 copies. In other words, in a pool that has at least 4 hosts, a host may not have a copy of a resource locally. In this case scenario, it is however possible to access a resource's data using a device like `/dev/drbdXXXX`. When data is written or read, network requests are sent to the hosts that have a replication of this volume. This volume type is called `diskless` and a DRBD which has local data is called `diskful`.
+Usually, when a resource is replicated through <abbr title="Distributed Replicated Block Device">DRBD</abbr>, we assume that it only exists in 1, 2 or 3 copies. In other words, in a pool that has at least 4 hosts, a host may not have a copy of a resource locally. In this case scenario, it is however possible to access a resource's data using a device like `/dev/drbdXXXX`. When data is written or read, network requests are sent to the hosts that have a replication of this volume. This volume type is called `diskless` and a <abbr title="Distributed Replicated Block Device">DRBD</abbr> which has local data is called `diskful`.
 
 Like a diskful, when a diskless is opened, it takes the primary lock.
 
 #### Where is the data stored?
 
-The data is stored in a lower-level storage located in a layer below the DRBDs.
+The data is stored in a lower-level storage located in a layer below the <abbr title="Distributed Replicated Block Device">DRBD</abbr>.
 In the driver, an `LVM group` is built on one or more physical disks. Each machine in a pool doesn't need a physical disk to be able to use LINSTOR/DRBD.
 
 :::tip
@@ -67,14 +67,14 @@ We recommend using the same types of drives (processor, disk) on every machine t
 
 ### Concepts of LINSTOR
 
-We saw that DRBD is a set of resources and volumes. These notions also exist in LINSTOR, with additional elements on top of DRBD.
+We saw that <abbr title="Distributed Replicated Block Device">DRBD</abbr> is a set of resources and volumes. These notions also exist in LINSTOR, with additional elements on top of <abbr title="Distributed Replicated Block Device">DRBD</abbr>.
 
 #### Node
 
 A node is an object that contains important information about a host such as:
   - Its name, which must be identical to the hostname.
   - Its type: controller, satellite, combined, auxiliary. In our implementation, we always use combined nodes which can be controller and/or satellite because if the current controller of a pool has a problem, we want to be able to start one elsewhere. Without this, we would no longer be able to launch LINSTOR commands.
-  - The IP address and port that are used by the satellites/controller. By default, the XAPI management IP is used.
+  - The IP address and port that are used by the satellites/controller. By default, the <abbr title="Xen Project Management API">XAPI</abbr> management IP is used.
 
 CLI example:
 ```
@@ -90,7 +90,7 @@ CLI example:
 
 #### Storage Pool
 
-A storage pool is a LINSTOR object that represents the physical storage layer of a pool node. In practice, it is an LVM layer below DRBD.
+A storage pool is a LINSTOR object that represents the physical storage layer of a pool node. In practice, it is an <abbr title="Logical Volume Manager">LVM</abbr> layer below <abbr title="Distributed Replicated Block Device">DRBD</abbr>.
 
 CLI example:
 ```
@@ -109,7 +109,7 @@ CLI example:
 
 In the XCP-ng LINSTOR driver, only two backends are supported: `LVM` (thick provisioning) and `LVM_THIN` (thin provisioning).
 
-In this example, the name of the storage pool used on each node is: `xcp-sr-linstor_group_thin_device`. The special storage pool `DfltDisklessStorPool` is used to manage diskless DRBDs.
+In this example, the name of the storage pool used on each node is: `xcp-sr-linstor_group_thin_device`. The special storage pool `DfltDisklessStorPool` is used to manage diskless <abbr title="Distributed Replicated Block Device">DRBD</abbr>.
 
 #### Resource Group
 
@@ -144,7 +144,7 @@ In an XCP-ng context, we use a single storage pool (xcp-sr-linstor_group_thin_de
 
 #### Resource, Volume & Definitions
 
-In comparison to DRBD, the info about the resource and volume also has a `definition` in LINSTOR. A resource cannot exist without a definition and it describes the most common attributes of each copy of the resource, regardless of the number of replications.
+In comparison to <abbr title="Distributed Replicated Block Device">DRBD</abbr>, the info about the resource and volume also has a `definition` in LINSTOR. A resource cannot exist without a definition and it describes the most common attributes of each copy of the resource, regardless of the number of replications.
 
 Examples of resource and volume definitions:
 ```
@@ -173,7 +173,7 @@ Examples of resource and volume definitions:
 ```
 
 In XCP-ng, we always use only one volume for one resource, so the `VolumeNr` column only contains 0s.
-It is possible to retrieve DRBD paths with this info.
+It is possible to retrieve <abbr title="Distributed Replicated Block Device">DRBD</abbr> paths with this info.
 For example for the HA statefile volume, we have:
 ```
 /dev/drbd/by-res/xcp-persistent-ha-statefile/0 # where 0 is the VolumeNr
@@ -242,20 +242,20 @@ A DRBD/LINSTOR resource can be in several states, the main ones are:
 - UpToDate: No issue with the resource!
 - DUnknown: Communication issue getting the resource's state. An incorrect IP address, a problem with the network or with a satellite can cause this.
 - Inconsistent: This can happen on replications when a new resource is created or during a new synchronization.
-- Diskless: The resource doesn't store the data locally but has a DRBD path to read/write, using the network.
-- TieBreaker: To protect against loss of quorum, each diskful and diskless DRBD acts as a tie-breaker. The reason for displaying this state using the `linstor r list` is because there is a specific case when it is explicitly visible: when a resource is not available on a host. No diskful nor diskless means no `/dev/drbdXXXX` path.
+- Diskless: The resource doesn't store the data locally but has a <abbr title="Distributed Replicated Block Device">DRBD</abbr> path to read/write, using the network.
+- TieBreaker: To protect against loss of quorum, each diskful and diskless <abbr title="Distributed Replicated Block Device">DRBD</abbr> acts as a tie-breaker. The reason for displaying this state using the `linstor r list` is because there is a specific case when it is explicitly visible: when a resource is not available on a host. No diskful nor diskless means no `/dev/drbdXXXX` path.
 
 For more info, please visit [this page](https://linbit.com/drbd-user-guide/drbd-guide-9_0-en/#s-disk-states).
 
 #### drbd-reactor
 
-Several services are necessary for LINSTOR to work properly on XCP-ng. The most trivial are the `linstor-controller` and the `linstor-satellite` services. 
+Several services are necessary for LINSTOR to work properly on XCP-ng. The most trivial are the `linstor-controller` and the `linstor-satellite` services.
 
 :::warning
 Never manually start a controller on a pool where an SR is already configured. There is a reason for this and it's called high availability: a controller must always be available. If a host that was running the controller is rebooted, another machine will start another controller. A daemon called `drbd-reactor` automatically handles the startup process.
 :::
 
-The `drbd-reactor` is a daemon implemented to react to DRBD events and respond using scripts.
+The `drbd-reactor` is a daemon implemented to react to <abbr title="Distributed Replicated Block Device">DRBD</abbr> events and respond using scripts.
 
 It has a modified configuration on XCP-ng so that it can always be restarted in the event of a problem:
 ```
@@ -274,7 +274,7 @@ Environment=LS_KEEP_RES=^xcp-persistent.*
 After=drbd.service
 ```
 
-As noted in the shared database section, the controller uses a DRBD volume containing the LINSTOR database instead of a simple local folder on a host. This database must be accessible after a reboot, meaning that `/dev/drbd/by-res/xcp-persistent-database/0` must be accessible on at least one machine (normally 3, since this volume is always replicated 3 times). A path like that is generated using a DRBD resource config file. These configurations are automatically created by LINSTOR itself and they are not persistent: they are recreated each time the controller is started after a pool reboot. The only way to keep a DRBD config file at boot is to use the `LS_KEEP_RES` environment variable to indicate it to LINSTOR.
+As noted in the shared database section, the controller uses a <abbr title="Distributed Replicated Block Device">DRBD</abbr> volume containing the LINSTOR database instead of a simple local folder on a host. This database must be accessible after a reboot, meaning that `/dev/drbd/by-res/xcp-persistent-database/0` must be accessible on at least one machine (normally 3, since this volume is always replicated 3 times). A path like that is generated using a <abbr title="Distributed Replicated Block Device">DRBD</abbr> resource config file. These configurations are automatically created by LINSTOR itself and they are not persistent: they are recreated each time the controller is started after a pool reboot. The only way to keep a <abbr title="Distributed Replicated Block Device">DRBD</abbr> config file at boot is to use the `LS_KEEP_RES` environment variable to indicate it to LINSTOR.
 
 - A `drbd-reactor` configuration that uses the linbit promoter plugin:
 ```
@@ -306,11 +306,11 @@ RemainAfterExit=true
 
 ### Prerequisites
 
-- At least 3 hosts: DRBD uses a quorum algorithm that needs at least 3 reachable machines to correctly replicate resources and avoid the risk of split-brain.
-- A dedicated 10G or higher network interface for DRBD. It's possible to use the same interface used for host management (XAPI) but it's recommended to use a dedicated interface.
+- At least 3 hosts: <abbr title="Distributed Replicated Block Device">DRBD</abbr> uses a quorum algorithm that needs at least 3 reachable machines to correctly replicate resources and avoid the risk of split-brain.
+- A dedicated 10G or higher network interface for <abbr title="Distributed Replicated Block Device">DRBD</abbr>. It's possible to use the same interface used for host management (<abbr title="Xen Project Management API">XAPI</abbr>) but it's recommended to use a dedicated interface.
 - At least 1 disk on any machine of the pool (case without replication). Otherwise, any number of disks can be used on a machine. However, to be consistent, we recommend using the same model and number for each machine that has disks.
 - The replication/place count must be equal to 1, 2 or 3.
-- 
+-
 :::warning
 Changing the replication factor after creating XOSTOR is not possible, as it can lead to significant issues and is therefore not supported.
 :::
@@ -325,7 +325,7 @@ The maximum number of machines per pool is 7.
 
 ## Update
 
-See this documentation: [RPU](/management/updates/#rolling-pool-update-rpu).
+See this documentation: [<abbr title="Rolling Pool Update">RPU</abbr>](/management/updates/#rolling-pool-update-rpu).
 
 ## Upgrade
 
@@ -391,7 +391,7 @@ linstor r list
 linstor advise r # Give possible fix commands in case of problems.
 ```
 
-- Check in XOA that the PBD of the SR of this host is connected. If not, connect it.
+- Check in XOA that the <abbr title="Physical Block Device">PBD</abbr> of the SR of this host is connected. If not, connect it.
 
 :::warning
 Very important: if you don't want to break the quorum or your production environment, you must execute the commands given above after upgrading a host and do not reboot/upgrade the others until the host's satellite is operational and its PBD is plugged.
@@ -486,9 +486,9 @@ Output example:
 ```
 
 Remarks regarding special volumes:
-- `xcp-persistent-database` is an important resource that contains the LINSTOR database, i.e. the list of volumes, nodes, etc. It's this DRBD resource that is mounted on `/var/lib/linstor` before the controller starts.
+- `xcp-persistent-database` is an important resource that contains the LINSTOR database, i.e. the list of volumes, nodes, etc. It's this <abbr title="Distributed Replicated Block Device">DRBD</abbr> resource that is mounted on `/var/lib/linstor` before the controller starts.
 - `xcp-persistent-ha-statefile` & `xcp-persistent-redo-log` are special volumes used by the HA.
-- All other resources start with `xcp-volume-<UUID>` where the UUID is an internal identifier different from the XAPI VDI UUIDs.
+- All other resources start with `xcp-volume-<UUID>` where the UUID is an internal identifier different from the <abbr title="Xen Project Management API">XAPI</abbr> <abbr title="VirtualBox Disk Image">VDI</abbr> UUIDs.
 
 ### How to get a quick view of the resource status of a pool?
 
@@ -518,9 +518,9 @@ For example, you can have an output like this:
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
-### Map LINSTOR resource names to XAPI VDI UUIDs
+### Map LINSTOR resource names to <abbr title="Xen Project Management API">XAPI</abbr> <abbr title="VirtualBox Disk Image">VDI</abbr> UUIDs
 
-Resource UUIDs are different from VDI UUIDs. The output of `linstor r list` gives the resource name but it doesn't give an understanding about relationships between LINSTOR volumes and XAPI VDI UUIDs:
+Resource UUIDs are different from <abbr title="VirtualBox Disk Image">VDI</abbr> UUIDs. The output of `linstor r list` gives the resource name but it doesn't give an understanding about relationships between LINSTOR volumes and <abbr title="Xen Project Management API">XAPI</abbr> <abbr title="VirtualBox Disk Image">VDI</abbr> UUIDs:
 ```
 ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
 ┊ ResourceName                                    ┊ Node    ┊ Port ┊ Usage  ┊ Conns ┊      State ┊ CreatedOn           ┊
@@ -599,11 +599,11 @@ Output format:
 
 ### How a LINSTOR SR capacity is calculated?
 
-If you cannot create a VDI due to an error of it being too large, even though it's smaller than the size of the SR in XO's view, there is an explanation:
-- The maximum size of a VDI that can be created is not necessarily equal to the SR capacity.
-- The SR capacity in the XOSTOR context is the maximum size that can be used to store _all_ VDI data.
+If you cannot create a <abbr title="VirtualBox Disk Image">VDI</abbr> due to an error of it being too large, even though it's smaller than the size of the SR in XO's view, there is an explanation:
+- The maximum size of a <abbr title="VirtualBox Disk Image">VDI</abbr> that can be created is not necessarily equal to the SR capacity.
+- The SR capacity in the XOSTOR context is the maximum size that can be used to store _all_ <abbr title="VirtualBox Disk Image">VDI</abbr> data.
 
-Exception: if the replication count is equal to the number of hosts, the SR capacity is equal to the max VDI size, i.e. the capacity of the smallest disk in the pool.
+Exception: if the replication count is equal to the number of hosts, the SR capacity is equal to the max <abbr title="VirtualBox Disk Image">VDI</abbr> size, i.e. the capacity of the smallest disk in the pool.
 
 This formula can be used to compute the SR capacity:
 ```
@@ -612,7 +612,7 @@ sr_capacity = smallest_host_disk_capacity * host_count / replication_count
 
 For a pool of 3 hosts for example, with a replication count of 2 and a disk of 200 GiB on each host, the formula gives an SR capacity equal to 300 GiB.
 Consider the following:
-- It's not possible to create a VDI greater than 200 GiB because the replication is not block-based but volume-based.
+- It's not possible to create a <abbr title="VirtualBox Disk Image">VDI</abbr> greater than 200 GiB because the replication is not block-based but volume-based.
 - If you create a volume of 200 GiB it means that 400 of the 600 GiB are physically used. However, the remaining disk of 200 GiB cannot be used because it cannot be replicated on two different disks.
 - If you create 3 volumes of 100 GiB: the SR is filled. In this case, you have 300 GiB of unique data and a replication of 300 GiB.
 
@@ -633,7 +633,7 @@ xe-toolstack-restart
 If you are in a situation where you can't safely update your pool, contact [Vates Pro Support](https://vates.tech/pricing-and-support) for guidance applying to your specific situation.
 :::
 
-First ensure you have the same configuration on each PBD of your XOSTOR SR using this command. Replace `<UUID>` with the SR UUID that you use:
+First ensure you have the same configuration on each <abbr title="Physical Block Device">PBD</abbr> of your XOSTOR SR using this command. Replace `<UUID>` with the SR UUID that you use:
 ```
 xe pbd-list sr-uuid=<UUID>
 ```
@@ -665,7 +665,7 @@ Then if you want to fix an incorrect group name value or even add a new host, us
 ```
 xe host-call-plugin host-uuid=<HOST_UUID> plugin=linstor-manager fn=addHost args:groupName=<GROUP_NAME>
 ```
-For a short description, this command (re)creates a PBD, opens DRBD/LINSTOR ports, starts specific services and adds the node to the LINSTOR database.
+For a short description, this command (re)creates a <abbr title="Physical Block Device">PBD</abbr>, opens DRBD/LINSTOR ports, starts specific services and adds the node to the LINSTOR database.
 
 If you have storage devices to use on the host, a LINSTOR storage layer is not directly added to the corresponding node.
 You can follow the [section](#how-to-add-storage-on-a-new-host) below to add storage to this new node.
@@ -673,8 +673,8 @@ You can follow the [section](#how-to-add-storage-on-a-new-host) below to add sto
 ### How to add storage on a new host?
 
 There are two simple steps:
-1. Create a VG (and LV for thin) with all the host disks
-2. Create a SP for the host pointing to this new VG
+1. Create a <abbr title="Volume Group">VG</abbr> (and <abbr title="Logical Volume">LV</abbr> for thin) with all the host disks
+2. Create a SP for the host pointing to this new <abbr title="Volume Group">VG</abbr>
 
 You can verify the storage state like this:
 ```
@@ -696,10 +696,10 @@ A `LVM_THIN` entry is missing for `hpmc17` in this context, meaning it has no lo
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
-1. Creating a LVM volume group and/or thin device
+1. Creating a <abbr title="Logical Volume Manager">LVM</abbr> volume group and/or thin device
 
-To add disks to the linstor SR, you will need to create a LVM volume group.
-Connect to the machine to modify and use `vgcreate` with the wanted disks to create a VG group on the host:
+To add disks to the linstor SR, you will need to create a <abbr title="Logical Volume Manager">LVM</abbr> volume group.
+Connect to the machine to modify and use `vgcreate` with the wanted disks to create a <abbr title="Volume Group">VG</abbr> group on the host:
 ```
 vgcreate <GROUP_NAME> <DEVICES>
 ```
@@ -736,9 +736,9 @@ In our example:
 linstor storage-pool create lvm hpmc17 xcp-sr-linstor_group_thin_device linstor_group/thin_device
 ```
 
-### How to use a specific network for DRBD requests?
+### How to use a specific network for <abbr title="Distributed Replicated Block Device">DRBD</abbr> requests?
 
-To use a specific network to handle the DRBD traffic, a new interface must be created on each host:
+To use a specific network to handle the <abbr title="Distributed Replicated Block Device">DRBD</abbr> traffic, a new interface must be created on each host:
 ```
 linstor node interface create <NODE_NAME> <INTERFACE_NAME> <IP>
 ```
@@ -846,14 +846,14 @@ vhd-util check -n <DRBD_PATH>
 In this example, `<DRBD_PATH>` is `/dev/drbd/by-res/xcp-volume-83da35c4-dd18-47fb-9d2b-68bd5b92fcaa/0`
 Two cases here:
 - If the volume is marked as `InUse` in the LINSTOR database, run this command on the host that is using it.
-- Otherwise, you can run this same command on the master that has the resource path on its filesystem (so a DRBD diskless or diskful).
+- Otherwise, you can run this same command on the master that has the resource path on its filesystem (so a <abbr title="Distributed Replicated Block Device">DRBD</abbr> diskless or diskful).
 
-If the volume is unusable and prevents an SR PBD-plug command, any action, or cannot be deleted via xe or XO, you can follow the instructions below.
+If the volume is unusable and prevents an SR <abbr title="Physical Block Device">PBD</abbr>-plug command, any action, or cannot be deleted via xe or XO, you can follow the instructions below.
 
 :::warning
 Again, if you're unsure of the situation, the procedure below is risky. There is only one major case where we consider that's useful to run these commands: A program like `dd` was executed on a resource, which destroyed the VHD headers/footers. Another similar scenario is deleting the replicas then recreating the resources.
 
-Additionally, we assume that if you destroy a resource, you have a recent backup of the corresponding VM or VDI and you want to restore it if the data is important.
+Additionally, we assume that if you destroy a resource, you have a recent backup of the corresponding VM or <abbr title="VirtualBox Disk Image">VDI</abbr> and you want to restore it if the data is important.
 :::
 
 1. Retrieve the SR's storage pool name using this command:
@@ -875,11 +875,11 @@ Example output where the storage pool name is `xcp-sr-linstor_group_thin_device`
 ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
-2. If you don't know what the corresponding VDI UUID for the DRBD resource is, you can deduce it via this command:
+2. If you don't know what the corresponding <abbr title="VirtualBox Disk Image">VDI</abbr> UUID for the <abbr title="Distributed Replicated Block Device">DRBD</abbr> resource is, you can deduce it via this command:
 ```
 linstor-kv-tool --dump-volumes -g <SP_NAME> | grep volume-name | grep <RES_UUID>
 ```
-As a reminder, `<RES_UUID>` is the UUID used in the naming of DRBD resources after the prefix `xcp-volume-`. For example: `xcp-volume-83da35c4-dd18-47fb-9d2b-68bd5b92fcaa`. And `<SP_NAME>` is the value obtained in the previous point.
+As a reminder, `<RES_UUID>` is the UUID used in the naming of <abbr title="Distributed Replicated Block Device">DRBD</abbr> resources after the prefix `xcp-volume-`. For example: `xcp-volume-83da35c4-dd18-47fb-9d2b-68bd5b92fcaa`. And `<SP_NAME>` is the value obtained in the previous point.
 
 :::tip
 For more explanation between `RES_UUID` and `VDI_UUID` link, check out [this section](#map-linstor-resource-names-to-xapi-vdi-uuids):
@@ -890,9 +890,9 @@ Example result by replacing `<RES_UUID>` with `83da35c4-dd18-47fb-9d2b-68bd5b92f
 linstor-kv-tool --dump-volumes -g xcp-sr-linstor_group_thin_device | grep volume-name | grep 83da35c4-dd18-47fb-9d2b-68bd5b92fcaa
   "xcp/volume/6b9046a2-8ef9-47ef-baa9-a4c533ca848a/volume-name": "83da35c4-dd18-47fb-9d2b-68bd5b92fcaa",
 ```
-Here, the XAPI UUID of the VDI to delete is `6b9046a2-8ef9-47ef-baa9-a4c533ca848a`.
+Here, the <abbr title="Xen Project Management API">XAPI</abbr> UUID of the <abbr title="VirtualBox Disk Image">VDI</abbr> to delete is `6b9046a2-8ef9-47ef-baa9-a4c533ca848a`.
 
-3. You can remove the VDI reference from the `kv-store` via the following command, replace `<VDI_UUID>` with the one obtained previously:
+3. You can remove the <abbr title="VirtualBox Disk Image">VDI</abbr> reference from the `kv-store` via the following command, replace `<VDI_UUID>` with the one obtained previously:
 ```
 linstor-kv-tool -g xcp-sr-linstor_group_thin_device --remove-volume <VDI_UUID>
 ```
@@ -904,7 +904,7 @@ linstor rd delete xcp-volume-<RES_UUID>
 
 ### How to use a specific network for satellites?
 
-Doing this is not recommended. To guarantee a certain robustness of the pool, the best choice is to use the XAPI management interface.  
+Doing this is not recommended. To guarantee a certain robustness of the pool, the best choice is to use the <abbr title="Xen Project Management API">XAPI</abbr> management interface.
 But if you are sure of what you are doing:
 
 ```
@@ -941,7 +941,7 @@ You should  have a similar configuration in the file:
     }
 ```
 
-For each entry, modify the IPs to use the XAPI management interface of each hostname.  
+For each entry, modify the IPs to use the <abbr title="Xen Project Management API">XAPI</abbr> management interface of each hostname.
 Save and repeat this modification on each host.
 
 Restart `drbd-reactor` on each machine, using this command:
@@ -961,7 +961,7 @@ If the array is empty, execute:
 systemctl stop linstor-controller
 ```
 
-The controller will restart on the current machine or another one.  
+The controller will restart on the current machine or another one.
 Check again the resource list.
 
 #### 2. Reset the active satellite connection
@@ -1021,7 +1021,7 @@ Show reports:
     linstor error-reports show 660585D7-00000-000000
 ```
 
-In this situation, the LINSTOR database should be modified manually.  
+In this situation, the LINSTOR database should be modified manually.
 Copy the database to another directory:
 ```
 mkdir /root/linstor-db/
@@ -1061,9 +1061,9 @@ PROPS_INSTANCE | PROP_KEY        | PROP_VALUE
 
 In this context:
 - `CurStltConnName` is the satellite connection used by a node.
-- `PrefNic` is the preferred network used by a DRBD resource on this node.
+- `PrefNic` is the preferred network used by a <abbr title="Distributed Replicated Block Device">DRBD</abbr> resource on this node.
 
-The goal is to reset the satellite and DRBD connections to use the `default` interface.
+The goal is to reset the satellite and <abbr title="Distributed Replicated Block Device">DRBD</abbr> connections to use the `default` interface.
 
 If the `CurStltConnName` is not equal to `default` for each node, use:
 ```
@@ -1089,7 +1089,7 @@ INSERT INTO LINSTOR.PROPS_CONTAINERS
 VALUES ('/NODES/R620-S4', 'PrefNic', 'default');
 ```
 
-:::warning  
+:::warning
 The value of `PROPS_INSTANCE` must be in capital letters, in this example: `/NODES/R620-S4`.
 :::
 
@@ -1148,7 +1148,7 @@ linstor r list
 
 ### What to do when a node is in an EVICTED state?
 
-A controller can mark a node as EVICTED if the LINSTOR default configuration is used and a satellite offline for 60 minutes. The DRBD resources are then replicated on the remaining nodes as a protection against data loss. The following command is usually enough to re-import the evicted machine:
+A controller can mark a node as EVICTED if the LINSTOR default configuration is used and a satellite offline for 60 minutes. The <abbr title="Distributed Replicated Block Device">DRBD</abbr> resources are then replicated on the remaining nodes as a protection against data loss. The following command is usually enough to re-import the evicted machine:
 ```
 linstor node restore <NODE_NAME>
 ```
@@ -1158,7 +1158,7 @@ If the machine has to be removed:
 linstor node lost <NODE_NAME>
 ```
 
-The next step is to remove the machine from the pool using XAPI commands.  
+The next step is to remove the machine from the pool using <abbr title="Xen Project Management API">XAPI</abbr> commands.
 Or using `xsconsole`: "Resource Pool Configuration" => "Remove This Host from the Pool".
 
 Note: iptables config must also be modified to remove LINSTOR port rules (edit `/etc/sysconfig/iptables` then `service iptables restart` to apply the changes).
@@ -1175,7 +1175,7 @@ For more info:
 This feature is currently experimental and not covered by [Vates Pro Support](https://vates.tech/pricing-and-support).
 :::
 
-On each host, create a new PV and VG using your cache devices:
+On each host, create a new <abbr title="Para-Virtualization">PV</abbr> and <abbr title="Volume Group">VG</abbr> using your cache devices:
 ```
 vgcreate linstor_group_cache <CACHE_DEVICES>
 ```
@@ -1221,7 +1221,7 @@ linstor sp delete <NODE_NAME> linstor_group_cache
 
 #### How to configure the cache size?
 
-By default, a VDI uses a cache size of 1% of its volume size. But it can be changed globally for all VDIs:
+By default, a <abbr title="VirtualBox Disk Image">VDI</abbr> uses a cache size of 1% of its volume size. But it can be changed globally for all <abbr title="VirtualBox Disk Image">VDI</abbr>:
 ```
 linstor vg set-property xcp-sr-linstor_group_thin_device 0 Cache/Cachesize <PERCENTAGE>
 ```
@@ -1231,7 +1231,7 @@ You can change this value globally or on a particular resource definition with:
 linstor rd set-property <VOLUME_NAME> Cache/Cachesize <PERCENTAGE>
 ```
 
-It's totally arbitrary. You can go up to 20-30% for for VMS with a high write rate. This should be enough to support a significant number of requests. 10% for solicited VMs. Between 1-5% for VMs with a few requests. You can use 100% if you want, for example for a database on a small VDI with a lot of queries.
+It's totally arbitrary. You can go up to 20-30% for for VMS with a high write rate. This should be enough to support a significant number of requests. 10% for solicited VMs. Between 1-5% for VMs with a few requests. You can use 100% if you want, for example for a database on a small <abbr title="VirtualBox Disk Image">VDI</abbr> with a lot of queries.
 
 :::warning
 Due to too-long VHD chains, snapshots can consume more memory than necessary. It's advisable to limit their use to backup processes via XOA.
@@ -1246,17 +1246,17 @@ linstor vg set-property xcp-sr-linstor_group_thin_device 0 Cache/OpMode <MODE>
 
 By default `writethrough` mode is used. This mode is only useful for improving read performance.
 
-With `writeback` mode enabled, the block to be written is added in the cached layer, not on the DRBD.
+With `writeback` mode enabled, the block to be written is added in the cached layer, not on the <abbr title="Distributed Replicated Block Device">DRBD</abbr>.
 This data block is moved later, and the process caller (here tapdisk) is only notified when the block is flushed in the cache disk.
 
-This algorithm is efficient in not having to wait for writes to be flushed to the local disk as well as to other DRBDs replicated on other nodes.
+This algorithm is efficient in not having to wait for writes to be flushed to the local disk as well as to other <abbr title="Distributed Replicated Block Device">DRBD</abbr> replicated on other nodes.
 However, if a power outage occurs on a machine using a cache that contains data, the data will be lost.
 You don't have this issue with writethrough, but this mode is only used for read performance.
 
 ### How to fix a LINSTOR database corruption?
 
 :::warning
-If you are in a situation where you don't know what you're doing, contact [Vates Pro Support](https://vates.tech/pricing-and-support) for guidance that applies to your specific situation. This repair may not be sufficient. It depends on what error the SMAPI indicates.
+If you are in a situation where you don't know what you're doing, contact [Vates Pro Support](https://vates.tech/pricing-and-support) for guidance that applies to your specific situation. This repair may not be sufficient. It depends on what error the <abbr title="Storage Manager API">SMAPI</abbr> indicates.
 :::
 
 After a total network outage or a critical crash of an entire XOSTOR pool, in very rare situations a transaction to the LINSTOR H2 database may not proceed as expected. This can lead to LINSTOR logs similar to this one:

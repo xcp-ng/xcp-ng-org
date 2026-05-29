@@ -7,7 +7,7 @@
     * No big deal, just exit maintenance mode :-)
 * The server is still booting.
     * Take your time and let him boot up :-) this takes sometimes some time, but typically not longer than some minutes.
-* A Storage Repository (SR) could not be attached.
+* A Storage Repository (<abbr title="Storage Repository">SR</abbr>) could not be attached.
     * Check the corresponding disk(s), network(s) and setting(s). Follow the [3-Step-Guide](../#the-3-step-guide).
 * There is a serious problem.
     * Follow the 3-Step-Guide.

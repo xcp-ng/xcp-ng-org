@@ -4,19 +4,19 @@ This page contains advanced info regarding XCP-ng architecture.
 
 ## 💽 Storage
 
-### Virtual disks on HVMs and PV guests
+### Virtual disks on <abbr title="Hardware Virtual Machine">HVM</abbr> and PV guests
 
 ![Diagram of virtual disk inner working, explained in the following paragraphs.](../../assets/img/tapdisk-architecture.jpg)
 
 #### `qemu-dm` and `tapdisk` at startup
 
-When a VM starts, whether it is a HVM or a PV guest, it is always started as a HVM. So during the boot process, the device of the VM is emulated. The process for mapping a virtual device from a host to a guest is called `qemu-dm`. There is one instance per disk like `tapdisk`, another process used to read/write in a VHD file the disk data. `qemu-dm` reads and writes to a `/dev/blktap/blktapX` host device, which is created by tapdisk and is managed by a driver in Dom 0: `blktap`.
+When a VM starts, whether it is a <abbr title="Hardware Virtual Machine">HVM</abbr> or a PV guest, it is always started as a <abbr title="Hardware Virtual Machine">HVM</abbr>. So during the boot process, the device of the VM is emulated. The process for mapping a virtual device from a host to a guest is called `qemu-dm`. There is one instance per disk like `tapdisk`, another process used to read/write in a VHD file the disk data. `qemu-dm` reads and writes to a `/dev/blktap/blktapX` host device, which is created by tapdisk and is managed by a driver in Dom 0: `blktap`.
 
 For each read/write in the VM disk, requests pass through an emulated driver, then `qemu-dm` and finally they are sent to `blktap`; since `tapdisk` is the creator/manager of the `blktap` device, it handles requests by reading them through a shared ring. The requests are consumed by reading or writing in the VHD file representing the disk of the VM, the `libaio` is used to access/modify the physical blocks. Finally `tapdisk` responds to `qemu-dm` by writing responses in the same ring.
 
 #### tapdisk & PV guests
 
-The process described above is used for HVMs and also for PV guests (at startup, PV drivers are not loaded).
+The process described above is used for <abbr title="Hardware Virtual Machine">HVM</abbr> and also for PV guests (at startup, PV drivers are not loaded).
 After starting a PV guest, the emulated driver in the VM is replaced by `blkfront` (a PV driver) which allows to communicate directly with `tapdisk` using a protocol: `blkif`; `blktap` and `qemu-dm` then become useless to handle devices requests. Note that system calls are used with two drivers: `eventchn dev` and `gntdev` to map VM memory pages in the user space of the host. Thus a shared ring can be used to receive requests directly from `tapdisk` in host user space instead of using the kernel space.
 
 ## ↕️ Components for VDI I/O
@@ -204,7 +204,7 @@ let add_device ~xs device backend_list frontend_list private_list
           (* ... *)
 ```
 
-One of the role of `xenopsd` here is to create VIFs and VBDs to boot correctly a VM. This is the output given when a new device must be added:
+One of the role of `xenopsd` here is to create VIFs and <abbr title="Virtual Block Device">VBD</abbr> to boot correctly a VM. This is the output given when a new device must be added:
 
 ```
 /var/log/xensource.log:36728:Nov 24 16:40:24 xcp-ng-lab-1 xenopsd-xc: [debug||14 |Parallel:task=5.atoms=1.(VBD.plug RW vm=6f25b64e-9887-7017-02cc-34e79bfae93d)|xenops] adding device  B0[/local/domain/0/backend/vbd3/1/768]  F1[/local/domain/1/device/vbd/768]  H[/xapi/6f25b64e-9887-7017-02cc-34e79bfae93d/hotplug/1/vbd3/768]
@@ -405,20 +405,20 @@ The read steps are similar, the main difference is that we must copy from the `D
 
 ## 📡 API
 
-XCP-ng uses **XAPI** as main API. This API is used by all clients. For more details go to [XAPI website](https://xapi-project.github.io/).
+XCP-ng uses **<abbr title="Xen Project Management API">XAPI</abbr>** as main API. This API is used by all clients. For more details go to [<abbr title="Xen Project Management API">XAPI</abbr> website](https://xapi-project.github.io/).
 
 :::tip
-If you want to build an application on top of XCP-ng, we strongly suggest the Xen Orchestra API instead of XAPI. *Xen Orchestra* provides an abstraction layer that's easier to use, and also acts as a central point for your whole infrastructure.
+If you want to build an application on top of XCP-ng, we strongly suggest the Xen Orchestra API instead of <abbr title="Xen Project Management API">XAPI</abbr>. *Xen Orchestra* provides an abstraction layer that's easier to use, and also acts as a central point for your whole infrastructure.
 :::
 
-### XAPI architecture
+### <abbr title="Xen Project Management API">XAPI</abbr> architecture
 
-XAPI is a toolstack split in two parts: `xenopsd` and XAPI itself (see the diagram below):
+<abbr title="Xen Project Management API">XAPI</abbr> is a toolstack split in two parts: `xenopsd` and <abbr title="Xen Project Management API">XAPI</abbr> itself (see the diagram below):
 
-![Diagram comparing XCP-ng, Xen + libvirt and Xen. XCP-ng uses the XAPI to expose its management to xe, XCP-ng Center, Xen Orchestra and CloudStack.](https://xcp-ng.org/assets/img/Xenstack.png)
+![Diagram comparing XCP-ng, Xen + libvirt and Xen. XCP-ng uses the <abbr title="Xen Project Management API">XAPI</abbr> to expose its management to xe, XCP-ng Center, Xen Orchestra and CloudStack.](https://xcp-ng.org/assets/img/Xenstack.png)
 
 :::warning
-XCP-ng is meant to use XAPI. Don't use it with `xl` or anything else!
+XCP-ng is meant to use <abbr title="Xen Project Management API">XAPI</abbr>. Don't use it with `xl` or anything else!
 :::
 
 #### General design
@@ -439,7 +439,7 @@ XCP-ng is meant to use XAPI. Don't use it with `xl` or anything else!
 
 ![Network architecture diagram showing the interaction between Dom0, DomU, Open vSwitch, its bridges and physical network interfaces.](../../assets/img/networking/Network-overview.png)
 
-At the highest level, Xen Orchestra and `xe` commands interact with XAPI to manage network configuration. The `xapi` daemon provides the main API, receiving requests and passing them to `message-switch`, which dispatches commands to the appropriate daemon. For networking, this is `xcp-networkd`, which applies the required configuration using Open vSwitch (OVS) commands.
+At the highest level, Xen Orchestra and `xe` commands interact with <abbr title="Xen Project Management API">XAPI</abbr> to manage network configuration. The `xapi` daemon provides the main API, receiving requests and passing them to `message-switch`, which dispatches commands to the appropriate daemon. For networking, this is `xcp-networkd`, which applies the required configuration using Open vSwitch (OVS) commands.
 
 In XCP-ng, all networking is managed by OVS:
 - The `openvswitch.ko` kernel module handles bridges, bonds, and actual network traffic.
@@ -448,14 +448,14 @@ In XCP-ng, all networking is managed by OVS:
 
 The bonds and bridges are all OVS ones. XCP-ng does not use linux bridges or bonds. For example, a `bond0` device won't appear in `ip link` as it only exists as a port of an OVS bridge. To have an ip used for it, it will have to be set on the matching bridge interface.
 
-Almost all configuration is handled through XAPI, ensuring pool-wide consistency. Only Xen Orchestra’s SDN Controller plugin interacts directly with `ovsdb-server`, `ovs-vswitchd` for Global private network and traffic rules respectively. These exceptions are detailed in later sections.
+Almost all configuration is handled through <abbr title="Xen Project Management API">XAPI</abbr>, ensuring pool-wide consistency. Only Xen Orchestra’s SDN Controller plugin interacts directly with `ovsdb-server`, `ovs-vswitchd` for Global private network and traffic rules respectively. These exceptions are detailed in later sections.
 
-### XAPI Objects
+### <abbr title="Xen Project Management API">XAPI</abbr> Objects
 
-The core concepts are introduced on the [Networking](../../networking) page. Here, we explain their operation and underlying mechanisms. XAPI stores the configuration and relationships for these objects, then configures OVS on each host in the pool.
+The core concepts are introduced on the [Networking](../../networking) page. Here, we explain their operation and underlying mechanisms. <abbr title="Xen Project Management API">XAPI</abbr> stores the configuration and relationships for these objects, then configures OVS on each host in the pool.
 
 :::tip
-Configuration is stored on the master’s XAPI, which then propagates it to pool members.
+Configuration is stored on the master’s <abbr title="Xen Project Management API">XAPI</abbr>, which then propagates it to pool members.
 :::
 
 #### Networks
@@ -469,16 +469,16 @@ Network types include:
 - Private Networks: Internal-only, with no external connectivity.
 - Global Private Networks: Layer 3 tunnels (GRE or VXLAN) connect multiple hosts, even across pools as long as they have IP connectivity.
 
-At the XAPI level, Networks are associated with PIFs for external access and VIFs for VM traffic.
+At the <abbr title="Xen Project Management API">XAPI</abbr> level, Networks are associated with <abbr title="Physical Interface">PIF</abbr> for external access and VIFs for VM traffic.
 
-#### PIFs
+#### <abbr title="Physical Interface">PIF</abbr>
 
-PIF stands for Physical Interface, but it can represent more than just a physical NIC. A PIF is any network interface that provides external connectivity for a host:
+<abbr title="Physical Interface">PIF</abbr> stands for Physical Interface, but it can represent more than just a physical NIC. A <abbr title="Physical Interface">PIF</abbr> is any network interface that provides external connectivity for a host:
 
 - Physical Interfaces: Standard NICs (e.g., `eth0`), mapped directly to hardware.
 - Bonds: Aggregations of multiple physical interfaces for redundancy or throughput.
 - Tunnels: Used for Global Private Networks (GRE or VXLAN), creating overlays across hosts.
-- VLANs: Layered on other PIF types, supporting 802.1Q VLAN tagging.
+- VLANs: Layered on other <abbr title="Physical Interface">PIF</abbr> types, supporting 802.1Q VLAN tagging.
 
 #### VIFs
 
@@ -486,7 +486,7 @@ VIFs are virtual network interfaces attached to VMs. Each VIF has an interface i
 
 ##### Emulated NICs
 
-When booting an HVM VM, an emulated NIC (typically Intel E1000 or Realtek RTL8139) is used. These are fully emulated by `qemu-dm`, with a tap device created on the host. The tap device is bound to the appropriate bridge. Emulated NICs are widely supported by guest OS drivers but offer lower performance than para-virtualized NICs.
+When booting an <abbr title="Hardware Virtual Machine">HVM</abbr> VM, an emulated NIC (typically Intel E1000 or Realtek RTL8139) is used. These are fully emulated by `qemu-dm`, with a tap device created on the host. The tap device is bound to the appropriate bridge. Emulated NICs are widely supported by guest OS drivers but offer lower performance than para-virtualized NICs.
 
 ##### Para-virtualized NICs
 
@@ -516,8 +516,8 @@ Networking in XCP-ng centers on “networks”, each backed by an OVS bridge on 
 
 :::warning
 Two key points:
-- If no VM on a host uses a network, its bridge is not created, and the PIF appears “Disconnected” in Xen Orchestra.
-- The PIF is not forcibly disconnected if no more VMs use it.
+- If no VM on a host uses a network, its bridge is not created, and the <abbr title="Physical Interface">PIF</abbr> appears “Disconnected” in Xen Orchestra.
+- The <abbr title="Physical Interface">PIF</abbr> is not forcibly disconnected if no more VMs use it.
 This is expected and does not cause any issue.
 :::
 
@@ -525,7 +525,7 @@ A bridge consists of:
 - Configuration in `ovsdb-server`.
 - Flow table in `ovs-vswitchd`.
 - Datapath in `openvswitch.ko`.
-- Ports matching XAPI’s PIFs and VIFs.
+- Ports matching <abbr title="Xen Project Management API">XAPI</abbr>’s <abbr title="Physical Interface">PIF</abbr> and VIFs.
 - One or more interfaces per port.
 - An “internal port” with a matching interface of type “internal.”
 
@@ -545,7 +545,7 @@ The `ovs-vsctl show` command displays all bridges, ports, and interfaces current
 
 #### VLANs
 
-The way we handle VLAN in OVS is somewhat unique. When you create a network in XOA, you select a PIF to back it. On the OVS side, if a bridge without VLAN tagging does not already exist (e.g., `xenbrX` for standard networks), it will be created. Then, an additional "fake bridge" is created (typically named `xapiX`, where X is a number). The ports of this fake bridge are assigned a VLAN tag and are added to the `xenbrX` bridge. This setup allows OVS to:
+The way we handle VLAN in OVS is somewhat unique. When you create a network in <abbr title="Xen Orchestra Appliance">XOA</abbr>, you select a <abbr title="Physical Interface">PIF</abbr> to back it. On the OVS side, if a bridge without VLAN tagging does not already exist (e.g., `xenbrX` for standard networks), it will be created. Then, an additional "fake bridge" is created (typically named `xapiX`, where X is a number). The ports of this fake bridge are assigned a VLAN tag and are added to the `xenbrX` bridge. This setup allows OVS to:
 
 - Create OpenFlow rules that tag or untag VLAN IDs as packets leave the bridge.
 - Control which ports can communicate with each other, even though they appear on the same `xenbrX` bridge.
@@ -641,10 +641,10 @@ To see the overall organization, use `ovs-vsctl show`:
 
 Global private networks are managed by Xen Orchestra's [SDN Controller plugin](https://docs.xen-orchestra.com/sdn_controller), also documented in the [XCP-ng SDN Controller documentation](../../networking/#-sdn-controller). Here, we explain their setup within OVS.
 
-A network is created, and its associated bridge is created on the required hosts. Unlike other network types, these can span multiple pools, which is why the SDN Controller plugin is needed as XAPI is not aware of other pools. After the bridge is created, tunnels (GRE or VXLAN, encrypted or not) are established between the center host and all hosts in the included pools. For encrypted tunnels, libreswan is used for IPsec, establishing routes at the kernel level. This currently limits you to one encrypted tunnel per protocol, as multiple tunnels would attempt to set the same route.
+A network is created, and its associated bridge is created on the required hosts. Unlike other network types, these can span multiple pools, which is why the SDN Controller plugin is needed as <abbr title="Xen Project Management API">XAPI</abbr> is not aware of other pools. After the bridge is created, tunnels (GRE or VXLAN, encrypted or not) are established between the center host and all hosts in the included pools. For encrypted tunnels, libreswan is used for IPsec, establishing routes at the kernel level. This currently limits you to one encrypted tunnel per protocol, as multiple tunnels would attempt to set the same route.
 
 :::tip
-In cross-pool setups, networks created on each pool have the same name, but their XAPI UUIDs will differ, as UUIDs are unique per pool.
+In cross-pool setups, networks created on each pool have the same name, but their <abbr title="Xen Project Management API">XAPI</abbr> UUIDs will differ, as UUIDs are unique per pool.
 :::
 
 These networks create their own bridges, and you can identify them by a port name `<bridge>_portX`, which will have a type indicating the protocol and a `remote_ip` field. This is visible in the `ovs-vsctl show` output:
@@ -670,7 +670,7 @@ On the central host, there will be one interface with a `remote_ip` per host, an
 
 #### Network creation
 
-Network creation is triggered via XO or `xe`, passing through XAPI, which instructs OVS to create the corresponding bridge. The following diagrams illustrate the process at a high level and then zoom in on the XAPI and OVS components.
+Network creation is triggered via XO or `xe`, passing through <abbr title="Xen Project Management API">XAPI</abbr>, which instructs OVS to create the corresponding bridge. The following diagrams illustrate the process at a high level and then zoom in on the <abbr title="Xen Project Management API">XAPI</abbr> and OVS components.
 
 High level flow:
 ```mermaid
@@ -687,7 +687,7 @@ sequenceDiagram
     XAPI->>XO: return network information
 ```
 
-XAPI flow:
+<abbr title="Xen Project Management API">XAPI</abbr> flow:
 ```mermaid
 sequenceDiagram
    participant xapi master
@@ -707,7 +707,7 @@ sequenceDiagram
    Note right of xapi supporter: local msg-switch&networkd
    xapi supporter->>xapi master: network created
    xapi master->>xapi-db: store information
-   
+
 ```
 
 OVS flow:
@@ -728,8 +728,8 @@ sequenceDiagram
 
 To simplify the diagram, names have been shortened:
 - XO SDN refers to XO and its SDN Controller plugin.
-- XAPI center is the master XAPI on the central host.
-- XAPIs are the master XAPI instances on other pools.
+- <abbr title="Xen Project Management API">XAPI</abbr> center is the master <abbr title="Xen Project Management API">XAPI</abbr> on the central host.
+- <abbr title="Xen Project Management API">XAPI</abbr>s are the master <abbr title="Xen Project Management API">XAPI</abbr> instances on other pools.
 - OVS refers to OVS on each host.
 
 ```mermaid
@@ -760,9 +760,9 @@ sequenceDiagram
 There are currently two ways to manage traffic rules:
 
 - The legacy method, where the SDN Controller plugin communicates directly with `ovs-vswitchd` to add or remove flows.
-- The new (BETA) method, which uses a XAPI plugin to manage OpenFlow rules locally by running OVS commands.
+- The new (BETA) method, which uses a <abbr title="Xen Project Management API">XAPI</abbr> plugin to manage OpenFlow rules locally by running OVS commands.
 
-The legacy approach is simpler but limited: `ovs-vswitchd` only listens for a single datapath, making it difficult to configure multiple networks or fake bridges (used for [VLANs](#vlans)). The new approach, using a XAPI plugin, overcomes these limitations by allowing each host to define rules locally, with full access to all datapaths, ports, and interfaces.
+The legacy approach is simpler but limited: `ovs-vswitchd` only listens for a single datapath, making it difficult to configure multiple networks or fake bridges (used for [VLANs](#vlans)). The new approach, using a <abbr title="Xen Project Management API">XAPI</abbr> plugin, overcomes these limitations by allowing each host to define rules locally, with full access to all datapaths, ports, and interfaces.
 
 ##### OpenFlow protocol
 
@@ -777,7 +777,7 @@ sequenceDiagram
     XO SDN->>XO SDN: build flow rules
     XO SDN->>ovs-vswitchd: send OpenFlow rules
 ```
-##### XAPI plugin
+##### <abbr title="Xen Project Management API">XAPI</abbr> plugin
 
 ```mermaid
 sequenceDiagram
@@ -829,4 +829,4 @@ sequenceDiagram
     datapath->>vif: send packet to the right port
     Note left of NIC: no packets
     datapath->>datapath: remove flow cache entry
-``` 
+```

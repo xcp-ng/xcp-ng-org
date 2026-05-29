@@ -29,7 +29,7 @@ Network access is not required for:
 ## Installation or Upgrade steps
 
 :::info
-During an upgrade, the installer will not detect your existing bond configuration. In XCP-ng, network settings are managed by XAPI and applied to Open vSwitch, but the installation process operates independently of these components.
+During an upgrade, the installer will not detect your existing bond configuration. In XCP-ng, network settings are managed by <abbr title="Xen Project Management API">XAPI</abbr> and applied to Open vSwitch, but the installation process operates independently of these components.
 :::
 
 1. Boot from your installation media. You'll reach the **Select Keymap** screen, at this stage, the network interfaces still have their temporary names, such as `side-XXXX-ethY`

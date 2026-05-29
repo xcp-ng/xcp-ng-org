@@ -83,26 +83,26 @@ A new XAPI method allowing you to choose the frequency of the core scheduler was
 ### New storage drivers
 We added three new experimental storage drivers: `zfs`, `glusterfs` and `cephfs`.
 
-We also decided to include all SR drivers by default in XCP-ng now, including experimental ones. We do not, however, install all the dependencies on dom0 by default: `xfsprogs`, `gluster-server`, `ceph-common`, `zfs`... They need to be installed using `yum` for you to use the related SR drivers. Check the documentation for each storage driver.
+We also decided to include all <abbr title="Storage Repository">SR</abbr> drivers by default in XCP-ng now, including experimental ones. We do not, however, install all the dependencies on dom0 by default: `xfsprogs`, `gluster-server`, `ceph-common`, `zfs`... They need to be installed using `yum` for you to use the related <abbr title="Storage Repository">SR</abbr> drivers. Check the documentation for each storage driver.
 
 #### `zfs`
-We already provided `zfs` packages in our repositories before, but there was no dedicated SR driver. Users would use the `file` driver, which has a major drawback: if the zpool is not active, that driver may believe that the SR suddenly became empty, and drop all VDI metadata.
+We already provided `zfs` packages in our repositories before, but there was no dedicated <abbr title="Storage Repository">SR</abbr> driver. Users would use the `file` driver, which has a major drawback: if the zpool is not active, that driver may believe that the <abbr title="Storage Repository">SR</abbr> suddenly became empty, and drop all VDI metadata.
 
-So we developed a dedicated `zfs` SR driver that checks whether `zfs` is present before drawing such conclusions.
+So we developed a dedicated `zfs` <abbr title="Storage Repository">SR</abbr> driver that checks whether `zfs` is present before drawing such conclusions.
 
-See [Transition to the new ZFS SR driver](#transition-to-the-new-zfs-sr-driver) if you were already using ZFS in XCP-ng before the 8.2 release.
+See [Transition to the new ZFS <abbr title="Storage Repository">SR</abbr> driver](#transition-to-the-new-zfs-sr-driver) if you were already using ZFS in XCP-ng before the 8.2 release.
 
-=> [ZFS SR Documentation](../../../storage#zfs)
+=> [ZFS <abbr title="Storage Repository">SR</abbr> Documentation](../../../storage#zfs)
 
 #### `glusterfs`
-Use this driver to connect to an existing Gluster storage as a shared SR.
+Use this driver to connect to an existing Gluster storage as a shared <abbr title="Storage Repository">SR</abbr>.
 
-=> [GlusterFS SR Documentation](../../../storage#glusterfs)
+=> [GlusterFS <abbr title="Storage Repository">SR</abbr> Documentation](../../../storage#glusterfs)
 
 #### `cephfs`
 Use this driver to connect to an existing Ceph storage through the CephFS storage interface.
 
-=> [CephFS SR Documentation](../../../storage#cephfs)
+=> [CephFS <abbr title="Storage Repository">SR</abbr> Documentation](../../../storage#cephfs)
 
 ### Guest tools ISO
 Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 8.2: they dropped the guest tools ISO, replaced by downloads from their website. We chose to retain the feature and still provide a guest tools ISO that you can mount to your VMs. Many thanks go to the [XAPI](https://github.com/xapi-project/xen-api/) developers who have accepted to keep the related source code in the XAPI project for us to keep using, rather than deleteing it.
@@ -135,25 +135,25 @@ The community-maintained XCP-ng Center client is [now available for download](ht
 Although we host XCP-ng Center on our GitHub organisation and authorized its contributors to use the XCP-ng logo, we remind our users that - as documented [in the official docs](../../management#-local-management) and on its [download page](https://github.com/xcp-ng/xenadmin/releases) - **XCP-ng Center is not officially supported by the XCP-ng project**.
 :::
 
-#### Transition to the new ZFS SR driver
+#### Transition to the new ZFS <abbr title="Storage Repository">SR</abbr> driver
 
-If you created a storage repository before upgrading to XCP-ng 8.2, be it manually or using Xen Orchestra's SR creation form, its type will be `file`. As explained [above](#zfs), this leaves you at risk of losing your VM metadata, so we strongly advise to transition to the new `zfs` SR driver.
+If you created a storage repository before upgrading to XCP-ng 8.2, be it manually or using Xen Orchestra's <abbr title="Storage Repository">SR</abbr> creation form, its type will be `file`. As explained [above](#zfs), this leaves you at risk of losing your VM metadata, so we strongly advise to transition to the new `zfs` <abbr title="Storage Repository">SR</abbr> driver.
 
 There exists no easy way to convert an existing storage repository from a given type, so the conversion procedure is:
 * Upgrade the pool to XCP-ng 8.2
 * Then for each host with a local ZFS storage that needs being re-created, starting with the pool master:
   * Install the `zfs` package if not installed already (`yum install zfs`).
-  * Back-up your VMs from the existing ZFS SR.
-  * Move the VMs from that local SR towards another SR, or export them then delete them.
-  * Check that the SR is now empty.
-  * Note the *SR uuid* (visible in Xen Orchestra, or in the output of `xe sr-list`).
-  * Find the associated PBD: `xe pbd-list sr-uuid={SR-UUID}`
-    * Note the *PBD uuid*.
+  * Back-up your VMs from the existing ZFS <abbr title="Storage Repository">SR</abbr>.
+  * Move the VMs from that local <abbr title="Storage Repository">SR</abbr> towards another <abbr title="Storage Repository">SR</abbr>, or export them then delete them.
+  * Check that the <abbr title="Storage Repository">SR</abbr> is now empty.
+  * Note the *<abbr title="Storage Repository">SR</abbr> uuid* (visible in Xen Orchestra, or in the output of `xe sr-list`).
+  * Find the associated <abbr title="Physical Block Device">PBD</abbr>: `xe pbd-list sr-uuid={SR-UUID}`
+    * Note the *<abbr title="Physical Block Device">PBD</abbr> uuid*.
     * Note the associated location (e.g. `/zfs/vol0`).
-  * Unplug the PBD: `xe pbd-unplug uuid={PBD-UUID}`
-  * Destroy the SR: `xe sr-destroy uuid={SR-UUID}`
-  * [Create the ZFS SR](../../../storage#zfs)
-  * Move or import the VMs back to the new SR
+  * Unplug the <abbr title="Physical Block Device">PBD</abbr>: `xe pbd-unplug uuid={PBD-UUID}`
+  * Destroy the <abbr title="Storage Repository">SR</abbr>: `xe sr-destroy uuid={SR-UUID}`
+  * [Create the ZFS <abbr title="Storage Repository">SR</abbr>](../../../storage#zfs)
+  * Move or import the VMs back to the new <abbr title="Storage Repository">SR</abbr>
 
 #### Status of Windows guest tools
 

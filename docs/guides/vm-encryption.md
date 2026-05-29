@@ -52,15 +52,15 @@ For Linux VMs, here are two popular tools:
     sudo mount /dev/mapper/encrypted_volume /mnt
     ```
 
-## Encrypting a shared storage repository
+## Encrypting a shared <abbr title="Storage Repository">SR</abbr>
 
-If you want to protect data across multiple hosts, consider using an encrypted storage repository (SR) for your VM disks. A popular option for this is TrueNAS, which can manage and encrypt SRs.
+If you want to protect data across multiple hosts, consider using an encrypted <abbr title="Storage Repository">SR</abbr> for your VM disks. A popular option for this is TrueNAS, which can manage and encrypt SRs.
 
 For detailed instructions, refer to the TrueNAS guide on [storage encryption](https://www.truenas.com/docs/core/13.0/coretutorials/storage/pools/storageencryption/).
 
 ## Things to keep in mind
 
 - **Encryption inside the VM** is the easiest and most flexible option. It works regardless of your storage setup and lets you choose the encryption method you prefer. However, this only protects data inside the VM. Your hypervisor and storage layer stay unencrypted.
-- **Encrypted storage repositories** secure data at the storage level, protecting all virtual disks in the SR. This is useful if you want to safeguard data across multiple VMs or hosts. Just be aware that it may affect performance and requires compatible storage hardware.
+- **Encrypted storage repositories** secure data at the storage level, protecting all virtual disks in the <abbr title="Storage Repository">SR</abbr>. This is useful if you want to safeguard data across multiple VMs or hosts. Just be aware that it may affect performance and requires compatible storage hardware.
 - **Full disk encryption** has to be set up during OS installation—you can't add it later to an existing VM.
 - Neither method is natively supported by Xen Orchestra or XCP-ng, so you'll need to manage encryption keys and access control on your own.

@@ -47,7 +47,7 @@ For more details, refer to the [Hardware Compatibility List (HCL)](../../install
 
 :::danger
 **Strongly discouraged** due to heavy write operations in XCP-ng:
-- **XAPI Database**: Undergoes frequent changes, resulting in extensive write operations, potentially reducing USB drive lifespan. The XAPI database maintains the state of all XCP-ng operations and is replicated across all hosts.
+- **<abbr title="Xen Project Management API">XAPI</abbr> Database**: Undergoes frequent changes, resulting in extensive write operations, potentially reducing USB drive lifespan. The <abbr title="Xen Project Management API">XAPI</abbr> database maintains the state of all XCP-ng operations and is replicated across all hosts.
 - **Logging**: XCP-ng generates a high volume of logs. Consider using a remote syslog service as an alternative.
 :::
 
@@ -164,7 +164,7 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 - **Virtual Disk Images per VM (including CD-ROMs)**: Up to **241**. This is also influenced by the limits of your guest OS; refer to its documentation to ensure compatibility.
 - **Virtual CD-ROM drives per VM**: **1**.
 - **Maximum Virtual Disk Size**:
-  - **2,040 GiB** using storage drivers with the VHD format (`Local EXT`, `Local LVM`, `NFS`, `LVM over iSCSI`, `XOSTOR`, etc.).
+  - **2,040 GiB** using storage drivers with the VHD format (Local EXT, Local LVM, NFS, LVM over iSCSI, <abbr title="Xen Orchestra Storage">XOSTOR</abbr>, etc.).
   - Nearly unlimited when using the `raw` storage driver or disk pass-through to the VM (note: snapshots and live migration are not supported in these cases).
   - New storage drivers are under active development to overcome the **2,040 GiB** VHD limit while retaining features like snapshots and live migration.
 
@@ -183,7 +183,7 @@ A resource pool is a collection of one or more servers (up to 64), which can be 
 
 ### Hardware Requirements
 
-- All servers must have compatible CPUs (same vendor — Intel or AMD). To run HVM VMs, CPUs must support virtualization.
+- All servers must have compatible CPUs (same vendor — Intel or AMD). To run <abbr title="Hardware Virtual Machine">HVM</abbr> VMs, CPUs must support virtualization.
 
 ### Additional Pool Requirements
 

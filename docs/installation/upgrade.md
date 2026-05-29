@@ -18,7 +18,7 @@ There are 3 upgrade methods, detailed below:
 :::
 
 :::warning
-For upgrading XCP-ng machines with an XOSTOR SR, please refer to this [additional information](../../xostor#upgrade) before taking any action.
+For upgrading XCP-ng machines with an <abbr title="Xen Orchestra Storage">XOSTOR</abbr> <abbr title="Storage Repository">SR</abbr>, please refer to this [additional information](../../xostor#upgrade) before taking any action.
 :::
 
 ## ☢️ Release Notes & Known Issues
@@ -36,7 +36,7 @@ Read the [Release Notes and Known Issues](../../releases#xcp-ng-release-history)
 :::
 
 :::warning
-* When upgrading from *XCP-ng 7.5 or lower* or from *XenServer* or *Citrix Hypervisor*, **it is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
+* When upgrading from *XCP-ng 7.5 or lower* or from *XenServer* or *Citrix Hypervisor*, **it is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to <abbr title="Xen Project Management API">XAPI</abbr> being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
 :::
 
 ## 💿 Upgrade via installation ISO (recommended)
@@ -221,7 +221,7 @@ This article describes how to proceed in order to convert your Citrix XenServer 
 **This is exactly the same thing for any Citrix Hypervisor version**.
 
 :::tip
-**Yes** you can do that without losing ANY settings (SR, VMs, networks) from your existing Citrix Hypervisor/XenServer infrastructure!
+**Yes** you can do that without losing ANY settings (<abbr title="Storage Repository">SR</abbr>, VMs, networks) from your existing Citrix Hypervisor/XenServer infrastructure!
 :::
 
 :::warning
@@ -229,7 +229,7 @@ This article describes how to proceed in order to convert your Citrix XenServer 
 * DON'T use the `Maintenance Mode` in XCP-ng Center. It moves the pool master to another host, which has to be avoided in the upgrading procedure.
 * If HA (High Availability) is enabled, disable it before upgrading
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`
-* **It is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
+* **It is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to <abbr title="Xen Project Management API">XAPI</abbr> being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
 * If you already have an XCP-ng pool, do not try to add a slave running XenServer to it. You will get an "Incompatible License" error. Please upgrade the slave to XCP-ng first, then add it to your existing pool
 * Before proceeding, it is important to ensure that the `xapi` service
   currently running on your host is compatible with the version provided by
@@ -293,7 +293,7 @@ As it's (obviously) a better partition scheme, we strongly recommend you to upgr
 :::
 
 :::warning
-Using the new partition scheme will REMOVE the content of your local SR.
+Using the new partition scheme will REMOVE the content of your local <abbr title="Storage Repository">SR</abbr>.
 :::
 
 #### Using the new partitions
@@ -302,7 +302,7 @@ In order to migrate using the new partition scheme, you need to run this command
 
 `$ touch /var/preserve/safe2upgrade`
 
-> Check that you are using GPT partitioning and not MBR and double check that you don't have any VDI attached to your local SR. Any remaining VDI will be removed.
+> Check that you are using GPT partitioning and not MBR and double check that you don't have any <abbr title="VirtualBox Disk Image">VDI</abbr> attached to your local <abbr title="Storage Repository">SR</abbr>. Any remaining <abbr title="VirtualBox Disk Image">VDI</abbr> will be removed.
 
 Then, you can follow the standard migration procedure describe above.
 

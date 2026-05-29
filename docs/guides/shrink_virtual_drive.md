@@ -33,7 +33,7 @@ It seems that doing a `dism /Online /Set-ReservedStorageState /State:Disabled` f
 1. Identify the partition you want to move to the new disk and then shut down the VM.
 1. Create a new drive of the smaller size you want in this VM.
 1. Switch the VM to BIOS mode.
-1. Get the Clonezilla ISO available in your ISO SR and insert it.
+1. Get the Clonezilla ISO available in your ISO <abbr title="Storage Repository">SR</abbr> and insert it.
 1. Check the boot order to ensure it's CD drive and then HDD.
 
 #### Steps

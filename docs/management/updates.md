@@ -96,12 +96,12 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 If you update any other host before the pool master, **it will lose the ability to connect to the pool master and will become completely unusable**.
 :::
 
-* Disable HA during the whole update process to avoid accidental fencing (automatically handled by [Xen Orchestra RPU](updates.md#from-xen-orchestra))
-* Avoid applying updates while XAPI tasks are running (`xe task-list`).
+* Disable HA during the whole update process to avoid accidental fencing (automatically handled by [Xen Orchestra <abbr title="Rolling Pool Update">RPU</abbr>](updates.md#from-xen-orchestra))
+* Avoid applying updates while <abbr title="Xen Project Management API">XAPI</abbr> tasks are running (`xe task-list`).
 * Some updates may probe SCSI devices. If your devices are sensitive to that kind of thing, plug them off before updating (see [this unfortunate story](https://github.com/xcp-ng/xcp/issues/232) of dead tape robots).
 * As a precaution, it may be a good idea to disconnect passed-through devices before applying the update.
 * If a reboot is required and you want to avoid downtime, you will probably move your VMs from host to host. One common mistake (favoured by the default values in some VM templates) is to give a VM a very low dynamic minimum RAM value. XCP-ng will reduce the VMs total RAM to that dynamic minimum during the live migration. If the limit is too low, this may lead to killed processes or even a crashed system inside the VM due to the memory pressure, thus requiring a reboot of the VM.
-* If among the to-be-updated packages you see `xcp-ng-pv-tools`, make sure to unmount the guest tools ISO from all running VMs before the update (it is done automatically during the update for VMs that are turned off). If the guest tools are still mounted at the time of the update, the VDI will point at a non-existing ISO image after the update. The VMs that have that VDI mounted will then fail to migrate or restart due to the missing VDI.
+* If among the to-be-updated packages you see `xcp-ng-pv-tools`, make sure to unmount the guest tools ISO from all running VMs before the update (it is done automatically during the update for VMs that are turned off). If the guest tools are still mounted at the time of the update, the <abbr title="VirtualBox Disk Image">VDI</abbr> will point at a non-existing ISO image after the update. The VMs that have that <abbr title="VirtualBox Disk Image">VDI</abbr> mounted will then fail to migrate or restart due to the missing <abbr title="VirtualBox Disk Image">VDI</abbr>.
 *Some people systematically run `xe vm-cd-eject --multiple` to eject all virtual CDs/DVDs from the VMs before updating and/or migrating.*
 * Do not update from an interactive shell that was directly started from the XCP-ng console (`xsconsole`), nor from the host's remote console that is available through the VNC protocol in Xen Orchestra or XCP-ng Center. The update process may restart those, kill the current shell and thus kill the update process which would leave the system in an unclean state (duplicate RPMs).
 
@@ -113,7 +113,7 @@ If you update any other host before the pool master, **it will lose the ability 
 
 Check prerequisites and precautions above.
 
-#### 2. Additional steps regarding XOSTOR SRs
+#### 2. Additional steps regarding <abbr title="Xen Orchestra Storage">XOSTOR</abbr> SRs
 
 LINSTOR expects that we always use satellites and controllers with the same version.
 Without precautions and after a reboot of a just updated host, it's possible that a machine can no longer communicate with other hosts through LINSTOR satellites.
@@ -165,35 +165,35 @@ Once the control plane has been fully restarted, it should be enabled back again
 
 ### From Xen Orchestra
 
-If you are using a pool with at least 2 hosts and a shared storage, you can rely on the "Rolling Pool Update" feature, doing all the heavy lifting for you. Alternatively, you can update hosts individually.
+If you are using a pool with at least 2 hosts and a shared storage, you can rely on the <abbr title="Rolling Pool Update">RPU</abbr> feature, doing all the heavy lifting for you. Alternatively, you can update hosts individually.
 
-#### Rolling Pool Update (RPU)
+#### Rolling Pool Update (<abbr title="Rolling Pool Update">RPU</abbr>)
 
-Also known as RPU, **this is the advised way to update your pool**. By just clicking on one button, Xen Orchestra will automatically move VMs around, apply updates and reboot the hosts, without any service interruption. The following button is available in the Pool view, on "Patches" tab:
+**This is the advised way to update your pool**. By just clicking on one button, Xen Orchestra will automatically move VMs around, apply updates and reboot the hosts, without any service interruption. The following button is available in the Pool view, on "Patches" tab:
 
-![XO's Rolling Pull Update button.](../../assets/img/rpubutton.png)
+![XO's rolling pull update (RPU) button.](../../assets/img/rpubutton.png)
 
 :::info
 This powerful and fully automated mechanism requires some prerequisites: all your VMs disks must be on a one (or more) shared storage. Also, high-availability will be automatically disabled, as the XO load balancer plugin and backup jobs. Everything will be enabled back when it's done!
 :::
 
-##### XOSTOR support
+##### <abbr title="Xen Orchestra Storage">XOSTOR</abbr> support
 
-Rolling Pool Updates (RPUs) can now handle pools that utilize XOSTOR. If there is no LINSTOR Storage Repository (SR), the RPU proceeds as usual. However, if a LINSTOR SR is present, and the prerequisites below are met, the update process includes additional steps to ensure compatibility before performing the standard rolling update.
+<abbr title="Rolling Pool Update">RPU</abbr> can now handle pools that utilize <abbr title="Xen Orchestra Storage">XOSTOR</abbr>. If there is no LINSTOR Storage Repository (<abbr title="Storage Repository">SR</abbr>), the <abbr title="Rolling Pool Update">RPU</abbr> proceeds as usual. However, if a LINSTOR <abbr title="Storage Repository">SR</abbr> is present, and the prerequisites below are met, the update process includes additional steps to ensure compatibility before performing the standard rolling update.
 
 :::warning
 
 **Prerequisites**
 
-Rolling Pool Updates (RPUs) can handle pools that utilize XOSTOR, if:
+<abbr title="Rolling Pool Update">RPU</abbr> can handle pools that utilize <abbr title="Xen Orchestra Storage">XOSTOR</abbr>, if:
 
 - your host uses `xcp-ng-xapi-plugins-1.12.0` or a later version.\
-    To verify your XAPI plugins version, run `rpm -q xcp-ng-xapi-plugins` on your host.
+    To verify your <abbr title="Xen Project Management API">XAPI</abbr> plugins version, run `rpm -q xcp-ng-xapi-plugins` on your host.
 - XO is on version 5.105 or later
 
 **What about older versions?**
 
-What happens with older versions of the XAPI plugins is that, after rebooting a recently updated host, it might no longer be able to communicate with other hosts through LINSTOR satellites. In fact, LINSTOR expects that we always use satellites and controllers with the same version.
+What happens with older versions of the <abbr title="Xen Project Management API">XAPI</abbr> plugins is that, after rebooting a recently updated host, it might no longer be able to communicate with other hosts through LINSTOR satellites. In fact, LINSTOR expects that we always use satellites and controllers with the same version.
 
 To avoid problems, it is strongly recommended to update the satellites, controllers packages of each host without rebooting:
 ```
@@ -209,11 +209,11 @@ systemctl restart linstor-satellite
 Then you can follow the instructions in the documentation to manually update the pool.
 :::
 
-![XO's pool Patches tab showing the Rolling pool update button being clicked on.](../../assets/img/rpu1.png)
+![XO's pool Patches tab showing the rolling pull update (RPU) button being clicked on.](../../assets/img/rpu1.png)
 
 #### Pool updates
 
-If you can't use RPU (Rolling Pool Updates), you can still use "Install pool patches" button. This will simply install updates on all hosts on your pool and restart the toolstack, **without doing any host reboot**:
+If you can't use <abbr title="Rolling Pool Update">RPU</abbr>, you can still use "Install pool patches" button. This will simply install updates on all hosts on your pool and restart the tool-stack, **without doing any host reboot**:
 
 ![XO's Install pool patches buton.](../../assets/img/updatebutton.png)
 
@@ -241,7 +241,7 @@ Else base your decision on an educated guess. Look at the list of the updated pa
 * Was there a kernel update? Reboot. Those are usually security fixes that require a reboot.
 * Were `xen-hypervisor` and/or other `xen-*` packages updated? Reboot too.
 * Other low-level packages may require a reboot too, for example `glibc`.
-* If you don't reboot, check that no task is currently running and restart the XAPI toolstack (`xe-toolstack-restart`).
+* If you don't reboot, check that no task is currently running and restart the <abbr title="Xen Project Management API">XAPI</abbr> toolstack (`xe-toolstack-restart`).
 
 All updates are announced on [https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing](https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing) along with information about what steps are required after installing the update (reboot, toolstack restart, service restart...).
 
@@ -252,6 +252,6 @@ Since the component that handles live migrations in XenServer is closed-source, 
 So, if you plan to live-migrate VMs as part of the update process (if some of the installed updates require a reboot of the hosts), then you should do this first to ensure migration will be smooth:
 
 * Install the latest update for `xcp-emu-manager` if there's one, on every host. Either from Xen Orchestra's patch management, or from command line directly on the hosts: `yum update xcp-emu-manager`.
-* Restart the XAPI toolstack on each host: `xe-toolstack-restart`. No need to reboot.
+* Restart the <abbr title="Xen Project Management API">XAPI</abbr> toolstack on each host: `xe-toolstack-restart`. No need to reboot.
 
 Now you can proceed with the rest of the updates and evacuate the hosts one by one (starting with the master) before rebooting it, if the update requires it.

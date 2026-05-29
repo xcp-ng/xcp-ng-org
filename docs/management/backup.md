@@ -31,7 +31,7 @@ And they come with different features:
 
 
 
-All options are explained in the [official documentation](https://xen-orchestra.com/docs/). Xen Orchestra is [available as a turnkey virtual appliance](https://xen-orchestra.com), called XOA which [you can deploy in a minute](https://vates.tech/deploy).
+All options are explained in the [official documentation](https://xen-orchestra.com/docs/). Xen Orchestra is [available as a turnkey virtual appliance](https://xen-orchestra.com), called <abbr title="Xen Orchestra Appliance">XOA</abbr> which [you can deploy in a minute](https://vates.tech/deploy).
 
 Alternatively, you can install and build it yourself [from the GitHub repository](https://github.com/vatesfr/xen-orchestra/).
 

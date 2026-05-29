@@ -57,7 +57,7 @@ Now you have your hosts running, the next step is to manage them. You have vario
 
 #### Host API architecture
 
-All XCP-ng clients are communicating with the pool master, through the Xen API ([XAPI](management/manage-locally/api.md)). You only need to open a connection to the master, even if there are multiple hosts.
+All XCP-ng clients are communicating with the pool master, through the Xen API ([<abbr title="Xen Project Management API">XAPI</abbr>](management/manage-locally/api.md)). You only need to open a connection to the master, even if there are multiple hosts.
 
 Some clients are stateless (only running when you open or use them) and others are stateful (running in a daemon, often in a dedicated VM). For very basic management tasks, stateless clients are fine. However, for more advanced features, you need stateful clients. The default choice is to use Xen Orchestra, but a list of solutions is available in our [management section](management).
 

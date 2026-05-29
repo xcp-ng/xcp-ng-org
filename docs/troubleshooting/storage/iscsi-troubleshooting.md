@@ -34,14 +34,14 @@ Display information about a target:
 iscsiadm -m node -T targetname -p <IP_address>
 ```
 
-Rescan a volume after expanding a LUN:
+Rescan a volume after expanding a <abbr title="Logical Unit Number">LUN</abbr>:
 ```sh
 iscsiadm -m node -p <IP_address> --rescan
 ```
 
 ## 💓 iSCSI in storage-cluster environment
 
-This apply to setup using DRBD/Corosync/Pacemaker.
+This apply to setup using <abbr title="Distributed Replicated Block Device">DRBD</abbr>/Corosync/Pacemaker.
 
 #### iSCSI reconnect after reboot fails permanently ( Unsupported SCSI Opcode )
 

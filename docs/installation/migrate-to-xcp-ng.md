@@ -34,11 +34,11 @@ Export your VM in OVA format, and use Xen Orchestra to import it. If you have an
 
 :::warning
 
-**Disk Size Limitations** 
+**Disk Size Limitations**
 
 Disks larger than 2TB - 8MB cannot be migrated automatically. You will need to create the VM in Xen Orchestra with multiple disks and use the OS capabilities to build them into a joined disk of the required size. Then, migrate the disk content using your preferred tool (e.g., Clonezilla, Robocopy, Rsync).
 
-**Warm migration prerequisites** 
+**Warm migration prerequisites**
 
 Warm migration (as explained below in the [XO V2V](#xo-v2v) section) involves migrating all content up to the last snapshot, then stopping the VM and migrating the snapshot content. This method requires that the VM has at least one snapshot and that the account used has permission to stop the VM.
 
@@ -59,7 +59,7 @@ Remove the VMware drivers before starting the migration.
 
 ### XO V2V
 
-Xen Orchestra introduces "V2V", or "VMware to Vates", a streamlined tool for migrating from VMware to the Vates Stack, which includes XCP-ng and Xen Orchestra (XO). 
+Xen Orchestra introduces "V2V", or "VMware to Vates", a streamlined tool for migrating from VMware to the Vates Stack, which includes XCP-ng and Xen Orchestra (XO).
 
 This tool is seamlessly integrated into Xen Orchestra and leverages the "warm migration" feature for efficient transitions. The process begins by exporting an initial snapshot of the VMware-based VM. Although this step can be time-consuming, it occurs without disrupting the VM's operation, ensuring transparency.
 
@@ -73,7 +73,7 @@ This method doesn't require any direct access to the VMware storage, only an HTT
 
 The initial situation: a running VM on ESXi on the left, your Xen Orchestra in the middle, and your Vates XCP-ng host on the right:
 
-![Diagram with ESXi Host on the left, with a running VM, XOA V2V in the middle, and an empty XCP-ng host on the right.](../../assets/img/xoa-v2v-1.png)
+![Diagram with ESXi Host on the left, with a running VM, Xen Orchestra Appliance V2V in the middle, and an empty XCP-ng host on the right.](../../assets/img/xoa-v2v-1.png)
 
 The initial sync: the empty VM is created on XCP-ng, and after a snapshot, the content is transferred from VMware side to the new VM disk on XCP-ng. This takes time, but your original VM is up all along (no service interruption):
 
@@ -93,16 +93,16 @@ This process is fully automated, without any human intervention after it starts 
 :::warning
 
 - **Raw disks:** Raw disks are not supported.
-- **VSAN:** 
+- **VSAN:**
     - When migrating from a VSAN, make sure your remote has enough storage capacity to accommodate the largest VM you plan to import. The VM will be stopped before migration begins, and the process may be slow.
-    - In this case, the network path is: VSAN → vSphere → Host running XOA → Remote → Host running XOA → Host with target storage → Target storage
-- **VMFS datastores:** 
+    - In this case, the network path is: VSAN → vSphere → Host running <abbr title="Xen Orchestra Appliance">XOA</abbr> → Remote → Host running <abbr title="Xen Orchestra Appliance">XOA</abbr> → Host with target storage → Target storage
+- **VMFS datastores:**
     - Warm migration is reported to work in most cases with VMFS5. If it doesn't work, try migrating the VM while it is stopped.
-    - In this case, the network path is: VMFS storage → ESXi → Host running XOA → Host with target storage → Target storage
+    - In this case, the network path is: VMFS storage → ESXi → Host running <abbr title="Xen Orchestra Appliance">XOA</abbr> → Host with target storage → Target storage
 - **NFS datastores:** When migrating from NFSdatastores (such as NFSDatastoreEsxi):\
     - Create a corresponding NFS remote in Xen Orchestra named `[VmWare] NFSDatastoreEsxi`. If not, it will fall back to the VMFS process.
     - Warm migration is reported to work in all cases.
-    - In this case, the network path is: NFS remote → Host running XOA → Host with target storage → Target storage
+    - In this case, the network path is: NFS remote → Host running <abbr title="Xen Orchestra Appliance">XOA</abbr> → Host with target storage → Target storage
 :::
 
 #### From the XO UI
@@ -113,13 +113,13 @@ In your Xen Orchestra UI, go to the main menu on the left, on **Import** click *
 
 After giving the vCenter credentials, click **Connect** and go to the next step:
 
-![XO import view showing how to choose the pool, SR and network for the imported VM, and the VM selected for import from VMware.](../../assets/img/v2v2.png)
+![XO import view showing how to choose the pool, <abbr title="Storage Repository">SR</abbr> and network for the imported VM, and the VM selected for import from VMware.](../../assets/img/v2v2.png)
 
 On this screen, you will basically select which VM to replicate, and to which pool, storage and network. When it's done, just click on "Import" and there you go!
 
 #### From the CLI
 
-You can also use the command-line interface (CLI) to migrate your VM. 
+You can also use the command-line interface (CLI) to migrate your VM.
 
 To do this:
 
@@ -129,7 +129,7 @@ To do this:
     - SSL check or not
     - The ID of the VM and the ID of the VM
 2. On the XCP-ng side, provide the following information:
-    - SR
+    - <abbr title="Storage Repository">SR</abbr>
     - Network
 
 3. Run this command with `xo-cli`:
@@ -144,13 +144,13 @@ Here is a comprehensive checklist of steps to take when encountering issues duri
 
 ##### General Checks
 
-**XOA Version**
+**<abbr title="Xen Orchestra Appliance">XOA</abbr> Version**
 
-1. Make sure you can go to this screen in XOA:
+1. Make sure you can go to this screen in <abbr title="Xen Orchestra Appliance">XOA</abbr>:
 
-![Selecting XOA in the sidebar, and  Updates in the submenu.](../../assets/img/check-update-xoa.png)
+![Selecting Xen Orchestra Appliance (XOA) in the sidebar, and  Updates in the submenu.](../../assets/img/check-update-xoa.png)
 
-2. Check your version of XOA. You should be usng the `latest` channel:
+2. Check your version of <abbr title="Xen Orchestra Appliance">XOA</abbr>. You should be usng the `latest` channel:
 
 ![Release channel selected to "latest".](../../assets/img/check-xoa-version.png)
 
@@ -159,15 +159,15 @@ If you were not using the `latest` channel previously:
     2. Update your VM.
 
 :::tip
-- **Backup method:** The migration will use the default backup migration. Check if the XOA VM can access it.
-- **Task timeout:** Note that XAPI tasks are limited to 24 hours by default. To increase that limitation, refer to the **24h task timeout** section of [this page](/management/manage-locally/api#24h-task-timeout).
+- **Backup method:** The migration will use the default backup migration. Check if the <abbr title="Xen Orchestra Appliance">XOA</abbr> VM can access it.
+- **Task timeout:** Note that <abbr title="Xen Project Management API">XAPI</abbr> tasks are limited to 24 hours by default. To increase that limitation, refer to the **24h task timeout** section of [this page](/management/manage-locally/api#24h-task-timeout).
 :::
 
 From this point onward, the process varies depending on the type of datastore you're using.
 
 ##### VMFS 5 (Mostly up to VMware 6.5)
 
-For VMFS 5, **you can perform a warm migration** (the VM doesn't need to be shut down before migration). 
+For VMFS 5, **you can perform a warm migration** (the VM doesn't need to be shut down before migration).
 
 Here's what you need to check:
 
@@ -204,18 +204,18 @@ Snapshots are not used, so it doesn't matter if there are any.
 2. Make sure that no ISO files are mounted to the VM.
 3. The VM **must** be powered off.
 4. Connect directly to vSphere via its IP address.
-5. If the V2V tool successfully detects that the VM is on a vSAN store, it should prompt you to select an XOA remote (see **Settings → Remotes**) to store a temporary VMDK export.
-6. If it does not prompt you to select an XOA remote before import, it has not detected your vSAN properly. 
+5. If the V2V tool successfully detects that the VM is on a vSAN store, it should prompt you to select an <abbr title="Xen Orchestra Appliance">XOA</abbr> remote (see **Settings → Remotes**) to store a temporary VMDK export.
+6. If it does not prompt you to select an <abbr title="Xen Orchestra Appliance">XOA</abbr> remote before import, it has not detected your vSAN properly.
 \
 In that case, please open a support ticket with details of the issue.
 
 ##### NFS Datastore
 
-For VMs residing on an NFS datastore, **you can perform a warm migration** (the VM doesn't need to be shut down before migration). 
+For VMs residing on an NFS datastore, **you can perform a warm migration** (the VM doesn't need to be shut down before migration).
 
 Here's what you need to check:
 
-1. Set up an NFS backup remote in XOA under **Settings → Remotes** that connects to the NFS datastore. Name it `[VMWARE]datastorename`, where `datastorename` is the exact name of the datastore on the VMware side.
+1. Set up an NFS backup remote in <abbr title="Xen Orchestra Appliance">XOA</abbr> under **Settings → Remotes** that connects to the NFS datastore. Name it `[VMWARE]datastorename`, where `datastorename` is the exact name of the datastore on the VMware side.
 2. Uninstall VMware tools before migration.
 3. Make sure no ISO files are mounted to the VM.
 4. Remove any unnecessary snapshots before migration, as they are take lots of resources to handle.
@@ -254,7 +254,7 @@ The fix for this is installing some xen drivers *before* exporting the VM from V
 
 ### VMDK
 
-You can also export Virtual Machine Disks (VMDK). VMDK is a file format that describes containers for virtual hard disk drives to be used in virtual machines like VMware Workstation. 
+You can also export Virtual Machine Disks (VMDK). VMDK is a file format that describes containers for virtual hard disk drives to be used in virtual machines like VMware Workstation.
 
 There are two methods to export VMDKs:
 
@@ -270,24 +270,24 @@ There are two methods to export VMDKs:
 
 :::warning
 
-Snapshot migration is slow due to the huge differences between VMDK and VHD file formats. Limit the number of snapshots to the minimum.
+Snapshot migration is slow due to the huge differences between VMDK and <abbr title="Virtual Hard Disk">VHD</abbr> file formats. Limit the number of snapshots to the minimum.
 
 :::
 
 1. Stop the VM on the VMware side.
 2. Export each disk as a VMDK file.
-3. Convert the VMDK files to the VHD format, using the command: `qemu-img convert -f vmdk -O vpc source.vmdk destination.vhd`.
+3. Convert the VMDK files to the <abbr title="Virtual Hard Disk">VHD</abbr> format, using the command: `qemu-img convert -f vmdk -O vpc source.vmdk destination.vhd`.
 4. Create a diskless VM in Xen Orchestra.
 5. Import the disks using the **Import → Disk** menu in XO.
 6. Attach the disk to the VM and start it.
 
 ### CloneZilla
 
-An alternative to using OVA. 
+An alternative to using OVA.
 
 1. Insert a CloneZilla live CD in your existing VMware VM, and boot on it. In the meantime, you also have a VM on the destination with the right metadata (same name and disks), which you'll also boot with CloneZilla.
 
-2. From the VM console, you can tell the source VM running CloneZilla to send all the blocks to the destination VM, also running CloneZilla. 
+2. From the VM console, you can tell the source VM running CloneZilla to send all the blocks to the destination VM, also running CloneZilla.
 
 3. As soon it's done, you can safely shut down the original VM and boot the copy on destination!
 
@@ -306,7 +306,7 @@ This method uses the `vmfs6-tools` package, which is provided as-is, is very old
 This method is helpful if you just install XCP-ng on an extra/dedicated drive on the same hardware, removing the need for a new server to migrate.
 :::
 
-In this case, you'll mount your local VMware storage into XCP-ng and use `qemu-img` to convert the VMDK files to VHDs directly in your own XCP-ng Storage Repository (SR). If you go from local storage to local storage, it's a very fast way to migrate even large disks.
+In this case, you'll mount your local VMware storage into XCP-ng and use `qemu-img` to convert the VMDK files to <abbr title="Virtual Hard Disk">VHD</abbr> directly in your own XCP-ng <abbr title="Storage Repository">SR</abbr>. If you go from local storage to local storage, it's a very fast way to migrate even large disks.
 
 :::warning
 This method use external packages to install in XCP-ng directly (the Dom0), and you should remove them just after you did the migration. Those commands must be executed on the Dom0 itself.
@@ -325,57 +325,57 @@ yum install vmfs6-tools --enablerepo=xcp-ng-lab
 vmfs6-fuse /path/to/vmware/disk /mnt
 ```
 
-#### Convert a VMDK file to a VHD
+#### Convert a VMDK file to a <abbr title="Virtual Hard Disk">VHD</abbr>
 
-For example, on a file-based SR (local ext or NFS):
+For example, on a file-based <abbr title="Storage Repository">SR</abbr> (local ext or NFS):
 
 ```
 qemu-img convert -f vmdk -O vpc myVMwaredisk.vmdk /run/sr-mount/<SR UUID>/`uuidgen`.vhd
 ```
 
-#### Rescan the SR
+#### Rescan the <abbr title="Storage Repository">SR</abbr>
 
-You need to rescan the SR where you new VHD file is, so it can be detected. It will appear in the disk list, without a name or description though. Attach it to any VM you created before (eg without booting it first), and boot.
+You need to rescan the <abbr title="Storage Repository">SR</abbr> where you new <abbr title="Virtual Hard Disk">VHD</abbr> file is, so it can be detected. It will appear in the disk list, without a name or description though. Attach it to any VM you created before (eg without booting it first), and boot.
 
 ## 🇭 From Hyper-V
 
-There's two options, both requiring to export your Hyper-V VM disk in VHD format.
+There's two options, both requiring to export your Hyper-V VM disk in <abbr title="Virtual Hard Disk">VHD</abbr> format.
 
 ### Export the VM disk
 
-**If the server can be taken offline:** Shut down the VM and create a VHD file from the existing VHDX.  
-  This process leaves the original disk file unchanged, allowing you to restart the VM in Hyper-V if needed. Ensure sufficient disk space is available for both the original VM and the new VHD file.
+**If the server can be taken offline:** Shut down the VM and create a <abbr title="Virtual Hard Disk">VHD</abbr> file from the existing <abbr title="Virtual Hard Disk">VHDX</abbr>.
+  This process leaves the original disk file unchanged, allowing you to restart the VM in Hyper-V if needed. Ensure sufficient disk space is available for both the original VM and the new <abbr title="Virtual Hard Disk">VHD</abbr> file.
 
-**If the server must remain online:** Export the VM and then convert the VHDX to a VHD file.  
-  Note that the original VM will continue running and may be updated during the migration process. Ensure enough disk space is available for the original VM, the exported VM, and the new VHD file.
+**If the server must remain online:** Export the VM and then convert the <abbr title="Virtual Hard Disk">VHDX</abbr> to a <abbr title="Virtual Hard Disk">VHD</abbr> file.
+  Note that the original VM will continue running and may be updated during the migration process. Ensure enough disk space is available for the original VM, the exported VM, and the new <abbr title="Virtual Hard Disk">VHD</abbr> file.
 
-1. Prepare the VHD for export.  
+1. Prepare the <abbr title="Virtual Hard Disk">VHD</abbr> for export.
   Before exporting, remove all the Hyper-V tools from the VM to ensure compatibility.
 
-2. (Optional). Shut down the VM in Hyper-V.  
+2. (Optional). Shut down the VM in Hyper-V.
   To shut down the VM, run this command in PowerShell:
   ```powershell
   STOP-VM -Name <VM name>
   ```
 
-3. Identify the VM disk to be exported.  
+3. Identify the VM disk to be exported.
   To identify the VM disk, run this command:
   ```powershell
   Get-VMHardDiskDrive -VMName <VM name>
   ```
 
-4. Make sure the VM disk has the correct format.   
+4. Make sure the VM disk has the correct format.
   - Use a **dynamic disk** format, as the **static format is not compatible with XCP-ng**.
-  - If the disk is in the **VHDX** format, convert it to the **VHD** format. 
-  To convert the disk from VHDX to VHD, run this command:  
+  - If the disk is in the **<abbr title="Virtual Hard Disk">VHDX</abbr>** format, convert it to the **<abbr title="Virtual Hard Disk">VHD</abbr>** format.
+  To convert the disk from <abbr title="Virtual Hard Disk">VHDX</abbr> to <abbr title="Virtual Hard Disk">VHD</abbr>, run this command:
 
   ```powershell
   Convert-VHD -Path <source path> -DestinationPath <destination path> -VHDType Dynamic
   ```
 
-### Import the VHD in Xen Orchestra
+### Import the <abbr title="Virtual Hard Disk">VHD</abbr> in Xen Orchestra
 
-In the left menu, go for "Import" then "Disk". Select the destination SR, and then add your VHD file into it. Depending on the VHD file size, it might take some time. The upload progress can be tracked in another XO tab, in the "Task" menu.
+In the left menu, go for "Import" then "Disk". Select the destination <abbr title="Storage Repository">SR</abbr>, and then add your <abbr title="Virtual Hard Disk">VHD</abbr> file into it. Depending on the <abbr title="Virtual Hard Disk">VHD</abbr> file size, it might take some time. The upload progress can be tracked in another XO tab, in the "Task" menu.
 
 When the disk is imported, you can:
 
@@ -384,28 +384,28 @@ When the disk is imported, you can:
 6. Boot the VM
 7. Install the tools
 
-### Alternative: direct VHD copy
+### Alternative: direct <abbr title="Virtual Hard Disk">VHD</abbr> copy
 
 :::warning
-This method is a bit more dangerous: if you don't respect the VHD name format, the SR will be blocked and giving warnings. Naming is crucial to avoid problems.
+This method is a bit more dangerous: if you don't respect the <abbr title="Virtual Hard Disk">VHD</abbr> name format, the <abbr title="Storage Repository">SR</abbr> will be blocked and giving warnings. Naming is crucial to avoid problems.
 :::
 
-It's possible to directly send the VHDs to an existing XCP-ng SR. However, you MUST respect some pre-requisites:
-* to use a dynamic disk VHD format
-* the VHD **MUST be named correctly** (see below)
+It's possible to directly send the <abbr title="Virtual Hard Disk">VHD</abbr> to an existing XCP-ng <abbr title="Storage Repository">SR</abbr>. However, you MUST respect some pre-requisites:
+* to use a dynamic disk <abbr title="Virtual Hard Disk">VHD</abbr> format
+* the <abbr title="Virtual Hard Disk">VHD</abbr> **MUST be named correctly** (see below)
 
-#### VHD naming
+#### <abbr title="Virtual Hard Disk">VHD</abbr> naming
 
 The **ONLY** working format is `<UUID>.vhd`, eg `e4e573d8-6272-43ae-b969-255717e518aa.vhd`. You can generate a UUID by simply using the command `uuidgen`.
 
 #### Steps
 
-1. Rename the dynamic VHD disk to the format `<UUID>.vhd`
-2. Copy it to the destination SR (any file type is supported: local, NFS…)
-3. Scan the SR
+1. Rename the dynamic <abbr title="Virtual Hard Disk">VHD</abbr> disk to the format `<UUID>.vhd`
+2. Copy it to the destination <abbr title="Storage Repository">SR</abbr> (any file type is supported: local, NFS…)
+3. Scan the <abbr title="Storage Repository">SR</abbr>
 
 :::note
-As soon you did scan the SR, the new disk is visible in the SR/disk view. Don't forget to add a name and a description to be able to identify it in the future. Indeed, any disk imported this way won't have any metadata, so it's up to you to fill it.
+As soon you did scan the <abbr title="Storage Repository">SR</abbr>, the new disk is visible in the <abbr title="Storage Repository">SR</abbr>/disk view. Don't forget to add a name and a description to be able to identify it in the future. Indeed, any disk imported this way won't have any metadata, so it's up to you to fill it.
 :::
 
 4. Create a VM with the appropriate template, **without any disk in it**
@@ -439,27 +439,27 @@ _Due the fact I have only server here, I have setup a "buffer" machine on my des
 
 * Use rsync to copy VM files to the "buffer" machine using `--sparse` flag.
 
-* Convert the QCOW2 to VHD using QEMU-IMG :
+* Convert the QCOW2 to <abbr title="Virtual Hard Disk">VHD</abbr> using QEMU-IMG :
 
   `qemu-img convert -O vpc myvm.qcow2 myvm.vhd`
 
-* Use rsync to copy the converted files (VHD) to your XCP-ng host.
+* Use rsync to copy the converted files (<abbr title="Virtual Hard Disk">VHD</abbr>) to your XCP-ng host.
 
-* After the rsync operation, the VHD are not valid for the XAPI, so repair them :
+* After the rsync operation, the <abbr title="Virtual Hard Disk">VHD</abbr> are not valid for the <abbr title="Xen Project Management API">XAPI</abbr>, so repair them :
 
    `vhd-util repair -n myvm.vhd`
 
     `vhd-util check -n myvm.vhd` should return `myvm.vhd is valid`
 
-* For each VM, create a VDI on Xen Orchestra with the virtual size of your VHD + 1GB (i.e the virtual size of myvm is 21GB, so I create a VDI with a size of 22GB).
+* For each VM, create a VDI on Xen Orchestra with the virtual size of your <abbr title="Virtual Hard Disk">VHD</abbr> + 1GB (i.e the virtual size of myvm is 21GB, so I create a VDI with a size of 22GB).
 
-* Get the UUID of the VDI (on Xen Orchestra or CLI) and use the CLI on the XCP-ng host to import the VHD content into the VDI :
+* Get the UUID of the VDI (on Xen Orchestra or CLI) and use the CLI on the XCP-ng host to import the <abbr title="Virtual Hard Disk">VHD</abbr> content into the VDI:
 
   `xe vdi-import filename=myvm.vhd format=vhd --progress uuid=<VDI UUID>`
 
 * Once the import is done, create a virtual machine using XO or XCP-ng Center, delete the VM disk that has been created and attach your newly created VDI to the VM. Don't forget to set the VM boot mode to UEFI if your VMs was in UEFI mode.
 
-* Boot the VM and find a way to enter in the virtual UEFI of the VM. Here, I type the Escape and F9,F10,F11,F12 keys like crazy. Select Boot Manager, you should see this window :
+* Boot the VM and find a way to enter in the virtual UEFI of the VM. Here, I type the Escape and F9,F10,F11,F12 keys like crazy. Select Boot Manager, you should see this window:
 
 ![The virtual UEFI boot manager showing the QEMU HARDDISK selected.](../../assets/img/migrate-to-xcp-ng_bootloader.png)
 
