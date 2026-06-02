@@ -182,7 +182,8 @@ Before any update or host maintenance, planned reboot and so on, **ALWAYS** put 
 If you have enough memory to put one host in maintenance (migrating all its VMs to another member of the pool), that will be alright. If you don't, you'll need to shut VMs down manually **from a XAPI client** (Xen Orchestra or `xe`), and **NOT from inside the operating system**.
 
 :::warning
-**Be very careful before doing ANY maintenance task**, otherwise HA will kick in and provide unpleasant surprises. You have been warned.
+- **Be very careful before doing ANY maintenance task**, otherwise HA will kick in and provide unpleasant surprises. You have been warned.
+- **Do NOT restart host toolstacks while high availability is enabled!** Attempting to restart the toolstack on an active host will cause the host to be immediately fenced and removed from the active liveset and pool. Always make sure that HA is disabled before restarting toolstacks.
 :::
 
 ## ↔️ Behavior
