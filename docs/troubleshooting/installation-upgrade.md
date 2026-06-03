@@ -59,11 +59,13 @@ The ssh server will be available once the network is up. If you are unsure which
 
 ## The installer reports "No Disks" but the machine has a drive
 
+**Cause**
+
 If the installer stops with **"No Disks"** ("This host does not appear to have any hard disks") and you know the machine has a drive, the most common cause on Dell and other consumer/SMB hardware is the BIOS storage-controller mode.
 
-Many Dell machines (OptiPlex, Latitude, Precision, and some PowerEdge) ship with **SATA Operation** set to **RAID On** (Intel Rapid Storage Technology), and some platforms also enable **Intel VMD**. In those modes the drive is presented through a controller the installer has no driver for, so no disk is detected.
+Many Dell machines (OptiPlex, Latitude, Precision, and some PowerEdge) ship with **SATA Operation** set to **RAID On** (Intel Rapid Storage Technology), and some platforms also enable **Intel VMD**. In those modes, the drive is presented through a controller the installer has no driver for, so no disk is detected.
 
-To fix it:
+**Fix**
 
 1. Reboot and enter the firmware setup (`F2` on Dell).
 2. Set **SATA Operation** (sometimes labelled "Storage" or "SATA Mode") to **AHCI**.
@@ -75,7 +77,9 @@ Switching from RAID/RST to AHCI can make an existing operating system on that co
 :::
 
 :::tip
-You can confirm the cause from the installer shell. Reach a shell with ALT+F2 (see [During installation or upgrade](#during-installation-or-upgrade)) and run `blkid` (or `cat /proc/partitions`). If you only see the install media (for example `/dev/sr0`, an `iso9660` filesystem) and no `/dev/nvme*` or `/dev/sda`, the drive is hidden by the controller mode rather than missing.
+You can confirm the cause from the installer shell. 
+
+Reach a shell with `ALT` + `F2` (see [During installation or upgrade](#during-installation-or-upgrade)) and run `blkid` (or `cat /proc/partitions`). If you only see the install media (for example `/dev/sr0`, an `iso9660` filesystem) and no `/dev/nvme*` or `/dev/sda`, the drive is hidden by the controller mode rather than missing.
 :::
 
 :::note
