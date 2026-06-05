@@ -30,7 +30,7 @@ Read the [Release Notes and Known Issues](../../releases#xcp-ng-release-history)
 * DON'T use the `Maintenance Mode` in XCP-ng Center. It moves the pool master to another host, which has to be avoided in the upgrade procedure.
 * If HA (High Availability) is enabled, disable it before upgrading.
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`.
-* Read [Handling alternate drivers or kernel](#%EF%B8%8F-handling-alternate-drivers-or-kernel) if your host depends on them.
+* Read [Handling alternate drivers or kernel](#-handling-alternate-drivers-or-kernel) if your host depends on them.
 * [Update your pool with the latest updates](../../management/updates) **before** upgrading, and reboot or restart the toolstack, depending on the nature of the installed updates.
 * [Install the latest updates](../../management/updates) **after** upgrading.
 :::
@@ -352,7 +352,7 @@ Live migration **should work** from any older XenServer/XCP-ng toward the latest
 
 If a live migration doesn't work, Xen Orchestra is able to do a warm migration for you. It's safer and still have a reasonable downtime. [Read this dedicated article](https://xen-orchestra.com/blog/warm-migration-with-xen-orchestra/) to learn more about it.
 
-## ☣️ Handling alternate drivers or kernel
+## ☣ Handling alternate drivers or kernel
 
 If - before the upgrade - your host depends on [alternate drivers](../../installation/hardware#-alternate-drivers) or on the [alternate kernel](../../installation/hardware#-alternate-kernel) to function, then it is possible that the upgraded system doesn't need such alternatives anymore. It is also possible that it still needs them.
 

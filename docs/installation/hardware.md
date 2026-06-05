@@ -12,7 +12,7 @@ XCP-ng comes with a large range of hardware support.
 A given device may be supported at one of two levels:
 
 1. Presence on the [Hardware Compatibility List](#-hardware-compatibility-list-hcl) guarantees support by XCP-ng. With some exceptions described in the next section.
-2. Many devices outside the HCL are also supported, but are not tested routinely. See [Supported hardware outside the HCL](#%EF%B8%8F-supported-hardware-outside-the-hcl).
+2. Many devices outside the HCL are also supported, but are not tested routinely. See [Supported hardware outside the HCL](#-supported-hardware-outside-the-hcl).
 
 ## 📖 Hardware Compatibility List (HCL)
 
@@ -20,7 +20,7 @@ XCP-ng 8.3 shares a compatibility list with XenServer 8.4. Thus, devices listed 
 
 Exceptions include devices which require *proprietary* software components to operate (closed source drivers, for example). Such devices do not impede the use of XCP-ng, but their features cannot be exploited.
 
-## ♻️ Supported hardware outside the HCL
+## ♻ Supported hardware outside the HCL
 
 Many devices outside the HCL actually work perfectly with XCP-ng. Contrarily to some hypervisors, XCP-ng does not demand the use of servers from a curated short list. Most of the hardware support depends on the Linux kernel drivers plus vendor drivers covering a very large range of devices.
 
