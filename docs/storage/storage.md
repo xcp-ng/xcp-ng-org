@@ -594,9 +594,9 @@ devices {
 ```
 
 :::warning
-This configuration must be re-applied after each [XCP-NG Upgrade]("https://docs.xcp-ng.org/installation/upgrade/") / reinstall.
+This configuration must be re-applied after each [XCP-NG Upgrade](/installation/upgrade/) / reinstall.
 
-[Updates](https://docs.xcp-ng.org/management/updates/) should not affect the LVM configuration.
+[Updates](/management/updates/) should not affect the LVM configuration.
 :::
 
 Create the CephRBD SR.
