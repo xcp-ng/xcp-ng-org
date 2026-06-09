@@ -308,6 +308,11 @@ Xen Orchestra previously offered a "Nested Virtualization" toggle in a VM's adva
 
 We understand the use cases that necessitate nested virtualization and are committed to making this feature available in a supported form in the future. Until it is implemented, there is unfortunately no supported way to enable it.
 
+## 🌡️ CPU Temperature on Intel
+
+As coretemp is not supported in XCP-ng, you can't rely on `sensors` to get the CPU temperatures on Intel platforms.
+
+Starting with XCP-ng 8.3 (TODO) `xenpm get-core-temp` got introduced as a alternative.
 
 ## 🐼 Advanced Xen
 
