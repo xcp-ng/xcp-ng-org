@@ -58,7 +58,10 @@ Starts with a capital letter unless the first word is a component name or the su
 
 Depending on a project's conventions, the format of the first line can be left free, or structured. This document does not enforce one way or the other. Check what conventions the project follows.
 
-An example of structure: `type(scope): short change description`. Example commit subject taken from Xen Orchestra: `feat(xo-server-netbox): optionally allow self-signed certificates`. The first part means that the commit adds a feature to the xo-server-netbox component. If the scope is not relevant, it can be omitted: `type: short change description`.
+Structured examples with [conventional commits](https://www.conventionalcommits.org) convention:
+* `type(scope): short change description`
+* `feat(xo-server-netbox): optionally allow self-signed certificates`, example taken from Xen Orchestra, first part means that the commit adds a feature to the xo-server-netbox component
+*  If the scope is not relevant, it can be omitted: `type: short change description`.
 
 On the other side, here's an example of a commit subject that doesn't follow a structured convention but still conveys enough information: `Unify documentation style and document all plugins`. The type is documentation, the scope is all plugins, and the change is style unification and added documentation to all plugins.
 
