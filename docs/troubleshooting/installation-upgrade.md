@@ -83,7 +83,7 @@ Reach a shell with `ALT` + `F2` (see [During installation or upgrade](#during-in
 :::
 
 :::note
-This is different from a disk hidden behind a storage controller whose driver is missing from the install ISO (for example some MegaRAID or `mpi3mr` adapters), which needs an updated installer rather than a BIOS change.
+A "No Disks" error caused by the RAID/RST controller mode described above is different from one where the disk is hidden behind a storage controller whose driver is missing from the install ISO (for example some MegaRAID or `mpi3mr` adapters). That case needs an updated installer rather than a BIOS change.
 :::
 
 ## The ISO installer does not offer to upgrade the existing install (XCP-ng or XenServer)
