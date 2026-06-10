@@ -2,19 +2,6 @@
 
 Common issues and topics related to Windows Guest Tools.
 
-## Not all PV drivers are correctly installed
-
-![Console tab view of a windows device manager showing not working PV drivers.](../../assets/img/win-pv-incorrect-install.png)
-
-### Cause
-
-It's possible that some antivirus blocks the end of the installation of the PV drivers. We've seen this happening with SentinelOne AV already (see [this thread](https://xcp-ng.org/forum/post/76098)).
-
-### Solution
-
-Simply pausing the agent and rebooting will allow the PV drivers to install successfully.
-After a successful installation, enabling the SentinelOne agent again is possible without any other issues regarding the tools or drivers.
-
 ## Low storage performance on Windows
 
 ### Cause
@@ -164,14 +151,6 @@ Next, set each VBD's property to non-unpluggable:
 xe vbd-param-set uuid=<vbd-uuid> unpluggable=false
 ```
 
-## Windows PV NICs losing IP after driver upgrade
-
-This is a known issue when updating XenServer VM Tools from versions older than 9.3.3.
-
-Refer to Citrix KB entry [CTX678047: Static IP loss when updating to VM Tools for Windows 9.3.3 or earlier](https://support.citrix.com/s/article/CTX678047-static-ip-loss-when-updating-to-vm-tools-for-windows-933-or-earlier).
-
-Future updates from XenServer VM Tools 9.3.3 to a later version will not encounter this issue.
-
 ## XenServer VM Tools not upgrading drivers after installation
 
 This can be due to the "Manage Citrix PV drivers via Windows Update" feature being enabled on that VM.
@@ -211,6 +190,28 @@ See the [XenClean guide](/vms/#fully-removing-xen-pv-drivers-with-xenclean) for 
 :::note
 You will need to reinstall the management agent.
 :::
+
+## Malfunctioning XenServer PV drivers
+
+### Symptoms
+
+Certain symptoms may suddenly manifest on Windows VMs using the Citrix XenServer VM Tools for Windows, such as:
+
+- Unable to suspend or migrate VM with the error "VM_NOT_SUSPENDABLE - State blocked by non-migratable device '0000:00:07.0/nvme'"
+- Sudden loss of static IP configuration
+- The VM shows its network connections as using "Intel(R) PRO/1000 MT Network Connection" instead of the expected "XenServer PV Network Device"
+
+### Cause
+
+You are using Citrix XenServer VM Tools for Windows, and an automatic driver update followed by an incomplete reboot caused the PV drivers to be deactivated.
+
+### Solution
+
+XCP-ng Windows Guest Tools avoids this issue, and is our recommended guest tools suite.
+
+XenServer drivers require multiple reboots after an update.
+Reboot your VMs manually, or set the [Autoreboot Registry value](https://support.citrix.com/external/article/CTX292687/setting-automatic-reboots-when-updating.html) to force the VM to automatically reboot after a driver update.
+You can also disable automatic updating of XenServer drivers and update them during a dedicated maintenance window.
 
 ## Windows Server 2025 hangs randomly with 0% CPU
 
