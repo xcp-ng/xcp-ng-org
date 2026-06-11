@@ -3,6 +3,7 @@
 
 const lightCodeTheme = require('prism-react-renderer').themes.github;
 const darkCodeTheme = require('prism-react-renderer').themes.dracula;
+const glossaryPlugin = require('docusaurus-plugin-glossary');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -57,6 +58,28 @@ const config = {
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/xcp-ng/xcp-ng-org/edit/master/',
+          // Add the remark plugin to enable auto-linking in docs
+          remarkPlugins: [
+            glossaryPlugin.getRemarkPlugin(
+              {
+                glossaryPath: 'glossary/glossary.json',
+                routePath: '/glossary',
+              },
+              { siteDir: __dirname }
+            ),
+          ],
+        },
+        pages: {
+          // Add the remark plugin to enable auto-linking in pages
+          remarkPlugins: [
+            glossaryPlugin.getRemarkPlugin(
+              {
+                glossaryPath: 'glossary/glossary.json',
+                routePath: '/glossary',
+              },
+              { siteDir: __dirname }
+            ),
+          ],
         },
         blog: false,
         theme: {
@@ -175,7 +198,14 @@ const config = {
     }),
   plugins: [
     require.resolve('docusaurus-plugin-image-zoom'),
-    require.resolve('docusaurus-lunr-search')
+    require.resolve('docusaurus-lunr-search'),
+    [
+      'docusaurus-plugin-glossary',
+      {
+        glossaryPath: 'glossary/glossary.json',
+        routePath: '/glossary',
+      },
+    ],
   ],
 };
 
