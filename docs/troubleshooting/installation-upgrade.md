@@ -83,7 +83,7 @@ Reach a shell with `ALT` + `F2` (see [During installation or upgrade](#during-in
 :::
 
 :::note
-The fix above applies only when the cause is the RAID/RST controller mode. A drive can also be hidden by a storage controller whose driver is missing from the install ISO (for example some MegaRAID or `mpi3mr` adapters). That case needs an updated installer, not a BIOS change.
+The fix above applies only when the cause is the RAID/RST controller mode. A drive can also be hidden by a storage controller whose driver is missing from the install ISO (for example some MegaRAID or `mpi3mr` adapters). That case requires an updated installer, not a BIOS change.
 :::
 
 ## The ISO installer does not offer to upgrade the existing install (XCP-ng or XenServer)
