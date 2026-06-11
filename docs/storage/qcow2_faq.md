@@ -104,6 +104,26 @@ Alternatively, you can specify the image format on the command line:
 xe vdi-create sr-uuid=<SR UUID> virtual-size=5TiB name-label="My QCOW2 VDI" sm-config:image-format=qcow2
 ```
 
+### How to know the image format used by a VDI
+
+To know what format a VDI is in, we added a key in the VDI `sm-config` for storage drivers compatible with the QCOW2 feature, called `image-format`.
+You can read it using `xe` with:
+```
+xe vdi-param-get uuid=<VDI UUID> param-name=sm-config param-key=image-format
+```
+
+The command will indicate if the information is not available:
+```
+# xe vdi-param-get uuid=a1d1188a-5e46-499c-a2fa-4a9d79362480  param-name=sm-config param-key=image-format
+Error: Key image-format not found in map
+```
+The information may not be available for multiple reasons:
+- the driver does not advertise the image format
+- the version of the storage stack does not include the feature
+- the VDI is missing the information
+The example above was on an ISO VDI, which does not currently advertise the format.
+For the VDI missing the information when the driver it is on usually provides it, it may be that it temporarily lost the information and it will be added at the next SR scan.
+
 ### Can you create a SR which only ever manages QCOW2 disks? How?
 
 Yes, you can by setting the `preferred-image-formats` parameter to `qcow2` (and the same is true for `vhd`).
