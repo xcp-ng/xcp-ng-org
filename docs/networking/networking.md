@@ -101,6 +101,10 @@ Finally, click on "Create network":
 
 That's it!
 
+:::warning
+When creating a VLAN-enabled network, setting its MTU higher than the underlying physical Network can cause packets to be dropped by the OVS bridge. See [MTU and VLAN interaction](#mtu-and-vlan-interaction) below for details.
+:::
+
 ### Trunk link for VMs
 
 It is also possible to directly expose the trunk link to the VM.
@@ -114,6 +118,24 @@ Be careful with the link's [MTU](https://en.wikipedia.org/wiki/Maximum_transmiss
 Otherwise, packets may be fragmented or even dropped.
 It needs to be properly configured on the switch, within the XCP-ng network, and on the VM's network interface.
 :::
+
+### MTU and VLAN interaction
+
+When you create a VLAN-enabled network in Xen Orchestra, it will share the same bridge as the underlying network.
+
+If the VLAN-enabled network is configured with a higher MTU than the underlying network it rides on, packets sent from a that VLAN will be dropped, not fragmented, as this is Layer 2 territory. The bridge cannot forward a frame that is larger than the egress port's MTU.
+
+Example scenario:
+
+| Interface | Role | MTU |
+|---|---|---|
+| `eth0` | Physical NIC, PIF for the main network | 1500 |
+| `xapi0` | VLAN 11 over `eth0`, PIF for the VLAN network | 9000 |
+| `vifX.Y` | VM on the VLAN network | 9000 |
+
+In this configuration, when a VM sends a 9000-byte packet on the VLAN, it arrives at the bridge and must exit through `eth0` (MTU 1500). The bridge drops the packet because it exceeds the egress port's MTU.
+
+**Solution:** Raise the physical interface's MTU to at least match the VLAN network's MTU before creating the VLAN network with jumbo frames.
 
 ## 🔗 Bonds
 
