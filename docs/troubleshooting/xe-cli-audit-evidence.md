@@ -1,4 +1,6 @@
 # Audit Evidence Collection via xe CLI   
+The list of `xe` commands used to collect information required for audit activities. Serves as a practical reference for extracting system data from XCP-ng hosts in a consistent and reproducible manner.
+
 ## Host & System Information   
 - `xe host-list` : Enumerate all hosts in the pool.   
 - `xe host-param-list uuid=<HOST\_UUID>` : Fetch detailed host properties such as OS version, patch level, and BIOS UUID.   
