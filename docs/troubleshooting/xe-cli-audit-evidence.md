@@ -28,7 +28,7 @@ A list of `xe` commands used to collect information required for compliance audi
    
 ## Roles   
 XAPI supports roles and allows them to be queried directly.
-In Vates VMS, RBAC is managed by Xen Orchestra (XO) and serves as the primary layer for user and permission management.
+However, in Vates VMS, RBAC is managed by Xen Orchestra (XO) and serves as the primary layer for user and permission management.
 - `xe role-list`: Enumerate all roles.   
 - `xe role-param-list uuid=<ROLE_UUID>`: Show role details.   
    
