@@ -298,11 +298,9 @@ This feature is useful for testing purposes and is also required for certain adv
 
 Unfortunately, Xen currently does not support nested virtualization. It is a desired feature for both the Xen Project and XCP-ng, but its implementation is still pending. You can find technical details in this Xen Summit talk: [part 1](https://www.youtube.com/watch?v=8jKGYY1Bi_o) and [part 2](https://www.youtube.com/watch?v=3MxWvVTmY1s).
 
-In the past, partial nested virtualization was implemented in Xen. However, it was experimental and insecure (with risks such as host crashes or worse) and, therefore, was not officially supported. Following a necessary rework of Xen's codebase, the limited functionality that existed was removed until it could be properly reimplemented.
+Historically, partial nested virtualization was implemented in Xen. However, it was experimental and insecure (with risks such as host crashes or worse) and, therefore, is not officially supported.
 
-**But I saw it working!**
-
-Xen Orchestra previously offered a "Nested Virtualization" toggle in a VM's advanced settings without warning users of its unsupported status. This led users to believe it was a supported feature. As a result, when this functionality was completely removed from XCP-ng 8.3 (and XenServer 8), it came as a surprise. Xen Orchestra has since been updated to clarify the unsupported status of nested virtualization.
+XCP-ng allows to enable this partial nested virtualization support. It can be useful for testing and troubleshooting purposes, **but must not be relied on for any mission-critical workload** in its current state.
 
 **But I really need it!**
 
