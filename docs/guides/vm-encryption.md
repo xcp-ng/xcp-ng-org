@@ -7,7 +7,7 @@ This guide covers two common methods: encrypting data inside the VM and using en
 :::warning
 
 - These are just suggestions. The methods below are not officially supported by XCP-ng.
-- This guide focuses on VM encryption and doesn't cover [dom0](../appendix/glossary.md) encryption.
+- This guide focuses on VM encryption and doesn't cover dom0 encryption.
 
 :::
 
