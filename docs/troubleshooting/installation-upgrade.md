@@ -57,6 +57,35 @@ You can specify an interface name such as `eth1` instead of `all` if necessary, 
 
 The ssh server will be available once the network is up. If you are unsure which DHCP address was obtained, you can use the shell console as described above to look it up using `ip a`. You can then connect as `root` using the password you provided on the commandline.
 
+## The installer reports "No Disks" but the machine has a drive
+
+**Cause**
+
+If the installer stops with **"No Disks"** ("This host does not appear to have any hard disks") and you know the machine has a drive, the most common cause on Dell and other consumer/SMB hardware is the BIOS storage-controller mode.
+
+Many Dell machines (OptiPlex, Latitude, Precision, and some PowerEdge) ship with **SATA Operation** set to **RAID On** (Intel Rapid Storage Technology), and some platforms also enable **Intel VMD**. In those modes, the drive is presented through a controller the installer has no driver for, so no disk is detected.
+
+**Fix**
+
+1. Reboot and enter the firmware setup (`F2` on Dell).
+2. Set **SATA Operation** (sometimes labelled "Storage" or "SATA Mode") to **AHCI**.
+3. If present, disable **Intel VMD**.
+4. Save, reboot, and restart the installer. The disk should now be detected.
+
+:::warning
+Switching from RAID/RST to AHCI can make an existing operating system on that controller unbootable. This is safe for a fresh XCP-ng install, since the disk is repartitioned anyway, but take care on a machine you dual-boot or reuse.
+:::
+
+:::tip
+You can confirm the cause from the installer shell. 
+
+Reach a shell with `ALT` + `F2` (see [During installation or upgrade](#during-installation-or-upgrade)) and run `blkid` (or `cat /proc/partitions`). If you only see the install media (for example `/dev/sr0`, an `iso9660` filesystem) and no `/dev/nvme*` or `/dev/sda`, the drive is hidden by the controller mode rather than missing.
+:::
+
+:::note
+The fix above applies only when the cause is the RAID/RST controller mode. A drive can also be hidden by a storage controller whose driver is missing from the install ISO (for example some MegaRAID or `mpi3mr` adapters). That is a different problem with a different fix: load a driver disk at install time, or use an updated installer that includes the driver. A BIOS change does not help there.
+:::
+
 ## The ISO installer does not offer to upgrade the existing install (XCP-ng or XenServer)
 
 :::note
