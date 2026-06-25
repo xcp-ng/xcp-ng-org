@@ -176,7 +176,7 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 
 ### Networking
 
-- **Virtual Network Interface Controllers (NICs) per VM**: Up to **7**.
+- **Virtual Network Interface Controllers (NICs) per VM**: Up to **16**.
   We recommend using paravirtualized devices is recommended. Support depends on guest operating system and whether or not XCP-ng Guest Tools are installed.
 
 ### Other
