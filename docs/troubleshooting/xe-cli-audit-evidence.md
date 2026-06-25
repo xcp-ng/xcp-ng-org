@@ -18,7 +18,7 @@ A list of `xe` commands used to collect information required for compliance audi
 - `xe sr-param-list uuid=<SR_UUID>`: Retrieve properties such as read‑only status, domain type, showing type and capacity.   
 - `xe vdi-param-list uuid=<VDI_UUID>`: List all parameters for a specific VDI in the environment.   
 - `xe vdi-param-get uuid=<VDI_UUID> param-name=<param>`: Get specific param of a VDI.   
-- `xe sd-vdi-list uuid=<SD_UUID>`: List all VDIs that belong to a particular storage domain.   
+- `xe vdi-list sr-uuid=<SR_UUID>`: List all VDIs that belong to a particular storage domain.   
    
 ## Networking   
 - `xe network-list`: Show all virtual networks.   
