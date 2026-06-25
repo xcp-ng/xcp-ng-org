@@ -26,7 +26,7 @@ The system requirements for XCP-ng are:
 
 - One or more 64-bit x86 CPUs, minimum 1.5 GHz; 2 GHz or faster multicore CPUs are recommended.
 - Hardware virtualization must be enabled (Intel VT-x or AMD-V).
-- Since XCP-ng 8.3, CPU must support SLAT (Intel EPT or AMD RVI/NPT).
+- Since XCP-ng 8.3, CPUs must support SLAT (Intel EPT or AMD RVI/NPT).
 - For stability and proper support of some features, enabling IOMMU (Intel VT-d or AMD-Vi) is recommended.
 
 :::tip
