@@ -15,7 +15,7 @@ A list of `xe` commands used to collect information required for compliance audi
    
 ## Storage Repository & VDI   
 - `xe sr-list`: Enumerate storage repositories.   
-- `xe sr-param-list uuid=<SD_UUID>`: Retrieve properties such as read‑only status, domain type, showing type and capacity.   
+- `xe sr-param-list uuid=<SR_UUID>`: Retrieve properties such as read‑only status, domain type, showing type and capacity.   
 - `xe vdi-param-list uuid=<VDI_UUID>`: List all parameters for a specific VDI in the environment.   
 - `xe vdi-param-get uuid=<VDI_UUID> param-name=<param>`: Get specific param of a VDI.   
 - `xe sd-vdi-list uuid=<SD_UUID>`: List all VDIs that belong to a particular storage domain.   
@@ -33,7 +33,7 @@ However, in Vates VMS, RBAC is managed by Xen Orchestra (XO) and serves as the p
 - `xe role-param-list uuid=<ROLE_UUID>`: Show role details.   
    
 ## Audit Logs   
-- `xe audit-log-get since=<timpestamp_ISO8601> filename=<dest_file>` Retrieve all of the available records of the RBAC audit file in the pool. If the optional parameter `since` is present, it downloads only the records from that specific point in time.   
+- `xe audit-log-get since=<timestamp_ISO8601> filename=<dest_file>` Retrieve all of the available records of the RBAC audit file in the pool. If the optional parameter `since` is present, it downloads only the records from that specific point in time.   
    
 Example:   
 `xe audit-log-get since=2026-06-11T00:00:00Z filename=/tmp/audit.log`   
@@ -41,7 +41,7 @@ Example:
 ## Certificates & Encryption   
 - `xe certificate-list`: List all installed certificates.   
 - `xe certificate-param-list uuid=<CERT_UUID>`: Get detailed certificate metadata.   
-- `xe host-param-get uuid=<CERT_UUID>param-name=tls-verification-enabled`: Show TLS verification parameter for internal components.
+- `xe host-param-get uuid=<CERT_UUID> param-name=tls-verification-enabled`: Show TLS verification parameter for internal components.
    
 ## Log Locations on XCP-ng   
 - `/var/log/xensource.log`: XAPI toolstack events and errors log.   
