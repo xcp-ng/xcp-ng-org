@@ -31,7 +31,7 @@ Your results are very welcome in our [Hardware Compatibility List (HCL)](../../i
 It's also important to test Operating Systems on XCP-ng. You have fun to install different Operating Systems? -> great! Test them all on XCP-ng!
 
 Most community testing is organized on the forum, on dedicated threads.
-* Watch the [thread dedicated to update candidates on stable releases](https://xcp-ng.org/forum/topic/365/updates-announcements-and-testing) (and make sure you enable mail notifications in your forum settings).
+* Watch the [thread dedicated to update candidates on stable releases](https://xcp-ng.org/forum/topic/9964/xcp-ng-8-3-updates-announcements-and-testing) (and make sure you enable mail notifications in your forum settings).
 * Check beta and RC announcements for new releases of XCP-ng [on the forum](https://xcp-ng.org/forum), and provide feedback before the final releases. Usually announced in the [News](https://xcp-ng.org/forum/category/11/news) section.
 * Check other topics created by our developers who look for feedback about new features. Topics usually created in the [Development](https://xcp-ng.org/forum/category/7/development) section.
 
