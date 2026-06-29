@@ -8,7 +8,7 @@ A list of `xe` commands used to collect information required for compliance audi
    
 ## Virtual Machine Configuration   
 - `xe vm-list`: List all VMs, including snapshots that have their own uuid.   
-- `xe vm-list is-a-snapshot=false`: List alll VMs without including snapshots.
+- `xe vm-list is-a-snapshot=false`: List all VMs without including snapshots.
 - `xe vm-param-list uuid=<VM_UUID>`: List all parameters (e.g., domain-type, domid) of a specific virtual machine.   
 - `xe vm-param-get uuid=<VM_UUID> param-name=<param>`: Get a specific configuration information (domid, other-config, etc). 
 - `xe vm-disk-list uuid=<VM_UUID>`: Show all disks attached to a VM (VDI UUIDs, sizes).   
