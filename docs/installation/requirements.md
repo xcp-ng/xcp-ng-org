@@ -62,6 +62,10 @@ Similarly, installing XCP-ng on SD cards is highly discouraged. A basic SSD offe
 - Minimum 100 Mbit/s NIC. Recommended: one or more Gb or 10 Gb NICs for faster data transfers, including P2V, import/export, and VM live migrations.
 - Use multiple NICs for redundancy. Network configuration depends on your storage type—refer to vendor documentation for guidance.
 
+:::danger
+XCP-ng hosts **MUST NOT** have a public IP address assigned to their management network. Management interfaces must only be accessible from trusted private networks.
+:::
+
 XCP-ng 8.2 requires an IPv4 network for management and storage traffic. Starting from XCP-ng 8.3, the management network supports IPv6.
 
 :::note
