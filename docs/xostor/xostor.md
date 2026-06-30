@@ -15,6 +15,12 @@ LINSTOR is made of two main components:
 
 Communication between the satellites and the controller is done via the TCP/IP protocol. A newly created LINSTOR SR will use the XAPI management interface by default.
 
+:::danger
+XCP-ng hosts in an XOSTOR pool **MUST NOT** be configured with a public IP address. LINSTOR satellites listen on TCP port 3366 and, by default, bind to the XAPI management interface IP. An external LINSTOR controller could register with the pool and block all legitimate LINSTOR commands, effectively denying storage operations on the entire pool.
+
+Use a dedicated private network for management and LINSTOR traffic. See the [Networking](../../networking/) documentation.
+:::
+
 A Python API is available to communicate with LINSTOR and is used in the driver. Otherwise, a CLI tool is available: `linstor`.
 
 ### DRBD
@@ -307,6 +313,7 @@ RemainAfterExit=true
 ### Prerequisites
 
 - At least 3 hosts: DRBD uses a quorum algorithm that needs at least 3 reachable machines to correctly replicate resources and avoid the risk of split-brain.
+- Hosts **MUST NOT** use a public IP address on the management network (see [Networking](../../networking/)).
 - A dedicated 10G or higher network interface for DRBD. It's possible to use the same interface used for host management (XAPI) but it's recommended to use a dedicated interface.
 - At least 1 disk on any machine of the pool (case without replication). Otherwise, any number of disks can be used on a machine. However, to be consistent, we recommend using the same model and number for each machine that has disks.
 - The replication/place count must be equal to 1, 2 or 3.
@@ -904,7 +911,12 @@ linstor rd delete xcp-volume-<RES_UUID>
 
 ### How to use a specific network for satellites?
 
-Doing this is not recommended. To guarantee a certain robustness of the pool, the best choice is to use the XAPI management interface.  
+Doing this is not recommended. To guarantee a certain robustness of the pool, the best choice is to use the XAPI management interface.
+
+:::warning
+Whatever network is used for LINSTOR satellites, it **MUST NOT** be reachable from the public Internet (see [Networking](../../networking/)).
+:::
+
 But if you are sure of what you are doing:
 
 ```

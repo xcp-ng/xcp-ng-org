@@ -6,6 +6,12 @@ XCP-ng is using Open vSwitch as its core, and supports various features from it.
 Even if one NIC can be enough for your host, having a dedicated NIC for storage will be really important to get consistent performances (especially if you use shared storage like iSCSI or NFS).
 :::
 
+:::danger
+XCP-ng hosts **MUST NOT** be configured with a public IP address on their management network. Management interfaces must only be reachable from trusted private networks.
+
+Exposing hosts to the Internet allows anyone to reach services that were designed for intra-pool communication only. On pools using [XOSTOR](../../xostor/), LINSTOR satellites listen on TCP port 3366 and bind to the XAPI management interface by default. An external party could initiate connections to pool satellites and register a rogue LINSTOR controller, blocking all legitimate LINSTOR commands and disrupting storage operations. A vulnerability in the LINSTOR satellite or related services would be significantly worse in this configuration.
+:::
+
 ## 🎓 Concepts
 
 This section describes the general concepts of networking in XCP-ng. For a deeper dive, check the [Network Architecture section](../../project/architecture/#%EF%B8%8F-network).
