@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # XO Lite
 
-Xen Orchestra Lite is a lightweight version of the Xen Orchestra meant for single-host administration, running directly from your browser without having to deploy anything, hosted on XCP-ng directly.
+Xen Orchestra Lite is a lightweight version of the Xen Orchestra meant for single-pool administration, running directly from your browser without having to deploy anything, hosted on XCP-ng directly.
 You can access it directly on the default https port, by following this URL pattern: https://[XCP-NGHOSTNAME]OR[XCP-NGIP ADDRESS].
 For example:
 - If my XCP-ng machine has the DNS hostname `mycloud.local`, I will access XO-lite at https://mycloud.local.
