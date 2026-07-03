@@ -100,7 +100,9 @@ The maximum number of supported logical processors may vary depending on the CPU
 XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
 :::
 
-- Up to 960 logical processors, depending on CPU support. **Note**: The theoretical, untested limit is 2,048 logical processors.
+:::note
+The theoretical, untested limit is 2,048 logical processors.
+:::
 
 #### XCP-ng 8.2 LTS
 
