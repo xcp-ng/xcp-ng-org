@@ -6,6 +6,12 @@ XCP-ng is using Open vSwitch as its core, and supports various features from it.
 Even if one NIC can be enough for your host, having a dedicated NIC for storage will be really important to get consistent performances (especially if you use shared storage like iSCSI or NFS).
 :::
 
+:::danger
+XCP-ng hosts **MUST NOT** have a public IP address assigned to their management network. Management interfaces must only be accessible from trusted private networks.
+
+This is even more important when using XOSTOR: see the related warning in the [XOSTOR documentation](../xostor/#how-does-it-work).
+:::
+
 ## 🎓 Concepts
 
 This section describes the general concepts of networking in XCP-ng. For a deeper dive, check the [Network Architecture section](../../project/architecture/#%EF%B8%8F-network).
