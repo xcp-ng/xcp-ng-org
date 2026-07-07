@@ -234,8 +234,8 @@ bcdedit /deletevalue "{current}" useplatformtick
 In situations where your VM stops responding, we may need to gather kernel memory dumps to help troubleshoot the situation.
 Follow this procedure to configure and gather a memory dump:
 
-- In the Advanced system settings dialog (`sysdm.cpl`), select the Advanced tab - Startup and Recovery - Settings.
-- In the System failure - Write debugging information setting, select Automatic memory dump or Kernel memory dump.
+- In the **Advanced** system settings dialog (`sysdm.cpl`), select the **Advanced** tab - **Startup and Recovery** - **Settings**.
+- In the **System failure - Write debugging information** setting, select **Automatic memory dump** or **Kernel memory dump**.
   ![Advanced system settings - Startup and Recovery - Write debugging information configured to Automatic memory dump.](../assets/img/winpv-memory-dump.png)
 - When the system locks up, retrieve your VM's domain ID from its host:
 ```
