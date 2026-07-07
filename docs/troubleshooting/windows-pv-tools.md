@@ -228,3 +228,24 @@ If you've set boot parameters to disable the synthetic timer, they need to be re
 bcdedit /deletevalue "{current}" useplatformclock
 bcdedit /deletevalue "{current}" useplatformtick
 ```
+
+## How to gather kernel memory dumps for in-depth troubleshooting
+
+In situations where your VM stops responding, we may need to gather kernel memory dumps to help troubleshoot the situation.
+Follow this procedure to configure and gather a memory dump:
+
+- In the **Advanced** system settings dialog (`sysdm.cpl`), select the **Advanced** tab - **Startup and Recovery** - **Settings**.
+- In the **System failure - Write debugging information** setting, select **Automatic memory dump** or **Kernel memory dump**.
+  ![Advanced system settings - Startup and Recovery - Write debugging information configured to Automatic memory dump.](../assets/img/winpv-memory-dump.png)
+- When the system locks up, retrieve your VM's domain ID from its host:
+```
+xe vm-param-get uuid=<vm-uuid> param-name=resident-on
+xe vm-param-get uuid=<vm-uuid> param-name=dom-id
+```
+- Make note of the domain ID displayed in the previous step.
+- Log in to the host where the VM is running via SSH. Use the following command to force the VM to crash:
+```
+xl trigger <domid> nmi
+```
+- Your VM will crash and generate a dump file. The default location is `C:\Windows\MEMORY.DMP`.
+- Provide the requested memory dump to customer support. The dump can be compressed in a ZIP file to reduce its size.
