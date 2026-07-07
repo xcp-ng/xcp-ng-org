@@ -224,7 +224,7 @@ Advanced use, not needed by most users.
 
 * DER-encoded certificate
 * PEM-encoded certificate
-* An auth file (can be created with `/opt/xensource/libexec/create-auth`).
+* An auth file containing multiple certs and/or hashes (see below for instructions).
 
 For example, to install a custom PK you may do the following:
 
@@ -524,11 +524,11 @@ Advanced use, not needed by most users.
 
 To update an individual certificate in the VM's NVRAM store:
 * Create or download an X509 certificate, or a `.auth` certificate list file.
-* If you are starting with an X509 certificate, use `/opt/xensource/libexec/create-auth` to convert it into a `.auth` file.
-* Shutdown the VM
-* Use varstore-set to load the .auth file into a VM. The attributes arg must be set to 0x27.
+* If you are starting with an X509 certificate, convert it into a `.auth` file. (See [Misc](#misc) for detailed instructions)
+* Shutdown the VM.
+* Use varstore-set to load the .auth file into a VM. The attributes argument must be set to 0x27 if overwriting, or 0x67 if appending.
    ```
-   varstore-set <vm-uuid> <guid> <name> 0x27 path/to/file.auth
+   varstore-set <vm-uuid> <guid> <name> <attributes> path/to/file.auth
    ```
    Where name is one of `PK`, `KEK`, `db` and `dbx`.
    The GUIDs for each variable are:
@@ -577,7 +577,7 @@ On Windows VMs, you can either:
 * run `msinfo32` and check the value of `System Summary` / `Secure Boot State` (expected: `On`)
 * or, from PowerShell as admin, run `Confirm-SecureBootUEFI` (expected: `True`)
 
-### Use two or more certificates for a Secure Boot variable
+### Use two or more certificates for a Secure Boot variable (varstored < 1.2.0-3.4)
 
 :::tip
 Advanced use, not needed by most users.
@@ -603,6 +603,62 @@ secureboot-certs install default KEK.auth default latest
 ```
 
 This may be done with any PK, KEK, db, or dbx.
+
+### Generating auth files for a pool or VM Secure Boot variable (varstored >= 1.2.0-3.4)
+
+:::tip
+Advanced use, not needed by most users.
+:::
+
+varstored 1.2.0-3.4 and later ships a `gen-sbvar.py` utility for generating auth files (`EFI_VARIABLE_AUTHENTICATION_2`) from a list of X.509 certificates or a JSON definition file.
+The JSON definition format is compatible with the pre-signed objects available at https://github.com/microsoft/secureboot_objects.
+
+:::tip
+If using varstored >= 1.3.4-2.1, use the command `gen-sbvar` instead of `gen-sbvar.py`.
+If not on an XCP-ng host, you can also install the tool locally from: https://github.com/xcp-ng/xcp-efivar-utils
+:::
+
+For example, to generate an **appendable** db auth file containing the Windows UEFI CA 2023 and Microsoft UEFI CA 2023 certificates, use the following command from within `microsoft/secureboot_objects`:
+
+```
+gen-sbvar \
+    --var-name db \
+    --var-guid d719b2cb-3d3a-4596-a3bc-dad00e67656f \
+    --append \
+    --architecture x86_64 \
+    --certs "PreSignedObjects/DB/Certificates/windows uefi ca 2023.der" "PreSignedObjects/DB/Certificates/microsoft uefi ca 2023.der" \
+    --vendor-guid 77fa9abd-0359-4d32-bd60-28f4e78f784b \
+    --output db2023.auth
+```
+
+To generate a dbx auth file containing all the latest revocations from `microsoft/secureboot_objects`, use the following command:
+
+```
+gen-sbvar \
+    --var-name dbx \
+    --var-guid d719b2cb-3d3a-4596-a3bc-dad00e67656f \
+    --architecture x86_64 \
+    --input PreSignedObjects/DBX/dbx_info_msft_latest.json \
+    --cert-search-path PreSignedObjects/DBX/Certificates \
+    --vendor-guid 77fa9abd-0359-4d32-bd60-28f4e78f784b \
+    --sets images certificates svns \
+    --output dbx.auth
+```
+
+Here are the known variable names and GUIDs:
+
+| Variable name | Variable GUID                          | Attributes (optional) |
+|---------------|----------------------------------------|-----------------------|
+| `PK`          | `8be4df61-93ca-11d2-aa0d-00e098032b8c` | `0x27`                |
+| `KEK`         | `8be4df61-93ca-11d2-aa0d-00e098032b8c` | `0x27`                |
+| `db`          | `d719b2cb-3d3a-4596-a3bc-dad00e67656f` | `0x27`                |
+| `dbx`         | `d719b2cb-3d3a-4596-a3bc-dad00e67656f` | `0x27`                |
+
+**Notes**
+- Use the fixed vendor GUID `77fa9abd-0359-4d32-bd60-28f4e78f784b` for any content coming from Microsoft, including individual certs and hashes.
+- Specify `--append` to create an appendable auth file. `EFI_VARIABLE_APPEND_WRITE (0x40)` will be added to the attributes value automatically.
+- If you need to produce a signed auth file, specify `--signer-cert` and `--signer-key`; or use the `--output-signable` and `--output-content` flags to create the respective files for use with `Set-SecureBootUEFI`.
+- See `gen-sbvar --help` for a detailed list of all options.
 
 ### Remove Certificates from a VM
 
