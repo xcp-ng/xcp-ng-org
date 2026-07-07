@@ -28,3 +28,19 @@ Because a file must be rotated if a log exceeds 100 MiB, the `rsyslog` daemon is
 
 There is normally no need to run it manually, a cron task `/etc/cron.d/xapi-logrotate.cron` is present to schedule it each hour.
 The goal of this special config is to keep the `xensource.log` files for one month, and to limit the number of log files to 100.
+
+## Forward XCP-ng syslog to remote server
+Syslog output can be forwarded to an external server such as Graylog or Wazuh for analysis, alerting and search capabilities.
+The following `xe` commands can be used from the XCP-ng CLI to enable syslog forwarding. Alternatively, this can be set up in Xen Orchestra, on the host's **Advanced** tab.
+
+```
+xe host-param-set uuid=<host_uuid> logging:syslog_destination=<hostname or IP>:port
+xe host-syslog-reconfigure host-uuid=<host_uuid>
+```
+
+Refer to this forum post for a high-level guide to setup Wazuh to receive and view syslog data:
+[Guide: XCP-ng syslog forwarding to Wazuh](https://xcp-ng.org/forum/topic/12322/guide-xcp-ng-syslog-forwarding-to-wazuh).
+
+Refer to Graylog's documentation for setting up a syslog input.
+
+If necessary, update the iptables rules on the XCP-ng host to permit traffic on the required port and protocol.
