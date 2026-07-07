@@ -180,11 +180,11 @@ XenServer has since open-sourced `varstored`, and we decided to switch to it to 
 
 Later, XenServer implemented changes in XAPI related to how UEFI certificates were stored and updated at the pool level, which would have caused regressions for XCP-ng users (despite the fact that they had attempted to take our needs into account, and consulted with us, which we appreciated). So we proposed and then implemented changes which retained the behaviour wanted by XenServer, while at the same time enabling us to offer a bigger flexibility to our users.
 
-As a result, Guest UEFI Secure Boot is handled slightly differently in XCP-ng 8.3 compared to XCP-ng 8.2.1, and you will need to set up Secure Boot for your pools again after upgrading to XCP-ng 8.3. The process is simple: just run `secureboot-certs install`, but it needs to be done manually.
+As a result, Guest UEFI Secure Boot is handled slightly differently in XCP-ng 8.3 compared to XCP-ng 8.2.1, and is ready to use on new pools without further preparation.
 
 Here’s how it works now. Although it may seem a bit convoluted, it balances various constraints while ensuring usability:
 
-- For Secure Boot to be available to UEFI VMs in a pool, UEFI certificates need to be installed once.
+- For Secure Boot to be available to UEFI VMs by default, XCP-ng provides a set of built-in Secure Boot certificates at a pool level. (Requires varstored version 1.2.0-3.4 or later)
 - VMs get their copy of the certificates from the pool the first time they boot and are not updated by XCP-ng afterward.
 - An unfortunate consequence is that some VMs booted before the certificates were installed on the pool, or imported from another pool where certificates were missing, will not be ready for Secure Boot.
 
