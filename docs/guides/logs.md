@@ -31,7 +31,7 @@ The goal of this special config is to keep the `xensource.log` files for one mon
 
 ## Forward XCP-ng syslog to remote server
 Syslog output can be forwarded to an external server such as Graylog or Wazuh for analysis, alerting and search capabilities.
-The following `xe` commands can be used from the XCP-ng CLI to enable syslog forwarding or this can be setup in Xen Orchestra on the Advanced tab for the host.
+The following `xe` commands can be used from the XCP-ng CLI to enable syslog forwarding. Alternatively, this can be set up in Xen Orchestra, on the host's **Advanced** tab.
 
 ```
 xe host-param-set uuid=<host_uuid> logging:syslog_destination=<hostname or IP>:port
