@@ -128,6 +128,12 @@ There are storage types that are officially supported, and others that are provi
     <td>X</td>
     <td>**No. Provided as-is**</td>
   </tr>
+  <tr>
+    <td>Fibre Channel</td>
+    <td></td>
+    <td>X</td>
+    <td>X</td>
+  </tr>
 </table>
 
 :::warning
@@ -199,6 +205,16 @@ xe sr-create host-uuid=<host UUID> type=file content-type=user name-label="Local
 ```
 
 Avoid using it with mountpoints for remote storage: if for some reason the filesystem is not mounted when the SR is scanned for virtual disks, the `file` driver will believe that the SR is empty and drop all VDI metadata for that storage.
+
+### Fibre Channel
+
+Fibre Channel is not a storage type per se, but rather a high-speed network technology and transport protocol used to connect computer data storage to Storage Area Networks (SANs). In XCP-ng, it is managed as a block storage type via hardware Host Bus Adapters (HBAs).
+
+:::warning
+While Fibre Channel is fully supported, for newer deployments we generally recommend evaluating modern alternatives such as iSCSI or NFS, which offer greater flexibility and simpler maintenance.
+:::
+
+For requirements and step-by-step installation instructions, see [Fibre Channel HBA Multipathing](./multipathing#fibre-channel-hba).
 
 ### XOSTOR
 
