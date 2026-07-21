@@ -364,27 +364,11 @@ For a Bios VM, screen resolution can be managed directly through the OS:
 
 #### UEFI VM
 
-For a UEFI VM, you will need to set up your resolution in the UEFI settings of the VM.
-For that you first will need to enter the VM UEFI setup:
-- At VM start, during Tiano firmware logo display, press ESC.
+For a UEFI VM, changing Windows screen resolution requires installing the XCP-ng Standard VGA Display Driver.
 
-![Tiano Firmware splash screen.](../../assets/img/screenshots/VM_Tiano.png)
+This driver is part of the Windows Guest Tools package.
 
-- You will enter the UEFI firmware management interface. Navigating with keyboard arrows, select *Device Manager* and press Enter.
-
-![Tiano management interface main screen with Device Manager selected.](../../assets/img/screenshots/VM_Tiano_1.png)
-
-- In  the next screen select *OVMF platform configuration*.
-
-![Tiano Device Manager, with OVMF Platform configuration selected.](../../assets/img/screenshots/VM_Tiano_2.png)
-
-- In the OVMF settings, select *Change Preferred* then the resolution you want.
-
-![Tiano OVMF platform configuration showing the prefered resolution set to 640x480.](../../assets/img/screenshots/VM_Tiano_3.png)
-
-- Press F10 and save the changes.
-- Restart your VM by sending a CTRL+ALT+DEL.
-- After reboot your VM will display the selected resolution.
+After installing this driver, screen resolution can be managed directly through the OS.
 
 ### Booting a live Linux ISO on a Windows VM
 
