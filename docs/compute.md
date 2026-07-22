@@ -188,6 +188,10 @@ It will be back in the Dom0 after a reboot.
 ## 🎮 GPU Passthrough
 To passthrough a complete graphics card to a VM (not virtualize it into multiple virtual vGPUs, which is different, see the vGPU section below), just follow the regular PCI passthrough instructions, no special steps are needed. Most Nvidia and AMD video cards should work without issue.  
 
+:::warning
+Passthrough of an integrated GPU (for example the iGPU of an AMD APU) is not currently supported. An integrated GPU keeps its option ROM in the motherboard firmware rather than on the card, so there is no ROM to expose to the VM. Work is in progress.
+:::
+
 :::tip
 Previously, Nvidia would block the use of gaming/consumer video cards for passthrough (the Nvidia installer would throw an **Error 43** when installing the driver inside your VM). They lifted this restriction in 2021 with driver R465 and above, so be sure to use the latest driver. [Details from Nvidia here.](https://nvidia.custhelp.com/app/answers/detail/a_id/5173/)
 :::
