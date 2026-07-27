@@ -36,12 +36,27 @@ const config = {
 
   themes: ['@docusaurus/theme-mermaid'],
 
+  customFields: {
+    // Formbricks feedback widget (see src/components/PageFeedback).
+    // These IDs are client-safe: the widget only talks to the public client API.
+    formbricks: {
+      apiHost: 'https://survey.vates.tech',
+      environmentId: 'cm1t5b3lt000811e86uf67vs8',
+      surveyId: 'cms3fa2uk005frw01pzboreld',
+    },
+  },
+
+  // The rgpd script wires Matomo (site 19) behind the tarteaucitron
+  // consent banner; the client module adds SPA page views and search
+  // tracking on top, only after consent (see src/clientModules/matomo.js).
   scripts: [
     {
       src: 'https://cdn.vates.tech/rgpd/doc-xcp-ng-org.js',
       async: true,
     },
   ],
+
+  clientModules: [require.resolve('./src/clientModules/matomo.js')],
 
   presets: [
     [
