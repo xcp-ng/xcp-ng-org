@@ -107,6 +107,116 @@ echo "xen" > /sys/devices/system/clocksource/clocksource0/current_clocksource
 
 ---
 
+## yum fails with "HTTPS Error 301 - Moved Permanently"
+
+Every `yum` command on dom0 fails, most often on a freshly installed host:
+
+```
+Loaded plugins: fastestmirror
+ * xcp-ng-base: mirrors.xcp-ng.org
+http://mirrors.xcp-ng.org/8/8.3/base/x86_64/repodata/repomd.xml: [Errno 14] HTTPS Error 301 - Moved Permanently
+Trying other mirror.
+...
+failure: repodata/repomd.xml from xcp-ng-base: [Errno 256] No more mirrors to try.
+```
+
+### Cause
+
+In almost every reported case, **the system clock on dom0 is wrong**, usually set far in
+the past.
+
+`mirrors.xcp-ng.org` redirects HTTP to HTTPS, then to a mirror close to you. That redirect
+is normal and is not the problem. But if the host's date is earlier than the start of the
+mirror's TLS certificate validity period, the HTTPS connection cannot be established: from
+the host's point of view, the certificate is not yet valid.
+
+The message names the redirect rather than the certificate because of the way `yum`
+reports errors. When a transfer fails *after* a redirect, it prints the redirect's status
+code and discards the underlying error. The `301` is genuine, and it is the last thing
+that succeeded.
+
+To confirm the diagnosis before changing anything, you can temporarily change the
+repository URL in `/etc/yum.repos.d/xcp-ng.repo` from `http://` to `https://`. This does
+not fix the download, but it removes the redirect, so `yum` reports the real error:
+
+```
+https://mirrors.xcp-ng.org/8/8.3/base/x86_64/repodata/repomd.xml: [Errno 14] curl#60 - "SSL certificate problem: certificate is not yet valid"
+```
+
+### Solution
+
+Check the date on dom0:
+
+```bash
+date
+```
+
+If it is wrong, configure NTP from `xsconsole`, or from the command line:
+
+```bash
+systemctl status chronyd
+chronyc sources
+chronyc makestep
+date
+```
+
+`chronyc makestep` is required: by default chrony corrects an offset by slewing the clock
+gradually, which never converges for an offset of months or years.
+
+Pay attention to what `chronyc sources` reports. `chronyd` can be both running and enabled
+while having **no time sources configured at all**, which is the case when the date was
+set manually during installation:
+
+```
+# chronyc sources
+210 Number of sources = 0
+```
+
+The service is then working exactly as configured, and doing nothing. Add time sources to
+`/etc/chrony.conf`, otherwise the correction is lost at the next boot:
+
+```
+server 0.centos.pool.ntp.org iburst
+server 1.centos.pool.ntp.org iburst
+server 2.centos.pool.ntp.org iburst
+server 3.centos.pool.ntp.org iburst
+```
+
+```bash
+systemctl restart chronyd
+chronyc sources
+hwclock --systohc
+```
+
+On an isolated network, use a local time source instead of the public pool.
+
+Once the clock is correct:
+
+```bash
+yum clean all
+yum check-update
+```
+
+:::tip
+Revert any change you made to `/etc/yum.repos.d/xcp-ng.repo` while investigating. With a
+correct clock, the default `http://mirrors.xcp-ng.org` URL works. Pinning a single mirror
+by hand takes the host out of the automatic mirror selection, and out of failover if that
+mirror becomes unavailable. See [Mirrors](../../project/mirrors).
+:::
+
+:::note
+Correcting the date does not invalidate the host's own certificate. XAPI issues it with a
+ten-year validity, so a host installed with a wrong date still holds a certificate that
+covers the corrected date. `xe host-refresh-server-certificate` is not needed here.
+:::
+
+:::note
+If `date` is wrong again after every power cycle, the motherboard's RTC battery is
+probably dead and should be replaced.
+:::
+
+---
+
 ## Async Tasks/Commands Hang or Execute Extremely Slowly
 
 ### Cause
