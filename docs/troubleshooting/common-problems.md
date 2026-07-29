@@ -210,15 +210,9 @@ chronyc makestep
 date
 ```
 
-**When `date` shows the correct time**, write it to the hardware clock so the correction
-survives a reboot:
-
-```bash
-hwclock --systohc
-```
-
-Run this only once `date` is correct. Run earlier, it copies the wrong time into the
-hardware clock instead of the right one.
+There is no need to copy the corrected time to the hardware clock by hand. The shipped
+`/etc/chrony.conf` enables `rtcsync`, so chronyd keeps the hardware clock in step on its
+own and the correction survives a reboot.
 
 Once the clock is correct:
 
