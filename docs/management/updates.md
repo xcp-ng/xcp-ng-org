@@ -28,6 +28,10 @@ If your version is lower than `8.3`, it will not receive updates anymore. To kee
 
 Your dom0 system must either have access to the internet, or to a local mirror. In the second case, make sure to update the `baseurl` values in `/etc/yum.repos.d/xcp-ng.repo` to make them point at the local mirror, and keep the mirror regularly synced.
 
+:::warning
+The host clock must also be correct. Repository access uses HTTPS, and a host whose date is wrong cannot validate the mirrors' TLS certificates. The error `yum` reports in that case is misleading, because it names a redirect instead of the certificate: see [yum fails with "HTTPS Error 301 - Moved Permanently"](../../troubleshooting/common-problems#yum-fails-with-https-error-301---moved-permanently).
+:::
+
 #### Proxy configuration
 
 If your hosts require a proxy to access the repositories, you have several options depending on your needs:
