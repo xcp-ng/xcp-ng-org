@@ -151,29 +151,30 @@ Check the date on dom0:
 date
 ```
 
-If it is wrong, configure NTP from `xsconsole`, or from the command line:
+If it is wrong, configure NTP from `xsconsole`, or from the command line.
+
+**Start by checking whether chrony has any time sources**, because it decides what you do
+next:
 
 ```bash
 systemctl status chronyd
 chronyc sources
-chronyc makestep
-date
 ```
 
-`chronyc makestep` is required: by default chrony corrects an offset by slewing the clock
-gradually, which never converges for an offset of months or years.
-
-Pay attention to what `chronyc sources` reports. `chronyd` can be both running and enabled
-while having **no time sources configured at all**, which is the case when the date was
-set manually during installation:
+`chronyd` can be both running and enabled while having **no time sources configured at
+all**, which is the case when the date was set manually during installation:
 
 ```
 # chronyc sources
 210 Number of sources = 0
 ```
 
-The service is then working exactly as configured, and doing nothing. Add time sources to
-`/etc/chrony.conf`, otherwise the correction is lost at the next boot:
+The service is then working exactly as configured, and doing nothing. This is the most
+common situation on a freshly installed host, so check it before anything else: with no
+sources, chrony has no measured offset, and the correction step below silently does
+nothing.
+
+If there are no sources, add some to `/etc/chrony.conf`:
 
 ```
 server 0.centos.pool.ntp.org iburst
@@ -182,13 +183,37 @@ server 2.centos.pool.ntp.org iburst
 server 3.centos.pool.ntp.org iburst
 ```
 
+On an isolated network, use a local time source instead of the public pool.
+
+Then restart chronyd and wait until at least one source is actually reachable. In
+`chronyc sources`, that means a line whose second column is `*` or `+`, not `?`:
+
 ```bash
 systemctl restart chronyd
 chronyc sources
+```
+
+Once a source is reachable, correct the clock and check the result:
+
+```bash
+chronyc makestep
+date
+```
+
+`chronyc makestep` is required: by default chrony corrects an offset by slewing the clock
+gradually, which never converges for an offset of months or years. It only works once
+chrony has a source to measure against, which is why it comes after the two steps above
+rather than before them.
+
+When `date` finally shows the correct time, write it to the hardware clock so the
+correction survives a reboot:
+
+```bash
 hwclock --systohc
 ```
 
-On an isolated network, use a local time source instead of the public pool.
+Run this only after `date` is correct. Run earlier, it copies the wrong time into the
+hardware clock instead of the right one.
 
 Once the clock is correct:
 
