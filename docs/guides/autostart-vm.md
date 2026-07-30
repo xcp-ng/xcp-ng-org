@@ -38,3 +38,19 @@ Now we enable autostart at the virtual machine level.
 
 5. Checking the output
 `# xe vm-param-list uuid=<VM_UUID> | grep other-config`
+
+## Controlling the boot order and delay
+
+Two separate VM parameters affect how a VM comes up alongside autostart, and setting one
+incorrectly can look like autostart itself is broken:
+
+- `other-config:start_order=<int>` sets the relative order in which VMs start (lower values
+  first).
+- `start-delay=<seconds>` sets how long the `VM.start` call blocks before returning, which
+  staggers concurrent starts. A misconfigured `start-delay` can make a VM appear to never
+  autostart, even though the setting itself has nothing to do with the autostart toggle.
+
+```
+# xe vm-param-set uuid=<VM_UUID> other-config:start_order=1
+# xe vm-param-set uuid=<VM_UUID> start-delay=30
+```
