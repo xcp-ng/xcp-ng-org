@@ -39,6 +39,25 @@ To access the backup (with all your tools and modifications) just mount the back
 
 ***
 
+## 🚫 Cross-version VM moves fail with VM_HOST_INCOMPATIBLE_VERSION after upgrading the master
+
+### Cause
+
+Right after upgrading and patching the pool master, moving VMs between hosts of different
+versions can keep failing with `VM_HOST_INCOMPATIBLE_VERSION`, even though the master has
+already been rebooted and any mounted ISOs ejected. The toolstack can be left holding stale
+version state from before the upgrade.
+
+### Solution
+
+Restart the toolstack on the master:
+
+```
+# xe-toolstack-restart
+```
+
+***
+
 ## 🐛 After upgrading my XCP-ng host is unstable, network card freezes, kernel errors, etc.
 
 ### Causes and Solutions
