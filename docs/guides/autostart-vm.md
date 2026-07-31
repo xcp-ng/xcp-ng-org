@@ -46,9 +46,15 @@ incorrectly can look like autostart itself is broken:
 
 - `other-config:start_order=<int>` sets the relative order in which VMs start (lower values
   first).
-- `start-delay=<seconds>` sets how long the `VM.start` call blocks before returning, which
-  staggers concurrent starts. A misconfigured `start-delay` can make a VM appear to never
-  autostart, even though the setting itself has nothing to do with the autostart toggle.
+- `start-delay=<seconds>` controls how long the startup sequence waits **after** this VM
+  before moving on to the next one. Note that two official descriptions exist and they read
+  differently: the CLI reference calls it "the delay to wait before a call to start up the VM
+  returns", while the XenAPI field description calls it "the delay to wait before proceeding
+  to the next order in the startup sequence". They describe the same blocking behaviour, but
+  the second is the one that matches what you observe, because the delay lands on the *next*
+  VM to start rather than on the VM the parameter is set on. A misconfigured `start-delay`
+  can also make a VM appear never to autostart, even though the parameter is unrelated to the
+  autostart toggle itself.
 
 ```
 # xe vm-param-set uuid=<VM_UUID> other-config:start_order=1
