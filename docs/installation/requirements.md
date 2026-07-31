@@ -78,6 +78,31 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 Set the server's BIOS clock to the current UTC time. For debugging support cases, serial console access may be required: see [how to configure it](../troubleshooting/advanced.md#serial-console-access). For systems without physical serial ports, embedded management devices (Dell iDRAC, HP iLO...) provide Serial-over-LAN.
 :::
 
+## 🔒 Host Secure Boot {#host-secure-boot}
+
+XCP-ng does not support Secure Boot for the host. Its boot chain is not signed by a
+certificate that stock firmware trusts, so with Secure Boot enabled the machine refuses to
+boot the installation media, and refuses the installed host afterwards. Disable Secure Boot
+in the firmware setup before installing, and leave it disabled.
+
+Depending on the firmware, this shows up in one of two ways: the UEFI boot entry silently
+disappears from the boot menu, or it stays and the machine reports something like:
+
+```
+Operating System Loader failed signature verification. WARNING: The file may have been tampered with!
+
+All bootable devices failed Secure Boot verification.
+```
+
+Despite the wording, nothing has been tampered with: the firmware is refusing a boot loader
+it has no certificate for. Re-enabling Secure Boot later, after a firmware reset or to
+satisfy a compliance baseline, will stop the host booting until it is turned off again.
+
+:::note
+This concerns Secure Boot for the **host**. Secure Boot for **VMs** is a separate feature and
+is supported: see [Guest UEFI Secure Boot](../../guides/guest-UEFI-Secure-Boot).
+:::
+
 ## 📋 XCP-ng Configuration Limits {#xcp-ng-configuration-limits}
 
 XCP-ng supports the following per host:
