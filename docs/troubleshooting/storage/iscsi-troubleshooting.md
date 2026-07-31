@@ -2,48 +2,55 @@
 
 This page is dedicated to common issues you might have with iSCSI.
 
-## 🎓 Basic iSCSI commands
+## 🎓 Basic iSCSI commands {#basic-iscsi-commands}
 
 Discover available targets from a discovery portal:
-```sh
+
+<Terminal shell title="root@xcp-ng-host — Basic iSCSI commands">{`
 iscsiadm -m discovery -t sendtargets -p <IP_address>
-```
+`}</Terminal>
 
 Log into a specific target:
-```sh
+
+<Terminal shell title="root@xcp-ng-host — Basic iSCSI commands">{`
 iscsiadm -m node -T targetname -p <IP_address> -l
-```
+`}</Terminal>
 
 Log into all targets:
-```sh
+
+<Terminal shell title="root@xcp-ng-host — Basic iSCSI commands">{`
 iscsiadm -m node -l
-```
+`}</Terminal>
 
 Display a list of all current sessions logged in:
-```sh
+
+<Terminal shell title="root@xcp-ng-host — Basic iSCSI commands">{`
 iscsiadm -m session
-```
+`}</Terminal>
 
 Log out of all targets:
-```sh
+
+<Terminal shell title="root@xcp-ng-host — Basic iSCSI commands">{`
 iscsiadm -m node -u
-```
+`}</Terminal>
 
 Display information about a target:
-```sh
+
+<Terminal shell title="root@xcp-ng-host — Basic iSCSI commands">{`
 iscsiadm -m node -T targetname -p <IP_address>
-```
+`}</Terminal>
 
 Rescan a volume after expanding a LUN:
-```sh
-iscsiadm -m node -p <IP_address> --rescan
-```
 
-## 💓 iSCSI in storage-cluster environment
+<Terminal shell title="root@xcp-ng-host — Basic iSCSI commands">{`
+iscsiadm -m node -p <IP_address> --rescan
+`}</Terminal>
+
+## 💓 iSCSI in storage-cluster environment {#iscsi-in-storage-cluster-environment}
 
 This apply to setup using DRBD/Corosync/Pacemaker.
 
-#### iSCSI reconnect after reboot fails permanently ( Unsupported SCSI Opcode )
+### iSCSI reconnect after reboot fails permanently (Unsupported SCSI Opcode)
 
 The problem is that in a storage-cluster environment every time the node changes or pacemaker start /stop /restart iSCSI resources the "iSCSI SN" for a lun are new generated and differs from that before.
 Xen uses the "iSCSI SN" as an identifier, so you have to ensure that "iSCSI SN" is the same on all cluster nodes.
@@ -65,7 +72,7 @@ kernel: [11219.642772] iSCSI/iqn.2018-12.com.example.server:33init: Unsupported 
 
 ```
 
-### Solution
+#### Solution
 
 The trick is to extend the Lio iSCSI lun configuration in pacemaker with a hard coded iscsi_sn (scsi_sn=d27dab3f-c8bf-4385-8f7e-a4772673939d) and `lio_iblock`, so that every node uses the same.
 

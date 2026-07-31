@@ -1,10 +1,16 @@
 ---
-"position": 4
+sidebar_position: 1
 ---
 
 # Storage in XCP-ng
 
-Storage in XCP-ng is quite a large topic. This section is dedicated to it. Keywords are:
+Storage in XCP-ng is quite a large topic. This section is dedicated to it.
+
+:::tip
+Looking for day-2 operations (detach/reattach an SR, resize or move virtual disks, reclaim space)? See [SR and VDI management](manage-srs.md).
+:::
+
+Keywords are:
 
 * SR: Storage Repository, the place for your VM disks (VDI SR)
 * VDI: a virtual disk
@@ -16,7 +22,7 @@ Please take into consideration, that Xen API (XAPI) via their storage module (`S
 We encourage people to use file based SR (local ext, NFS, XOSTOR…) because it's easier to deal with. If you want to know more, read the rest.
 :::
 
-## 📑 Storage types
+## 📑 Storage types {#storage-types}
 
 There are two types of storage:
 
@@ -149,15 +155,15 @@ As XCP-ng will handle everything for you, be aware that the device or partition 
 * If you want to attach an existing SR to your pool, don't create a new local SR over it, else your virtual disks will be deleted. Instead, use the `xe sr-introduce` command. Further explanation can be found in the official XenServer documentation: https://support.citrix.com/external/article?articleUrl=CTX121896-how-to-introduce-a-local-storage-repository-in-xenserver
 :::
 
-In [Xen Orchestra](../management#%EF%B8%8F-manage-at-scale):
+In [Xen Orchestra](../management#manage-at-scale):
 
 ![Adding a new local ext SR in XO.](https://xcp-ng.org/assets/img/screenshots/createSRlocal.png)
 
 Via `xe` CLI for a local EXT SR (where `sdaX` is a partition, but it can be the entire device e.g. `sdc`):
 
-```
+<Terminal shell title="root@xcp-ng-host — Local">{`
 xe sr-create host-uuid=<host UUID> type=ext content-type=user name-label="Local Ext" device-config:device=/dev/sdaX
-```
+`}</Terminal>
 
 In addition to the two main, rock-solid, local storages (EXT and LVM), XCP-ng offers storage drivers for other types of local storage (ZFS, XFS, etc.).
 
@@ -194,9 +200,10 @@ Local, thin-provisioned. Not recommended.
 The `file` storage driver allows you to use any local directory as storage. 
 
 Example:
-```
+
+<Terminal shell title="root@xcp-ng-host — File">{`
 xe sr-create host-uuid=<host UUID> type=file content-type=user name-label="Local File SR" device-config:location=/path/to/storage
-```
+`}</Terminal>
 
 Avoid using it with mountpoints for remote storage: if for some reason the filesystem is not mounted when the SR is scanned for virtual disks, the `file` driver will believe that the SR is empty and drop all VDI metadata for that storage.
 
@@ -224,19 +231,19 @@ Then either reboot or run `modprobe -v zfs` to load the kernel module.
 
 Due to the variety of parameters of ZFS, the SR driver does not automate everything. You need to create your ZFS pool and volumes yourself, e.g. on partition `sda4`:
 
-```
+<Terminal shell title="ZFS">{`
 zpool create -o ashift=12 -m /mnt/zfs tank /dev/sda4
-```
+`}</Terminal>
 
-```
- zfs create tank/zfssr
-```
+<Terminal shell title="ZFS">{`
+zfs create tank/zfssr
+`}</Terminal>
 
 Now you can create the SR on top of it:
 
-```
+<Terminal shell title="root@xcp-ng-host — ZFS">{`
 xe sr-create host-uuid=<HOST_UUID> type=zfs content-type=user name-label=LocalZFS device-config:location=/mnt/zfs/zfssr
-```
+`}</Terminal>
 
 :::tip
 Please report any problems (performance or otherwise) you might encounter with ZFS. [Our forum](https://xcp-ng.org/forum) is here for that!
@@ -267,9 +274,9 @@ zpool iostat -v 1
 
 To get the list of supported parameters, you can execute:
 
-```
+<Terminal shell title="ZFS module parameters">{`
 man zfs-module-parameters
-```
+`}</Terminal>
 
 It's possible to write/read parameters on the fly. For example:
 
@@ -308,9 +315,9 @@ Works in the same way as the Local EXT storage driver: you hand it a device and 
 
 Via `xe` CLI for a local XFS SR (where `sdaX` is a partition, but it can be the entire device e.g. `sdc`):
 
-```
+<Terminal shell title="root@xcp-ng-host — XFS">{`
 xe sr-create host-uuid=<host UUID> type=xfs content-type=user name-label="Local XFS" device-config:device=/dev/sdaX
-```
+`}</Terminal>
 
 ### Glusterfs
 
@@ -326,9 +333,9 @@ Shared, thin-provisioned storage. Available since XCP-ng 8.2.
 
 You can use this driver to connect to an existing [Gluster storage](https://docs.gluster.org/en/latest/) volume and configure it as a shared SR for all your hosts in the pool. For example, a Gluster storage with 3 nodes (`192.168.1.11`, `192.168.1.12` and `192.168.1.13`) and a volume name called `glustervolume` will be thin provisioned with the command:
 
-```
+<Terminal shell title="root@xcp-ng-host — Glusterfs">{`
 xe sr-create content-type=user type=glusterfs name-label=GlusterSharedStorage shared=true device-config:server=192.168.1.11:/glustervolume device-config:backupservers=192.168.1.12:192.168.1.13
-```
+`}</Terminal>
 
 ### CephFS
 
@@ -347,8 +354,8 @@ Error parameters: , The SR is not available [opterr=ceph is not installed],
 
 Since most of the Centos repositories have been deprecated, you need to add the Vault repository before installing.
 
-```
-# nano /etc/yum.repos.d/CentOS-Vault.repo
+<Terminal title="CephFS">{`
+nano /etc/yum.repos.d/CentOS-Vault.repo
 
 # Vault
 [Vault-base]
@@ -371,10 +378,11 @@ baseurl=http://vault.centos.org/centos/$releasever/extras/$basearch/
 enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
-```
+`}</Terminal>
+
 After that follow installation steps
 
-```
+<Terminal shell title="root@xcp-ng-host — Vault">{`
 yum install centos-release-ceph-nautilus --enablerepo=Vault-extras
 yum-config-manager --disable centos-nfs-ganesha28 centos-ceph-nautilus
 # Fix the repo file so that it points at vault.centos.org
@@ -383,18 +391,20 @@ sed -i -e 's/#baseurl=/baseurl=/' /etc/yum.repos.d/CentOS-Ceph-Nautilus.repo
 sed -i -e 's/mirror\.centos\.org/vault.centos.org/' /etc/yum.repos.d/CentOS-Ceph-Nautilus.repo
 # install
 yum install ceph-common --enablerepo=centos-ceph-nautilus,Vault-base
-```
+`}</Terminal>
 
 Create `/etc/ceph/admin.secret` with your access secret for CephFS.
-```
-# cat /etc/ceph/admin.secret
+
+<Terminal title="install">{`
+cat /etc/ceph/admin.secret
 AQBX21dfVMJtBhAA2qthmLyp7Wxz+T5YgoxzeQ==
-```
+`}</Terminal>
 
 Now you can create the SR where `server` is your mon ip.
-```
-# xe sr-create type=cephfs name-label=ceph device-config:server=172.16.10.10 device-config:serverpath=/xcpsr device-config:options=name=admin,secretfile=/etc/ceph/admin.secret
-```
+
+<Terminal shell title="root@xcp-ng-host — cat /etc/ceph/admin.secret">{`
+xe sr-create type=cephfs name-label=ceph device-config:server=172.16.10.10 device-config:serverpath=/xcpsr device-config:options=name=admin,secretfile=/etc/ceph/admin.secret
+`}</Terminal>
 
 :::tip
 * For `serverpath` it would be good idea to use an empty folder from the CephFS instead of `/`.
@@ -416,11 +426,13 @@ SR driver was contributed directly by MooseFS Development Team.
 :::
 
 Installation steps
-```
+
+<Terminal shell title="MooseFS">{`
 curl "https://ppa.moosefs.com/RPM-GPG-KEY-MooseFS" > /etc/pki/rpm-gpg/RPM-GPG-KEY-MooseFS
 curl "http://ppa.moosefs.com/MooseFS-3-el7.repo" > /etc/yum.repos.d/MooseFS.repo
 yum install moosefs-client
-```
+`}</Terminal>
+
 :::tip
 - By default, the `moosefs` storage driver is not enabled and must be whitelisted in XAPI's configuration.
 - The list of accepted storage drivers is defined in `/etc/xapi.conf` but we must *never* modify this file directly. Instead, copy the `sm-plugins` definition from it, add `moosefs` to the line, and write the resulting line to a new `/etc/xapi.conf.d/99-enable-moosefs.conf` file.
@@ -428,10 +440,11 @@ yum install moosefs-client
 :::
 
 Now when the MooseFS client is installed you can connect to an existing [MooseFS cluster](https://moosefs.com/support/#documentation) and create a shared SR for all hosts in the pool.
-```
 
-# xe sr-create type=moosefs name-label=MooseFS-SR content-type=user shared=True device-config:masterhost=mfsmaster.host.name device-config:masterport=9421 device-config:rootpath=/xcp-ng
-```
+<Terminal shell title="root@xcp-ng-host — MooseFS">{`
+
+xe sr-create type=moosefs name-label=MooseFS-SR content-type=user shared=True device-config:masterhost=mfsmaster.host.name device-config:masterport=9421 device-config:rootpath=/xcp-ng
+`}</Terminal>
 
 Basically, to connect the driver to our cluster we have to know two parameters:
 - masterhost - MooseFS master host name or IP, default mfsmaster
@@ -455,17 +468,17 @@ For a Fibre Channel multipath configuration, please follow [these steps](../../s
 
 You can add a Host Bus Adapter (HBA) storage device with `xe`:
 
-```
+<Terminal shell title="root@xcp-ng-host — HBA">{`
 xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage device-config:SCSIid=<the SCSI id>
-```
+`}</Terminal>
 
 This is great for passing through full hardware disks, such as an entire hard disk.
 
 If you have a problem with the SCSIid, you can use this alternative, carefully selecting the right drive, and checking it's visible on all hosts with the same name:
 
-```
+<Terminal shell title="root@xcp-ng-host — HBA">{`
 xe sr-create content-type=user shared=true type=lvmohba name-label=MyHBAStorage device-config:device=/dev/<HBA drive>
-```
+`}</Terminal>
 
 ### Ceph iSCSI gateway
 
@@ -494,8 +507,8 @@ Known issue: this SR is not allowed to be used for HA state metadata due to LVM 
 
 Since most of the Centos repositories have been deprecated, you need to add the Vault repository before installing.
 
-```
-# nano /etc/yum.repos.d/CentOS-Vault.repo
+<Terminal title="Ceph RBD">{`
+nano /etc/yum.repos.d/CentOS-Vault.repo
 
 # Vault
 [Vault-base]
@@ -518,10 +531,11 @@ baseurl=http://vault.centos.org/centos/$releasever/extras/$basearch/
 enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
-```
+`}</Terminal>
+
 After that follow installation steps
 
-```
+<Terminal shell title="root@xcp-ng-host — Vault">{`
 yum install centos-release-ceph-nautilus --enablerepo=Vault-extras
 yum-config-manager --disable centos-nfs-ganesha28 centos-ceph-nautilus
 # Fix the repo file so that it points at vault.centos.org
@@ -530,32 +544,32 @@ sed -i -e 's/#baseurl=/baseurl=/' /etc/yum.repos.d/CentOS-Ceph-Nautilus.repo
 sed -i -e 's/mirror\.centos\.org/vault.centos.org/' /etc/yum.repos.d/CentOS-Ceph-Nautilus.repo
 # install
 yum install ceph-common --enablerepo=centos-ceph-nautilus,Vault-base
-```
+`}</Terminal>
 
 Create `/etc/ceph/keyring` with your access secret for Ceph.
 
-```
-# cat /etc/ceph/keyring 
+<Terminal title="install">{`
+cat /etc/ceph/keyring
 [client.admin]
 key = YOUR-SECRET-KEY
-```
+`}</Terminal>
 
 Create `/etc/ceph/ceph.conf` as your matching setup.
 
-```
-# cat /etc/ceph/ceph.conf 
+<Terminal title="cat /etc/ceph/keyring">{`
+cat /etc/ceph/ceph.conf
 [global]
 mon_host = mon-ip-1:6789,mon-ip-2:6789,mon-ip-3:6789
 
 [client.admin]
 keyring = /etc/ceph/keyring
-```
+`}</Terminal>
 
 Create the RBD image.
 
-```
+<Terminal shell title="install">{`
 rbd create --size 300G --image-feature layering pool/xen1
-```
+`}</Terminal>
 
 Mount the RBD image on your host.
 
@@ -566,17 +580,17 @@ rbd map pool/xen1
 
 To automatically mount the RBD image, you can configure the `/etc/rbdmap` ( see [RBDMap documentation ](https://docs.ceph.com/en/reef/man/8/rbdmap/) ) as follows:
 
-```
+<Terminal title="Map it to all xen hosts in your pool">{`
 cat /etc/ceph/rbdmap
 # RbdDevice		Parameters
 pool/xen1
-```
+`}</Terminal>
 
 And then, enable the `rbdmap` service to mount automatically the image at boot.
 
-```
+<Terminal shell title="RbdDevice		Parameters">{`
 systemctl enable --now rbdmap
-```
+`}</Terminal>
 
 The CEPH RBD SR is built on top of an LVM Block device (your RBD image). You need to adapt the LVM configuration in order to be able to detect the newly created LVM VG created by XCP-NG.
 
@@ -600,10 +614,11 @@ This configuration must be re-applied after each [XCP-NG Upgrade](/installation/
 :::
 
 Create the CephRBD SR.
-```
+
+<Terminal shell title="root@xcp-ng-host — RbdDevice		Parameters">{`
 # create a shared LVM
 xe sr-create name-label='CEPH' shared=true device-config:device=/dev/rbd/rbd/xen1 type=lvm content-type=user
-```
+`}</Terminal>
 
 You will probably want to configure ceph further so that the block device is mapped on reboot.
 
@@ -621,14 +636,14 @@ Largeblock SR is a workaround for 4KiB disks not working on VDI creation with no
 
 To create a LargeBlock SR, the same parameters needed for a EXT SR are needed with the SR type changed to `largeblock`.
 
-```
+<Terminal shell title="root@xcp-ng-host — LargeBlock SR">{`
 xe sr-create host-uuid=<host UUID> type=largeblock content-type=user name-label="Local largeblock" device-config:device=/dev/sdaX
-```
+`}</Terminal>
 
 The largeblock SR creates a translation layer to align the device on 512 sector size using a loop device and creates a EXT SR on this emulated device.
 It's needed to work around an issue with VHD alignment that creates an error on VHD creation on the native 4KiB device.
 
-## 💿 ISO SR
+## 💿 ISO SR {#iso-sr}
 
 You might be wondering how to upload an ISO. Unlike other solutions, you need to create a dedicated "space" for these, a specific ISO SR. To create an ISO SR, you have 2 possibilities:
 - Shared: A shared ISO SR is on a VM or on a dedicated storage server. It's accessible with an IP address, like 192.168.1.100 via SMB or NFS.
@@ -686,7 +701,7 @@ That's it!
 Don't forget to rescan your SR after adding, changing, or deleting ISO files. Rescan is done automatically every 10 minutes otherwise.
 :::
 
-## 📡 Storage API
+## 📡 Storage API {#storage-api}
 
 Current storage stack on XCP-ng is called `SMAPIv1`. The VHD format is used, which has a maximum file size limitation of 2TiB. This means that when using this format your VM disk can't be larger than 2TiB.
 
@@ -705,9 +720,9 @@ Alternatively, you can decide to use a disk without 2TiB limitation, thanks to R
 
 To create a large VDI on a file based SR, it's trivial, for example:
 
-```
+<Terminal shell title="root@xcp-ng-host — Using RAW format">{`
 xe vdi-create type=user sm-config:type=raw virtual-size=5TiB sr-uuid=<SR_UUID> name-label=test
-```
+`}</Terminal>
 
 On a block based storage, it's a bit more complicated:
 
@@ -725,7 +740,7 @@ You won't be able to live migrate storage on this disk or snapshot it anymore. O
 
 Also, the storage API is far more agnostic and the code is better. So what's the catch? Problem is there's no Open Source implementation of `SMAPIv3`, also the current API state isn't really complete (doesn't support a lot of features). However, XCP-ng team is working on it too, because it's clearly the future!
 
-## 🪄 Coalesce
+## 🪄 Coalesce {#coalesce}
 
 Coalesce process is an operation happening in your hosts as soon a snapshot is removed.
 
@@ -762,7 +777,7 @@ But more than that, Xen Orchestra is also able to show you uncoalesced disk in t
 
 More about this exclusive feature on [https://xen-orchestra.com/blog/xenserver-coalesce-detection-in-xen-orchestra/](https://xen-orchestra.com/blog/xenserver-coalesce-detection-in-xen-orchestra/)
 
-## 🦮 How to modify an existing SR connection
+## 🦮 How to modify an existing SR connection {#how-to-modify-an-existing-sr-connection}
 
 The link between a host and an SR is called the `PBD`. A PBD basically stores **how** to access a storage repository (like the path to the drive or to an NFS share).
 

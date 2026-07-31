@@ -1,10 +1,29 @@
 ---
+sidebar_position: 1
 toc_max_heading_level: 4
 ---
 
 # Virtual Machines (VMs)
 
-## 🛠️ Guest Tools
+This page covers guest OS support and guest tools. The other pages of this section cover the VM operations:
+
+* [Create and manage VMs](vm-lifecycle.md): create, clone, start/stop, delete
+* [Templates](templates.md) and [Snapshots](snapshots.md)
+* [VM migration](vm-migration.md) and [Import and export](import-export.md)
+* [Advanced VM settings](advanced.md): boot options, vTPM, memory, time
+* [Windows VMs](windows.md): creation, sysprep, in-place upgrades
+
+## 🧩 Supported guest operating systems {#supported-guest-operating-systems}
+
+XCP-ng can run virtually any x86 operating system that works in a Xen HVM guest, far beyond any official list. In practice, three things define how well a guest is supported:
+
+1. **A matching [template](templates.md)**: XCP-ng ships templates with the right virtual hardware defaults for all common operating systems (Windows, the major Linux families, *BSD…). For an OS with no dedicated template, start from a generic or closely related one.
+2. **Guest tools availability**: PV drivers and a management agent make the difference between "it boots" and "it runs well": see the per-OS sections below.
+3. **The OS's own lifecycle**: an OS abandoned by its vendor will not get fixed for guest-side issues.
+
+If you rely on professional support, the commercially supported guest OS list is maintained on the [Vates documentation](https://docs.vates.tech/). For everything else, the [forum](https://xcp-ng.org/forum) is full of reports about less common guests.
+
+## 🛠️ Guest Tools {#guest-tools}
 
 XCP-ng needs guest tools to be installed in the VMs in order to communicate with the guest operating system. This brings better performance and is required for various features.
 
@@ -18,7 +37,7 @@ Linux: see [Linux Guest Tools](#linux-guest-tools) \
 Windows: see [Windows Guest Tools](#windows-guest-tools) \
 FreeBSD, OpenBSD and some appliances based on them: see [*BSD Guest Tools](#bsd-guest-tools)
 
-## 🏘️ All VMs
+## 🏘️ All VMs {#all-vms}
 
 ### Dynamic Memory
 
@@ -40,53 +59,53 @@ How Secure Boot can be enabled in VMs is described in a [dedicated guide](../gui
 
 1. Connect to a XCP-ng server using SSH, then execute this command with the VM UUID to join:
 
-```
+<Terminal shell title="root@xcp-ng-host — Use a VNC client">{`
 xe vm-list params=dom-id,resident-on uuid=<VM_UUID>
-```
+`}</Terminal>
 
 For example:
 
-```
+<Terminal title="root@xcp-ng-host — Use a VNC client">{`
 xe vm-list params=dom-id,resident-on uuid=b2632c6a-8c0c-2fcc-4f1f-5b872733f58c
 resident-on ( RO)    : 888254e8-da05-4f86-ad37-979b8d6bad04
          dom-id ( RO): 2
-```
+`}</Terminal>
 
 2. Then, check you are on the host where the VM is currently running using the host UUID:
 
-```
+<Terminal title="root@xcp-ng-host — Use a VNC client">{`
 xe pif-list management=true params=IP host-uuid=888254e8-da05-4f86-ad37-979b8d6bad04
 IP ( RO)    : 172.16.210.15
-```
+`}</Terminal>
 
 If not, use this IP to create an SSH connection to the right host.
 
 3. Ensure `socat` is installed and execute this command with the DOM ID got earlier and a free TCP port:
 
-```
+<Terminal shell title="Use a VNC client">{`
 socat TCP-LISTEN:<TCP_PORT_TO_USE> UNIX-CONNECT:/var/run/xen/vnc-<DOM_ID>
-```
+`}</Terminal>
 
 What have we done? We exposed a UNIX domain socket (which allows us to connect to the VM using VNC) directly over TCP.
 
 4. Fine, now open a new shell, and on your local machine create an SSH tunnel with a free TCP port:
 
-```
+<Terminal shell title="Use a VNC client">{`
 ssh -L <LOCAL_PORT>:localhost:<REMOTE_PORT> root@<HOST_IP>
-```
+`}</Terminal>
 
 5. Finally, start the client, for example `vncviewer`:
 
-```
+<Terminal shell title="Use a VNC client">{`
 vncviewer localhost:<LOCAL_PORT>
-```
+`}</Terminal>
 
 ### Disk WWID
 
 Certain applications, such as Oracle ASM, require a unique identifier for disk drives known as a WWID (World Wide Identifier). In a Linux environment, this can be achieved by utilizing the `ID_PART_ENTRY_UUID` or `ID_PART_ENTRY_NAME` variables. These identifiers can be set in the udev rules file located at `/etc/udev/rules.d/99-asm.rules`. For detailed instructions on configuring disk devices manually for Oracle ASM using WWID, refer to [this guide](https://alexzy.blogspot.com/2018/02/configuring-disk-devices-manually-for.html).
 
 
-## 🪟 Windows VMs
+## 🪟 Windows VMs {#windows-vms}
 
 ### Windows Guest Tools
 
@@ -131,9 +150,11 @@ Before starting the VM:
 If you already started the VM with the option on, then the Citrix drivers have been installed automatically. Restart from scratch or go to [Fully removing Xen PV drivers with XenClean](#fully-removing-xen-pv-drivers-with-xenclean).
 
 Tip: you can also check the value of the parameter from the command line.
-```
+
+<Terminal shell title="root@xcp-ng-host — Prerequisite: Disable 'Manage…">{`
 xe vm-param-get param-name=has-vendor-device uuid={VM-UUID}
-```
+`}</Terminal>
+
 `True` means that it's active, `False` that it isn't. It needs to be `False`.
 
 ##### Install the XCP-ng tools
@@ -345,9 +366,9 @@ Viridian enlightenments are enabled by default on Windows VM templates included 
 
 To enable Viridian enlightenments for other non-Windows VM templates, simply run the following command:
 
-```
+<Terminal shell title="root@xcp-ng-host — Enabling Viridian extensions">{`
 xe vm-param-set uuid=<vm-uuid> platform:device_id=0002 platform:viridian=true platform:viridian_time_ref_count=true platform:viridian_reference_tsc=true platform:viridian_apic_assist=true platform:viridian_crash_ctl=true platform:viridian_stimer=true
-```
+`}</Terminal>
 
 :::warning
 Do not set the device ID on VMs with Xen PV drivers installed. Changing the device ID may cause old Xen PV drivers to fail booting.
@@ -395,19 +416,22 @@ The issue is due to a parameter value which is specific to Windows VMs and preve
 First, get the UUID of the Windows VM (visible in Xen Orchestra, or in the output of `xe vm-list`) and make sure it is powered off.
 
 Open an ssh session to the XCP-ng host of the concerned VM and enter the following command:
-```bash
-$ xe vm-param-set uuid=VM-UUID platform:device_id=0001
-```
+
+<Terminal shell title="root@xcp-ng-host — Booting a live Linux ISO on a…">{`
+xe vm-param-set uuid=VM-UUID platform:device_id=0001
+`}</Terminal>
+
 Where `VM-UUID` is the uuid of the Windows VM.
 
 You should be able to boot the VM on any Linux ISO disk.
 
 Once done with Linux, shut down the VM and restore the parameter to its original value with:
-```bash
-$ xe vm-param-set uuid=VM-UUID platform:device_id=0002
-```
 
-## 🐧 Linux VMs
+<Terminal shell title="root@xcp-ng-host — Booting a live Linux ISO on a…">{`
+xe vm-param-set uuid=VM-UUID platform:device_id=0002
+`}</Terminal>
+
+## 🐧 Linux VMs {#linux-vms}
 
 ### Linux Guest Tools
 
@@ -430,31 +454,37 @@ Distros often have policies that forbid enabling new services by default, so mos
 
 ##### CentOS and Fedora
 Enable the EPEL repository in the VM, then:
-```
+
+<Terminal shell title="root@xcp-ng-host — CentOS and Fedora">{`
 yum install xe-guest-utilities-latest
-```
+`}</Terminal>
+
 The service is not enabled by default, so enable it and start it:
-```
+
+<Terminal shell title="CentOS and Fedora">{`
 systemctl enable xe-linux-distribution
 systemctl start xe-linux-distribution
-```
+`}</Terminal>
 
 ##### Alpine
 Enable the `community` repository in `/etc/apk/repositories`, then:
-```
+
+<Terminal shell title="Alpine">{`
 apk add xe-guest-utilities
-```
+`}</Terminal>
+
 The service is not enabled by default, so enable it and start it:
-```
+
+<Terminal title="Alpine">{`
 rc-update add xe-guest-utilities
 rc-service xe-guest-utilities start
-```
+`}</Terminal>
 
 ##### Ubuntu
 
-```
+<Terminal shell title="Ubuntu">{`
 apt install xe-guest-utilities
-```
+`}</Terminal>
 
 Some older versions of Ubuntu, now EOL, may not have this package available in their repositories. Known such releases are 20.10 to 21.10. The best solution is to upgrade to a supported release. If this is really not possible, you may install the tools from the guest tools ISO.
 
@@ -467,20 +497,24 @@ Some older versions of Ubuntu, now EOL, may not have this package available in t
 For distros that are supported by the `install.sh` script (Debian, CentOS, RHEL, SLES, Ubuntu...), the process is:
 * Attach the guest tools ISO to the guest from Xen Orchestra or using `xe`.
 * Then inside the VM, as root:
-```
+
+<Terminal shell title="Supported' Linux distributions">{`
 mount /dev/cdrom /mnt
 bash /mnt/Linux/install.sh
 umount /dev/cdrom
-```
+`}</Terminal>
+
 * No need to reboot the VM even if the script asks to. That's an old message from back when it was needed to install a kernel module in addition to the management agent. We'll get rid of it at some point.
 * Eject the guest tools ISO
 
 ##### Derived Linux distributions
 
 If your Linux distribution is not recognized by the installation script but derives from one that is supported by the script, you can override the detection and force the tools to install by using:
-```
+
+<Terminal shell title="Derived Linux distributions">{`
 bash /mnt/Linux/install.sh -d $DISTRO -m $MAJOR_VERSION
-```
+`}</Terminal>
+
 Examples:
 ```
 ## derived from debian 10
@@ -500,30 +534,37 @@ For the remaining Linux distributions, mount the guest tools ISO as described ab
 ###### openSUSE Leap 15.2 with transactional-update
 
 For the xe-daemon to start it is necessary that insserv is installed on the system. To make sure that is the case run
-```
+
+<Terminal shell title="openSUSE Leap 15.2 with transactional-update">{`
 sudo transactional-uptdate pkg install insserv-compat
-```
+`}</Terminal>
+
 and as good measure reboot if they weren't already installed.
 
 To install the guest tools open up the chroot environment with
-```
+
+<Terminal shell title="openSUSE Leap 15.2 with transactional-update">{`
 sudo transactional-update shell
-```
+`}</Terminal>
+
 and mount the ISO like with every other derived distro
-```
+
+<Terminal shell title="openSUSE Leap 15.2 with transactional-update">{`
 mount /dev/cdrom /mnt
 bash /mnt/Linux/install.sh -d sles -m 15
 umount /dev/cdrom
-```
+`}</Terminal>
+
 To exit the chroot cleanly you have to kill the `xe-daemon` process that may have been automatically started. Otherwise you end up with a corrupted snapshot and transactional-update will fail.
 
 And again reboot the system to go to your newest snapshot.
 
 After the reboot enable the service and start it with
-```
+
+<Terminal shell title="openSUSE Leap 15.2 with transactional-update">{`
 systemctl enable xe-linux-distribution.service
 systemctl start xe-linux-distribution.service
-```
+`}</Terminal>
 
 #### Update the guest tools
 
@@ -545,7 +586,7 @@ The default Ubuntu installation includes a package named `linux-modules-extra` c
 
 For more details, the problem comes from `Ubuntu` kernels that don't have the `efi-framebuffer` driver compiled in. This driver should be used if the `bochs` driver isn't present and it is just not selected in the `Ubuntu` kernel build config. To be more precise, `Ubuntu` kernels try to use a driver called `simple-framebuffer` for which there seems to be an incompatibility with the way the OVMF UEFI bios initializes the VGA card, causing the distorted display.
 
-## 😈 *BSD VMs
+## 😈 *BSD VMs {#bsd-vms}
 
 ### *BSD Guest Tools
 
@@ -562,10 +603,11 @@ To communicate with the hypervisor, you need to install two [ports](https://www.
 The `install.sh` script on the guest tools ISO does not yet support FreeBSD, so there is no point in mounting the guest tools ISO on a FreeBSD VM.
 
 To manually [install xe-guest-utilities from a package](https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/pkgng-intro.html) you can run:
-```
+
+<Terminal shell title="FreeBSD Guest Tools">{`
 pkg install xen-guest-tools xe-guest-utilities
 service xenguest start
-```
+`}</Terminal>
 
 By default the `xe-daemon` will run if FreeBSD detects the Xen hypervisor at boot. If that autodetection fails for some reason, you can force it to try by putting `xenguest_enable=YES` in your `rc.conf` file: `sysrc xenguest_enable=YES`.
 

@@ -1,6 +1,6 @@
 # Using LACP to Net Install or Upgrade XCP-ng
 
-## Foreword
+## 📖 Foreword {#foreword}
 
 :::warning
 - This guide is specifically for environments using LACP-only networks, without LACP fallback. It assumes you do not want to reconfigure your switches.
@@ -13,7 +13,7 @@ Our installer does not support LACP. This guide explains how to bypass this limi
 When using LACP, your switch needs to be configured for it. If you cannot or prefer not to reconfigure your switch, you won’t be able to use the single-interface option provided by the installer.
 For other bonding methods (active-backup, balance-lsb), the switch does not need to be aware of the bond, and you can simply use one of the interfaces that will be part of the bond.
 
-## When does the installer need network?
+## 🌐 When does the installer need network? {#when-does-the-installer-need-network}
 
 A working network configuration is only necessary in the following scenarios:
 
@@ -26,7 +26,7 @@ Network access is not required for:
 - A new installation from the full ISO.
 - Upgrading the master host from the full ISO.
 
-## Installation or Upgrade steps
+## 🪜 Installation or Upgrade steps {#installation-or-upgrade-steps}
 
 :::info
 During an upgrade, the installer will not detect your existing bond configuration. In XCP-ng, network settings are managed by XAPI and applied to Open vSwitch, but the installation process operates independently of these components.
@@ -45,31 +45,31 @@ Do not attempt to configure the bond yet. Doing so would mislead the installer i
 4. Use `ip link` to make sure that the interfaces are named `ethX`. If that's the case, you can move on to the next steps.
 5. Now we can configure a bond using standard linux tools.
 
-```bash
+<Terminal shell title="Installation or Upgrade steps">{`
 modprobe bonding mode=802.3ad miimon=100 # automatically creates bond0 in 8.3 installer
 ip link set eth0 down
 ip link set eth1 down
 ip link set eth0 master bond0
 ip link set eth1 master bond0
-```
+`}</Terminal>
 
 6. Configure an IP address. There are two ways to do this:
 
 - Via DHCP:
 
-```bash
+<Terminal shell title="Installation or Upgrade steps">{`
 dhclient bond0
-```
+`}</Terminal>
 
 - Manually assigning a static IP:
 
-```bash
+<Terminal shell title="Installation or Upgrade steps">{`
 ip addr add aaa.bbb.ccc.ddd/NN dev bond0
 ip route add default via aaa.bbb.ccc.1
 ip link set bond0 up
 # if doing a netinstall, set DNS too
 echo "nameserver aaa.bbb.ccc.1" > /etc/resolv.conf
-```
+`}</Terminal>
 
 For example:\
 ![Terminal capture showing the output of previous commands.](../assets/img/installer-creating-lacp-bond.png)
@@ -117,25 +117,25 @@ At this point, you’ll need to create your bond and set it as the management in
 
 1. Create a new network named `bond0`. For example:
 
-```bash
+<Terminal shell title="root@xcp-ng-host — New net install">{`
 xe network-create name-label="bond0"
-```
+`}</Terminal>
 
 2. Create the bond using the `network-uuid` that command just returned:
 
-```bash
+<Terminal shell title="root@xcp-ng-host — New net install">{`
 xe bond-create mode=lacp network-uuid=<network_uuid> pif-uuids=<pif_uuid#1>,<pif-uuid#2>
-```
+`}</Terminal>
 
 3. Set the previously created bond as your management interface:
 
-```bash
+<Terminal shell title="root@xcp-ng-host — New net install">{`
 # for example, to set a static IP:
 xe pif-reconfigure-ip uuid=<bond_pif_uuid> netmask=255.255.255.0 gateway=192.168.1.1 IP=192.168.1.5 DNS=192.168.1.1 mode=static
 # or, for DHCP:
 xe pif-reconfigure-ip uuid=<bond_pif_uuid> mode=dhcp
 # then set it as management interface:
 xe host-management-reconfigure pif-uuid=<bond_pif_uuid>
-```
+`}</Terminal>
 
 You're all set!

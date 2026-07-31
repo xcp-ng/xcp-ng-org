@@ -2,7 +2,7 @@
 
 How to properly handle host power cycle?
 
-## General case
+## 🔄 General case {#general-case}
 
 The proper way to reboot or shutdown a host is:
 
@@ -22,7 +22,7 @@ The proper way to reboot or shutdown a host is:
 Step 1 is especially important if [High Availability](../../management/ha) is enforced on your pool. You don't want the other hosts to believe that a host crashed or self-fenced - and take consecutive action - when it's actually planned maintenance. Alternatively, you can also disable HA on the pool for the duration of the maintenance operations to avoid issues caused by HA.
 :::
 
-## With "agile" VMs
+## 🤸 With "agile" VMs {#with-agile-vms}
 
 If all your VMs are "agile", that is, they're not tied to local storage or local devices (device pass-through), and if there are enough resources on other hosts in the pool, the above can be simplified as:
 

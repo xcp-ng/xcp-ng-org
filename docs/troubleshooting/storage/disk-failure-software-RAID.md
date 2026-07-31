@@ -6,7 +6,7 @@ title: 'Software RAID issues'
 
 This page regroups the common issues you might deal with regarding software RAID.
 
-## ⏏️ Disk replacement with software RAID
+## ⏏️ Disk replacement with software RAID {#disk-replacement-with-software-raid}
 
 If XCP-ng has been installed with a *software RAID 1 full disk mirror* method, a disk failure can be fixed with a disk replacement. Here's how:
 
@@ -17,9 +17,11 @@ Boot to the XCP-ng installer ISO in shell mode.
 ### Once booted into your XCP-ng install or the ISO
 
 Enter the following commands:
-```
+
+<Terminal shell title="Once booted into your XCP-ng install or the ISO">{`
 cat /proc/mdstat
-```
+`}</Terminal>
+
 This will return a similar output:
 ```
 Personalities : [raid1]
@@ -33,9 +35,11 @@ unused devices: <none>
 ### Remove damaged disk
 
 Let's assume we want to remove `nvme0n1`:
-```
+
+<Terminal shell title="Remove damaged disk">{`
 mdadm --manage /dev/md127 --fail /dev/nvme0n1
-```
+`}</Terminal>
+
 Now `mdstat` shows `nvme0n1` as *failed*:
 ```
 Personalities : [raid1]
@@ -45,9 +49,11 @@ md127 : active raid1 nvme0n2[3] nvme0n1[2](F)
 unused devices: <none>
 ```
 Now we can remove the disk from the raid:
-```
+
+<Terminal shell title="Remove damaged disk">{`
 mdadm --manage /dev/md127 --remove /dev/nvme0n1
-```
+`}</Terminal>
+
 The disk is removed from `mdstat`:
 ```
 Personalities : [raid1]
@@ -61,9 +67,11 @@ The disk is successfully removed.
 ### Add a new/replacement disk to the RAID
 
 Now we can add a replacement disk. Shutdown your host, install the disk on your system, then boot it to your XCP-ng install or the installer ISO once more. Now add the disk to the RAID:
-```
+
+<Terminal shell title="Add a new/replacement disk to the RAID">{`
 mdadm --manage /dev/md127 --add /dev/nvme0n1
-```
+`}</Terminal>
+
 `mdstat` shows that disk `nvme0n1` is in the RAID and is synchronizing with `nvme0n2`:
 ```
 Personalities : [raid1]

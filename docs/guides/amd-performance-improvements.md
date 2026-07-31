@@ -2,7 +2,7 @@
 
 This page details performance improvements on AMD processors and how to deploy the fixes on your pool.
 
-## What's the "AMD EPYC performance" story?
+## 📖 What's the "AMD EPYC performance" story? {#whats-the-amd-epyc-performance-story}
 
 This issue was first identified on EPYC processors in 2024, which is why it was first called the "AMD EPYC performance issue". However, it affects all AMD processors, not just the EPYC product line.
 
@@ -11,7 +11,7 @@ Network traffic is efficient for many workloads, but not the most demanding ones
 
 As with most performance issues, this case is complicated. The issue can stem from multiple causes, but at least one bottleneck has been eliminated.
 
-## Fix 1 (significant): uncached grant-tables
+## 🩹 Fix 1 (significant): uncached grant-tables {#fix-1-significant-uncached-grant-tables}
 
 ### Technical description of the issue and its fix
 
@@ -53,12 +53,12 @@ There's more work to be done to improve performance on AMD EPYC servers, but it 
 
 Use the [`check_grant_table_cacheability.py`](https://github.com/xcp-ng/xcp/blob/master/scripts/amd_perf/check_grant_table_cacheability.py) script:
 
-```
-$ wget https://raw.githubusercontent.com/xcp-ng/xcp/refs/heads/master/scripts/amd_perf/check_grant_table_cacheability.py
+<Terminal title="How to validate the fix on Linux guests">{`
+wget https://raw.githubusercontent.com/xcp-ng/xcp/refs/heads/master/scripts/amd_perf/check_grant_table_cacheability.py
 $ sudo python3 ./check_grant_table_cacheability.py
 'xen-platform-pci' PCI IO mem address is 0xFB000000
 Grant table cacheability fix is ACTIVE.
-```
+`}</Terminal>
 
 ### OS support
 
@@ -105,7 +105,7 @@ Guest kernel version determines whether the performance fix is supported or not.
 * _SOON_: Distro needs to update its kernel
 
 
-## Fix 2: spurious interrupts
+## ⚡ Fix 2: spurious interrupts {#fix-2-spurious-interrupts}
 
 ### Technical description of the issue and its fix
 
@@ -138,7 +138,7 @@ Here are the LTS kernels that have been fixed:
 * v6.15.11
 * v6.16.2
 
-## Future improvements and leads
+## 🔮 Future improvements and leads {#future-improvements-and-leads}
 
 The last improvement does not work on every platform, so the story may not be over yet. At least one bottleneck remains.
 

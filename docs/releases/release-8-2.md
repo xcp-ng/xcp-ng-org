@@ -15,10 +15,10 @@ XCP-ng 8.2 is an [LTS Release](../#xcp-ng-release-history). [Download the instal
 SHA256 checksums, GPG signatures and net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
 :::info
-LTS means **Long Term Support**: more information in [this section](../#-lts-releases).
+LTS means **Long Term Support**: more information in [this section](../#lts-releases).
 :::
 
-## Release information
+## ℹ️ Release information {#release-information}
 
 * Released on 2020-11-18
 * Based on Citrix Hypervisor 8.2
@@ -27,11 +27,11 @@ LTS means **Long Term Support**: more information in [this section](../#-lts-rel
 * Kernel 4.19 + patches
 * Supported until 2025-09-16 (The initial EOL date was 2025-06-05, and we extended it to provide more time to upgrade to XCP-ng 8.3 LTS)
 
-## Install
+## 💿 Install {#install}
 
 See [Installation](../../../installation/install-xcp-ng).
 
-## Upgrade from previous releases
+## ⬆️ Upgrade from previous releases {#upgrade-from-previous-releases}
 
 Despite being an LTS, you can upgrade from previous releases. Both upgrade methods are supported:
 * From the installation ISO
@@ -39,7 +39,7 @@ Despite being an LTS, you can upgrade from previous releases. Both upgrade metho
 
 Refer to the [Upgrade Howto](../../../installation/upgrade).
 
-## What changed since 8.1
+## ✨ What changed since 8.1 {#what-changed-since-81}
 
 ### Highlight from Citrix Hypervisor changes
 
@@ -110,7 +110,7 @@ Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 
 ### Other changes
 
 * We replaced Citrix's `gpumon` package, not built by us, by a mock build of `gpumon` sources, without the proprietary nvidia developer kit. For you as users, this changes nothing. For us, it means getting rid of a package that was not built by the XCP-ng build system.
-* [Alternate kernel](../../installation/hardware#-alternate-kernel) updated to version 4.19.142.
+* [Alternate kernel](../../installation/hardware#alternate-kernel) updated to version 4.19.142.
 * Intel's `e1000e` driver updated to version 3.8.4 in order to support more devices.
 * Cisco's `enic` and `fnic` drivers updated to offer better device support and compatibility.
 * `rsyslog` (logging daemon) synced from latest CentOS 7.8 security and bugfix update because several memory leaks have been patched in it.
@@ -123,7 +123,7 @@ Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 
 * `zfs` updated to 0.8.5
 * `glusterfs` 8.1 added to the XCP-ng repositories
 * New [additional driver package](../../management/additional-packages): `r8125-module`, for the `r8125` Realtek device driver.
-* [Alternate driver package](../../installation/hardware#-alternate-drivers) `intel-igb-alt` updated to version 5.4.6.
+* [Alternate driver package](../../installation/hardware#alternate-drivers) `intel-igb-alt` updated to version 5.4.6.
 
 ### Misc
 
@@ -132,7 +132,7 @@ Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 
 The community-maintained XCP-ng Center client is [now available for download](https://github.com/xcp-ng/xenadmin/releases/tag/v20.04.01.33). However, it is not a recommended client to use because it was modified for 8.2 support without any specific QA or validation. Keep in mind that the officially supported clients - all fully Open Source - are [documented on this page](../../management).
 
 :::note
-Although we host XCP-ng Center on our GitHub organisation and authorized its contributors to use the XCP-ng logo, we remind our users that - as documented [in the official docs](../../management#-local-management) and on its [download page](https://github.com/xcp-ng/xenadmin/releases) - **XCP-ng Center is not officially supported by the XCP-ng project**.
+Although we host XCP-ng Center on our GitHub organisation and authorized its contributors to use the XCP-ng logo, we remind our users that - as documented [in the official docs](../../management#local-management) and on its [download page](https://github.com/xcp-ng/xenadmin/releases) - **XCP-ng Center is not officially supported by the XCP-ng project**.
 :::
 
 #### Transition to the new ZFS SR driver
@@ -161,7 +161,7 @@ Plans are laid out for simpler installation and maintenance of Windows guest too
 
 Using the Windows guest tools is [documented here](/vms#windows-guest-tools).
 
-## Update: what's new in XCP-ng 8.2.1
+## 🆕 Update: what's new in XCP-ng 8.2.1 {#update-whats-new-in-xcp-ng-821}
 
 XCP-ng 8.2.1 was released as a maintenance update for XCP-ng 8.2 LTS, which has its own version number because it also comes with updated installation images.
 
@@ -171,7 +171,7 @@ The update brought a few enhancements such as [Guest Secure Boot](../../guides/g
 
 They are detailed in the [Release announcement for XCP-ng 8.2.1](https://xcp-ng.org/blog/2022/02/28/xcp-ng-8-2-1-update/).
 
-## Known issues
+## 🐞 Known issues {#known-issues}
 
 ### `yum update` from within a VNC console
 

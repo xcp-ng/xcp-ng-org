@@ -2,11 +2,79 @@
 
 This page contains advanced info regarding XCP-ng architecture.
 
-## 💽 Storage
+## 💽 Storage {#storage}
 
 ### Virtual disks on HVMs and PV guests
 
-![Diagram of virtual disk inner working, explained in the following paragraphs.](../../assets/img/tapdisk-architecture.jpg)
+<Schema label="Virtual disk I/O path · from a guest process down to the real storage" legend={[["#56c288", "guest side"], ["#4a90e2", "dom0 side"], ["#e0a94a", "shared ring (blkif)"]]} maxWidth="720px">
+<svg viewBox="0 0 720 350" role="img" aria-label="In the guest, a user process goes through libc, the block layer and blkfront; requests cross to dom0 through a shared blkif ring using grant tables and event channels; in dom0, tapdisk picks them up, uses libaio through the block layer and device driver to reach the VHD data on the physical storage; qemu-dm handles the emulated path">
+  <g fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.28)">
+    <rect x="20" y="20" width="270" height="310" rx="8"/>
+    <rect x="430" y="20" width="270" height="310" rx="8"/>
+  </g>
+  <text x="155" y="44" fontSize="17" fill="#56c288" textAnchor="middle">Guest VM (domU)</text>
+  <text x="565" y="44" fontSize="17" fill="#4a90e2" textAnchor="middle">Control domain (dom0)</text>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="90" y="60" width="130" height="30" rx="5"/>
+    <rect x="90" y="128" width="130" height="30" rx="5"/>
+    <rect x="90" y="196" width="130" height="30" rx="5"/>
+  </g>
+  <rect x="90" y="264" width="130" height="30" rx="5" fill="rgba(86,194,136,0.14)" stroke="#56c288" strokeOpacity="0.85"/>
+  <g fontSize="14" fill="#c6d2e1" textAnchor="middle">
+    <text x="155" y="79">user process</text>
+    <text x="155" y="147">block layer</text>
+    <text x="155" y="215">/dev/xvda</text>
+  </g>
+  <text x="155" y="283" fontSize="14" fill="#56c288" textAnchor="middle">blkfront</text>
+  <g fontSize="11.5" fill="#7a8699">
+    <text x="166" y="112">libc · syscalls</text>
+    <text x="166" y="180">guest kernel</text>
+    <text x="166" y="248">PV disk driver</text>
+  </g>
+  <g stroke="#56c288" strokeWidth="1.6">
+    <line x1="155" y1="90" x2="155" y2="128"/>
+    <line x1="155" y1="158" x2="155" y2="196"/>
+    <line x1="155" y1="226" x2="155" y2="264"/>
+  </g>
+  <rect x="310" y="240" width="100" height="78" rx="8" fill="rgba(224,169,74,0.12)" stroke="#e0a94a" strokeOpacity="0.85"/>
+  <text x="360" y="264" fontSize="12.5" fill="#e0a94a" textAnchor="middle">shared ring</text>
+  <text x="360" y="279" fontSize="12.5" fill="#e0a94a" textAnchor="middle">(blkif)</text>
+  <text x="360" y="302" fontSize="11" fill="#7a8699" textAnchor="middle">grant tables +</text>
+  <text x="360" y="313" fontSize="11" fill="#7a8699" textAnchor="middle">event channels</text>
+  <g stroke="#e0a94a" strokeWidth="1.6">
+    <line x1="220" y1="279" x2="310" y2="279"/>
+    <line x1="410" y1="279" x2="460" y2="279"/>
+  </g>
+  <rect x="460" y="252" width="120" height="30" rx="5" fill="rgba(74,144,226,0.14)" stroke="#4a90e2" strokeOpacity="0.85"/>
+  <text x="520" y="271" fontSize="14" fill="#4a90e2" textAnchor="middle">tapdisk</text>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="600" y="252" width="86" height="30" rx="5"/>
+    <rect x="460" y="184" width="120" height="30" rx="5"/>
+    <rect x="460" y="116" width="120" height="30" rx="5"/>
+  </g>
+  <g fontSize="12.5" fill="#c6d2e1" textAnchor="middle">
+    <text x="643" y="271">qemu-dm</text>
+    <text x="520" y="203">block layer</text>
+    <text x="520" y="135">device driver</text>
+  </g>
+  <g fontSize="11.5" fill="#7a8699">
+    <text x="531" y="240">libaio · aio syscalls</text>
+    <text x="531" y="172">dom0 kernel</text>
+  </g>
+  <text x="643" y="298" fontSize="11" fill="#7a8699" textAnchor="middle">emulated devices</text>
+  <g stroke="#4a90e2" strokeWidth="1.6">
+    <line x1="520" y1="252" x2="520" y2="214"/>
+    <line x1="520" y1="184" x2="520" y2="146"/>
+    <line x1="520" y1="116" x2="520" y2="86"/>
+  </g>
+  <line x1="580" y1="267" x2="600" y2="267" stroke="rgba(255,255,255,0.35)" strokeWidth="1.4"/>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="470" y="56" width="100" height="30" rx="12"/>
+  </g>
+  <text x="520" y="75" fontSize="12.5" fill="#c6d2e1" textAnchor="middle">VHD data</text>
+  <text x="531" y="104" fontSize="11.5" fill="#7a8699">physical storage</text>
+</svg>
+</Schema>
 
 #### `qemu-dm` and `tapdisk` at startup
 
@@ -19,7 +87,7 @@ For each read/write in the VM disk, requests pass through an emulated driver, th
 The process described above is used for HVMs and also for PV guests (at startup, PV drivers are not loaded).
 After starting a PV guest, the emulated driver in the VM is replaced by `blkfront` (a PV driver) which allows to communicate directly with `tapdisk` using a protocol: `blkif`; `blktap` and `qemu-dm` then become useless to handle devices requests. Note that system calls are used with two drivers: `eventchn dev` and `gntdev` to map VM memory pages in the user space of the host. Thus a shared ring can be used to receive requests directly from `tapdisk` in host user space instead of using the kernel space.
 
-## ↕️ Components for VDI I/O
+## ↕️ Components for VDI I/O {#components-for-vdi-io}
 
 ### XenStore
 
@@ -44,7 +112,7 @@ Generally the communication is made between a `front` and `back` driver. The fro
 Note: Like said in the top section, it's not always the case but we can avoid usage of a back driver, we can use a process in the host user space. In the case of XCP-ng, `tapdisk`/`tapback` are used instead of `blkback` to talk with `blkfront`.
 
 
-#### Negociation and connection
+#### Negotiation and connection
 
 Implementation of a `Xenbus` driver in `blkfront`:
 
@@ -403,7 +471,7 @@ The persistent grants are not used in `tapdisk`.
 
 The read steps are similar, the main difference is that we must copy from the `Dom0` VHD file to the `guest` buffer.
 
-## 📡 API
+## 📡 API {#api}
 
 XCP-ng uses **XAPI** as main API. This API is used by all clients. For more details go to [XAPI website](https://xapi-project.github.io/).
 
@@ -415,7 +483,80 @@ If you want to build an application on top of XCP-ng, we strongly suggest the Xe
 
 XAPI is a toolstack split in two parts: `xenopsd` and XAPI itself (see the diagram below):
 
-![Diagram comparing XCP-ng, Xen + libvirt and Xen. XCP-ng uses the XAPI to expose its management to xe, XCP-ng Center, Xen Orchestra and CloudStack.](https://xcp-ng.org/assets/img/Xenstack.png)
+<Schema label="Toolstack comparison · XCP-ng (XAPI) next to plain Xen setups" legend={[["#56c288", "OCaml"], ["#4a90e2", "C"]]} maxWidth="760px">
+<svg viewBox="0 0 760 420" role="img" aria-label="Three columns: XCP-ng where clients like xe, Xen Orchestra and CloudStack drive XAPI over xenops, libxc and Xen; Xen with libvirt where virsh and OpenStack drive libvirt over libxl; and plain Xen driven by the xl CLI">
+  <g fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.28)">
+    <rect x="20" y="20" width="240" height="360" rx="8"/>
+    <rect x="280" y="20" width="220" height="360" rx="8"/>
+    <rect x="520" y="20" width="220" height="360" rx="8"/>
+  </g>
+  <g fontSize="13" fill="#c6d2e1" textAnchor="middle">
+    <text x="140" y="44">XCP-ng</text>
+    <text x="390" y="44">Xen + libvirt</text>
+    <text x="630" y="44">plain Xen</text>
+  </g>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="36" y="60" width="98" height="24" rx="5"/>
+    <rect x="146" y="60" width="98" height="24" rx="5"/>
+    <rect x="36" y="92" width="98" height="24" rx="5"/>
+    <rect x="146" y="92" width="98" height="24" rx="5"/>
+    <rect x="296" y="60" width="90" height="24" rx="5"/>
+    <rect x="398" y="60" width="90" height="24" rx="5"/>
+    <rect x="536" y="60" width="188" height="24" rx="5"/>
+  </g>
+  <g fontSize="10" fill="#c6d2e1" textAnchor="middle">
+    <text x="85" y="76">xe (CLI)</text>
+    <text x="195" y="76">Xen Orchestra</text>
+    <text x="85" y="108">XCP-ng Center</text>
+    <text x="195" y="108">CloudStack</text>
+    <text x="341" y="76">virsh</text>
+    <text x="443" y="76">OpenStack</text>
+    <text x="630" y="76">xl CLI</text>
+  </g>
+  <rect x="36" y="152" width="208" height="34" rx="5" fill="rgba(86,194,136,0.14)" stroke="#56c288" strokeOpacity="0.85"/>
+  <text x="140" y="174" fontSize="12.5" fill="#56c288" textAnchor="middle">XAPI</text>
+  <rect x="36" y="202" width="208" height="30" rx="5" fill="rgba(86,194,136,0.14)" stroke="#56c288" strokeOpacity="0.85"/>
+  <text x="140" y="222" fontSize="11.5" fill="#56c288" textAnchor="middle">xenopsd</text>
+  <rect x="296" y="152" width="192" height="34" rx="5" fill="rgba(74,144,226,0.14)" stroke="#4a90e2" strokeOpacity="0.85"/>
+  <text x="390" y="174" fontSize="12.5" fill="#4a90e2" textAnchor="middle">libvirt</text>
+  <rect x="296" y="202" width="192" height="30" rx="5" fill="rgba(74,144,226,0.14)" stroke="#4a90e2" strokeOpacity="0.85"/>
+  <text x="390" y="222" fontSize="11.5" fill="#4a90e2" textAnchor="middle">libxl</text>
+  <rect x="536" y="152" width="188" height="34" rx="5" fill="rgba(74,144,226,0.14)" stroke="#4a90e2" strokeOpacity="0.85"/>
+  <text x="630" y="174" fontSize="12.5" fill="#4a90e2" textAnchor="middle">libxl</text>
+  <g fill="rgba(74,144,226,0.14)" stroke="#4a90e2" strokeOpacity="0.85">
+    <rect x="36" y="248" width="208" height="30" rx="5"/>
+    <rect x="296" y="248" width="192" height="30" rx="5"/>
+    <rect x="536" y="248" width="188" height="30" rx="5"/>
+    <rect x="36" y="300" width="208" height="44" rx="5"/>
+    <rect x="296" y="300" width="192" height="44" rx="5"/>
+    <rect x="536" y="300" width="188" height="44" rx="5"/>
+  </g>
+  <g fontSize="11" fill="#4a90e2" textAnchor="middle">
+    <text x="140" y="268">libxc (libxenctrl)</text>
+    <text x="390" y="268">libxc (libxenctrl)</text>
+    <text x="630" y="268">libxc (libxenctrl)</text>
+  </g>
+  <g fontSize="12.5" fill="#4a90e2" textAnchor="middle">
+    <text x="140" y="327">Xen</text>
+    <text x="390" y="327">Xen</text>
+    <text x="630" y="327">Xen</text>
+  </g>
+  <g stroke="rgba(255,255,255,0.3)" strokeWidth="1.3">
+    <line x1="140" y1="116" x2="140" y2="152"/>
+    <line x1="140" y1="186" x2="140" y2="202"/>
+    <line x1="140" y1="232" x2="140" y2="248"/>
+    <line x1="140" y1="278" x2="140" y2="300"/>
+    <line x1="390" y1="88" x2="390" y2="152"/>
+    <line x1="390" y1="186" x2="390" y2="202"/>
+    <line x1="390" y1="232" x2="390" y2="248"/>
+    <line x1="390" y1="278" x2="390" y2="300"/>
+    <line x1="630" y1="88" x2="630" y2="152"/>
+    <line x1="630" y1="186" x2="630" y2="248"/>
+    <line x1="630" y1="278" x2="630" y2="300"/>
+  </g>
+  <text x="140" y="368" fontSize="10" fill="#7a8699" textAnchor="middle">what XCP-ng runs</text>
+</svg>
+</Schema>
 
 :::warning
 XCP-ng is meant to use XAPI. Don't use it with `xl` or anything else!
@@ -423,21 +564,445 @@ XCP-ng is meant to use XAPI. Don't use it with `xl` or anything else!
 
 #### General design
 
-![Diagram presenting the interaction of various part inside XCP-ng, too complex to be describe in a few sentences unfortunately.](https://xapi-project.github.io/xapi/xapi.png)
+<Schema label="Inside xapi · one daemon, many subsystems" legend={[["#56c288", "entry points"], ["#e0a94a", "storage"], ["#ef6a5f", "high availability"]]} maxWidth="920px">
+<svg viewBox="0 0 920 620" role="img" aria-label="Clients from the outside world reach xapi's XML-RPC and HTTP handlers on ports 80 and 443; requests go through message forwarding which locks and dispatches to the subsystems: authentication, CLI server, storage access over SMAPI, high availability with xhad, VM lifecycle via xenopsd, host plugins and the replicated database">
+  <text x="90" y="34" fontSize="11" fill="#7a8699">the outside world</text>
+  <g fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.28)">
+    <rect x="120" y="46" width="130" height="24" rx="5"/>
+    <rect x="270" y="46" width="130" height="24" rx="5"/>
+    <rect x="420" y="46" width="130" height="24" rx="5"/>
+    <rect x="570" y="46" width="130" height="24" rx="5"/>
+    <rect x="720" y="46" width="90" height="24" rx="5"/>
+  </g>
+  <g fontSize="10" fill="#c6d2e1" textAnchor="middle">
+    <text x="185" y="62">Xen Orchestra</text>
+    <text x="335" y="62">XCP-ng Center</text>
+    <text x="485" y="62">OpenStack</text>
+    <text x="635" y="62">CloudStack</text>
+    <text x="765" y="62">xe CLI</text>
+  </g>
+  <rect x="270" y="110" width="380" height="40" rx="6" fill="rgba(86,194,136,0.12)" stroke="#56c288" strokeOpacity="0.85"/>
+  <text x="460" y="128" fontSize="11.5" fill="#56c288" textAnchor="middle">XenAPI (XML-RPC) · HTTP GET/PUT</text>
+  <text x="460" y="143" fontSize="9" fill="#7a8699" textAnchor="middle">ports 80 / 443</text>
+  <g stroke="#56c288" strokeWidth="1.3" fill="none">
+    <path d="M185 70 C 185 92, 300 100, 340 110"/>
+    <path d="M335 70 C 335 92, 390 98, 410 110"/>
+    <path d="M485 70 L 470 110"/>
+    <path d="M635 70 C 635 92, 560 98, 530 110"/>
+    <path d="M765 70 C 765 94, 640 100, 600 110"/>
+  </g>
+  <rect x="290" y="186" width="340" height="36" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.35)"/>
+  <text x="460" y="204" fontSize="11.5" fill="#c6d2e1" textAnchor="middle">message forwarding</text>
+  <text x="460" y="217" fontSize="9" fill="#7a8699" textAnchor="middle">locking · dispatch</text>
+  <line x1="460" y1="150" x2="460" y2="186" stroke="#56c288" strokeWidth="1.5"/>
+  <path d="M630 200 L 730 200" stroke="#56c288" strokeWidth="1.3"/>
+  <text x="740" y="196" fontSize="9.5" fill="#7a8699">other hosts</text>
+  <text x="740" y="209" fontSize="9.5" fill="#7a8699">in the pool (443)</text>
+  <rect x="40" y="180" width="180" height="76" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.28)"/>
+  <text x="130" y="200" fontSize="10.5" fill="#c6d2e1" textAnchor="middle">authentication</text>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.25)">
+    <rect x="52" y="212" width="74" height="30" rx="4"/>
+    <rect x="136" y="212" width="72" height="30" rx="4"/>
+  </g>
+  <text x="89" y="226" fontSize="9" fill="#c6d2e1" textAnchor="middle">PAM</text>
+  <text x="89" y="237" fontSize="8" fill="#7a8699" textAnchor="middle">/etc/passwd</text>
+  <text x="172" y="230" fontSize="9" fill="#c6d2e1" textAnchor="middle">AD</text>
+  <line x1="290" y1="204" x2="220" y2="210" stroke="rgba(255,255,255,0.3)" strokeWidth="1.3"/>
+  <g fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.28)">
+    <rect x="40" y="300" width="150" height="60" rx="6"/>
+    <rect x="640" y="470" width="140" height="90" rx="6"/>
+    <rect x="40" y="470" width="170" height="90" rx="6"/>
+  </g>
+  <text x="115" y="325" fontSize="10.5" fill="#c6d2e1" textAnchor="middle">CLI server</text>
+  <text x="115" y="342" fontSize="8.5" fill="#7a8699" textAnchor="middle">handles xe commands</text>
+  <rect x="230" y="300" width="260" height="90" rx="6" fill="rgba(224,169,74,0.08)" stroke="#e0a94a" strokeOpacity="0.7"/>
+  <text x="360" y="320" fontSize="10.5" fill="#e0a94a" textAnchor="middle">storage access</text>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.25)">
+    <rect x="244" y="332" width="110" height="24" rx="4"/>
+    <rect x="366" y="332" width="110" height="24" rx="4"/>
+  </g>
+  <text x="299" y="348" fontSize="9.5" fill="#c6d2e1" textAnchor="middle">SMAPIv2</text>
+  <text x="421" y="348" fontSize="9.5" fill="#c6d2e1" textAnchor="middle">usage tracking</text>
+  <text x="421" y="378" fontSize="8.5" fill="#7a8699" textAnchor="middle">storage.db</text>
+  <rect x="530" y="300" width="260" height="90" rx="6" fill="rgba(239,106,95,0.08)" stroke="#ef6a5f" strokeOpacity="0.7"/>
+  <text x="660" y="320" fontSize="10.5" fill="#ef6a5f" textAnchor="middle">high availability</text>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.25)">
+    <rect x="544" y="332" width="110" height="24" rx="4"/>
+    <rect x="666" y="332" width="110" height="24" rx="4"/>
+  </g>
+  <text x="599" y="348" fontSize="9.5" fill="#c6d2e1" textAnchor="middle">failure planner</text>
+  <text x="721" y="348" fontSize="9.5" fill="#c6d2e1" textAnchor="middle">liveset monitor</text>
+  <rect x="820" y="326" width="70" height="30" rx="4" fill="rgba(239,106,95,0.12)" stroke="#ef6a5f" strokeOpacity="0.8"/>
+  <text x="855" y="345" fontSize="9.5" fill="#ef6a5f" textAnchor="middle">xhad</text>
+  <line x1="776" y1="344" x2="820" y2="342" stroke="#ef6a5f" strokeWidth="1.3"/>
+  <text x="855" y="308" fontSize="8.5" fill="#7a8699" textAnchor="middle">other hosts (694)</text>
+  <line x1="855" y1="326" x2="855" y2="314" stroke="#ef6a5f" strokeWidth="1.2"/>
+  <rect x="230" y="470" width="240" height="90" rx="6" fill="rgba(224,169,74,0.08)" stroke="#e0a94a" strokeOpacity="0.7"/>
+  <text x="350" y="490" fontSize="10.5" fill="#e0a94a" textAnchor="middle">SMAPIv1 drivers</text>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.25)">
+    <rect x="244" y="504" width="46" height="22" rx="4"/>
+    <rect x="298" y="504" width="46" height="22" rx="4"/>
+    <rect x="352" y="504" width="46" height="22" rx="4"/>
+    <rect x="406" y="504" width="52" height="22" rx="4"/>
+  </g>
+  <g fontSize="8.5" fill="#c6d2e1" textAnchor="middle">
+    <text x="267" y="519">EXT</text>
+    <text x="321" y="519">NFS</text>
+    <text x="375" y="519">LVM</text>
+    <text x="432" y="519">LVMoISCSI…</text>
+  </g>
+  <line x1="299" y1="356" x2="330" y2="470" stroke="#e0a94a" strokeWidth="1.3"/>
+  <text x="125" y="494" fontSize="10.5" fill="#c6d2e1" textAnchor="middle">VM lifecycle</text>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.25)">
+    <rect x="54" y="506" width="66" height="24" rx="4"/>
+    <rect x="130" y="506" width="66" height="24" rx="4"/>
+  </g>
+  <text x="87" y="522" fontSize="9" fill="#c6d2e1" textAnchor="middle">xenopsd</text>
+  <text x="163" y="522" fontSize="9" fill="#c6d2e1" textAnchor="middle">xcp-rrdd</text>
+  <rect x="500" y="470" width="120" height="90" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.28)"/>
+  <text x="560" y="494" fontSize="10.5" fill="#c6d2e1" textAnchor="middle">host plugins</text>
+  <text x="560" y="512" fontSize="8" fill="#7a8699" textAnchor="middle">/etc/xapi.d/plugins</text>
+  <text x="710" y="494" fontSize="10.5" fill="#c6d2e1" textAnchor="middle">database</text>
+  <text x="710" y="512" fontSize="8.5" fill="#7a8699" textAnchor="middle">+ events</text>
+  <text x="710" y="524" fontSize="8.5" fill="#7a8699" textAnchor="middle">+ replication</text>
+  <g stroke="rgba(255,255,255,0.3)" strokeWidth="1.3" fill="none">
+    <path d="M340 222 C 250 250, 160 270, 120 300"/>
+    <path d="M420 222 C 400 250, 380 270, 370 300"/>
+    <path d="M520 222 C 560 250, 610 270, 640 300"/>
+    <path d="M320 222 C 220 300, 140 380, 122 470"/>
+    <path d="M520 222 C 505 300, 512 400, 552 470"/>
+    <path d="M628 220 C 810 290, 815 400, 718 470"/>
+  </g>
+</svg>
+</Schema>
 
 #### Objects
 
-![Diagram of XAPI objects and their interactions.](https://xapi-project.github.io/xen-api/classes.png)
+<Schema label="XAPI object model · the main classes and their references" legend={[["#e0a94a", "storage objects"], ["#8e83fe", "network objects"], ["#7a8699", "metrics and auxiliaries"]]} maxWidth="760px">
+<svg viewBox="0 0 760 500" role="img" aria-label="A user opens a session on a host; hosts connect to SRs through PBDs; VDIs live in SRs and attach to VMs through VBDs; PIFs and VIFs connect hosts and VMs to networks; most objects have companion metrics classes; pool, task and event stand on their own">
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.35)">
+    <rect x="30" y="200" width="70" height="28" rx="5"/>
+    <rect x="120" y="200" width="80" height="28" rx="5"/>
+    <rect x="220" y="200" width="80" height="30" rx="5"/>
+  </g>
+  <g fontSize="10.5" fill="#c6d2e1" textAnchor="middle">
+    <text x="65" y="218">user</text>
+    <text x="160" y="218">session</text>
+    <text x="260" y="219">host</text>
+  </g>
+  <g fill="rgba(224,169,74,0.12)" stroke="#e0a94a" strokeOpacity="0.8">
+    <rect x="270" y="90" width="70" height="26" rx="5"/>
+    <rect x="360" y="40" width="70" height="28" rx="5"/>
+    <rect x="470" y="90" width="70" height="26" rx="5"/>
+    <rect x="470" y="160" width="70" height="26" rx="5"/>
+  </g>
+  <g fontSize="10" fill="#e0a94a" textAnchor="middle">
+    <text x="305" y="107">PBD</text>
+    <text x="395" y="58">SR</text>
+    <text x="505" y="107">VDI</text>
+    <text x="505" y="177">VBD</text>
+  </g>
+  <rect x="360" y="0" width="70" height="24" rx="5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.25)"/>
+  <text x="395" y="16" fontSize="9.5" fill="#7a8699" textAnchor="middle">SM</text>
+  <rect x="580" y="200" width="80" height="34" rx="5" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.45)"/>
+  <text x="620" y="221" fontSize="11" fill="#c6d2e1" textAnchor="middle">VM</text>
+  <g fill="rgba(142,131,254,0.12)" stroke="#8e83fe" strokeOpacity="0.8">
+    <rect x="220" y="330" width="70" height="26" rx="5"/>
+    <rect x="350" y="380" width="90" height="28" rx="5"/>
+    <rect x="490" y="330" width="70" height="26" rx="5"/>
+  </g>
+  <g fontSize="10" fill="#8e83fe" textAnchor="middle">
+    <text x="255" y="347">PIF</text>
+    <text x="395" y="398">network</text>
+    <text x="525" y="347">VIF</text>
+  </g>
+  <g fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.22)">
+    <rect x="80" y="130" width="90" height="24" rx="10"/>
+    <rect x="80" y="270" width="100" height="24" rx="10"/>
+    <rect x="600" y="90" width="100" height="24" rx="10"/>
+    <rect x="670" y="160" width="86" height="24" rx="10"/>
+    <rect x="670" y="250" width="86" height="24" rx="10"/>
+    <rect x="590" y="290" width="120" height="24" rx="10"/>
+    <rect x="600" y="420" width="90" height="24" rx="10"/>
+    <rect x="160" y="420" width="90" height="24" rx="10"/>
+    <rect x="330" y="200" width="70" height="24" rx="10"/>
+    <rect x="330" y="250" width="70" height="24" rx="10"/>
+    <rect x="440" y="225" width="70" height="24" rx="10"/>
+  </g>
+  <g fontSize="8.5" fill="#7a8699" textAnchor="middle">
+    <text x="125" y="146">host_cpu</text>
+    <text x="130" y="286">host_metrics</text>
+    <text x="650" y="106">VBD_metrics</text>
+    <text x="713" y="176">crashdump</text>
+    <text x="713" y="266">VM_metrics</text>
+    <text x="650" y="306">VM_guest_metrics</text>
+    <text x="645" y="436">VIF_metrics</text>
+    <text x="205" y="436">PIF_metrics</text>
+    <text x="365" y="216">pool</text>
+    <text x="365" y="266">task</text>
+    <text x="475" y="241">event</text>
+  </g>
+  <g stroke="rgba(255,255,255,0.35)" strokeWidth="1.2">
+    <line x1="100.0" y1="214.0" x2="120.0" y2="214.0"/>
+    <line x1="200.0" y1="214.4" x2="220.0" y2="214.6"/>
+    <line x1="266.0" y1="200.0" x2="299.8" y2="116.0"/>
+    <line x1="328.9" y1="90.0" x2="369.3" y2="68.0"/>
+    <line x1="395.0" y1="24.0" x2="395.0" y2="40.0"/>
+    <line x1="475.8" y1="90.0" x2="426.4" y2="68.0"/>
+    <line x1="505.0" y1="116.0" x2="505.0" y2="160.0"/>
+    <line x1="539.0" y1="186.0" x2="580.0" y2="201.7"/>
+    <line x1="147.2" y1="154.0" x2="232.3" y2="200.0"/>
+    <line x1="153.3" y1="270.0" x2="230.9" y2="230.0"/>
+    <line x1="255.5" y1="330.0" x2="259.4" y2="230.0"/>
+    <line x1="290.0" y1="355.8" x2="356.6" y2="380.0"/>
+    <line x1="491.9" y1="356.0" x2="430.7" y2="380.0"/>
+    <line x1="534.8" y1="330.0" x2="607.2" y2="234.0"/>
+    <line x1="625.5" y1="114.0" x2="531.5" y2="160.0"/>
+    <line x1="688.2" y1="184.0" x2="655.1" y2="200.0"/>
+    <line x1="688.2" y1="250.0" x2="655.1" y2="234.0"/>
+    <line x1="645.8" y1="290.0" x2="626.0" y2="234.0"/>
+    <line x1="628.8" y1="420.0" x2="542.5" y2="356.0"/>
+    <line x1="211.7" y1="420.0" x2="247.7" y2="356.0"/>
+  </g>
+</svg>
+</Schema>
 
 #### Pool design
 
-![How a pool is managed, a shared storage in the center, XAPI on each host. The pool master creates a disk, xapi from another host uses the disk. The various XAPIs talk to each other to handle configuration and VM migrations.](https://xapi-project.github.io/getting-started/pool.png)
+<Schema label="Pool design · every host runs XAPI, requests converge on the coordinator" legend={[["#56c288", "XenAPI over TLS (443)"], ["#7a8699", "storage and migration traffic"]]} maxWidth="720px">
+<svg viewBox="0 0 720 380" role="img" aria-label="Four hosts each run xapi and talk to each other over TLS port 443; XenAPI clients target the pool coordinator which redirects requests as needed; the shared storage sits in the middle: the coordinator creates a disk, any member can then use it; VM migrations stream memory directly between hosts">
+  <text x="120" y="30" fontSize="12" fill="#c6d2e1" textAnchor="middle">XenAPI clients</text>
+  <g fill="rgba(86,194,136,0.14)" stroke="#56c288" strokeOpacity="0.85">
+    <rect x="40" y="70" width="160" height="40" rx="6"/>
+  </g>
+  <g fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.28)">
+    <rect x="40" y="170" width="160" height="40" rx="6"/>
+    <rect x="520" y="70" width="160" height="40" rx="6"/>
+    <rect x="520" y="170" width="160" height="40" rx="6"/>
+  </g>
+  <g fontSize="12" fill="#c6d2e1" textAnchor="middle">
+    <text x="120" y="88">xapi</text>
+    <text x="120" y="188">xapi</text>
+    <text x="600" y="88">xapi</text>
+    <text x="600" y="188">xapi</text>
+  </g>
+  <g fontSize="9.5" fill="#7a8699" textAnchor="middle">
+    <text x="120" y="103">pool coordinator</text>
+    <text x="120" y="203">host</text>
+    <text x="600" y="103">host</text>
+    <text x="600" y="203">host</text>
+  </g>
+  <path d="M120 38 L 120 68" stroke="#56c288" strokeWidth="1.6"/>
+  <g stroke="#56c288" strokeWidth="1.4" fill="none">
+    <line x1="120" y1="110" x2="120" y2="170"/>
+    <line x1="600" y1="110" x2="600" y2="170"/>
+    <path d="M200 84 C 320 60, 420 60, 520 84"/>
+    <path d="M200 196 C 320 224, 420 224, 520 196"/>
+  </g>
+  <text x="360" y="60" fontSize="9.5" fill="#56c288" textAnchor="middle">TLS · port 443</text>
+  <rect x="280" y="110" width="160" height="70" rx="14" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.3)"/>
+  <text x="360" y="142" fontSize="11.5" fill="#c6d2e1" textAnchor="middle">shared storage</text>
+  <text x="360" y="160" fontSize="9.5" fill="#7a8699" textAnchor="middle">(SR)</text>
+  <g stroke="rgba(255,255,255,0.35)" strokeWidth="1.4" fill="none">
+    <path d="M200 96 C 250 100, 280 102, 300 110"/>
+    <path d="M520 100 C 470 102, 440 104, 420 110"/>
+  </g>
+  <g fontSize="9" fill="#7a8699">
+    <text x="212" y="92">create disk</text>
+    <text x="448" y="96" textAnchor="end">use disk</text>
+  </g>
+  <path d="M200 204 C 320 250, 420 250, 520 204" stroke="rgba(255,255,255,0.35)" strokeWidth="1.4" fill="none" strokeDasharray="5 4"/>
+  <text x="360" y="252" fontSize="9" fill="#7a8699" textAnchor="middle">VM migration: memory image streamed host to host</text>
+  <g fontSize="9.5" fill="#7a8699">
+    <text x="40" y="290">All XenAPI requests are redirected to the coordinator,</text>
+    <text x="40" y="304">except stats, consoles and import/export,</text>
+    <text x="40" y="318">which go straight to the host concerned.</text>
+  </g>
+  <text x="680" y="318" fontSize="10" fill="#7a8699" textAnchor="end">a resource pool: a unit of shared storage</text>
+</svg>
+</Schema>
 
-## 🕸️ Network
+## 🕸️ Network {#network}
 
 ### Overview
 
-![Network architecture diagram showing the interaction between Dom0, DomU, Open vSwitch, its bridges and physical network interfaces.](../../assets/img/networking/Network-overview.png)
+<Schema label="Network architecture · from the toolstack to the wire" legend={[["#8e83fe", "PV path (netfront/netback)"], ["#4a90e2", "emulated path"], ["#e0a94a", "Open vSwitch"], ["#56c288", "control plane"]]} maxWidth="920px">
+<svg viewBox="0 0 920 800" role="img" aria-label="Clients reach XAPI in dom0 userland, which drives Open vSwitch; in the dom0 kernel, the openvswitch module hosts bridges connecting VM interfaces, VLAN fake bridges, a bond and the physical NICs; VM traffic flows through netfront/netback or through qemu-dm for emulated NICs; one NIC is passed through directly to a VM">
+  <g fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.28)">
+    <rect x="210" y="20" width="520" height="180" rx="8"/>
+    <rect x="210" y="230" width="520" height="390" rx="8"/>
+    <rect x="20" y="30" width="150" height="112" rx="8"/>
+    <rect x="20" y="310" width="150" height="104" rx="8"/>
+    <rect x="20" y="434" width="150" height="70" rx="8"/>
+    <rect x="760" y="300" width="140" height="70" rx="8"/>
+    <rect x="760" y="560" width="140" height="70" rx="8"/>
+    <rect x="210" y="650" width="520" height="30" rx="8"/>
+  </g>
+  <text x="470" y="40" fontSize="12.5" fill="#c6d2e1" textAnchor="middle">dom0 · userland</text>
+  <text x="240" y="252" fontSize="12.5" fill="#c6d2e1">dom0 · kernel</text>
+  <text x="470" y="670" fontSize="12" fill="#c6d2e1" textAnchor="middle">Xen hypervisor</text>
+  <text x="95" y="48" fontSize="10.5" fill="#7a8699" textAnchor="middle">management clients</text>
+  <g fill="rgba(86,194,136,0.10)" stroke="#56c288" strokeOpacity="0.5">
+    <rect x="28" y="56" width="134" height="22" rx="5"/>
+    <rect x="28" y="84" width="134" height="22" rx="5"/>
+    <rect x="28" y="112" width="134" height="22" rx="5"/>
+  </g>
+  <g fontSize="9.5" fill="#c6d2e1" textAnchor="middle">
+    <text x="95" y="70">Xen Orchestra</text>
+    <text x="95" y="98">remote xe</text>
+    <text x="95" y="126">xapi (pool members)</text>
+  </g>
+  <rect x="230" y="48" width="280" height="140" rx="6" fill="rgba(86,194,136,0.06)" stroke="#56c288" strokeOpacity="0.6"/>
+  <text x="370" y="66" fontSize="11" fill="#56c288" textAnchor="middle">XAPI toolstack</text>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="246" y="78" width="110" height="22" rx="4"/>
+    <rect x="246" y="108" width="110" height="22" rx="4"/>
+    <rect x="246" y="152" width="110" height="22" rx="4"/>
+    <rect x="372" y="78" width="122" height="22" rx="4"/>
+    <rect x="372" y="108" width="122" height="22" rx="4"/>
+  </g>
+  <g fontSize="10" fill="#c6d2e1" textAnchor="middle">
+    <text x="301" y="93">xapi</text>
+    <text x="301" y="123">xe (local)</text>
+    <text x="301" y="167">networkd</text>
+    <text x="433" y="93">message-switch</text>
+    <text x="433" y="123">xenopsd</text>
+  </g>
+  <rect x="530" y="48" width="184" height="84" rx="6" fill="rgba(224,169,74,0.08)" stroke="#e0a94a" strokeOpacity="0.7"/>
+  <text x="622" y="66" fontSize="11" fill="#e0a94a" textAnchor="middle">Open vSwitch (userland)</text>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="542" y="76" width="160" height="20" rx="4"/>
+    <rect x="542" y="104" width="160" height="20" rx="4"/>
+  </g>
+  <g fontSize="9.5" fill="#c6d2e1" textAnchor="middle">
+    <text x="622" y="90">ovsdb-server</text>
+    <text x="622" y="118">ovs-vswitchd · flow table</text>
+  </g>
+  <rect x="530" y="152" width="86" height="26" rx="4" fill="rgba(74,144,226,0.14)" stroke="#4a90e2" strokeOpacity="0.85"/>
+  <text x="573" y="169" fontSize="10" fill="#4a90e2" textAnchor="middle">qemu-dm</text>
+  <rect x="630" y="152" width="84" height="26" rx="4" fill="rgba(86,194,136,0.10)" stroke="#56c288" strokeOpacity="0.6"/>
+  <text x="672" y="169" fontSize="10" fill="#c6d2e1" textAnchor="middle">xenstore</text>
+  <g stroke="#56c288" strokeWidth="1.4" fill="none">
+    <path d="M162 67 C 200 67, 210 89, 244 89"/>
+    <path d="M162 95 C 200 95, 205 92, 244 90"/>
+    <path d="M162 123 C 200 123, 210 95, 244 92"/>
+  </g>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="250" y="266" width="90" height="22" rx="4"/>
+    <rect x="380" y="266" width="90" height="22" rx="4"/>
+    <rect x="500" y="266" width="90" height="22" rx="4"/>
+  </g>
+  <g fontSize="10" fill="#c6d2e1" textAnchor="middle">
+    <text x="295" y="281">netlink</text>
+    <text x="425" y="281">xenbus</text>
+    <text x="545" y="281">tun/tap</text>
+  </g>
+  <g stroke="#56c288" strokeWidth="1.4">
+    <line x1="301" y1="174" x2="295" y2="266"/>
+    <line x1="672" y1="178" x2="429" y2="266"/>
+  </g>
+  <line x1="622" y1="132" x2="602" y2="298" stroke="#e0a94a" strokeWidth="1.4"/>
+  <line x1="573" y1="178" x2="548" y2="266" stroke="#4a90e2" strokeWidth="1.4"/>
+  <rect x="230" y="300" width="480" height="226" rx="6" fill="rgba(224,169,74,0.06)" stroke="#e0a94a" strokeOpacity="0.7"/>
+  <text x="470" y="318" fontSize="11" fill="#e0a94a" textAnchor="middle">openvswitch.ko</text>
+  <rect x="246" y="330" width="220" height="184" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.25)"/>
+  <text x="356" y="346" fontSize="10" fill="#c6d2e1" textAnchor="middle">bridge xenbr0 · flow cache</text>
+  <g fill="rgba(142,131,254,0.12)" stroke="#8e83fe" strokeOpacity="0.7">
+    <rect x="258" y="356" width="120" height="20" rx="4"/>
+    <rect x="258" y="384" width="120" height="20" rx="4"/>
+  </g>
+  <rect x="258" y="412" width="120" height="20" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)"/>
+  <g fontSize="9" fill="#c6d2e1" textAnchor="middle">
+    <text x="318" y="370">port vif1.0 (netback)</text>
+    <text x="318" y="398">port vif2.0 (netback)</text>
+    <text x="318" y="426">port eth0</text>
+  </g>
+  <rect x="258" y="442" width="196" height="62" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.25)" strokeDasharray="4 3"/>
+  <text x="356" y="458" fontSize="9.5" fill="#c6d2e1" textAnchor="middle">xapi0 (fake bridge) · VLAN 42</text>
+  <rect x="270" y="468" width="120" height="20" rx="4" fill="rgba(142,131,254,0.12)" stroke="#8e83fe" strokeOpacity="0.7"/>
+  <text x="330" y="482" fontSize="9" fill="#c6d2e1" textAnchor="middle">port vif2.1 (netback)</text>
+  <rect x="486" y="330" width="208" height="184" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.25)"/>
+  <text x="590" y="346" fontSize="10" fill="#c6d2e1" textAnchor="middle">bridge xapi1 · flow cache</text>
+  <rect x="498" y="356" width="110" height="20" rx="4" fill="rgba(74,144,226,0.14)" stroke="#4a90e2" strokeOpacity="0.7"/>
+  <text x="553" y="370" fontSize="9" fill="#c6d2e1" textAnchor="middle">port tap3.0</text>
+  <rect x="498" y="404" width="184" height="62" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.25)"/>
+  <text x="590" y="420" fontSize="9.5" fill="#c6d2e1" textAnchor="middle">port bond0</text>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="510" y="430" width="70" height="20" rx="4"/>
+    <rect x="596" y="430" width="70" height="20" rx="4"/>
+  </g>
+  <g fontSize="9" fill="#c6d2e1" textAnchor="middle">
+    <text x="545" y="444">eth1</text>
+    <text x="631" y="444">eth2</text>
+  </g>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="280" y="544" width="80" height="22" rx="4"/>
+    <rect x="440" y="544" width="80" height="22" rx="4"/>
+    <rect x="580" y="544" width="80" height="22" rx="4"/>
+  </g>
+  <g fontSize="9.5" fill="#c6d2e1" textAnchor="middle">
+    <text x="320" y="559">eth0 netdev</text>
+    <text x="480" y="559">eth1 netdev</text>
+    <text x="620" y="559">eth2 netdev</text>
+  </g>
+  <rect x="250" y="580" width="440" height="22" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.2)"/>
+  <text x="470" y="595" fontSize="9.5" fill="#7a8699" textAnchor="middle">device drivers</text>
+  <g stroke="rgba(255,255,255,0.3)" strokeWidth="1.3">
+    <line x1="318" y1="432" x2="320" y2="544"/>
+    <line x1="545" y1="450" x2="480" y2="544"/>
+    <line x1="631" y1="450" x2="620" y2="544"/>
+    <line x1="320" y1="566" x2="320" y2="580"/>
+    <line x1="480" y1="566" x2="480" y2="580"/>
+    <line x1="620" y1="566" x2="620" y2="580"/>
+  </g>
+  <text x="95" y="328" fontSize="11" fill="#c6d2e1" textAnchor="middle">VM2</text>
+  <g fill="rgba(142,131,254,0.12)" stroke="#8e83fe" strokeOpacity="0.85">
+    <rect x="32" y="340" width="126" height="22" rx="4"/>
+    <rect x="32" y="372" width="126" height="22" rx="4"/>
+    <rect x="32" y="462" width="126" height="22" rx="4"/>
+  </g>
+  <g fontSize="9.5" fill="#c6d2e1" textAnchor="middle">
+    <text x="95" y="355">eth0 (netfront)</text>
+    <text x="95" y="387">eth1 (netfront)</text>
+    <text x="95" y="477">eth0 (netfront)</text>
+  </g>
+  <text x="95" y="452" fontSize="11" fill="#c6d2e1" textAnchor="middle">VM1</text>
+  <g stroke="#8e83fe" strokeWidth="1.5" fill="none">
+    <path d="M158 351 C 210 351, 220 394, 256 394"/>
+    <path d="M158 383 C 210 383, 225 478, 268 478"/>
+    <path d="M158 473 C 205 473, 215 366, 256 366"/>
+  </g>
+  <text x="830" y="318" fontSize="11" fill="#c6d2e1" textAnchor="middle">VM3</text>
+  <rect x="772" y="330" width="116" height="22" rx="4" fill="rgba(74,144,226,0.14)" stroke="#4a90e2" strokeOpacity="0.85"/>
+  <text x="830" y="345" fontSize="9.5" fill="#c6d2e1" textAnchor="middle">eth0 (emulated)</text>
+  <path d="M573 178 C 573 214, 700 212, 770 240 C 815 262, 828 290, 828 330" stroke="#4a90e2" strokeWidth="1.4" fill="none"/>
+  <text x="830" y="578" fontSize="11" fill="#c6d2e1" textAnchor="middle">VM4</text>
+  <rect x="772" y="590" width="116" height="22" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.35)"/>
+  <text x="830" y="605" fontSize="9.5" fill="#c6d2e1" textAnchor="middle">eth0 (passthrough)</text>
+  <g fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.3)">
+    <rect x="280" y="710" width="80" height="24" rx="5"/>
+    <rect x="440" y="710" width="80" height="24" rx="5"/>
+    <rect x="580" y="710" width="80" height="24" rx="5"/>
+    <rect x="790" y="710" width="80" height="24" rx="5"/>
+  </g>
+  <g fontSize="10" fill="#c6d2e1" textAnchor="middle">
+    <text x="320" y="726">NIC1</text>
+    <text x="480" y="726">NIC2</text>
+    <text x="620" y="726">NIC3</text>
+    <text x="830" y="726">NIC4</text>
+  </g>
+  <g stroke="rgba(255,255,255,0.3)" strokeWidth="1.3">
+    <line x1="320" y1="710" x2="320" y2="602"/>
+    <line x1="480" y1="710" x2="480" y2="602"/>
+    <line x1="620" y1="710" x2="620" y2="602"/>
+  </g>
+  <line x1="830" y1="710" x2="830" y2="630" stroke="rgba(255,255,255,0.45)" strokeWidth="1.5"/>
+  <text x="822" y="676" fontSize="9" fill="#7a8699" textAnchor="end">PCI passthrough</text>
+  <path d="M548 288 C 500 320, 486 340, 496 364" stroke="#4a90e2" strokeWidth="1.4" fill="none"/>
+  <line x1="295" y1="288" x2="300" y2="300" stroke="#56c288" strokeWidth="1.4"/>
+  <text x="470" y="770" fontSize="9.5" fill="#7a8699" textAnchor="middle">VM1/VM2: PV datapath · VM3: emulated NIC through qemu-dm and tap · VM4: direct hardware access</text>
+</svg>
+</Schema>
 
 At the highest level, Xen Orchestra and `xe` commands interact with XAPI to manage network configuration. The `xapi` daemon provides the main API, receiving requests and passing them to `message-switch`, which dispatches commands to the appropriate daemon. For networking, this is `xcp-networkd`, which applies the required configuration using Open vSwitch (OVS) commands.
 
@@ -592,10 +1157,11 @@ Additionally, `ovs-vsctl show` does not display it as a separate bridge, but ins
 ```
 
 Although its ports are added to `xenbr0` it does have a list of its own ports:
-```
-# ovs-vsctl list-ports xapi9
+
+<Terminal title="ovs-ofctl dump-flows xapi0">{`
+ovs-vsctl list-ports xapi9
 vif20.1
-```
+`}</Terminal>
 
 This makes it easier to identify its ports and interfaces than trying to match the tags to a port.
 
@@ -639,7 +1205,7 @@ To see the overall organization, use `ovs-vsctl show`:
 
 #### Global Private Networks (tunnels)
 
-Global private networks are managed by Xen Orchestra's [SDN Controller plugin](https://docs.xen-orchestra.com/sdn_controller), also documented in the [XCP-ng SDN Controller documentation](../../networking/#-sdn-controller). Here, we explain their setup within OVS.
+Global private networks are managed by Xen Orchestra's [SDN Controller plugin](https://docs.xen-orchestra.com/sdn_controller), also documented in the [XCP-ng SDN Controller documentation](../../networking/#sdn-controller). Here, we explain their setup within OVS.
 
 A network is created, and its associated bridge is created on the required hosts. Unlike other network types, these can span multiple pools, which is why the SDN Controller plugin is needed as XAPI is not aware of other pools. After the bridge is created, tunnels (GRE or VXLAN, encrypted or not) are established between the center host and all hosts in the included pools. For encrypted tunnels, libreswan is used for IPsec, establishing routes at the kernel level. This currently limits you to one encrypted tunnel per protocol, as multiple tunnels would attempt to set the same route.
 

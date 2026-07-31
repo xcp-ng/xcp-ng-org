@@ -1,18 +1,22 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 ---
 
 # Multipathing
 
 How to properly setup a new SR with multipathing on Xen Orchestra and XCP-ng.
 
+Multipathing uses several independent network or SAN paths between each host and the storage unit. It is the recommended setup for iSCSI and Fibre Channel SRs: a path failure (NIC, cable, switch, controller) doesn't interrupt storage traffic, and total throughput can be higher.
+
+What requires care is *when* you enable it, not whether you should:
+
 :::warning
-Do not attempt to enable multipathing on a production pool with existing and active iSCSI and/or HBA and/or FC SRs.
+Do not attempt to enable multipathing on a production pool with existing and active iSCSI and/or HBA and/or FC SRs: the device topology changes when multipathing takes over, which must not happen under active I/O. Enable it **before** creating these SRs.
 
 You can activate it on the "fly", per XCP-ng host (Advanced tab), but it is recommended to do so with XCP-ng hosts that have no VMs running.
 :::
 
-## iSCSI
+## 🌐 iSCSI {#iscsi}
 
 ### Requirements
 * Two different network interfaces.
@@ -21,9 +25,7 @@ You can activate it on the "fly", per XCP-ng host (Advanced tab), but it is reco
 * iSCSI target ports are operating in portal mode.
 
 :::info
-If the storage vendor recommends using Jumbo Frames, you will need to implement them.
-
-Since each architecture is unique, feel free to check with the storage vendor if it’s possible to stay with an MTU of 1500 (e.g., using storage dedicated PIF at 10Gb/s or 25Gb/s).
+Keep the default MTU (1500) on your storage networks. Non-standard MTUs are a frequent source of hard-to-diagnose storage issues, for little to no gain on modern networks: see [MTUs](../networking/networking.md#mtus).
 :::
 
 :::warning
@@ -43,94 +45,61 @@ This could have an impact on expected performance.
 | 🟢 | 422 | 10.42.2.0/24 | 10.42.2.11 | 10.42.2.101 | 10.42.2.102 |
 
 #### Target architecture diagram
-```mermaid
----
-config:
-  look: normal
-  theme: default
----
-flowchart LR
-  classDef blueNode fill:#A7C8F0,stroke:#2C6693,color:#000000;
-  classDef greenNode fill:#A8E6A2,stroke:#3E8E41,color:#000000;
-  classDef grayNode fill:#D6D6D6,stroke:#8C8C8C,color:#000000;
 
-  subgraph server[XCP-ng host]
-    direction LR
-    subgraph Card1[Network cards]
-        direction RL
-        card1pif1[pif1]
-        card1pif2[pif2]
-        card2pif1[pif4]
-        card2pif2[pif3]
-    end
-  end
-  subgraph Switch 2
-    vlan422[vlan422]:::greenNode
-  end
-  subgraph Switch 1
-    vlan421[vlan421]:::blueNode
-  end
-  subgraph storage[Storage unit]
-  direction LR
-    subgraph ctrl2[Controller 2]
-        direction RL
-        ctrl2-port1[port1]
-        ctrl2-port2[port2]
-    end
-    subgraph ctrl1[Controller 1]
-        direction RL
-        ctrl1-port1[port1]
-        ctrl1-port2[port2]
-    end
-    lun1@{ shape: lin-cyl, label: "LUN" }
-
-  end
-
-  card1-pif1-ip([10.42.1.11/24]):::blueNode
-  card1-pif2-ip([other networks]):::grayNode
-  card2-pif2-ip([10.42.2.11/24]):::greenNode
-  card2-pif1-ip([other networks]):::grayNode
-  ctrl1-port1-ip([10.42.1.101/24]):::blueNode
-  ctrl1-port2-ip([10.42.2.101/24]):::greenNode
-  ctrl2-port1-ip([10.42.1.102/24]):::blueNode
-  ctrl2-port2-ip([10.42.2.102/24]):::greenNode
-
-  card1pif1<-->card1-pif1-ip
-  card1-pif1-ip<-->vlan421
-  vlan421<-->ctrl1-port1-ip
-  ctrl1-port1-ip<-->ctrl1-port1
-  vlan421<-->ctrl2-port1-ip
-  ctrl2-port1-ip<-->ctrl2-port1
-
-  card2pif2<-->card2-pif2-ip
-  card2-pif2-ip<-->vlan422
-  vlan422<-->ctrl1-port2-ip
-  ctrl1-port2-ip<-->ctrl1-port2
-  vlan422<-->ctrl2-port2-ip
-  ctrl2-port2-ip<-->ctrl2-port2
-
-  card1pif2<-->card1-pif2-ip
-  card2pif1<-->card2-pif1-ip
-  ctrl1 <----> lun1
-  ctrl2 <----> lun1
-
-linkStyle 0 stroke:#4A90E2,stroke-width:2px;
-linkStyle 1 stroke:#4A90E2,stroke-width:2px;
-linkStyle 2 stroke:#4A90E2,stroke-width:2px;
-linkStyle 3 stroke:#4A90E2,stroke-width:2px;
-linkStyle 4 stroke:#4A90E2,stroke-width:2px;
-linkStyle 5 stroke:#4A90E2,stroke-width:2px;
-
-linkStyle 6 stroke:#5CB85C,stroke-width:2px;
-linkStyle 7 stroke:#5CB85C,stroke-width:2px;
-linkStyle 8 stroke:#5CB85C,stroke-width:2px;
-linkStyle 9 stroke:#5CB85C,stroke-width:2px;
-linkStyle 10 stroke:#5CB85C,stroke-width:2px;
-linkStyle 11 stroke:#5CB85C,stroke-width:2px;
-
-linkStyle 12 stroke:#8C8C8C,stroke-width:2px;
-linkStyle 13 stroke:#8C8C8C,stroke-width:2px;
-```
+<Schema label="iSCSI multipathing · two independent paths from host to storage" legend={[["#4a90e2", "path A · VLAN 421"], ["#56c288", "path B · VLAN 422"]]} maxWidth="560px">
+<svg viewBox="0 0 560 445" role="img" aria-label="An XCP-ng host with two NICs on top; each NIC goes through its own switch and VLAN; each switch reaches one port on each of the two storage controllers; the LUN sits below both controllers">
+  <g fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.28)">
+    <rect x="160" y="16" width="240" height="104" rx="8"/>
+    <rect x="60" y="180" width="180" height="52" rx="8"/>
+    <rect x="320" y="180" width="180" height="52" rx="8"/>
+    <rect x="50" y="290" width="460" height="140" rx="8"/>
+  </g>
+  <text x="280" y="40" fontSize="14" fill="#c6d2e1" textAnchor="middle">XCP-ng host</text>
+  <rect x="175" y="52" width="100" height="44" rx="5" fill="rgba(74,144,226,0.14)" stroke="#4a90e2" strokeOpacity="0.85"/>
+  <text x="225" y="70" fontSize="12" fill="#4a90e2" textAnchor="middle">pif1</text>
+  <text x="225" y="86" fontSize="9" fill="#7a8699" textAnchor="middle">10.42.1.11/24</text>
+  <rect x="285" y="52" width="100" height="44" rx="5" fill="rgba(86,194,136,0.14)" stroke="#56c288" strokeOpacity="0.85"/>
+  <text x="335" y="70" fontSize="12" fill="#56c288" textAnchor="middle">pif2</text>
+  <text x="335" y="86" fontSize="9" fill="#7a8699" textAnchor="middle">10.42.2.11/24</text>
+  <text x="150" y="210" fontSize="13" fill="#c6d2e1" textAnchor="middle">Switch 1</text>
+  <text x="150" y="226" fontSize="11" fill="#4a90e2" textAnchor="middle">VLAN 421 · 10.42.1.0/24</text>
+  <text x="410" y="210" fontSize="13" fill="#c6d2e1" textAnchor="middle">Switch 2</text>
+  <text x="410" y="226" fontSize="11" fill="#56c288" textAnchor="middle">VLAN 422 · 10.42.2.0/24</text>
+  <text x="66" y="420" fontSize="13" fill="#c6d2e1">Storage unit</text>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="70" y="326" width="200" height="56" rx="6"/>
+    <rect x="290" y="326" width="200" height="56" rx="6"/>
+  </g>
+  <circle cx="120" cy="326" r="7" fill="rgba(74,144,226,0.25)" stroke="#4a90e2"/>
+  <circle cx="220" cy="326" r="7" fill="rgba(86,194,136,0.25)" stroke="#56c288"/>
+  <circle cx="340" cy="326" r="7" fill="rgba(74,144,226,0.25)" stroke="#4a90e2"/>
+  <circle cx="440" cy="326" r="7" fill="rgba(86,194,136,0.25)" stroke="#56c288"/>
+  <g fontSize="9.5" fill="#7a8699" textAnchor="middle">
+    <text x="120" y="348">.1.101</text>
+    <text x="220" y="348">.2.101</text>
+    <text x="340" y="348">.1.102</text>
+    <text x="440" y="348">.2.102</text>
+  </g>
+  <text x="170" y="372" fontSize="12" fill="#c6d2e1" textAnchor="middle">Controller 1</text>
+  <text x="390" y="372" fontSize="12" fill="#c6d2e1" textAnchor="middle">Controller 2</text>
+  <rect x="230" y="394" width="100" height="28" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)"/>
+  <text x="280" y="412" fontSize="12" fill="#c6d2e1" textAnchor="middle">LUN</text>
+  <g stroke="rgba(255,255,255,0.35)" strokeWidth="1.4">
+    <line x1="170" y1="382" x2="230" y2="397"/>
+    <line x1="390" y1="382" x2="330" y2="397"/>
+  </g>
+  <g stroke="#4a90e2" strokeWidth="1.6" fill="none">
+    <path d="M225 96 C 225 130, 170 145, 152 178"/>
+    <path d="M150 232 C 150 265, 130 290, 120 319"/>
+    <path d="M150 232 C 160 270, 300 280, 338 319"/>
+  </g>
+  <g stroke="#56c288" strokeWidth="1.6" fill="none">
+    <path d="M335 96 C 335 130, 390 145, 408 178"/>
+    <path d="M410 232 C 410 265, 430 290, 440 319"/>
+    <path d="M410 232 C 400 270, 260 280, 222 319"/>
+  </g>
+</svg>
+</Schema>
 
 ### Operating procedure
 
@@ -186,9 +155,9 @@ If this is not the case:
 #### 3. Configure the SR
 Proceed with the iSCSI SR configuration as indicated in the [storage documentation](../../storage/#iscsi).
 
-## Fibre Channel (HBA)
+## 🧵 Fibre Channel (HBA) {#fibre-channel-hba}
 ### Requirements
-* Check that the Fibre Channel cards model(s) is supported via the [HCL](../../installation/hardware/#-hardware-compatibility-list-hcl).
+* Check that the Fibre Channel cards model(s) is supported via the [HCL](../../installation/hardware/#hardware-compatibility-list-hcl).
 * Two different Fibre Channel ports.
 * Two different SAN switches.
 * Multiple targets per LUN on your storage unit.
@@ -200,63 +169,54 @@ Make sure not to mix Fibre Channel speeds.
 
 ### Target architecture
 #### Target architecture diagram
-```mermaid
----
-config:
-  look: normal
-  theme: default
----
-flowchart LR
-  classDef blueNode fill:#A7C8F0,stroke:#2C6693,color:#000000;
-  classDef greenNode fill:#A8E6A2,stroke:#3E8E41,color:#000000;
-  classDef grayNode fill:#D6D6D6,stroke:#8C8C8C,color:#000000;
 
-  subgraph server[XCP-ng host]
-    direction LR
-    subgraph Card1[Fibre Channel]
-        direction RL
-        card1port1[port1]
-        card1port2[port2]
-    end
-  end
-
-  subgraph storage[Storage unit]
-  direction LR
-    subgraph ctrl2[Controller 2]
-        direction RL
-        ctrl2-port1[port1]
-        ctrl2-port2[port2]
-    end
-    subgraph ctrl1[Controller 1]
-        direction RL
-        ctrl1-port1[port1]
-        ctrl1-port2[port2]
-    end
-    lun1@{ shape: lin-cyl, label: "LUN" }
-
-  end
-
-  vlan421[SAN Switch 1]:::blueNode
-  vlan422[SAN Switch 2]:::greenNode
-
-  card1port1<---->vlan421
-  vlan421<---->ctrl1-port1
-  vlan421<---->ctrl2-port1
-
-  card1port2<---->vlan422
-  vlan422<---->ctrl1-port2
-  vlan422<---->ctrl2-port2
-
-  ctrl1 <----> lun1
-  ctrl2 <----> lun1
-
-linkStyle 0 stroke:#4A90E2,stroke-width:2px;
-linkStyle 1 stroke:#4A90E2,stroke-width:2px;
-linkStyle 2 stroke:#4A90E2,stroke-width:2px;
-linkStyle 3 stroke:#5CB85C,stroke-width:2px;
-linkStyle 4 stroke:#5CB85C,stroke-width:2px;
-linkStyle 5 stroke:#5CB85C,stroke-width:2px;
-```
+<Schema label="Fibre Channel multipathing · two independent fabrics from host to storage" legend={[["#4a90e2", "fabric A"], ["#56c288", "fabric B"]]} maxWidth="560px">
+<svg viewBox="0 0 560 420" role="img" aria-label="An XCP-ng host with two Fibre Channel ports on top; each port goes through its own SAN switch; each switch reaches one port on each of the two storage controllers; the LUN sits below both controllers">
+  <g fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.28)">
+    <rect x="160" y="16" width="240" height="96" rx="8"/>
+    <rect x="60" y="160" width="180" height="48" rx="8"/>
+    <rect x="320" y="160" width="180" height="48" rx="8"/>
+    <rect x="50" y="266" width="460" height="140" rx="8"/>
+  </g>
+  <text x="280" y="40" fontSize="14" fill="#c6d2e1" textAnchor="middle">XCP-ng host</text>
+  <text x="280" y="56" fontSize="10" fill="#7a8699" textAnchor="middle">Fibre Channel HBA</text>
+  <rect x="180" y="66" width="90" height="30" rx="5" fill="rgba(74,144,226,0.14)" stroke="#4a90e2" strokeOpacity="0.85"/>
+  <text x="225" y="85" fontSize="12" fill="#4a90e2" textAnchor="middle">port 1</text>
+  <rect x="290" y="66" width="90" height="30" rx="5" fill="rgba(86,194,136,0.14)" stroke="#56c288" strokeOpacity="0.85"/>
+  <text x="335" y="85" fontSize="12" fill="#56c288" textAnchor="middle">port 2</text>
+  <text x="150" y="181" fontSize="13" fill="#c6d2e1" textAnchor="middle">SAN switch 1</text>
+  <text x="150" y="198" fontSize="11" fill="#4a90e2" textAnchor="middle">fabric A</text>
+  <text x="410" y="181" fontSize="13" fill="#c6d2e1" textAnchor="middle">SAN switch 2</text>
+  <text x="410" y="198" fontSize="11" fill="#56c288" textAnchor="middle">fabric B</text>
+  <text x="66" y="396" fontSize="13" fill="#c6d2e1">Storage unit</text>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="70" y="302" width="200" height="56" rx="6"/>
+    <rect x="290" y="302" width="200" height="56" rx="6"/>
+  </g>
+  <circle cx="120" cy="302" r="7" fill="rgba(74,144,226,0.25)" stroke="#4a90e2"/>
+  <circle cx="220" cy="302" r="7" fill="rgba(86,194,136,0.25)" stroke="#56c288"/>
+  <circle cx="340" cy="302" r="7" fill="rgba(74,144,226,0.25)" stroke="#4a90e2"/>
+  <circle cx="440" cy="302" r="7" fill="rgba(86,194,136,0.25)" stroke="#56c288"/>
+  <text x="170" y="344" fontSize="12" fill="#c6d2e1" textAnchor="middle">Controller 1</text>
+  <text x="390" y="344" fontSize="12" fill="#c6d2e1" textAnchor="middle">Controller 2</text>
+  <rect x="230" y="370" width="100" height="28" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)"/>
+  <text x="280" y="388" fontSize="12" fill="#c6d2e1" textAnchor="middle">LUN</text>
+  <g stroke="rgba(255,255,255,0.35)" strokeWidth="1.4">
+    <line x1="170" y1="358" x2="230" y2="373"/>
+    <line x1="390" y1="358" x2="330" y2="373"/>
+  </g>
+  <g stroke="#4a90e2" strokeWidth="1.6" fill="none">
+    <path d="M225 96 C 225 125, 170 130, 152 158"/>
+    <path d="M150 208 C 150 240, 130 268, 120 295"/>
+    <path d="M150 208 C 160 246, 300 258, 338 295"/>
+  </g>
+  <g stroke="#56c288" strokeWidth="1.6" fill="none">
+    <path d="M335 96 C 335 125, 390 130, 408 158"/>
+    <path d="M410 208 C 410 240, 430 268, 440 295"/>
+    <path d="M410 208 C 400 246, 260 258, 222 295"/>
+  </g>
+</svg>
+</Schema>
 ### Operating procedure
 
 #### 1. Prepare XCP-ng hosts
@@ -312,7 +272,7 @@ If this is not the case:
 Proceed with the HBA SR configuration as indicated in the [storage documentation](../../storage/#hba).
 
 
-## Maintenance operations
+## 🔧 Maintenance operations {#maintenance-operations}
 ### Add a new XCP-ng host to an existing multipathing pool
 
 :::warning
@@ -323,7 +283,7 @@ Do not add the new XCP-ng host to the pool without completing these steps.
 2. Ensure that the iSCSI PIF configuration is completed if you are using iSCSI.
 3. Add the new XCP-ng host to the pool.
 
-## Troubleshooting
+## 🧑‍⚕️ Troubleshooting {#troubleshooting}
 
 ### Verify multipathing
 You can use the command ```multipath -ll``` to check if multipathing is active.
@@ -356,16 +316,15 @@ tcp: [4] 10.42.2.102:3260,2 iqn.2024-02.com.acme:ultrasan.lun01 (non-flash)
 In this example, we have four iSCSI sessions with one LUN.
 :::
 
-#### iSCSI: Verify Jumbo Frame configuration
-To check the Jumbo Frames configuration, connect to a XCP-ng host and try pinging all IP addresses involved in your iSCSI storage (target and initiator) using this command.
+#### iSCSI: verify MTU consistency
+An MTU mismatch between the host, the switches and the storage unit causes erratic storage behavior. To check for one, connect to a XCP-ng host and ping all IP addresses involved in your iSCSI storage (target and initiator) with a full-size, non-fragmentable packet:
 
-```
-ping -M do -s 8972 <REMOTE_IP_ADDRESS>
-```
+<Terminal shell title="iSCSI: verify MTU consistency">{`
+ping -M do -s 1472 <REMOTE_IP_ADDRESS>
+`}</Terminal>
+
+(1472 is for the standard MTU of 1500: packet size minus the 28 bytes of IP and ICMP headers. If your network uses another MTU, subtract 28 from it.)
+
 :::warning
-If you get an error, usually ```ping: sendmsg: Message too long```, your MTU settings are incorrect, and you need to fix your network configuration.
-:::
-
-:::tip
-If your storage vendor allows it, feel free to use "1500" for MTU.
+If you get an error, usually ```ping: sendmsg: Message too long```, your MTU settings are inconsistent along the path, and you need to fix your network configuration.
 :::

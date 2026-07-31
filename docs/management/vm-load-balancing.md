@@ -1,6 +1,6 @@
 # VM Load balancing
 
-## 📋 Introduction
+## 📋 Introduction {#introduction}
 
 A generic definition (from Wikipedia), is:
 
@@ -12,7 +12,7 @@ In the case of virtualization, you have multiple physical hosts, which runs your
 Maybe you already heard about VMWare DRS (Distributed Resource Scheduler): that's the same principle here, but for XCP-ng.
 :::
 
-## 🎓 Concepts
+## 🎓 Concepts {#concepts}
 So the first objective is to adapt your VM placement in live (without service interruption), depending of the load. Because [Xen Orchestra](../manage-at-scale/xo-web-ui) is connected to multiple pools and XCP-ng supports live storage motion, we can perform load balancing on a **whole XCP-ng infrastructure** (even between remote datacenters). A load balancing policy is called a "**plan**".
 
 Let's take a simple example, with these 2 hosts running 6 VMs:
@@ -41,7 +41,7 @@ But it's not the only way to see this: there is multiple possibilities to "optim
 
 Those ways can be also called modes: "performance" for 1, "density" for number 2 and "mixed" for the last.
 
-## 🔧 Configure a plan
+## 🔧 Configure a plan {#configure-a-plan}
 
 In this coming new view, you'll be able to configure a new load balancing plan, or edit an existing one.
 
@@ -98,7 +98,7 @@ The global situation (resource usage) is examined **every minute**.
 TODO: more details to come here
 :::
 
-## ↔️ VM anti-affinity
+## ↔️ VM anti-affinity {#vm-anti-affinity}
 
 VM anti-affinity is a feature that prevents VMs with the same user tags from running on the same host. This functionality is available directly in the load-balancer plugin.
 This way, you can avoid having pairs of redundant VMs or similar running on the same host.

@@ -11,16 +11,16 @@ XCP-ng comes with a large range of hardware support.
 
 A given device may be supported at one of two levels:
 
-1. Presence on the [Hardware Compatibility List](#-hardware-compatibility-list-hcl) guarantees support by XCP-ng. With some exceptions described in the next section.
-2. Many devices outside the HCL are also supported, but are not tested routinely. See [Supported hardware outside the HCL](#-supported-hardware-outside-the-hcl).
+1. Presence on the [Hardware Compatibility List](#hardware-compatibility-list-hcl) guarantees support by XCP-ng. With some exceptions described in the next section.
+2. Many devices outside the HCL are also supported, but are not tested routinely. See [Supported hardware outside the HCL](#supported-hardware-outside-the-hcl).
 
-## 📖 Hardware Compatibility List (HCL)
+## 📖 Hardware Compatibility List (HCL) {#hardware-compatibility-list-hcl}
 
 XCP-ng 8.3 shares a compatibility list with XenServer 8.4. Thus, devices listed on [XenServer's Hardware Compatibility List](http://hcl.xenserver.com/) are supported, with rare exceptions.
 
 Exceptions include devices which require *proprietary* software components to operate (closed source drivers, for example). Such devices do not impede the use of XCP-ng, but their features cannot be exploited.
 
-## ♻ Supported hardware outside the HCL
+## ♻ Supported hardware outside the HCL {#supported-hardware-outside-the-hcl}
 
 Many devices outside the HCL actually work perfectly with XCP-ng. Contrarily to some hypervisors, XCP-ng does not demand the use of servers from a curated short list. Most of the hardware support depends on the Linux kernel drivers plus vendor drivers covering a very large range of devices.
 
@@ -30,7 +30,7 @@ Concretely, if your hardware is not on the HCL, there's still a very high chance
 
 Let's mention one particular kind of exceptions to support, though. **Security on older hardware having hardware vulnerabilities.** Older hardware, while usually still running very well - and we're all for using existing hardware while it lasts rather than buying new machines - may not receive hardware-related security updates from their very vendor. In particular those related to side-channel attacks (Spectre, Meltdown, and everything that ensued). In this case, you can use XCP-ng, but without expecting protection against this kind of vulnerablity, because it simply doesn't depend on XCP-ng (or any other hypervisor): it depends on the hardware vendor.
 
-## 🧰 Alternate drivers
+## 🧰 Alternate drivers {#alternate-drivers}
 
 XCP-ng occasionally provides alternate drivers for users who have issues with the main drivers installed with XCP-ng.
 
@@ -43,26 +43,29 @@ In this section we provide instructions that are common to all the provided driv
 Just replace `package-name` with the actual package name.
 
 ### Installation
-```
+
+<Terminal shell title="root@xcp-ng-host — Installation">{`
 yum install package-name
-```
+`}</Terminal>
 
 ### Activation
 
 The simplest way is to `reboot`.
 
 Else, if you know the module name, you can unload it from the kernel and reload it.
-```
+
+<Terminal shell title="Activation">{`
 modprobe -r module-name
 modprobe -v module-name
-```
+`}</Terminal>
 
 ### Uninstallation
 
 If the driver does not work as intended, just remove the package from the system and follow the "Activation" steps above.
-```
+
+<Terminal shell title="root@xcp-ng-host — Uninstallation">{`
 yum remove package-name
-```
+`}</Terminal>
 
 ### Updates
 
@@ -81,14 +84,14 @@ A list is maintained at [https://github.com/xcp-ng/xcp/wiki/Drivers](https://git
 Check the "XCP-ng X.Y alternate driver" column, which provides packages names and versions for every available alternate driver.
 
 
-## 🎁 Additional kernel modules
+## 🎁 Additional kernel modules {#additional-kernel-modules}
 
-Additional kernel modules are a lot like [alternate drivers](#-alternate-drivers) (most of the above section applies to them) except that they don't replace an existing driver from the system. They add a new one that didn't exist at all.
+Additional kernel modules are a lot like [alternate drivers](#alternate-drivers) (most of the above section applies to them) except that they don't replace an existing driver from the system. They add a new one that didn't exist at all.
 
 Their list is maintained at [https://github.com/xcp-ng/xcp/wiki/Drivers](https://github.com/xcp-ng/xcp/wiki/Drivers), in a table named "Other kernel modules available in XCP-ng X.Y".
 
 
-## 🚒 Alternate kernel
+## 🚒 Alternate kernel {#alternate-kernel}
 
 We provide an "alternate Linux kernel" on XCP-ng 8.0 and above, named `kernel-alt`. It is kernel 4.19, as the main kernel, but with all updates from the Linux 4.19 branch applied. By construction, it should thus be stable. However it **receives less testing** so we cannot fully guarantee against regressions (any detected regression we'd work on a fix quickly, of course). We also backport security fixes from the main kernel to the alternate kernel when needed.
 
@@ -107,27 +110,28 @@ This will boot the installer with the alternate kernel and also install the alte
 ### Installation on an existing system
 You can install it using
 
-```
+<Terminal shell title="root@xcp-ng-host — Installation on an existing…">{`
 yum install kernel-alt
-```
+`}</Terminal>
 
 This will install the kernel and add a grub boot menu entry to boot from it. It will **not** default to it unless you change the default in `grub.cfg` (`/boot/grub/grub.cfg` or `/boot/efi/EFI/xenserver/grub.cfg` depending on whether you are in BIOS mode or UEFI mode).
 
 There may also be a newer release of kernel-alt in testing repositories:
 
-```
+<Terminal shell title="root@xcp-ng-host — Installation on an existing…">{`
 yum install kernel-alt --enablerepo=xcp-ng-testing
-```
+`}</Terminal>
 
 ### Uninstall
 Boot the main kernel, then:
-```
+
+<Terminal shell title="root@xcp-ng-host — Uninstall">{`
 yum remove kernel-alt
-```
+`}</Terminal>
 
 This will remove the added grub entry automatically too and set default boot to main kernel if needed.
 
-## 🛠️ Tips related to specific hardware
+## 🛠️ Tips related to specific hardware {#tips-related-to-specific-hardware}
 
 Below is a non-exhaustive list of server models or devices for which the XCP-ng community provided extra tips.
 
@@ -190,7 +194,7 @@ There are several USB 5Gbps NICs based on this chipset available on the market. 
 
 The kernel module is just a repackage for XCP-ng of [the AQC111U drivers available for Linux Kernel 3.10 on the Marvell website](https://www.marvell.com/support/downloads.html).
 
-To install the driver follow the instructions provided in the [**Alternate drivers** section below](#-alternate-drivers) and use `aqc111u-module` as `package-name` _(`module-name` would be `aqc111u`)_.
+To install the driver follow the instructions provided in the [**Alternate drivers** section below](#alternate-drivers) and use `aqc111u-module` as `package-name` _(`module-name` would be `aqc111u`)_.
 
 Known compatible NICs are [^1]:
 

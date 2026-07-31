@@ -5,15 +5,15 @@ sidebar_position: 1
 # XCP-ng 8.3 LTS
 
 
-XCP-ng 8.3 is an [LTS Release](../#-lts-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.2.iso?https=1).
+XCP-ng 8.3 is an [LTS Release](../#lts-releases). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3.0-20250606.2.iso?https=1).
 
 SHA256 checksums, GPG signatures, and the net-install ISO are available [here](https://xcp-ng.org/#easy-to-install).
 
 :::info
-LTS means **Long Term Support**: more information in [this section](../#-lts-releases).
+LTS means **Long Term Support**: more information in [this section](../#lts-releases).
 :::
 
-## Structure of the document
+## 🗺️ Structure of the document {#structure-of-the-document}
 
 * [Release information](#release-information)
 * [What's new](#whats-new)
@@ -22,7 +22,7 @@ LTS means **Long Term Support**: more information in [this section](../#-lts-rel
 * [Attention points](#attention-points) - Highly recommended read before upgrading.
 * [Known issues](#known-issues)
 
-## Release information
+## ℹ️ Release information {#release-information}
 
 For this release, the product lifecycle has changed:
 * A longer preview phase, enabling broad user feedback, now ended.
@@ -38,11 +38,11 @@ Key details:
 * LTS since 2025-06-16.
 * Supported until 2028-11-30.
 
-## Install
+## 💿 Install {#install}
 
 See [Installation](../../../installation/install-xcp-ng).
 
-## Upgrade from previous releases
+## ⬆️ Upgrade from previous releases {#upgrade-from-previous-releases}
 
 Upgrading to XCP-ng 8.3 is possible from:
 - An up-to-date XCP-ng 8.2.1 (recommended)
@@ -62,7 +62,7 @@ Refer to the [Upgrade How-to](../../../installation/upgrade) for the exact upgra
 Users who installed a prerelease of XCP-ng 8.3 must upgrade to the final 8.3.0 version using the installation ISO image. The only exception is for users who installed XCP-ng 8.3 RC2 or have already upgraded to RC2 using the installation ISO image. These users can simply [update their system](../../management/updates) without needing the ISO image.
 :::
 
-## What's new
+## ✨ What's new {#whats-new}
 
 XCP-ng 8.3 is the result of years of development on XCP-ng, XenServer, and common open-source foundations such as the Xen Project.
 
@@ -227,9 +227,10 @@ Now it's simpler:
 To enhance security, it is now possible to close TCP port 80 on the management interface. By default, port 80 remains open for specific clients that may still require it, but all internal connections now utilize HTTPS. Previously, VM migration occurred over port 80, but this has been updated.
 
 To close port 80, run the following command:
-```
+
+<Terminal shell title="root@xcp-ng-host — Restricted use of port 80 [XS]">{`
 xe pool-param-set uuid=<pool-uuid> https-only=true
-```
+`}</Terminal>
 
 ### Improvements in the installer
 
@@ -346,13 +347,13 @@ We've also invested heavily in test automation to improve coverage. Nevertheless
 
 [Additional packages](../../management/additional-packages) are packages made available by the XCP-ng team directly in our RPM repositories, for easy installation and update on XCP-ng hosts.
 
-- [Alternate kernel](../../installation/hardware#-alternate-kernel) updated to version 4.19.316 (as of XCP-ng 8.3 release).
-- New [alternate driver packages](../../installation/hardware#-alternate-drivers): `intel-i40e-alt`, `intel-ice-alt`, `tg3-module-alt`, and `mlx4-modules-alt`. Various other alternate driver packages were also updated. See [XCP-ng Drivers](https://github.com/xcp-ng/xcp/wiki/Drivers).
+- [Alternate kernel](../../installation/hardware#alternate-kernel) updated to version 4.19.316 (as of XCP-ng 8.3 release).
+- New [alternate driver packages](../../installation/hardware#alternate-drivers): `intel-i40e-alt`, `intel-ice-alt`, `tg3-module-alt`, and `mlx4-modules-alt`. Various other alternate driver packages were also updated. See [XCP-ng Drivers](https://github.com/xcp-ng/xcp/wiki/Drivers).
 - `zfs` updated to version 2.1.15. ⚠️ Existing ZFS pools may need to be upgraded using `zpool upgrade`. Check ZFS documentation.
 - `netdata` updated to version 1.44.3.
 - `lsscsi` added to the XCP-ng repositories.
 
-## Status of XOSTOR in XCP-ng 8.3
+## 🗄️ Status of XOSTOR in XCP-ng 8.3 {#status-of-xostor-in-xcp-ng-83}
 
 As of the initial release, XOSTOR (our hyperconverged storage solution based on LINSTOR) was available in XCP-ng 8.3 but was still considered **beta**.
 
@@ -360,7 +361,7 @@ Since 2025-06-16, XOSTOR is officially supported on XCP-ng 8.3, as long as it is
 
 A [specific upgrade process](../../xostor/#upgrade) is available for pools running XCP-ng 8.2.1 with XOSTOR.
 
-## Deprecations and removals
+## 🗑️ Deprecations and removals {#deprecations-and-removals}
 
 ### PV virtualization mode
 
@@ -437,7 +438,7 @@ So here it's not really a removal. XenServer replaced the component used for Act
 
 We deleted the old, unsupported since XCP-ng 8.1, experimental EXT4 driver, superseded by the regular EXT driver (which also uses `ext4`). We're talking about an old experimental driver that you never used unless you installed the experimental packages in the XCP-ng 7.x era, so this removal is painless for the vast majority of XCP-ng users, if not all!
 
-## Attention points
+## ⚠️ Attention points {#attention-points}
 
 Important changes or adjustments that may affect how you use the product. Be sure to review these to avoid unexpected behavior.
 
@@ -488,7 +489,7 @@ You will also need to disable Secure Boot in the VM settings if it was enforced.
 
 See [Active Directory in XCP-ng](#active-directory-in-xcp-ng).
 
-## Known issues
+## 🐞 Known issues {#known-issues}
 
 ### IPv6-related issues
 

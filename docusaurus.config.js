@@ -11,6 +11,7 @@ const config = {
   url: 'https://docs.xcp-ng.org',
   baseUrl: '/',
   onBrokenLinks: 'throw',
+  onBrokenAnchors: 'throw',
   favicon: 'img/xcpcrop128.png',
   trailingSlash: true,
   markdown: {
@@ -66,6 +67,7 @@ const config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
+          showLastUpdateTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
@@ -188,7 +190,20 @@ const config = {
     }),
   plugins: [
     require.resolve('docusaurus-plugin-image-zoom'),
-    require.resolve('docusaurus-lunr-search')
+    require.resolve('docusaurus-lunr-search'),
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        // Whenever a page is moved or renamed, add a redirect here so the
+        // old URL keeps working (external links, search engines, forum posts).
+        redirects: [
+          {
+            from: '/troubleshooting/storage/disk-failure-softwaire-RAID/',
+            to: '/troubleshooting/storage/disk-failure-software-RAID/',
+          },
+        ],
+      },
+    ],
   ],
 };
 

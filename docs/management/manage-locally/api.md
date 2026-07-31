@@ -8,13 +8,13 @@ XAPI is requested by multiple **clients**, like Xen Orchestra or `xe` CLI. See [
 We strongly encourage to build applications on top of XO API and not XAPI. In fact, XAPI is made with very specific calls (close to the Xen logic), so it's a lot better to build a solution on top of a more global API, the one [provided by Xen Orchestra](https://xen-orchestra.com/docs/architecture.html#api). It will act as a central point for all your pools and you won't have to handle all the Xen specifics.
 :::
 
-## 📐 Architecture
+## 📐 Architecture {#architecture}
 
 XAPI is using a database (Read/write on the master, replicated to slaves in read only). It's an XML file located at `/var/lib/xcp/state.db`. All the metadata and settings of your pool, hosts, VMs and so on are stored there.
 
 ![Diagram of the XAPI classes (too complex to describe here).](../../../static/img/xapiclasses.png)
 
-## 🧑‍⚕️ Troubleshooting
+## 🧑‍⚕️ Troubleshooting {#troubleshooting}
 
 ### Restarting the API
 
@@ -76,9 +76,10 @@ Common values are:
 After changing the configuration, restart the toolstack with `xe-toolstack-restart`. 
 
 Example with one command to enable HSTS and restart XAPI (example sets 1 year = 31536000):
-```bash
+
+<Terminal shell title="Set HSTS retained for 1y">{`
 echo "hsts_max_age = 31536000" > /etc/xapi.conf.d/hsts.conf' && sudo xe-toolstack-restart
-```
+`}</Terminal>
 
 :::note
 You can then type `xapi-wait-init-complete 30` to ensure that XAPI has fully started.

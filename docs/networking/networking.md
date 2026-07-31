@@ -6,9 +6,9 @@ XCP-ng is using Open vSwitch as its core, and supports various features from it.
 Even if one NIC can be enough for your host, having a dedicated NIC for storage will be really important to get consistent performances (especially if you use shared storage like iSCSI or NFS).
 :::
 
-## 🎓 Concepts
+## 🎓 Concepts {#concepts}
 
-This section describes the general concepts of networking in XCP-ng. For a deeper dive, check the [Network Architecture section](../../project/architecture/#%EF%B8%8F-network).
+This section describes the general concepts of networking in XCP-ng. For a deeper dive, check the [Network Architecture section](../../project/architecture/#network).
 
 XCP-ng creates a network for each physical NIC during installation. When you add a server to a pool, the default networks **are merged**. This is meant to be sure that all physical NICs with the same device name are attached to the same network, authorizing seamless VM flexibility on any host of the pool.
 
@@ -51,7 +51,7 @@ Each XCP-ng server has one or more networks, which are virtual Ethernet switches
 
 #### Definition
 
-The **Maximum Transmission Unit (MTU)** represents the largest packet size, measured in bytes, that a network layer—such as Ethernet or TCP/IP—can transmit without fragmenting the data. It effectively sets the upper limit for the payload size of a single network packet.
+The **Maximum Transmission Unit (MTU)** represents the largest packet size, measured in bytes, that a network layer (such as Ethernet or TCP/IP) can transmit without fragmenting the data. It effectively sets the upper limit for the payload size of a single network packet.
 
 #### Typical MTU values
 
@@ -75,7 +75,7 @@ Non-standard MTUs are supported on **storage interfaces**. However, jumbo frames
 
 While these limitations may be addressed in future updates, **stick to default MTU settings on management interfaces** to ensure **operational stability**.
 
-## 🏷️ VLANs
+## 🏷️ VLANs {#vlans}
 
 VLANs, as defined by the IEEE 802.1Q standard, allow a single physical network to support multiple logical networks. XCP-ng hosts support VLANs in multiple ways.
 
@@ -137,11 +137,134 @@ In this configuration, when a VM sends a 9000-byte packet on the VLAN, it arrive
 
 **Solution:** Raise the physical interface's MTU to at least match the VLAN network's MTU before creating the VLAN network with jumbo frames.
 
-## 🔗 Bonds
+## 🔗 Bonds {#bonds}
 
-It's same as previous section, just check the "Bonded Network" and select multiple PIFs in the Interface selector. You can either use VLANs or not, it doesn't matter!
+A bond aggregates 2 to 4 physical NICs into one logical interface, for redundancy (a cable, NIC or switch failure doesn't cut traffic) and, depending on the mode, more total bandwidth. Bonds work for VM traffic, management and storage alike, with or without VLANs on top.
 
-## 🌐 Manage physical NICs
+### Bond modes
+
+* **Active-active** (`balance-slb`, the default): all links carry traffic. VM traffic is spread by source MAC address and rebalanced periodically. No specific switch configuration needed, which makes it the easy and safe choice. One given VIF's traffic uses one link at a time, so a single VM won't exceed one NIC's bandwidth.
+* **Active-passive** (`active-backup`): one link carries everything, the others are standby. No switch configuration either, and the most predictable failover behavior. Choose it when your switches don't support anything better or when you bond across two independent, non-stackable switches.
+* **LACP** (`lacp`): the NICs form an 802.3ad link aggregation group with the switch, so **the switch ports must be configured as an LACP LAG** (and the switches stacked/MLAG if you spread the bond across two of them). Traffic can be hashed by source MAC or by IP and port, the latter letting a single VM use several links for multiple flows:
+
+<Terminal shell title="root@xcp-ng-host — Bond modes">{`
+xe bond-param-set uuid=<bond-uuid> properties:hashing_algorithm=tcpudp_ports
+`}</Terminal>
+
+(`src_mac` is the other value.)
+
+:::tip
+If you plan to install or upgrade a host whose management interface is on an LACP bond, read the [LACP install guide](../guides/lacp-install-upgrade.md) first: the installer doesn't speak LACP.
+:::
+
+### Create a bond
+
+From Xen Orchestra: **New** → **Network**, check "Bonded network", select the member PIFs and the mode. XO takes care of creating it properly on every host of the pool.
+
+With `xe`, create a new network then the bond on each host, starting with the pool coordinator:
+
+<Terminal shell title="root@xcp-ng-host — Create a bond">{`
+xe network-create name-label="bond0"
+xe bond-create network-uuid=<network-uuid> pif-uuids=<pif1-uuid>,<pif2-uuid> mode=balance-slb
+`}</Terminal>
+
+Notes:
+
+* Do this from a NIC that is *not* part of the future bond (or from a serial/physical console): connectivity on the member NICs drops when the bond forms. If the management interface is among the members, XAPI moves it onto the bond automatically.
+* The bond takes the MAC address of its first member; you can override it with `mac=` at creation.
+* The failover reactivity is controlled by the bond's up delay (31000 ms by default, to avoid flapping): `xe pif-param-set uuid=<bond-pif-uuid> other-config:bond-updelay=<ms>` then replug the PIF.
+
+### Remove a bond
+
+<Terminal shell title="root@xcp-ng-host — Remove a bond">{`
+xe bond-destroy uuid=<bond-uuid>
+`}</Terminal>
+
+The member NICs come back as individual PIFs. If the management interface was on the bond, it moves back to the primary member.
+
+## 🎯 Dedicated storage NIC {#dedicated-storage-nic}
+
+To keep storage (or backup) traffic away from the management and VM networks, give a spare NIC its own IP and use that subnet for your NFS/iSCSI targets:
+
+<Terminal shell title="root@xcp-ng-host — Dedicated storage NIC">{`
+xe pif-list host-name-label=<host> device=eth2       # find the PIF
+xe pif-reconfigure-ip uuid=<pif-uuid> mode=static IP=10.10.10.11 netmask=255.255.255.0
+xe pif-param-set uuid=<pif-uuid> disallow-unplug=true other-config:management_purpose="Storage"
+`}</Terminal>
+
+From Xen Orchestra: host → **Network** tab, edit the PIF's IP configuration directly.
+
+The host routes storage traffic through that NIC simply because the storage target's IP belongs to its subnet, so use a dedicated subnet (and ideally a dedicated VLAN) for storage. This also composes with [multipathing](../storage/multipathing.md), which uses several such NICs on separate paths.
+
+## 🧭 Management interface {#management-interface}
+
+The management interface is the PIF carrying XAPI traffic (pool communication, Xen Orchestra connections, migrations by default...). A few operations around it:
+
+### Move it to another NIC (or bond, or VLAN)
+
+<Terminal shell title="root@xcp-ng-host — Move it to another NIC (or bond…">{`
+xe pif-list host-name-label=<host>                  # find the target PIF
+xe pif-reconfigure-ip uuid=<new-pif-uuid> mode=dhcp # the future management PIF needs an IP config
+xe host-management-reconfigure pif-uuid=<new-pif-uuid>
+`}</Terminal>
+
+Do this from a console that won't be cut (physical, serial, or the current management NIC if it stays connected): your management sessions will reconnect to the new address.
+
+### Change its IP configuration
+
+<Terminal shell title="root@xcp-ng-host — Change its IP configuration">{`
+xe pif-reconfigure-ip uuid=<mgmt-pif-uuid> mode=static IP=<ip> netmask=<mask> gateway=<gw> DNS=<dns>
+xe host-management-reconfigure pif-uuid=<mgmt-pif-uuid>
+`}</Terminal>
+
+On the pool coordinator, members will reconnect automatically; if a member gets lost after a coordinator IP change, point it to the new address with `xe pool-recover-slaves` from the coordinator. If you locked yourself out entirely, use the [emergency network reset](#emergency-network-reset).
+
+### Change the hostname
+
+<Terminal shell title="root@xcp-ng-host — Change the hostname">{`
+xe host-set-hostname-live host-uuid=<host-uuid> host-name=<new-hostname>
+`}</Terminal>
+
+### DNS servers
+
+DNS is part of the management PIF's IP configuration (`DNS=` in `pif-reconfigure-ip` above, comma-separated). For DNS *search domains*, see [DNS search domains](#dns-search-domains).
+
+## 🚦 Limit a VM's network bandwidth (QoS) {#limit-a-vms-network-bandwidth-qos}
+
+An outgoing rate limit can be set per virtual interface:
+
+<Terminal shell title="root@xcp-ng-host — Limit a VM's network bandwidth…">{`
+xe vif-param-set uuid=<vif-uuid> qos_algorithm_type=ratelimit qos_algorithm_params:kbps=10240
+`}</Terminal>
+
+(here about 10 MB/s). Unplug/replug the VIF, or restart the VM, to apply. Remove it by setting `qos_algorithm_type=""`. This limits what the VM can *send*; incoming traffic shaping is a job for your physical network.
+
+## 📛 Restrict what a VM can send (switch port locking) {#switch-port-locking}
+
+By default, a VM can emit any traffic on its networks. You can lock a virtual interface down to its expected addresses (anti-spoofing), or block it entirely. Useful when you don't fully trust what runs inside the VMs, e.g. in hosting scenarios.
+
+<Terminal shell title="root@xcp-ng-host — Restrict what a VM can send…">{`
+# Only allow this VIF to send from a given IP
+xe vif-param-set uuid=<vif-uuid> locking-mode=locked
+xe vif-param-set uuid=<vif-uuid> ipv4-allowed=192.0.2.10
+
+# Block a VIF entirely
+xe vif-param-set uuid=<vif-uuid> locking-mode=disabled
+`}</Terminal>
+
+A network-wide default can be set for all VIFs that stay in `default` mode: `xe network-param-set uuid=<network-uuid> default-locking-mode=disabled` (or `unlocked`). Changes on a running VM need a VIF replug or a VM restart. See the [CLI reference](../appendix/cli_reference.md#vif-commands) for the full parameter list.
+
+## 🚛 NBD backup network {#nbd-backup-network}
+
+Xen Orchestra's NBD-enabled backups read disk data over the NBD protocol (port 10809), on networks you have explicitly allowed. To dedicate a network (for example your storage or a backup network) to that traffic:
+
+<Terminal shell title="root@xcp-ng-host — NBD backup network">{`
+xe network-param-add uuid=<network-uuid> param-name=purpose param-key=nbd
+`}</Terminal>
+
+The network needs an IP on each host (a [dedicated NIC](#dedicated-storage-nic) works perfectly). See the [backup page](../management/backup.md) for the XO side.
+
+## 🌐 Manage physical NICs {#manage-physical-nics}
 
 ### Add a new NIC
 
@@ -150,19 +273,22 @@ Once a NIC is physically installed, in Xen Orchestra, go to your host's networki
 ![XO's Network tab with the refresh button highlighted.](../../assets/img/screenshots/PIFs-refresh.png)
 
 This can also be done on the command line. After physically installing a new NIC, you'll need to run a `xe pif-scan` command on the host to get this NIC added as an available PIF.
-```
+
+<Terminal shell title="root@xcp-ng-host — Add a new NIC">{`
 xe pif-scan host-uuid=<HOST UUID>
-```
+`}</Terminal>
 
 Check new NIC by UUID:
-```
+
+<Terminal shell title="root@xcp-ng-host — Add a new NIC">{`
 xe pif-list
-```
+`}</Terminal>
 
 Plug new NIC:
-```
+
+<Terminal shell title="root@xcp-ng-host — Add a new NIC">{`
 xe pif-plug uuid=<NIC UUID>
-```
+`}</Terminal>
 
 ### Renaming NICs
 
@@ -174,51 +300,62 @@ If for some reason the NIC order between hosts doesn't match up, you can fix it 
 These commands are meant to be done on non-active interfaces. Typically this will be done directly after install, before even joining a pool.
 :::
 
-```
+<Terminal shell title="Renaming NICs">{`
 interface-rename --help
-```
+`}</Terminal>
+
 This will display all available options.
 
-```
+<Terminal shell title="Renaming NICs">{`
 interface-rename --list
-```
+`}</Terminal>
+
 This will display the current interface mapping/assignments.
 
 Interfaces you wish to rename need to be downed first:
-```
+
+<Terminal shell title="Renaming NICs">{`
 ifconfig eth4 down
 ifconfig eth8 down
-```
+`}</Terminal>
 
 The most common use will be an update statement like the following:
-```
+
+<Terminal shell title="Renaming NICs">{`
 interface-rename --update eth4=00:24:81:80:19:63 eth8=00:24:81:7f:cf:8b
-```
+`}</Terminal>
+
 This example will set the mac-address for eth4 & eth8, switching them in the process.
 
 The XAPI database needs the old PIFs removed. First list your PIFs for the affected NICs:
-```
+
+<Terminal shell title="root@xcp-ng-host — Renaming NICs">{`
 xe pif-list
 xe pif-forget uuid=<uuid of eth4>
 xe pif-forget uuid=<uuid of eth8>
-```
+`}</Terminal>
+
 Reboot the host to apply these settings.
 
 The interfaces by their new names need to be re-enabled:
-```
+
+<Terminal shell title="Renaming NICs">{`
 ifconfig eth4 up
 ifconfig eth8 up
-```
+`}</Terminal>
 
 The new interfaces need to be introduced to the PIF database:
-```
+
+<Terminal shell title="root@xcp-ng-host — Renaming NICs">{`
 xe host-list
-```
+`}</Terminal>
+
 Make note of the host uuid. Then introduce the interfaces:
-```
+
+<Terminal shell title="root@xcp-ng-host — Renaming NICs">{`
 xe pif-introduce device=eth4 host-uuid=<host uuid> mac=<mac>
 xe pif-introduce device=eth8 host-uuid=<host uuid> mac=<mac>
-```
+`}</Terminal>
 
 By renaming/updating interfaces like this, you can assure all your hosts have the same interface order.
 
@@ -227,14 +364,16 @@ By renaming/updating interfaces like this, you can assure all your hosts have th
 
 Before removing a physical NIC, ensure that no VMs are using the interface. Shutdown the host, physically remove the NIC and boot.
 After boot, the PIF will need to be removed. You can do it this way:
-```
+
+<Terminal shell title="root@xcp-ng-host — Remove a physical NIC">{`
 xe pif-forget uuid=<PIF UUID>
-```
+`}</Terminal>
+
 The `<PIF UUID>` can be obtained with either `xe pif-list` or with Xen Orchestra. This command only needs to be ran once on the pool. 
 
-## 🛞 SDN controller
+## 🛞 SDN controller {#sdn-controller}
 
-An SDN controller is provided by a [Xen Orchestra](../management#%EF%B8%8F-manage-at-scale) plugin. Thanks to that, you can enjoy advanced network features.
+An SDN controller is provided by a [Xen Orchestra](../management#manage-at-scale) plugin. Thanks to that, you can enjoy advanced network features.
 
 ### GRE/VXLAN tunnels
 
@@ -298,7 +437,7 @@ It means the TLS certificate, used to identify an SDN controller, on the host do
 
 The issue should be fixed.
 
-## 🚏 Static routes
+## 🚏 Static routes {#static-routes}
 
 Sometimes you need to add extra routes to an XCP-ng host. It can be done manually with an `ip route add 10.88.0.0/14 via 10.88.113.193` (for example). But it won't persist after a reboot.
 
@@ -306,31 +445,35 @@ To properly create persistent static routes, first create your xen network inter
 
 Now insert the UUID in the below example command. Also change the IPs to what you need, using the following format: `<network>/<netmask>/gateway IP>`. For example, our previous `ip route add 10.88.0.0/14 via 10.88.113.193` will be translated into:
 
-```
+<Terminal shell title="root@xcp-ng-host — Static routes">{`
 xe network-param-set uuid=<network UUID> other-config:static-routes=10.88.0.0/14/10.88.113.193
-```
+`}</Terminal>
 
 :::tip
 You **must** restart the toolstack on **all hosts in the pool** for the new route to be added!
 :::
 
 You can check the result with a `route -n` afterwards to see if the route is now present. If you must add multiple static routes, it must be in one command, and the routes separated by commas. For example, to add both 10.88.0.0/14 via 10.88.113.193 *and* 10.0.0.0/24 via 192.168.1.1, you would use this:
-```
+
+<Terminal shell title="root@xcp-ng-host — Static routes">{`
 xe network-param-set uuid=<network UUID> other-config:static-routes=10.88.0.0/14/10.88.113.193,10.0.0.0/24/192.168.1.1
-```
+`}</Terminal>
+
 ### Removing static routes
 
 To **remove** static routes you have added, stick the same network UUID from before in the below command:
-```
+
+<Terminal shell title="root@xcp-ng-host — Removing static routes">{`
 xe network-param-remove uuid=<network UUID> param-key=static-routes param-name=other-config
-```
+`}</Terminal>
+
 A toolstack restart is needed as before, on all hosts in the pool.
 
 :::tip
 XAPI might not remove the already-installed route until the host is rebooted. If you need to remove it ASAP,  you can use `ip route del 10.88.0.0/14 via 10.88.113.193`. Check that it's gone with `route -n`.
 :::
 
-## 🕸️ Full mesh network
+## 🕸️ Full mesh network {#full-mesh-network}
 
 This page describes how to configure a three node meshed network ([see Wikipedia](https://en.wikipedia.org/wiki/Mesh_networking)) which is a very cheap approach to create a 3 node HA cluster, that can be used to host a Ceph cluster, or similar clustered solutions that require 3 nodes in order to operate with full high-availability.
 
@@ -423,45 +566,49 @@ This setup will save you costs of 2 network switches you would otherwise have to
 * Forum post: [https://xcp-ng.org/forum/topic/1897/mesh-network](https://xcp-ng.org/forum/topic/1897/mesh-network)
 * Proxmox wiki: [https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server](https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server)
 
-## 🔎 DNS Search Domains
+## 🔎 DNS Search Domains {#dns-search-domains}
 
 When XCP-ng is configured for static IP configuration there are no DNS search domains added. It is possible to add search domains into `/etc/resolv.conf`, however those won't persist across reboots. Use `xe pif-param-set` to add search domains that should persist across reboots.
 
 * First identify the PIF used as management interface.
-```
-# xe pif-list host-name-label=xcpng-srv01 management=true
+
+<Terminal title="root@xcp-ng-host — DNS Search Domains">{`
+xe pif-list host-name-label=xcpng-srv01 management=true
 uuid ( RO)                  : 76608ca2-e099-9344-af36-5b63c0022913
                 device ( RO): bond0
     currently-attached ( RO): true
                   VLAN ( RO): -1
           network-uuid ( RO): cc966455-d5f8-0257-04a7-d3d7c671636b
-```
+`}</Terminal>
+
 * Take note of the `uuid` field and pass that to `xe pif-param-set`
-```
-# xe pif-param-set uuid=76608ca2-e099-9344-af36-5b63c0022913 other-config:domain=searchdomain1.com,searchdomain2.com,searchdomain3.com
-```
+
+<Terminal shell title="root@xcp-ng-host — xe pif-list…">{`
+xe pif-param-set uuid=76608ca2-e099-9344-af36-5b63c0022913 other-config:domain=searchdomain1.com,searchdomain2.com,searchdomain3.com
+`}</Terminal>
+
 This procedure has to be done for all hosts in the same pool.
 
-## 👷 Network Troubleshooting
+## 👷 Network Troubleshooting {#network-troubleshooting}
 
 ### Network corruption
 
 Disabling TX offload might help to diagnose NIC issues:
 
-```
+<Terminal shell title="root@xcp-ng-host — Network corruption">{`
 xe pif-param-set uuid=<PIF UUID> other-config:ethtool-tx=off
-```
+`}</Terminal>
 
 ### Disabling FCoE
 
 If you are using bonds on FCoE capable devices, it's preferable to disable it entirely:
 
-```
+<Terminal shell title="Disabling FCoE">{`
 systemctl stop fcoe
 systemctl stop xs-fcoe
 systemctl mask fcoe
 systemctl mask xs-fcoe
-```
+`}</Terminal>
 
 See [https://github.com/xcp-ng/xcp/issues/138](https://github.com/xcp-ng/xcp/issues/138).
 
@@ -515,23 +662,25 @@ You can't live migrate a VM with SR-IOV enabled. Use it only if you really need 
 
 Then, you can enable and configure it with `xe` CLI:
 
-```
+<Terminal shell title="root@xcp-ng-host — Setup">{`
 xe network-create name-label=SRIOV
 xe network-sriov-create network-uuid=<network_uuid> pif-uuid=<physical_pif_uuid>
 xe network-sriov-param-list uuid=<SR-IOV Network_uuid>
-```
+`}</Terminal>
 
 The last command will tell you if you need to reboot or not.
 
 Assign the SR-IOV network to your VM:
-```
+
+<Terminal shell title="root@xcp-ng-host — Setup">{`
 xe vif-create device=<device index> mac=<vf_mac_address> network-uuid=<sriov_network> vm-uuid=<vm_uuid>
-```
+`}</Terminal>
 
 If you want to disable it:
-```
+
+<Terminal shell title="root@xcp-ng-host — Setup">{`
 xe network-sriov-destroy uuid=<network_sriov_uuid>
-```
+`}</Terminal>
 
 :::tip
 You can read a Citrix guide here: [https://support.citrix.com/article/CTX235044](https://support.citrix.com/article/CTX235044)
@@ -541,9 +690,9 @@ You can read a Citrix guide here: [https://support.citrix.com/article/CTX235044]
 
 With kernel version 4.15 a fix in the e1000e driver [has been introduced](https://github.com/torvalds/linux/commit/b10effb92e272051dd1ec0d7be56bf9ca85ab927). However, this fix slightly slows down DMA access times to prevent the NIC to hang up on heavy UDP traffic. This impacts the TCP performance. A workaround to regain full transfer speeds, you can turn off TCP segmentation offloading via the following command:
 
-```
+<Terminal shell title="Intel i218/i219 slow speed">{`
 ethtool -K <interface> tso off gso off
-```
+`}</Terminal>
 
 There is currently no fix available / announced that allows offloading TCP segmentation to the NIC without sacrificing performance.
 
