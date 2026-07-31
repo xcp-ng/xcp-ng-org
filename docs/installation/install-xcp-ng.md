@@ -33,6 +33,12 @@ On Windows, you can use Rufus to create the bootable USB stick.
 
 Start the host and boot on the USB media.
 
+:::warning
+If the machine refuses to boot the media, or reports that the operating system loader failed
+signature verification, check the [firmware prerequisites](../../installation/requirements#firmware-prerequisites):
+Secure Boot must be disabled, and the system clock must be correct.
+:::
+
 ### Follow instructions
 
 #### 1. UEFI vs BIOS

@@ -74,6 +74,45 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 Set the server's BIOS clock to the current UTC time. For debugging support cases, serial console access may be required: see [how to configure it](../troubleshooting/advanced.md#serial-console-access). For systems without physical serial ports, embedded management devices (Dell iDRAC, HP iLO...) provide Serial-over-LAN.
 :::
 
+## 🔧 Firmware prerequisites {#firmware-prerequisites}
+
+Two firmware settings must be correct before installation, because both cause the installer
+to fail signature verification with a message that does not mention either of them.
+
+### Secure Boot must be disabled
+
+XCP-ng does not support Secure Boot for the host. Its boot chain is not signed by a
+certificate that stock firmware trusts, so with Secure Boot enabled the machine refuses to
+boot both the installation media and, after installation, the installed host itself.
+
+Depending on the firmware, this shows up in one of two ways: the UEFI boot entry silently
+disappears from the boot menu, or it stays and the machine reports something like:
+
+```
+Operating System Loader failed signature verification. WARNING: The file may have been tampered with!
+
+All bootable devices failed Secure Boot verification.
+```
+
+Despite the wording, nothing has been tampered with. Disable Secure Boot in the firmware
+setup and leave it disabled. Re-enabling it later, for example after a firmware reset or to
+satisfy a compliance baseline, will stop the host booting until it is turned off again.
+
+:::note
+This concerns Secure Boot for the **host**. Secure Boot for **VMs** is a separate feature and
+is supported: see [Guest UEFI Secure Boot](../../guides/guest-UEFI-Secure-Boot).
+:::
+
+### The system clock must be correct
+
+Signatures cannot be validated against a badly wrong clock. A machine whose firmware date has
+drifted, typically one that has been powered off for a long time or has had its firmware
+reset, produces the same signature verification failure **even with Secure Boot already
+disabled**.
+
+If you see a signature verification error and Secure Boot is off, check the date in the
+firmware setup before anything else.
+
 ## 📋 XCP-ng Configuration Limits {#xcp-ng-configuration-limits}
 
 XCP-ng supports the following per host:
