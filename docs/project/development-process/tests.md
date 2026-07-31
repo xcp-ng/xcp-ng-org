@@ -16,9 +16,9 @@ Not everyone can test everything, but everything must get tested in the end.
 
 If anything goes wrong, try to isolate [the logs](../../troubleshooting/log-files.md) related to that failure (and what happened just before), and try to identify a way to reproduce if possible. You can also [create a full status report](../../troubleshooting/log-files.md#produce-a-status-report) to let someone else try to identify the issue.
 
-Give priority to tests on actual hardware, but if you don't have any hardware available for those, then [testing in a nested environment](../../compute.md#-nested-virtualization) is useful too.
+Give priority to tests on actual hardware, but if you don't have any hardware available for those, then [testing in a nested environment](../../compute.md#nested-virtualization) is useful too.
 
-## Basic tests
+## ✅ Basic tests {#basic-tests}
 
 - verify installation
 - verify connectivity with your interfaces
@@ -33,7 +33,7 @@ Give priority to tests on actual hardware, but if you don't have any hardware av
 - [check your logs](../../troubleshooting/log-files.md) for uncommon info or warnings.
 - (add more here...)
 
-## Installer
+## 💿 Installer {#installer}
 
 * installation, upgrade
 * net-install with GPG check on
@@ -41,7 +41,7 @@ Give priority to tests on actual hardware, but if you don't have any hardware av
 * compatibility with driver disks from Citrix?
 * backup restore
 
-## Live migration tests
+## 🚚 Live migration tests {#live-migration-tests}
 
 Live migration needs to be tested, with or without storage motion (ie. moving the VM disk data to another storage repository). It is both a very important feature and something that can break in subtle ways, especially across different versions of XenServer or XCP-ng.
 
@@ -86,7 +86,7 @@ and
 This one is the most important and not the easiest to test. During a pool upgrade, the hosts of your pool have heterogeneous versions of XAPI, Xen and other components, and many features are disabled. This is a situation that is meant to be as short as possible. When live migration fails at this stage, it is never a nice situation.
 **That's why this is the kind of live migration that requires the most testing**.
 
-Note: if you don't have the hardware and VMs to test this, you can create a virtual pool using [nested virtualization](../../compute.md#-nested-virtualization).
+Note: if you don't have the hardware and VMs to test this, you can create a virtual pool using [nested virtualization](../../compute.md#nested-virtualization).
 
 If anything fails and you absolutely need to move forward, we advise to produce and save a full [status report](../../troubleshooting/log-files.md#produce-a-status-report) on both hosts involved before continuing.
 
@@ -101,7 +101,7 @@ Some bugs detected in the past during our tests when migrating from old versions
 
 We try to overcome these whenever possible, but bugs that require patching the old host cannot be fixed.
 
-## Cold migration tests
+## 🧊 Cold migration tests {#cold-migration-tests}
 
 Live migration is important, but let's not forget to test "cold" migration (migration of shutdown VMs).
 
@@ -134,7 +134,7 @@ and
 * cross-pool migration, same versions
 * migration from earlier releases, cross-pool
 
-## Test the Xen hypervisor itself
+## 🐼 Test the Xen hypervisor itself {#test-the-xen-hypervisor-itself}
 
 The Xen hypervisor, which is at the core of XCP-ng, will benefit from being tested on a wide range of hardware. There exist test suites for this. You don't need to run them on every host you own if they are truly identical, but it's good to run them on as wide a range of hardware as possible.
 
@@ -149,10 +149,11 @@ Please report any issue or unexpected result on [the forum](https://xcp-ng.org/f
 The first test suite is **XTF** (stands for Xen Test Framework)
 
 Enable HVM FEP on the host. This is not mandatory but if you don't, several tests that require it will be skipped:
-```
+
+<Terminal shell title="root@xcp-ng-host — XTF">{`
 /opt/xensource/libexec/xen-cmdline --set-xen hvm_fep
 reboot
-```
+`}</Terminal>
 
 Note: this debug setting is not recommended for production.
 
@@ -165,12 +166,14 @@ make -j8
 ```
 
 (Optional, protects your host from a crash if its hardware is vulnerable to [XSA-304](https://xenbits.xen.org/xsa/advisory-304.html)) Switch EPT superpages to secure mode:
-```
+
+<Terminal shell title="root@xcp-ng-host — XTF">{`
 xl set-parameters ept=no-exec-sp
-```
+`}</Terminal>
 
 Run the tests
-```
+
+<Terminal shell title="XTF">{`
 # self test
 ./xtf-runner selftest -q --host
 # all tests
@@ -178,12 +181,13 @@ Run the tests
 ./xtf-runner -aqq --host
 # check return code. Should be "3" which means "no failures but some tests were skipped":
 echo $?
-```
+`}</Terminal>
 
 Switch back EPT superpages to fast mode, if needed
-```
+
+<Terminal shell title="root@xcp-ng-host — check return code. Should be '3'…">{`
 xl set-parameters ept=exec-sp
-```
+`}</Terminal>
 
 There will be a few SKIPPED tests, but there shouldn't be many.
 
@@ -200,19 +204,20 @@ You can ignore skipped tests which belong to this list.
 The `xen-dom0-tests` RPM provides several test programs from the Xen Project.
 
 Install:
-```
+
+<Terminal shell title="root@xcp-ng-host — xen-dom0-tests">{`
 yum install xen-dom0-tests
-```
+`}</Terminal>
 
 Read `/usr/share/xen-dom0-tests-metadata.json`, then, for each test listed in it, run the corresponding binary found in `/usr/libexec/xen/bin/` and check the return code.
 
 For example:
 
-```
+<Terminal shell title="xen-dom0-tests">{`
 /usr/libexec/xen/bin/test-cpu-policy
 # check return code. Must be 0, otherwise this means there was a failure.
 echo $?
-```
+`}</Terminal>
 
 Here is a `bash` snippet which automates this process. It requires python3 and thus will only work on XCP-ng 8.3 or above.
 

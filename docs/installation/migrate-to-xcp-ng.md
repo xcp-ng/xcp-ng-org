@@ -12,25 +12,25 @@ This documentation will help you to make a migration to XCP-ng, from any most co
 OVA import method will miss the information if the VM is running BIOS or UEFI mode. Double check your settings on your original system, and then enable (or not) UEFI on XCP-ng side for the destination VM. You can do so in VM advanced tab in Xen Orchestra.
 :::
 
-## 🇽 From XenServer
+## 🇽 From XenServer {#from-xenserver}
 
-We got a dedicated section on [how to migrate from XenServer to XCP-ng](../../installation/upgrade#-upgrade-from-xenserver).
+We got a dedicated section on [how to migrate from XenServer to XCP-ng](../../installation/upgrade#upgrade-from-xenserver).
 
-## 🍋 From Citrix Hypervisor
+## 🍋 From Citrix Hypervisor {#from-citrix-hypervisor}
 
-We got a dedicated section on [how to migrate from Citrix Hypervisor to XCP-ng](../../installation/upgrade#-upgrade-from-xenserver).
+We got a dedicated section on [how to migrate from Citrix Hypervisor to XCP-ng](../../installation/upgrade#upgrade-from-xenserver).
 
-## 🐼 From Xen on Linux
+## 🐼 From Xen on Linux {#from-xen-on-linux}
 
 If you are running Xen on your usual distro (Debian, Ubuntu…), you are using `xl` to manage your VMs, and also plain text configuration files. You can migrate to an existing XCP-ng host thanks to [the `xen2xcp` script](https://github.com/xcp-ng/xen2xcp).
 
 Check [the README](https://github.com/xcp-ng/xen2xcp/blob/master/README.md) for usage instructions.
 
-## 📦 From Virtualbox
+## 📦 From Virtualbox {#from-virtualbox}
 
-Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](#-from-vmware) section.
+Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](#from-vmware) section.
 
-## 🇻 From VMware
+## 🇻 From VMware {#from-vmware}
 
 :::warning
 
@@ -314,30 +314,30 @@ This method use external packages to install in XCP-ng directly (the Dom0), and 
 
 #### Install Qemu-img and vmfs tools
 
-```
+<Terminal shell title="root@xcp-ng-host — Install Qemu-img and vmfs tools">{`
 yum install qemu-img --enablerepo=base,updates
 yum install vmfs6-tools --enablerepo=xcp-ng-lab
-```
+`}</Terminal>
 
 #### Mount the VMware storage repository
 
-```
+<Terminal shell title="Mount the VMware storage repository">{`
 vmfs6-fuse /path/to/vmware/disk /mnt
-```
+`}</Terminal>
 
 #### Convert a VMDK file to a VHD
 
 For example, on a file-based SR (local ext or NFS):
 
-```
-qemu-img convert -f vmdk -O vpc myVMwaredisk.vmdk /run/sr-mount/<SR UUID>/`uuidgen`.vhd
-```
+<Terminal shell title="Convert a VMDK file to a VHD">{`
+qemu-img convert -f vmdk -O vpc myVMwaredisk.vmdk /run/sr-mount/<SR UUID>/\`uuidgen\`.vhd
+`}</Terminal>
 
 #### Rescan the SR
 
 You need to rescan the SR where you new VHD file is, so it can be detected. It will appear in the disk list, without a name or description though. Attach it to any VM you created before (eg without booting it first), and boot.
 
-## 🇭 From Hyper-V
+## 🇭 From Hyper-V {#from-hyper-v}
 
 There's two options, both requiring to export your Hyper-V VM disk in VHD format.
 
@@ -417,7 +417,7 @@ As soon you did scan the SR, the new disk is visible in the SR/disk view. Don't 
 If you lost ability to extend migrated volume (opening journal failed: -2) You need to move disk to another storage, VM should be ON during moving process. This issue can occur when vhd files was directly copied to storage folder.
 :::
 
-## 🇰 From KVM (Libvirt)
+## 🇰 From KVM (Libvirt) {#from-kvm-libvirt}
 
 Related forum thread: [https://xcp-ng.org/forum/topic/1465/migrating-from-kvm-to-xcp-ng](https://xcp-ng.org/forum/topic/1465/migrating-from-kvm-to-xcp-ng)
 

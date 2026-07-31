@@ -13,7 +13,7 @@ Best effort support is provided for additional packages provided by the XCP-ng p
 * [supported list for XCP-ng 8.3](http://reports.xcp-ng.org/8.3/extra_installable.txt)
 :::
 
-## 📜 Rules
+## 📜 Rules {#rules}
 
 ### 1. Never enable additional repositories
 
@@ -31,7 +31,7 @@ To disable a repository, edit `/etc/yum.repos.d/name_of_repo.repo` and set `enab
 
 ### 2. Prefer additional packages from XCP-ng's own repositories
 
-We offer a number of additional packages ranging from ZFS support, [newer drivers](../../installation/hardware#-alternate-drivers) or [newer kernel](../../installation/hardware#-alternate-kernel), to small utilities such as `vim`, `joe`, `iperf`, `mc`, etc.).
+We offer a number of additional packages ranging from ZFS support, [newer drivers](../../installation/hardware#alternate-drivers) or [newer kernel](../../installation/hardware#alternate-kernel), to small utilities such as `vim`, `joe`, `iperf`, `mc`, etc.).
 
 A regularly updated list of such utilities is available at [http://reports.xcp-ng.org/8.3/extra_installable.txt](http://reports.xcp-ng.org/8.3/extra_installable.txt) for XCP-ng 8.3.
 
@@ -76,7 +76,7 @@ The `wpa_supplicant` package is provided for homelab and testing purposes only. 
 - [CVE-2019-9496](https://www.cvedetails.com/cve/CVE-2019-9496):  An invalid authentication sequence could result in Denial of Service.
 - [CVE-2019-9497](https://www.cvedetails.com/cve/CVE-2019-9497), [CVE-2019-9498](https://www.cvedetails.com/cve/CVE-2019-9498), [CVE-2019-9499](https://www.cvedetails.com/cve/CVE-2019-9499):  These vulnerabilities may allow an attacker to complete EAP-PWD authentication without knowing the password.
 
-#### mc ((Midnight Commander)
+#### mc (Midnight Commander)
 
 - [CVE-2021-36370](https://www.cvedetails.com/cve/CVE-2021-36370): When establishing an SFTP connection, the fingerprint of the server is neither checked nor displayed, therefore a user will not be able to verify its authenticity.
 
@@ -84,7 +84,7 @@ The `wpa_supplicant` package is provided for homelab and testing purposes only. 
 
 If you have [pro support](https://xcp-ng.com), ask there. As part of the support, additional supported packages - such as new drivers - may be provided. Else ask the community on the [forum](https://xcp-ng.org/forum/).
 
-## 🦮 How to install
+## 🦮 How to install {#how-to-install}
 
 Before doing any change, start keeping track somewhere of any change you bring to the system. This will help for:
 * support
@@ -93,14 +93,17 @@ Before doing any change, start keeping track somewhere of any change you bring t
 
 ### From XCP-ng repositories
 
-`yum install name_of_package`
+<Terminal shell title="root@xcp-ng-host — From XCP-ng repositories">{`
+yum install name_of_package
+`}</Terminal>
 
 ### From CentOS repositories
 
 The CentOS repos are already installed but are disabled, on purpose. Install from them with:
-```
+
+<Terminal shell title="root@xcp-ng-host — From CentOS repositories">{`
 yum install name_of_package --enablerepo=base,updates
-```
+`}</Terminal>
 
 Make sure it will not try to overwrite system packages with updates from CentOS. XCP-ng uses fixed or modified versions of some CentOS packages whereas the CentOS repos point at the latest.
 
@@ -111,14 +114,16 @@ CentOS 7 reached its end of life, so installing additional packages from its rep
 ### From EPEL repositories
 
 On XCP-ng, the EPEL repos are already installed but are disabled, on purpose. Install from them with:
-```
+
+<Terminal shell title="root@xcp-ng-host — From EPEL repositories">{`
 yum install name_of_package --enablerepo=epel
-```
+`}</Terminal>
 
 Sometimes you'll need extra dependencies from CentOS. Replace the command with:
-```
+
+<Terminal shell title="root@xcp-ng-host — From EPEL repositories">{`
 yum install name_of_package --enablerepo=epel,base,updates
-```
+`}</Terminal>
 
 And as above make sure no package from the system will get overwritten in the process.
 
@@ -135,16 +140,26 @@ EPEL 7 reached its end of life at the same time as CentOS 7, so installing addit
 
 And as usual make sure it won't overwrite existing packages...
 
-## 📦 Up to date additional packages
+## 📦 Up to date additional packages {#up-to-date-additional-packages}
 
 If you installed from XCP-ng repositories, [they will be updated like the rest of the XCP-ng system](../../management/updates).
 
 If you installed from any other repository, including CentOS and EPEL, you need to update them (and their dependencies) manually
 
-## ♻️ System upgrade
+## ♻️ System upgrade {#system-upgrade}
 
 See [upgrade section](../../installation/upgrade) for a discussion of the differences between "Installer upgrade" and "`yum`-style upgrade".
 
 Installer upgrade will reinstall the system from scratch and just keep your configuration related to XCP-ng (network, VMs, SRs, etc.). Anything else will have to be re-done.
 
 An upgrade using `yum` directly will try to update or keep the packages that you installed. Packages installed from XCP-ng repositories should get updated seamlessly. Packages from other repositories will not get updated: they may be left in place (then you'll have to update them yourselves if needed), removed (due to package conflicts or because they are obsoleted by packages from the updated XCP-ng) or even make the upgrade fail until they are manually removed.
+
+## 📀 Supplemental packs {#supplemental-packs}
+
+Supplemental packs are vendor-provided ISO images adding software or drivers to a host (management agents, GPU drivers...). They can be provided [at installation time](../installation/install-xcp-ng.md), or installed on a running host:
+
+<Terminal shell title="root@xcp-ng-host — Supplemental packs">{`
+xe-install-supplemental-pack /path/to/pack.iso
+`}</Terminal>
+
+The same rules as other additional software apply: only install packs built for your XCP-ng version, and remember they may need reinstalling after an upgrade.

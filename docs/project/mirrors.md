@@ -6,13 +6,13 @@ Like a Linux distribution, XCP-ng's installation images and RPM repositories can
 
 XCP-ng uses [mirrorbits](https://github.com/etix/mirrorbits) to redirect download requests to an appropriate mirror based on their update status and geographical position.
 
-## 🏢 Original mirror
+## 🏢 Original mirror {#original-mirror}
 
 `mirrors.xcp-ng.org` is the base for all download links, either downloads of installation ISO images, or RPM repositories used by `yum` to download updates.
 
 Previous versions of XCP-ng used to download files directly from `https://updates.xcp-ng.org`, which since then has becomes one mirror among others (and a fallback in case of files missing from other mirrors).
 
-## 📋 List of mirrors
+## 📋 List of mirrors {#list-of-mirrors}
 
 You can check our live list of mirrors at this URL: [https://mirrors.xcp-ng.org/?mirrorstats](https://mirrors.xcp-ng.org/?mirrorstats)
 
@@ -20,7 +20,7 @@ You can check our live list of mirrors at this URL: [https://mirrors.xcp-ng.org/
 If loading this page fails due to too many redirections, just go to [https://xcp-ng.org](https://xcp-ng.org) once, then try again)
 :::
 
-## 📥 Add your mirror
+## 📥 Add your mirror {#add-your-mirror}
 
 Anyone or any entity can submit a mirror to our approval so that we add it to the list used by mirrorbits. It is a way to contribute to the XCP-ng project!
 
@@ -47,9 +47,10 @@ If one of those prerequisites is causing an issue to you as a mirror provider, t
 ### How to sync
 
 Here's how to sync from the main mirror. Adapt if syncing from another mirror.
-```
+
+<Terminal shell title="How to sync">{`
 rsync -rlptv --delete-delay updates.xcp-ng.org::repo/ /local/path/to/mirror
-```
+`}</Terminal>
 
 Note: if you sync from our main mirror, rsync access will be unlocked for your host after your application. See below.
 
@@ -104,7 +105,7 @@ Main contact: John Doe <john.doe@...>
 
 Feel free to ask any question in your application message.
 
-## 🔒 Security
+## 🔒 Security {#security}
 
 ### Context
 
@@ -129,26 +130,26 @@ Since XCP-ng 7.6, we use [GPG](https://gnupg.org/) to sign:
 Before you can use our public key to verify the authenticity of a downloaded file, you need to import it.
 
 Download the key
-```
+
+<Terminal shell title="Import the public key">{`
 wget https://xcp-ng.org/RPM-GPG-KEY-xcpng
-```
+`}</Terminal>
 
 A key is of no use if you can't trust it. So check its fingerprint.
-```
-gpg --quiet --with-fingerprint RPM-GPG-KEY-xcpng
-```
 
-Expected output:
-```
+<Terminal title="Import the public key">{`
+gpg --quiet --with-fingerprint RPM-GPG-KEY-xcpng
 pub  2048R/3FD3AC9E 2018-10-03 XCP-ng Key (XCP-ng Official Signing Key) <security@xcp-ng.org>
       Key fingerprint = 34AC 2EB6 8248 FED6 D076  838A CD75 783A 3FD3 AC9E
 sub  2048R/2EB0DF19 2018-10-03
-```
+`}</Terminal>
 
 If your version of gpg doesn't display fingerprints anymore, try instead:
-```
+
+<Terminal shell title="Import the public key">{`
 gpg --import --import-options show-only RPM-GPG-KEY-xcpng
-```
+`}</Terminal>
+
 with expected output:
 ```
 pub   rsa2048 2018-10-03 [SC]
@@ -163,24 +164,23 @@ you can also check that the fingerprint stored in our GitHub repository is the s
 (and in case you think someone might have altered the above link, check that the repository does actually belong to the XCP-ng project).
 
 Now import the key with `gpg`:
-```
+
+<Terminal shell title="Import the public key">{`
 gpg --import RPM-GPG-KEY-xcpng
-```
+`}</Terminal>
 
 #### Check a downloaded file
 The signature for `somefile` is stored in `somefile.asc`. Download both, then:
-```
-gpg --verify somefile.asc somefile
-```
 
-Expected output:
-```
+<Terminal title="Check a downloaded file">{`
+gpg --verify somefile.asc somefile
 # gpg: Signature made Wed 10 Oct 2018 12:50:06 PM CEST using RSA key ID 3FD3AC9E
 # gpg: Good signature from "XCP-ng Key (XCP-ng Official Signing Key) <security@xcp-ng.org>"
 # gpg: WARNING: This key is not certified with a trusted signature!
 # gpg:          There is no indication that the signature belongs to the owner.
 # Primary key fingerprint: 34AC 2EB6 8248 FED6 D076  838A CD75 783A 3FD3 AC9E
-```
+`}</Terminal>
+
 Only the date should change depending on the date of signature. **`Good Signature`** is what tells us that the verification is successful. The warning is also expected because the signing key itself is not signed and we've not setup a list of trusted sources on the computer, so there's no way for gpg to tell if the key is to be trusted or not.
 
 #### Check an ISO image
@@ -189,14 +189,16 @@ In this example we will first check the authenticity of the SHA256SUMS file, the
 First: import the GPG key if not done already (see above).
 
 Verify the authenticity of the `SHA256SUMS` file.
-```
+
+<Terminal shell title="Check an ISO image">{`
 gpg --verify SHA256SUMS.asc SHA256SUMS
-```
+`}</Terminal>
 
 Now that we trust the authenticity of the `SHA256SUMS` file, let's check the integrity of the `.iso` file.
-```
+
+<Terminal shell title="Check an ISO image">{`
 LC_ALL=C sha256sum -c SHA256SUMS 2>&1 | grep OK
-```
+`}</Terminal>
 
 It should display:
 ```
@@ -210,21 +212,24 @@ This is exactly the same as for the `.iso` file above: we provided a `SHA256SUMS
 First: import the GPG key if not done already. You can follow the steps above, but if you are on an XCP-ng 7.6 or newer, you can take a shortcut because the key file is already on your system: `gpg --import /etc/pki/rpm-gpg/RPM-GPG-KEY-xcpng`
 
 Example with `xcp-ng-7.6.repo`:
-```
+
+<Terminal shell title="Check a repository (.repo) file">{`
 wget https://updates.xcp-ng.org/7/xcp-ng-7.6.repo -O xcp-ng-7.6.repo
 wget https://updates.xcp-ng.org/7/SHA256SUMS -O SHA256SUMS
 wget https://updates.xcp-ng.org/7/SHA256SUMS.asc -O SHA256SUMS.asc
-```
+`}</Terminal>
 
 Verify the authenticity of the `SHA256SUMS` file.
-```
+
+<Terminal shell title="Check a repository (.repo) file">{`
 gpg --verify SHA256SUMS.asc SHA256SUMS
-```
+`}</Terminal>
 
 Now that we trust the authenticity of the `SHA256SUMS` file, let's check the integrity of the `.repo` file.
-```
+
+<Terminal shell title="Check a repository (.repo) file">{`
 LC_ALL=C sha256sum -c SHA256SUMS 2>&1 | grep OK
-```
+`}</Terminal>
 
 It should display:
 ```

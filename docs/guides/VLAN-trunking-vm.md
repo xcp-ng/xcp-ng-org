@@ -26,7 +26,7 @@ For this scenario, we are assuming a configuration of 3 physical interfaces:
 - `eth1`: WAN side - ethernet
 - `eth2`: LAN side - VLAN trunk
 
-## MTU configuration
+## 📏 MTU configuration {#mtu-configuration}
 
 The [MTU](https://en.wikipedia.org/wiki/Maximum_transmission_unit) needs to be the same on all the switch's ports carrying 802.1Q packets.
 As the VLAN header adds 4-byte overhead, a standard 1500 ethernet MTU should be configured with MTU 1504.
@@ -54,8 +54,8 @@ As an alternative to using XO,
 you can see the network list using `xe network-list`,
 directly on the master host:
 
-```
-# xe network-list params=uuid,name-label,MTU
+<Terminal title="root@xcp-ng-host — MTU configuration">{`
+xe network-list params=uuid,name-label,MTU
 uuid ( RO)          : e1012298-fdd6-595a-c81f-dae5c3a6d4f6
     name-label ( RW): Host internal management network
            MTU ( RW): 1500
@@ -71,7 +71,7 @@ uuid ( RO)          : ea1a8810-43ba-0f8c-499a-22442ad5ea11
 uuid ( RO)          : 015bda3e-830b-d33d-ab91-098632ef61a3
     name-label ( RW): Pool-wide network associated with eth2
            MTU ( RW): 1500
-```
+`}</Terminal>
 
 choose the LAN network that will have the VLAN trunk,
 and modify it:
@@ -110,7 +110,7 @@ or more simply, just reboot the host.
 
 ```
 
-## VM interfaces
+## 🔌 VM interfaces {#vm-interfaces}
 
 Once the MTU is properly configured, create a new VM for OPNsense with several VIFs:
 - `VIF #0` - the management interface (MTU 1500)
@@ -121,7 +121,7 @@ The MTU isn't configurable here and the value is taken from the underlying netwo
 If the MTU isn't 1504 for your trunk network,
 please go back and review the configuration.
 
-## OPNsense installation
+## 🛡️ OPNsense installation {#opnsense-installation}
 
 Once you've booted OPNsense, start the manual interface assignment and configure VLANs.
 

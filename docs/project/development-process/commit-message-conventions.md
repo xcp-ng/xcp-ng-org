@@ -6,13 +6,13 @@ sidebar_position: 11
 
 Our conventions on commit messages.
 
-## Foreword
+## 📖 Foreword {#foreword}
 
 XCP-ng and Xen Orchestra are made of many different projects and components. This document is an attempt at defining a minimal, common set of rules for git commit messages we want to follow in the context of those projects. They should be generic and consensual enough that we can follow them for our internal commits, but also when contributing upstream (while following the upstream project's rules, of course).
 
 Individual projects part of XCP-ng or Xen Orchestra can also define additional rules and exceptions. For example, Xen Orchestra developers follow [additional rules coming from the AngularJS guidelines](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y).
 
-## Goals
+## 🎯 Goals {#goals}
 
 The main goals behind the commit message rules are:
 
@@ -24,7 +24,7 @@ The main goals behind the commit message rules are:
 
 There could be more goals, but they are not covered by the minimal set of rules in this document. For example: permitting scripting changelog generation, with a separation between security fixes, features and bug fixes. This is left for each individual project to define.
 
-## Structure of a commit message
+## 🧱 Structure of a commit message {#structure-of-a-commit-message}
 
 The widely accepted structure is:
 
@@ -40,7 +40,7 @@ changes
 Footer
 ```
 
-## First line: short subject
+## ✏️ First line: short subject {#first-line-short-subject}
 
 Here's a challenge: it must remain really short (50 characters is the convention, but in this minimal set of rules we'll allow up to 70 characters), but also ideally answer three essential questions:
 
@@ -64,11 +64,11 @@ On the other side, here's an example of a commit subject that doesn't follow a s
 
 When there's no structured convention, ask yourself: are the type, the scope and the change obvious in the subject I wrote?
 
-## Second line: blank
+## ⬜ Second line: blank {#second-line-blank}
 
 Nothing on that line. Period. No exceptions.
 
-## Message body: commit description
+## 📝 Message body: commit description {#message-body-commit-description}
 
 This part gets easily forgotten, but it's really important. You don't know who will read your commit, when (could be in ten years from now), what knowledge they will have about the project or about the code. Maybe they're someone from the support that has only minimal knowledge in the programming language. Maybe they're a project manager. Maybe it's a developer who took over this component after you left. And often enough, it will just be yourself scratching your head and asking yourself: "Why the h\*\*\* did I make this change???".
 
@@ -93,7 +93,7 @@ For good examples, go look at the commit history [from the Xen project](http://x
 
 Verbs that describe what you did are in the imperative form. Lines should not be longer than 70 characters.
 
-## Message footer
+## 🦶 Message footer {#message-footer}
 
 ### Referencing issues
 
@@ -111,4 +111,4 @@ Be careful with "Fixes" or "Closes", because they can automatically close issues
 
 ### Developer Certificate of Origin (DCO)
 
-As a member of the Linux Foundation, XCP-ng asks every contributor to certify that they are allowed to contribute the code or documentation they submit to us. See our [contributing](../../contributing#-developer-certificate-of-origin-dco) section for details. This is enforced for every repository under the GitHub `xcp-ng` and `xcp-ng-rpms` organizations.
+As a member of the Linux Foundation, XCP-ng asks every contributor to certify that they are allowed to contribute the code or documentation they submit to us. See our [contributing](../../contributing#developer-certificate-of-origin-dco) section for details. This is enforced for every repository under the GitHub `xcp-ng` and `xcp-ng-rpms` organizations.

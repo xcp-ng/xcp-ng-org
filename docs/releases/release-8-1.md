@@ -8,11 +8,11 @@ sidebar_class_name: hidden
 XCP-ng 8.1 is EOL (End Of Life) since 2021. Please check the [currently supported release(s)](releases.md).
 :::
 
-**XCP-ng 8.1** is a [standard release](../#-standard-release). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso?https=1).
+**XCP-ng 8.1** is a [standard release](../#standard-release). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.1/xcp-ng-8.1.0-2.iso?https=1).
 
 SHA256 checksums, GPG signatures and net-install ISO are available [here](http://mirrors.xcp-ng.org/isos/8.1/).
 
-## Release information
+## ℹ️ Release information {#release-information}
 
 * Released on 2020-03-31.
 * Based on Citrix Hypervisor 8.1.
@@ -20,10 +20,10 @@ SHA256 checksums, GPG signatures and net-install ISO are available [here](http:/
 * [Xen 4.13](https://wiki.xenproject.org/wiki/Xen_Project_4.13_Feature_List).
 * Kernel 4.19, with patches. Latest kernel hotfix from CH 8.1 at the date of release included in the release.
 
-## Install
+## 💿 Install {#install}
 See [Installation](../../installation/install-xcp-ng).
 
-## Upgrade from previous releases
+## ⬆️ Upgrade from previous releases {#upgrade-from-previous-releases}
 
 Since XCP-ng 8.1.0 is a minor release, both upgrade methods are supported:
 * From the installation ISO
@@ -31,7 +31,7 @@ Since XCP-ng 8.1.0 is a minor release, both upgrade methods are supported:
 
 Refer to the [Upgrade Howto](../../installation/upgrade).
 
-## What changed since 8.0
+## ✨ What changed since 8.0 {#what-changed-since-80}
 
 ### Highlight from Citrix Hypervisor changes
 
@@ -79,7 +79,7 @@ For more information and use cases, you can check [this Devblog](https://xen-orc
 
 Our installer now offers two new installation options. In legacy boot mode, access them with F2 when offered the choice. In UEFI mode, see the added boot menu entries.
 * First new option: boot the installer with a 2G RAM limit instead of the 8G default. This is a workaround for installation issues on hardware with Ryzen CPUs. Though those are Desktop-class CPUs and not supported officially in the HCL, we tried to make it easier to workaround the infamous "installer crashes on Ryzen" issue.
-* Second new option: boot the installer with our [alternate kernel](../../installation/hardware#-alternate-kernel) (kernel-alt). That kernel, built and maintained by @r1 for the team, is based on the main kernel, with all upstream kernel.org patches from the LTS 4.19 branch applied.It should be very stable by construction **but it receives less testing**. That option is there for cases when the main kernel and drivers have issues, so that you can quickly test if kernel.org patches have fixed it already. It will also install the alternate kernel in addition to the main kernel as a convenience. **If kernel-alt fixes issues for you, the most important thing to do is to tell us so that we may fix the main kernel!**
+* Second new option: boot the installer with our [alternate kernel](../../installation/hardware#alternate-kernel) (kernel-alt). That kernel, built and maintained by @r1 for the team, is based on the main kernel, with all upstream kernel.org patches from the LTS 4.19 branch applied.It should be very stable by construction **but it receives less testing**. That option is there for cases when the main kernel and drivers have issues, so that you can quickly test if kernel.org patches have fixed it already. It will also install the alternate kernel in addition to the main kernel as a convenience. **If kernel-alt fixes issues for you, the most important thing to do is to tell us so that we may fix the main kernel!**
 
 ### New leaf coalesce logic with dynamic limits
 
@@ -90,7 +90,7 @@ Those interested in the patches, see [this commit](https://github.com/xcp-ng-rpm
 ### Changes regarding our specific packages
 
 * ZFS updated to 0.8.3.
-* [Alternate kernel](../../installation/hardware#-alternate-kernel) updated to version 4.19.108. Installing it now automatically adds a new boot entry in grub's configuration, to make testing easier. Default entry remains that of the main kernel.
+* [Alternate kernel](../../installation/hardware#alternate-kernel) updated to version 4.19.108. Installing it now automatically adds a new boot entry in grub's configuration, to make testing easier. Default entry remains that of the main kernel.
 * `netdata-ui` still available from our repositories and also as a feature in Xen Orchestra.
   * r1 contributed a fix to netdata project to bring support for Xen 4.13
   * stormi made netdata cache be RAM-only to workaround an upstream bug that could make the disk cache grow forever
@@ -107,7 +107,7 @@ However we have updated the [documentation about the guest tools](../../../vms),
 
 * Fixed netxtreme drivers (`bnx2x` module) that crashed with some models.
 
-## Misc
+## ⛑️ Misc {#misc}
 
 ### Announcement about our former experimental ext4 SR driver
 
@@ -154,7 +154,7 @@ See "Destroy and re-create a local SR" below.
     * Example: `xe sr-create type=ext name-label="Local EXT storage" host-uuid=c9800783-5202-4ccb-87fd-ff8ced6c935f device-config:device=/dev/sdb`
 * When you have handled all the servers of the pool, then for each host, if you had installed the `sm-additional-drivers` package, remove it (unless you also have XFS SRs): `yum remove sm-additional-drivers xfsprogs`.
 
-## Known issues
+## 🐞 Known issues {#known-issues}
 
 ### Host unreachable - NVIDIA GPU
 

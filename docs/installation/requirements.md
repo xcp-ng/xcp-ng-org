@@ -12,7 +12,7 @@ An XCP-ng server is dedicated entirely to running XCP-ng and hosting VMs. It is 
 Installing third-party software directly in the XCP-ng control domain is not supported, except for software supplied in the official repositories. If you wish to add extra packages to XCP-ng, please [submit your request here](https://github.com/xcp-ng/xcp/issues/56).
 :::
 
-## 📋 XCP-ng System Requirements
+## 📋 XCP-ng System Requirements {#xcp-ng-system-requirements}
 
 XCP-ng is generally deployed on server-class hardware, but it also supports many workstation and laptop models. For more information, refer to the [Hardware Compatibility List (HCL)](../../installation/hardware).
 
@@ -62,7 +62,7 @@ Similarly, installing XCP-ng on SD cards is highly discouraged. A basic SSD offe
 ### Network
 
 - Minimum 100 Mbit/s NIC. Recommended: one or more Gb or 10 Gb NICs for faster data transfers, including P2V, import/export, and VM live migrations.
-- Use multiple NICs for redundancy. Network configuration depends on your storage type—refer to vendor documentation for guidance.
+- Use multiple NICs for redundancy. Network configuration depends on your storage type: refer to vendor documentation for guidance.
 
 XCP-ng 8.2 requires an IPv4 network for management and storage traffic. Starting from XCP-ng 8.3, the management network supports IPv6.
 
@@ -71,10 +71,10 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 :::
 
 :::info
-Set the server's BIOS clock to the current UTC time. For debugging support cases, serial console access may be required. Consider configuring serial console access for XCP-ng. For systems without physical serial ports, explore embedded management devices like Dell DRAC or HP iLO. See [CTX228930 - How to Configure Serial Console Access on XenServer 7.0 and later](https://support.citrix.com/article/CTX228930).
+Set the server's BIOS clock to the current UTC time. For debugging support cases, serial console access may be required: see [how to configure it](../troubleshooting/advanced.md#serial-console-access). For systems without physical serial ports, embedded management devices (Dell iDRAC, HP iLO...) provide Serial-over-LAN.
 :::
 
-## 📋 XCP-ng Configuration Limits
+## 📋 XCP-ng Configuration Limits {#xcp-ng-configuration-limits}
 
 XCP-ng supports the following per host:
 
@@ -116,7 +116,7 @@ The theoretical, untested limit is 2,048 logical processors.
 
 - Up to 800 VLANs.
 
-## Virtual Machine Configuration Limits
+## 📋 Virtual Machine Configuration Limits {#virtual-machine-configuration-limits}
 
 Below are the supported limits for virtual machines on XCP-ng.
 
@@ -189,13 +189,13 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 
 - **Passed-through USB devices**: Up to **6**.
 
-## 🎱 Pool Requirements
+## 🎱 Pool Requirements {#pool-requirements}
 
 A resource pool is a collection of one or more servers (up to 64), which can be homogeneous or heterogeneous. Before creating or joining a pool, ensure the following:
 
 ### Hardware Requirements
 
-- All servers must have compatible CPUs (same vendor — Intel or AMD).
+- All servers must have compatible CPUs (same vendor: Intel or AMD).
 
 ### Additional Pool Requirements
 
@@ -209,7 +209,7 @@ In addition to the hardware prerequisites identified previously, there are some 
 * It cannot have a bonded management interface. Reconfigure the management interface and move it to a physical NIC before adding the server to the pool. Once the server has joined the pool, you can reconfigure the management interface again.
 * It must be running the same version of XCP-ng, at the same update level, as servers already in the pool.
 
-Resource pools can have hosts with varying physical network interfaces and local storage capacities. In practice, it is often difficult to obtain multiple servers with the exact same CPUs, and so minor variations are permitted. If you want your environment to have hosts with varying CPUs in the same resource pool, you can force join a pool together using the CLI. To know more on forced joining operation, see Hosts and Resource Pools.
+Resource pools can have hosts with varying physical network interfaces and local storage capacities. In practice, it is often difficult to obtain multiple servers with the exact same CPUs, and so minor variations are permitted. If you want your environment to have hosts with varying CPUs in the same resource pool, you can force join a pool together using the CLI. To know more on forced joining operation, see [Hosts and pools operations](../management/hosts-pools.md#heterogeneous-pools).
 
 > **Note**: Servers providing shared NFS or iSCSI storage must have static or DNS-addressable IPs.
 
@@ -221,4 +221,33 @@ A homogeneous resource pool is an aggregate of servers with identical CPUs. Serv
 
 Technologies such as Intel FlexMigration or AMD Extended Migration allow you to create heterogeneous pools. These technologies provide CPU masking or leveling, which means you can configure a CPU to appear to provide a different make, model, or feature set than it actually does. These capabilities allow you to create pools of hosts with different CPUs and still support secure, live migrations.
 
-For detailed information, see the Hosts and Resource Pools.
+For detailed information, see [Hosts and pools operations](../management/hosts-pools.md).
+
+## 🔌 Network ports and connectivity {#network-ports-and-connectivity}
+
+What needs to be reachable, if you have firewalls between your management network, your hosts and your storage.
+
+### Inbound, to the hosts
+
+| Port | Protocol | Used for |
+|---|---|---|
+| 443 | TCP | XAPI (HTTPS): all management clients (Xen Orchestra, XO Lite, `xe`), VM consoles, migrations |
+| 80 | TCP | Legacy HTTP access to XAPI. Restricted by default on XCP-ng 8.3 |
+| 22 | TCP | SSH access to dom0 |
+| 10809 | TCP | NBD, used by Xen Orchestra's NBD-enabled backups |
+
+VM consoles (VNC) are proxied through XAPI over port 443: no direct VNC port needs to be opened.
+
+### Between the hosts of a pool
+
+* **443/TCP**: pool coordination (XAPI to XAPI) and live migrations.
+* **694/UDP**: [HA](../management/ha.md) heartbeat, when high availability is enabled.
+* **[XOSTOR](../xostor/xostor.md)** pools additionally need the LINSTOR and DRBD replication ports between hosts: see the XOSTOR documentation.
+
+### Outbound, from the hosts
+
+* **53/UDP-TCP** (DNS) and **123/UDP** (NTP): name resolution and time sync.
+* **80/443 TCP** to the [update repositories](../management/updates.md) (directly or through a proxy).
+* Storage protocols towards your SRs: **2049/TCP** for NFS (plus 111 and the mountd port for NFSv3), **3260/TCP** for iSCSI, **445/TCP** for SMB.
+
+Keep the management network private: XAPI, SSH and consoles are administrative interfaces, they have no business being exposed to the internet.

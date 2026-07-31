@@ -8,7 +8,7 @@ To know more on high availability in general and how to set it up with XCP-ng, s
 
 ---
 
-## My host rebooted. Why did it reboot?
+## 🔄 My host rebooted. Why did it reboot? {#my-host-rebooted-why-did-it-reboot}
 
 If a host configured for high availability reboots unexpectedly, it might have: 
 
@@ -17,7 +17,7 @@ If a host configured for high availability reboots unexpectedly, it might have:
 
 Check the host's logs to verify if any of these events happened, in particular `/var/log/xha.log`.
 
-## I can't reach my host!
+## 🚨 I can't reach my host! {#i-cant-reach-my-host}
 
 ### Disabling HA
 
@@ -25,10 +25,10 @@ If a host becomes unreachable, a first step is to disable HA on your environment
 
 To do this, run the following commands:
 
-```
+<Terminal title="root@xcp-ng-host — Disabling HA">{`
 xe host-emergency-ha-disable force=true
 xe-toolstack-restart
-```
+`}</Terminal>
 
 Your host will reboot with high availability disabled. This will let you:
 
@@ -41,20 +41,20 @@ If a host cannot connect to the pool coordinator, you might want to turn it into
 
 To make your host reboot as a pool coordinator, run:
 
-```
+<Terminal shell title="root@xcp-ng-host — Changing pool coordinators">{`
 xe pool-emergency-transition-to-master uuid=<host uuid>
-```
+`}</Terminal>
 
 To tell your host the location of your pool coordinator, run:
 
-```
+<Terminal shell title="root@xcp-ng-host — Changing pool coordinators">{`
 xe pool-emergency-reset-master master-address=<new pool coordinator hostname>
-```
+`}</Terminal>
 
 ### Re-enabling HA
 
 Once your issue has been sorted out **and** if you still need HA, then feel free to enable HA again. To do this, run the following command on your pool:
 
-```
+<Terminal shell title="root@xcp-ng-host — Re-enabling HA">{`
 xe pool-ha-enable heartbeat-sr-uuid=<sr uuid>
-```
+`}</Terminal>

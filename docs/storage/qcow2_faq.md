@@ -1,14 +1,14 @@
 ---
-sidebar_position: 2
+sidebar_position: 4
 ---
 
 # QCOW2 FAQ
 
-## What’s QCOW2?
+## 🎓 What’s QCOW2? {#whats-qcow2}
 
 QCOW2 is the name of a virtual disk image format coming from the open source QEMU project. Contrarily to the VHD disk image format, historically used by XCP-ng, QCOW2 is not limited to 2 TiB per disk.
 
-## Quick summary
+## ⚡ Quick summary {#quick-summary}
 
 For those who will only read this.
 
@@ -18,13 +18,13 @@ For those who will only read this.
 - Not needed to create a new SR to create QCOW2 disks. A SR can have QCOW2 and VHD co-existing.
 - VHD stays the default for now, a QCOW2 disk will automatically be created when asking for the creation of a VDI bigger than 2040GiB.
 
-## Glossary
+## 📚 Glossary {#glossary}
 
 - VDI: Virtual Disk Image. This is a VM’s disk, seen from the hypervisor.
 - SR: Storage Repository. Storage space managed by XCP-ng to store VDIs.
 - image format: there exist several formats to store a VM disk’s data. VHD, QCOW2 and VMDK are all such image formats. Historically, XCP-ng only supported the VHD image format (as well as raw data, which means no image format). It now supports a new image format in addition to VHD: QCOW2.
 
-## About image formats
+## 🖼️ About image formats {#about-image-formats}
 
 Before entering the FAQ itself, let's talk about image formats.
 
@@ -45,22 +45,22 @@ You can also add the parameter at the SR creation on the command line with `xe`.
 
 Example:
 
-```
+<Terminal shell title="root@xcp-ng-host — Configure a new SR's…">{`
 xe sr-create name-label="test-lvmsr" type=lvm device-config:device=/dev/nvme1n1 device-config:preferred-image-formats=qcow2
-```
+`}</Terminal>
 
 ### Configure an existing SR's preferred-image-formats
 
 As said above, by default, an existing SR has `vhd,qcow2` as its preferred image formats. This is our recommended default at the moment.
 
-To tell an existing SR that it must prefer the `qcow2` image format for new disks, it is necessary to unplug, destroy, recreate and re-plug its PBD with the added parameter in the device-config: https://docs.xcp-ng.org/storage/#-how-to-modify-an-existing-sr-connection
+To tell an existing SR that it must prefer the `qcow2` image format for new disks, it is necessary to unplug, destroy, recreate and re-plug its PBD with the added parameter in the device-config: https://docs.xcp-ng.org/storage/#how-to-modify-an-existing-sr-connection
 
 In order to unplug the PBD, any VMs with a VDI on the SR will have to be stopped, or the VDI moved temporarily to another SR.
 
 This operation will not affect the contents of the SR. The PDB object represents the connection to the SR, not its contents.
 
 
-## FAQ
+## ❓ FAQ {#faq}
 
 Now let's enter the FAQ itself.
 
@@ -100,24 +100,27 @@ This only works on SR types which support QCOW2.
 
 Alternatively, you can specify the image format on the command line:
 
-```
+<Terminal shell title="root@xcp-ng-host — How to create a QCOW2 VDI">{`
 xe vdi-create sr-uuid=<SR UUID> virtual-size=5TiB name-label="My QCOW2 VDI" sm-config:image-format=qcow2
-```
+`}</Terminal>
 
 ### How to know the image format used by a VDI
 
 To know what format a VDI is in, we added a key in the VDI `sm-config` for storage drivers compatible with the QCOW2 feature, called `image-format`.
 A VDI `sm-config` is data from the storage layer in the XAPI, it's used to share information directly with the storage implementation.
 You can read it using `xe` with:
-```
+
+<Terminal shell title="root@xcp-ng-host — How to know the image format…">{`
 xe vdi-param-get uuid=<VDI UUID> param-name=sm-config param-key=image-format
-```
+`}</Terminal>
 
 The command output will tell you if the information is not available:
-```
-# xe vdi-param-get uuid=a1d1188a-5e46-499c-a2fa-4a9d79362480  param-name=sm-config param-key=image-format
+
+<Terminal title="root@xcp-ng-host — How to know the image format…">{`
+xe vdi-param-get uuid=a1d1188a-5e46-499c-a2fa-4a9d79362480  param-name=sm-config param-key=image-format
 Error: Key image-format not found in map
-```
+`}</Terminal>
+
 The information may not be available for multiple reasons:
 - the driver does not advertise the image format
 - the version of the storage stack does not include the feature
@@ -133,9 +136,10 @@ Yes, you can by setting the `preferred-image-formats` parameter to `qcow2` (and 
 You can do so directly in the SR creation form of Xen Orchestra.
 
 Here's also a command line example:
-```
+
+<Terminal shell title="root@xcp-ng-host — Can you create a SR which only…">{`
 xe sr-create name-label="test-lvmsr" type=lvm device-config:device=/dev/nvme1n1 device-config:preferred-image-formats=qcow2
-```
+`}</Terminal>
 
 ### Can I create QCOW2 disks smaller than 2 TiB?
 
@@ -186,11 +190,11 @@ For thick allocated disks, you need the space for the base copy, the snapshot an
 
 Yes, on File based SR, you can create a QCOW2 with a different cluster size with the command:
 
-```bash
+<Terminal shell title="Can we change the QCOW2 cluster size?">{`
 cd /var/run/sr-mount/<SR UUID>/
 qemu-img create -f qcow2 -o cluster_size=2M $(uuidgen).qcow2 10G
 xe sr-scan uuid=<SR UUID> # to introduce it in the XAPI
-```
+`}</Terminal>
 
 The `qemu-img` command will print the name, the VDI is `<VDI UUI>.qcow2` from the output.
 

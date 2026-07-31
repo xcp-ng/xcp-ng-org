@@ -6,9 +6,9 @@ sidebar_position: 2
 
 How to install XCP-ng.
 
-## 💿 ISO installation
+## 💿 ISO installation {#iso-installation}
 
-If you want to use the netinstall ISO, see the [Netinstall section](#-netinstall).
+If you want to use the netinstall ISO, see the [Netinstall section](#netinstall).
 
 ### Download and create media
 
@@ -18,10 +18,10 @@ SHA256 checksums, GPG signatures and net-install ISOs are available [here](https
 
 Then, create the install media (e.g. a USB key 1GB or larger should work):
 
-```
+<Terminal shell title="Download and create media">{`
 # example with XCP-ng 8.3
 dd if=xcp-ng-8.3.0-20250606.2.iso of=/dev/sdX bs=8M oflag=direct
-```
+`}</Terminal>
 
 Finally, boot on that media and go to the next section.
 
@@ -166,7 +166,7 @@ After a reboot, you should see the GRUB menu:
 
 It means the system is correctly installed! Enjoy XCP-ng 🚀
 
-## 🌐 Netinstall
+## 🌐 Netinstall {#netinstall}
 
 The netinstall image is a lightweight ISO (around 150MiB) that will only contain the installer, but no actual RPM packages. Sometimes, it's more convenient/faster when your ISO is on a slow connection (e.g. a virtual media using a server IPMI).
 
@@ -174,13 +174,13 @@ You can download it on this URL: [https://mirrors.xcp-ng.org/isos/8.3/xcp-ng-8.3
 
 As with the regular installation ISO, write it on a USB media:
 
-```
+<Terminal shell title="Netinstall">{`
 dd if=xcp-ng-8.3.0-20250606-netinstall.iso of=/dev/sdX bs=8M oflag=direct
-```
+`}</Terminal>
 
 Everything else is like the [regular install](#start-the-host), except that it will not offer to install from local media, only from distant ones.
 
-## 🎬 PXE boot install
+## 🎬 PXE boot install {#pxe-boot-install}
 
 ### Requirements
 
@@ -204,7 +204,7 @@ PXE boot doesn't support tagged VLAN networks! Be sure to boot on a untagged net
 4. In the TFTP root directory, create a folder called `pxelinux.cfg`
 5. In the pxelinux.cfg directory, create your configuration file called `default`.
 
-The file itself will contain the way to install XCP-ng: manually (with answer to provide on the host console/screen) or fully automated (see [Automated install](/installation/install-xcp-ng/#-automated-install) below).
+The file itself will contain the way to install XCP-ng: manually (with answer to provide on the host console/screen) or fully automated (see [Automated install](/installation/install-xcp-ng/#automated-install) below).
 
 Here is an example of a manual installation:
 
@@ -216,7 +216,8 @@ label xcp-ng
 ```
 
 How TFTP folder looks like when configured
-```
+
+<Terminal title="TFTP server configuration - BIOS boot">{`
 tree -L 1 /srv/tftp/
 srv/tftp
 ├── mboot.c32
@@ -227,7 +228,7 @@ srv/tftp
     ├── install.img
     ├── vmlinuz
     └── xen.gz
-```
+`}</Terminal>
 
 #### TFTP server configuration - UEFI boot
 
@@ -248,7 +249,8 @@ If you want to make an installation in UEFI mode, you need to have a slightly di
 5. Copy the following files from the XCP-ng ISO: `grubx64.efi`, `install.img` (from the root directory), `vmlinuz`, and `xen.gz` (from the /boot directory) to the new `EFI/xcp-ng` directory on the TFTP server.
 
 How TFTP folder looks like when configured
-```
+
+<Terminal title="TFTP server configuration - UEFI boot">{`
 tree -L 1 /srv/tftp/
 srv/tftp
 └── EFI
@@ -259,7 +261,7 @@ srv/tftp
     │   └── xen.gz
     └── xenserver
         └── grub.cfg
-```
+`}</Terminal>
 
 On the FTP, NFS or HTTP server, get all the installation media content in there.
 
@@ -276,7 +278,7 @@ When you do copy the installation files, **DO NOT FORGET** the `.treeinfo` file.
 3. Select boot from the Ethernet card
 4. You should see the PXE menu you created before!
 
-## ✨ iPXE over HTTP install
+## ✨ iPXE over HTTP install {#ipxe-over-http-install}
 
 This guide is for UEFI boot, using iPXE over an HTTP server to serve files needed for installation.
 
@@ -291,7 +293,7 @@ To get XCP-ng installed from iPXE over HTTP, you need:
 
 The top-level should look like this:
 
-```
+<Terminal title="Requirements">{`
 tree -L 1 /path/to/http-directory/
 .
 ├── EFI
@@ -302,7 +304,7 @@ tree -L 1 /path/to/http-directory/
 ├── RPM-GPG-KEY-Platform-V1
 ├── boot
 └── install.img
-```
+`}</Terminal>
 
 2. Boot the target machine.
 3. Press Ctrl-B to catch the iPXE menu.  Use the chainload command to load grub.
@@ -336,7 +338,7 @@ configfile /EFI/xenserver/grub.cfg
 7. Continue with installation as normal.
 
 
-## 🤖 Automated install
+## 🤖 Automated install {#automated-install}
 <a name="-automatedinstall"></a>
 XCP-ng's installation can be automated by using network boot (PXE) or a custom installation image.
 
@@ -371,7 +373,7 @@ Check [the full answerfile reference](../../appendix/answerfile).
 
 ### Via PXE
 
-Follow the [previous section on Network boot (PXE)](#-pxe-boot-install) and add options to that will fetch and use an answer file.
+Follow the [previous section on Network boot (PXE)](#pxe-boot-install) and add options to that will fetch and use an answer file.
 
 #### PXE unattended install - BIOS boot
 
@@ -524,15 +526,31 @@ As an improvement and to delay the `md` resync (increasing install speed by abou
 
 The `noresync.sh` script would do something like this:
 
-```
+<Terminal shell title="Software RAID in answerfile">{`
 #!/bin/sh
 echo 0 > /proc/sys/dev/raid/speed_limit_max
 echo 0 > /proc/sys/dev/raid/speed_limit_min
-```
+`}</Terminal>
 
 Upon server reboot, normal `md` resync will take place.
 
-## Advanced installation options (installer command-line parameters)
+## 🧭 Boot from SAN {#boot-from-san}
+
+Instead of local disks, a host can be installed on (and boot from) a SAN LUN. Facts verified against the XCP-ng installer:
+
+* **Hardware HBA (Fibre Channel, FCoE HBA, SAS, hardware iSCSI)**: the HBA presents the LUN like a local disk, so the installer simply shows it in the disk selection step. Configure the HBA's boot BIOS so the server firmware boots from it.
+* **Software iSCSI boot (iBFT)**: on NICs whose firmware supports iSCSI boot (iBFT), boot the installer with the `use_ibft` parameter: it reads the iSCSI target configuration from the firmware, connects to the LUN and offers it as an installation target. The NIC used for iSCSI is then reserved for storage traffic.
+* **Multipath**: if the LUN is reachable over several paths, also boot the installer with `device_mapper_multipath=enabled` so the installation lands on the multipath device and the host boots with multipathing active from the start. Without it, installing on one bare path makes the "redundant" boot disk a single point of failure.
+
+To pass these parameters, edit the boot entry at the installer's boot menu (or add them to your [PXE](#pxe-boot-install) configuration, next to the other installer parameters), for example:
+
+```
+device_mapper_multipath=enabled use_ibft
+```
+
+The same applies to [automated installs](#automated-install): these are installer *boot* parameters, they go on the kernel command line, not in the answer file.
+
+## 🎛️ Advanced installation options (installer command-line parameters) {#advanced-installation-options-installer-command-line-parameters}
 
 The XCP-ng installer can be further parameterized to support advanced installation environments. The command line options are passed as parameters to the ```vmlinuz``` kernel of the installer.
 
@@ -562,6 +580,14 @@ A script is either XML (for ```answerfile=``` or ```rt_answerfile=```) or an exe
 Start an ssh server during installation allowing root to log-on interactively with the given password.
 
 ### Behaviour
+
+#### device_mapper_multipath=disabled|enabled
+
+Run the installation on top of multipath devices, for [boot from SAN](#boot-from-san) setups. Default: `disabled`.
+
+#### use_ibft
+
+Read the NIC firmware's iBFT to determine the iSCSI boot configuration, for software [boot from SAN](#boot-from-san).
 
 #### atexit=reboot|poweroff|shell
 
@@ -635,11 +661,11 @@ Read the scriptlocation execute it and use its standard output as an answerfile 
 
 See ```network_device=```.
 
-## 🧑‍⚕️ Troubleshooting
+## 🧑‍⚕️ Troubleshooting {#troubleshooting}
 
 See [the Troubleshooting page](../../troubleshooting/after-upgrade).
 
-## ⛑️ Misc
+## ⛑️ Misc {#misc}
 
 ### Installation on USB drives
 

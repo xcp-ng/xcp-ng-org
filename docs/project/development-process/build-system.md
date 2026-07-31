@@ -14,7 +14,7 @@ What follows is important if you want to understand how our official RPMs are bu
 However, for local builds meant for testing your changes (e.g. add a few patches to see how the component behaves with them), check the [Local RPM build](../local-rpm-build) section.
 :::
 
-## Enter Koji
+## 🏭 Enter Koji {#enter-koji}
 
 When building RPMs, many things can and must be automated. This is what a build system is for. Ours is [Koji](https://koji.xcp-ng.org/), which [comes from the Fedora project](https://pagure.io/koji).
 
@@ -30,7 +30,7 @@ And with a bit of scripting or additional components:
 * GPG signing of RPMs.
 * Creation of RPM repositories.
 
-## Koji's concepts
+## 🎓 Koji's concepts {#kojis-concepts}
 
 (see also [https://pagure.io/docs/koji/](https://pagure.io/docs/koji/) though its howto is very Fedora-centric)
 
@@ -109,7 +109,7 @@ Another (fictitious) example:
 
 This is just to show that build tag and destination tag **can** be different. Build dependencies will be pulled from `v8.x-testing` and the result will be put in `v8.x-sandbox`. This means that builds to the sandbox will never use packages that are already in the sandbox as build dependencies. Why would we do that? To guarantee that builds made in the sandbox are never influenced by other builds made there, possibly by other users. This is a fictitious situation, just to illustrate the concepts of build tag and destination tag.
 
-## Build and release process
+## 🪜 Build and release process {#build-and-release-process}
 Here's how to update a package in XCP-ng, step by step. This process requires writing rights on the git repository corresponding to the package at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/) and submit rights in Koji. Others are invited to fork one the repositories at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/), [build RPMs locally in our build container](../local-rpm-build), and then create pull requests. Reading the steps below will still be useful to you to help make appropriate changes.
 
 This applies only to packages that we build in Koji. There are also packages that are not built in Koji. Most packages from CentOS, for example, are imported directly from CentOS into our Koji instance.
@@ -161,19 +161,19 @@ Then, if it is an **update candidate** for an existing package:
     * What to test.
     * Is a reboot required…
 
-## Special case: new packages
+## 🆕 Special case: new packages {#special-case-new-packages}
 Importing new packages requires extra steps.
 
 **TODO**
 
-## Special case: packages not built by us
+## 🤝 Special case: packages not built by us {#special-case-packages-not-built-by-us}
 Most packages imported from CentOS or EPEL are not built by our Koji instance. We import the source RPM and the built RPMs directly.
 
 **TODO**
 
 Bits of information can be inferred from [Import-RPM-build-dependencies-from-CentOS-and-EPEL](https://github.com/xcp-ng/xcp/wiki/Import-RPM-build-dependencies-from-CentOS-and-EPEL)
 
-## Other tags
+## 🏷️ Other tags {#other-tags}
 In a previous section, I've tried to explain what tags are used for in Koji. We use them also for something else. We probably even misuse them.
 
 Once a day, we run a job that makes sure every *build* in our Koji instance is tagged with one of the following tags:
@@ -190,10 +190,10 @@ Example: [https://koji.xcp-ng.org/buildinfo?buildID=655](https://koji.xcp-ng.org
 
 All those tags have no purpose in Koji's workflow. They are just useful pieces of information for us.
 
-## RPM signing
+## ✍️ RPM signing {#rpm-signing}
 We automatically sign the RPMs built by or imported to Koji before exporting them towards the RPM repositories.
 
-[More information about RPM signing](../../../project/mirrors#-security).
+[More information about RPM signing](../../../project/mirrors#security).
 
-## Repository generation
+## 🗃️ Repository generation {#repository-generation}
 Handled by a cron job on koji's server. Then the repository is synchronised to [https://updates.xcp-ng.org/](https://updates.xcp-ng.org/).

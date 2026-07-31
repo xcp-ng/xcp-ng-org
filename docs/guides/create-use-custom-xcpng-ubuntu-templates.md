@@ -17,7 +17,7 @@ This post explains in detail the steps to create templates based on Ubuntu. The 
 
 All experiments will be conducted using the graphical virtual machine manager [Xen Orchestra](https://xen-orchestra.com), except for the last part where we will use XO-CLI (Xen Orchestra CLI) to bypass the graphical interface.
 
-## Prerequisites
+## ℹ️ Prerequisites {#prerequisites}
 
 * [XCP-NG](https://xcp-ng.org/)
 * [Xen Orchestra](https://xen-orchestra.com) from the sources or Xen Orchestra virtual Appliance (XOA)
@@ -25,7 +25,7 @@ All experiments will be conducted using the graphical virtual machine manager [X
 * [JQ](https://jqlang.github.io/jq/) (for the last part of this post)
 * Ubuntu 22.04.04 Server LTS under ISO and OVA formats
 
-## Create a new Virtual Machine
+## 🏗️ Create a new Virtual Machine {#create-a-new-virtual-machine}
 
 Two approaches for creating a virtual machine will be presented in this post:
 
@@ -81,7 +81,7 @@ The creation of the virtual image from a cloud image in OVA format is complete. 
     $ sudo apt dist-upgrade
     ```
 
-10. Install the package *xe-guest-utilities-latest* to improve communication between the XCP-NG hypervisor and the virtual machine ([Guest tools](https://docs.xcp-ng.org/vms/#%EF%B8%8F-guest-tools)):
+10. Install the package *xe-guest-utilities-latest* to improve communication between the XCP-NG hypervisor and the virtual machine ([Guest tools](https://docs.xcp-ng.org/vms/#guest-tools)):
 
     ```
     $ sudo apt install xe-guest-utilities
@@ -225,7 +225,7 @@ The creation of the virtual image *custom-ubuntu22.04* from an ISO file is compl
 * If a problem occurs when creating or using your template, go to `/var/log` and look for `cloud-init.log` to troubleshoot the issue.
 :::
 
-## Template creation
+## 📸 Template creation {#template-creation}
 
 The template creation step involves converting an existing virtual machine into the format used for templates. This step is irreversible in the sense that the virtual machine will no longer appear in the list of virtual machines in [Xen Orchestra](https://xen-orchestra.com).
 
@@ -235,7 +235,7 @@ The template creation step involves converting an existing virtual machine into 
 
 The template has been created and added to the list of existing templates. The created template is named after the virtual machine *custom-ubuntu22.04*.
 
-## Using the template
+## 🚀 Using the template {#using-the-template}
 
 Using the previously created template will allow you to rely on an existing virtual machine on which it will be possible to add configurations supported by Cloud-init. The [documentation](https://cloudinit.readthedocs.io/en/latest/index.html) for [Cloud-init](https://cloud-init.io/) regarding configurations is not user friendly. This [GitHub repository](https://github.com/number5/cloud-init/tree/main/doc/examples) associated with the official documentation makes it easier to understand the complexity of [Cloud-init](https://cloud-init.io/).
 
@@ -356,7 +356,7 @@ ssh_authorized_keys:
 
 Note that it is possible to use a programming language to call the JSON-RPC API over WebSocket. This [post](https://mickael-baron.fr/blog/2021/05/28/xo-server-websocket-jsonrcp) provides more details on how to use either Python or Java.
 
-## Conclusion
+## 🏁 Conclusion {#conclusion}
 
 This post has detailed the creation of templates based on the Ubuntu distribution. These described steps can also be applied to other Linux distributions, such as Debian. Regarding the creation of Linux virtual machines from a template using [Cloud-init](https://cloud-init.io/), there are still many configurations to explore. The [Cloud-init](https://cloud-init.io/) documentation, despite its complexity, allows you to express all the constraints to initialize virtual machines tailored to your needs.
 

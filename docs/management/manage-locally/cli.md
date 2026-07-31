@@ -6,51 +6,51 @@ The xe CLI can be used locally on any XCP-ng host, it's installed along with it.
 The complete set of all `xe` commands is available in the [Appendix section](../../../appendix/cli_reference).
 :::
 
-## ℹ️ Getting help with xe commands
+## ℹ️ Getting help with xe commands {#getting-help-with-xe-commands}
 
 Basic help is available for CLI commands on-host by typing the following:
 
-```
+<Terminal shell title="root@xcp-ng-host — Getting help with xe commands">{`
 xe help
-```
+`}</Terminal>
 
 Help for individual commands is available by typing:
 
-```
+<Terminal shell title="root@xcp-ng-host — Getting help with xe commands">{`
 xe help <command>
-```
+`}</Terminal>
 
 For example:
 
-```
-[ ~]# xe help host-cpu-info
+<Terminal title="root@xcp-ng-host — Getting help with xe commands">{`
+xe help host-cpu-info
 command name            : host-cpu-info
         reqd params     : 
         optional params : uuid
         description     : Lists information about the host's physical CPUs.
-```
+`}</Terminal>
 
 Or a list of all xe commands is displayed if you type:
 
-```
+<Terminal shell title="root@xcp-ng-host — Getting help with xe commands">{`
 xe help --all
-```
+`}</Terminal>
 
-## 🪧 Basic xe syntax
+## 🪧 Basic xe syntax {#basic-xe-syntax}
 
 The basic syntax of all XCP-ng xe CLI commands is:
 
-```
+<Terminal shell title="root@xcp-ng-host — Basic xe syntax">{`
 xe <command> <argument>=value <argument>=value
-```
+`}</Terminal>
 
 Each specific command contains its own set of arguments that are of the form `argument=value`. Some commands have required arguments, and most have some set of optional arguments. Typically a command assumes default values for some of the optional arguments when invoked without them.
 
 For example, adding a bootable ISO image as a mounted CD-Rom to a VM can be done with the following command:
 
-```
+<Terminal shell title="root@xcp-ng-host — Basic xe syntax">{`
 xe vm-cd-add uuid=679c70cb-b358-00e1-72c0-819e8f74f00c cd-name=ubuntu-20.04.2-live-server-amd64.iso device=1
-```
+`}</Terminal>
 
 If the xe command is executed remotely, extra arguments are used to connect and authenticate. These arguments also take the form argument=argument_value.
 
@@ -62,15 +62,15 @@ The optional port argument can be used to specify the agent port on the remote X
 
 Example: On the local XCP-ng server:
 
-```
+<Terminal shell title="root@xcp-ng-host — Basic xe syntax">{`
 xe vm-list
-```
+`}</Terminal>
 
 Example: On the remote XCP-ng server:
 
-```
+<Terminal shell title="root@xcp-ng-host — Basic xe syntax">{`
 xe vm-list -user username -password password -server hostname
-```
+`}</Terminal>
 
 Shorthand syntax is also available for remote connection arguments:
 
@@ -82,21 +82,21 @@ Shorthand syntax is also available for remote connection arguments:
 
 Example: On a remote XCP-ng server:
 
-```
+<Terminal shell title="root@xcp-ng-host — Basic xe syntax">{`
 xe vm-list -u myuser -pw mypassword -s hostname
-```
+`}</Terminal>
 
 Arguments are also taken from the environment variable `XE_EXTRA_ARGS`, in the form of comma-separated key/value pairs. For example, to enter commands that are run on a remote XCP-ng server, first run the following command:
 
-```
+<Terminal shell title="Basic xe syntax">{`
 export XE_EXTRA_ARGS="server=foobar,port=443,username=root,password=pass"
-```
+`}</Terminal>
 
 After running this command, you no longer have to specify the remote XCP-ng server parameters in each xe command that you run.
 
 Using the `XE_EXTRA_ARGS` environment variable also enables tab completion of xe commands when issued against a remote XCP-ng server, which is disabled by default.
 
-## 🀄 Special characters and syntax
+## 🀄 Special characters and syntax {#special-characters-and-syntax}
 
 To specify argument/value pairs on the xe command line, write: `argument=value`
 
@@ -110,7 +110,7 @@ When you use the CLI on your XCP-ng server, commands have a tab completion featu
 Tab completion does not normally work when executing commands on a remote XCP-ng server. However, if you set the `XE_EXTRA_ARGS` variable on the machine where you enter the commands, tab completion is enabled. For more information, see Basic xe syntax.
 :::
 
-## 🧮 Command types
+## 🧮 Command types {#command-types}
 
 The CLI commands can be split in two halves. Low-level commands are concerned with listing and parameter manipulation of API objects. Higher level commands are used to interact with VMs or hosts in a more abstract level.
 
@@ -172,7 +172,7 @@ Where class is one of:
 
 Not every value of class has the full set of class-param-action commands. Some values of class have a smaller set of commands.
 
-## 🧶 Parameter types
+## 🧶 Parameter types {#parameter-types}
 
 The objects that are addressed with the xe commands have sets of parameters that identify them and define their states.
 
@@ -197,15 +197,15 @@ The platform parameter has a list of items that represent key/value pairs. The k
 
 To filter on a map parameter or set a map parameter, use a colon (`:`) to separate the map parameter name and the key/value pair. For example, to set the value of the `foo` key of the other-config parameter of a VM to `baa`, the command would be
 
-```
+<Terminal shell title="root@xcp-ng-host — Parameter types">{`
 xe vm-param-set uuid=VM uuid other-config:foo=baa
-```
+`}</Terminal>
 
 :::note
 In previous releases, the hyphen character (-) was used to specify map parameters. This syntax still works but is deprecated.
 :::
 
-## 🔬 Low-level parameter commands
+## 🔬 Low-level parameter commands {#low-level-parameter-commands}
 
 There are several commands for operating on parameters of objects: class-param-get, class-param-set, class-param-add, class-param-remove, class-param-clear, and class-param-list. Each of these commands takes a uuid parameter to specify the particular object. Since these commands are considered low-level commands, they must use the `UUID` and not the VM name label.
 
@@ -233,7 +233,7 @@ Removes either a key/value pair from a map, or a key from a set.
 
 Completely clears a set or a map.
 
-## 📜 Low-level list commands
+## 📜 Low-level list commands {#low-level-list-commands}
 
 The class-list command lists the objects of type class. By default, this type of command lists all objects, printing a subset of the parameters. This behavior can be modified in the following ways:
 
@@ -242,15 +242,15 @@ The class-list command lists the objects of type class. By default, this type of
 
 To change the parameters that are printed, specify the argument params as a comma-separated list of the required parameters. For example:
 
-```
+<Terminal shell title="root@xcp-ng-host — Low-level list commands">{`
 xe vm-list params=name-label,other-config
-```
+`}</Terminal>
 
 Alternatively, to list all of the parameters, use the syntax:
 
-```
+<Terminal shell title="root@xcp-ng-host — Low-level list commands">{`
 xe vm-list params=all
-```
+`}</Terminal>
 
 The list command doesn’t show some parameters that are expensive to calculate. These parameters are shown as, for example:
 
@@ -262,9 +262,9 @@ To obtain these fields, use either the command class-param-list or class-param-g
 
 To filter the list, the CLI matches parameter values with those values specified on the command-line, only printing objects that match all of the specified constraints. For example:
 
-```
+<Terminal shell title="root@xcp-ng-host — Low-level list commands">{`
 xe vm-list HVM-boot-policy="BIOS order" power-state=halted
-```
+`}</Terminal>
 
 This command lists only those VMs for which both the field power-state has the value halted and the field `HVM-boot-policy` has the value BIOS order.
 
@@ -276,7 +276,7 @@ When scripting, a useful technique is passing `--minimal` on the command line, c
 a85d6717-7264-d00e-069b-3b1d19d56ad9,aaa3eec5-9499-bcf3-4c03-af10baea96b7, 42c044de-df69-4b30-89d9-2c199564581d
 ```
 
-## 🙊 Secrets
+## 🙊 Secrets {#secrets}
 
 XCP-ng provides a secrets mechanism to avoid passwords being stored in plaintext in command-line history or on API objects. XenCenter uses this feature automatically and it can also be used from the xe CLI for any command that requires a password.
 
@@ -286,14 +286,14 @@ Password secrets cannot be used to authenticate with a XCP-ng host from a remote
 
 To create a secret object, run the following command on your XCP-ng host.
 
-```
+<Terminal shell title="root@xcp-ng-host — Secrets">{`
 xe secret-create value=my-password
-```
+`}</Terminal>
 
 A secret is created and stored on the XCP-ng host. The command outputs the UUID of the secret object. For example, `99945d96-5890-de2a-3899-8c04ef2521db`. Append `_secret` to the name of the password argument to pass this UUID to any command that requires a password.
 
 Example: On the XCP-ng host where you created the secret, you can run the following command:
 
-```
+<Terminal shell title="root@xcp-ng-host — Secrets">{`
 xe sr-create device-config:location=sr_address device-config:type=cifs device-config:username=cifs_username device-config:cifspassword_secret=secret_uuid name-label="CIFS ISO SR" type="iso" content-type="iso" shared="true"
-```
+`}</Terminal>

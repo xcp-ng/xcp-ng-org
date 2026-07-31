@@ -53,3 +53,9 @@
 .hidden {
   display: none;
 }
+
+/* Each doc page numbers its <Schema> figures from 1 (see the Schema
+   component's styles). */
+article {
+  counter-reset: schema-fig;
+}

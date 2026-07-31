@@ -2,7 +2,7 @@
 
 In XCP-ng, high availability (or HA) is the ability to detect a failed host and automatically boot all the VMs that were running on this host to the other alive machines.
 
-## 📋 Introduction
+## 📋 Introduction {#introduction}
 
 Implementing VM High availability (HA) is a real challenge.
 
@@ -22,7 +22,7 @@ High availability requires **far more maintenance** and will create some traps i
 Before using it, **please think about it carefully**: do you **REALLY** need it? We've seen people having less uptime using HA than when not using it, because you **must understand** what you are doing every time you reboot or update a host.
 :::
 
-## 🎓 Concepts
+## 🎓 Concepts {#concepts}
 
 The pool concept allows hosts to exchange their data and status:
 
@@ -39,7 +39,7 @@ Here are the possible cases and how they are dealt with:
 * **Lost storage but not network**: if the host can contact a majority of pool members, it can stay alive. Indeed, in this scenario, there is no harm for the data (can't write to the VM disks). If the host is alone (i.e can't contact any other host or less than the majority), it goes for a reboot procedure.
 * **Lost network but not storage (worst case!)**: the host considers itself as problematic and starts a reboot procedure (hard power off and restart). This fencing procedure guarantees the sanity of your data.
 
-## Requirements
+## ✅ Requirements {#requirements}
 
 Enabling HA in XCP-ng requires thorough planning and validation of several prerequisites:
 
@@ -70,7 +70,7 @@ Use the `pif-plug` command in the CLI to activate VLAN and bond PIFs, ensuring t
 Additionally, the `xe diagnostic-vm-status` CLI command can help identify why a VM isn’t agile, allowing you to take corrective action as needed.
 
 
-## ⚙️ Configuration
+## ⚙️ Configuration {#configuration}
 
 ### Prepare the pool
 
@@ -85,9 +85,9 @@ To enable HA, just toggle it on, which gives you a SR selector as Heartbeat SR.
 
 You can also enable it with this xe CLI command:
 
-```
+<Terminal shell title="root@xcp-ng-host — Prepare the pool">{`
 xe pool-ha-enable heartbeat-sr-uuids=<SR_UUID>
-```
+`}</Terminal>
 
 :::tip
 Remember that you need to use a shared storage repository to enable high availability.
@@ -101,18 +101,18 @@ How many host failures you can tolerate before running out of options? For 2 hos
 
 XCP-ng can calculate this value for you. In our sample case, it looks like this:
 
-```
+<Terminal title="root@xcp-ng-host — Maximum host failure number">{`
 xe pool-ha-compute-max-host-failures-to-tolerate
 1
-```
+`}</Terminal>
 
 But it could be also **0**. Because, even if you lose 1 host, is there not enough RAM to boot the HA VM on the last one? If not, you can't ensure their survival. 
 
 If you want to set the number yourself, you can do it with this command:
 
-```
+<Terminal shell title="root@xcp-ng-host — Maximum host failure number">{`
 xe pool-param-set ha-host-failures-to-tolerate=1 uuid=<Pool_UUID>
-```
+`}</Terminal>
 
 If more hosts fail than this number, the system will raise an **over-commitment** alert.
 
@@ -135,9 +135,9 @@ This is pretty straightforward with Xen Orchestra. Go to the **Advanced** panel 
 
 You can also do that configuration with *xe CLI*:
 
-```
+<Terminal shell title="root@xcp-ng-host — Choosing a high availability mode">{`
 xe vm-param-set uuid=<VM_UUID> ha-restart-priority=restart
-```
+`}</Terminal>
 
 #### Start order
 
@@ -155,9 +155,9 @@ The order value is an integer, with the default set to **0**, indicating the **h
 
 You can set the order property value of a VM via the command-line interface:
 
-```
+<Terminal shell title="root@xcp-ng-host — How do I set the start order?">{`
 xe vm-param-set uuid=<VM UUID> order=<number>
-```
+`}</Terminal>
 
 #### Configure HA timeout
 
@@ -171,11 +171,11 @@ If any XCP-ng server cannot regain access to networking or storage within the sp
 
 The **default timeout is 60 seconds**, but you can adjust this value using the following command to suit your needs:
 
-```
+<Terminal shell title="root@xcp-ng-host — How do I configure it?">{`
 xe pool-param-set uuid=<pool UUID> other-config:default_ha_timeout=<timeout in seconds>
-```
+`}</Terminal>
 
-## 🔧 Updates/maintenance
+## 🔧 Updates/maintenance {#updatesmaintenance}
 
 Before any update or host maintenance, planned reboot and so on, **ALWAYS** put your host in maintenance mode. If you don't do that, XAPI will think it's an unplanned failure, and will act accordingly.
 
@@ -186,7 +186,7 @@ If you have enough memory to put one host in maintenance (migrating all its VMs 
 - **Do NOT restart host toolstacks while high availability is enabled!** Attempting to restart the toolstack on an active host will cause the host to be immediately fenced and removed from the active liveset and pool. Always make sure that HA is disabled before restarting toolstacks.
 :::
 
-## ↔️ Behavior
+## ↔️ Behavior {#behavior}
 
 ### Halting the VM
 
@@ -200,9 +200,9 @@ However, if you halt the VM directly in the guest OS (via the console or in SSH)
 
 Starting with XAPI 25.16.0, VM restart behavior can be changed on a pool-wide basis. To do this, run this command:
 
-```
+<Terminal shell title="root@xcp-ng-host — Configure VM shutdown behavior">{`
 xe pool-param-set uuid=... ha-reboot-vm-on-internal-shutdown=false
-```
+`}</Terminal>
 
 The `ha-reboot-vm-on-internal-shutdown` parameter indicates whether VM-initiated shutdowns will trigger a restart for HA-protected VMs, for example, when a user clicks the shutdown in Windows.
 
@@ -260,13 +260,66 @@ Immediatly after fencing, **Minion 1** will be booted on the other host.
 
 Finally, the worst case: keep the storage operational, but "cut" the (management) network interface. Same procedure: unplug the cable physically and wait... Because **lab1** cannot contact any other host in the pool (in this case, **lab2**), it starts the fencing procedure. The result is exactly the same as the previous test. It's gone for the pool master, displayed as **Halted** until we re-plug the cable.
 
-## 🤓 Architecture
+## 🤓 Architecture {#architecture}
 
 ### General
 
 The diagram below shows how HA is managed on a pool.
 
-![Shared SR has an ha-statefile queried by the XHA daemons running on each hosts. These daemons also talk to each other.](../../assets/img/xha-shared-sr.png)
+<Schema label="HA on a shared SR · two heartbeat paths to tell network and storage failures apart" legend={[["#4a90e2", "network heartbeat"], ["#56c288", "storage heartbeat"], ["#e0a94a", "ha-statefile"]]} maxWidth="640px">
+<svg viewBox="0 0 640 400" role="img" aria-label="Three XCP-ng hosts each run an XHA daemon; the daemons exchange a network heartbeat with each other, and each also writes a storage heartbeat into the ha-statefile volume on the shared SR that holds the VM disks">
+  <g fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.28)">
+    <rect x="20" y="20" width="190" height="120" rx="8"/>
+    <rect x="225" y="20" width="190" height="120" rx="8"/>
+    <rect x="430" y="20" width="190" height="120" rx="8"/>
+  </g>
+  <g fontSize="12.5" fill="#c6d2e1" textAnchor="middle">
+    <text x="115" y="42">XCP-ng A</text>
+    <text x="320" y="42">XCP-ng B</text>
+    <text x="525" y="42">XCP-ng C</text>
+  </g>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="66" y="52" width="98" height="24" rx="5"/>
+    <rect x="271" y="52" width="98" height="24" rx="5"/>
+  </g>
+  <g fontSize="10.5" fill="#7a8699" textAnchor="middle">
+    <text x="115" y="68">VM A</text>
+    <text x="320" y="68">VM B</text>
+  </g>
+  <g fill="rgba(74,144,226,0.14)" stroke="#4a90e2" strokeOpacity="0.85">
+    <rect x="46" y="92" width="138" height="28" rx="5"/>
+    <rect x="251" y="92" width="138" height="28" rx="5"/>
+    <rect x="456" y="92" width="138" height="28" rx="5"/>
+  </g>
+  <g fontSize="11" fill="#c6d2e1" textAnchor="middle">
+    <text x="115" y="110">XHA daemon</text>
+    <text x="320" y="110">XHA daemon</text>
+    <text x="525" y="110">XHA daemon</text>
+  </g>
+  <g stroke="#4a90e2" strokeWidth="1.8">
+    <line x1="184" y1="106" x2="251" y2="106"/>
+    <line x1="389" y1="106" x2="456" y2="106"/>
+  </g>
+  <rect x="140" y="210" width="360" height="140" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.28)"/>
+  <text x="488" y="338" fontSize="12" fill="#c6d2e1" textAnchor="end">Shared SR (e.g. NFS)</text>
+  <rect x="160" y="266" width="130" height="32" rx="6" fill="rgba(224,169,74,0.14)" stroke="#e0a94a" strokeOpacity="0.85"/>
+  <text x="225" y="286" fontSize="11" fill="#e0a94a" textAnchor="middle">ha-statefile</text>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="320" y="240" width="92" height="24" rx="5"/>
+    <rect x="320" y="274" width="92" height="24" rx="5"/>
+  </g>
+  <g fontSize="10" fill="#7a8699" textAnchor="middle">
+    <text x="366" y="256">vol_1.vhd</text>
+    <text x="366" y="290">vol_2.vhd</text>
+    <text x="366" y="316">… VM disks</text>
+  </g>
+  <g stroke="#56c288" strokeWidth="1.6" fill="none">
+    <path d="M100 120 C 100 180, 150 230, 180 264"/>
+    <path d="M320 120 C 320 170, 250 220, 222 264"/>
+    <path d="M525 120 C 525 190, 340 230, 292 276"/>
+  </g>
+</svg>
+</Schema>
 
 As you can see, a `XHA daemon` is running on each host and two main paths are used: one for the network, another for storage.
 For HA to operate properly, two communication paths are used: one over the network and another reserved for storage.
@@ -278,7 +331,48 @@ The only difference is that `ha-statefile` is a raw volume in which data is writ
 
 Regarding the structure of this SR heartbeat volume:
 
-![The ha-statefile has info about each alive hosts in the pool.](../../assets/img/xha-statefile-structure.png)
+<Schema label="ha-statefile layout · one reserved slot per host, readable by all" legend={[["#56c288", "host writes its own slot"], ["#e0a94a", "ha-statefile (raw volume)"]]} maxWidth="640px">
+<svg viewBox="0 0 640 250" role="img" aria-label="Three hosts each write a heartbeat into their own slot of the ha-statefile volume; every host reads all the slots to know who is alive">
+  <g fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.28)">
+    <rect x="40" y="20" width="150" height="36" rx="6"/>
+    <rect x="245" y="20" width="150" height="36" rx="6"/>
+    <rect x="450" y="20" width="150" height="36" rx="6"/>
+  </g>
+  <g fontSize="12" fill="#c6d2e1" textAnchor="middle">
+    <text x="115" y="43">XCP-ng A</text>
+    <text x="320" y="43">XCP-ng B</text>
+    <text x="525" y="43">XCP-ng C</text>
+  </g>
+  <g stroke="#56c288" strokeWidth="1.8">
+    <line x1="115" y1="56" x2="115" y2="118"/>
+    <line x1="320" y1="56" x2="320" y2="118"/>
+    <line x1="525" y1="56" x2="525" y2="118"/>
+  </g>
+  <g fontSize="9.5" fill="#56c288">
+    <text x="124" y="92">writes</text>
+    <text x="329" y="92">writes</text>
+    <text x="534" y="92">writes</text>
+  </g>
+  <rect x="30" y="120" width="580" height="70" rx="8" fill="rgba(224,169,74,0.08)" stroke="#e0a94a" strokeOpacity="0.85"/>
+  <g fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.28)">
+    <rect x="46" y="134" width="170" height="42" rx="5"/>
+    <rect x="251" y="134" width="170" height="42" rx="5"/>
+    <rect x="456" y="134" width="140" height="42" rx="5"/>
+  </g>
+  <g fontSize="10.5" fill="#c6d2e1" textAnchor="middle">
+    <text x="131" y="151">slot A</text>
+    <text x="336" y="151">slot B</text>
+    <text x="526" y="151">slot C</text>
+  </g>
+  <g fontSize="9.5" fill="#7a8699" textAnchor="middle">
+    <text x="131" y="168">"alive at 10:42:03"</text>
+    <text x="336" y="168">"alive at 10:42:03"</text>
+    <text x="526" y="168">"alive at 10:42:02"</text>
+  </g>
+  <text x="36" y="214" fontSize="10.5" fill="#7a8699">no write lock needed: each host only ever writes its own slot…</text>
+  <text x="604" y="238" fontSize="10.5" fill="#7a8699" textAnchor="end">…and reads all the others to know who is alive</text>
+</svg>
+</Schema>
 
 - As the picture shows, this volume contains a single entry for each host, where each host writes to its own dedicated area AND can also read the state of other hosts. In other words, each host writes a “heartbeat” value indicating that it’s alive at a given time, which is verified by the whole pool.
 
@@ -288,9 +382,80 @@ Regarding the structure of this SR heartbeat volume:
 
 For DRBD/LINSTOR experts, and with the general architecture explanation, you can understand what happens when we replace the NFS hearbeat volume by a DRBD device.
 
-We must change our architecture because — basically — a DRBD volume can only be opened in one place at a time. We cannot easily write in each volume at the same time, because we would have to open or close the heartbeat volume several times per second. Or, we would have to set up a mechanism in the xha daemon so that each one writes in turn. Since this is complex to set up, we chose another approach.
+We must change our architecture because, basically, a DRBD volume can only be opened in one place at a time. We cannot easily write in each volume at the same time, because we would have to open or close the heartbeat volume several times per second. Or, we would have to set up a mechanism in the xha daemon so that each one writes in turn. Since this is complex to set up, we chose another approach.
 
-![In XOSTOR case, each hosts have an HTTP DISK server, only one is active. It checks the ha-statefile, talk to each hosts NBD HTTP server which talks to their host XHA daemon.](../../assets/img/xha-xostor-sr.png)
+<Schema label="HA on XOSTOR · the storage heartbeat is proxied to the single DRBD primary" legend={[["#4a90e2", "network heartbeat"], ["#56c288", "storage heartbeat path"], ["#e0a94a", "ha-statefile"]]} maxWidth="640px">
+<svg viewBox="0 0 640 470" role="img" aria-label="Three XCP-ng hosts run the XHA daemon over an NBD HTTP server; only host A runs the active HTTP disk server, which owns the DRBD primary and writes the ha-statefile on the shared XOSTOR SR; the other hosts forward their heartbeat through it">
+  <g fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.28)">
+    <rect x="20" y="20" width="190" height="170" rx="8"/>
+    <rect x="225" y="20" width="190" height="170" rx="8"/>
+    <rect x="430" y="20" width="190" height="170" rx="8"/>
+  </g>
+  <g fontSize="12.5" fill="#c6d2e1" textAnchor="middle">
+    <text x="115" y="42">XCP-ng A</text>
+    <text x="320" y="42">XCP-ng B</text>
+    <text x="525" y="42">XCP-ng C</text>
+  </g>
+  <g fill="rgba(74,144,226,0.14)" stroke="#4a90e2" strokeOpacity="0.85">
+    <rect x="46" y="52" width="138" height="26" rx="5"/>
+    <rect x="251" y="52" width="138" height="26" rx="5"/>
+    <rect x="456" y="52" width="138" height="26" rx="5"/>
+  </g>
+  <g fontSize="11" fill="#c6d2e1" textAnchor="middle">
+    <text x="115" y="69">XHA daemon</text>
+    <text x="320" y="69">XHA daemon</text>
+    <text x="525" y="69">XHA daemon</text>
+  </g>
+  <g stroke="#4a90e2" strokeWidth="1.8">
+    <line x1="184" y1="65" x2="251" y2="65"/>
+    <line x1="389" y1="65" x2="456" y2="65"/>
+  </g>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="46" y="92" width="138" height="26" rx="5"/>
+    <rect x="251" y="92" width="138" height="26" rx="5"/>
+    <rect x="456" y="92" width="138" height="26" rx="5"/>
+  </g>
+  <g fontSize="10.5" fill="#c6d2e1" textAnchor="middle">
+    <text x="115" y="109">NBD HTTP server</text>
+    <text x="320" y="109">NBD HTTP server</text>
+    <text x="525" y="109">NBD HTTP server</text>
+  </g>
+  <rect x="46" y="140" width="138" height="30" rx="5" fill="rgba(86,194,136,0.14)" stroke="#56c288" strokeOpacity="0.85"/>
+  <text x="115" y="159" fontSize="10.5" fill="#56c288" textAnchor="middle">HTTP disk server ★</text>
+  <g fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)">
+    <rect x="251" y="140" width="138" height="30" rx="5"/>
+    <rect x="456" y="140" width="138" height="30" rx="5"/>
+  </g>
+  <g fontSize="10" fill="#5b6577" textAnchor="middle">
+    <text x="320" y="159">HTTP disk server (idle)</text>
+    <text x="525" y="159">HTTP disk server (idle)</text>
+  </g>
+  <g stroke="#56c288" strokeWidth="1.6" fill="none">
+    <line x1="115" y1="78" x2="115" y2="92"/>
+    <line x1="320" y1="78" x2="320" y2="92"/>
+    <line x1="525" y1="78" x2="525" y2="92"/>
+    <line x1="115" y1="118" x2="115" y2="140"/>
+    <path d="M251 105 C 215 105, 205 130, 188 148"/>
+    <path d="M456 105 C 446 205, 260 215, 165 174"/>
+    <path d="M115 170 C 115 220, 150 260, 178 304"/>
+  </g>
+  <rect x="140" y="250" width="360" height="150" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.28)"/>
+  <text x="488" y="388" fontSize="12" fill="#c6d2e1" textAnchor="end">Shared XOSTOR SR</text>
+  <rect x="160" y="306" width="130" height="32" rx="6" fill="rgba(224,169,74,0.14)" stroke="#e0a94a" strokeOpacity="0.85"/>
+  <text x="225" y="326" fontSize="11" fill="#e0a94a" textAnchor="middle">ha-statefile</text>
+  <text x="225" y="352" fontSize="9.5" fill="#7a8699" textAnchor="middle">DRBD · primary on A</text>
+  <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
+    <rect x="330" y="290" width="92" height="24" rx="5"/>
+    <rect x="330" y="324" width="92" height="24" rx="5"/>
+  </g>
+  <g fontSize="10" fill="#7a8699" textAnchor="middle">
+    <text x="376" y="306">vol_1</text>
+    <text x="376" y="340">vol_2</text>
+    <text x="376" y="366">… VM disks</text>
+  </g>
+  <text x="630" y="462" fontSize="10" fill="#7a8699" textAnchor="end">★ single active instance · another host takes over if A crashes</text>
+</svg>
+</Schema>
 
 To support the fact that only one DRBD volume can be PRIMARY, and to avoid making significant changes to the xha/XHAPI modules, we had to be a bit creative. Instead of writing to or reading directly from the heartbeat volume on all hosts, we use an `NBD HTTP server` daemon. It's a process that listens through an NBD device, which is seen as the heartbeat volume by the XHA daemon.
 

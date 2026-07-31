@@ -10,23 +10,24 @@ This page aims at guiding you through the modification of the installation ISO i
 
 Obviously, a modified installation image is not an official installation image anymore, so it's harder to provide support for that. However, it can still be useful in some cases and we also hope that letting you know how to modify the installer will help getting useful contributions on its [code base](https://github.com/xcp-ng/host-installer).
 
-## Extract an existing ISO image
+## 📤 Extract an existing ISO image {#extract-an-existing-iso-image}
 
-```
+<Terminal shell title="Extract an existing ISO image">{`
 mkdir tmpmountdir/
 mount -o loop filename.iso tmpmountdir/ # as root
 cp -a tmpmountdir/. iso
 umount tmpmountdir/ # as root
-```
+`}</Terminal>
 
 Now you have the contents of the ISO image in the `iso/` directory. Note that everything in the directory is read-only at this stage, so you will need to change the file permissions or be root to modify the files.
 
 For example:
-```
-chmod a+w iso/ -R
-```
 
-## Contents of the installation ISO image
+<Terminal shell title="Extract an existing ISO image">{`
+chmod a+w iso/ -R
+`}</Terminal>
+
+## 🗂️ Contents of the installation ISO image {#contents-of-the-installation-iso-image}
 
 We'll only list the files that are used during an installation or upgrade. The other files in the ISO are documentation or additional tools.
 
@@ -37,11 +38,11 @@ We'll only list the files that are used during an installation or upgrade. The o
 * `repodata/`: yum metadata about the RPMs
 * `.treeinfo`: often forgotten when one copies the contents of the ISO for network installation, this hidden file contains necessary metadata about XCP-ng and its version
 
-## Create a fully automated installation image
+## 🤖 Create a fully automated installation image {#create-a-fully-automated-installation-image}
 
 [A guide is available in the *Installation* page](../../../installation/install-xcp-ng#unattended-installation-with-a-custom-iso-image).
 
-## Modify the installer itself
+## 🛠️ Modify the installer itself {#modify-the-installer-itself}
 
 The steps to modify the installer are:
 * (extract the ISO image, see above)
@@ -63,21 +64,26 @@ cd ..
 ### Navigate in the installer's filesystem
 
 If you want to use commands in the installer's filesystem context, as root:
-```
+
+<Terminal shell title="Navigate in the installer's filesystem">{`
 chroot install/
-```
+`}</Terminal>
+
 To use `yum` or `rpm`, you'll also need to mount `urandom` in your chrooted dir.
 From outside the chroot run:
-```
+
+<Terminal shell title="Navigate in the installer's filesystem">{`
 touch install/dev/urandom
 mount -B /dev/urandom install/dev/urandom # As root!
-```
+`}</Terminal>
+
 Then useful commands will be available to you in the context of that filesystem, such as `rpm`, `yum`, etc.
 
 For example, you can list all RPMs present in that "system":
-```
+
+<Terminal shell title="root@xcp-ng-host — Navigate in the installer's…">{`
 rpm -qa | sort
-```
+`}</Terminal>
 
 Exit chroot with `exit` or Ctrl + D.
 
@@ -97,9 +103,11 @@ Example use cases:
 ### Modify the installer code itself
 
 The installer is a `python` program that comes from the `host-installer`. In chroot, you can easily locate its files with:
-```
+
+<Terminal shell title="root@xcp-ng-host — Modify the installer code itself">{`
 rpm -ql host-installer
-```
+`}</Terminal>
+
 Most of them are in `/opt/xensource/installer/`
 
 Our git repository for the installer is: [https://github.com/xcp-ng/host-installer](https://github.com/xcp-ng/host-installer). Feel free to create pull requests for your enhancements or bug fixes.
@@ -107,15 +115,16 @@ Our git repository for the installer is: [https://github.com/xcp-ng/host-install
 ### Build a new `install.img` with your changes
 
 From the `iso/` directory
-```
+
+<Terminal shell title="Build a new install.img with your changes">{`
 cd install/
 find . | cpio -o -H newc | bzip2 > ../install.img # as root!
 rm install/ -rf # as root too. Or move it somewhere else. We don't want it in the final ISO.
-```
+`}</Terminal>
 
 Then you can either read the next section or jump to "Build a new ISO image with your changes".
 
-## Change the list of installed RPMs
+## 📦 Change the list of installed RPMs {#change-the-list-of-installed-rpms}
 
 You may want the installer to install more packages, or updated packages.
 
@@ -130,7 +139,7 @@ To achieve this:
   createrepo_c . -o .
   ```
 
-## Build a new ISO image with your changes
+## 💿 Build a new ISO image with your changes {#build-a-new-iso-image-with-your-changes}
 
 From the `iso/` directory:
 ```

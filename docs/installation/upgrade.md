@@ -12,16 +12,16 @@ For updates that don't change the version numbers (bugfixes, security fixes), se
 
 :::info
 There are 3 upgrade methods, detailed below:
-* [Using the installation ISO (recommended)](#-upgrade-via-installation-iso-recommended).
+* [Using the installation ISO (recommended)](#upgrade-via-installation-iso-recommended).
 * [Using the installation ISO when you can't boot from it: remote upgrade](#using-the-installation-iso-when-you-cant-boot-from-it-remote-upgrade).
-* [From command line a.k.a. yum-style upgrade](#-from-command-line). ⚠️ Only for some point version upgrades.
+* [From command line a.k.a. yum-style upgrade](#from-command-line). ⚠️ Only for some point version upgrades.
 :::
 
 :::warning
 For upgrading XCP-ng machines with an XOSTOR SR, please refer to this [additional information](../../xostor#upgrade) before taking any action.
 :::
 
-## ☢️ Release Notes & Known Issues
+## ☢️ Release Notes & Known Issues {#release-notes--known-issues}
 
 Read the [Release Notes and Known Issues](../../releases#xcp-ng-release-history) for every release that is higher than your current release. They may provide additional instructions for specific situations. Also **please read the following warnings**:
 
@@ -30,7 +30,7 @@ Read the [Release Notes and Known Issues](../../releases#xcp-ng-release-history)
 * DON'T use the `Maintenance Mode` in XCP-ng Center. It moves the pool master to another host, which has to be avoided in the upgrade procedure.
 * If HA (High Availability) is enabled, disable it before upgrading.
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`.
-* Read [Handling alternate drivers or kernel](#-handling-alternate-drivers-or-kernel) if your host depends on them.
+* Read [Handling alternate drivers or kernel](#handling-alternate-drivers-or-kernel) if your host depends on them.
 * [Update your pool with the latest updates](../../management/updates) **before** upgrading, and reboot or restart the toolstack, depending on the nature of the installed updates.
 * [Install the latest updates](../../management/updates) **after** upgrading.
 :::
@@ -39,7 +39,7 @@ Read the [Release Notes and Known Issues](../../releases#xcp-ng-release-history)
 * When upgrading from *XCP-ng 7.5 or lower* or from *XenServer* or *Citrix Hypervisor*, **it is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
 :::
 
-## 💿 Upgrade via installation ISO (recommended)
+## 💿 Upgrade via installation ISO (recommended) {#upgrade-via-installation-iso-recommended}
 
 This is the standard XCP-ng way. With this method, note that you can often skip intermediate release (e.g. from 7.5 to 8.2 directly) without needing intermediate upgrade, but there are exceptions, so check the [release notes](../../releases#xcp-ng-release-history)! For example, we strongly advise to upgrade to XCP-ng 8.2.1 first before jumping to XCP-ng 8.3.
 
@@ -77,7 +77,7 @@ See [the Troubleshooting page](../../troubleshooting/after-upgrade).
 
 This is an alternate method if you can't boot from the installation ISO.
 
-If you do not have access to your server or remote KVM in order to upgrade using the interactive ISO installer, you can initiate an automatic reboot and upgrade process using the following procedure, which replaces steps 4 to 6 in the above [upgrade procedure](#-upgrade-via-installation-iso-recommended).
+If you do not have access to your server or remote KVM in order to upgrade using the interactive ISO installer, you can initiate an automatic reboot and upgrade process using the following procedure, which replaces steps 4 to 6 in the above [upgrade procedure](#upgrade-via-installation-iso-recommended).
 
 * Unpack/extract the XCP-ng ISO to a folder on an HTTP server. Make sure not to miss the hidden .treeinfo file (common mistake if you `cp` the files with `*`).
 * Get the UUID of your host by running the below command:
@@ -100,7 +100,7 @@ Note: it has been brought to our attention that [a DHCP server may be necessary 
 
 Once upgraded, **keep the system regularly updated** (see [Updates Howto](../../management/updates)).
 
-## 🧑‍💻 From command line
+## 🧑‍💻 From command line {#from-command-line}
 
 A.k.a. yum-style upgrade.
 
@@ -144,7 +144,7 @@ More at [Additional packages](../../management/additional-packages).
 
 #### Precautions
 
-The [precautions that apply to regular updates](../../management/updates#-precautions) also apply to the upgrade process.
+The [precautions that apply to regular updates](../../management/updates#precautions) also apply to the upgrade process.
 
 Check them carefully.
 
@@ -191,9 +191,9 @@ In the commands below your shell will automatically replace `$VER` with the valu
 
 #### 2. Upgrade the system's packages
 
-```
+<Terminal shell title="root@xcp-ng-host — 2. Upgrade the system's packages">{`
 yum update
-```
+`}</Terminal>
 
 #### 3. Check the configuration files
 
@@ -207,14 +207,14 @@ If you haven't modified configuration files that `rpm` wants to update, there wi
 
 /!\ There is an exception: always ignore the `/etc/cron.d/logrotate.cron.rpmsave` file. Citrix team named that file this way so that it is ignored by cron. It is used only with legacy partitioning, where no `/var/log` partition exists, and triggers a very aggressive log rotation. Leave it alone.
 
-```
+<Terminal shell title="3. Check the configuration files">{`
 # Find conflicting configuration files, excluding logrotate.cron.rpmsave
 find /etc \( -name "*.rpmnew" -or -name "*.rpmsave" ! -name "logrotate.cron.rpmsave" \)
-```
+`}</Terminal>
 
 #### 4. Reboot the host
 
-## 🇽 Upgrade from XenServer
+## 🇽 Upgrade from XenServer {#upgrade-from-xenserver}
 
 This article describes how to proceed in order to convert your Citrix XenServer infrastructure into a XCP-ng infrastructure.
 
@@ -326,23 +326,29 @@ If you do not have access to your server or remote KVM in order to upgrade using
 
 Unpack/extract the XCP-NG ISO to a folder on a webserver. Then get the UUID of your host by running the below command:
 
-`xe host-list`
+<Terminal shell title="root@xcp-ng-host — Alternate method: remote upgrade">{`
+xe host-list
+`}</Terminal>
 
 Using that host UUID, as well as the URL to the folder hosting the unpacked XCP-NG ISO, run the following command to test access:
 
-`xe host-call-plugin plugin=prepare_host_upgrade.py host-uuid=750d9176-6468-4a08-8647-77a64c09093e fn=testUrl args:url=http://<ip-address>/xcp-ng/unpackedexample/`
+<Terminal shell title="root@xcp-ng-host — Alternate method: remote upgrade">{`
+xe host-call-plugin plugin=prepare_host_upgrade.py host-uuid=750d9176-6468-4a08-8647-77a64c09093e fn=testUrl args:url=http://<ip-address>/xcp-ng/unpackedexample/
+`}</Terminal>
 
 The returned output must be true to continue.
 
 Now tell the host to automatically boot to the ISO and upgrade itself on next reboot (using the UUID and URL from before):
 
-`xe host-call-plugin plugin=prepare_host_upgrade.py host-uuid=750d9176-6468-4a08-8647-77a64c09093e fn=main args:url=http://<ip-address>/xcp-ng/unpackedexample/`
+<Terminal shell title="root@xcp-ng-host — Alternate method: remote upgrade">{`
+xe host-call-plugin plugin=prepare_host_upgrade.py host-uuid=750d9176-6468-4a08-8647-77a64c09093e fn=main args:url=http://<ip-address>/xcp-ng/unpackedexample/
+`}</Terminal>
 
 The output should also be true. It has created a temporary entry in the grub bootloader which will automatically load the upgrade ISO on the next boot. It then automatically runs the XCP-NG upgrade with no user intervention required. It will also backup your existing XenServer dom0 install to the secondary backup partition, just like the normal upgrade.
 
 To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it's available, but if not, it should proceed fine and boot into upgraded XCP-NG in 10 to 20 minutes.
 
-## 👴 Migrate VMs from older XenServer/XCP-ng
+## 👴 Migrate VMs from older XenServer/XCP-ng {#migrate-vms-from-older-xenserverxcp-ng}
 
 ### Live migration
 
@@ -352,13 +358,13 @@ Live migration **should work** from any older XenServer/XCP-ng toward the latest
 
 If a live migration doesn't work, Xen Orchestra is able to do a warm migration for you. It's safer and still have a reasonable downtime. [Read this dedicated article](https://xen-orchestra.com/blog/warm-migration-with-xen-orchestra/) to learn more about it.
 
-## ☣ Handling alternate drivers or kernel
+## ☣ Handling alternate drivers or kernel {#handling-alternate-drivers-or-kernel}
 
-If - before the upgrade - your host depends on [alternate drivers](../../installation/hardware#-alternate-drivers) or on the [alternate kernel](../../installation/hardware#-alternate-kernel) to function, then it is possible that the upgraded system doesn't need such alternatives anymore. It is also possible that it still needs them.
+If - before the upgrade - your host depends on [alternate drivers](../../installation/hardware#alternate-drivers) or on the [alternate kernel](../../installation/hardware#alternate-kernel) to function, then it is possible that the upgraded system doesn't need such alternatives anymore. It is also possible that it still needs them.
 
 When upgrading using the upgrade ISO:
 * Alternate drivers will not be installed automatically: install them from the repositories after the first reboot.
-* The alternate kernel will not be installed automatically, unless you tell the installer to do so (see [Alternate kernel](../../installation/hardware#-alternate-kernel)).
+* The alternate kernel will not be installed automatically, unless you tell the installer to do so (see [Alternate kernel](../../installation/hardware#alternate-kernel)).
 
 When upgrading using `yum`:
 * Alternate drivers will usually be kept and upgraded if a newer version is provided, but that is not a general rule: we handle it on a case by case basis. Sometimes a newer "default" driver will obsolete an older alternate driver.

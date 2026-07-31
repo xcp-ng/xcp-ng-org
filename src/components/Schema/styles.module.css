@@ -1,0 +1,90 @@
+/* A schematic board: always dark in both themes, like the <Terminal> frame,
+   so consoles and diagrams read as one family of technical panels. */
+.board {
+  margin: 1.4rem 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #0c1119;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 14px 34px -20px rgba(0, 0, 0, 0.55);
+}
+
+/* The board fills the text column; the drawing inside is capped by its
+   maxWidth prop and centered. No breakout: the doc layout has sidebars on
+   both sides, so anything wider than the column collides with them. */
+
+/* Faint blueprint dot grid behind the drawing. */
+.canvas {
+  padding: 1.4rem 1.2rem 1.1rem;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 18px 18px;
+  background-position: 9px 9px;
+}
+
+.drawing {
+  margin: 0 auto;
+}
+
+.drawing svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-family: var(--ifm-font-family-monospace);
+}
+
+/* Engineering-drawing title strip. */
+.caption {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 1rem 0.55rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  background: #171b26;
+}
+
+/* Book-style caption: a mono "FIG. n" stamp, then the description in
+   sentence-case italic body type. */
+.label {
+  font-family: var(--ifm-font-family-base);
+  font-size: 0.84rem;
+  font-style: italic;
+  line-height: 1.4;
+  color: #8b96a8;
+}
+
+/* Automatic figure numbering, per page. The counter is reset on <article>
+   in src/css/custom.css. */
+.label::before {
+  counter-increment: schema-fig;
+  content: 'Fig. ' counter(schema-fig) '  ';
+  font-family: var(--ifm-font-family-monospace);
+  font-style: normal;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c6d2e1;
+}
+
+.legend {
+  margin-left: auto;
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.78rem;
+  color: #7a8699;
+}
+
+.swatch {
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+  display: inline-block;
+}

@@ -1,6 +1,6 @@
 # Releases
 
-## XCP-ng Release History
+## 📜 XCP-ng Release History {#xcp-ng-release-history}
 
 | Version                   | Released   | Status               | Support until                                | Release notes                        |
 | ---                       | ---        | ---                  | ---                                          | ---                                  |
@@ -14,7 +14,7 @@
 
 (*) Support for XCP-ng 8.2 LTS was extended for a short period to ensure a three-month gap between the official LTS release of XCP-ng 8.3 and the end of support for XCP-ng 8.2 LTS.
 
-## 🟢 LTS Releases
+## 🟢 LTS Releases {#lts-releases}
 
 *Latest LTS: [XCP-ng 8.3](release-8-3.md)*
 
@@ -47,7 +47,7 @@ gantt
     XCP-ng 8.2 LTS         :2024-08-30, 1y
 ```
 
-## 🟡 Standard Release
+## 🟡 Standard Release {#standard-release}
 
 *Latest: [XCP-ng 8.3](release-8-3.md) (somehow)*
 
@@ -59,7 +59,7 @@ Using the standard release is recommended if:
 
 Standard releases are supported until the next release, plus a few additional months to allow time for transitioning. Check the support dates [in the table above](#xcp-ng-release-history).
 
-If you prefer a more conservative approach, consider choosing our [LTS release](#-lts-releases).
+If you prefer a more conservative approach, consider choosing our [LTS release](#lts-releases).
 
 :::note
 XCP-ng 8.3 is special, as it started as a standard release, then became as announced a LTS release in June 2025.
@@ -68,7 +68,7 @@ XCP-ng 9.0 might follow the same path.
 :::
 
 
-## 🔴 Pre Releases
+## 🔴 Pre Releases {#pre-releases}
 
 Using a pre-release is relevant only for testing purposes. Check [the `Release` tag on our blog](https://xcp-ng.org/blog/tag/release/) for (pre-)release announcements.
 
