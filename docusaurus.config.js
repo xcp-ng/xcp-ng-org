@@ -35,7 +35,7 @@ const config = {
     locales: ['en'],
   },
 
-  themes: ['@docusaurus/theme-mermaid'],
+  themes: ['@docusaurus/theme-mermaid', 'docusaurus-theme-search-typesense'],
 
   customFields: {
     // Formbricks feedback widget (see src/components/PageFeedback).
@@ -84,6 +84,28 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      // Federated search across docs.xcp-ng.org, docs.vates.tech and
+      // docs.xen-orchestra.com. Results group by product; hits from the
+      // two sibling sites keep their absolute URL (externalUrlRegex).
+      // The API key is search-only and public by design.
+      // Local dev against a local Typesense (prod only allows CORS from
+      // the three doc domains):
+      //   TYPESENSE_HOST=localhost TYPESENSE_PORT=8108 \
+      //   TYPESENSE_PROTOCOL=http TYPESENSE_SEARCH_KEY=<key> npm start
+      typesense: {
+        typesenseCollectionName: 'vates_federated',
+        externalUrlRegex: 'docs\\.vates\\.tech|docs\\.xen-orchestra\\.com',
+        typesenseServerConfig: {
+          nodes: [{
+            host: process.env.TYPESENSE_HOST ?? 'typesense.vates.tech',
+            port: Number(process.env.TYPESENSE_PORT ?? 443),
+            protocol: process.env.TYPESENSE_PROTOCOL ?? 'https',
+          }],
+          apiKey: process.env.TYPESENSE_SEARCH_KEY ?? 'b2806f42e60429ceecb3808a2c6bb31cc9ca955cb1e4290c',
+        },
+        typesenseSearchParameters: {},
+        contextualSearch: false,
+      },
       navbar: {
         title: 'XCP-ng Documentation',
         logo: {
@@ -190,6 +212,9 @@ const config = {
     }),
   plugins: [
     require.resolve('docusaurus-plugin-image-zoom'),
+    // Kept even though Typesense provides the search UI: this plugin
+    // generates search-doc.json, which the federated search indexer
+    // consumes (src/theme/SearchBar picks the Typesense bar).
     require.resolve('docusaurus-lunr-search'),
     [
       '@docusaurus/plugin-client-redirects',
