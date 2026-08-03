@@ -213,7 +213,7 @@ There are several commands for operating on parameters of objects: class-param-g
 
 Lists all of the parameters and their associated values. Unlike the class-list command, this command lists the values of "expensive" fields.
 
-* `class-param-get uuid=uuid param-name=parameter param-key=key`
+* `class-param-get uuid=uuid param-name=parameter [param-key=key]`
 
 Returns the value of a particular parameter. For a map parameter, specifying the param-key gets the value associated with that key in the map. If param-key is not specified or if the parameter is a set, the command returns a string representation of the set or map.
 
