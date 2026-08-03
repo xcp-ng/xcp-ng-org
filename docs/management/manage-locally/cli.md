@@ -198,7 +198,7 @@ The platform parameter has a list of items that represent key/value pairs. The k
 To filter on a map parameter or set a map parameter, use a colon (`:`) to separate the map parameter name and the key/value pair. For example, to set the value of the `foo` key of the other-config parameter of a VM to `baa`, the command would be
 
 <Terminal shell title="root@xcp-ng-host — Parameter types">{`
-xe vm-param-set uuid=VM uuid other-config:foo=baa
+xe vm-param-set uuid=VM-uuid other-config:foo=baa
 `}</Terminal>
 
 :::note
