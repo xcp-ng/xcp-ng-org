@@ -580,7 +580,7 @@ On Windows VMs, you can either:
 ### Use two or more certificates for a Secure Boot variable (varstored < 1.2.0-3.4)
 
 :::tip
-Advanced use, not needed by most users.
+This guide is intended for advanced use cases and is not needed by most users.
 :::
 
 To create a Secure Boot variable (PK, KEK, db, or dbx) with multiple certificates, it is required to use the `create-auth` tool to bundle the certificates into a single .auth file.
@@ -610,12 +610,13 @@ This may be done with any PK, KEK, db, or dbx.
 Advanced use, not needed by most users.
 :::
 
-varstored 1.2.0-3.4 and later ships a `gen-sbvar.py` utility for generating auth files (`EFI_VARIABLE_AUTHENTICATION_2`) from a list of X.509 certificates or a JSON definition file.
+varstored 1.2.0-3.4 and later ship a `gen-sbvar.py` utility for generating auth files (`EFI_VARIABLE_AUTHENTICATION_2`) from a list of X.509 certificates or a JSON definition file.
 The JSON definition format is compatible with the pre-signed objects available at https://github.com/microsoft/secureboot_objects.
 
 :::tip
-If using varstored >= 1.3.4-2.1, use the command `gen-sbvar` instead of `gen-sbvar.py`.
-If not on an XCP-ng host, you can also install the tool locally from: https://github.com/xcp-ng/xcp-efivar-utils
+If using varstored 1.3.4-2.1 or later, use the command `gen-sbvar` instead of `gen-sbvar.py`.
+
+If not on an XCP-ng host, you can also install the tool locally from https://github.com/xcp-ng/xcp-efivar-utils
 :::
 
 For example, to generate an **appendable** db auth file containing the Windows UEFI CA 2023 and Microsoft UEFI CA 2023 certificates, use the following command from within `microsoft/secureboot_objects`:
@@ -656,7 +657,7 @@ Here are the known variable names and GUIDs:
 
 **Notes**
 - Use the fixed vendor GUID `77fa9abd-0359-4d32-bd60-28f4e78f784b` for any content coming from Microsoft, including individual certs and hashes.
-- Specify `--append` to create an appendable auth file. `EFI_VARIABLE_APPEND_WRITE (0x40)` will be added to the attributes value automatically.
+- To create an appendable auth file, specify `--append`. `EFI_VARIABLE_APPEND_WRITE (0x40)` will be added to the attributes value automatically.
 - If you need to produce a signed auth file, specify `--signer-cert` and `--signer-key`; or use the `--output-signable` and `--output-content` flags to create the respective files for use with `Set-SecureBootUEFI`.
 - See `gen-sbvar --help` for a detailed list of all options.
 
