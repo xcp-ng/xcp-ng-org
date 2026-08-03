@@ -107,7 +107,7 @@ For values containing spaces, write: `argument="value with spaces"`
 When you use the CLI on your XCP-ng server, commands have a tab completion feature similar to the feature in the standard Linux bash shell. For example, if you type `xe vm-l` and then press the `TAB` key, the rest of the command is displayed. If more than one command begins with `vm-l`, pressing `TAB` a second time lists the possibilities. This feature is useful when specifying object UUIDs in commands.
 
 :::note
-Tab completion does not normally work when executing commands on a remote XCP-ng server. However, if you set the `XE_EXTRA_ARGS` variable on the machine where you enter the commands, tab completion is enabled. For more information, see Basic xe syntax.
+Tab completion does not normally work when executing commands on a remote XCP-ng server. However, if you set the `XE_EXTRA_ARGS` variable on the machine where you enter the commands, tab completion is enabled. For more information, see [Basic xe syntax](#basic-xe-syntax).
 :::
 
 ## 🧮 Command types {#command-types}
