@@ -25,7 +25,7 @@ For example:
 <Terminal title="root@xcp-ng-host — Getting help with xe commands">{`
 xe help host-cpu-info
 command name            : host-cpu-info
-        reqd params     : 
+        reqd params     :
         optional params : uuid
         description     : Lists information about the host's physical CPUs.
 `}</Terminal>
@@ -112,7 +112,7 @@ Tab completion does not normally work when executing commands on a remote XCP-ng
 
 ## 🧮 Command types {#command-types}
 
-The CLI commands can be split in two halves. Low-level commands are concerned with listing and parameter manipulation of API objects. Higher level commands are used to interact with VMs or hosts in a more abstract level.
+The CLI commands can be split in two halves. Low-level commands are concerned with listing and parameter manipulation of API objects. Higher level commands are used to interact with VMs or hosts at a more abstract level.
 
 The low-level commands are:
 
