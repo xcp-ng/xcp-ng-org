@@ -364,9 +364,9 @@ For a Bios VM, screen resolution can be managed directly through the OS:
 
 #### UEFI VM
 
-For a UEFI VM, changing Windows screen resolution requires installing the XCP-ng Standard VGA Display Driver.
+For a UEFI VM, changing Windows screen resolution requires installing the **XCP-ng Standard VGA Display Driver**.
 
-This driver is part of the Windows Guest Tools package.
+This driver is part of the [Windows Guest Tools](#xcp-ng-windows-guest-tools) package.
 
 After installing this driver, screen resolution can be managed directly through the OS.
 
