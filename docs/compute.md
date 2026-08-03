@@ -189,7 +189,7 @@ It will be back in the Dom0 after a reboot.
 To passthrough a complete graphics card to a VM (not virtualize it into multiple virtual vGPUs, which is different, see the vGPU section below), just follow the regular PCI passthrough instructions, no special steps are needed. Most Nvidia and AMD video cards should work without issue.  
 
 :::warning
-Passthrough of an integrated GPU (for example the iGPU of an AMD APU) is not currently supported. An integrated GPU keeps its option ROM in the motherboard firmware rather than on the card, so there is no ROM to expose to the VM. Work is in progress.
+Passthrough of an AMD APU's integrated GPU is not currently supported. An integrated GPU keeps its option ROM in the motherboard firmware rather than on the card, so there is no ROM to expose to the VM. Support for this feature is currently under development.
 :::
 
 :::tip
