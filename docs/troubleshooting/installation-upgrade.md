@@ -19,6 +19,22 @@ Upgrade here designates an upgrade using the installation ISO
 
 If any of the above allows to work around your issue, please let us know ([github issues](https://github.com/xcp-ng/xcp/issues)). We can't fix issues we aren't aware of.
 
+### Dell PowerEdge 13G (R730/R730xd) UEFI Boot Freeze
+
+**Symptom:**  
+When booting XCP-ng 8.3.0+ in UEFI mode, the boot process hangs indefinitely immediately after the GRUB menu, with the last visible line being:
+`[ 0.009993] efi: EFI_MEMMAP is not enabled.`
+
+**Root Cause:**  
+Stricter memory map verification rules introduced in modern Xen/Dom0 kernels clash with early, fragmented high-memory MMIO tables populated by Dell 13G firmware. Additionally, clogged NVRAM variables on older motherboards can cause the EFI handover to fail.
+
+**Solution:**
+1. **Update Firmware:** Flash the system BIOS to version 2.8.0 or newer, and update the iDRAC/Lifecycle Controller in lockstep.
+2. **Adjust MMIO Allocations:** Enter the System BIOS (**F2**) -> **Integrated Devices** and apply these changes:
+   * Set **Memory Mapped I/O above 4GB** to `Disabled`.
+   * Set **Lower Memory Mapped I/O Base** to `Enabled` (or `512GB`).
+3. **Clear NVRAM Cruft:** Go into the **UEFI Boot Settings** -> **UEFI Boot Sequence** and delete any dead, duplicated, or orphaned boot entries from past OS installations to free up firmware space.
+
 ## 🚧 During installation or upgrade {#during-installation-or-upgrade}
 
 You can reach a shell with ALT+F2 (or ALT+RIGHT) and a logs console with ALT+F3 (or ALT+RIGHT twice).
