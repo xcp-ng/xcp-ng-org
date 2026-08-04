@@ -14,7 +14,7 @@ screen resolution, regardless of the `vga` parameter when booting in UEFI mode.
 
 To change resolutions, you can try adding the `vga` parameter to the Xen command line.
 
-The parameter follows this format `vga=gfx-WxHx24` (where W is screen width and H is
+The parameter follows this format: `vga=gfx-WxHx24` (where W is screen width and H is
 screen height, 24 being the standard 8bpp color depth). For instance,
 `vga=gfx-1920x1080x24` configures a 1920x1080 (1080p 16:9) screen resolution.
 
