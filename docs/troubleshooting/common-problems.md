@@ -105,6 +105,18 @@ echo "xen" > /sys/devices/system/clocksource/clocksource0/current_clocksource
   printf '%s\n\t%s\n%s\n' 'if test -f /sys/devices/system/clocksource/clocksource0/current_clocksource; then' 'echo xen > /sys/devices/system/clocksource/clocksource0/current_clocksource' 'fi' >> /etc/rc.local
 `}</Terminal>
 
+:::warning
+The second command makes the change persistent by appending to `/etc/rc.local`, but that file
+is only executed at boot if `/etc/rc.d/rc.local` is executable. If it is not, the workaround is
+skipped at every boot and nothing reports it: the clocksource silently reverts. Check the
+permissions, and set them if needed:
+:::
+
+<Terminal title="Make sure rc.local runs at boot">{`
+ls -l /etc/rc.d/rc.local
+chmod +x /etc/rc.d/rc.local
+`}</Terminal>
+
 ---
 
 ## 🐌 Async Tasks/Commands Hang or Execute Extremely Slowly {#async-taskscommands-hang-or-execute-extremely-slowly}
