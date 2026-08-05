@@ -113,14 +113,9 @@ const config = {
           src: 'img/xcpcrop128.png',
         },
         items: [
-          {href: 'https://xcp-ng.org', label: 'Home', position: 'right'},
-          {href: 'https://xcp-ng.org/blog', label: 'Blog', position: 'right'},
-          {href: 'https://vates.tech', label: 'Pro Support', position: 'right'},
-          {
-            href: 'https://github.com/xcp-ng',
-            label: 'GitHub',
-            position: 'right',
-          },
+          {to: 'https://docs.vates.tech/', label: 'Vates VMS', position: 'right', target: '_self'},
+          {href: '/', label: 'XCP-ng', position: 'right'},
+          {to: 'https://docs.xen-orchestra.com/', label: 'Xen Orchestra', position: 'right', target: '_self'},
         ],
       },
       footer: {
@@ -130,7 +125,11 @@ const config = {
             title: 'Learn',
             items: [
               {
-                label: 'Introduction',
+                label: 'About XCP-ng',
+                href: 'https://xcp-ng.org',
+              },
+              {
+                label: 'XCP-ng doc',
                 href: '/',
               },
               {

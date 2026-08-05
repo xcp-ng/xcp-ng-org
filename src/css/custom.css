@@ -59,3 +59,8 @@
 article {
   counter-reset: schema-fig;
 }
+
+/* Make links to Vates VMS/XO/XCP-ng docs more visible in the documentation header */
+.navbar__item {
+  font-weight: bold;
+}
