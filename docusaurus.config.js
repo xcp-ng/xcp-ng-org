@@ -113,7 +113,7 @@ const config = {
           src: 'img/xcpcrop128.png',
         },
         items: [
-          {to: 'https://docs.vates.tech/', label: 'Vates VMS', position: 'right', target: '_self'},
+          {href: 'https://docs.vates.tech/', label: 'Vates VMS', position: 'right'},
           {href: '/', label: 'XCP-ng', position: 'right'},
           {to: 'https://docs.xen-orchestra.com/', label: 'Xen Orchestra', position: 'right', target: '_self'},
         ],
