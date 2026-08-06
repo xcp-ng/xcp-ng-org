@@ -358,21 +358,34 @@ This issue was discovered by Vates as part of our investment into upstream Xen d
 
 Viridian is a codename for [Hyper-V](https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/hyper-v-overview), a native hypervisor developed by Microsoft that allows the creation of virtual machines on x86-64 systems running Windows.
 
-Viridian extensions —referred to as "Viridian enlightenments" by Microsoft— are used by any "recent" Windows OS to work properly. Make sure they are enabled for your VM.
+Viridian extensions —referred to as "Viridian enlightenments" by Microsoft— are required for Windows OSes to work properly.
 
 :::tip
-Viridian enlightenments are enabled by default on Windows VM templates included with XCP-ng.
+Viridian enlightenments are enabled by default on Windows VM templates included with XCP-ng. Viridian is also enabled on V2V-migrated and Packer-created VMs if using the correct templates.
+
+We recommend checking for Viridian enlightenments on old VMs that may not have the right defaults, or when you observe performance or reliability issues on Windows VMs.
 :::
 
-To enable Viridian enlightenments for other non-Windows VM templates, simply run the following command:
+To detect whether your VM has Viridian enabled, use the following command on the host:
 
-<Terminal shell title="root@xcp-ng-host — Enabling Viridian extensions">{`
-xe vm-param-set uuid=<vm-uuid> platform:device_id=0002 platform:viridian=true platform:viridian_time_ref_count=true platform:viridian_reference_tsc=true platform:viridian_apic_assist=true platform:viridian_crash_ctl=true platform:viridian_stimer=true
+<Terminal shell title="root@xcp-ng-host — Detecting Viridian extensions">{`
+xe vm-param-get uuid=<vm-uuid> param-name=platform
 `}</Terminal>
 
-:::warning
-Do not set the device ID on VMs with Xen PV drivers installed. Changing the device ID may cause old Xen PV drivers to fail booting.
-:::
+For proper operation of Windows, all of the following six Viridian parameters should be set to `true`: `viridian`, `viridian_time_ref_count`, `viridian_reference_tsc`, `viridian_apic_assist`, `viridian_crash_ctl` and `viridian_stimer`.
+
+If your VM is missing any of the above parameters, run the following command to enable them all:
+
+<Terminal shell title="root@xcp-ng-host — Enabling Viridian extensions">{`
+xe vm-param-set \\
+  uuid=<vm-uuid> \\
+  platform:viridian=true \\
+  platform:viridian_time_ref_count=true \\
+  platform:viridian_reference_tsc=true \\
+  platform:viridian_apic_assist=true \\
+  platform:viridian_crash_ctl=true \\
+  platform:viridian_stimer=true
+`}</Terminal>
 
 ### Manage screen resolution
 
