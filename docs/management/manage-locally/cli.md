@@ -25,7 +25,7 @@ For example:
 <Terminal title="root@xcp-ng-host — Getting help with xe commands">{`
 xe help host-cpu-info
 command name            : host-cpu-info
-        reqd params     : 
+        reqd params     :
         optional params : uuid
         description     : Lists information about the host's physical CPUs.
 `}</Terminal>
@@ -107,12 +107,12 @@ For values containing spaces, write: `argument="value with spaces"`
 When you use the CLI on your XCP-ng server, commands have a tab completion feature similar to the feature in the standard Linux bash shell. For example, if you type `xe vm-l` and then press the `TAB` key, the rest of the command is displayed. If more than one command begins with `vm-l`, pressing `TAB` a second time lists the possibilities. This feature is useful when specifying object UUIDs in commands.
 
 :::note
-Tab completion does not normally work when executing commands on a remote XCP-ng server. However, if you set the `XE_EXTRA_ARGS` variable on the machine where you enter the commands, tab completion is enabled. For more information, see Basic xe syntax.
+Tab completion does not normally work when executing commands on a remote XCP-ng server. However, if you set the `XE_EXTRA_ARGS` variable on the machine where you enter the commands, tab completion is enabled. For more information, see [Basic xe syntax](#basic-xe-syntax).
 :::
 
 ## 🧮 Command types {#command-types}
 
-The CLI commands can be split in two halves. Low-level commands are concerned with listing and parameter manipulation of API objects. Higher level commands are used to interact with VMs or hosts in a more abstract level.
+The CLI commands can be split in two halves. Low-level commands are concerned with listing and parameter manipulation of API objects. Higher level commands are used to interact with VMs or hosts at a more abstract level.
 
 The low-level commands are:
 
@@ -198,7 +198,7 @@ The platform parameter has a list of items that represent key/value pairs. The k
 To filter on a map parameter or set a map parameter, use a colon (`:`) to separate the map parameter name and the key/value pair. For example, to set the value of the `foo` key of the other-config parameter of a VM to `baa`, the command would be
 
 <Terminal shell title="root@xcp-ng-host — Parameter types">{`
-xe vm-param-set uuid=VM uuid other-config:foo=baa
+xe vm-param-set uuid=VM-uuid other-config:foo=baa
 `}</Terminal>
 
 :::note
@@ -213,7 +213,7 @@ There are several commands for operating on parameters of objects: class-param-g
 
 Lists all of the parameters and their associated values. Unlike the class-list command, this command lists the values of "expensive" fields.
 
-* `class-param-get uuid=uuid param-name=parameter param-key=key`
+* `class-param-get uuid=uuid param-name=parameter [param-key=key]`
 
 Returns the value of a particular parameter. For a map parameter, specifying the param-key gets the value associated with that key in the map. If param-key is not specified or if the parameter is a set, the command returns a string representation of the set or map.
 
