@@ -38,3 +38,25 @@ xe vm-list
 
 5. Checking the output
 `# xe vm-param-list uuid=<VM_UUID> | grep other-config`
+
+## Controlling the boot order and delay
+
+Two separate VM parameters affect how a VM comes up alongside autostart, and setting one
+incorrectly can look like autostart itself is broken:
+
+- `other-config:start_order=<int>` sets the relative order in which VMs start (lower values
+  first).
+- `start-delay=<seconds>` controls how long the startup sequence waits **after** this VM
+  before moving on to the next one. Note that two official descriptions exist and they read
+  differently: the CLI reference calls it "the delay to wait before a call to start up the VM
+  returns", while the XenAPI field description calls it "the delay to wait before proceeding
+  to the next order in the startup sequence". They describe the same blocking behaviour, but
+  the second is the one that matches what you observe, because the delay lands on the *next*
+  VM to start rather than on the VM the parameter is set on. A misconfigured `start-delay`
+  can also make a VM appear never to autostart, even though the parameter is unrelated to the
+  autostart toggle itself.
+
+```
+# xe vm-param-set uuid=<VM_UUID> other-config:start_order=1
+# xe vm-param-set uuid=<VM_UUID> start-delay=30
+```
