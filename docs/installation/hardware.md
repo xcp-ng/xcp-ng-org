@@ -149,6 +149,38 @@ In BIOS:
 
 ### Network Cards
 
+#### Emulex Fiber Channel HBA/Storage Controller
+
+On XCP-ng 8.3, the `emulex-lpfc` RPM contains two different versions of the
+`lpfc` driver that are mutually exclusive (in the sense they cannot
+be loaded at the same time), `lpfc.ko` and `lpfc14.ko`.
+
+The following table summarizes which Fibre Channel HBA is supported by
+which driver:
+
+| Adapter series |   lpfc.ko (12.x)   |  lpfc14.ko (14.x)  |
+|----------------|:------------------:|:------------------:|
+| LPe12000       | :white_check_mark: |                    |
+| LPe16000       | :white_check_mark: |                    |
+| LPe31000       |                    | :white_check_mark: |
+| LPe32000       |                    | :white_check_mark: |
+| LPe35000       |                    | :white_check_mark: |
+| LPe36000       |                    | :white_check_mark: |
+| LPe37000       |                    | :white_check_mark: |
+| LPe38000       |                    | :white_check_mark: |
+
+In practice, you don't have to worry about which driver to load because
+they are both auto-loaded in the presence of supported hardware.
+
+:::note
+If your host has both an older and newer generation Fibre Channel HBA
+plugged in, only one generation will work as both drivers cannot be
+loaded at the same time.
+:::
+
+You can download the "Emulex Drivers for Linux" user guides here:
+- [Release 12.x](https://docs.broadcom.com/doc/12399036)
+- [Release 14.x](https://docs.broadcom.com/doc/elx_DRVLin-UG144-101.pdf)
 
 #### Emulex Corporation OneConnect NIC (Skyhawk) (rev 10) - 10Gbps NIC "OCe14102-NT"
 
