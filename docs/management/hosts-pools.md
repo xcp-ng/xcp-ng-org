@@ -192,6 +192,14 @@ Lost the root password? See the [reset procedure](../troubleshooting/common-prob
 
 Correct and consistent clocks across the pool matter more than on ordinary servers: XAPI coordination, live migration, HA heartbeats, logs correlation and Windows guests (which get their initial time from the host) all rely on it. NTP servers are normally configured at [installation time](../installation/install-xcp-ng.md).
 
+A wrong date rarely fails where you would expect. It usually surfaces as an error that names something else:
+
+* Repository access stops working. Repositories are served over HTTPS, and a host whose date falls outside the mirror's certificate validity period cannot complete the TLS handshake. `yum` reports the redirect it followed instead of the certificate: see [yum fails with "HTTPS Error 301 - Moved Permanently"](../troubleshooting/common-problems.md#yum-fails-with-https-error-301---moved-permanently).
+* The installer refuses the repository keys, with `Signature Key Import Failed`.
+* Hosts that disagree on the time cause problems across the pool, from live migration to HA.
+
+### Configuring the NTP servers {#configuring-the-ntp-servers}
+
 To change them afterwards on XCP-ng 8.3, edit `/etc/chrony.conf`, then:
 
 <Terminal shell title="Time synchronization (NTP)">{`
@@ -200,6 +208,41 @@ chronyc sources
 `}</Terminal>
 
 On XCP-ng 8.2, the NTP daemon is `ntpd`: edit `/etc/ntp.conf`, then `systemctl restart ntpd` and check with `ntpq -p`. In both cases, `xsconsole` also offers an NTP configuration menu under **Network and Management Interface**.
+
+### Correcting a wrong clock {#correcting-a-wrong-clock}
+
+Check the sources before anything else. `chronyd` can be both running and enabled while having **no time source configured at all**, which is what happens when the date was set manually during installation:
+
+<Terminal shell title="root@xcp-ng-host — Check the clock and its sources">{`
+date
+systemctl status chronyd
+chronyc sources
+`}</Terminal>
+
+`210 Number of sources = 0` means the service is working exactly as configured, and doing nothing. Add time sources to `/etc/chrony.conf`:
+
+```
+server 0.centos.pool.ntp.org iburst
+server 1.centos.pool.ntp.org iburst
+server 2.centos.pool.ntp.org iburst
+server 3.centos.pool.ntp.org iburst
+```
+
+On an isolated network, use a local time source instead of the public pool. Then restart chronyd and confirm a source is reachable: in `chronyc sources`, a line whose second column is `*` or `+`, not `?`.
+
+With a reachable source, step the clock and check the result:
+
+<Terminal shell title="root@xcp-ng-host — Step the clock">{`
+chronyc makestep
+date
+`}</Terminal>
+
+`chronyc makestep` is needed because chrony corrects an offset by slewing the clock gradually by default, which never converges for an offset of months or years. It does nothing useful while there are no sources: it reports success and moves the clock nowhere, having no measured offset to step to.
+
+:::note
+* There is no need to copy the corrected time to the hardware clock by hand. The shipped `/etc/chrony.conf` enables `rtcsync`, so chronyd keeps the hardware clock in step and the correction survives a reboot.
+* If `date` is wrong again after every power cycle, the motherboard's RTC battery is probably dead and should be replaced.
+:::
 
 ## 🔌 Remote host power-on {#remote-host-power-on}
 
