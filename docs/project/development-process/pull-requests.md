@@ -2,7 +2,7 @@
 sidebar_position: 10.5
 ---
 
-# Pull Request Guidelines
+# Pull Request Guidelines {#pull-request-guidelines}
 
 XCP-ng's git repositories are hosted on GitHub under the [xcp-ng](https://github.com/xcp-ng/)
 and [xcp-ng-rpms](https://github.com/xcp-ng-rpms/) organizations.
@@ -34,7 +34,7 @@ that is normal, and it is generally recoverable. A first pull request often take
 rounds, and nobody is keeping score of how many. If a review comment doesn't make sense to
 you, say so and ask: that is expected of you, not held against you.
 
-## Contents
+## Contents {#contents}
 
 - [A simple rule](#a-simple-rule)
 - [Core principles](#core-principles)
@@ -53,7 +53,7 @@ you, say so and ask: that is expected of you, not held against you.
 - [Open questions](#open-questions)
 - [Packaging pull requests](#packaging-pull-requests) (RPM repositories only)
 
-## A simple rule
+## A simple rule {#a-simple-rule}
 
 Many experienced teams follow the same simple principle, stated once for each side of a
 review.
@@ -73,13 +73,13 @@ Both rules open the same way on purpose: each side is answerable for what it put
 to. When both sides follow these principles, reviews are faster, discussions are more
 productive, what gets merged is of high quality, and the project benefits.
 
-## Core principles
+## Core principles {#core-principles}
 
 Reviews go well when there is shared context, clear expectations, prompt replies, and a
 willingness to give each other the benefit of the doubt. Those matter more than technical
 brilliance, which is why the principles below are mostly not about code.
 
-### Assume positive intent
+### Assume positive intent {#assume-positive-intent}
 
 **Review comments are about the proposed change, not about the person proposing it.**
 
@@ -94,7 +94,7 @@ read it as the technical observation it almost certainly is:
 >
 > **Not as:** you clearly don't understand locking.
 
-### Don't make people guess
+### Don't make people guess {#dont-make-people-guess}
 
 **Be explicit. Provide context, explain your reasoning, and state your assumptions.**
 
@@ -118,7 +118,7 @@ draft, what a push contained, whether you are still waiting or have already fini
 reviewing: none of that announces itself, so several of the rules further down are this same
 rule applied to those moments.
 
-### Respect everyone's time
+### Respect everyone's time {#respect-everyones-time}
 
 **Reviewing is part of the job, not an interruption to it.**
 
@@ -128,7 +128,7 @@ late, and the team pays for it in stale branches, conflicts and rework.
 It belongs in your week like any other engineering task, and it is worth protecting time
 for.
 
-### Own your work
+### Own your work {#own-your-work}
 
 **Opening a pull request means: "I believe this change is ready to be considered for
 integration."**
@@ -143,7 +143,7 @@ You should understand every line you are proposing and be able to explain why it
 
 That is not an answer a reviewer can do anything with.
 
-### Make PRs accessible
+### Make PRs accessible {#make-prs-accessible}
 
 **If a description or a comment includes an image, add a text alternative.** A screenshot of
 a failure, a graph, a UI change: none of it reaches a blind or low-vision reader without alt
@@ -152,11 +152,11 @@ GitHub.
 
 > `![The host list, with the second host greyed out and marked "unreachable"](screenshot.png)`
 
-## Before opening a pull request
+## Before opening a pull request {#before-opening-a-pull-request}
 
-### Is a pull request the right vehicle?
+### Is a pull request the right vehicle? {#is-a-pull-request-the-right-vehicle}
 
-#### A pull request is not an RFC
+#### A pull request is not an RFC {#a-pull-request-is-not-an-rfc}
 
 **A pull request proposes to integrate a change. Whether the change should exist at all is a
 different conversation, and it should usually happen first.**
@@ -191,7 +191,7 @@ The lighter option is to ask first:
 > open a pull request: is this a problem we want to solve now, and is this the right
 > direction? I can share the branch if it's useful.
 
-#### A pull request is not a bug report
+#### A pull request is not a bug report {#a-pull-request-is-not-a-bug-report}
 
 **If you discover a bug but are not familiar with the code, consider discussing it before
 investing significant effort in a fix.**
@@ -205,7 +205,7 @@ When in doubt, start by discussing the problem.
 
 This is general advice, not a strict rule.
 
-#### Draft pull requests
+#### Draft pull requests {#draft-pull-requests}
 
 **Use a draft when the pull request is not ready to be merged.**
 
@@ -217,9 +217,9 @@ matter covered above.
 When taking a pull request out of draft, add the right reviewers and leave a comment saying
 that it is ready for review. The state change on its own is easy to miss.
 
-### Preparing the change
+### Preparing the change {#preparing-the-change}
 
-#### Keep pull requests focused
+#### Keep pull requests focused {#keep-pull-requests-focused}
 
 **Each pull request should address a single concern whenever practical.**
 
@@ -234,7 +234,7 @@ Focused pull requests are easier to understand, review, test, and merge. A mixed
 request cannot be accepted or rejected as a unit: if the cleanup is fine but the feature
 needs another round, everything waits, including the cleanup.
 
-#### Keep pull requests reasonably small
+#### Keep pull requests reasonably small {#keep-pull-requests-reasonably-small}
 
 **Review quality decreases as change size increases.**
 
@@ -244,7 +244,7 @@ A 1,000-line pull request is often skimmed.
 
 When possible, split large changes into smaller logical steps.
 
-#### Review your own work first
+#### Review your own work first {#review-your-own-work-first}
 
 **Opening a pull request is not the next step after pushing commits. Self-review is.**
 
@@ -268,7 +268,7 @@ Of course, it is fine not to be an expert, and to miss things that an expert wou
 That is not what this is about. It is about the mistakes that a few extra minutes of
 self-review would have caught.
 
-#### Write meaningful commits
+#### Write meaningful commits {#write-meaningful-commits}
 
 **Commit history is part of the project. Commits should tell a coherent story.**
 
@@ -285,7 +285,7 @@ runs `git blame` on that line in three years, which may well be you.
 As a reminder, see also
 [XCP-ng's commit message conventions](https://docs.xcp-ng.org/project/development-process/commit-message-conventions/).
 
-#### Write a meaningful PR title and description
+#### Write a meaningful PR title and description {#write-a-meaningful-pr-title-and-description}
 
 **The title must explain what the change does. The description must explain why it exists.**
 
@@ -305,16 +305,16 @@ fifty pull requests:
 >
 > **Better:** storage: release the device lock when attach fails
 
-## During review: expectations for authors
+## During review: expectations for authors {#during-review-expectations-for-authors}
 
-### Keeping the review moving
+### Keeping the review moving {#keeping-the-review-moving}
 
-#### Ask for review
+#### Ask for review {#ask-for-review}
 
 Review requests are usually created automatically when you open a pull request, so most of
 the time there is nothing for you to do here.
 
-#### Reviewer teams
+#### Reviewer teams {#reviewer-teams}
 
 Many git repositories in the XCP-ng project have a CODEOWNERS file that points to teams
 rather than to individuals, so GitHub requests the review from a whole team automatically.
@@ -327,7 +327,7 @@ second opinion.
 Do not re-request a review from a team just to notify it of what is happening on the pull
 request. Re-requesting means that we will wait for another review before merging.
 
-#### Requesting review: prefer a team over several individuals
+#### Requesting review: prefer a team over several individuals {#requesting-review-prefer-a-team-over-several-individuals}
 
 *This applies to team members: outside contributors are not expected to know who should
 review their change.*
@@ -346,7 +346,7 @@ from the team after their own; that is the right way to ask for a second opinion
 It is also fine to request a review from specific individuals when you know that they are
 the right people to look at the change.
 
-#### Be responsive
+#### Be responsive {#be-responsive}
 
 **Reviews only work when participants remain engaged.**
 
@@ -358,9 +358,9 @@ Being responsive is important for reviewers. It is even more important for autho
 reviewer who has paged your change into their head loses that context quickly, and a pull
 request that goes quiet usually has to be reviewed again from the start.
 
-### Answering a review
+### Answering a review {#answering-a-review}
 
-#### Re-test after making changes
+#### Re-test after making changes {#re-test-after-making-changes}
 
 **When addressing review comments, test the updated code again.**
 
@@ -369,7 +369,7 @@ cycles are spent catching mistakes introduced while addressing previous comments
 edit, made when the work already feels finished, is the one that tends to get the least
 attention.
 
-#### Reply to comments, and request re-review explicitly
+#### Reply to comments, and request re-review explicitly {#reply-to-comments-and-request-re-review-explicitly}
 
 **Reply to the comments you addressed, and let the reviewer mark them resolved.**
 
@@ -397,7 +397,7 @@ There is one exception. A reviewer who is still pending, meaning that they have 
 since the last time they were asked, has no re-request button, so mentioning them in a
 comment is the only way to notify them.
 
-#### Explain what your push contains
+#### Explain what your push contains {#explain-what-your-push-contains}
 
 **Every push notifies your reviewers. Tell them what it was.**
 
@@ -411,11 +411,11 @@ Say it even when the answer is "nothing":
 
 > Force-pushed: reworked the second commit, the other three are untouched.
 
-## During review: expectations for reviewers
+## During review: expectations for reviewers {#during-review-expectations-for-reviewers}
 
-### Staying with the review
+### Staying with the review {#staying-with-the-review}
 
-#### Review promptly
+#### Review promptly {#review-promptly}
 
 Review delay is one of the largest sources of friction in software development. Prompt
 reviews reduce the same costs described under [Be responsive](#be-responsive): context
@@ -424,7 +424,7 @@ switching, waiting time, merge conflicts, and rework.
 If you are directly involved in a pull request and cannot give it a proper review for a
 while, say so there, so that the author can look for somebody else instead of waiting.
 
-#### See the review through, or hand it over
+#### See the review through, or hand it over {#see-the-review-through-or-hand-it-over}
 
 **The reviewers who start on a pull request stay with it until it is merged or closed, unless
 they say otherwise.**
@@ -444,9 +444,9 @@ taken over by another reviewer.
 > I'm dropping off this one. Someone closer to the storage code should judge that part. My
 > thread about error handling is resolved as far as I'm concerned.
 
-### Judging the change
+### Judging the change {#judging-the-change}
 
-#### Understand before judging
+#### Understand before judging {#understand-before-judging}
 
 **Make sure you understand the problem being solved before you review the implementation.**
 
@@ -457,7 +457,7 @@ unclear, ask questions first.
 > Before I get into the implementation: is the goal here to make this path faster, or to
 > make it survive a disconnect? The description reads both ways to me.
 
-#### Focus on important issues
+#### Focus on important issues {#focus-on-important-issues}
 
 **Prioritize correctness, reliability, security, maintainability, and consistency.**
 
@@ -465,7 +465,7 @@ Do not block changes solely because you would have implemented them differently.
 different but sound approach is not a defect, and the author has usually spent longer
 thinking about their particular context than you have.
 
-#### Review more than the code
+#### Review more than the code {#review-more-than-the-code}
 
 **The diff is only part of the change.**
 
@@ -478,7 +478,7 @@ Review:
 - testing impact
 - user impact
 
-#### What an approval covers
+#### What an approval covers {#what-an-approval-covers}
 
 **Approving means you also approve the commit messages and the pull request description.**
 
@@ -487,9 +487,9 @@ Do not approve if they are not ready yet, or we may end up merging without ever 
 Instead, you can leave a comment saying that you are ready to approve as soon as the last
 details are settled.
 
-### Writing comments
+### Writing comments {#writing-comments}
 
-#### Distinguish preferences from requirements
+#### Distinguish preferences from requirements {#distinguish-preferences-from-requirements}
 
 **Make it obvious whether your comment is blocking, a suggestion, or a nitpick.**
 
@@ -507,7 +507,7 @@ Be explicit about it.
 The last one has earned the word *must*, because it says what breaks and why. Reserve it
 for those cases and authors will trust it.
 
-#### Explain your reasoning
+#### Explain your reasoning {#explain-your-reasoning}
 
 Avoid:
 
@@ -521,7 +521,7 @@ Review comments are more useful when they explain both the concern and the reaso
 it. Teach rather than command: ideally the author finishes the review able to make the same
 judgement themselves next time.
 
-#### Assume competence
+#### Assume competence {#assume-competence}
 
 **Avoid language that assumes mistakes.**
 
@@ -536,7 +536,7 @@ Prefer:
 Often it was. The goal is to understand before concluding, and when it really was an
 oversight, the question costs the author nothing to answer.
 
-#### Prefer threads over pull-request-level comments
+#### Prefer threads over pull-request-level comments {#prefer-threads-over-pull-request-level-comments}
 
 **Attach comments to code whenever you can, so that they become resolvable threads.**
 
@@ -548,7 +548,7 @@ When your comment is not about a specific line, you can still start a thread by 
 it to a file instead of to the pull request. It is a workaround for a weakness in GitHub's
 interface, and it is worth the small detour.
 
-#### Be aware of comment volume
+#### Be aware of comment volume {#be-aware-of-comment-volume}
 
 **Large numbers of comments can be intimidating. Provide overall context.**
 
@@ -558,7 +558,7 @@ of them are minor. One sentence fixes that:
 > Overall looks good. Most comments are minor readability suggestions. Only the comments
 > regarding error handling are blocking.
 
-#### Acknowledge good work
+#### Acknowledge good work {#acknowledge-good-work}
 
 **Reviews should not consist exclusively of criticism.**
 
@@ -568,9 +568,9 @@ again.
 
 > The way you split these commits made this very easy to follow. Thanks!
 
-## Merging
+## Merging {#merging}
 
-### Two approvals from maintainers
+### Two approvals from maintainers {#two-approvals-from-maintainers}
 
 A pull request is mergeable once two maintainers of the target repository have approved it.
 The maintainers are usually identified as a team rather than as individuals.
@@ -590,7 +590,7 @@ reviewer waiting for the author to respond, the right reflex is to talk quickly.
 
 Let's not let pull requests rot, for any reason.
 
-### Who merges?
+### Who merges? {#who-merges}
 
 **By default, the last reviewer to have approved is the one who merges, once no requested
 review is still outstanding and nothing blocking is unresolved.**
@@ -614,9 +614,9 @@ If you are contributing from outside the XCP-ng team, none of this is yours to d
 not have merge rights, and you are not expected to produce a build. A maintainer takes the
 change from approval onwards.
 
-## When discussions stall
+## When discussions stall {#when-discussions-stall}
 
-### Ask
+### Ask {#ask}
 
 **You are entitled to ask again for a review that has not come, or for a response from an
 unresponsive author.**
@@ -625,7 +625,7 @@ Really, you shouldn't hesitate to ask, and a polite reminder on the pull request
 always acceptable. Members of the XCP-ng team who would rather not ask directly can ask a
 coordinator or facilitator to relay it for them.
 
-### Escalate early
+### Escalate early {#escalate-early}
 
 **Long comment threads are often a sign that written communication is no longer the most
 effective tool.**
@@ -642,14 +642,14 @@ minutes of conversation.
 If this is not enough to resolve the issue, escalate to a person or a team who can
 arbitrate.
 
-## Open questions
+## Open questions {#open-questions}
 
 One point is still under discussion, so it is **not policy and should not be cited as a
 rule**: it has been suggested that comments and commit messages refer to people by their
 e-mail address or GitHub handle rather than by their full name. No decision has been taken,
 and it is recorded here so that anyone who wants to weigh in knows the question is open.
 
-## Packaging pull requests
+## Packaging pull requests {#packaging-pull-requests}
 
 *This section only concerns the RPM packaging repositories (`xcp-ng-rpms`).
 If you are not touching one, you can stop reading here.*
@@ -657,7 +657,7 @@ If you are not touching one, you can stop reading here.*
 Packaging pull requests carry an extra obligation: the change is not finished when it is
 merged, because the package still has to be built.
 
-### Who reviews
+### Who reviews {#who-reviews}
 
 Each package has a maintainer team, which must approve the pull request. The release team
 (OS Platform & Release) must approve it as well.
@@ -665,7 +665,7 @@ Each package has a maintainer team, which must approve the pull request. The rel
 When the maintainer team is the OS Platform & Release team itself, two members of that team
 must approve.
 
-### If the pull request changes the release
+### If the pull request changes the release {#if-the-pull-request-changes-the-release}
 
 **A build from the target branch must follow the merge.**
 
@@ -673,7 +673,7 @@ Bumping the release is a statement that a build carrying that release exists, or
 to. Merging and then forgetting the build leaves the branch claiming a version that was
 never produced.
 
-### If the pull request does not change the release
+### If the pull request does not change the release {#if-the-pull-request-does-not-change-the-release}
 
 On rare occasions, a pull request brings changes that we do not want to build yet, and
 that should be stacked for the next build instead. In that case, leave the `Release:` tag
@@ -704,7 +704,7 @@ Another accepted convention:
 In both cases these are comments rather than an incomplete changelog entry, so that the spec
 file does not trigger linting errors.
 
-### Packaging pull requests with several commits
+### Packaging pull requests with several commits {#packaging-pull-requests-with-several-commits}
 
 Ideally, only the last commit updates the `Release:` tag and the changelog, and the earlier
 commits stack their changelog items as comments, as described above. When rebasing on
