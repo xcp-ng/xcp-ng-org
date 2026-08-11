@@ -4,17 +4,17 @@ sidebar_position: 8
 
 # Time synchronization
 
-XCP-ng keeps the dom0 clock with `chronyd`. A host whose date is wrong carries on working
-normally until something needs to trust that date, and the failures it produces then rarely
-mention time at all. This page covers why the clock matters, how to configure NTP, and how
-to check and correct it.
+XCP-ng keeps the dom0 clock synchronized using `chronyd`. A host whose date is wrong keeps
+working normally until something needs to trust that date. When that happens, the resulting
+failures rarely point to the clock as the cause. This page explains why the clock matters, how
+to configure NTP, and how to check and correct it.
 
 ## ⏰ Why the clock must be correct {#why-the-clock-must-be-correct}
 
 - **Access to the repositories.** Updates are fetched over HTTPS, and TLS validates the
-  server's certificate against the host's own date. A host set far in the past cannot
-  complete the handshake, because from where it is standing the mirror's certificate is not
-  valid yet. The error `yum` prints in that situation does not mention time.
+  server's certificate against the host's own date. If the host's clock is set too far in the
+  past, the TLS handshake fails because, from the host's perspective, the mirror's certificate
+  is not yet valid. The error `yum` prints in that situation does not mention time.
 - **Pool membership.** A host joining a pool must have its clock synchronized with the pool
   master. See [Pool Requirements](../../installation/requirements#pool-requirements).
 - **Certificates.** Certificates are only valid inside a validity window. A host whose date
@@ -28,16 +28,16 @@ to check and correct it.
 
 The time daemon on dom0 is `chronyd`, configured through `/etc/chrony.conf`.
 
-The shipped configuration enables `rtcsync`, so chronyd keeps the hardware clock in step
-with the system clock on its own. There is no need to copy a corrected time to the hardware
-clock by hand, and a correction survives a reboot.
+The default configuration enables `rtcsync`, allowing chronyd to keep the hardware clock
+synchronized with the system clock automatically. There is no need to manually update the
+hardware clock after correcting the system time, and the correction persists across reboots.
 
 ## 🔧 Configuring the time sources {#configuring-the-time-sources}
 
 ### During installation
 
-The installer asks for the timezone and the time at step 11, and lets you either give it NTP
-servers or set the time manually. Always give it an NTP server. See
+At step 11, the installer prompts you to enter the time, select a time zone and either
+configure NTP servers or set the time manually. Always configure at least one NTP server. See
 [Install XCP-ng](../../installation/install-xcp-ng).
 
 :::warning
@@ -73,13 +73,17 @@ enabled while having **no time sources configured at all**:
 210 Number of sources = 0
 ```
 
-The service is then behaving exactly as configured, and doing nothing. Every other check an
+Then, the service behaves exactly as configured, and does nothing. Every other check an
 operator would normally run looks healthy, which is what makes this one worth running early
 rather than late.
 
 When sources are configured, `chronyc sources` lists them. In the `MS` column, the second
-character is the state of that source: `*` marks the one currently being used, `+` marks
-another acceptable source being combined with it, and `?` means the source is unreachable.
+character is the state of that source:
+
+- `*` marks the one currently being used.
+- `+` marks another acceptable source being combined with it.
+- `?` means the source is unreachable.
+
 At least one source should reach the `*` state.
 
 To see the offset chrony believes it has, and whether it has settled:
@@ -102,35 +106,37 @@ chronyc makestep
 date
 ```
 
-`chronyc makestep` is what does the work here. By default chrony corrects an offset by
-slewing the clock gradually, which never converges for an offset of months or years.
+`chronyc makestep` is what does the work here. By default, chrony corrects time offsets by
+gradually slewing the system clock, which never converges for an offset of months or years.
 
 ### If `Number of sources = 0`
 
 Do not start with `makestep`. It will report success and move nothing, because chrony has no
-measured offset to step to. Add time sources to `/etc/chrony.conf` first:
+measured offset to step to.
 
-```
-server 0.centos.pool.ntp.org iburst
-server 1.centos.pool.ntp.org iburst
-server 2.centos.pool.ntp.org iburst
-server 3.centos.pool.ntp.org iburst
-```
+1. Add time sources to `/etc/chrony.conf`:
 
-Then restart the service and confirm that a source has become reachable, as described in
-[Checking the time sources](#checking-the-time-sources):
+   ```
+   server 0.pool.ntp.org iburst
+   server 1.pool.ntp.org iburst
+   server 2.pool.ntp.org iburst
+   server 3.pool.ntp.org iburst
+   ```
 
-```bash
-systemctl restart chronyd
-chronyc sources
-```
+2. Restart the service and confirm that a source has become reachable, as described in
+   [Checking the time sources](#checking-the-time-sources):
 
-Once a source is reachable, correct the clock:
+   ```bash
+   systemctl restart chronyd
+   chronyc sources
+   ```
 
-```bash
-chronyc makestep
-date
-```
+3. Once a source is reachable, correct the clock:
+
+   ```bash
+   chronyc makestep
+   date
+   ```
 
 :::note
 Correcting the date does not invalidate the host's own certificate. XAPI issues it with a
@@ -146,16 +152,15 @@ host is running; it cannot help a clock that loses its value when the power goes
 
 ## 🌐 Isolated networks {#isolated-networks}
 
-Hosts without access to the internet cannot reach the public NTP pool, and the symptom is
-the same as having no sources at all: `chronyc sources` lists servers that never leave the
-`?` state.
+Hosts without Internet access cannot reach the public NTP pool. The result is the same as
+having no sources at all: `chronyc sources` lists servers that never leave the `?` state.
 
-On such a network, point `/etc/chrony.conf` at a time source that hosts can actually reach,
+On such networks, point `/etc/chrony.conf` at a time source that hosts can actually reach,
 such as an appliance on the same network or a local server that is itself synchronized.
 
 ## 🎱 Pools {#pools}
 
 Keep every host in a pool synchronized, ideally against the same sources. A host whose clock
-disagrees with the pool master is not merely inconvenient: clock synchronization is one of
-the requirements for joining a pool in the first place, alongside the others listed in
+differs from the pool master is not just inconvenient: clock synchronization is one of
+the requirements for joining a pool, along with the other requirements listed in
 [Pool Requirements](../../installation/requirements#pool-requirements).
