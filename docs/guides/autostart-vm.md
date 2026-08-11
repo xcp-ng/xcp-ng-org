@@ -41,14 +41,14 @@ xe vm-list
 
 ## 🔢 Start order and delays {#start-order-and-delays}
 
-Autostart does not define an order. Every flagged VM is started in one go at host boot, so
-there is no way to sequence them.
+Autostart does not define a startup order. All VMs flagged for autostart are started when the
+host boots, so there is no way to sequence them.
 
-Ordering and delays belong to [vApps](../vms/vm-lifecycle.md#vapps) instead. Two VM
-parameters apply when an appliance is started, and after an HA failover:
+To define a startup order or add delays, use [vApps](../vms/vm-lifecycle.md#vapps) instead.
+Two VM parameters apply when an appliance is started, and after an HA failover:
 
 - `order` sets the relative order in which the appliance's VMs start, lower values first.
-- `start-delay` is a number of seconds. A call to start the VM does not return until the
+- `start-delay` specifies a delay in seconds. A call to start the VM does not return until the
   delay has elapsed, so in a sequential appliance start the next VM waits that much longer.
 
 <Terminal title="root@xcp-ng-host — Start order and delays">{`
@@ -65,6 +65,6 @@ holds arbitrary keys.
 not start at boot until the parameter was cleared
 ([forum thread](https://xcp-ng.org/forum/topic/12388)). The delay does hold the start call
 open, which is measurable, but whether that is what kept the VM from starting has not been
-established. If a VM does not come up after a host reboot, checking `start-delay` costs
-nothing.
+established. If a VM does not come up after a host reboot, checking its `start-delay` value
+is a simple troubleshooting step.
 :::
