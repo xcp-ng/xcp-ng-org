@@ -102,7 +102,7 @@ XAPI can group VMs into an *appliance* (also called vApp): a set of VMs started 
 
 <Terminal shell title="root@xcp-ng-host — VM groups with a start order…">{`
 xe appliance-create name-label="my-app"
-xe vm-param-set uuid=<vm-uuid> appliance=<appliance-uuid> start-order=1 start-delay=30
+xe vm-param-set uuid=<vm-uuid> appliance=<appliance-uuid> order=1 start-delay=30
 xe appliance-start uuid=<appliance-uuid>
 `}</Terminal>
 
