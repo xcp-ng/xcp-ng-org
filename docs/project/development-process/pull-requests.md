@@ -317,7 +317,6 @@ Avoid histories that:
 
 - introduce something only to remove it later
 - mix unrelated concerns
-- contain "fix review comment" commits
 - require readers to reconstruct what happened
 
 Rework your history before requesting review. The audience for a commit message is whoever
