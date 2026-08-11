@@ -336,6 +336,9 @@ The description should answer:
 - Why was this approach chosen?
 - What alternatives were considered?
 - What should reviewers focus on?
+- What was tested?
+
+You may also add links to build logs, artifacts and test results when relevant.
 
 Repository-specific pull request templates must be followed when available.
 
