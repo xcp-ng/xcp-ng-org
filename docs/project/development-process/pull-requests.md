@@ -342,8 +342,8 @@ You may also add links to build logs, artifacts and test results when relevant.
 
 Repository-specific pull request templates must be followed when available.
 
-Titles are worth a moment of thought, because they are what everyone else sees in a list of
-fifty pull requests:
+Titles are worth a moment of thought, because they are what everyone else sees in e-mail
+notifications or in a list of fifty pull requests:
 
 > **Weak:** device lock release
 >
