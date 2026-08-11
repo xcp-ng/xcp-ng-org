@@ -266,8 +266,8 @@ on a branch.
 
 Avoid:
 
-- feature + refactoring
-- bug fix + cleanup
+- feature + unrelated refactoring
+- bug fix + unrelated cleanup
 - documentation update + unrelated code changes
 - "while I was here" changes
 
