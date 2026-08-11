@@ -42,14 +42,20 @@ xe vm-list
 ## 🔢 Start order and delays {#start-order-and-delays}
 
 Autostart does not define a startup order. All VMs flagged for autostart are started when the
-host boots, so there is no way to sequence them.
+host boots, in a single bulk call that never reads the `order` parameter, so you cannot choose
+which VM starts first.
 
-To define a startup order or add delays, use [vApps](../vms/vm-lifecycle.md#vapps) instead.
-Two VM parameters apply when an appliance is started, and after an HA failover:
+They are started one after another rather than all at once, so a `start-delay` on one VM does
+hold up the ones behind it. That spaces a boot out, but it does not sequence it, because which
+VMs end up behind the delay is not something you control.
+
+To define a startup order, use [vApps](../vms/vm-lifecycle.md#vapps) instead. Two VM parameters
+apply when an appliance is started, and after an HA failover:
 
 - `order` sets the relative order in which the appliance's VMs start, lower values first.
 - `start-delay` specifies a delay in seconds. A call to start the VM does not return until the
-  delay has elapsed, so in a sequential appliance start the next VM waits that much longer.
+  delay has elapsed, so in a sequential appliance start the next VM waits that much longer. The
+  VM it is set on is already running by then. It is the call that waits, not the VM.
 
 <Terminal title="root@xcp-ng-host — Start order and delays">{`
 xe vm-param-set uuid=<VM_UUID> order=1
@@ -60,11 +66,20 @@ The parameter is `order`. `start-order` is rejected as an unknown field, and
 `other-config:start_order` is accepted without doing anything at all, since `other-config`
 holds arbitrary keys.
 
+:::warning
+An appliance is not started when the host boots. Nothing in the boot sequence calls
+`appliance-start`, so grouping VMs into an appliance does not on its own bring them up after a
+reboot. They also need `other-config:auto_poweron`, and once they have it they take the
+autostart path above, which ignores `order`. Start an appliance with `xe appliance-start`, or
+let HA restart it after a failover.
+:::
+
 :::note
 `start-delay` has been reported to interfere with autostart: one user found a VM that would
 not start at boot until the parameter was cleared
-([forum thread](https://xcp-ng.org/forum/topic/12388)). The delay does hold the start call
-open, which is measurable, but whether that is what kept the VM from starting has not been
-established. If a VM does not come up after a host reboot, checking its `start-delay` value
-is a simple troubleshooting step.
+([forum thread](https://xcp-ng.org/forum/topic/12388)). A delayed start does hold up the VMs
+queued behind it, which explains one coming up late, but not one that never comes up at all.
+That part is unexplained. If a VM does not appear after a host reboot, checking its
+`start-delay` value, and waiting to see whether it is merely queued behind another VM's delay,
+are both worth doing.
 :::
