@@ -22,3 +22,5 @@ Our policy is to upstream everything if possible. However, there are some except
 
 ## 🤝 How to help at development {#how-to-help-at-development}
 It all depends on your skills and areas of interest so it's hard to tell specifically in advance. It usually starts with a feature that you want, or a bug that is annoying you. Alternatively, having a look at the open GitHub issues and picking one ([https://github.com/xcp-ng/xcp/issues](https://github.com/xcp-ng/xcp/issues)) can be a way to get started. Even if you don't know where to start, just come and talk with us (see [Where discussion happens](../release-process-overview#where-discussion-happens) above).
+
+When you are ready to submit code, read our [pull request guidelines](../pull-requests) first: they cover how to prepare a pull request and what to expect from review.

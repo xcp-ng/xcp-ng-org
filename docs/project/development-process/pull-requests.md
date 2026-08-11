@@ -283,7 +283,7 @@ Rework your history before requesting review. The audience for a commit message 
 runs `git blame` on that line in three years, which may well be you.
 
 As a reminder, see also
-[XCP-ng's commit message conventions](https://docs.xcp-ng.org/project/development-process/commit-message-conventions/).
+[XCP-ng's commit message conventions](../commit-message-conventions).
 
 #### Write a meaningful PR title and description {#write-a-meaningful-pr-title-and-description}
 
