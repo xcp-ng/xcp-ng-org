@@ -34,6 +34,10 @@ that is normal, and it is generally recoverable. A first pull request often take
 rounds, and nobody is keeping score of how many. If a review comment doesn't make sense to
 you, say so and ask: that is expected of you, not held against you.
 
+Note: upstream projects we contribute to may have different rules. While many principles laid
+out here to help individuals work together probably still hold, we must conform to the
+upstream rules.
+
 ## Contents {#contents}
 
 - [A simple rule](#a-simple-rule)
