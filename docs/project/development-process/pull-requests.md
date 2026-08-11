@@ -38,6 +38,7 @@ you, say so and ask: that is expected of you, not held against you.
 
 - [A simple rule](#a-simple-rule)
 - [Core principles](#core-principles)
+- [Where to discuss](#where-to-discuss)
 - [Before opening a pull request](#before-opening-a-pull-request)
     - [Is a pull request the right vehicle?](#is-a-pull-request-the-right-vehicle)
     - [Preparing the change](#preparing-the-change)
@@ -152,6 +153,29 @@ GitHub.
 
 > `![The host list, with the second host greyed out and marked "unreachable"](screenshot.png)`
 
+## Where to discuss {#where-to-discuss}
+
+**Wherever a discussion happens, the outcome must be visible from all contributors.**
+
+In several places in this document we stress that talking can overcome many obstacles. But
+where should those discussions happen?
+
+For occasional contributors, the main channels are
+[GitHub issues](https://github.com/xcp-ng/xcp/issues), the pull request's own description and
+comments ([when there's pull request](#is-a-pull-request-the-right-vehicle), and
+[the forum](https://xcp-ng.org/forum/), which is a good place to collectively diagnose an issue
+or discuss improvements. See
+[Where discussion happens](../release-process-overview#where-discussion-happens) for the full
+list of the project's channels.
+
+XCP-ng team members use these too, and have extra channels at hand: internal chat, and face to
+face conversation, remote or not. Those are precious tools and the team should use them, especially
+when discussions seem to stall. But XCP-ng is an open project, so the outcome must be public:
+design documents, code, and the reasoning behind a decision all belong somewhere a contributor
+can read them. When a discussion that shaped a pull request happened out of sight, summarize it
+in the pull request itself. A contributor who cannot see why a decision was made is entitled to
+ask for that context.
+
 ## Before opening a pull request {#before-opening-a-pull-request}
 
 ### Is a pull request the right vehicle? {#is-a-pull-request-the-right-vehicle}
@@ -164,7 +188,7 @@ different conversation, and it should usually happen first.**
 Large architectural changes, process changes, workflow changes, significant new features,
 and unplanned changes that noticeably affect users should generally begin with discussion
 before code is written: an issue, a design document, a discussion thread, or a meeting with
-the relevant stakeholders.
+the relevant stakeholders (see [Where to discuss](#where-to-discuss)).
 
 Starting from a solution shifts the work onto reviewers, who then have to recover the
 underlying need, identify missing constraints, supply the architectural context and weigh the
@@ -201,7 +225,7 @@ Maintainers may already be aware of the issue, have additional context, or have 
 direction for addressing it. This applies equally, perhaps especially, before setting an
 AI agent to work on it.
 
-When in doubt, start by discussing the problem.
+When in doubt, start by discussing the problem: see [Where to discuss](#where-to-discuss).
 
 This is general advice, not a strict rule.
 
@@ -586,7 +610,8 @@ comment is left, and if there is none and enough people have approved, they will
 without waiting for the unresponsive reviewer.
 
 If at any point anyone feels stuck with a pull request, whether as the author or as a
-reviewer waiting for the author to respond, the right reflex is to talk quickly.
+reviewer waiting for the author to respond, the right reflex is to talk quickly (see
+[Where to discuss](#where-to-discuss)).
 
 Let's not let pull requests rot, for any reason.
 
@@ -630,7 +655,8 @@ coordinator or facilitator to relay it for them.
 **Long comment threads are often a sign that written communication is no longer the most
 effective tool.**
 
-If a discussion is not converging after several exchanges:
+If a discussion is not converging after several exchanges, move it to a channel with more
+bandwidth (see [Where to discuss](#where-to-discuss)):
 
 - schedule a call
 - pair review
