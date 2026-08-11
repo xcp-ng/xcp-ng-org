@@ -150,11 +150,23 @@ That is not an answer a reviewer can do anything with.
 
 ### Make PRs accessible {#make-prs-accessible}
 
-**If a description or a comment includes an image, add a text alternative.** A screenshot of
-a failure, a graph, a UI change: none of it reaches a blind or low-vision reader without alt
-text, so describe what the image shows. This holds in any tool that renders images, not only
-GitHub.
+**Prefer text to images. When an image is genuinely the right medium, describe it.**
 
+A screenshot does not reach a blind or low-vision reader, and much of what gets screenshotted
+was text to begin with. A terminal session, a log excerpt, a stack trace: paste those into a
+fenced code block instead. Text can be read aloud, searched, quoted, and copy-pasted; a
+screenshot of a terminal is none of those things, however careful its alt text.
+
+When you show a chart or a benchmark, give the numbers as well. The picture shows the shape of
+the result; the data is what a reviewer can check.
+
+Some things really are visual, such as a UI layout or a rendering glitch. Describe what the
+image shows, not what it is. This holds in any tool that renders images, not only GitHub.
+
+> **Not:**
+> `![screenshot](screenshot.png)`
+>
+> **But:**
 > `![The host list, with the second host greyed out and marked "unreachable"](screenshot.png)`
 
 ## Where to discuss {#where-to-discuss}
