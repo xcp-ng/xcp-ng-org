@@ -98,9 +98,9 @@ read it as the technical observation it almost certainly is:
 
 **Be explicit. Provide context, explain your reasoning, and state your assumptions.**
 
-The reviewer should not have to reverse-engineer your intentions from a diff, and the author
-should not have to reverse-engineer the reviewer's concerns. **A few minutes spent writing
-context can save hours of back-and-forth discussion.**
+The reviewer should not have to reverse-engineer the author's intentions from a diff, and
+the author should not have to reverse-engineer the reviewer's concerns.
+**A few minutes spent writing context can save hours of back-and-forth discussion.**
 
 The same change, described two ways:
 
