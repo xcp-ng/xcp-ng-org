@@ -243,6 +243,19 @@ that it is ready for review. The state change on its own is easy to miss.
 
 ### Preparing the change {#preparing-the-change}
 
+#### Choose the target repository and branches {#choose-the-target-repository-and-branches}
+
+See [Git repositories](../../gitrepo) for where the code lives, and
+[Tags and maintenance branches](../tags-maintenance-branches-in-our-code) for which branch to
+target.
+
+If this doesn't answer your questions, [reach out](#where-to-discuss).
+
+Regular contributors who have write rights to the repositories should create their PR branches
+directly on the repository rather than in external forks. This facilitates running CI checks
+(usually disabled by default for external PRs due to security settings) and working together
+on a branch.
+
 #### Keep pull requests focused {#keep-pull-requests-focused}
 
 **Each pull request should address a single concern whenever practical.**
