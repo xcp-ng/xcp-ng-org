@@ -154,7 +154,7 @@ Check the date on dom0:
 date
 `}</Terminal>
 
-If it is wrong, fix the time synchronization: see [Time synchronization (NTP)](../management/hosts-pools.md#time-synchronization-ntp) for how to check the chrony sources and step the clock. On a host whose date was set manually at installation, `chronyd` is often running with no time source at all, and correcting the clock then takes an extra step.
+If it is wrong, fix the time synchronization: see [Time synchronization](../management/time-synchronization.md#correcting-a-wrong-clock) for how to check the chrony sources and step the clock. On a host whose date was set manually at installation, `chronyd` is often running with no time source at all, and correcting the clock then takes an extra step.
 
 Once the clock is correct:
 
@@ -163,7 +163,7 @@ yum clean all
 yum check-update
 `}</Terminal>
 
-:::tip
+:::warning
 Revert any change you made to `/etc/yum.repos.d/xcp-ng.repo` while investigating. With a correct clock, the default `http://mirrors.xcp-ng.org` URL works. Pinning a single mirror by hand takes the host out of the automatic mirror selection, and out of failover if that mirror becomes unavailable. See [Mirrors](../project/mirrors.md).
 :::
 
