@@ -150,13 +150,14 @@ dead and should be replaced. `rtcsync` can only keep the hardware clock in step 
 host is running; it cannot help a clock that loses its value when the power goes.
 :::
 
-## 🌐 Isolated networks {#isolated-networks}
+## 🌐 Networks without internet access {#networks-without-internet-access}
 
 Hosts without Internet access cannot reach the public NTP pool. The result is the same as
 having no sources at all: `chronyc sources` lists servers that never leave the `?` state.
 
-On such networks, point `/etc/chrony.conf` at a time source that hosts can actually reach,
-such as an appliance on the same network or a local server that is itself synchronized.
+On such networks, point `/etc/chrony.conf` to a time source that hosts can actually reach,
+such as an appliance on the same network, or a local server that is itself synchronized and
+acts as the reference time for the network.
 
 ## 🎱 Pools {#pools}
 
