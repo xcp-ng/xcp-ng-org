@@ -221,7 +221,9 @@ This can be due to the Viridian synthetic timer feature being disabled on the gu
 
 ### Solution
 
-First, check that [Viridian extensions are all enabled on your VM](/vms/#enabling-viridian-extensions).
+First, check that all Viridian extensions are all enabled on your VM.
+See the [Enabling Viridian extensions](/vms/#enabling-viridian-extensions) guide for more details.
+
 If you've set boot parameters to disable the synthetic timer, they need to be reverted:
 
 ```
