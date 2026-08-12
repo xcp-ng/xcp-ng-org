@@ -141,6 +141,13 @@ integration."**
 You own the proposed changes. You have reviewed them yourself. You have tested them.
 Reviewers are not your primary quality-control mechanism.
 
+If you have doubts about part of what you produced, say so, and say which part. For a local
+uncertainty, a note in the description or a comment on the line is enough. When the doubt is
+more fundamental, start with a [draft pull request](#draft-pull-requests), or a
+[design document](#a-pull-request-is-not-an-rfc) if what you are unsure about is the design
+itself. Reviewers will appreciate the honesty, and much prefer it to working out halfway
+through a review that part of the change was a guess.
+
 If you used tools to help produce the changes, you remain fully responsible for the result.
 You should understand every line you are proposing and be able to explain why it is there:
 
