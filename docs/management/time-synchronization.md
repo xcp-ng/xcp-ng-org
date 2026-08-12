@@ -77,14 +77,34 @@ Then, the service behaves exactly as configured, and does nothing. Every other c
 operator would normally run looks healthy, which is what makes this one worth running early
 rather than late.
 
-When sources are configured, `chronyc sources` lists them. In the `MS` column, the second
-character is the state of that source:
+On a host that is synchronizing normally, the same two commands look like this:
+
+```
+# systemctl status chronyd
+● chronyd.service - NTP client/server
+   Loaded: loaded (/usr/lib/systemd/system/chronyd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Wed 2026-08-12 08:38:14 CEST; 46min ago
+
+# chronyc sources
+210 Number of sources = 4
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^* vps1.websters-computers.>     2   7   377    59   -361us[ -444us] +/- 8522us
+^+ meshflow.net                  3   9   377   118   +203us[ +122us] +/-   12ms
+^+ mail.rapidooo.fr              2   9   377   113  -1029us[-1110us] +/- 9934us
+^- 88-185-213-3.subs.proxad>     3   8   377   506   +688us[ +491us] +/-   49ms
+```
+
+In the `MS` column, the first character is the source type, `^` for a server, and the second
+is the state of that source:
 
 - `*` marks the one currently being used.
-- `+` marks another acceptable source being combined with it.
+- `+` marks another acceptable source, combined with it.
+- `-` marks a source chrony is measuring but has excluded from the combination.
 - `?` means the source is unreachable.
 
-At least one source should reach the `*` state.
+At least one source should reach the `*` state. Seeing `-` on some of the others is normal
+and does not need correcting.
 
 To see the offset chrony believes it has, and whether it has settled:
 
