@@ -35,7 +35,7 @@ Start the host and boot on the USB media.
 
 :::warning
 If the firmware refuses to boot the media, or reports that the operating system loader failed
-signature verification, check that [Secure Boot](../../installation/requirements#host-secure-boot)
+signature verification, make sure [Secure Boot](../../installation/requirements#host-secure-boot)
 is disabled. XCP-ng does not support Secure Boot for the host.
 :::
 

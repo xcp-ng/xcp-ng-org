@@ -80,7 +80,7 @@ Set the server's BIOS clock to the current UTC time. For debugging support cases
 
 ## 🔒 Host Secure Boot {#host-secure-boot}
 
-XCP-ng does not support Secure Boot for the host. Its boot chain is not signed by a
+XCP-ng does not support Secure Boot for the host. The XCP-ng boot chain is not signed by a
 certificate that stock firmware trusts, so with Secure Boot enabled the machine refuses to
 boot the installation media, and refuses the installed host afterwards. Disable Secure Boot
 in the firmware setup before installing, and leave it disabled.
