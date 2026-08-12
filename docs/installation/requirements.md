@@ -80,28 +80,30 @@ Set the server's BIOS clock to the current UTC time. For debugging support cases
 
 ## 🔒 Host Secure Boot {#host-secure-boot}
 
-XCP-ng does not support Secure Boot for the host. The XCP-ng boot chain is not signed by a
-certificate that stock firmware trusts, so with Secure Boot enabled the machine refuses to
-boot the installation media, and refuses the installed host afterwards. Disable Secure Boot
-in the firmware setup before installing, and leave it disabled.
+:::note
+This section concerns Secure Boot for the **host**. Secure Boot for **VMs** is a separate
+feature and is supported: see [Guest UEFI Secure Boot](../../guides/guest-UEFI-Secure-Boot).
+:::
 
-Depending on the firmware, this shows up in one of two ways: the UEFI boot entry silently
-disappears from the boot menu, or it stays and the machine reports something like:
+XCP-ng does not support Secure Boot for the host. Its boot chain is not signed by a
+certificate that stock firmware trusts. Because of that, enabling Secure Boot will prevent
+the machine from booting both the installation media and the installed host. Disable Secure
+Boot in the firmware setup before installing, and leave it disabled.
 
-```
-Operating System Loader failed signature verification. WARNING: The file may have been tampered with!
+Depending on the firmware, this shows up in one of two ways:
 
-All bootable devices failed Secure Boot verification.
-```
+1. The UEFI boot entry silently disappears from the boot menu.
+2. The entry stays, and the machine reports something like:
+
+   ```
+   Operating System Loader failed signature verification. WARNING: The file may have been tampered with!
+
+   All bootable devices failed Secure Boot verification.
+   ```
 
 Despite the wording, nothing has been tampered with: the firmware is refusing a boot loader
-it has no certificate for. Re-enabling Secure Boot later, after a firmware reset or to
-satisfy a compliance baseline, will stop the host booting until it is turned off again.
-
-:::note
-This concerns Secure Boot for the **host**. Secure Boot for **VMs** is a separate feature and
-is supported: see [Guest UEFI Secure Boot](../../guides/guest-UEFI-Secure-Boot).
-:::
+it has no certificate for. If Secure Boot is re-enabled later (whether after a firmware reset
+or to meet compliance requirements) the host will fail to boot until you disable it again.
 
 ## 📋 XCP-ng Configuration Limits {#xcp-ng-configuration-limits}
 
