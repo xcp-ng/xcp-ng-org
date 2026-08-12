@@ -38,7 +38,7 @@ Note: upstream projects we contribute to may have different rules. While many pr
 out here to help individuals work together probably still hold, we must conform to the
 upstream rules.
 
-## Contents {#contents}
+## 📋 Contents {#contents}
 
 - [A simple rule](#a-simple-rule)
 - [Core principles](#core-principles)
@@ -58,7 +58,7 @@ upstream rules.
 - [Open questions](#open-questions)
 - [Packaging pull requests](#packaging-pull-requests) (RPM repositories only)
 
-## A simple rule {#a-simple-rule}
+## 📌 A simple rule {#a-simple-rule}
 
 Many experienced teams follow the same simple principle, stated once for each side of a
 review.
@@ -78,7 +78,7 @@ Both rules open the same way on purpose: each side is answerable for what it put
 to. When both sides follow these principles, reviews are faster, discussions are more
 productive, what gets merged is of high quality, and the project benefits.
 
-## Core principles {#core-principles}
+## 🧱 Core principles {#core-principles}
 
 Reviews go well when there is shared context, clear expectations, prompt replies, and a
 willingness to give each other the benefit of the doubt. Those matter more than technical
@@ -169,7 +169,7 @@ image shows, not what it is. This holds in any tool that renders images, not onl
 > **But:**
 > `![The host list, with the second host greyed out and marked "unreachable"](screenshot.png)`
 
-## Where to discuss {#where-to-discuss}
+## 💬 Where to discuss {#where-to-discuss}
 
 **Wherever a discussion happens, the outcome must be visible from all contributors.**
 
@@ -192,7 +192,7 @@ can read them. When a discussion that shaped a pull request happened out of sigh
 in the pull request itself. A contributor who cannot see why a decision was made is entitled to
 ask for that context.
 
-## Before opening a pull request {#before-opening-a-pull-request}
+## 📝 Before opening a pull request {#before-opening-a-pull-request}
 
 ### Is a pull request the right vehicle? {#is-a-pull-request-the-right-vehicle}
 
@@ -360,7 +360,7 @@ notifications or in a list of fifty pull requests:
 >
 > **Better:** storage: release the device lock when attach fails
 
-## During review: expectations for authors {#during-review-expectations-for-authors}
+## ✍️ During review: expectations for authors {#during-review-expectations-for-authors}
 
 ### Keeping the review moving {#keeping-the-review-moving}
 
@@ -466,7 +466,7 @@ Say it even when the answer is "nothing":
 
 > Force-pushed: reworked the second commit, the other three are untouched.
 
-## During review: expectations for reviewers {#during-review-expectations-for-reviewers}
+## 🔍 During review: expectations for reviewers {#during-review-expectations-for-reviewers}
 
 ### Staying with the review {#staying-with-the-review}
 
@@ -623,7 +623,7 @@ again.
 
 > The way you split these commits made this very easy to follow. Thanks!
 
-## Merging {#merging}
+## 🔀 Merging {#merging}
 
 ### Two approvals from maintainers {#two-approvals-from-maintainers}
 
@@ -670,7 +670,7 @@ If you are contributing from outside the XCP-ng team, none of this is yours to d
 not have merge rights, and you are not expected to produce a build. A maintainer takes the
 change from approval onwards.
 
-## When discussions stall {#when-discussions-stall}
+## ⏳ When discussions stall {#when-discussions-stall}
 
 ### Ask {#ask}
 
@@ -699,14 +699,14 @@ minutes of conversation.
 If this is not enough to resolve the issue, escalate to a person or a team who can
 arbitrate.
 
-## Open questions {#open-questions}
+## ❓ Open questions {#open-questions}
 
 One point is still under discussion, so it is **not policy and should not be cited as a
 rule**: it has been suggested that comments and commit messages refer to people by their
 e-mail address or GitHub handle rather than by their full name. No decision has been taken,
 and it is recorded here so that anyone who wants to weigh in knows the question is open.
 
-## Packaging pull requests {#packaging-pull-requests}
+## 📦 Packaging pull requests {#packaging-pull-requests}
 
 *This section only concerns the RPM packaging repositories (`xcp-ng-rpms`).
 If you are not touching one, you can stop reading here.*
