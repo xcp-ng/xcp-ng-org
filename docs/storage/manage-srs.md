@@ -1,5 +1,11 @@
 ---
 sidebar_position: 2
+heading_emoji:
+  quick-recap-of-the-objects: mortar_board
+  sr-operations: card_index
+  vdi-operations: floppy_disk
+  reclaim-space: broom
+  disk-io-tuning: gear
 ---
 
 # SR and VDI management
@@ -10,7 +16,7 @@ Everyday operations on storage repositories (SRs) and virtual disks (VDIs): rena
 All of these operations are available from [Xen Orchestra](../management/manage-at-scale/xo-web-ui.md) with a few clicks (SR view and VM → Disks tab). The `xe` commands are given for scripting, troubleshooting, or when you work directly on a host.
 :::
 
-## 🎓 Quick recap of the objects {#quick-recap-of-the-objects}
+## Quick recap of the objects {#quick-recap-of-the-objects}
 
 * **SR** (Storage Repository): where virtual disks live.
 * **VDI** (Virtual Disk Image): one virtual disk.
@@ -67,7 +73,7 @@ All of these operations are available from [Xen Orchestra](../management/manage-
 
 More details in the [storage overview](storage.md) and in the [architecture page](../project/architecture.md#storage).
 
-## 📇 SR operations {#sr-operations}
+## SR operations {#sr-operations}
 
 ### Rename an SR
 
@@ -150,7 +156,7 @@ xe sr-probe type=nfs device-config:server=<ip>
 
 The command answers in XML, listing what to feed into the next step (or into `sr-introduce` when [reattaching](#reattach-a-forgotten-sr)).
 
-## 💾 VDI operations {#vdi-operations}
+## VDI operations {#vdi-operations}
 
 ### Find your disks
 
@@ -211,7 +217,7 @@ xe vdi-import uuid=<destination-vdi-uuid> filename=disk.vhd format=vhd
 
 (For `vdi-import`, create the destination VDI first, at least as big as the source.)
 
-## 🧹 Reclaim space {#reclaim-space}
+## Reclaim space {#reclaim-space}
 
 Deleting VMs, disks and snapshots frees space:
 
@@ -225,7 +231,7 @@ xe host-call-plugin host-uuid=<host-uuid> plugin=trim fn=do_trim args:sr_uuid=<s
 
 If space doesn't come back after deleting snapshots, the coalesce process probably hasn't finished (or is stuck): see the [coalesce section](storage.md#coalesce) to check its status.
 
-## ⚙️ Disk I/O tuning {#disk-io-tuning}
+## Disk I/O tuning {#disk-io-tuning}
 
 The dom0 I/O scheduler used for an SR's physical devices can be changed if you have a specific workload profile (default is fine for most cases):
 

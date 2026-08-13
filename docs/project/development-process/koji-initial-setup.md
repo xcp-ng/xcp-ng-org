@@ -1,12 +1,20 @@
 ---
 sidebar_position: 14
+heading_emoji:
+  certificates: identification_card
+  installing-koji: inbox_tray
+  configuring-koji: gear
+  test-your-connection: test_tube
+  get-more-permissions: key
+  koji-in-docker-container: whale
+  useful-commands: toolbox
 ---
 
 # Koji initial setup
 
 How to configure Koji as a user.
 
-## 🪪 Certificates {#certificates}
+## Certificates {#certificates}
 
 Once accepted as a proven packager or as an apprentice, you will receive your connection certificate as well as the server's CA public certificate:
 
@@ -25,7 +33,7 @@ You may also receive a browser certificate for the connection to Koji's web inte
 ```
 You need to import it into your web browser's certificate store and then use it when you log in to [https://koji.xcp-ng.org/](https://koji.xcp-ng.org/)
 
-## 📥 Installing koji {#installing-koji}
+## Installing koji {#installing-koji}
 The preferred, distro-independent way is to install it from PyPi with `pip`, `uv` or your preferred tool. Alternatively, your distro might provide the `koji` client as a package you can install from its repositories. You could also run it from a Fedora container, but that's mostly a last resort option if anything else fails for some reason.
 
 Example on Ubuntu 24.04+:
@@ -37,7 +45,7 @@ sudo apt install -y build-essential python3-dev libkrb5-dev krb5-user libssl-dev
 pipx install koji
 ```
 
-## ⚙️ Configuring koji {#configuring-koji}
+## Configuring koji {#configuring-koji}
 Put this in `~/.koji/config`:
 ```
 [koji]
@@ -68,10 +76,10 @@ authtype = ssl
 
 In some cases (with older versions of koji), we've found that the `cert` directive in `~/.koji/config ` was not used if there was no such directive in `/etc/koji.conf`. Workaround: add a `cert = ~/.koji/client.crt` to `/etc/koji.conf`, or possibly even `cp ~/.koji/config /etc/koji.conf`.
 
-## 🧪 Test your connection {#test-your-connection}
+## Test your connection {#test-your-connection}
 `koji moshimoshi`. If it greats you (in any language), then your connection to the server works.
 
-## 🔑 Get more permissions {#get-more-permissions}
+## Get more permissions {#get-more-permissions}
 After your first connection, your user gets added by koji to its database. Now you need permissions to be able to tag builds. Ask an administrator for the `build` permission.
 
 You can verify the permissions for a given user `$USER` with:
@@ -81,7 +89,7 @@ koji list-users # Check if $USER is listed
 koji list-permissions --user=$USER # Adapt $USER if needed
 `}</Terminal>
 
-## 🐳 Koji in Docker container {#koji-in-docker-container}
+## Koji in Docker container {#koji-in-docker-container}
 
 This used to be useful when our koji server was a bit too old for recent crypto, but now **installing from `PyPi` is probably the best choice**.
 
@@ -108,7 +116,7 @@ This command does the same as above, but relies on docker caching the result of 
 docker run -it --rm -v$HOME/.koji:/root/.koji:ro $(docker build -q - <<<$'FROM fedora:41\nRUN dnf install -qy koji') koji moshimoshi
 ```
 
-## 🧰 Useful commands {#useful-commands}
+## Useful commands {#useful-commands}
 
 Just a quick list. Make sure to have read and understood our [development process tour](../../../category/development-process).
 

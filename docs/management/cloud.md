@@ -1,3 +1,10 @@
+---
+heading_emoji:
+  xen-orchestra: artificial_satellite
+  cloudstack: cloud
+  openstack: books
+---
+
 # Cloud features
 
 Cloud features refer to the capability of delegating resources outside the platform administrators perimeters, like developers or customers.
@@ -7,7 +14,7 @@ You have multiple choices:
 1. Using Xen Orchestra Cloud features (ACLs, Self Service)
 2. Using CloudStack or OpenStack (adapted to very large deployments)
 
-## 🛰️ Xen Orchestra {#xen-orchestra}
+## Xen Orchestra {#xen-orchestra}
 
 Some interesting "cloud-like" features are available in Xen Orchestra : ACLs and Self-service.
 
@@ -42,7 +49,7 @@ The self-service feature allows users to create new VMs within a **limited amoun
 ![XO dashboard of the available ressources to the devs group, with vCPUs, Memory and Storage, showing their usage and total available ressources.](../../static/img/xoself.png)
 </div>
 
-## ☁️ CloudStack {#cloudstack}
+## CloudStack {#cloudstack}
 
 <div style={{textAlign: 'center'}}>
 ![The CloudStack logo.](../../static/img/cloudstack_logo.png)
@@ -54,7 +61,7 @@ Apache CloudStack is open source software designed to deploy and manage large ne
 
 See the [dedicated documentation](https://docs.cloudstack.apache.org/en/4.17.2.0/installguide/hypervisor/xenserver.html?highlight=xcp-ng) on how to install CloudStack on top of XCP-ng.
 
-## 📚 OpenStack {#openstack}
+## OpenStack {#openstack}
 
 :::warning
 Unlike Cloudstack, we do not know the level of compatibility with OpenStack. Take time to ask OpenStack community about their support for XAPI-based hosts

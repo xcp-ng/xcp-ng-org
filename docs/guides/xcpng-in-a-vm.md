@@ -1,3 +1,12 @@
+---
+heading_emoji:
+  'nested-xcp-ng-using-xcp-ng': package
+  'nested-xcp-ng-using-xen': panda_face
+  'nested-xcp-ng-using-vmware-esxi-and-workstation': regional_indicator_v
+  'nested-xcp-ng-using-microsoft-hyper-v-windows-10---windows-server-2016': regional_indicator_h
+  'nested-xcp-ng-using-qemukvm': regional_indicator_k
+---
+
 # XCP-ng in a VM
 
 How to run XCP-ng in a VM?
@@ -16,7 +25,7 @@ Here is the list of hypervisors on which you can try XCP-ng :
 * [QEMU/KVM](#nested-xcp-ng-using-qemukvm)
 * [Virtualbox](https://www.virtualbox.org) (Nested Virtualisation implemented only in v6.1.x and above - [https://www.virtualbox.org/ticket/4032](https://www.virtualbox.org/ticket/4032))
 
-## 📦 Nested XCP-ng using XCP-ng {#nested-xcp-ng-using-xcp-ng}
+## Nested XCP-ng using XCP-ng {#nested-xcp-ng-using-xcp-ng}
 
 * create a new VM from CentOS 7 template with minimum 2 vCPU and 4GB RAM
 * change disk size to 100GB
@@ -24,7 +33,7 @@ Here is the list of hypervisors on which you can try XCP-ng :
 * default NIC type of Realtek may create stability issue for nested XCP-NG, change it to Intel e1000 : `xe vm-param-set uuid=<UUID> platform:nic_type="e1000"`
 * install/use it like normal :-)
 
-## 🐼 Nested XCP-ng using Xen {#nested-xcp-ng-using-xen}
+## Nested XCP-ng using Xen {#nested-xcp-ng-using-xen}
 
 It's a pretty standard HVM, but you need to use a `vif` of `ioemu` type. Check this configuration example:
 
@@ -58,7 +67,7 @@ on_reboot   = 'destroy'
 on_crash    = 'destroy'
 ```
 
-## 🇻 Nested XCP-ng using VMware (ESXi and Workstation) {#nested-xcp-ng-using-vmware-esxi-and-workstation}
+## Nested XCP-ng using VMware (ESXi and Workstation) {#nested-xcp-ng-using-vmware-esxi-and-workstation}
 
 _The following steps can be performed under VMware Workstation Pro, the settings will remain the same but the configuration will be slightly different. We will discuss this point at the end of this section about VMware._
 
@@ -122,7 +131,7 @@ Once your host's network is set up, we'll look at configuring the XCP-ng virtual
    * Check if the virtual machine correctly works by trying to connect using XCP-ng Center and by creating a virtual machine on your nested XCP-ng.
 
 
-## 🇭 Nested XCP-ng using Microsoft Hyper-V (Windows 10 - Windows Server 2016) {#nested-xcp-ng-using-microsoft-hyper-v-windows-10---windows-server-2016}
+## Nested XCP-ng using Microsoft Hyper-V (Windows 10 - Windows Server 2016) {#nested-xcp-ng-using-microsoft-hyper-v-windows-10---windows-server-2016}
 
 
 _The following steps can be performed with Hyper-V on Windows 10 (version 1607 minimum) and Windows Server 2016 (Hyper-V Server also). The settings will remain the same for both OS._
@@ -158,7 +167,7 @@ The VM settings :
 
 ![Windows Server on XCP-ng under Hyper-V](http://image.noelshack.com/fichiers/2018/39/5/1538145459-2.png)
 
-## 🇰 Nested XCP-ng using QEMU/KVM {#nested-xcp-ng-using-qemukvm}
+## Nested XCP-ng using QEMU/KVM {#nested-xcp-ng-using-qemukvm}
 
 _The following steps can be performed using QEMU/KVM on a Linux host, Proxmox or oVirt._
 

@@ -1,14 +1,20 @@
 ---
 sidebar_position: 4
+heading_emoji:
+  whats-qcow2: mortar_board
+  quick-summary: zap
+  glossary: books
+  about-image-formats: framed_picture
+  faq: question
 ---
 
 # QCOW2 FAQ
 
-## 🎓 What’s QCOW2? {#whats-qcow2}
+## What’s QCOW2? {#whats-qcow2}
 
 QCOW2 is the name of a virtual disk image format coming from the open source QEMU project. Contrarily to the VHD disk image format, historically used by XCP-ng, QCOW2 is not limited to 2 TiB per disk.
 
-## ⚡ Quick summary {#quick-summary}
+## Quick summary {#quick-summary}
 
 For those who will only read this.
 
@@ -18,13 +24,13 @@ For those who will only read this.
 - Not needed to create a new SR to create QCOW2 disks. A SR can have QCOW2 and VHD co-existing.
 - VHD stays the default for now, a QCOW2 disk will automatically be created when asking for the creation of a VDI bigger than 2040GiB.
 
-## 📚 Glossary {#glossary}
+## Glossary {#glossary}
 
 - VDI: Virtual Disk Image. This is a VM’s disk, seen from the hypervisor.
 - SR: Storage Repository. Storage space managed by XCP-ng to store VDIs.
 - image format: there exist several formats to store a VM disk’s data. VHD, QCOW2 and VMDK are all such image formats. Historically, XCP-ng only supported the VHD image format (as well as raw data, which means no image format). It now supports a new image format in addition to VHD: QCOW2.
 
-## 🖼️ About image formats {#about-image-formats}
+## About image formats {#about-image-formats}
 
 Before entering the FAQ itself, let's talk about image formats.
 
@@ -60,7 +66,7 @@ In order to unplug the PBD, any VMs with a VDI on the SR will have to be stopped
 This operation will not affect the contents of the SR. The PDB object represents the connection to the SR, not its contents.
 
 
-## ❓ FAQ {#faq}
+## FAQ {#faq}
 
 Now let's enter the FAQ itself.
 

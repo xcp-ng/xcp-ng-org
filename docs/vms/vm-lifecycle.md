@@ -1,5 +1,12 @@
 ---
 sidebar_position: 2
+heading_emoji:
+  create-a-vm: building_construction
+  clone-or-copy-a-vm: sheep
+  start-stop-reboot: zap
+  protect-a-vm-against-accidental-deletion: shield
+  vapps: basket
+  delete-a-vm: wastebasket
 ---
 
 # Create and manage VMs
@@ -10,7 +17,7 @@ Creating, cloning and deleting virtual machines on XCP-ng.
 The most comfortable way to create and manage VMs is [Xen Orchestra](../management/manage-at-scale/xo-web-ui.md) (or [XO Lite](../management/manage-locally/xo-lite.md) directly from your host, for simple cases). The `xe` commands below are useful for scripting and automation. See also [infrastructure as code](../management/infrastructure-as-code.md) for Terraform/OpenTofu, Packer and Ansible.
 :::
 
-## 🏗️ Create a VM {#create-a-vm}
+## Create a VM {#create-a-vm}
 
 ### From a template + ISO
 
@@ -49,7 +56,7 @@ See [clone or copy](#clone-or-copy-a-vm) below: cloning an installed and prepare
 
 Import an existing VM (XVA, OVA, or disks from another hypervisor): see [import and export](import-export.md) and [migrate to XCP-ng](../installation/migrate-to-xcp-ng.md).
 
-## 🐑 Clone or copy a VM {#clone-or-copy-a-vm}
+## Clone or copy a VM {#clone-or-copy-a-vm}
 
 Two different operations:
 
@@ -67,7 +74,7 @@ The source VM must be halted (or use a [snapshot](snapshots.md) of a running VM 
 Clones inherit everything from the source, including hostname, SSH host keys, and machine IDs. For anything you plan to clone repeatedly, prepare the source first (for Linux: reset `/etc/machine-id`, SSH host keys, static IPs; for Windows: use `sysprep`). Details in the [templates page](templates.md).
 :::
 
-## ⚡ Start, stop, reboot {#start-stop-reboot}
+## Start, stop, reboot {#start-stop-reboot}
 
 From Xen Orchestra or XO Lite, use the VM's action buttons. With `xe`:
 
@@ -82,7 +89,7 @@ A clean shutdown/reboot requires working [guest tools](vms.md#guest-tools) in th
 
 To start VMs automatically when the host boots, see the [autostart guide](../guides/autostart-vm.md). To choose *which host* a VM should preferably run on, set its affinity host (`xe vm-param-set uuid=<vm-uuid> affinity=<host-uuid>`). See [VM load balancing](../management/vm-load-balancing.md) for dynamic placement.
 
-## 🛡️ Protect a VM against accidental deletion {#protect-a-vm-against-accidental-deletion}
+## Protect a VM against accidental deletion {#protect-a-vm-against-accidental-deletion}
 
 You can block specific operations on any VM, including deletion:
 
@@ -96,7 +103,7 @@ Anyone (or any script) trying to delete the VM will get an error until the block
 xe vm-param-remove uuid=<vm-uuid> param-name=blocked-operations param-key=destroy
 `}</Terminal>
 
-## 🧺 VM groups with a start order (vApps) {#vapps}
+## VM groups with a start order (vApps) {#vapps}
 
 XAPI can group VMs into an *appliance* (also called vApp): a set of VMs started together, in a defined order, with delays between them. Typical use: bring a database up before the application servers. The group is also what [HA](../management/ha.md) and DR tooling can recover as a unit.
 
@@ -108,7 +115,7 @@ xe appliance-start uuid=<appliance-uuid>
 
 See the [appliance commands](../appendix/cli_reference.md#appliance-commands) in the CLI reference.
 
-## 🗑️ Delete a VM {#delete-a-vm}
+## Delete a VM {#delete-a-vm}
 
 From Xen Orchestra, deleting a VM lets you choose whether to also remove its disks and snapshots. With `xe`:
 

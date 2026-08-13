@@ -1,8 +1,16 @@
+---
+heading_emoji:
+  whats-the-amd-epyc-performance-story: open_book
+  fix-1-significant-uncached-grant-tables: adhesive_bandage
+  fix-2-spurious-interrupts: zap
+  future-improvements-and-leads: crystal_ball
+---
+
 # Network traffic performance on AMD processors
 
 This page details performance improvements on AMD processors and how to deploy the fixes on your pool.
 
-## 📖 What's the "AMD EPYC performance" story? {#whats-the-amd-epyc-performance-story}
+## What's the "AMD EPYC performance" story? {#whats-the-amd-epyc-performance-story}
 
 This issue was first identified on EPYC processors in 2024, which is why it was first called the "AMD EPYC performance issue". However, it affects all AMD processors, not just the EPYC product line.
 
@@ -11,7 +19,7 @@ Network traffic is efficient for many workloads, but not the most demanding ones
 
 As with most performance issues, this case is complicated. The issue can stem from multiple causes, but at least one bottleneck has been eliminated.
 
-## 🩹 Fix 1 (significant): uncached grant-tables {#fix-1-significant-uncached-grant-tables}
+## Fix 1 (significant): uncached grant-tables {#fix-1-significant-uncached-grant-tables}
 
 ### Technical description of the issue and its fix
 
@@ -105,7 +113,7 @@ Guest kernel version determines whether the performance fix is supported or not.
 * _SOON_: Distro needs to update its kernel
 
 
-## ⚡ Fix 2: spurious interrupts {#fix-2-spurious-interrupts}
+## Fix 2: spurious interrupts {#fix-2-spurious-interrupts}
 
 ### Technical description of the issue and its fix
 
@@ -138,7 +146,7 @@ Here are the LTS kernels that have been fixed:
 * v6.15.11
 * v6.16.2
 
-## 🔮 Future improvements and leads {#future-improvements-and-leads}
+## Future improvements and leads {#future-improvements-and-leads}
 
 The last improvement does not work on every platform, so the story may not be over yet. At least one bottleneck remains.
 

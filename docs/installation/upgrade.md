@@ -1,5 +1,12 @@
 ---
 sidebar_position: 4
+heading_emoji:
+  release-notes--known-issues: radioactive
+  upgrade-via-installation-iso-recommended: cd
+  from-command-line: technologist
+  upgrade-from-xenserver: regional_indicator_x
+  migrate-vms-from-older-xenserverxcp-ng: older_man
+  handling-alternate-drivers-or-kernel: biohazard
 ---
 
 # Upgrade to a newer release
@@ -14,14 +21,14 @@ For updates that don't change the version numbers (bugfixes, security fixes), se
 There are 3 upgrade methods, detailed below:
 * [Using the installation ISO (recommended)](#upgrade-via-installation-iso-recommended).
 * [Using the installation ISO when you can't boot from it: remote upgrade](#using-the-installation-iso-when-you-cant-boot-from-it-remote-upgrade).
-* [From command line a.k.a. yum-style upgrade](#from-command-line). ⚠️ Only for some point version upgrades.
+* [From command line a.k.a. yum-style upgrade](#from-command-line). :warning: Only for some point version upgrades.
 :::
 
 :::warning
 For upgrading XCP-ng machines with an XOSTOR SR, please refer to this [additional information](../../xostor#upgrade) before taking any action.
 :::
 
-## ☢️ Release Notes & Known Issues {#release-notes--known-issues}
+## Release Notes & Known Issues {#release-notes--known-issues}
 
 Read the [Release Notes and Known Issues](../../releases#xcp-ng-release-history) for every release that is higher than your current release. They may provide additional instructions for specific situations. Also **please read the following warnings**:
 
@@ -39,7 +46,7 @@ Read the [Release Notes and Known Issues](../../releases#xcp-ng-release-history)
 * When upgrading from *XCP-ng 7.5 or lower* or from *XenServer* or *Citrix Hypervisor*, **it is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
 :::
 
-## 💿 Upgrade via installation ISO (recommended) {#upgrade-via-installation-iso-recommended}
+## Upgrade via installation ISO (recommended) {#upgrade-via-installation-iso-recommended}
 
 This is the standard XCP-ng way. With this method, note that you can often skip intermediate release (e.g. from 7.5 to 8.2 directly) without needing intermediate upgrade, but there are exceptions, so check the [release notes](../../releases#xcp-ng-release-history)! For example, we strongly advise to upgrade to XCP-ng 8.2.1 first before jumping to XCP-ng 8.3.
 
@@ -100,7 +107,7 @@ Note: it has been brought to our attention that [a DHCP server may be necessary 
 
 Once upgraded, **keep the system regularly updated** (see [Updates Howto](../../management/updates)).
 
-## 🧑‍💻 From command line {#from-command-line}
+## From command line {#from-command-line}
 
 A.k.a. yum-style upgrade.
 
@@ -214,7 +221,7 @@ find /etc \( -name "*.rpmnew" -or -name "*.rpmsave" ! -name "logrotate.cron.rpms
 
 #### 4. Reboot the host
 
-## 🇽 Upgrade from XenServer {#upgrade-from-xenserver}
+## Upgrade from XenServer {#upgrade-from-xenserver}
 
 This article describes how to proceed in order to convert your Citrix XenServer infrastructure into a XCP-ng infrastructure.
 
@@ -348,7 +355,7 @@ The output should also be true. It has created a temporary entry in the grub boo
 
 To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it's available, but if not, it should proceed fine and boot into upgraded XCP-NG in 10 to 20 minutes.
 
-## 👴 Migrate VMs from older XenServer/XCP-ng {#migrate-vms-from-older-xenserverxcp-ng}
+## Migrate VMs from older XenServer/XCP-ng {#migrate-vms-from-older-xenserverxcp-ng}
 
 ### Live migration
 
@@ -358,7 +365,7 @@ Live migration **should work** from any older XenServer/XCP-ng toward the latest
 
 If a live migration doesn't work, Xen Orchestra is able to do a warm migration for you. It's safer and still have a reasonable downtime. [Read this dedicated article](https://xen-orchestra.com/blog/warm-migration-with-xen-orchestra/) to learn more about it.
 
-## ☣ Handling alternate drivers or kernel {#handling-alternate-drivers-or-kernel}
+## Handling alternate drivers or kernel {#handling-alternate-drivers-or-kernel}
 
 If - before the upgrade - your host depends on [alternate drivers](../../installation/hardware#alternate-drivers) or on the [alternate kernel](../../installation/hardware#alternate-kernel) to function, then it is possible that the upgraded system doesn't need such alternatives anymore. It is also possible that it still needs them.
 

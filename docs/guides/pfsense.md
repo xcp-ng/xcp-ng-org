@@ -1,16 +1,25 @@
+---
+heading_emoji:
+  '1-create-vm-as-normal': building_construction
+  '2-install-guest-utilities': hammer_and_wrench
+  '3-disable-tx-checksum-offload': no_entry_sign
+  using-xen-orchestra: artificial_satellite
+  using-cli: technologist
+---
+
 # pfSense / OPNsense VM
 
 A guide to run pfSense in a VM.
 
 Despite pfSense and OPNsense do work great in a VM, there are a few extra steps that need to be taken first.
 
-## 🏗️ 1. Create VM as normal. {#1-create-vm-as-normal}
+## 1. Create VM as normal. {#1-create-vm-as-normal}
 
 * When creating the VM, choose the `other install media` VM template
 * Prefer `UEFI` boot mode for pfSense versions > 2.4 (`BIOS` mode works but will be slower to boot)
 * Continue through the installer like normal
 
-## 🛠️ 2. Install Guest Utilities {#2-install-guest-utilities}
+## 2. Install Guest Utilities {#2-install-guest-utilities}
 
 There are 2 ways of doing that, either using the CLI (pfSense or OPNsense) or the Web UI (OPNsense).
 
@@ -33,7 +42,7 @@ Next: Reboot the system to have the guest tools started (installer doesn't do th
 
 Guest Tools are now installed and running, and will automatically run on every boot of the VM.
 
-## 🚫 3. Disable TX Checksum Offload {#3-disable-tx-checksum-offload}
+## 3. Disable TX Checksum Offload {#3-disable-tx-checksum-offload}
 
 Now is the most important step: we must disable TX checksum offload on the virtual xen interfaces of the VM. This is because network traffic between VMs in a hypervisor is not populated with a typical Ethernet checksum, since they only traverse server memory and never leave over a physical cable. The majority of operating systems know to expect this when virtualized and handle Ethernet frames with empty checksums without issue. However `pf` in FreeBSD does not handle them correctly and will drop them, leading to broken performance.
 
@@ -47,14 +56,14 @@ Disabling checksum offloading is only necessary for virtual interfaces. When usi
 Many guides on the internet for pfSense in Xen VMs will tell you to uncheck checksum options in the pfSense web UI, or to also disable RX offload on the Xen side. These are not only unnecessary, but some of them will make performance worse.
 :::
 
-## 🛰️ Using Xen Orchestra {#using-xen-orchestra}
+## Using Xen Orchestra {#using-xen-orchestra}
 
 - Head to the "Network" tab of your VM : in the advanced settings (click the blue gear icon) for each adapter, disable TX checksumming.
 - Restart the VM.
 
 That's it !
 
-## 🧑‍💻 Using CLI {#using-cli}
+## Using CLI {#using-cli}
 
 SSH to dom0 on your XCP-NG hypervisor and run the following:
 

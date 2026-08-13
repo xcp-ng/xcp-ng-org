@@ -1,5 +1,12 @@
 ---
 sidebar_class_name: hidden
+heading_emoji:
+  release-information: information_source
+  install: cd
+  upgrade-from-previous-releases: arrow_up
+  what-changed-since-81: sparkles
+  update-whats-new-in-xcp-ng-821: new
+  known-issues: beetle
 ---
 
 # XCP-ng 8.2 LTS
@@ -18,7 +25,7 @@ SHA256 checksums, GPG signatures and net-install ISO are available [here](https:
 LTS means **Long Term Support**: more information in [this section](../#lts-releases).
 :::
 
-## ℹ️ Release information {#release-information}
+## Release information {#release-information}
 
 * Released on 2020-11-18
 * Based on Citrix Hypervisor 8.2
@@ -27,11 +34,11 @@ LTS means **Long Term Support**: more information in [this section](../#lts-rele
 * Kernel 4.19 + patches
 * Supported until 2025-09-16 (The initial EOL date was 2025-06-05, and we extended it to provide more time to upgrade to XCP-ng 8.3 LTS)
 
-## 💿 Install {#install}
+## Install {#install}
 
 See [Installation](../../../installation/install-xcp-ng).
 
-## ⬆️ Upgrade from previous releases {#upgrade-from-previous-releases}
+## Upgrade from previous releases {#upgrade-from-previous-releases}
 
 Despite being an LTS, you can upgrade from previous releases. Both upgrade methods are supported:
 * From the installation ISO
@@ -39,7 +46,7 @@ Despite being an LTS, you can upgrade from previous releases. Both upgrade metho
 
 Refer to the [Upgrade Howto](../../../installation/upgrade).
 
-## ✨ What changed since 8.1 {#what-changed-since-81}
+## What changed since 8.1 {#what-changed-since-81}
 
 ### Highlight from Citrix Hypervisor changes
 
@@ -161,7 +168,7 @@ Plans are laid out for simpler installation and maintenance of Windows guest too
 
 Using the Windows guest tools is [documented here](/vms#windows-guest-tools).
 
-## 🆕 Update: what's new in XCP-ng 8.2.1 {#update-whats-new-in-xcp-ng-821}
+## Update: what's new in XCP-ng 8.2.1 {#update-whats-new-in-xcp-ng-821}
 
 XCP-ng 8.2.1 was released as a maintenance update for XCP-ng 8.2 LTS, which has its own version number because it also comes with updated installation images.
 
@@ -171,7 +178,7 @@ The update brought a few enhancements such as [Guest Secure Boot](../../guides/g
 
 They are detailed in the [Release announcement for XCP-ng 8.2.1](https://xcp-ng.org/blog/2022/02/28/xcp-ng-8-2-1-update/).
 
-## 🐞 Known issues {#known-issues}
+## Known issues {#known-issues}
 
 ### `yum update` from within a VNC console
 

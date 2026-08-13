@@ -1,8 +1,16 @@
+---
+heading_emoji:
+  xen-orchestra: artificial_satellite
+  '3rd-party-solutions': motorway
+  disaster-recovery: ambulance
+  host-and-pool-configuration-backup: toolbox
+---
+
 # Backup
 
 It's really important to backup your VMs. You have multiple options, but only Xen Orchestra is both **advanced, agentless, fully Open Source and officially supported** (tested for all XCP-ng releases).
 
-## 🛰️ Xen Orchestra {#xen-orchestra}
+## Xen Orchestra {#xen-orchestra}
 
 Xen Orchestra is the most advanced backup solution and 100% integrated with XCP-ng. There is many different backup options:
 
@@ -35,7 +43,7 @@ All options are explained in the [official documentation](https://xen-orchestra.
 
 Alternatively, you can install and build it yourself [from the GitHub repository](https://github.com/vatesfr/xen-orchestra/).
 
-## 🛣️ 3rd party solutions {#3rd-party-solutions}
+## 3rd party solutions {#3rd-party-solutions}
 
 There's 3rd party solutions officially compatible with XCP-ng to make VM backups. Please check our [ecosystem](https://docs.vates.tech/compatible-solutions/xcp-ng-ecosystem#vm-backup) page on the backup section.
 
@@ -45,7 +53,7 @@ Some popular backup solutions (like [VEEAM](https://www.veeam.com/)) can be used
 
 However, you'll lose the tight integration you have between XCP-ng and Xen Orchestra, both bundled of the [Vates Stack](https://vates.tech).
 
-## 🚑 Disaster recovery {#disaster-recovery}
+## Disaster recovery {#disaster-recovery}
 
 Disaster recovery (replicating VMs to a secondary site/pool and restarting them there when the primary is lost) is handled by Xen Orchestra: **Continuous Replication** keeps standby copies of your VMs on another pool's storage, ready to start; **Disaster Recovery** backup jobs do the same from backup files. See the [XO backup documentation](https://docs.xen-orchestra.com/xo5/backups) for the full picture (RPO, failover, failback).
 
@@ -57,7 +65,7 @@ What a DR plan needs on the XCP-ng side, whatever the tooling:
 * **A management plane that survives**: run Xen Orchestra (or be able to redeploy it from its config backup) outside the primary failure domain.
 * **Tests**: a failover you never exercised is a hypothesis, not a plan. XO can start replicated VMs on an isolated network for testing.
 
-## 🧰 Host and pool configuration backup {#host-and-pool-configuration-backup}
+## Host and pool configuration backup {#host-and-pool-configuration-backup}
 
 Besides VM data, the platform itself has state worth saving: the pool metadata (all your XAPI objects: VM configurations, SRs, networks...).
 

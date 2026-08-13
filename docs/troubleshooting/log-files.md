@@ -1,26 +1,39 @@
+---
+heading_emoji:
+  general-log: scroll
+  xapis-log: satellite
+  storage-related-eg-coalescing-snapshots: minidisc
+  kernel-messages: penguin
+  kernel-crash-logs: boom
+  produce-a-status-report: clipboard
+  xcp-ng-center: window
+  windows-vm: desktop_computer
+  useful-data-for-debugging: mag
+---
+
 # Log files
 
 On a XCP-ng host, like in most Linux/UNIX systems, the logs are located in `/var/log`. XCP-ng does not use `journald` for logs, so everything is in `/var/log` directly.
 
-## 📜 General log {#general-log}
+## General log {#general-log}
 
 `/var/log/daemon.log`
 
 Output of various running daemons involved in XCP-ng's tasks. Examples: output of `xenopsd` which handles the communication with the VMs, of executables involved in live migration and storage motion, and more...
 
-## 📡 XAPI's log {#xapis-log}
+## XAPI's log {#xapis-log}
 
 `/var/log/xensource.log`
 
 Contains the output of the XAPI toolstack.
 
-## 💽 Storage related (eg. coalescing snapshots) {#storage-related-eg-coalescing-snapshots}
+## Storage related (eg. coalescing snapshots) {#storage-related-eg-coalescing-snapshots}
 
 `/var/log/SMlog`
 
 Contains the output of the storage manager.
 
-## 🐧 Kernel messages {#kernel-messages}
+## Kernel messages {#kernel-messages}
 
 For hardware related issues or system crashes.
 
@@ -28,11 +41,11 @@ For hardware related issues or system crashes.
 
 All kernel logs since last boot: type `dmesg`.
 
-## 💥 Kernel crash logs {#kernel-crash-logs}
+## Kernel crash logs {#kernel-crash-logs}
 
 In case of a host crash, if it is kernel-related, you should find logs in `/var/crash`
 
-## 📋 Produce a status report {#produce-a-status-report}
+## Produce a status report {#produce-a-status-report}
 
 To help someone else identify an issue or reproduce a bug, you can generate a full status report containing all log files, details about your configuration and more.
 
@@ -43,19 +56,19 @@ xen-bugtool --yestoall
 Then upload the resulting archive somewhere. It may contain sensitive information about your setup, so it may be better to upload it to a private area and give the link only to those you trust to analyze it.
 
 
-## 🪟 XCP-ng Center {#xcp-ng-center}
+## XCP-ng Center {#xcp-ng-center}
 
 You can display the log files via menu `Help` -> `View XCP-ng Center Log Files`.
 
 The log files are located in `C:\Users\<user>\AppData\Roaming\XCP-ng\XCP-ng Center\logs`.
 
-## 🖥️ Windows VM {#windows-vm}
+## Windows VM {#windows-vm}
 
 ### (PV-)Driver install log
 `C:\Windows\INF\setupapi.dev.log`
 
 
-## 🔍 Useful data for debugging {#useful-data-for-debugging}
+## Useful data for debugging {#useful-data-for-debugging}
 
 ### DMAR/IVRS ACPI tables
 

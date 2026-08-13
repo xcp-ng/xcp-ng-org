@@ -1,3 +1,9 @@
+---
+heading_emoji:
+  my-host-rebooted-why-did-it-reboot: arrows_counterclockwise
+  i-cant-reach-my-host: rotating_light
+---
+
 # High availability (HA)
 
 High Availability (HA) is designed to automatically restart protected virtual machines in case a host fails. While this helps improve resilience, there are situations where HA may behave unexpectedly, prevent actions from completing, or make recovery more complex.
@@ -8,7 +14,7 @@ To know more on high availability in general and how to set it up with XCP-ng, s
 
 ---
 
-## 🔄 My host rebooted. Why did it reboot? {#my-host-rebooted-why-did-it-reboot}
+## My host rebooted. Why did it reboot? {#my-host-rebooted-why-did-it-reboot}
 
 If a host configured for high availability reboots unexpectedly, it might have: 
 
@@ -17,7 +23,7 @@ If a host configured for high availability reboots unexpectedly, it might have:
 
 Check the host's logs to verify if any of these events happened, in particular `/var/log/xha.log`.
 
-## 🚨 I can't reach my host! {#i-cant-reach-my-host}
+## I can't reach my host! {#i-cant-reach-my-host}
 
 ### Disabling HA
 

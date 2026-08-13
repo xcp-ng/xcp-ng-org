@@ -1,5 +1,16 @@
 ---
 sidebar_position: 5
+heading_emoji:
+  concepts: mortar_board
+  create-a-pool: building_construction
+  remove-a-host-from-a-pool: door
+  change-the-pool-coordinator: crown
+  maintenance-mode: wrench
+  root-password: key
+  time-synchronization-ntp: alarm_clock
+  remote-host-power-on: electric_plug
+  pool-wide-settings: handshake
+  pool-database-backup: stethoscope
 ---
 
 # Hosts and pools operations
@@ -10,7 +21,7 @@ Day-to-day operations on your XCP-ng hosts and resource pools: creating a pool, 
 Almost everything on this page can be done in a few clicks from [Xen Orchestra](manage-at-scale/xo-web-ui.md), which is the recommended way to operate XCP-ng at scale. The `xe` commands are given so you can also work directly on a host, script operations, or troubleshoot when the orchestrator is not available.
 :::
 
-## 🎓 Concepts {#concepts}
+## Concepts {#concepts}
 
 A **resource pool** is a group of up to 64 XCP-ng hosts managed as a single entity. One host is the **pool coordinator** (formerly called "pool master"): it exposes the XAPI endpoint for the whole pool, holds the pool database and forwards operations to the other members. All members keep a replicated copy of that database, which is why another host can take over the coordinator role if needed.
 
@@ -66,7 +77,7 @@ The requirements for pooling hosts (hardware, CPU vendor, versions…) are descr
 A standalone host is simply a pool of one: there's no special "pool creation" step. You create a pool by joining a second host to the first one.
 :::
 
-## 🏗️ Create a pool {#create-a-pool}
+## Create a pool {#create-a-pool}
 
 ### Name the pool
 
@@ -108,7 +119,7 @@ If the hosts differ in a way that blocks a regular join, you can force it, and t
 xe pool-join master-address=<coordinator> master-username=root master-password=<password> force=true
 `}</Terminal>
 
-## 🚪 Remove a host from a pool {#remove-a-host-from-a-pool}
+## Remove a host from a pool {#remove-a-host-from-a-pool}
 
 From Xen Orchestra, use the host's **Detach** action. With `xe`:
 
@@ -128,7 +139,7 @@ xe host-forget uuid=<host-uuid>
 
 `host-forget` doesn't touch the (dead) host itself: if it ever comes back online, it will still believe it belongs to the pool, so reinstall it before reuse.
 
-## 👑 Change the pool coordinator {#change-the-pool-coordinator}
+## Change the pool coordinator {#change-the-pool-coordinator}
 
 ### Planned change
 
@@ -149,7 +160,7 @@ xe pool-recover-slaves
 
 The first command makes the local host the new coordinator; the second tells the remaining members to point at it. See also [HA troubleshooting](../troubleshooting/troubleshooting-ha.md) when high availability is involved.
 
-## 🔧 Maintenance mode {#maintenance-mode}
+## Maintenance mode {#maintenance-mode}
 
 Before rebooting a host or working on its hardware, put it in maintenance mode: it stops accepting new VMs and evacuates the running ones (live migrating them to the other members).
 
@@ -174,7 +185,7 @@ xe host-enable uuid=<host-uuid>
 
 See also the dedicated guide about [rebooting or shutting down a host](../guides/host-reboot.md), and the [updates documentation](updates.md) for the recommended way to patch a whole pool (Rolling Pool Update in Xen Orchestra).
 
-## 🔑 Root password {#root-password}
+## Root password {#root-password}
 
 The `root` password of the hosts is what XAPI clients (Xen Orchestra, XO Lite, `xe`…) use to authenticate. All members of a pool are meant to share the same root password (a joining host adopts the pool's credentials).
 
@@ -188,7 +199,7 @@ You can also use `xsconsole` (the text console you get on the host's physical/se
 
 Lost the root password? See the [reset procedure](../troubleshooting/common-problems.md#reset-xcp-ng-root-password) in the troubleshooting section.
 
-## ⏰ Time synchronization (NTP) {#time-synchronization-ntp}
+## Time synchronization (NTP) {#time-synchronization-ntp}
 
 Correct and consistent clocks across the pool matter more than on ordinary servers: XAPI coordination, live migration, HA heartbeats, logs correlation and Windows guests (which get their initial time from the host) all rely on it. NTP servers are normally configured at [installation time](../installation/install-xcp-ng.md).
 
@@ -201,7 +212,7 @@ chronyc sources
 
 On XCP-ng 8.2, the NTP daemon is `ntpd`: edit `/etc/ntp.conf`, then `systemctl restart ntpd` and check with `ntpq -p`. In both cases, `xsconsole` also offers an NTP configuration menu under **Network and Management Interface**.
 
-## 🔌 Remote host power-on {#remote-host-power-on}
+## Remote host power-on {#remote-host-power-on}
 
 XCP-ng can power hosts back on remotely, using either Wake-on-LAN or the server's out-of-band controller. Configure the method per host:
 
@@ -217,7 +228,7 @@ xe host-power-on host=<host-uuid>
 
 This capability is also what allows [VM load balancing](vm-load-balancing.md) density plans to power hosts off and on according to the load.
 
-## 🤝 Pool-wide settings {#pool-wide-settings}
+## Pool-wide settings {#pool-wide-settings}
 
 ### Rotate the pool secret
 
@@ -265,6 +276,6 @@ xe pool-param-set uuid=<pool-uuid> migration-compression=true
 
 The setting applies pool-wide to subsequent migrations; Xen Orchestra also exposes it in the pool's advanced settings.
 
-## 🩺 Pool database backup {#pool-database-backup}
+## Pool database backup {#pool-database-backup}
 
 The pool database (all your XAPI objects: VMs, SRs, networks…) is replicated on every member, and can also be exported and restored: see the [backup page](backup.md) for pool metadata backup and restore procedures.

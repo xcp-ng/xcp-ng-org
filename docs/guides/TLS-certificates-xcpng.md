@@ -1,3 +1,11 @@
+---
+heading_emoji:
+  generate-certificate-signing-request: memo
+  install-the-certificate-chain-for-xcp-ng-v82: link
+  install-the-certificate-chain-for-xcp-ng-up-to-v81: older_adult
+  pool-certificate-verification: shield
+---
+
 # TLS certificate for XCP-ng
 
 How to add a TLS certificate?
@@ -8,7 +16,7 @@ If you would like to replace this certificate by a valid one, either from an int
 
 Note that if you use an non-public certificate authority and XenOrchestra, you have [additional configuration to specify on Xen Orchestra side](https://xen-orchestra.com/docs/configuration.html#custom-certificate-authority).
 
-## 📝 Generate certificate signing request {#generate-certificate-signing-request}
+## Generate certificate signing request {#generate-certificate-signing-request}
 
 You can use the auto-generated key to create a certificate signing request:
 
@@ -16,7 +24,7 @@ You can use the auto-generated key to create a certificate signing request:
 openssl req -new -key /etc/xensource/xapi-ssl.pem -subj '/CN=XCP-ng hypervisor/' -out xcp-ng.csr
 `}</Terminal>
 
-## 🔗 Install the certificate chain (for XCP-ng v8.2+) {#install-the-certificate-chain-for-xcp-ng-v82}
+## Install the certificate chain (for XCP-ng v8.2+) {#install-the-certificate-chain-for-xcp-ng-v82}
 
 Once you have your certificates, upload the certificates to your XCP-ng host, then use the following command to install the certificates:
 
@@ -31,7 +39,7 @@ The `certificate-chain` parameter is optional. The private key can be deleted af
 Done! Visit your XCP-ng host ip using a browser and validate the certificate is correct.
 
 
-## 🧓 Install the certificate chain (for XCP-ng up to v8.1) {#install-the-certificate-chain-for-xcp-ng-up-to-v81}
+## Install the certificate chain (for XCP-ng up to v8.1) {#install-the-certificate-chain-for-xcp-ng-up-to-v81}
 
 :::note
 This information about deprecated releases is retained solely to assist with the transition to a supported release.
@@ -45,7 +53,7 @@ Then, you have to restart xapi :
 systemctl restart xapi
 `}</Terminal>
 
-## 🛡️ Pool certificate verification (XCP-ng 8.3) {#pool-certificate-verification}
+## Pool certificate verification (XCP-ng 8.3) {#pool-certificate-verification}
 
 Since XCP-ng 8.3, hosts of a pool can verify each other's TLS certificates. New pools have it enabled; on upgraded pools, enable it once every member runs 8.3:
 

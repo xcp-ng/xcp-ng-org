@@ -1,5 +1,8 @@
 ---
 sidebar_position: 4
+heading_emoji:
+  '1-we-are-upstream': arrow_up
+  '2-we-are-downstream': arrow_down
 ---
 
 # Tags, maintenance branches in our code repositories
@@ -16,7 +19,7 @@ The objectives of the branch and tag naming conventions are:
 
 The first question to ask ourselves is: **who is the upstream for the software**?
 
-## ⬆️ 1. We are upstream {#1-we-are-upstream}
+## 1. We are upstream {#1-we-are-upstream}
 
 We decide when to release a new version, and we decide the versioning.
 
@@ -41,7 +44,7 @@ Special case: if VERSION and XCPNGVERSION are always the same (example: `xcp-ng-
 * Tags: `vXCPNGVERSIONFULL` (`v8.2.0`)
 * Maintenance branch if needed: `XCPNGVERSION` (`8.2`)
 
-## ⬇️ 2. We are downstream {#2-we-are-downstream}
+## 2. We are downstream {#2-we-are-downstream}
 
 We do not decide how and when new versions and released, and how they are numbered. So we need to somewhat mix the upstream versioning with our own branch names and versioning. For maintenance branches and tags related to an XCP-ng release, notably.
 

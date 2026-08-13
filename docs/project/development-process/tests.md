@@ -1,5 +1,11 @@
 ---
 sidebar_position: 12
+heading_emoji:
+  basic-tests: white_check_mark
+  installer: cd
+  live-migration-tests: truck
+  cold-migration-tests: ice_cube
+  test-the-xen-hypervisor-itself: panda_face
 ---
 
 # Tests
@@ -18,7 +24,7 @@ If anything goes wrong, try to isolate [the logs](../../troubleshooting/log-file
 
 Give priority to tests on actual hardware, but if you don't have any hardware available for those, then [testing in a nested environment](../../compute.md#nested-virtualization) is useful too.
 
-## ✅ Basic tests {#basic-tests}
+## Basic tests {#basic-tests}
 
 - verify installation
 - verify connectivity with your interfaces
@@ -33,7 +39,7 @@ Give priority to tests on actual hardware, but if you don't have any hardware av
 - [check your logs](../../troubleshooting/log-files.md) for uncommon info or warnings.
 - (add more here...)
 
-## 💿 Installer {#installer}
+## Installer {#installer}
 
 * installation, upgrade
 * net-install with GPG check on
@@ -41,7 +47,7 @@ Give priority to tests on actual hardware, but if you don't have any hardware av
 * compatibility with driver disks from Citrix?
 * backup restore
 
-## 🚚 Live migration tests {#live-migration-tests}
+## Live migration tests {#live-migration-tests}
 
 Live migration needs to be tested, with or without storage motion (ie. moving the VM disk data to another storage repository). It is both a very important feature and something that can break in subtle ways, especially across different versions of XenServer or XCP-ng.
 
@@ -101,7 +107,7 @@ Some bugs detected in the past during our tests when migrating from old versions
 
 We try to overcome these whenever possible, but bugs that require patching the old host cannot be fixed.
 
-## 🧊 Cold migration tests {#cold-migration-tests}
+## Cold migration tests {#cold-migration-tests}
 
 Live migration is important, but let's not forget to test "cold" migration (migration of shutdown VMs).
 
@@ -134,7 +140,7 @@ and
 * cross-pool migration, same versions
 * migration from earlier releases, cross-pool
 
-## 🐼 Test the Xen hypervisor itself {#test-the-xen-hypervisor-itself}
+## Test the Xen hypervisor itself {#test-the-xen-hypervisor-itself}
 
 The Xen hypervisor, which is at the core of XCP-ng, will benefit from being tested on a wide range of hardware. There exist test suites for this. You don't need to run them on every host you own if they are truly identical, but it's good to run them on as wide a range of hardware as possible.
 

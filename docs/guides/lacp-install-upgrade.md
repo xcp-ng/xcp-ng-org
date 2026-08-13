@@ -1,6 +1,13 @@
+---
+heading_emoji:
+  foreword: open_book
+  when-does-the-installer-need-network: globe_with_meridians
+  installation-or-upgrade-steps: ladder
+---
+
 # Using LACP to Net Install or Upgrade XCP-ng
 
-## 📖 Foreword {#foreword}
+## Foreword {#foreword}
 
 :::warning
 - This guide is specifically for environments using LACP-only networks, without LACP fallback. It assumes you do not want to reconfigure your switches.
@@ -13,7 +20,7 @@ Our installer does not support LACP. This guide explains how to bypass this limi
 When using LACP, your switch needs to be configured for it. If you cannot or prefer not to reconfigure your switch, you won’t be able to use the single-interface option provided by the installer.
 For other bonding methods (active-backup, balance-lsb), the switch does not need to be aware of the bond, and you can simply use one of the interfaces that will be part of the bond.
 
-## 🌐 When does the installer need network? {#when-does-the-installer-need-network}
+## When does the installer need network? {#when-does-the-installer-need-network}
 
 A working network configuration is only necessary in the following scenarios:
 
@@ -26,7 +33,7 @@ Network access is not required for:
 - A new installation from the full ISO.
 - Upgrading the master host from the full ISO.
 
-## 🪜 Installation or Upgrade steps {#installation-or-upgrade-steps}
+## Installation or Upgrade steps {#installation-or-upgrade-steps}
 
 :::info
 During an upgrade, the installer will not detect your existing bond configuration. In XCP-ng, network settings are managed by XAPI and applied to Open vSwitch, but the installation process operates independently of these components.

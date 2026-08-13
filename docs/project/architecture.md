@@ -1,8 +1,16 @@
+---
+heading_emoji:
+  storage: minidisc
+  components-for-vdi-io: arrow_up_down
+  api: satellite
+  'network': spider_web
+---
+
 # Architecture
 
 This page contains advanced info regarding XCP-ng architecture.
 
-## 💽 Storage {#storage}
+## Storage {#storage}
 
 ### Virtual disks on HVMs and PV guests
 
@@ -87,7 +95,7 @@ For each read/write in the VM disk, requests pass through an emulated driver, th
 The process described above is used for HVMs and also for PV guests (at startup, PV drivers are not loaded).
 After starting a PV guest, the emulated driver in the VM is replaced by `blkfront` (a PV driver) which allows to communicate directly with `tapdisk` using a protocol: `blkif`; `blktap` and `qemu-dm` then become useless to handle devices requests. Note that system calls are used with two drivers: `eventchn dev` and `gntdev` to map VM memory pages in the user space of the host. Thus a shared ring can be used to receive requests directly from `tapdisk` in host user space instead of using the kernel space.
 
-## ↕️ Components for VDI I/O {#components-for-vdi-io}
+## Components for VDI I/O {#components-for-vdi-io}
 
 ### XenStore
 
@@ -471,7 +479,7 @@ The persistent grants are not used in `tapdisk`.
 
 The read steps are similar, the main difference is that we must copy from the `Dom0` VHD file to the `guest` buffer.
 
-## 📡 API {#api}
+## API {#api}
 
 XCP-ng uses **XAPI** as main API. This API is used by all clients. For more details go to [XAPI website](https://xapi-project.github.io/).
 
@@ -822,7 +830,7 @@ XCP-ng is meant to use XAPI. Don't use it with `xl` or anything else!
 </svg>
 </Schema>
 
-## 🕸️ Network {#network}
+## Network {#network}
 
 ### Overview
 

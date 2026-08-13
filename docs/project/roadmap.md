@@ -1,3 +1,12 @@
+---
+heading_emoji:
+  in-tech-preview: building_construction
+  in-progress: construction_worker_man
+  specdesignpoc: labcoat
+  done: checkered_flag
+  backlog: card_file_box
+---
+
 # Roadmap
 
 Our global roadmap.
@@ -14,7 +23,7 @@ The goal of this document is to give you a hint of what's next. However, since a
 
 If you have any suggestion, feel free to ask on our [community forum](https://xcp-ng.org/forum/category/1/feedback-and-requests).
 
-## 🏗️ In tech preview {#in-tech-preview}
+## In tech preview {#in-tech-preview}
 
 _Technology that is here, but not officially released for production usage._
 
@@ -25,7 +34,7 @@ _Technology that is here, but not officially released for production usage._
 * SPDK-based `blkif` backend (platform)
 * SMAPIv3 evolution (storage)
 
-## 👷 In progress {#in-progress}
+## In progress {#in-progress}
 
 _Things we started to work on, but are not usable or visible yet._
 
@@ -40,14 +49,14 @@ _Things we started to work on, but are not usable or visible yet._
 
 * LACP support during install (platform)
 
-## 🥼 Spec/Design/PoC {#specdesignpoc}
+## Spec/Design/PoC {#specdesignpoc}
 
 _Features that are being discussed or designed, but not even partly coded._
 
 * [xenopsd-ng](https://github.com/xcp-ng/xenopsd-ng) (Xen)
 * Virtio support (platform)
 
-## 🏁 Done {#done}
+## Done {#done}
 
 * SMAPIv3 full ZFS driver
 * Faster Xen Motion (compression in `xenops`?)
@@ -79,7 +88,7 @@ _Features that are being discussed or designed, but not even partly coded._
 * Upgrade detection and upgrade with updater plugin (2018)
 * Extra package repo (2018)
 
-## 🗃️ Backlog {#backlog}
+## Backlog {#backlog}
 
 _This is a kind of wish list, without any priorities, where we try to put some ideas._
 

@@ -1,3 +1,21 @@
+---
+heading_emoji:
+  concepts: mortar_board
+  vlans: label
+  bonds: link
+  dedicated-storage-nic: dart
+  management-interface: compass
+  limit-a-vms-network-bandwidth-qos: vertical_traffic_light
+  switch-port-locking: name_badge
+  'nbd-backup-network': articulated_lorry
+  manage-physical-nics: globe_with_meridians
+  sdn-controller: wheel
+  static-routes: busstop
+  full-mesh-network: spider_web
+  dns-search-domains: mag_right
+  'network-troubleshooting': construction_worker_man
+---
+
 # Networking
 
 XCP-ng is using Open vSwitch as its core, and supports various features from it.
@@ -12,7 +30,7 @@ XCP-ng hosts **MUST NOT** have a public IP address assigned to their management 
 This is even more important when using XOSTOR: see the related warning in the [XOSTOR documentation](../xostor/#how-does-it-work).
 :::
 
-## 🎓 Concepts {#concepts}
+## Concepts {#concepts}
 
 This section describes the general concepts of networking in XCP-ng. For a deeper dive, check the [Network Architecture section](../../project/architecture/#network).
 
@@ -81,7 +99,7 @@ Non-standard MTUs are supported on **storage interfaces**. However, jumbo frames
 
 While these limitations may be addressed in future updates, **stick to default MTU settings on management interfaces** to ensure **operational stability**.
 
-## 🏷️ VLANs {#vlans}
+## VLANs {#vlans}
 
 VLANs, as defined by the IEEE 802.1Q standard, allow a single physical network to support multiple logical networks. XCP-ng hosts support VLANs in multiple ways.
 
@@ -143,7 +161,7 @@ In this configuration, when a VM sends a 9000-byte packet on the VLAN, it arrive
 
 **Solution:** Raise the physical interface's MTU to at least match the VLAN network's MTU before creating the VLAN network with jumbo frames.
 
-## 🔗 Bonds {#bonds}
+## Bonds {#bonds}
 
 A bond aggregates 2 to 4 physical NICs into one logical interface, for redundancy (a cable, NIC or switch failure doesn't cut traffic) and, depending on the mode, more total bandwidth. Bonds work for VM traffic, management and storage alike, with or without VLANs on top.
 
@@ -188,7 +206,7 @@ xe bond-destroy uuid=<bond-uuid>
 
 The member NICs come back as individual PIFs. If the management interface was on the bond, it moves back to the primary member.
 
-## 🎯 Dedicated storage NIC {#dedicated-storage-nic}
+## Dedicated storage NIC {#dedicated-storage-nic}
 
 To keep storage (or backup) traffic away from the management and VM networks, give a spare NIC its own IP and use that subnet for your NFS/iSCSI targets:
 
@@ -202,7 +220,7 @@ From Xen Orchestra: host → **Network** tab, edit the PIF's IP configuration di
 
 The host routes storage traffic through that NIC simply because the storage target's IP belongs to its subnet, so use a dedicated subnet (and ideally a dedicated VLAN) for storage. This also composes with [multipathing](../storage/multipathing.md), which uses several such NICs on separate paths.
 
-## 🧭 Management interface {#management-interface}
+## Management interface {#management-interface}
 
 The management interface is the PIF carrying XAPI traffic (pool communication, Xen Orchestra connections, migrations by default...). A few operations around it:
 
@@ -235,7 +253,7 @@ xe host-set-hostname-live host-uuid=<host-uuid> host-name=<new-hostname>
 
 DNS is part of the management PIF's IP configuration (`DNS=` in `pif-reconfigure-ip` above, comma-separated). For DNS *search domains*, see [DNS search domains](#dns-search-domains).
 
-## 🚦 Limit a VM's network bandwidth (QoS) {#limit-a-vms-network-bandwidth-qos}
+## Limit a VM's network bandwidth (QoS) {#limit-a-vms-network-bandwidth-qos}
 
 An outgoing rate limit can be set per virtual interface:
 
@@ -245,7 +263,7 @@ xe vif-param-set uuid=<vif-uuid> qos_algorithm_type=ratelimit qos_algorithm_para
 
 (here about 10 MB/s). Unplug/replug the VIF, or restart the VM, to apply. Remove it by setting `qos_algorithm_type=""`. This limits what the VM can *send*; incoming traffic shaping is a job for your physical network.
 
-## 📛 Restrict what a VM can send (switch port locking) {#switch-port-locking}
+## Restrict what a VM can send (switch port locking) {#switch-port-locking}
 
 By default, a VM can emit any traffic on its networks. You can lock a virtual interface down to its expected addresses (anti-spoofing), or block it entirely. Useful when you don't fully trust what runs inside the VMs, e.g. in hosting scenarios.
 
@@ -260,7 +278,7 @@ xe vif-param-set uuid=<vif-uuid> locking-mode=disabled
 
 A network-wide default can be set for all VIFs that stay in `default` mode: `xe network-param-set uuid=<network-uuid> default-locking-mode=disabled` (or `unlocked`). Changes on a running VM need a VIF replug or a VM restart. See the [CLI reference](../appendix/cli_reference.md#vif-commands) for the full parameter list.
 
-## 🚛 NBD backup network {#nbd-backup-network}
+## NBD backup network {#nbd-backup-network}
 
 Xen Orchestra's NBD-enabled backups read disk data over the NBD protocol (port 10809), on networks you have explicitly allowed. To dedicate a network (for example your storage or a backup network) to that traffic:
 
@@ -270,7 +288,7 @@ xe network-param-add uuid=<network-uuid> param-name=purpose param-key=nbd
 
 The network needs an IP on each host (a [dedicated NIC](#dedicated-storage-nic) works perfectly). See the [backup page](../management/backup.md) for the XO side.
 
-## 🌐 Manage physical NICs {#manage-physical-nics}
+## Manage physical NICs {#manage-physical-nics}
 
 ### Add a new NIC
 
@@ -377,7 +395,7 @@ xe pif-forget uuid=<PIF UUID>
 
 The `<PIF UUID>` can be obtained with either `xe pif-list` or with Xen Orchestra. This command only needs to be ran once on the pool. 
 
-## 🛞 SDN controller {#sdn-controller}
+## SDN controller {#sdn-controller}
 
 An SDN controller is provided by a [Xen Orchestra](../management#manage-at-scale) plugin. Thanks to that, you can enjoy advanced network features.
 
@@ -443,7 +461,7 @@ It means the TLS certificate, used to identify an SDN controller, on the host do
 
 The issue should be fixed.
 
-## 🚏 Static routes {#static-routes}
+## Static routes {#static-routes}
 
 Sometimes you need to add extra routes to an XCP-ng host. It can be done manually with an `ip route add 10.88.0.0/14 via 10.88.113.193` (for example). But it won't persist after a reboot.
 
@@ -479,7 +497,7 @@ A toolstack restart is needed as before, on all hosts in the pool.
 XAPI might not remove the already-installed route until the host is rebooted. If you need to remove it ASAP,  you can use `ip route del 10.88.0.0/14 via 10.88.113.193`. Check that it's gone with `route -n`.
 :::
 
-## 🕸️ Full mesh network {#full-mesh-network}
+## Full mesh network {#full-mesh-network}
 
 This page describes how to configure a three node meshed network ([see Wikipedia](https://en.wikipedia.org/wiki/Mesh_networking)) which is a very cheap approach to create a 3 node HA cluster, that can be used to host a Ceph cluster, or similar clustered solutions that require 3 nodes in order to operate with full high-availability.
 
@@ -572,7 +590,7 @@ This setup will save you costs of 2 network switches you would otherwise have to
 * Forum post: [https://xcp-ng.org/forum/topic/1897/mesh-network](https://xcp-ng.org/forum/topic/1897/mesh-network)
 * Proxmox wiki: [https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server](https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server)
 
-## 🔎 DNS Search Domains {#dns-search-domains}
+## DNS Search Domains {#dns-search-domains}
 
 When XCP-ng is configured for static IP configuration there are no DNS search domains added. It is possible to add search domains into `/etc/resolv.conf`, however those won't persist across reboots. Use `xe pif-param-set` to add search domains that should persist across reboots.
 
@@ -595,7 +613,7 @@ xe pif-param-set uuid=76608ca2-e099-9344-af36-5b63c0022913 other-config:domain=s
 
 This procedure has to be done for all hosts in the same pool.
 
-## 👷 Network Troubleshooting {#network-troubleshooting}
+## Network Troubleshooting {#network-troubleshooting}
 
 ### Network corruption
 

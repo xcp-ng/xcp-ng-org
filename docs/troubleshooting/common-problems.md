@@ -1,10 +1,30 @@
+---
+heading_emoji:
+  blank-screen-on-a-linux-vm: desktop_computer
+  initrd-is-missing-after-an-update: dna
+  vm-not-in-expected-power-state: electric_plug
+  host-and-pool-have-incompatible-licenses: identification_card
+  rebooting-hangs-the-server: arrows_counterclockwise
+  server-loses-time-on-14th-gen-dell-hardware: alarm_clock
+  async-taskscommands-hang-or-execute-extremely-slowly: snail
+  tcp-offload-checksum-errors: globe_with_meridians
+  tcp-segmentation-offload-tso-decreasing-performances: turtle
+  reset-xcp-ng-root-password: key
+  xenstore-related-issues: file_cabinet
+  ubuntu-1804-boot-issue: hiking_boot
+  missing-templates-when-creating-a-new-vm: clipboard
+  the-updater-plugin-is-busy: recycle
+  unable-to-live-migrate-vdi-between-srs: truck
+  installation-hanging-at-select-keymap: keyboard
+---
+
 # Common Problems
 
 Here is a list of common problems.
 
 ---
 
-## 🖥️ Blank screen (on a Linux VM) {#blank-screen-on-a-linux-vm}
+## Blank screen (on a Linux VM) {#blank-screen-on-a-linux-vm}
 
 ### Cause
 
@@ -32,7 +52,7 @@ Blacklist the problematic driver ([source](https://xcp-ng.org/forum/post/1707)):
 
 ---
 
-## 🧬 Initrd is missing after an update {#initrd-is-missing-after-an-update}
+## Initrd is missing after an update {#initrd-is-missing-after-an-update}
 
 ### Cause
 
@@ -52,7 +72,7 @@ Here is an example of `dracut` command on a 8.3 host: `dracut -f /boot/initrd-4.
 
 ---
 
-## 🔌 VM not in expected power state {#vm-not-in-expected-power-state}
+## VM not in expected power state {#vm-not-in-expected-power-state}
 
 ### Cause
 
@@ -64,7 +84,7 @@ Restart toolstack on CLI with the command `xe-toolstack-restart`. This just rest
 
 ---
 
-## 🪪 Host and Pool have incompatible Licenses {#host-and-pool-have-incompatible-licenses}
+## Host and Pool have incompatible Licenses {#host-and-pool-have-incompatible-licenses}
 
 ### Cause
 
@@ -76,7 +96,7 @@ To solve this, simply get your pool "coherent" and do not mix products. Ensure a
 
 ---
 
-## 🔄 Rebooting hangs the server {#rebooting-hangs-the-server}
+## Rebooting hangs the server {#rebooting-hangs-the-server}
 
 ### Cause
 
@@ -92,7 +112,7 @@ Try these steps:
 
 ---
 
-## ⏰ Server loses time on 14th gen Dell hardware {#server-loses-time-on-14th-gen-dell-hardware}
+## Server loses time on 14th gen Dell hardware {#server-loses-time-on-14th-gen-dell-hardware}
 
 ### Cause
 
@@ -119,7 +139,7 @@ chmod +x /etc/rc.d/rc.local
 
 ---
 
-## 🐌 Async Tasks/Commands Hang or Execute Extremely Slowly {#async-taskscommands-hang-or-execute-extremely-slowly}
+## Async Tasks/Commands Hang or Execute Extremely Slowly {#async-taskscommands-hang-or-execute-extremely-slowly}
 
 ### Cause
 
@@ -135,7 +155,7 @@ This symptom can be caused by a variety of issues including RAID degradation, ag
 
 ---
 
-## 🌐 TCP Offload checksum errors {#tcp-offload-checksum-errors}
+## TCP Offload checksum errors {#tcp-offload-checksum-errors}
 
 ### Cause
 
@@ -168,7 +188,7 @@ The PIF UUID can be found by executing:
 
 ---
 
-## 🐢 TCP Segmentation Offload (TSO) decreasing performances {#tcp-segmentation-offload-tso-decreasing-performances}
+## TCP Segmentation Offload (TSO) decreasing performances {#tcp-segmentation-offload-tso-decreasing-performances}
 
 ### Cause
 
@@ -195,7 +215,7 @@ xe pif-plug uuid=$PIFUUID
 If working on a pool, you can set this for all the PIFs of the pool from a single host as `xe pif-list` will show all the PIFs of the pool. You can then do a "Rolling Pool Reboot" in XO from your pool page, in the advanced tab.
 :::
 
-## 🔑 Reset XCP-ng root password {#reset-xcp-ng-root-password}
+## Reset XCP-ng root password {#reset-xcp-ng-root-password}
 
 ### Cause
 
@@ -213,7 +233,7 @@ After the password has been set, please place a copy somewhere safe and delete t
 
 ---
 
-## 🗄️ XenStore related issues {#xenstore-related-issues}
+## XenStore related issues {#xenstore-related-issues}
 
 ### Cause
 
@@ -227,7 +247,7 @@ The `XENSTORED_TRACE` being enabled might give useful information.
 
 ---
 
-## 🥾 Ubuntu 18.04 boot issue {#ubuntu-1804-boot-issue}
+## Ubuntu 18.04 boot issue {#ubuntu-1804-boot-issue}
 
 ### Cause
 
@@ -245,7 +265,7 @@ Alternatively, in a fresh Ubuntu 18.04 install, you can switch to UEFI and you w
 
 ---
 
-## 📋 Missing templates when creating a new VM {#missing-templates-when-creating-a-new-vm}
+## Missing templates when creating a new VM {#missing-templates-when-creating-a-new-vm}
 
 ### Cause
 
@@ -263,7 +283,7 @@ This should recreate all the templates.
 
 ---
 
-## ♻️ The updater plugin is busy {#the-updater-plugin-is-busy}
+## The updater plugin is busy {#the-updater-plugin-is-busy}
 
 ### Cause
 
@@ -282,7 +302,7 @@ Remove `/var/lib/xcp-ng-xapi-plugins/updater.py.lock` and that should fix it.
 
 ---
 
-## 🚚 Unable to live migrate VDI between SRs {#unable-to-live-migrate-vdi-between-srs}
+## Unable to live migrate VDI between SRs {#unable-to-live-migrate-vdi-between-srs}
 
 ### Cause
 
@@ -309,7 +329,7 @@ To know more about certificates in XAPI, check out the [XAPI documentation](http
 
 ---
 
-## ⌨️ Installation hanging at "Select Keymap" {#installation-hanging-at-select-keymap}
+## Installation hanging at "Select Keymap" {#installation-hanging-at-select-keymap}
 
 ### Issue
 

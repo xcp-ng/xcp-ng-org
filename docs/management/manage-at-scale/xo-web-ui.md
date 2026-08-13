@@ -1,5 +1,9 @@
 ---
 sidebar_position: 1
+heading_emoji:
+  deploy-xen-orchestra-virtual-appliance: rocket
+  xoa-vs-xo-from-github: coin
+  web-ui: globe_with_meridians
 ---
 
 # Xen Orchestra Web UI
@@ -35,7 +39,7 @@ Xen Orchestra is fully Open Source, and it comes in 2 "flavors":
 We advise to start using XOA by deploying it really easily in [few clicks on this page](https://vates.tech/deploy/). You can always decide later to build it yourself from GitHub.
 :::
 
-## 🚀 Deploy Xen Orchestra virtual Appliance {#deploy-xen-orchestra-virtual-appliance}
+## Deploy Xen Orchestra virtual Appliance {#deploy-xen-orchestra-virtual-appliance}
 You can deploy Xen Orchestra from a web UI, using:
 * [Web deploy directly](https://vates.tech/deploy/) (fastest & recommended)
 * Using [XO Lite](../manage-locally/xo-lite.md)
@@ -54,7 +58,7 @@ From the CLI using a deploy script, by running this in your XCP-ng host:
 bash -c "$(wget -qO- https://xoa.io/deploy)"
 `}</Terminal>
 
-## 🪙 XOA vs XO from GitHub? {#xoa-vs-xo-from-github}
+## XOA vs XO from GitHub? {#xoa-vs-xo-from-github}
 
 XOA is meant to be used as the easiest way to test it, but also to use it in production: this is the version **professionally supported**, with an updater and a support tunnel mechanism.
 
@@ -64,7 +68,7 @@ If you are an individual, feel free to enjoy the version from [GitHub directly](
 XO from the sources doesn't have QA and there's no stable version. It's great for a home lab or to make tests, but not for production.
 :::
 
-## 🌐 Web UI {#web-ui}
+## Web UI {#web-ui}
 
 You have access to all XCP-ng possibilities (and more!) from a web UI:
 
