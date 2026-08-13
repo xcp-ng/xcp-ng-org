@@ -72,6 +72,12 @@ const config = {
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/xcp-ng/xcp-ng-org/edit/master/',
+          // Emoji are written as `:name:` in the markdown, never as characters,
+          // so that the sources stay readable to anyone using a screen reader.
+          // Docusaurus's own remark-emoji does most of the work; this runs
+          // before it and handles the names its dataset gets wrong. See
+          // src/plugins/emoji/.
+          beforeDefaultRemarkPlugins: [require('./src/plugins/emoji/inline')],
         },
         blog: false,
         theme: {
