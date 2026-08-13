@@ -63,6 +63,36 @@ The one exception to the no-characters rule is **quoted material**: sample termi
 JSON payload, a code span, an inline SVG. There the character is part of what is being quoted,
 and a shortcode would not be converted anyway. Keep it as it is.
 
+#### What the build does with them
+
+The same reasoning applies to the published page, so the build does not simply drop the
+character into the HTML. Nothing here needs anything from you — it is worth knowing only
+because it explains why a heading looks bare in the browser's inspector.
+
+A heading's emoji is decoration: the heading reads correctly without it, and announcing it
+ahead of the title on every heading is noise to anyone navigating by heading. So it is hidden
+where it stands, and the table of contents entry gets the same treatment:
+
+```html
+<h2 id="where-to-start"><span aria-hidden="true">🚀</span> Where to start</h2>
+```
+
+Drawing it from CSS instead would additionally keep it out of the text copied with the heading
+and out of the search index, but `aria-hidden` needs no CSS at all, so the emoji still renders
+in a text-mode browser such as w3m and in browsers too old for the CSS involved. That trade is
+forced rather than chosen: in a text browser the visible text *is* what a screen reader gets,
+so nothing can show w3m the emoji while hiding it from assistive tech.
+
+Every other emoji means something, so it stays where it is and gets a name instead:
+
+```html
+<span role="img" aria-label="warning">⚠️</span>
+```
+
+That name is what a braille display receives in place of the character, which is the point: a
+braille table has no cell for an emoji, so a bare one arrives as a placeholder the reader has
+to stop and inspect. Speech is unchanged — it is the name a screen reader announces anyway.
+
 `npm run lint:emoji` checks all of this, in both directions. It reports emoji characters in the
 sources, and it reports shortcodes that would silently not work:
 
