@@ -77,6 +77,9 @@ const config = {
           // as a row of question marks. See src/plugins/emoji/.
           rehypePlugins: [require('./src/plugins/emoji/headings')],
           beforeDefaultRemarkPlugins: [require('./src/plugins/emoji/inline')],
+          // Must stay in remarkPlugins: it rewrites the toc export, so it has
+          // to run after the default plugin that builds it.
+          remarkPlugins: [require('./src/plugins/emoji/toc')],
         },
         blog: false,
         theme: {

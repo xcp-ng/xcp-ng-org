@@ -57,9 +57,10 @@ heading_emoji:
 ## Merging {#merging}
 ```
 
-The emoji is then drawn by CSS, as decoration: screen readers announce "Contents", the
-character is not copied along with the heading text, and it stays out of the table of contents
-and of the search index. A heading with no entry in the map simply gets no emoji.
+The emoji is then drawn by CSS, as decoration, and never becomes text: screen readers announce
+"Contents", the character is not copied along with the heading text, and the search index holds
+the heading without it. The table of contents shows the same emoji, drawn the same way. A
+heading with no entry in the map simply gets no emoji.
 
 Mistyping an emoji name, or leaving an entry behind after renaming a heading, **fails the
 build** — otherwise the emoji would just silently vanish and nobody would notice.

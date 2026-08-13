@@ -60,13 +60,16 @@ article {
   counter-reset: schema-fig;
 }
 
-/* Heading emoji. src/plugins/emoji/headings.js puts them here from the
-   heading_emoji front matter, and they are drawn as generated content so the
-   character never becomes text: the empty alt (the / "" part) keeps it out of
-   the accessibility tree, and it is not copied along with the heading either.
-   A browser too old for alt text drops the whole declaration and shows no
-   emoji, which is the right way for this to fail. */
-.markdown :is(h1, h2, h3, h4, h5, h6)[data-emoji]::before {
+/* Emoji from the heading_emoji front matter: on the heading itself, put there
+   by src/plugins/emoji/headings.js, and on the matching table of contents
+   entry, put there by src/plugins/emoji/toc.js.
+
+   They are drawn as generated content so the character never becomes text: the
+   empty alt (the / "" part) keeps it out of the accessibility tree, and it is
+   not copied along with the heading either. A browser too old for alt text
+   drops the whole declaration and shows no emoji, which is the right way for
+   this to fail. */
+[data-emoji]::before {
   content: attr(data-emoji) / '';
   margin-inline-end: 0.4em;
 }
