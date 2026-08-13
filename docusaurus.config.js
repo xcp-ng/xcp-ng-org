@@ -72,6 +72,11 @@ const config = {
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/xcp-ng/xcp-ng-org/edit/master/',
+          // Heading emoji come from the heading_emoji front matter, never from
+          // the markdown itself, so that they reach nobody reading the source
+          // as a row of question marks. See src/plugins/emoji/.
+          rehypePlugins: [require('./src/plugins/emoji/headings')],
+          beforeDefaultRemarkPlugins: [require('./src/plugins/emoji/inline')],
         },
         blog: false,
         theme: {
