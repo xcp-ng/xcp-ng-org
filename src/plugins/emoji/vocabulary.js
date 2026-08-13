@@ -1,6 +1,7 @@
 /**
- * Emoji vocabulary, shared by the emoji remark plugin (inline.js) and by the
- * check script that enforces the rule (scripts/check-emoji.js).
+ * Emoji vocabulary, shared by the three emoji build plugins (inline.js,
+ * headings.js, toc.js) and by the check script that enforces the rule
+ * (scripts/check-emoji.js).
  *
  * Documentation sources contain no emoji characters: contributors write the
  * `:name:` shortcode and the build inserts the character. Docusaurus does that
@@ -112,4 +113,43 @@ const EMOJI_SOURCE = [
   '(?:\\u200D.(?:\\uFE0F|[\\u{1F3FB}-\\u{1F3FF}])?)*',
 ].join('');
 
-module.exports = {NAMES, EMOJI_SOURCE};
+// The other direction, character to name, for the plugins that have to label an
+// emoji they find in the built page. node-emoji's own `which` covers everything
+// remark-emoji converted; this covers the names it had never heard of, which are
+// exactly the ones ALIASES exists for.
+//
+// The two gemoji names that are not words go in as well: `+1` would reach a
+// screen reader as "plus one", which is not what 👍 means to a reader.
+const OWN_LABELS = {
+  ...Object.fromEntries(Object.entries(NAMES).map(([name, character]) => [character, name])),
+  '👍': 'thumbs_up',
+  '👎': 'thumbs_down',
+};
+
+// node-emoji is ESM-only and this file is required from a CommonJS config, so it
+// has to be imported dynamically. Cache the promise: label() is called once per
+// emoji, on every page.
+let nodeEmojiPromise;
+
+function nodeEmoji() {
+  nodeEmojiPromise ??= import('node-emoji');
+  return nodeEmojiPromise;
+}
+
+/**
+ * The accessible name for an emoji character: its emoji name, spelled out.
+ *
+ * This is what a braille display receives in place of the character, so it has
+ * to be words rather than a shortcode — `desktop computer`, not
+ * `desktop_computer`. It matches what a screen reader announces for the bare
+ * character anyway, so speech is unchanged.
+ *
+ * @param {string} character a single emoji, variation selector and all
+ * @returns {Promise<string | undefined>} undefined if nothing knows this emoji
+ */
+async function label(character) {
+  const name = OWN_LABELS[character] ?? (await nodeEmoji()).which(character);
+  return name?.replace(/_/g, ' ');
+}
+
+module.exports = {NAMES, EMOJI_SOURCE, label};

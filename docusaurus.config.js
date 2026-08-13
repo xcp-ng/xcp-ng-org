@@ -78,6 +78,13 @@ const config = {
           // before it and handles the names its dataset gets wrong. See
           // src/plugins/emoji/.
           beforeDefaultRemarkPlugins: [require('./src/plugins/emoji/inline')],
+          // Must stay in remarkPlugins: it rewrites the toc export, so it has to
+          // run after the default plugin that builds it.
+          remarkPlugins: [require('./src/plugins/emoji/toc')],
+          // Takes heading emoji out of the heading text and gives every other
+          // emoji an accessible name, so neither reaches a screen reader or a
+          // braille display as a bare character.
+          rehypePlugins: [require('./src/plugins/emoji/headings')],
         },
         blog: false,
         theme: {
