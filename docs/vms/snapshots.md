@@ -10,7 +10,7 @@ A snapshot captures the state of a VM at a point in time: its disks, and optiona
 Snapshots are **not backups**: they live on the same SR as the VM. If the storage is lost, snapshots are lost with it. For real backups (full, delta, replicated, off-site…), use [Xen Orchestra backup](../management/backup.md).
 :::
 
-## 🎓 How they work {#how-they-work}
+## :mortar_board: How they work {#how-they-work}
 
 XCP-ng disks are copy-on-write: taking a snapshot freezes the current disk state as a read-only parent, and the VM continues writing into a new child disk. This makes snapshot creation almost instant, but it has consequences:
 
@@ -50,7 +50,7 @@ XCP-ng disks are copy-on-write: taking a snapshot freezes the current disk state
 * Snapshots consume space on the SR (on thick-provisioned SRs like LVM/iSCSI/HBA, a snapshot can reserve up to the full disk size).
 * Deleting a snapshot doesn't free space immediately: the [coalesce process](../storage/storage.md#coalesce) has to merge the chain in the background first.
 
-## 📸 Take a snapshot {#take-a-snapshot}
+## :camera_flash: Take a snapshot {#take-a-snapshot}
 
 Two flavors:
 
@@ -68,7 +68,7 @@ xe vm-checkpoint vm="my-vm" new-name-label="before-upgrade-with-ram"
 In Xen Orchestra you can exclude specific disks from snapshots (and backups) by naming convention: putting `[NOSNAP]` (snapshots) or `[NOBAK]` (backups and their snapshots) in the disk's name. Very useful for large scratch/data disks. On XCP-ng 8.3, disk exclusion is supported natively by the snapshot API, which XO uses.
 :::
 
-## ⏪ Revert to a snapshot {#revert-to-a-snapshot}
+## :rewind: Revert to a snapshot {#revert-to-a-snapshot}
 
 Reverting replaces the VM's current state with the snapshot's state. **Everything written since the snapshot is lost.**
 
@@ -81,7 +81,7 @@ xe snapshot-revert snapshot-uuid=<snapshot-uuid>
 
 After reverting, the VM is halted (or suspended for a RAM snapshot; resume it to continue exactly where it was). The snapshot itself survives the revert, so you can revert again later.
 
-## 🗑️ Delete a snapshot {#delete-a-snapshot}
+## :wastebasket: Delete a snapshot {#delete-a-snapshot}
 
 From Xen Orchestra: Snapshots tab → delete. With `xe`:
 
@@ -91,11 +91,11 @@ xe snapshot-uninstall snapshot-uuid=<snapshot-uuid>
 
 Space is reclaimed asynchronously by the [coalesce process](../storage/storage.md#coalesce): expect a delay (and storage I/O activity) before the SR usage drops. If space never comes back, check that coalesce isn't stuck.
 
-## 🔁 Scheduled (rolling) snapshots {#scheduled-rolling-snapshots}
+## :repeat: Scheduled (rolling) snapshots {#scheduled-rolling-snapshots}
 
 Use Xen Orchestra's **Rolling Snapshot** backup jobs: take a snapshot of selected VMs on a schedule and keep the N most recent ones. This gives you automatic short-term rollback points at near-zero cost. See the [XO backup documentation](https://docs.xen-orchestra.com/xo5/rolling_snapshots) for details, and remember the warning above: schedule real backups too.
 
-## 🧰 Other things you can do with a snapshot {#other-things-you-can-do-with-a-snapshot}
+## :toolbox: Other things you can do with a snapshot {#other-things-you-can-do-with-a-snapshot}
 
 * [Create a template](templates.md#create-a-custom-template) from it (golden image without stopping the source VM).
 * Create a full VM from it: `xe snapshot-copy snapshot-uuid=<uuid> new-name-label="restored-vm"` (or from Xen Orchestra, "create VM from snapshot").

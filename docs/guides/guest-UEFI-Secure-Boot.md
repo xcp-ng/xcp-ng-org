@@ -4,7 +4,7 @@ How to configure UEFI Secure boot?
 
 Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute trusted binaries at boot. In practice, these are the binaries released by the operating system (OS) vendor for the OS running in the VM (Microsoft Windows, Debian, RHEL, Alpine, etc.).
 
-## 🆕 Recent changes in guest Secure Boot configuration {#recent-changes-in-guest-secure-boot-configuration}
+## :new: Recent changes in guest Secure Boot configuration {#recent-changes-in-guest-secure-boot-configuration}
 
 The default guest Secure Boot keys in XCP-ng are changing.
 
@@ -44,7 +44,7 @@ This step is also required for Secure Boot support on previously V2V-migrated VM
 **Risk of data loss:** Propagating certificates to an existing VM will change its Secure Boot vTPM measurements. If you depend on these measurements (e.g. BitLocker with TPM protector), you must carefully read the [Preparing for Secure Boot Variable Changes](#preparing-for-secure-boot-variable-changes) procedure.
 :::
 
-## ℹ️ Requirements {#requirements}
+## :information_source: Requirements {#requirements}
 
 * XCP-ng >= 8.2.1.
 * UEFI Secure Boot Certificates installed on the pool (this is detailed below).
@@ -52,13 +52,13 @@ This step is also required for Secure Boot support on previously V2V-migrated VM
 
 Note: it's not necessary that the XCP-ng host boots in UEFI mode for Secure Boot to be enabled on VMs.
 
-## 🆙 8.3 with varstored >= 1.2.0-3.4 {#83-with-varstored--120-34}
+## :up: 8.3 with varstored >= 1.2.0-3.4 {#83-with-varstored--120-34}
 
 Secure Boot is ready to use on new VMs without extra configuration. Simply activate Secure Boot on your VMs, and they will be provided with an appropriate set of default Secure Boot variables.
 
 We will keep updating the default Secure Boot variables with future updates from Microsoft. If you don't want this behavior, you can lock in these variables by using the [Manually Install the Default UEFI Certificates](#manually-install-the-default-uefi-certificates) procedure.
 
-## 🧓 8.2.1 and 8.3 with varstored < 1.2.0-3.4 {#821-and-83-with-varstored--120-34}
+## :older_adult: 8.2.1 and 8.3 with varstored < 1.2.0-3.4 {#821-and-83-with-varstored--120-34}
 
 These versions of XCP-ng require manual configuration to enable Secure Boot.
 
@@ -89,7 +89,7 @@ Starting with XCP-ng 8.3, Xen Orchestra was made to help you in the setup of Sec
 More about this in [Troubleshoot Guest Secure Boot Issues](#troubleshoot-guest-secure-boot-issues)
 :::
 
-## 🎓 How XCP-ng Manages the Certificates {#how-xcp-ng-manages-the-certificates}
+## :mortar_board: How XCP-ng Manages the Certificates {#how-xcp-ng-manages-the-certificates}
 
 Let's embark on our journey towards understanding how all this works.
 
@@ -125,7 +125,7 @@ At the VM level:
 * The VM's Operating System may update some of the VM's certificates by itself (Windows updates the revocation list, `dbx`, when needed).
 * We provide administrators with tools to [manage a VM's UEFI certificates](#certificate-management) if needed.
 
-## 🎱 Configure the Pool {#configure-the-pool}
+## :8ball: Configure the Pool {#configure-the-pool}
 
 For pools with varstored version >= 1.2.0-3.4, no action is required.
 
@@ -261,7 +261,7 @@ secureboot-certs clear
 
 Existing VMs will not be affected.
 
-## ✅ Enable Secure Boot for a Guest VM {#enable-secure-boot-for-a-guest-vm}
+## :white_check_mark: Enable Secure Boot for a Guest VM {#enable-secure-boot-for-a-guest-vm}
 
 ### Enable Secure Boot at VM creation
 
@@ -331,7 +331,7 @@ Consequences:
 Also see [VMs that won't boot due to a revoked certificate](#vms-that-wont-boot-due-to-a-revoked-certificate).
 :::
 
-## 🚫 Disable Secure Boot for a Guest VM {#disable-secure-boot-for-a-guest-vm}
+## :no_entry_sign: Disable Secure Boot for a Guest VM {#disable-secure-boot-for-a-guest-vm}
 
 ### Disable Secure Boot for a Guest VM using XO
 
@@ -348,7 +348,7 @@ xe vm-param-set uuid=<vm-uuid> platform:secureboot=false
 
 Reboot the VM and Secure Boot will be disabled.
 
-## 🧑‍⚕️ Troubleshoot Guest Secure Boot Issues {#troubleshoot-guest-secure-boot-issues}
+## :health_worker: Troubleshoot Guest Secure Boot Issues {#troubleshoot-guest-secure-boot-issues}
 You may encounter the following issues with your VMs when enabling Secure Boot:
 * The VM won't boot.
 * The VM does boot, but SecureBoot is actually disabled.
@@ -361,11 +361,11 @@ Starting with XCP-ng 8.3, you can get a "secureboot readiness" status of a VM: f
 | first_boot | SecureBoot enforced, pending first boot | Normal transient state. Secure Boot was enabled by the user but the VM hasn't booted yet so its certificates are still empty. | Boot the VM at least once so that the pool's UEFI certificates are propagated to it. |
 | ready | SecureBoot enforced | From the hypervisor's point of view, all is ready for Secure Boot in the VM, and it's enforced. If the VM boots to a UEFI shell, this means that the boot binaries didn't pass the Secure Boot validation.| In case of boot failure, either the installed OS doesn't support Secure Boot, or its binaries were signed with a key which is not valid ([anymore?](#vms-that-wont-boot-due-to-a-revoked-certificate)) according to the UEFI certificates installed in the VM's UEFI variable store, or the installed certificates are wrong or inconsistent. |
 | ready_no_dbx | SecureBoot enforced, but no dbx present | The minimum certificates necessary to enforce Secure Boot are present, but the revocation list is missing. This is not a good idea. See [Secure Boot and revoked certificates](#secure-boot-and-revoked-certificates).| We advise to install the `dbx` revocation list. |
-| setup_mode | ⚠️ SecureBoot wanted, but disabled due to the VM being in UEFI setup mode | There is a mismatch between the user intent (enabling Secure Boot) and the state of the VM certificates (no PK, so the VM is in [Setup Mode](#uefi-setup-mode)). The VM boots, but Secure Boot is actually disabled! | [Check your pool was setup](#view-certificates-already-installed-on-the-pool) for Secure Boot, [set it up](#configure-the-pool) if needed, then [propagate the pool certificates to the VM](#propagate-pool-certificates-to-a-vm).|
-| certs_incomplete | ⚠️ SecureBoot wanted, but some EFI certificates are missing | Unbootable VM because Secure Boot can't be enforced, due to missing certificates. Only some certs are present. This will often mean that your VM was booted before your pool was setup for Secure Boot, so it only has the `PK` key, and is missing the rest of the necessary certificates. | [Check your pool was setup](#view-certificates-already-installed-on-the-pool) for Secure Boot, [set it up](#configure-the-pool) if needed, then [propagate the pool certificates to the VM](#propagate-pool-certificates-to-a-vm).|
+| setup_mode | :warning: SecureBoot wanted, but disabled due to the VM being in UEFI setup mode | There is a mismatch between the user intent (enabling Secure Boot) and the state of the VM certificates (no PK, so the VM is in [Setup Mode](#uefi-setup-mode)). The VM boots, but Secure Boot is actually disabled! | [Check your pool was setup](#view-certificates-already-installed-on-the-pool) for Secure Boot, [set it up](#configure-the-pool) if needed, then [propagate the pool certificates to the VM](#propagate-pool-certificates-to-a-vm).|
+| certs_incomplete | :warning: SecureBoot wanted, but some EFI certificates are missing | Unbootable VM because Secure Boot can't be enforced, due to missing certificates. Only some certs are present. This will often mean that your VM was booted before your pool was setup for Secure Boot, so it only has the `PK` key, and is missing the rest of the necessary certificates. | [Check your pool was setup](#view-certificates-already-installed-on-the-pool) for Secure Boot, [set it up](#configure-the-pool) if needed, then [propagate the pool certificates to the VM](#propagate-pool-certificates-to-a-vm).|
 
 
-## ⛔ Secure Boot and revoked certificates {#secure-boot-and-revoked-certificates}
+## :no_entry: Secure Boot and revoked certificates {#secure-boot-and-revoked-certificates}
 
 ### Revocation database updates
 
@@ -404,7 +404,7 @@ Despite this, we still recommend that you always install the latest revocation d
   * either disable Secure Boot for the VM, as its binaries are not secure anymore anyway. This can be temporary until an update brings properly signed binaries.
   * or [install](#change-the-certificates-already-installed-on-a-vm) an older `dbx` to the VM, [downloaded from the archive of prior versions of `dbx` files](https://uefi.org/revocationlistfile/archive). Let us stress again that this exposes the VM to risk, and therefore, we recommend that before choosing an archived `dbx` users evaluate the vulnerabilities that their guest system will be exposed to by omitting the most recent revocations. Above all, downgrading the `dbx` must not give you a dangerous false sense of security.
 
-## 🗂️ Certificate Management {#certificate-management}
+## :card_index_dividers: Certificate Management {#certificate-management}
 
 ### View Certificates Already Installed on the Pool
 
@@ -539,7 +539,7 @@ To update an individual certificate in the VM's NVRAM store:
    d719b2cb-3d3a-4596-a3bc-dad00e67656f dbx
    ```
 
-## ⛑️ Misc {#misc}
+## :rescue_worker_helmet: Misc {#misc}
 
 ### Secure Boot and the UEFI Firmware Menu in the Guest
 

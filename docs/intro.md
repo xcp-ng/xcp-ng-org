@@ -19,7 +19,7 @@ Visit the [main website](https://xcp-ng.org) to learn more. Latest updates are p
 Discover the growing network around XCP-ng and Xen Orchestra, collectively known as the [Vates Stack](https://vates.tech). Visit the [ecosystem page](https://docs.vates.tech/compatible-solutions/xcp-ng-ecosystem) at the Vates VMS documentation to explore our current partnerships and certification opportunities. Interested in joining? We’d love to [hear from you](https://vates.tech/contact)!
 :::
 
-## 🚀 Where to start {#where-to-start}
+## :rocket: Where to start {#where-to-start}
 
 <CardGrid>
 <LinkCard title="Install XCP-ng" href="/installation/install-xcp-ng/">Download the ISO and install your first host.</LinkCard>
@@ -32,7 +32,7 @@ Discover the growing network around XCP-ng and Xen Orchestra, collectively known
 <LinkCard title="Troubleshooting" href="/troubleshooting/">The 3-step guide, common problems, log files.</LinkCard>
 </CardGrid>
 
-## 🧭 Which documentation for what? {#which-documentation}
+## :compass: Which documentation for what? {#which-documentation}
 
 Three documentation sets work together. Knowing which one to open saves time:
 
@@ -44,7 +44,7 @@ Three documentation sets work together. Knowing which one to open saves time:
 
 As a rule of thumb: if it happens **on a host or pool**, it's documented here; if you do it **from Xen Orchestra**, it's in the XO docs; if it's about **the offer around the software** (trial, licenses, support, certified hardware), it's on the Vates docs.
 
-## ⚙️ General design {#general-design}
+## :gear: General design {#general-design}
 
 XCP-ng contains multiple components, built around the Xen Hypervisor. It's meant to run on top of bare-metal machines.
 
@@ -114,7 +114,7 @@ XCP-ng contains multiple components, built around the Xen Hypervisor. It's meant
 </svg>
 </Schema>
 
-## 📚 Stack overview {#stack-overview}
+## :books: Stack overview {#stack-overview}
 
 The main goal of XCP-ng is to be a fully integrated and dedicated virtualization platform, without requiring any deep Linux or system knowledge. It's meant to be managed in a centralized manner via [Xen Orchestra](management/#manage-at-scale), whether you have only one host or thousands of them. Backup is also included inside Xen Orchestra.
 
@@ -122,7 +122,7 @@ The main goal of XCP-ng is to be a fully integrated and dedicated virtualization
 ![Vates VMS stack overview.](../assets/img/vates-vms.png)
 </div>
 
-## 🎓 Concepts {#concepts}
+## :mortar_board: Concepts {#concepts}
 
 There are a few concepts to grasp in order to get a clear picture about what XCP-ng is.
 
@@ -152,7 +152,7 @@ Some clients are stateless (only running when you open or use them) and others a
 
 Xen Orchestra is a complete and agentless backup solution for your VMs running on XCP-ng. Please read the dedicated [backup section](management/backup) to get more details.
 
-## 📹 Community videos on XCP-ng {#community-videos-on-xcp-ng}
+## :video_camera: Community videos on XCP-ng {#community-videos-on-xcp-ng}
 
 :::note
 Those videos are made by 3rd parties. However, for example, Tom from Lawrence Systems is providing a lot of content on XCP-ng and Xen Orchestra. Check his [YouTube channel](https://www.youtube.com/channel/UCHkYOD-3fZbuGhwsADBd9ZQ).
@@ -170,7 +170,7 @@ A quick intro by Raid Owl:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/kguTbVBqmuw?si=bWze86s07ZDkLzlU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
-## 🌍 Project and community {#project-and-community}
+## :earth_africa: Project and community {#project-and-community}
 
 XCP-ng is a community-driven Open Source project, backed by [Vates](https://vates.tech). Everything about the project itself (roadmap, contributing, development process, security handling) lives in the [project pages](/category/project).
 

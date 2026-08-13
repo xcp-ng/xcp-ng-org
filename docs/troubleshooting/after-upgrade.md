@@ -1,6 +1,6 @@
 # After Upgrade
 
-## 🔧 The Server stays in Maintenance Mode {#the-server-stays-in-maintenance-mode}
+## :wrench: The Server stays in Maintenance Mode {#the-server-stays-in-maintenance-mode}
 
 ### Causes and Solutions
 * You enabled the maintenance mode and forgot about it.
@@ -14,7 +14,7 @@
 
 ***
 
-## 🙅 Some of my VMs do not start {#some-of-my-vms-do-not-start}
+## :no_good_woman: Some of my VMs do not start {#some-of-my-vms-do-not-start}
 
 With the following error: "This operation cannot be performed because the specified virtual disk could not be found."
 
@@ -26,7 +26,7 @@ Eject the ISO on those VMs.
 
 ***
 
-## 💔 Missing scripts/tools after upgrade {#missing-scriptstools-after-upgrade}
+## :broken_heart: Missing scripts/tools after upgrade {#missing-scriptstools-after-upgrade}
 
 ### Cause
 
@@ -39,7 +39,7 @@ To access the backup (with all your tools and modifications) just mount the back
 
 ***
 
-## 🐛 After upgrading my XCP-ng host is unstable, network card freezes, kernel errors, etc. {#after-upgrading-my-xcp-ng-host-is-unstable-network-card-freezes-kernel-errors-etc}
+## :bug: After upgrading my XCP-ng host is unstable, network card freezes, kernel errors, etc. {#after-upgrading-my-xcp-ng-host-is-unstable-network-card-freezes-kernel-errors-etc}
 
 ### Causes and Solutions
 

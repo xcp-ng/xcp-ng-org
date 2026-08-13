@@ -4,7 +4,7 @@ How to contribute to XCP-ng? There are many ways of contributing:
 * by giving some of your time to work on the project. Code isn't the only way! Community support, translation, documentation, testing…
 * with money, by subscribing to [Pro Support](https://vates.tech), which funds further developments.
 
-## 💁 Help others {#help-others}
+## :tipping_hand_woman: Help others {#help-others}
 
 You don't have to be a programmer/IT-nerd to help at this project. Just ask or offer your help:
 
@@ -14,17 +14,17 @@ You don't have to be a programmer/IT-nerd to help at this project. Just ask or o
 
 We are happy about every helping hand!
 
-## 🌍 Translations {#translations}
+## :earth_africa: Translations {#translations}
 
 [Help us translate the built-in web interface (XO Lite) in more languages!](http://translate.vates.tech/engage/xen-orchestra/)
 
-## ✍️ Write documentation {#write-documentation}
+## :writing_hand: Write documentation {#write-documentation}
 
-Contribute to our documentation with pull requests modifying the files in this very documentation. At the bottom of each page (including this one!), you can find a "🖊️ Edit this page" link. Click on it and contribute!
+Contribute to our documentation with pull requests modifying the files in this very documentation. At the bottom of each page (including this one!), you can find a ":pen: Edit this page" link. Click on it and contribute!
 
-## 🧑‍🔬 Test {#test}
+## :scientist: Test {#test}
 
-It's important to test XCP-ng on many different platforms and devices. You have gear laying around or access to some special devices? -> be a tester and test all the features of XCP-ng 🚀
+It's important to test XCP-ng on many different platforms and devices. You have gear laying around or access to some special devices? -> be a tester and test all the features of XCP-ng :rocket:
 
 Your results are very welcome in our [Hardware Compatibility List (HCL)](../../installation/hardware)!
 
@@ -37,7 +37,7 @@ Most community testing is organized on the forum, on dedicated threads.
 
 You can also read [this](../development-process/tests) for test ideas.
 
-## 🧑‍💻 Develop {#develop}
+## :technologist: Develop {#develop}
 
 You are a developer and want to code with us? Cool!
 
@@ -49,17 +49,17 @@ There are many components, in various languages: C, ocaml, python and more.
     * Forum -> Development Corner: [https://xcp-ng.org/forum/category/7/development](https://xcp-ng.org/forum/category/7/development)
 * Read [this introduction](../development-process/development). The rest of the [Development Process Tour](../../category/development-process) is also of interest for anyone who wants to help on development.
 
-## 📦 Package {#package}
+## :package: Package {#package}
 
 Development is one thing, but for your changes to reach actual users, they need to be packaged into RPMs.
 
 See the [Development Process Tour](../../category/development-process) for an introduction about the packaging process, and useful tips (like: [how to rebuild a RPM for XCP-ng locally](../development-process/local-rpm-build)).
 
-## 📣 Talk about us {#talk-about-us}
+## :mega: Talk about us {#talk-about-us}
 
 Another valuable way to help is by talking about XCP-ng to people you know or to your audience.
 
-## 🪪 Developer Certificate of Origin (DCO) {#developer-certificate-of-origin-dco}
+## :identification_card: Developer Certificate of Origin (DCO) {#developer-certificate-of-origin-dco}
 
 As a member of the Linux Foundation, XCP-ng asks that every contributor certifies that they are allowed to contribute the code or documentation they submit to us. This is done with a simple
 ```

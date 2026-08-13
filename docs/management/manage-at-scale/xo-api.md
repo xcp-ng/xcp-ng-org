@@ -8,7 +8,7 @@ There's two different APIs to manage XCP-ng at scale via Xen Orchestra:
 * a REST API, simple to use to read content
 * a JSON-RPC over websocket API, more complex but coming with all features
 
-## 📡 REST API {#rest-api}
+## :satellite: REST API {#rest-api}
 
 We developed XO original API to be used between the Web UI `xo-web` and the server backend, `xo-server`. That's why it's a JSON-RPC API connected via websockets, allowing us to update objects live in the browser. This is perfect for our usage, but a bit complicated for others.
 
@@ -265,7 +265,7 @@ $ curl \
 
 We are adding features and improving the REST API step by step. If you have interesting use cases or feedback, please ask directly at [the dedicated forum section](https://xcp-ng.org/forum/category/18/rest-api).
 
-## 🥋 JSON-RPC over websockets {#json-rpc-over-websockets}
+## :martial_arts_uniform: JSON-RPC over websockets {#json-rpc-over-websockets}
 
 This is the API used between Xen Orchestra web UI and the server part, `xo-server`. It's a bit harder to use than the REST API, but if you need a live subscription to events happening in your infrastructure, or to send advanced commands, this is the right one.
 

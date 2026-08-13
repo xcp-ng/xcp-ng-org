@@ -2,7 +2,7 @@
 
 This page is dedicated to common issues you might have with iSCSI.
 
-## 🎓 Basic iSCSI commands {#basic-iscsi-commands}
+## :mortar_board: Basic iSCSI commands {#basic-iscsi-commands}
 
 Discover available targets from a discovery portal:
 
@@ -46,7 +46,7 @@ Rescan a volume after expanding a LUN:
 iscsiadm -m node -p <IP_address> --rescan
 `}</Terminal>
 
-## 💓 iSCSI in storage-cluster environment {#iscsi-in-storage-cluster-environment}
+## :heartbeat: iSCSI in storage-cluster environment {#iscsi-in-storage-cluster-environment}
 
 This apply to setup using DRBD/Corosync/Pacemaker.
 

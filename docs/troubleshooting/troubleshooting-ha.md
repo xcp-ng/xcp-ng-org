@@ -8,7 +8,7 @@ To know more on high availability in general and how to set it up with XCP-ng, s
 
 ---
 
-## 🔄 My host rebooted. Why did it reboot? {#my-host-rebooted-why-did-it-reboot}
+## :arrows_counterclockwise: My host rebooted. Why did it reboot? {#my-host-rebooted-why-did-it-reboot}
 
 If a host configured for high availability reboots unexpectedly, it might have: 
 
@@ -17,7 +17,7 @@ If a host configured for high availability reboots unexpectedly, it might have:
 
 Check the host's logs to verify if any of these events happened, in particular `/var/log/xha.log`.
 
-## 🚨 I can't reach my host! {#i-cant-reach-my-host}
+## :rotating_light: I can't reach my host! {#i-cant-reach-my-host}
 
 ### Disabling HA
 

@@ -16,7 +16,7 @@ Do not attempt to enable multipathing on a production pool with existing and act
 You can activate it on the "fly", per XCP-ng host (Advanced tab), but it is recommended to do so with XCP-ng hosts that have no VMs running.
 :::
 
-## 🌐 iSCSI {#iscsi}
+## :globe_with_meridians: iSCSI {#iscsi}
 
 ### Requirements
 * Two different network interfaces.
@@ -41,8 +41,8 @@ This could have an impact on expected performance.
 #### Configuration example
 | Path | Vlan | Subnet | XCP-ng Host PIF address | Storage Controller 1 address | Storage Controller 2 address |
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| 🔵 | 421 | 10.42.1.0/24 | 10.42.1.11 | 10.42.1.101 | 10.42.1.102 |
-| 🟢 | 422 | 10.42.2.0/24 | 10.42.2.11 | 10.42.2.101 | 10.42.2.102 |
+| :large_blue_circle: | 421 | 10.42.1.0/24 | 10.42.1.11 | 10.42.1.101 | 10.42.1.102 |
+| :green_circle: | 422 | 10.42.2.0/24 | 10.42.2.11 | 10.42.2.101 | 10.42.2.102 |
 
 #### Target architecture diagram
 
@@ -155,7 +155,7 @@ If this is not the case:
 #### 3. Configure the SR
 Proceed with the iSCSI SR configuration as indicated in the [storage documentation](../../storage/#iscsi).
 
-## 🧵 Fibre Channel (HBA) {#fibre-channel-hba}
+## :thread: Fibre Channel (HBA) {#fibre-channel-hba}
 ### Requirements
 * Check that the Fibre Channel cards model(s) is supported via the [HCL](../../installation/hardware/#hardware-compatibility-list-hcl).
 * Two different Fibre Channel ports.
@@ -272,7 +272,7 @@ If this is not the case:
 Proceed with the HBA SR configuration as indicated in the [storage documentation](../../storage/#hba).
 
 
-## 🔧 Maintenance operations {#maintenance-operations}
+## :wrench: Maintenance operations {#maintenance-operations}
 ### Add a new XCP-ng host to an existing multipathing pool
 
 :::warning
@@ -283,7 +283,7 @@ Do not add the new XCP-ng host to the pool without completing these steps.
 2. Ensure that the iSCSI PIF configuration is completed if you are using iSCSI.
 3. Add the new XCP-ng host to the pool.
 
-## 🧑‍⚕️ Troubleshooting {#troubleshooting}
+## :health_worker: Troubleshooting {#troubleshooting}
 
 ### Verify multipathing
 You can use the command ```multipath -ll``` to check if multipathing is active.

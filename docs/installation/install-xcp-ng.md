@@ -6,7 +6,7 @@ sidebar_position: 2
 
 How to install XCP-ng.
 
-## 💿 ISO installation {#iso-installation}
+## :cd: ISO installation {#iso-installation}
 
 If you want to use the netinstall ISO, see the [Netinstall section](#netinstall).
 
@@ -164,9 +164,9 @@ After a reboot, you should see the GRUB menu:
 
 ![XCP-ng GRUB menu, with entries for XCP-ng, a serial console, Safe Mode and 2 fallback options for console and serial using xen and linux fallback images.](https://xcp-ng.org/assets/img/screenshots/install23.png)
 
-It means the system is correctly installed! Enjoy XCP-ng 🚀
+It means the system is correctly installed! Enjoy XCP-ng :rocket:
 
-## 🌐 Netinstall {#netinstall}
+## :globe_with_meridians: Netinstall {#netinstall}
 
 The netinstall image is a lightweight ISO (around 150MiB) that will only contain the installer, but no actual RPM packages. Sometimes, it's more convenient/faster when your ISO is on a slow connection (e.g. a virtual media using a server IPMI).
 
@@ -180,7 +180,7 @@ dd if=xcp-ng-8.3.0-20250606-netinstall.iso of=/dev/sdX bs=8M oflag=direct
 
 Everything else is like the [regular install](#start-the-host), except that it will not offer to install from local media, only from distant ones.
 
-## 🎬 PXE boot install {#pxe-boot-install}
+## :clapper: PXE boot install {#pxe-boot-install}
 
 ### Requirements
 
@@ -278,7 +278,7 @@ When you do copy the installation files, **DO NOT FORGET** the `.treeinfo` file.
 3. Select boot from the Ethernet card
 4. You should see the PXE menu you created before!
 
-## ✨ iPXE over HTTP install {#ipxe-over-http-install}
+## :sparkles: iPXE over HTTP install {#ipxe-over-http-install}
 
 This guide is for UEFI boot, using iPXE over an HTTP server to serve files needed for installation.
 
@@ -338,7 +338,7 @@ configfile /EFI/xenserver/grub.cfg
 7. Continue with installation as normal.
 
 
-## 🤖 Automated install {#automated-install}
+## :robot: Automated install {#automated-install}
 <a name="-automatedinstall"></a>
 XCP-ng's installation can be automated by using network boot (PXE) or a custom installation image.
 
@@ -534,7 +534,7 @@ echo 0 > /proc/sys/dev/raid/speed_limit_min
 
 Upon server reboot, normal `md` resync will take place.
 
-## 🧭 Boot from SAN {#boot-from-san}
+## :compass: Boot from SAN {#boot-from-san}
 
 Instead of local disks, a host can be installed on (and boot from) a SAN LUN. Facts verified against the XCP-ng installer:
 
@@ -550,7 +550,7 @@ device_mapper_multipath=enabled use_ibft
 
 The same applies to [automated installs](#automated-install): these are installer *boot* parameters, they go on the kernel command line, not in the answer file.
 
-## 🎛️ Advanced installation options (installer command-line parameters) {#advanced-installation-options-installer-command-line-parameters}
+## :control_knobs: Advanced installation options (installer command-line parameters) {#advanced-installation-options-installer-command-line-parameters}
 
 The XCP-ng installer can be further parameterized to support advanced installation environments. The command line options are passed as parameters to the ```vmlinuz``` kernel of the installer.
 
@@ -661,11 +661,11 @@ Read the scriptlocation execute it and use its standard output as an answerfile 
 
 See ```network_device=```.
 
-## 🧑‍⚕️ Troubleshooting {#troubleshooting}
+## :health_worker: Troubleshooting {#troubleshooting}
 
 See [the Troubleshooting page](../../troubleshooting/after-upgrade).
 
-## ⛑️ Misc {#misc}
+## :rescue_worker_helmet: Misc {#misc}
 
 ### Installation on USB drives
 

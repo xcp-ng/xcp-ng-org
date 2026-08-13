@@ -1,7 +1,7 @@
 
 # XOSTOR documentation
 
-## 🎓 LINSTOR/DRBD global documentation in the context of XCP-ng {#linstordrbd-global-documentation-in-the-context-of-xcp-ng}
+## :mortar_board: LINSTOR/DRBD global documentation in the context of XCP-ng {#linstordrbd-global-documentation-in-the-context-of-xcp-ng}
 
 ### What is LINSTOR?
 
@@ -310,9 +310,9 @@ ExecStop=/opt/xensource/libexec/safe-umount /var/lib/linstor
 RemainAfterExit=true
 ```
 
-## ❓ Howto and Questions {#howto-and-questions}
+## :question: Howto and Questions {#howto-and-questions}
 
-## 📥 Installation {#installation}
+## :inbox_tray: Installation {#installation}
 
 ### Prerequisites
 
@@ -334,11 +334,11 @@ Changing the replication factor after creating XOSTOR is not possible, as it can
 The maximum number of machines per pool is 7.
 :::
 
-## ♻️ Update {#update}
+## :recycle: Update {#update}
 
 See this documentation: [RPU](/management/updates/#rolling-pool-update-rpu).
 
-## ⬆️ Upgrade {#upgrade}
+## :arrow_up: Upgrade {#upgrade}
 
 If you are reading this documentation, we assume that you want to upgrade a pool on which XOSTOR is deployed, i.e. change the version of XCP-ng, for example from 8.2 to 8.3.
 For updates that don't change the version number of XCP-ng (bugfixes, security fixes), see [the update section](#update).
@@ -437,7 +437,7 @@ systemctl restart linstor-satellite
 
 - In case of a bad node (missing, without storage pool or inaccessible via `linstor n l`/`linstor sp l`) due to a failed upgrade or if the documentation was not followed correctly, you can read this [documentation](#how-to-add-a-new-host-or-fix-a-badly-configured-host) to recover.
 
-## 💬 Global questions {#global-questions}
+## :speech_balloon: Global questions {#global-questions}
 
 ### The linstor command does not work!?
 

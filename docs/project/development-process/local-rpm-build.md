@@ -8,10 +8,10 @@ How to build RPMs locally.
 
 Koji, the build system, is used only for official builds or update candidates. For daily development or community builds, we provide a simpler build environment using docker.
 
-## 📦 `xcp-ng-build-env` {#xcp-ng-build-env}
+## :package: `xcp-ng-build-env` {#xcp-ng-build-env}
 We provide a build environment that can run locally on your computer: [https://github.com/xcp-ng/xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env). It revolves around docker containers and a few convenience scripts. This is what we use for development, before we send the actual changes to our official build system, `koji`.
 
-## 🦮 Guide to local RPM rebuild {#guide-to-local-rpm-rebuild}
+## :guide_dog: Guide to local RPM rebuild {#guide-to-local-rpm-rebuild}
 With some prior knowledge about development and RPM packaging, the documentation of [https://github.com/xcp-ng/xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env) should be enough to get you started. However, in what follows, we provide a step by step guide for anyone to become accustomed to the process.
 
 ### Requirements
@@ -68,7 +68,7 @@ We can't cover every situation here, so we will address a simple case: add patch
 
 Then follow the same steps as before to build the RPM.
 
-## 🖥️ An XCP-ng host as a build environment {#an-xcp-ng-host-as-a-build-environment}
+## :desktop_computer: An XCP-ng host as a build environment {#an-xcp-ng-host-as-a-build-environment}
 You can also turn any XCP-ng host (preferrably installed in a VM. Don't sacrifice a physical host for that) into a build environment: all the tools and build dependencies are available from the default RPM repositories for XCP-ng, or from CentOS and EPEL repositories.
 
 You won't benefit from the convenience scripts from [xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env) though.

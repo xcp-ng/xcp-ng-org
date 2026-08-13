@@ -12,7 +12,7 @@ XCP-ng 8.1 is EOL (End Of Life) since 2021. Please check the [currently supporte
 
 SHA256 checksums, GPG signatures and net-install ISO are available [here](http://mirrors.xcp-ng.org/isos/8.1/).
 
-## ℹ️ Release information {#release-information}
+## :information_source: Release information {#release-information}
 
 * Released on 2020-03-31.
 * Based on Citrix Hypervisor 8.1.
@@ -20,10 +20,10 @@ SHA256 checksums, GPG signatures and net-install ISO are available [here](http:/
 * [Xen 4.13](https://wiki.xenproject.org/wiki/Xen_Project_4.13_Feature_List).
 * Kernel 4.19, with patches. Latest kernel hotfix from CH 8.1 at the date of release included in the release.
 
-## 💿 Install {#install}
+## :cd: Install {#install}
 See [Installation](../../installation/install-xcp-ng).
 
-## ⬆️ Upgrade from previous releases {#upgrade-from-previous-releases}
+## :arrow_up: Upgrade from previous releases {#upgrade-from-previous-releases}
 
 Since XCP-ng 8.1.0 is a minor release, both upgrade methods are supported:
 * From the installation ISO
@@ -31,7 +31,7 @@ Since XCP-ng 8.1.0 is a minor release, both upgrade methods are supported:
 
 Refer to the [Upgrade Howto](../../installation/upgrade).
 
-## ✨ What changed since 8.0 {#what-changed-since-80}
+## :sparkles: What changed since 8.0 {#what-changed-since-80}
 
 ### Highlight from Citrix Hypervisor changes
 
@@ -107,7 +107,7 @@ However we have updated the [documentation about the guest tools](../../../vms),
 
 * Fixed netxtreme drivers (`bnx2x` module) that crashed with some models.
 
-## ⛑️ Misc {#misc}
+## :rescue_worker_helmet: Misc {#misc}
 
 ### Announcement about our former experimental ext4 SR driver
 
@@ -154,7 +154,7 @@ See "Destroy and re-create a local SR" below.
     * Example: `xe sr-create type=ext name-label="Local EXT storage" host-uuid=c9800783-5202-4ccb-87fd-ff8ced6c935f device-config:device=/dev/sdb`
 * When you have handled all the servers of the pool, then for each host, if you had installed the `sm-additional-drivers` package, remove it (unless you also have XFS SRs): `yum remove sm-additional-drivers xfsprogs`.
 
-## 🐞 Known issues {#known-issues}
+## :beetle: Known issues {#known-issues}
 
 ### Host unreachable - NVIDIA GPU
 

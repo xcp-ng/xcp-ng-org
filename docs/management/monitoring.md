@@ -6,7 +6,7 @@ sidebar_position: 6
 
 How to watch the health and performance of your hosts, VMs and storage, and get alerted before users notice a problem.
 
-## 🛰️ With Xen Orchestra {#with-xen-orchestra}
+## :artificial_satellite: With Xen Orchestra {#with-xen-orchestra}
 
 Xen Orchestra is the natural place to monitor a whole XCP-ng infrastructure:
 
@@ -17,7 +17,7 @@ Xen Orchestra is the natural place to monitor a whole XCP-ng infrastructure:
 
 See the [Xen Orchestra documentation](https://docs.xen-orchestra.com/) for the details of each feature.
 
-## 📊 Host-level metrics (RRDs) {#host-level-metrics-rrds}
+## :bar_chart: Host-level metrics (RRDs) {#host-level-metrics-rrds}
 
 Each host continuously records metrics (CPU, memory, network, storage, per-VM and per-host) in round-robin databases (RRDs), with several months of history at decreasing granularity. This is what powers the graphs in Xen Orchestra and XO Lite.
 
@@ -37,7 +37,7 @@ Individual data sources can be enabled or disabled (`xe host-data-source-record`
 
 The raw RRDs are also exposed over HTTP for external collectors: `https://<host>/rrd_updates?start=<unix-timestamp>&host=true` returns everything that changed since the given time, in XML. This endpoint is a simple way to feed XCP-ng metrics into your own tooling without installing anything in dom0.
 
-## 🖥️ Live view on the host {#live-view-on-the-host}
+## :desktop_computer: Live view on the host {#live-view-on-the-host}
 
 For an instant view directly on a host (SSH or console):
 
@@ -47,13 +47,13 @@ For an instant view directly on a host (SSH or console):
 
 High dom0 load, or dom0 running out of memory, degrades every VM on the host: see the [dom0 memory guide](../guides/dom0-memory.md).
 
-## 📡 Netdata {#netdata}
+## :satellite: Netdata {#netdata}
 
 For detailed real-time dashboards on a host, XCP-ng provides `netdata` packages, and Xen Orchestra Premium can install and integrate them in one click (host view, *Advanced* tab). Netdata gives you per-second metrics with a modern web UI, and can stream to a central Netdata parent if you have one.
 
 You can also install it manually as an [additional package](additional-packages.md), keeping in mind the general rule: dom0 is not a regular Linux box, keep extra software minimal.
 
-## 🔔 SNMP and external supervision {#snmp-and-external-supervision}
+## :bell: SNMP and external supervision {#snmp-and-external-supervision}
 
 If your organization has a central supervision system (Zabbix, Centreon, LibreNMS, Prometheus...), a few options:
 
@@ -74,7 +74,7 @@ systemctl enable --now snmpd
 Whatever you install, never let a monitoring agent modify dom0's configuration or update its packages: see the [additional packages rules](additional-packages.md#rules).
 :::
 
-## 🚨 What should I watch? {#what-should-i-watch}
+## :rotating_light: What should I watch? {#what-should-i-watch}
 
 A reasonable minimal set of alerts for an XCP-ng infrastructure:
 

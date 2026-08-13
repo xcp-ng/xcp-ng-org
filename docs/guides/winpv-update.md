@@ -14,7 +14,7 @@ To contextualize the update process, we will test it on a VM vulnerable to XSA-4
 
 ![A banner indicating that some of the VMs are vulnerable with a link to check them.](../assets/img/winpv-update/vuln1.png)
 
-## ⚙️ Setting up automatic installation {#setting-up-automatic-installation}
+## :gear: Setting up automatic installation {#setting-up-automatic-installation}
 
 Create a new GPO in your desired OU and edit it:
 
@@ -39,7 +39,7 @@ In **Select deployment method**, select **Assigned**. You can change this later.
 
 The targeted VMs will now pick up and install the driver package you selected.
 
-## 🔄 Setting up automatic reboot {#setting-up-automatic-reboot}
+## :arrows_counterclockwise: Setting up automatic reboot {#setting-up-automatic-reboot}
 
 The Windows PV drivers require multiple reboots to be installed or updated.
 In this section, we will set up the Autoreboot feature of Windows PV drivers.
@@ -69,7 +69,7 @@ Specify the following settings:
 
 Click **OK** to save the changes.
 
-## 👀 Observing the installation process {#observing-the-installation-process}
+## :eyes: Observing the installation process {#observing-the-installation-process}
 
 You'll need to reboot your VMs to apply the updates.
 After reboot, the VMs will pick up on your new GPO and install the linked driver package.
@@ -84,12 +84,12 @@ Once the update finishes, you should no longer see the vulnerability warning in 
 
 ![Hosts list showing no banner and no warning icon now that everything is installed.](../assets/img/winpv-update/vuln2.png)
 
-## 🔗 Useful links {#useful-links}
+## :link: Useful links {#useful-links}
 
 - If you want to remove existing Xen drivers, refer to the [XenClean guide](/vms/#fully-removing-xen-pv-drivers-with-xenclean).
 - Refer to the [XenBootFix guide](/troubleshooting/windows-pv-tools/#windows-fails-to-boot-hangs-inaccessible_boot_device) if you encounter VM boot issues after the update.
 
-## 🛡️ Appendix: Blocking vulnerable Xen drivers with Application Control for Windows {#appendix-blocking-vulnerable-xen-drivers-with-application-control-for-windows}
+## :shield: Appendix: Blocking vulnerable Xen drivers with Application Control for Windows {#appendix-blocking-vulnerable-xen-drivers-with-application-control-for-windows}
 
 :::warning
 **Risk of BSOD**: Incorrect application of App Control rules can prevent the system from booting.
