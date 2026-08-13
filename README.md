@@ -63,16 +63,28 @@ The one exception to the no-characters rule is **quoted material**: sample termi
 JSON payload, a code span, an inline SVG. There the character is part of what is being quoted,
 and a shortcode would not be converted anyway. Keep it as it is.
 
-`npm run lint:emoji` checks all of this. It exempts fenced code blocks and code spans; for a
-quoted case outside those, put `<!-- allow-emoji -->` on the line before.
+`npm run lint:emoji` checks all of this, in both directions. It reports emoji characters in the
+sources, and it reports shortcodes that would silently not work:
+
+- a name nothing resolves — a typo, or an emoji missing from the tables below — which renders as
+  the literal text `:name:`;
+- a name that resolves without the U+FE0F variation selector, which some fonts draw as a flat
+  monochrome glyph;
+- a shortcode in front matter or in an attribute value such as `title=":rocket: Install"`, where
+  nothing converts it;
+- a heading with an emoji and no explicit `{#id}`.
+
+Fenced code blocks, code spans and the JSX template literals in `<Terminal>` blocks are exempt,
+in both directions: quoted output keeps its characters, and shortcodes are not converted there
+anyway. For a quoted case outside them, put `<!-- allow-emoji -->` on the line before.
 
 #### When a name does not work
 
 Docusaurus converts the shortcodes, and its emoji dataset is a few Unicode versions behind
 gemoji: names for anything recent, and for the profession sequences like `:technologist:`, are
 missing. Two tables in `src/plugins/emoji/vocabulary.js` fill the gap, and that file is the one
-place in the documentation build where emoji characters belong. Which table you add to depends
-on what the built page shows:
+place in the documentation build where emoji characters belong. `npm run lint:emoji` tells you
+which table to add to, and so does the built page:
 
 - **The literal text `:melting_face:`, shortcode and all** — Docusaurus has never heard of the
   name. Add it to `ALIASES`, keeping the list alphabetical:

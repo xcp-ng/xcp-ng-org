@@ -51,6 +51,7 @@ const ALIASES = {
 const PRESENTATION = {
   artificial_satellite: '🛰️',
   balance_scale: '⚖️',
+  biohazard: '☣️',
   building_construction: '🏗️',
   card_file_box: '🗃️',
   card_index_dividers: '🗂️',
@@ -70,6 +71,7 @@ const PRESENTATION = {
   rescue_worker_helmet: '⛑️',
   shield: '🛡️',
   spider_web: '🕸️',
+  thermometer: '🌡️',
   wastebasket: '🗑️',
   world_map: '🗺️',
   writing_hand: '✍️',
