@@ -6,6 +6,10 @@
  * `:name:` shortcode and the build inserts the character. Docusaurus does that
  * conversion itself (markdown.emoji, on by default, via remark-emoji), so the
  * only thing needed here is the handful of names remark-emoji gets wrong.
+ *
+ * The two tables below are the ones to extend when a name does not work. Which
+ * one depends on the symptom, and the Emoji section of README.md walks a
+ * contributor through it — keep the two in step if you change how this works.
  */
 
 // Names remark-emoji does not know. Its dataset is node-emoji, built on
