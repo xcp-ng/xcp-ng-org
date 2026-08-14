@@ -119,6 +119,60 @@ chmod +x /etc/rc.d/rc.local
 
 ---
 
+## 📦 yum fails with "HTTPS Error 301 - Moved Permanently" {#yum-fails-with-https-error-301---moved-permanently}
+
+Every `yum` command on dom0 fails, most often on a freshly installed host:
+
+```
+Loaded plugins: fastestmirror
+ * xcp-ng-base: mirrors.xcp-ng.org
+http://mirrors.xcp-ng.org/8/8.3/base/x86_64/repodata/repomd.xml: [Errno 14] HTTPS Error 301 - Moved Permanently
+Trying other mirror.
+...
+failure: repodata/repomd.xml from xcp-ng-base: [Errno 256] No more mirrors to try.
+```
+
+### Cause
+
+In almost every reported case, **the system clock on dom0 is wrong**, usually set far in the past.
+
+`mirrors.xcp-ng.org` redirects HTTP to HTTPS, then to a mirror close to you. That redirect is normal and is not the problem. But if the host's date is earlier than the start of the mirror's TLS certificate validity period, the HTTPS connection cannot be established: from the host's point of view, the certificate is not yet valid.
+
+The message names the redirect rather than the certificate because of the way `yum` reports errors. When a transfer fails *after* a redirect, it prints the redirect's status code and discards the underlying error. The `301` is genuine, and it is the last thing that succeeded.
+
+To confirm the diagnosis before changing anything, you can temporarily change the repository URL in `/etc/yum.repos.d/xcp-ng.repo` from `http://` to `https://`. This does not fix the download, but it removes the redirect, so `yum` reports the real error:
+
+```
+https://mirrors.xcp-ng.org/8/8.3/base/x86_64/repodata/repomd.xml: [Errno 14] curl#60 - "SSL certificate problem: certificate is not yet valid"
+```
+
+### Solution
+
+Check the date on dom0:
+
+<Terminal shell title="root@xcp-ng-host — Check the date">{`
+date
+`}</Terminal>
+
+If it is wrong, fix the time synchronization: see [Time synchronization](../management/time-synchronization.md#correcting-a-wrong-clock) for how to check the chrony sources and step the clock. On a host whose date was set manually at installation, `chronyd` is often running with no time source at all, and correcting the clock then takes an extra step.
+
+Once the clock is correct:
+
+<Terminal shell title="root@xcp-ng-host — Solution">{`
+yum clean all
+yum check-update
+`}</Terminal>
+
+:::warning
+Revert any change you made to `/etc/yum.repos.d/xcp-ng.repo` while investigating. With a correct clock, the default `http://mirrors.xcp-ng.org` URL works. Pinning a single mirror by hand takes the host out of the automatic mirror selection, and out of failover if that mirror becomes unavailable. See [Mirrors](../project/mirrors.md).
+:::
+
+:::note
+Correcting the date does not invalidate the host's own certificate. XAPI issues it with a ten-year validity, so a host installed with a wrong date still holds a certificate that covers the corrected date. `xe host-refresh-server-certificate` is not needed here.
+:::
+
+---
+
 ## 🐌 Async Tasks/Commands Hang or Execute Extremely Slowly {#async-taskscommands-hang-or-execute-extremely-slowly}
 
 ### Cause

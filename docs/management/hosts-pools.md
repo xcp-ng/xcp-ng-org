@@ -192,6 +192,8 @@ Lost the root password? See the [reset procedure](../troubleshooting/common-prob
 
 Correct and consistent clocks across the pool matter more than on ordinary servers: XAPI coordination, live migration, HA heartbeats, logs correlation and Windows guests (which get their initial time from the host) all rely on it. NTP servers are normally configured at [installation time](../installation/install-xcp-ng.md).
 
+See [Time synchronization](time-synchronization.md) for what a wrong clock breaks, how to check whether `chronyd` has any time sources, and how to correct a clock that is already wrong.
+
 To change them afterwards on XCP-ng 8.3, edit `/etc/chrony.conf`, then:
 
 <Terminal shell title="Time synchronization (NTP)">{`
