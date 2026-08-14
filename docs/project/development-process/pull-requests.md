@@ -9,10 +9,11 @@ and [xcp-ng-rpms](https://github.com/xcp-ng-rpms/) organizations.
 
 Contributions to XCP-ng are welcome, from people of all backgrounds and levels of experience.
 This page is written to help contributors and maintainers work together effectively, by setting
-out what each side can expect of the other.
-
-Good code review is not only about code quality. It is also about collaboration, knowledge
-sharing, collective ownership, and efficient use of everyone's time.
+out what each side can expect of the other. Knowing pull requests in general is not the same
+as knowing how we use them: people who all know them well still work with them differently,
+and this page says which way we do it here. If the mechanics themselves are new to you,
+GitHub's [pull request documentation](https://docs.github.com/en/pull-requests/reference/pull-requests)
+covers those.
 
 We do hold high standards regarding commit messages, git history, and pull request quality,
 and those standards come from years of experience maintaining complex software projects, as
@@ -29,14 +30,13 @@ exhaustive. XCP-ng is a live project, its customs evolve, and we will strive to 
 current as they do. Individual projects and teams may also have conventions of their own on
 top of what is written here, so it is worth asking if you are unsure.
 
-**If you get something wrong** while you are still learning how we work with pull requests,
-that is normal, and it is generally recoverable. A first pull request often takes a few
+**If you get something wrong.** That is normal while you are still learning how we work with
+pull requests, and it is generally recoverable. A first pull request often takes a few
 rounds, and nobody is keeping score of how many. If a review comment doesn't make sense to
 you, say so and ask: that is expected of you, not held against you.
 
-Note: upstream projects we contribute to may have different rules. While many principles laid
-out here to help individuals work together probably still hold, we must conform to the
-upstream rules.
+**Upstream projects may have different rules.** While many principles laid out here to help
+individuals work together probably still hold, we must conform to the upstream rules.
 
 ## 📋 Contents {#contents}
 
