@@ -12,6 +12,8 @@ XCP-ng and Xen Orchestra are made of many different projects and components. Thi
 
 Individual projects part of XCP-ng or Xen Orchestra can also define additional rules and exceptions. For example, Xen Orchestra developers follow [additional rules coming from the AngularJS guidelines](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y).
 
+Commit messages are one part of a larger whole. See also our [pull request guidelines](../pull-requests), which cover how commits fit into a pull request and how it gets reviewed.
+
 ## 🎯 Goals {#goals}
 
 The main goals behind the commit message rules are:
