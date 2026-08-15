@@ -12,7 +12,7 @@ In any case:
 * monitor RAM usage in the control domain
 * if issues arise (failed live migration for example), [look at the logs](../../troubleshooting/log-files) for messages related to lack of memory
 
-## 📏 Recommended values {#recommended-values}
+## Recommended values {#recommended-values}
 
 * we advise to give at least 2GiB of RAM for Dom0. Below that your XCP-ng may experience performance issues or other weird errors.
 * up to 64GiB RAM on your machine, at least 4GiB RAM for Dom0
@@ -22,11 +22,11 @@ In any case:
 Note: If you use ZFS, assign at least 16GB RAM to avoid swapping. ZFS (in standard configuration) uses half the Dom0 RAM as cache!
 :::
 
-## 📊 Current RAM usage {#current-ram-usage}
+## Current RAM usage {#current-ram-usage}
 
 You can use `htop` to see how much RAM is currently used in the dom0. Alternatively, you can have Netdata to show you past values.
 
-## 🔧 Change dom0 memory {#change-dom0-memory}
+## Change dom0 memory {#change-dom0-memory}
 
 Example with 4 GiB:
 

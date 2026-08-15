@@ -12,25 +12,25 @@ This documentation will help you to make a migration to XCP-ng, from any most co
 OVA import method will miss the information if the VM is running BIOS or UEFI mode. Double check your settings on your original system, and then enable (or not) UEFI on XCP-ng side for the destination VM. You can do so in VM advanced tab in Xen Orchestra.
 :::
 
-## 🇽 From XenServer {#from-xenserver}
+## From XenServer {#from-xenserver}
 
 We got a dedicated section on [how to migrate from XenServer to XCP-ng](../../installation/upgrade#upgrade-from-xenserver).
 
-## 🍋 From Citrix Hypervisor {#from-citrix-hypervisor}
+## From Citrix Hypervisor {#from-citrix-hypervisor}
 
 We got a dedicated section on [how to migrate from Citrix Hypervisor to XCP-ng](../../installation/upgrade#upgrade-from-xenserver).
 
-## 🐼 From Xen on Linux {#from-xen-on-linux}
+## From Xen on Linux {#from-xen-on-linux}
 
 If you are running Xen on your usual distro (Debian, Ubuntu…), you are using `xl` to manage your VMs, and also plain text configuration files. You can migrate to an existing XCP-ng host thanks to [the `xen2xcp` script](https://github.com/xcp-ng/xen2xcp).
 
 Check [the README](https://github.com/xcp-ng/xen2xcp/blob/master/README.md) for usage instructions.
 
-## 📦 From Virtualbox {#from-virtualbox}
+## From Virtualbox {#from-virtualbox}
 
 Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](#from-vmware) section.
 
-## 🇻 From VMware {#from-vmware}
+## From VMware {#from-vmware}
 
 :::warning
 
@@ -337,7 +337,7 @@ qemu-img convert -f vmdk -O vpc myVMwaredisk.vmdk /run/sr-mount/<SR UUID>/\`uuid
 
 You need to rescan the SR where you new VHD file is, so it can be detected. It will appear in the disk list, without a name or description though. Attach it to any VM you created before (eg without booting it first), and boot.
 
-## 🇭 From Hyper-V {#from-hyper-v}
+## From Hyper-V {#from-hyper-v}
 
 There's two options, both requiring to export your Hyper-V VM disk in VHD format.
 
@@ -417,7 +417,7 @@ As soon you did scan the SR, the new disk is visible in the SR/disk view. Don't 
 If you lost ability to extend migrated volume (opening journal failed: -2) You need to move disk to another storage, VM should be ON during moving process. This issue can occur when vhd files was directly copied to storage folder.
 :::
 
-## 🇰 From KVM (Libvirt) {#from-kvm-libvirt}
+## From KVM (Libvirt) {#from-kvm-libvirt}
 
 Related forum thread: [https://xcp-ng.org/forum/topic/1465/migrating-from-kvm-to-xcp-ng](https://xcp-ng.org/forum/topic/1465/migrating-from-kvm-to-xcp-ng)
 

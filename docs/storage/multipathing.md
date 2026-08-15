@@ -16,7 +16,7 @@ Do not attempt to enable multipathing on a production pool with existing and act
 You can activate it on the "fly", per XCP-ng host (Advanced tab), but it is recommended to do so with XCP-ng hosts that have no VMs running.
 :::
 
-## 🌐 iSCSI {#iscsi}
+## iSCSI {#iscsi}
 
 ### Requirements
 * Two different network interfaces.
@@ -155,7 +155,7 @@ If this is not the case:
 #### 3. Configure the SR
 Proceed with the iSCSI SR configuration as indicated in the [storage documentation](../../storage/#iscsi).
 
-## 🧵 Fibre Channel (HBA) {#fibre-channel-hba}
+## Fibre Channel (HBA) {#fibre-channel-hba}
 ### Requirements
 * Check that the Fibre Channel cards model(s) is supported via the [HCL](../../installation/hardware/#hardware-compatibility-list-hcl).
 * Two different Fibre Channel ports.
@@ -280,7 +280,7 @@ If this is not the case:
 Proceed with the HBA SR configuration as indicated in the [storage documentation](../../storage/#hba).
 
 
-## 🔧 Maintenance operations {#maintenance-operations}
+## Maintenance operations {#maintenance-operations}
 ### Add a new XCP-ng host to an existing multipathing pool
 
 :::warning
@@ -291,7 +291,7 @@ Do not add the new XCP-ng host to the pool without completing these steps.
 2. Ensure that the iSCSI PIF configuration is completed if you are using iSCSI.
 3. Add the new XCP-ng host to the pool.
 
-## 🧑‍⚕️ Troubleshooting {#troubleshooting}
+## Troubleshooting {#troubleshooting}
 
 ### Verify multipathing
 You can use the command ```multipath -ll``` to check if multipathing is active.

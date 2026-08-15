@@ -6,7 +6,7 @@ sidebar_position: 3
 
 This page details how to keep your XCP-ng system updated (bug fixes and security fixes) between [upgrades](../../installation/upgrade).
 
-## ⚡ Quick start {#quick-start}
+## Quick start {#quick-start}
 
 If you want to manage your XCP-ng updates, we suggest that you use Xen Orchestra. It's the fastest & easiest way to keep your infrastructure up-to-date. See the [dedicated section](updates.md#from-xen-orchestra). If you want to learn more about Xen Orchestra, also check the [management section](management.md).
 
@@ -14,7 +14,7 @@ If you want to manage your XCP-ng updates, we suggest that you use Xen Orchestra
 Each update is covered by a dedicated blog post. Browse all update posts at https://xcp-ng.org/blog/tag/update/
 :::
 
-## ♻️ Support cycle {#support-cycle}
+## Support cycle {#support-cycle}
 
 We maintain one or several releases in parallel:
 * LTS releases (currently `8.3`).
@@ -63,7 +63,7 @@ In any case, installing extra packages from outside the XCP-ng repositories can 
 
 More at [Additional packages](../../management/additional-packages).
 
-## 💡 Get information about the updates {#get-information-about-the-updates}
+## Get information about the updates {#get-information-about-the-updates}
 
 Every update is first tested and discussed on a forum thread dedicated to update candidates for a given XCP-ng release. We highly recommend to subscribe to these threads (activate e-mail notifications in your forum settings if you want to be notified of new messages). You will thus know about coming updates in advance and be able to help us validate them. No one would like updates to be delayed because of lack of feedback there.
 
@@ -89,7 +89,7 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 * [List of immediate **update candidates**](https://koji.xcp-ng.org/builds?inherited=0&tagID=89&order=-build_id&latest=1)
 * [List of **testing** packages prepared for a future update](https://koji.xcp-ng.org/builds?inherited=0&tagID=43&order=-build_id&latest=1)
 
-## 🚸 Precautions {#precautions}
+## Precautions {#precautions}
 
 :::warning
 **Always update the pool master first. Other pool members must never run a higher version than the master.**
@@ -106,7 +106,7 @@ If you update any other host before the pool master, **it will lose the ability 
 *Some people systematically run `xe vm-cd-eject --multiple` to eject all virtual CDs/DVDs from the VMs before updating and/or migrating.*
 * Do not update from an interactive shell that was directly started from the XCP-ng console (`xsconsole`), nor from the host's remote console that is available through the VNC protocol in Xen Orchestra or XCP-ng Center. The update process may restart those, kill the current shell and thus kill the update process which would leave the system in an unclean state (duplicate RPMs).
 
-## 🦮 How to apply the updates {#how-to-apply-the-updates}
+## How to apply the updates {#how-to-apply-the-updates}
 
 ### From command line
 
@@ -239,7 +239,7 @@ You can see hosts that will require a reboot via a small blue triangle:
 We do NOT recommend to install updates to individual hosts. Obviously except if they are alone in their own pool. Running hosts in the same pool with different level of updates should be avoided as possible. We leave that option in case you have a specific need, but again, we discourage that usage as possible. Note that even a host alone in its pool can be updated via the "Pool update" button!
 :::
 
-## 🏁 When to reboot? {#when-to-reboot}
+## When to reboot? {#when-to-reboot}
 
 There is currently no way for XCP-ng to automatically tell you if a reboot is required.
 
@@ -253,7 +253,7 @@ Else base your decision on an educated guess. Look at the list of the updated pa
 
 All updates are announced on the [XCP-ng Blog](https://xcp-ng.org/blog/tag/update/) along with information about what steps are required after installing the update (reboot, toolstack restart, service restart...).
 
-## 🔥 XCP-ng 7.5/7.6 and live migrations {#xcp-ng-7576-and-live-migrations}
+## XCP-ng 7.5/7.6 and live migrations {#xcp-ng-7576-and-live-migrations}
 
 Since the component that handles live migrations in XenServer is closed-source, we had to write our own. However, it took several tries before we reached a fully functional replacement, that's why only hosts that have had the latest updates of the `xcp-emu-manager` package have the fully working replacement. Previous versions will or will not manage to migrate your VMs, depending on various contextual factors, including the VM's load.
 

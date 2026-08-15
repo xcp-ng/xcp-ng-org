@@ -2,7 +2,7 @@
 
 Common issues and topics related to Windows Guest Tools.
 
-## 🐌 Low storage performance on Windows {#low-storage-performance-on-windows}
+## Low storage performance on Windows {#low-storage-performance-on-windows}
 
 ### Cause
 
@@ -20,7 +20,7 @@ Consult your motherboard manual for details; for example, on Dell systems with i
 </div>
 
 
-## 🥾 Windows fails to boot (hangs, `INACCESSIBLE_BOOT_DEVICE`) {#windows-fails-to-boot-hangs-inaccessible_boot_device}
+## Windows fails to boot (hangs, `INACCESSIBLE_BOOT_DEVICE`) {#windows-fails-to-boot-hangs-inaccessible_boot_device}
 
 In some situations (failed uninstallation, major Windows version upgrades), Xen PV drivers (whether Citrix or XCP-ng) may cause Windows to fail to start (hanging at boot, BSOD with Stop code `INACCESSIBLE_BOOT_DEVICE`).
 The XenBootFix utility included with XCP-ng Windows Guest Tools 9.0 and above helps you disable any active Xen PV drivers and get your system to a bootable state before running XenClean.
@@ -54,7 +54,7 @@ Below is a procedure for using XenBootFix to recover a non-booting VM:
 7. Type `exit` to close Command Prompt. If using Windows RE, choose **Continue** to boot into Windows. Windows should now start normally.
 8. **You must immediately run XenClean from within Windows to remove the remaining Xen drivers**. See instructions above.
 
-## 🧵 Connecting to guests using serial console {#connecting-to-guests-using-serial-console}
+## Connecting to guests using serial console {#connecting-to-guests-using-serial-console}
 
 In some situations, you might want to expose a VM's serial console to network for troubleshooting purposes (e.g. Windows kernel debugging).
 You can use the following procedure:
@@ -73,7 +73,7 @@ You can use the following procedure:
   Connect using [WinDbg](https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/) using the `Attach to kernel` option with a connection string: `com:ipport=7001,port=<host IP>`
 * To undo the changes and remove the serial setting, use `xe vm-param-remove uuid=<uuid> param-name=platform param-key=hvm_serial`
 
-## 💙 BSOD 0x3B (SYSTEM_SERVICE_EXCEPTION) or 0x7E (SYSTEM_THREAD_EXCEPTION_NOT_HANDLED) on newer Intel CPUs {#bsod-0x3b-system_service_exception-or-0x7e-system_thread_exception_not_handled-on-newer-intel-cpus}
+## BSOD 0x3B (SYSTEM_SERVICE_EXCEPTION) or 0x7E (SYSTEM_THREAD_EXCEPTION_NOT_HANDLED) on newer Intel CPUs {#bsod-0x3b-system_service_exception-or-0x7e-system_thread_exception_not_handled-on-newer-intel-cpus}
 
 ### Cause
 
@@ -88,7 +88,7 @@ Stop the VM, run the following command on the host then restart the VM:
 xe vm-param-add uuid=<VM's UUID> param-name=platform msr-relaxed=true
 `}</Terminal>
 
-## 💥 BSOD 0x109 (CRITICAL_STRUCTURE_CORRUPTION) after migrating VMs on Intel platforms {#bsod-0x109-critical_structure_corruption-after-migrating-vms-on-intel-platforms}
+## BSOD 0x109 (CRITICAL_STRUCTURE_CORRUPTION) after migrating VMs on Intel platforms {#bsod-0x109-critical_structure_corruption-after-migrating-vms-on-intel-platforms}
 
 ### Cause
 
@@ -110,7 +110,7 @@ Focus on the following settings (naming depends on BIOS vendor):
 - Power and thermal controls
 - Event counters
 
-## ♻️ Windows fails to boot after updating {#windows-fails-to-boot-after-updating}
+## Windows fails to boot after updating {#windows-fails-to-boot-after-updating}
 
 ### Cause
 
@@ -126,7 +126,7 @@ bcdboot C:\Windows
 
 After exiting to Windows, your system should boot successfully.
 
-## 🤐 Windows Server 2019 crashes on AMD Zen without BSOD {#windows-server-2019-crashes-on-amd-zen-without-bsod}
+## Windows Server 2019 crashes on AMD Zen without BSOD {#windows-server-2019-crashes-on-amd-zen-without-bsod}
 
 First, try disabling Viridian from Xen Orchestra. Note that this value may reset itself after reboot.
 
@@ -134,7 +134,7 @@ If this fixes the problem, remove the Registry value `Enabled` at `HKLM\SYSTEM\C
 
 You can now enable Viridian again for better VM performance.
 
-## 💾 Data drives showing as removable in Windows {#data-drives-showing-as-removable-in-windows}
+## Data drives showing as removable in Windows {#data-drives-showing-as-removable-in-windows}
 
 Follow the instructions in the Citrix KB entry [CTX583997: In XenServer, fixed data drives show as removable data drives to BitLocker](https://support.citrix.com/s/article/CTX583997-in-xenserver-fixed-data-drives-show-as-removable-data-drives-to-bitlocker).
 
@@ -151,7 +151,7 @@ Next, set each VBD's property to non-unpluggable:
 xe vbd-param-set uuid=<vbd-uuid> unpluggable=false
 `}</Terminal>
 
-## 🚫 XenServer VM Tools not upgrading drivers after installation {#xenserver-vm-tools-not-upgrading-drivers-after-installation}
+## XenServer VM Tools not upgrading drivers after installation {#xenserver-vm-tools-not-upgrading-drivers-after-installation}
 
 This can be due to the "Manage Citrix PV drivers via Windows Update" feature being enabled on that VM.
 
@@ -159,7 +159,7 @@ If this feature is enabled, XenServer VM Tools will automatically uncheck the "I
 
 Make sure to either check this checkbox, specify `ALLOWDRIVERINSTALL=YES` on the Msiexec command line (if installing via command line) or install driver updates via Windows Update.
 
-## 🔄 XenServer drivers not receiving updates via Windows Update {#xenserver-drivers-not-receiving-updates-via-windows-update}
+## XenServer drivers not receiving updates via Windows Update {#xenserver-drivers-not-receiving-updates-via-windows-update}
 
 ### Cause
 
@@ -191,7 +191,7 @@ See the [XenClean guide](/vms/#fully-removing-xen-pv-drivers-with-xenclean) for 
 You will need to reinstall the management agent.
 :::
 
-## 🩺 Malfunctioning XenServer PV drivers {#malfunctioning-xenserver-pv-drivers}
+## Malfunctioning XenServer PV drivers {#malfunctioning-xenserver-pv-drivers}
 
 ### Symptoms
 
@@ -213,7 +213,7 @@ XenServer drivers require multiple reboots after an update.
 Reboot your VMs manually, or set the [Autoreboot Registry value](https://support.citrix.com/external/article/CTX292687/setting-automatic-reboots-when-updating.html) to force the VM to automatically reboot after a driver update.
 You can also disable automatic updating of XenServer drivers and update them during a dedicated maintenance window.
 
-## 🧊 Windows Server 2025 hangs randomly with 0% CPU {#windows-server-2025-hangs-randomly-with-0-cpu}
+## Windows Server 2025 hangs randomly with 0% CPU {#windows-server-2025-hangs-randomly-with-0-cpu}
 
 ### Cause
 
@@ -231,7 +231,7 @@ bcdedit /deletevalue "{current}" useplatformclock
 bcdedit /deletevalue "{current}" useplatformtick
 ```
 
-## 🧠 How to gather kernel memory dumps for in-depth troubleshooting {#how-to-gather-kernel-memory-dumps-for-in-depth-troubleshooting}
+## How to gather kernel memory dumps for in-depth troubleshooting {#how-to-gather-kernel-memory-dumps-for-in-depth-troubleshooting}
 
 In situations where your VM stops responding, we may need to gather kernel memory dumps to help troubleshoot the situation.
 Follow this procedure to configure and gather a memory dump:

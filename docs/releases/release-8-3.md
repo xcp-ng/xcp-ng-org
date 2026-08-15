@@ -13,7 +13,7 @@ SHA256 checksums, GPG signatures, and the net-install ISO are available [here](h
 LTS means **Long Term Support**: more information in [this section](../#lts-releases).
 :::
 
-## 🗺️ Structure of the document {#structure-of-the-document}
+## Structure of the document {#structure-of-the-document}
 
 * [Release information](#release-information)
 * [What's new](#whats-new)
@@ -38,11 +38,11 @@ Key details:
 * LTS since 2025-06-16.
 * Supported until 2028-11-30.
 
-## 💿 Install {#install}
+## Install {#install}
 
 See [Installation](../../../installation/install-xcp-ng).
 
-## ⬆️ Upgrade from previous releases {#upgrade-from-previous-releases}
+## Upgrade from previous releases {#upgrade-from-previous-releases}
 
 Upgrading to XCP-ng 8.3 is possible from:
 - An up-to-date XCP-ng 8.2.1 (recommended)
@@ -62,7 +62,7 @@ Refer to the [Upgrade How-to](../../../installation/upgrade) for the exact upgra
 Users who installed a prerelease of XCP-ng 8.3 must upgrade to the final 8.3.0 version using the installation ISO image. The only exception is for users who installed XCP-ng 8.3 RC2 or have already upgraded to RC2 using the installation ISO image. These users can simply [update their system](../../management/updates) without needing the ISO image.
 :::
 
-## ✨ What's new {#whats-new}
+## What's new {#whats-new}
 
 XCP-ng 8.3 is the result of years of development on XCP-ng, XenServer, and common open-source foundations such as the Xen Project.
 
@@ -353,7 +353,7 @@ We've also invested heavily in test automation to improve coverage. Nevertheless
 - `netdata` updated to version 1.44.3.
 - `lsscsi` added to the XCP-ng repositories.
 
-## 🗄️ Status of XOSTOR in XCP-ng 8.3 {#status-of-xostor-in-xcp-ng-83}
+## Status of XOSTOR in XCP-ng 8.3 {#status-of-xostor-in-xcp-ng-83}
 
 As of the initial release, XOSTOR (our hyperconverged storage solution based on LINSTOR) was available in XCP-ng 8.3 but was still considered **beta**.
 
@@ -361,7 +361,7 @@ Since 2025-06-16, XOSTOR is officially supported on XCP-ng 8.3, as long as it is
 
 A [specific upgrade process](../../xostor/#upgrade) is available for pools running XCP-ng 8.2.1 with XOSTOR.
 
-## 🗑️ Deprecations and removals {#deprecations-and-removals}
+## Deprecations and removals {#deprecations-and-removals}
 
 ### PV virtualization mode
 
@@ -438,7 +438,7 @@ So here it's not really a removal. XenServer replaced the component used for Act
 
 We deleted the old, unsupported since XCP-ng 8.1, experimental EXT4 driver, superseded by the regular EXT driver (which also uses `ext4`). We're talking about an old experimental driver that you never used unless you installed the experimental packages in the XCP-ng 7.x era, so this removal is painless for the vast majority of XCP-ng users, if not all!
 
-## ⚠️ Attention points {#attention-points}
+## Attention points {#attention-points}
 
 Important changes or adjustments that may affect how you use the product. Be sure to review these to avoid unexpected behavior.
 
@@ -489,7 +489,7 @@ You will also need to disable Secure Boot in the VM settings if it was enforced.
 
 See [Active Directory in XCP-ng](#active-directory-in-xcp-ng).
 
-## 🐞 Known issues {#known-issues}
+## Known issues {#known-issues}
 
 ### IPv6-related issues
 

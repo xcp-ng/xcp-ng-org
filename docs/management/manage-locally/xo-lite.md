@@ -22,13 +22,13 @@ XO Lite uses a self-signed certificate. You need to accept the certificate (foll
 XO Lite is still a work in progress! However, it's meant to cover all basic actions you need to boostrap your infrastructure or just do basic operation on your VMs.
 :::
 
-## 🔐 Credentials {#credentials}
+## Credentials {#credentials}
 
 XO Lite credentials are the same than the host (SSH credentials), usually `root` as user and the password chosen during the installation process.
 
 ![The XO Lite login page.](../../../static/img/xolitelogin.png)
 
-## 📊 Dashboard {#dashboard}
+## Dashboard {#dashboard}
 
 Once logged, you can see the dashboard:
 
@@ -38,7 +38,7 @@ Once logged, you can see the dashboard:
 XO Lite isn't a multi-cluster orchestrator, it's just a local management console. If you want to orchestrate your VMs at scale (load balancing, backup, warm migration and so on), you MUST use [Xen Orchestra](../manage-at-scale/xo-web-ui.md)!
 :::
 
-## 🚫 Disabling XO Lite {#disabling-xo-lite}
+## Disabling XO Lite {#disabling-xo-lite}
 
 First, let's emphasize that XO Lite is merely an XAPI client. While it is made readily available by the web server on XCP-ng, it actually runs entirely in your web browser. It does **not** increase the attack surface on XCP-ng servers. Additionally, in a properly configured XCP-ng deployment, the management interface resides on a dedicated network, accessible only to administrators.
 

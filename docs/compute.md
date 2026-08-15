@@ -6,7 +6,7 @@ sidebar_position: 8
 
 This section is dedicated to compute related things, like GPU/vGPU or PCI passthrough, nested virtualization or advanced Xen features.
 
-## 🔗 PCI Passthrough {#pci-passthrough}
+## PCI Passthrough {#pci-passthrough}
 
 ### 0. Prerequisites
 
@@ -202,7 +202,7 @@ If you want to get the PCI device accessible again in the Dom0, you also need to
 
 It will be back in the Dom0 after a reboot.
 
-## 🎮 GPU Passthrough {#gpu-passthrough}
+## GPU Passthrough {#gpu-passthrough}
 To passthrough a complete graphics card to a VM (not virtualize it into multiple virtual vGPUs, which is different, see the vGPU section below), just follow the regular PCI passthrough instructions, no special steps are needed. Most Nvidia and AMD video cards should work without issue.  
 
 :::warning
@@ -213,7 +213,7 @@ Passthrough of an AMD APU's integrated GPU is not currently supported. An integr
 Previously, Nvidia would block the use of gaming/consumer video cards for passthrough (the Nvidia installer would throw an **Error 43** when installing the driver inside your VM). They lifted this restriction in 2021 with driver R465 and above, so be sure to use the latest driver. [Details from Nvidia here.](https://nvidia.custhelp.com/app/answers/detail/a_id/5173/)
 :::
 
-## 🖥️ vGPU {#vgpu}
+## vGPU {#vgpu}
 
 ### NVIDIA vGPU
 
@@ -246,7 +246,7 @@ Start the VM and log into the guest OS and load the appropriate guest driver fro
 > Known working cards:
 * S7150x2
 
-## 🖱️ USB Passthrough {#usb-passthrough}
+## USB Passthrough {#usb-passthrough}
 
 :::tip
 There's no need to alter any files manually as some older guides suggest
@@ -329,7 +329,7 @@ Then run
 xe pusb-scan host-uuid=<host_uuid>
 `}</Terminal>
 
-## 📦 Nested Virtualization {#nested-virtualization}
+## Nested Virtualization {#nested-virtualization}
 
 Nested virtualization is the ability to run a hypervisor within another hypervisor. For example, running XCP-ng inside a VM that itself runs on XCP-ng.
 
@@ -345,13 +345,13 @@ XCP-ng allows to enable this partial nested virtualization support. It can be us
 
 We understand the use cases that necessitate nested virtualization and are committed to making this feature available in a supported form in the future. Until it is implemented, there is unfortunately no supported way to enable it.
 
-## 🌡 CPU Temperature on Intel {#cpu-temperature-on-intel}
+## CPU Temperature on Intel {#cpu-temperature-on-intel}
 
 As coretemp is not supported in XCP-ng, you can't rely on `sensors` to get the CPU temperatures on Intel platforms.
 
 Starting with XCP-ng 8.3 (`xen-4.17.6-9.3.xcpng8.3`), the `xenpm get-core-temp` command was introduced as an alternative.
 
-## 🐼 Advanced Xen {#advanced-xen}
+## Advanced Xen {#advanced-xen}
 
 This section is dedicated to advanced Xen use cases. Use it with caution!
 
