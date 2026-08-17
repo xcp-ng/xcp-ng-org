@@ -10,13 +10,13 @@ Moving VMs in and out of XCP-ng as files: full VMs (XVA, OVA) or individual disk
 Coming from VMware, Hyper-V, KVM or another hypervisor? There's a dedicated page: [migrate to XCP-ng](../installation/migrate-to-xcp-ng.md), including XO's V2V tool for live VMware conversions.
 :::
 
-## 📦 Formats {#formats}
+## Formats {#formats}
 
 * **XVA**: the native format. A single streamable file containing the VM's metadata *and* its disks. Best fidelity (everything is preserved), best performance, and works between any XCP-ng/XAPI-based hosts. Use it whenever both sides are XCP-ng.
 * **OVA/OVF**: the interchange format, when the other side is *not* XCP-ng. An OVA is an archive with the disks and a hardware description; interpretation varies between vendors, so expect to double-check VM settings after import.
 * **Disk images** (VHD, VMDK, raw): import/export a single disk rather than a whole VM. Attach the imported disk to a VM you create yourself.
 
-## 📥 Import {#import}
+## Import {#import}
 
 ### XVA
 
@@ -36,7 +36,7 @@ From Xen Orchestra: **New** → **Import** accepts `.ova` files directly, shows 
 
 From Xen Orchestra: **New** → **Import** → **Disk** imports a VHD or VMDK file into an SR of your choice; then attach it to a VM ([how](../storage/manage-srs.md#create-and-attach-a-new-disk-to-a-vm)). With `xe`, see [vdi-import](../storage/manage-srs.md#export--import-a-single-disk).
 
-## 📤 Export {#export}
+## Export {#export}
 
 ### XVA
 
@@ -60,7 +60,7 @@ From Xen Orchestra: VM → **Export** and choose the OVA format. Use it only whe
 
 From Xen Orchestra, each disk in the VM's Disks tab has an export button (VHD). See also [exporting VDIs with xe](../storage/manage-srs.md#export--import-a-single-disk).
 
-## 🔁 Not what you're looking for? {#not-what-youre-looking-for}
+## Not what you're looking for? {#not-what-youre-looking-for}
 
 * Moving a VM between two **connected** pools? Use [live migration](vm-migration.md), no intermediate file needed.
 * Recurring exports for safety? That's a backup job. See [backup](../management/backup.md): Xen Orchestra does scheduled full/delta backups, replication and more.

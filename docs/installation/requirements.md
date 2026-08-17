@@ -12,7 +12,7 @@ An XCP-ng server is dedicated entirely to running XCP-ng and hosting VMs. It is 
 Installing third-party software directly in the XCP-ng control domain is not supported, except for software supplied in the official repositories. If you wish to add extra packages to XCP-ng, please [submit your request here](https://github.com/xcp-ng/xcp/issues/56).
 :::
 
-## 📋 XCP-ng System Requirements {#xcp-ng-system-requirements}
+## XCP-ng System Requirements {#xcp-ng-system-requirements}
 
 XCP-ng is generally deployed on server-class hardware, but it also supports many workstation and laptop models. For more information, refer to the [Hardware Compatibility List (HCL)](../../installation/hardware).
 
@@ -78,7 +78,7 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 Set the server's BIOS clock to the current UTC time. For debugging support cases, serial console access may be required: see [how to configure it](../troubleshooting/advanced.md#serial-console-access). For systems without physical serial ports, embedded management devices (Dell iDRAC, HP iLO...) provide Serial-over-LAN.
 :::
 
-## 📋 XCP-ng Configuration Limits {#xcp-ng-configuration-limits}
+## XCP-ng Configuration Limits {#xcp-ng-configuration-limits}
 
 XCP-ng supports the following per host:
 
@@ -120,7 +120,7 @@ The theoretical, untested limit is 2,048 logical processors.
 
 - Up to 800 VLANs.
 
-## 📋 Virtual Machine Configuration Limits {#virtual-machine-configuration-limits}
+## Virtual Machine Configuration Limits {#virtual-machine-configuration-limits}
 
 Below are the supported limits for virtual machines on XCP-ng.
 
@@ -193,7 +193,7 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 
 - **Passed-through USB devices**: Up to **6**.
 
-## 🎱 Pool Requirements {#pool-requirements}
+## Pool Requirements {#pool-requirements}
 
 A resource pool is a collection of one or more servers (up to 64), which can be homogeneous or heterogeneous. Before creating or joining a pool, ensure the following:
 
@@ -227,7 +227,7 @@ Technologies such as Intel FlexMigration or AMD Extended Migration allow you to 
 
 For detailed information, see [Hosts and pools operations](../management/hosts-pools.md).
 
-## 🔌 Network ports and connectivity {#network-ports-and-connectivity}
+## Network ports and connectivity {#network-ports-and-connectivity}
 
 What needs to be reachable, if you have firewalls between your management network, your hosts and your storage.
 

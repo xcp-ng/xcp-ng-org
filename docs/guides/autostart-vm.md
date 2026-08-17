@@ -4,14 +4,14 @@ How to start VM on host boot?
 
 A VM can be started at XCP-ng boot itself, it's called **Auto power on**. We have two ways to configure it: using Xen Orchestra or via the CLI.
 
-## 🛰️ With Xen Orchestra {#with-xen-orchestra}
+## With Xen Orchestra {#with-xen-orchestra}
 
 In Xen Orchestra we can just enable a toggle in VM "Advanced" view, called **Auto power on**. Everything will be set accordingly.
 
 ![XO's VM advanced tab showing the Auto power on option.](../../assets/img/autopoweron1.png)
 
 
-## 🧑‍💻 With the CLI {#with-the-cli}
+## With the CLI {#with-the-cli}
 
 1. Determine the UUID of the pool for which we want to enable Auto Start. To do this, run the console command on the server:
 

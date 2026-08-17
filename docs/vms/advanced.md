@@ -6,7 +6,7 @@ sidebar_position: 7
 
 Less common VM-level settings and behaviors: boot options, vTPM, time handling.
 
-## 🥾 Boot options {#boot-options}
+## Boot options {#boot-options}
 
 ### Boot device order
 
@@ -31,7 +31,7 @@ xe vm-param-get uuid=<vm-uuid> param-name=platform param-key=device-model
 
 See also [how to check UEFI/Secure Boot status](../guides/guest-UEFI-Secure-Boot.md#misc).
 
-## 🔐 vTPM {#vtpm}
+## vTPM {#vtpm}
 
 Starting with XCP-ng 8.3, VMs can have a **virtual TPM 2.0**, required for Windows 11 and Windows Server 2025, and usable by Linux guests too.
 
@@ -56,7 +56,7 @@ Guests get their initial clock from the host, then keep time themselves. Recomme
 * Run an NTP client **in each guest** (chrony, systemd-timesyncd, Windows Time). Time drifts after live migrations, suspend/resume or snapshots revert are then corrected automatically.
 * **Windows** stores local time in the RTC by default. XCP-ng exposes a UTC clock, so either keep Windows' own time service active (default, recommended) or make Windows use UTC. If a Windows VM shows a fixed offset after boot, check the timezone settings in the guest.
 
-## 🚫 Blocking operations on a VM {#blocking-operations-on-a-vm}
+## Blocking operations on a VM {#blocking-operations-on-a-vm}
 
 Any XAPI operation can be administratively blocked per VM (deletion, but also start, shutdown, migration…):
 
@@ -66,7 +66,7 @@ xe vm-param-set uuid=<vm-uuid> blocked-operations:migrate_send=true
 
 See [protecting a VM against accidental deletion](vm-lifecycle.md#protect-a-vm-against-accidental-deletion) for the most common use.
 
-## 🧠 VM memory {#vm-memory}
+## VM memory {#vm-memory}
 
 A VM's memory is defined by four values: static min/max (the hard bounds, changed only while the VM is halted) and dynamic min/max (the range the VM can be ballooned within, at runtime). When dynamic min = dynamic max, the VM simply owns that amount: this is the recommended setup for predictable performance, and the [caution about Dynamic Memory Control](vms.md#dynamic-memory) explains why.
 

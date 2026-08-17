@@ -2,7 +2,7 @@
 
 This page contains advanced info regarding XCP-ng architecture.
 
-## 💽 Storage {#storage}
+## Storage {#storage}
 
 ### Virtual disks on HVMs and PV guests
 
@@ -471,7 +471,7 @@ The persistent grants are not used in `tapdisk`.
 
 The read steps are similar, the main difference is that we must copy from the `Dom0` VHD file to the `guest` buffer.
 
-## 📡 API {#api}
+## API {#api}
 
 XCP-ng uses **XAPI** as main API. This API is used by all clients. For more details go to [XAPI website](https://xapi-project.github.io/).
 
@@ -822,7 +822,7 @@ XCP-ng is meant to use XAPI. Don't use it with `xl` or anything else!
 </svg>
 </Schema>
 
-## 🕸️ Network {#network}
+## Network {#network}
 
 ### Overview
 

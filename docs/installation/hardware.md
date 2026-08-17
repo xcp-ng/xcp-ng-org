@@ -14,13 +14,13 @@ A given device may be supported at one of two levels:
 1. Presence on the [Hardware Compatibility List](#hardware-compatibility-list-hcl) guarantees support by XCP-ng. With some exceptions described in the next section.
 2. Many devices outside the HCL are also supported, but are not tested routinely. See [Supported hardware outside the HCL](#supported-hardware-outside-the-hcl).
 
-## 📖 Hardware Compatibility List (HCL) {#hardware-compatibility-list-hcl}
+## Hardware Compatibility List (HCL) {#hardware-compatibility-list-hcl}
 
 XCP-ng 8.3 shares a compatibility list with XenServer 8.4. Thus, devices listed on [XenServer's Hardware Compatibility List](http://hcl.xenserver.com/) are supported, with rare exceptions.
 
 Exceptions include devices which require *proprietary* software components to operate (closed source drivers, for example). Such devices do not impede the use of XCP-ng, but their features cannot be exploited.
 
-## ♻ Supported hardware outside the HCL {#supported-hardware-outside-the-hcl}
+## Supported hardware outside the HCL {#supported-hardware-outside-the-hcl}
 
 Many devices outside the HCL actually work perfectly with XCP-ng. Contrarily to some hypervisors, XCP-ng does not demand the use of servers from a curated short list. Most of the hardware support depends on the Linux kernel drivers plus vendor drivers covering a very large range of devices.
 
@@ -30,7 +30,7 @@ Concretely, if your hardware is not on the HCL, there's still a very high chance
 
 Let's mention one particular kind of exceptions to support, though. **Security on older hardware having hardware vulnerabilities.** Older hardware, while usually still running very well - and we're all for using existing hardware while it lasts rather than buying new machines - may not receive hardware-related security updates from their very vendor. In particular those related to side-channel attacks (Spectre, Meltdown, and everything that ensued). In this case, you can use XCP-ng, but without expecting protection against this kind of vulnerablity, because it simply doesn't depend on XCP-ng (or any other hypervisor): it depends on the hardware vendor.
 
-## 🧰 Alternate drivers {#alternate-drivers}
+## Alternate drivers {#alternate-drivers}
 
 XCP-ng occasionally provides alternate drivers for users who have issues with the main drivers installed with XCP-ng.
 
@@ -84,14 +84,14 @@ A list is maintained at [https://github.com/xcp-ng/xcp/wiki/Drivers](https://git
 Check the "XCP-ng X.Y alternate driver" column, which provides packages names and versions for every available alternate driver.
 
 
-## 🎁 Additional kernel modules {#additional-kernel-modules}
+## Additional kernel modules {#additional-kernel-modules}
 
 Additional kernel modules are a lot like [alternate drivers](#alternate-drivers) (most of the above section applies to them) except that they don't replace an existing driver from the system. They add a new one that didn't exist at all.
 
 Their list is maintained at [https://github.com/xcp-ng/xcp/wiki/Drivers](https://github.com/xcp-ng/xcp/wiki/Drivers), in a table named "Other kernel modules available in XCP-ng X.Y".
 
 
-## 🚒 Alternate kernel {#alternate-kernel}
+## Alternate kernel {#alternate-kernel}
 
 We provide an "alternate Linux kernel" on XCP-ng 8.0 and above, named `kernel-alt`. It is kernel 4.19, as the main kernel, but with all updates from the Linux 4.19 branch applied. By construction, it should thus be stable. However it **receives less testing** so we cannot fully guarantee against regressions (any detected regression we'd work on a fix quickly, of course). We also backport security fixes from the main kernel to the alternate kernel when needed.
 
@@ -131,7 +131,7 @@ yum remove kernel-alt
 
 This will remove the added grub entry automatically too and set default boot to main kernel if needed.
 
-## 🛠️ Tips related to specific hardware {#tips-related-to-specific-hardware}
+## Tips related to specific hardware {#tips-related-to-specific-hardware}
 
 Below is a non-exhaustive list of server models or devices for which the XCP-ng community provided extra tips.
 

@@ -6,7 +6,7 @@ sidebar_position: 3
 
 Templates are the blueprint VMs are created from: they define the virtual hardware (firmware type, devices, memory defaults…) and, optionally, pre-installed disk content.
 
-## 🎓 Two kinds of templates {#two-kinds-of-templates}
+## Two kinds of templates {#two-kinds-of-templates}
 
 * **Built-in templates**: shipped with XCP-ng, one per supported guest OS family. They contain **no disk content**: they only carry the right virtual hardware settings and optimizations for that OS (device model, boot mode, memory defaults…). You install the OS yourself from an ISO or network. Always create a VM from the template matching its OS: this is what guarantees the best defaults.
 * **Custom templates**: created by you from an existing VM or snapshot. They include the **disks' content**, so new VMs start as exact copies. This is the classic "golden image" workflow.
@@ -21,7 +21,7 @@ xe template-list params=name-label
 If built-in templates are missing (e.g. after an incomplete upgrade), see [this troubleshooting entry](../troubleshooting/common-problems.md#missing-templates-when-creating-a-new-vm).
 :::
 
-## 📸 Create a custom template {#create-a-custom-template}
+## Create a custom template {#create-a-custom-template}
 
 ### From a VM
 
@@ -42,7 +42,7 @@ xe snapshot-export-to-template snapshot-uuid=<snapshot-uuid> filename=my-templat
 xe vm-import filename=my-template.xva preserve=true
 `}</Terminal>
 
-## 🧼 Prepare the source before templating {#prepare-the-source-before-templating}
+## Prepare the source before templating {#prepare-the-source-before-templating}
 
 New VMs created from a custom template are clones: anything unique to the source machine gets duplicated. Before converting a source VM into a template:
 
@@ -51,7 +51,7 @@ New VMs created from a custom template are clones: anything unique to the source
 
 A full worked example (cloud image → prepared VM → template → new VMs) is in the [Ubuntu custom templates guide](../guides/create-use-custom-xcpng-ubuntu-templates.md).
 
-## 🚀 Create VMs from a template {#create-vms-from-a-template}
+## Create VMs from a template {#create-vms-from-a-template}
 
 From Xen Orchestra: **New** → **VM** and pick your template: custom templates appear alongside built-in ones. With `xe`:
 
@@ -61,7 +61,7 @@ xe vm-install template="my-golden-image" new-name-label="new-vm" sr-uuid=<sr-uui
 
 For repeated or automated deployments, drive this with [Terraform/OpenTofu, Packer or Ansible](../management/infrastructure-as-code.md).
 
-## 📦 Move templates around {#move-templates-around}
+## Move templates around {#move-templates-around}
 
 Templates export and import like VMs, in XVA format, which is handy to copy a golden image to another pool:
 
@@ -72,7 +72,7 @@ xe vm-import filename=my-template.xva preserve=true
 
 Or from Xen Orchestra, export/import from the template's view (see [import and export](import-export.md)).
 
-## 🗑️ Delete a custom template {#delete-a-custom-template}
+## Delete a custom template {#delete-a-custom-template}
 
 In Xen Orchestra, from the templates list (Home → VMs → templates filter). With `xe`:
 

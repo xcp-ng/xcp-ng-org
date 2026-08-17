@@ -2,7 +2,7 @@
 
 In XCP-ng, high availability (or HA) is the ability to detect a failed host and automatically boot all the VMs that were running on this host to the other alive machines.
 
-## 📋 Introduction {#introduction}
+## Introduction {#introduction}
 
 Implementing VM High availability (HA) is a real challenge.
 
@@ -22,7 +22,7 @@ High availability requires **far more maintenance** and will create some traps i
 Before using it, **please think about it carefully**: do you **REALLY** need it? We've seen people having less uptime using HA than when not using it, because you **must understand** what you are doing every time you reboot or update a host.
 :::
 
-## 🎓 Concepts {#concepts}
+## Concepts {#concepts}
 
 The pool concept allows hosts to exchange their data and status:
 
@@ -39,7 +39,7 @@ Here are the possible cases and how they are dealt with:
 * **Lost storage but not network**: if the host can contact a majority of pool members, it can stay alive. Indeed, in this scenario, there is no harm for the data (can't write to the VM disks). If the host is alone (i.e can't contact any other host or less than the majority), it goes for a reboot procedure.
 * **Lost network but not storage (worst case!)**: the host considers itself as problematic and starts a reboot procedure (hard power off and restart). This fencing procedure guarantees the sanity of your data.
 
-## ✅ Requirements {#requirements}
+## Requirements {#requirements}
 
 Enabling HA in XCP-ng requires thorough planning and validation of several prerequisites:
 
@@ -70,7 +70,7 @@ Use the `pif-plug` command in the CLI to activate VLAN and bond PIFs, ensuring t
 Additionally, the `xe diagnostic-vm-status` CLI command can help identify why a VM isn’t agile, allowing you to take corrective action as needed.
 
 
-## ⚙️ Configuration {#configuration}
+## Configuration {#configuration}
 
 ### Prepare the pool
 
@@ -175,7 +175,7 @@ The **default timeout is 60 seconds**, but you can adjust this value using the f
 xe pool-param-set uuid=<pool UUID> other-config:default_ha_timeout=<timeout in seconds>
 `}</Terminal>
 
-## 🔧 Updates/maintenance {#updatesmaintenance}
+## Updates/maintenance {#updatesmaintenance}
 
 Before any update or host maintenance, planned reboot and so on, **ALWAYS** put your host in maintenance mode. If you don't do that, XAPI will think it's an unplanned failure, and will act accordingly.
 
@@ -260,7 +260,7 @@ Immediatly after fencing, **Minion 1** will be booted on the other host.
 
 Finally, the worst case: keep the storage operational, but "cut" the (management) network interface. Same procedure: unplug the cable physically and wait... Because **lab1** cannot contact any other host in the pool (in this case, **lab2**), it starts the fencing procedure. The result is exactly the same as the previous test. It's gone for the pool master, displayed as **Halted** until we re-plug the cable.
 
-## 🤓 Architecture {#architecture}
+## Architecture {#architecture}
 
 ### General
 

@@ -27,11 +27,11 @@ LTS means **Long Term Support**: more information in [this section](../#lts-rele
 * Kernel 4.19 + patches
 * Supported until 2025-09-16 (The initial EOL date was 2025-06-05, and we extended it to provide more time to upgrade to XCP-ng 8.3 LTS)
 
-## 💿 Install {#install}
+## Install {#install}
 
 See [Installation](../../../installation/install-xcp-ng).
 
-## ⬆️ Upgrade from previous releases {#upgrade-from-previous-releases}
+## Upgrade from previous releases {#upgrade-from-previous-releases}
 
 Despite being an LTS, you can upgrade from previous releases. Both upgrade methods are supported:
 * From the installation ISO
@@ -39,7 +39,7 @@ Despite being an LTS, you can upgrade from previous releases. Both upgrade metho
 
 Refer to the [Upgrade Howto](../../../installation/upgrade).
 
-## ✨ What changed since 8.1 {#what-changed-since-81}
+## What changed since 8.1 {#what-changed-since-81}
 
 ### Highlight from Citrix Hypervisor changes
 
@@ -171,7 +171,7 @@ The update brought a few enhancements such as [Guest Secure Boot](../../guides/g
 
 They are detailed in the [Release announcement for XCP-ng 8.2.1](https://xcp-ng.org/blog/2022/02/28/xcp-ng-8-2-1-update/).
 
-## 🐞 Known issues {#known-issues}
+## Known issues {#known-issues}
 
 ### `yum update` from within a VNC console
 

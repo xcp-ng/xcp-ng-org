@@ -13,7 +13,7 @@ Best effort support is provided for additional packages provided by the XCP-ng p
 * [supported list for XCP-ng 8.3](http://reports.xcp-ng.org/8.3/extra_installable.txt)
 :::
 
-## 📜 Rules {#rules}
+## Rules {#rules}
 
 ### 1. Never enable additional repositories
 
@@ -84,7 +84,7 @@ The `wpa_supplicant` package is provided for homelab and testing purposes only. 
 
 If you have [pro support](https://xcp-ng.com), ask there. As part of the support, additional supported packages - such as new drivers - may be provided. Else ask the community on the [forum](https://xcp-ng.org/forum/).
 
-## 🦮 How to install {#how-to-install}
+## How to install {#how-to-install}
 
 Before doing any change, start keeping track somewhere of any change you bring to the system. This will help for:
 * support
@@ -140,13 +140,13 @@ EPEL 7 reached its end of life at the same time as CentOS 7, so installing addit
 
 And as usual make sure it won't overwrite existing packages...
 
-## 📦 Up to date additional packages {#up-to-date-additional-packages}
+## Up to date additional packages {#up-to-date-additional-packages}
 
 If you installed from XCP-ng repositories, [they will be updated like the rest of the XCP-ng system](../../management/updates).
 
 If you installed from any other repository, including CentOS and EPEL, you need to update them (and their dependencies) manually
 
-## ♻️ System upgrade {#system-upgrade}
+## System upgrade {#system-upgrade}
 
 See [upgrade section](../../installation/upgrade) for a discussion of the differences between "Installer upgrade" and "`yum`-style upgrade".
 
@@ -154,7 +154,7 @@ Installer upgrade will reinstall the system from scratch and just keep your conf
 
 An upgrade using `yum` directly will try to update or keep the packages that you installed. Packages installed from XCP-ng repositories should get updated seamlessly. Packages from other repositories will not get updated: they may be left in place (then you'll have to update them yourselves if needed), removed (due to package conflicts or because they are obsoleted by packages from the updated XCP-ng) or even make the upgrade fail until they are manually removed.
 
-## 📀 Supplemental packs {#supplemental-packs}
+## Supplemental packs {#supplemental-packs}
 
 Supplemental packs are vendor-provided ISO images adding software or drivers to a host (management agents, GPU drivers...). They can be provided [at installation time](../installation/install-xcp-ng.md), or installed on a running host:
 

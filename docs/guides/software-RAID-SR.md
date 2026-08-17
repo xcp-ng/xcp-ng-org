@@ -18,7 +18,7 @@ In addition, the example presented below is a fresh installation and not being i
 
 These instructions assume you are starting with a server already installed with software RAID and have no other storage repositories defined except what may be on the existing RAID.
 
-## 🖥️ Example System {#example-system}
+## Example System {#example-system}
 
 The example system we're demonstrating here is a small server using 5 identical 1TB hard drives. XCP-ng has already been installed in a software RAID configuration using 2 of the 5 drives. There is already a default "Local storage" repository configured as part of the XCP-ng setup on the existing RAID 1 drive pair.
 
@@ -55,7 +55,7 @@ unused devices: <none>
 
 The 5 drives are in place as `sda` through `sde` and as can be seen from the list are exactly the same size. The RAID 1 drive pair is set up as the XCP-ng default of a partitioned RAID 1 array `md127` using drives `sda` and `sdb` and is in a healthy state.
 
-## 🧱 Building the Second RAID {#building-the-second-raid}
+## Building the Second RAID {#building-the-second-raid}
 
 We have 3 remaining identical drives,  `sdc`, `sdd`, and `sde` and we're going to create a RAID 5 array using them in order to maximize the amount of space. We'll create this using the mdadm command like this:
 
@@ -103,7 +103,7 @@ unused devices: <none>
 
 Here we can see that the new RAID 5 array is in place as array `md0`, is using drives `sdc`, `sdd`, and `sde` and is healthy. As expected for a 3 drive RAID 5 array, it is providing about twice as much available space as a single drive.
 
-## 💽 Building the Storage Repository {#building-the-storage-repository}
+## Building the Storage Repository {#building-the-storage-repository}
 
 Now we create a new storage repository on the new RAID array like this:
 
@@ -118,7 +118,7 @@ At this point, we'd expect that the system could just be used as is, virtual mac
 
 Unfortunately, we'd be wrong.
 
-## 🫨 Unstable RAID Arrays When Booting {#unstable-raid-arrays-when-booting}
+## Unstable RAID Arrays When Booting {#unstable-raid-arrays-when-booting}
 
 What really happens when XCP-ng boots with a software RAID is that code in the Linux kernel and in the initrd file will attempt to find and automatically assemble any RAID arrays in the system. When there is just the single `md127` RAID 1 array, the process works pretty well. Unfortunately, the system seems to occasionally break down where there are more drives, more arrays, and more complex arrays.
 
@@ -132,7 +132,7 @@ This can also happen to the `md127` boot array where it will show with only one 
 
 So what can we do about this?  Fortunately, we can give the system more information about what RAID arrays are in the system and specify that they should be started up at boot.
 
-## 📌 Stabilizing the RAID Boot Configuration: The mdadm.conf File {#stabilizing-the-raid-boot-configuration-the-mdadmconf-file}
+## Stabilizing the RAID Boot Configuration: The mdadm.conf File {#stabilizing-the-raid-boot-configuration-the-mdadmconf-file}
 
 The first thing we need to do is give the system more information on what RAID arrays exist and how they're put together. The way to do this is by creating a raid configuration file `/etc/mdadm.conf`.
 
@@ -172,7 +172,7 @@ So what do these lines do? The first line instructs the system to allow or attem
 
 This file gives the system a description of what arrays are configured in the system and what drives are used to create them but doesn't specify what to do with them. The system should be able to use this information at boot for automatic assembly of the arrays. Booting with the `mdadm.conf` file in place is more reliable but still runs into same problems as before.
 
-## 🧬 Stabilizing the RAID Boot Configuration: The initrd Configuration {#stabilizing-the-raid-boot-configuration-the-initrd-configuration}
+## Stabilizing the RAID Boot Configuration: The initrd Configuration {#stabilizing-the-raid-boot-configuration-the-initrd-configuration}
 
 The other thing we need to do is give the system some idea of what to do with the RAID arrays at boot time. The way to do this is by adding instructions for the `dracut` program creating the initrd file to enable all RAID support, use the `mdadm.conf` file we created, and to start the arrays at boot time.
 
@@ -207,7 +207,7 @@ The second set instructs the booting Linux kernel to support automatic RAID asse
 
 Something to note when creating the file is to allow extra space between command line parameters. That is why most of the lines have extra space before and after parameters within the quotes.
 
-## 🧪 Building and Testing the New initrd File {#building-and-testing-the-new-initrd-file}
+## Building and Testing the New initrd File {#building-and-testing-the-new-initrd-file}
 
 Now that we have all of this extra configuration, we need to get the system to include it for use at boot. To do that we use the `dracut` command to create a new initrd file like this:
 
@@ -235,7 +235,7 @@ unused devices: <none>
 
 We can see that both arrays are active and healthy with all drives accounted for. Examining the storage repositories using Xen Orchestra, XCP-ng, or `xe` commands shows that both the Local storage and RAID storage repositories are available.
 
-## 🧑‍⚕️ Troubleshooting {#troubleshooting}
+## Troubleshooting {#troubleshooting}
 
 The most common problems in this process stem from one of a few things.
 
@@ -279,7 +279,7 @@ Another possible but rare problem is caused by drives that shift their identific
 
 This type of problem is very difficult to diagnose and correct. It may be possible to resolve it using different BIOS or setup configurations in the host system or by updating BIOS or controller firmware.
 
-## ♻️ Updates and Upgrades {#updates-and-upgrades}
+## Updates and Upgrades {#updates-and-upgrades}
 
 We will eventually need to update or patch the system to fix problems or close security holes as they are discovered.
 
@@ -339,7 +339,7 @@ After the rebuilding of the initrd file has finished, it should be safe to reboo
 
 In some cases it is also possible to perform [an upgrade using `yum`](../../installation/upgrade#from-command-line) instead of booting from CD. This type of upgrade does not completely replace the running system and does not create a backup copy. It is really a long series of updates instead of a full replacement. When upgrading a system using `yum`, the `mdadm.conf` and `dracut_mdraid.conf` files should remain in place just as with updates but copies of the files should be saved before the upgrade just in case.
 
-## 🎨 More and Different {#more-and-different}
+## More and Different {#more-and-different}
 
 So what if we don't have or don't want a system that's identical to the example we just built in these instructions? Here are some of the possible and normal variations of software RAID under XCP-ng.
 

@@ -8,7 +8,7 @@ How we make a release process.
 
 Let's first discuss the RPM repository structure and define stable and development releases. Then we'll see development and packaging aspects.
 
-## 🗃️ XCP-ng's RPM repositories {#xcp-ngs-rpm-repositories}
+## XCP-ng's RPM repositories {#xcp-ngs-rpm-repositories}
 *A new repository structure has been introduced with XCP-ng 8.0, which is what this section will cover. For the structure used in XCP-ng 7.5 and 7.6, see [https://xcp-ng.org/forum/topic/185/structure-of-the-rpm-repositories](https://xcp-ng.org/forum/topic/185/structure-of-the-rpm-repositories).*
 
 First, the *goals* behind the RPM repository structure are:
@@ -64,12 +64,12 @@ Note that having lots of additional packages in `base` and `updates` does not me
 * if you voluntarily install them (`yum install ...`),
 * or when pulled as a dependency of another update (in which case we do want that).
 
-## ⚖️ Stable release vs development release {#stable-release-vs-development-release}
+## Stable release vs development release {#stable-release-vs-development-release}
 This is very common: released stable versions only get non-disruptive updates during their support lifetime: bug fixes and security fixes. Those are first published to the `testing` RPM repository and then moved to the `updates` RPM repository so that it is offered to all users (see [Updates Howto](../../../management/updates)). We also allow ourselves to add features to an existing stable version as optional packages, or as updates to existing packages provided that we can do it without creating risks of regression. Example: we added support for `zstd` compression for VM exports to an already released XCP-ng 7.6.
 
 On the contrary, the development version (aka the next stable release) can get any kind of breaking change until the day of release. Packages are then usually directly pushed to the `base` repository.
 
-## 🏭 How a RPM package is built for XCP-ng {#how-a-rpm-package-is-built-for-xcp-ng}
+## How a RPM package is built for XCP-ng {#how-a-rpm-package-is-built-for-xcp-ng}
 There are two sides of the coin: **development** and **RPM packaging**. For a given RPM package that does not come from CentOS or EPEL, we always provide packaging work. We can also provide development work, depending on the package, either as contributors to an upstream project, or as our own upstream.
 
 Here are the usual steps. We will expand on them afterwards:
@@ -83,7 +83,7 @@ Here are the usual steps. We will expand on them afterwards:
   * **Publish the build** to the appropriate RPM repository (`testing` for stable releases, `base` for development release of XCP-ng)
 * **Installer ISO image generation**: in the case of a development release of XCP-ng, when all the above has been done for all the RPMs, generate an ISO image with the installer and the required RPMs.
 
-## 💬 Where discussion happens {#where-discussion-happens}
+## Where discussion happens {#where-discussion-happens}
 Usually discussion will happen:
 * On [GitHub issues](https://github.com/xcp-ng/xcp/issues).
 * In [the forum](https://xcp-ng.org/forum/).

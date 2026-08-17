@@ -2,7 +2,7 @@
 
 XCP-ng doesn't support VDI (Virtual Disk Image) shrinking, only growing. However, there are solutions to achieve the same result, albeit with some manual steps.
 
-## 🪟 Windows VMs {#windows-vms}
+## Windows VMs {#windows-vms}
 
 There are two options to do this. The most reliable is the Clonezilla method, but the XenConvert route might also work.
 
@@ -58,6 +58,6 @@ When it's done:
 1. Detach the bigger disk (keep it as a backup in case something goes wrong).
 1. Boot the VM.
 
-## 🐧 Linux VMs {#linux-vms}
+## Linux VMs {#linux-vms}
 
 You can use the same Clonezilla method. However, since "everything is a file" in Linux/BSDs, you can also use `rsync` to migrate the files from the original system to the new one.

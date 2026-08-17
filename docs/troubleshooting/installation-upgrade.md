@@ -2,7 +2,7 @@
 
 Upgrade here designates an upgrade using the installation ISO
 
-## 💥 If the installer starts booting up then crashes or hangs {#if-the-installer-starts-booting-up-then-crashes-or-hangs}
+## If the installer starts booting up then crashes or hangs {#if-the-installer-starts-booting-up-then-crashes-or-hangs}
 
 * First of all check the integrity of the ISO image you downloaded, using the provided checksum
 * Try the other boot options
@@ -35,7 +35,7 @@ Stricter memory map verification rules introduced in modern Xen/Dom0 kernels cla
    * Set **Lower Memory Mapped I/O Base** to `Enabled` (or `512GB`).
 3. **Clear NVRAM Cruft:** Go into the **UEFI Boot Settings** -> **UEFI Boot Sequence** and delete any dead, duplicated, or orphaned boot entries from past OS installations to free up firmware space.
 
-## 🚧 During installation or upgrade {#during-installation-or-upgrade}
+## During installation or upgrade {#during-installation-or-upgrade}
 
 You can reach a shell with ALT+F2 (or ALT+RIGHT) and a logs console with ALT+F3 (or ALT+RIGHT twice).
 
@@ -73,7 +73,7 @@ You can specify an interface name such as `eth1` instead of `all` if necessary, 
 
 The ssh server will be available once the network is up. If you are unsure which DHCP address was obtained, you can use the shell console as described above to look it up using `ip a`. You can then connect as `root` using the password you provided on the commandline.
 
-## 💽 The installer reports "No Disks" but the machine has a drive {#the-installer-reports-no-disks-but-the-machine-has-a-drive}
+## The installer reports "No Disks" but the machine has a drive {#the-installer-reports-no-disks-but-the-machine-has-a-drive}
 
 **Cause**
 
@@ -102,7 +102,7 @@ Reach a shell with `ALT` + `F2` (see [During installation or upgrade](#during-in
 The fix above applies only when the cause is the RAID/RST controller mode. A drive can also be hidden by a storage controller whose driver is missing from the install ISO (for example some MegaRAID or `mpi3mr` adapters). That is a different problem with a different fix: load a driver disk at install time, or use an updated installer that includes the driver. A BIOS change does not help there.
 :::
 
-## 🙅 The ISO installer does not offer to upgrade the existing install (XCP-ng or XenServer) {#the-iso-installer-does-not-offer-to-upgrade-the-existing-install-xcp-ng-or-xenserver}
+## The ISO installer does not offer to upgrade the existing install (XCP-ng or XenServer) {#the-iso-installer-does-not-offer-to-upgrade-the-existing-install-xcp-ng-or-xenserver}
 
 :::note
 This section details how to deal with the most frequent causes for the installer not detecting your current installation. There can be other, rarer cases which are not detailed here.  In all cases the detailed reason for an inability to upgrade will always be possible to find in the installer log file. See [During installation or upgrade](#during-installation-or-upgrade) to access the log file.
@@ -186,12 +186,12 @@ Probe of /dev/nvme0n1 found boot=(True, '/dev/nvme0n1p4') root=(1, '/dev/nvme0n1
 
 The `/etc/xensource-inventory` file is critical to the upgrade process. This is one of the cases where the log will exhibit "A problem occurred whilst scanning for existing installations:" followed by more details.
 
-## 📜 Installation logs {#installation-logs}
+## Installation logs {#installation-logs}
 
 On the installed system, installer logs are kept in `/var/log/installer/`.
 
 The main log file is `/var/log/installer/install-log`.
 
-## 🐛 Debugging the installer {#debugging-the-installer}
+## Debugging the installer {#debugging-the-installer}
 
 You can [build your own installer](../../project/development-process/ISO-modification).

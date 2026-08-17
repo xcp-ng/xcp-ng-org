@@ -6,7 +6,7 @@ sidebar_position: 7
 
 Who can access your XCP-ng infrastructure, and with which rights.
 
-## 🎓 The model in short {#the-model-in-short}
+## The model in short {#the-model-in-short}
 
 There are two distinct layers:
 
@@ -15,7 +15,7 @@ There are two distinct layers:
 
 In other words: XCP-ng authenticates *management planes*, Xen Orchestra authenticates *people*.
 
-## 🔑 Host level: the root account {#host-level-the-root-account}
+## Host level: the root account {#host-level-the-root-account}
 
 * Change the password with `xe user-password-change` or `xsconsole`: see [root password management](hosts-pools.md#root-password).
 * All pool members share the same root password.
@@ -26,7 +26,7 @@ In other words: XCP-ng authenticates *management planes*, Xen Orchestra authenti
 XAPI historically supports external authentication (Active Directory) and role-based access control at the host level. In XCP-ng this path is deprecated (see the [8.3 release notes](../releases/release-8-3.md#active-directory-in-xcp-ng)) and not recommended: user management is done in Xen Orchestra, which offers much more flexibility without touching dom0.
 :::
 
-## 👥 Xen Orchestra: users, groups and ACLs {#xen-orchestra-users-groups-and-acls}
+## Xen Orchestra: users, groups and ACLs {#xen-orchestra-users-groups-and-acls}
 
 What Xen Orchestra provides on top of your pools:
 
@@ -37,7 +37,7 @@ What Xen Orchestra provides on top of your pools:
 
 See the Xen Orchestra documentation for details: [users](https://docs.xen-orchestra.com/xo5/users), [ACLs](https://docs.xen-orchestra.com/xo5/users#acls), [self-service](https://docs.xen-orchestra.com/xo5/users#self-service-portal).
 
-## 🧭 Recommended setup {#recommended-setup}
+## Recommended setup {#recommended-setup}
 
 For a team of any size:
 

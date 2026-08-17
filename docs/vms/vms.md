@@ -13,7 +13,7 @@ This page covers guest OS support and guest tools. The other pages of this secti
 * [Advanced VM settings](advanced.md): boot options, vTPM, memory, time
 * [Windows VMs](windows.md): creation, sysprep, in-place upgrades
 
-## 🧩 Supported guest operating systems {#supported-guest-operating-systems}
+## Supported guest operating systems {#supported-guest-operating-systems}
 
 XCP-ng can run virtually any x86 operating system that works in a Xen HVM guest, far beyond any official list. In practice, three things define how well a guest is supported:
 
@@ -23,7 +23,7 @@ XCP-ng can run virtually any x86 operating system that works in a Xen HVM guest,
 
 If you rely on professional support, the commercially supported guest OS list is maintained on the [Vates documentation](https://docs.vates.tech/). For everything else, the [forum](https://xcp-ng.org/forum) is full of reports about less common guests.
 
-## 🛠️ Guest Tools {#guest-tools}
+## Guest Tools {#guest-tools}
 
 XCP-ng needs guest tools to be installed in the VMs in order to communicate with the guest operating system. This brings better performance and is required for various features.
 
@@ -37,7 +37,7 @@ Linux: see [Linux Guest Tools](#linux-guest-tools) \
 Windows: see [Windows Guest Tools](#windows-guest-tools) \
 FreeBSD, OpenBSD and some appliances based on them: see [*BSD Guest Tools](#bsd-guest-tools)
 
-## 🏘️ All VMs {#all-vms}
+## All VMs {#all-vms}
 
 ### Dynamic Memory
 
@@ -105,7 +105,7 @@ vncviewer localhost:<LOCAL_PORT>
 Certain applications, such as Oracle ASM, require a unique identifier for disk drives known as a WWID (World Wide Identifier). In a Linux environment, this can be achieved by utilizing the `ID_PART_ENTRY_UUID` or `ID_PART_ENTRY_NAME` variables. These identifiers can be set in the udev rules file located at `/etc/udev/rules.d/99-asm.rules`. For detailed instructions on configuring disk devices manually for Oracle ASM using WWID, refer to [this guide](https://alexzy.blogspot.com/2018/02/configuring-disk-devices-manually-for.html).
 
 
-## 🪟 Windows VMs {#windows-vms}
+## Windows VMs {#windows-vms}
 
 ### Windows Guest Tools
 
@@ -428,7 +428,7 @@ Once done with Linux, shut down the VM and restore the parameter to its original
 xe vm-param-set uuid=VM-UUID platform:device_id=0002
 `}</Terminal>
 
-## 🐧 Linux VMs {#linux-vms}
+## Linux VMs {#linux-vms}
 
 ### Linux Guest Tools
 
@@ -583,7 +583,7 @@ The default Ubuntu installation includes a package named `linux-modules-extra` c
 
 For more details, the problem comes from `Ubuntu` kernels that don't have the `efi-framebuffer` driver compiled in. This driver should be used if the `bochs` driver isn't present and it is just not selected in the `Ubuntu` kernel build config. To be more precise, `Ubuntu` kernels try to use a driver called `simple-framebuffer` for which there seems to be an incompatibility with the way the OVMF UEFI bios initializes the VGA card, causing the distorted display.
 
-## 😈 *BSD VMs {#bsd-vms}
+## *BSD VMs {#bsd-vms}
 
 ### *BSD Guest Tools
 
