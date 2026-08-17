@@ -19,7 +19,8 @@ to configure NTP, and how to check and correct it.
   master, and must stay synchronized afterwards. A failed join tells you what is wrong. Drift
   that sets in later does not: it surfaces as hosts disagreeing about when things happened,
   each of them convinced by its own clock. Keep every host in a pool on the same time sources.
-  See [Pool Requirements](../../installation/requirements#pool-requirements).
+  See [Pool Requirements](../../installation/requirements#pool-requirements) for the other
+  conditions a host has to meet before it can join.
 - **Certificates.** Certificates are only valid inside a validity window. A host whose date
   falls outside that window will reject, or be rejected by, connections that would otherwise
   succeed.
@@ -50,21 +51,23 @@ had no time source to begin with.
 ### During installation
 
 The installer prompts you to enter the time, select a time zone, and either configure NTP
-servers or set the time manually. Always configure at least one NTP server. See
-[Install XCP-ng](../../installation/install-xcp-ng).
+servers or set the time manually. Always configure at least one NTP server (see
+[Install XCP-ng](../../installation/install-xcp-ng) for where this falls in the installation
+sequence).
 
 :::warning
 If you set the time manually at this step, the host can end up with `chronyd` running but no
 time source configured at all. The clock still ticks, but nothing ever checks it: it drifts
 from the date you typed, and if that date was wrong, it stays wrong. This is also the one
 case that does not fix itself at boot, since `makestep` needs a source to measure against.
-See [Checking the time sources](#checking-the-time-sources) below.
+[Checking the time sources](#checking-the-time-sources) below shows how to recognise that
+state on a running host.
 :::
 
 ### During an automated installation
 
 The installation answer file accepts one or more NTP servers through the `<ntp-server>`
-element. See [Answer file](../../appendix/answerfile).
+element (see [Answer file](../../appendix/answerfile) for its syntax).
 
 ### On an installed host
 
@@ -149,8 +152,8 @@ Work outward, from the configuration to the network:
    ever configured, which is the manual-time-at-install case. Add them with `xsconsole`.
 2. **Are they reachable?** Sources stuck at `?` are configured but unanswered. NTP goes out
    over UDP 123, so a firewall between the host and its servers produces exactly this, as
-   does a network with no route to the public pool. See
-   [Networks without internet access](#networks-without-internet-access).
+   does a network with no route to the public pool, which
+   [Networks without internet access](#networks-without-internet-access) below covers.
 3. **Is the daemon healthy?** `systemctl status chronyd`, and `journalctl -u chronyd` for
    what it made of its configuration at startup.
 4. **Was the configuration changed underneath you?** `rpm -V chrony` reports whether
