@@ -49,6 +49,10 @@ VMs are started one after another rather than all at once, so a `start-delay` on
 hold up the ones behind it. That spaces a boot out, but it does not sequence it, because which
 VMs end up behind the delay is not something you control.
 
+Measured on XCP-ng 8.3, with four autostart VMs and `start-delay=120` on one of them: the
+delayed VM was running about ten seconds after the host enabled itself, and the other three
+stayed halted for the next two minutes before starting together.
+
 To define a startup order, use [vApps](../vms/vm-lifecycle.md#vapps) instead. Two VM parameters
 apply when an appliance is started, and after an HA failover:
 
@@ -78,8 +82,8 @@ let HA restart it after a failover.
 `start-delay` has been reported to interfere with autostart: one user found a VM that would
 not start at boot until the parameter was cleared
 ([forum thread](https://xcp-ng.org/forum/topic/12388)). A delayed start does hold up the VMs
-queued behind it, so it explains a VM coming up late. A VM that stays down for good is a
-different matter, and that part is unexplained. If a VM does not appear after a host reboot,
-it is worth checking its `start-delay` value and waiting to see whether it is simply queued
-behind another VM's delay.
+queued behind it, so it explains a VM coming up late. It does not explain one that stays down,
+and that part is unexplained: in the measurement above, the delayed VM was the first to start.
+If a VM does not appear after a host reboot, it is worth checking its `start-delay` value and
+waiting to see whether it is simply queued behind another VM's delay.
 :::
