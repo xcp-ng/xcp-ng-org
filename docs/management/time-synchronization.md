@@ -16,7 +16,10 @@ to configure NTP, and how to check and correct it.
   past, the TLS handshake fails because, from the host's perspective, the mirror's certificate
   is not yet valid. The error `yum` prints in that situation does not mention time.
 - **Pool membership.** A host joining a pool must have its clock synchronized with the pool
-  master. See [Pool Requirements](../../installation/requirements#pool-requirements).
+  master, and must stay synchronized afterwards. A failed join tells you what is wrong. Drift
+  that sets in later does not: it surfaces as hosts disagreeing about when things happened,
+  each of them convinced by its own clock. Keep every host in a pool on the same time sources.
+  See [Pool Requirements](../../installation/requirements#pool-requirements).
 - **Certificates.** Certificates are only valid inside a validity window. A host whose date
   falls outside that window will reject, or be rejected by, connections that would otherwise
   succeed.
@@ -32,18 +35,30 @@ The default configuration enables `rtcsync`, allowing chronyd to keep the hardwa
 synchronized with the system clock automatically. There is no need to manually update the
 hardware clock after correcting the system time, and the correction persists across reboots.
 
+It also sets `makestep 1.0 3`, which lets chronyd jump the clock rather than ease it into
+place, for the first three updates after the service starts. A host that boots with a badly
+wrong date therefore fixes itself within seconds, as long as it can reach a time source.
+Measured on 8.3: a clock put 45 days in the past was corrected between five and ten seconds
+after `chronyd` started.
+
+After those three updates chronyd only slews, which for an offset of months or years never
+converges. That is the case the manual correction below exists for, along with the host that
+had no time source to begin with.
+
 ## 🔧 Configuring the time sources {#configuring-the-time-sources}
 
 ### During installation
 
-At step 11, the installer prompts you to enter the time, select a time zone and either
-configure NTP servers or set the time manually. Always configure at least one NTP server. See
+The installer prompts you to enter the time, select a time zone, and either configure NTP
+servers or set the time manually. Always configure at least one NTP server. See
 [Install XCP-ng](../../installation/install-xcp-ng).
 
 :::warning
 If you set the time manually at this step, the host can end up with `chronyd` running but no
-time source configured at all. It will keep whatever date it was installed with. See
-[Checking the time sources](#checking-the-time-sources) below.
+time source configured at all. The clock still ticks, but nothing ever checks it: it drifts
+from the date you typed, and if that date was wrong, it stays wrong. This is also the one
+case that does not fix itself at boot, since `makestep` needs a source to measure against.
+See [Checking the time sources](#checking-the-time-sources) below.
 :::
 
 ### During an automated installation
@@ -53,8 +68,17 @@ element. See [Answer file](../../appendix/answerfile).
 
 ### On an installed host
 
-You can configure NTP from `xsconsole`, or by editing `/etc/chrony.conf` directly and
-restarting the service.
+Use `xsconsole`. Its NTP screen adds and removes time servers and restarts `chronyd` for you.
+
+:::warning
+Editing `/etc/chrony.conf` by hand is a last resort, for when no other route works. Reach for
+`xsconsole` first.
+
+Xen Orchestra does not configure NTP on hosts. Its `xoa network ntp` command sets the time
+servers of the XOA appliance itself, which is a Debian VM keeping its own clock, and the NTP
+field in the XOA deployment form does the same for the appliance being deployed. Neither
+touches the chrony configuration of the hosts XO manages.
+:::
 
 ## 🔍 Checking the time sources {#checking-the-time-sources}
 
@@ -89,10 +113,10 @@ On a host that is synchronizing normally, the same two commands look like this:
 210 Number of sources = 4
 MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ===============================================================================
-^* vps1.websters-computers.>     2   7   377    59   -361us[ -444us] +/- 8522us
-^+ meshflow.net                  3   9   377   118   +203us[ +122us] +/-   12ms
-^+ mail.rapidooo.fr              2   9   377   113  -1029us[-1110us] +/- 9934us
-^- 88-185-213-3.subs.proxad>     3   8   377   506   +688us[ +491us] +/-   49ms
+^* ntp1.example.net              2   7   377    59   -361us[ -444us] +/- 8522us
+^+ ntp2.example.net              3   9   377   118   +203us[ +122us] +/-   12ms
+^+ ntp3.example.net              2   9   377   113  -1029us[-1110us] +/- 9934us
+^- ntp4.example.net              3   8   377   506   +688us[ +491us] +/-   49ms
 ```
 
 In the `MS` column, the first character is the source type, `^` for a server, and the second
@@ -114,54 +138,75 @@ chronyc tracking
 
 ## 🛠️ Correcting a wrong clock {#correcting-a-wrong-clock}
 
-Start with `chronyc sources`, because the answer decides which of the two paths below
-applies.
+A host with working time sources does not usually have a wrong clock, because chronyd steps
+it within seconds of starting. So a clock that is still wrong is telling you that something
+upstream of it is broken. Find that first. Stepping the clock by hand gets you working again
+today, and if you stop there the date is wrong again in a few weeks.
 
-### If sources are listed
+Work outward, from the configuration to the network:
 
-Correct the clock and check the result:
+1. **Are there any sources?** `chronyc sources`. `Number of sources = 0` means none were
+   ever configured, which is the manual-time-at-install case. Add them with `xsconsole`.
+2. **Are they reachable?** Sources stuck at `?` are configured but unanswered. NTP goes out
+   over UDP 123, so a firewall between the host and its servers produces exactly this, as
+   does a network with no route to the public pool. See
+   [Networks without internet access](#networks-without-internet-access).
+3. **Is the daemon healthy?** `systemctl status chronyd`, and `journalctl -u chronyd` for
+   what it made of its configuration at startup.
+4. **Was the configuration changed underneath you?** `rpm -V chrony` reports whether
+   `/etc/chrony.conf` still matches the package. Hand edits and `xsconsole` both show up here.
+
+Once sources are reachable, restarting the daemon corrects the clock on its own, because the
+`makestep` allowance applies again from a fresh start:
+
+```bash
+systemctl restart chronyd
+chronyc sources
+date
+```
+
+### Stepping the clock immediately
+
+If you need the correct date right now and the daemon has been running for a while, its
+`makestep` allowance is already spent and it will only slew:
 
 ```bash
 chronyc makestep
 date
 ```
 
-`chronyc makestep` is what does the work here. By default, chrony corrects time offsets by
-gradually slewing the system clock, which never converges for an offset of months or years.
-
-### If `Number of sources = 0`
-
-Do not start with `makestep`. It will report success and move nothing, because chrony has no
-measured offset to step to.
-
-1. Add time sources to `/etc/chrony.conf`:
-
-   ```
-   server 0.pool.ntp.org iburst
-   server 1.pool.ntp.org iburst
-   server 2.pool.ntp.org iburst
-   server 3.pool.ntp.org iburst
-   ```
-
-2. Restart the service and confirm that a source has become reachable, as described in
-   [Checking the time sources](#checking-the-time-sources):
-
-   ```bash
-   systemctl restart chronyd
-   chronyc sources
-   ```
-
-3. Once a source is reachable, correct the clock:
-
-   ```bash
-   chronyc makestep
-   date
-   ```
+This is a stopgap. It needs at least one reachable source to have something to step to, and
+on a host with `Number of sources = 0` it reports success while moving nothing. It also does
+nothing about the reason the clock was wrong, so treat it as buying time for the diagnosis
+above rather than as the end of it.
 
 :::note
-Correcting the date does not invalidate the host's own certificate. XAPI issues it with a
-ten-year validity, so a host installed with a wrong date still holds a certificate that
-covers the corrected date. `xe host-refresh-server-certificate` is not needed for this.
+**Check the host certificate after a large correction.**
+
+XAPI issues the host certificate with a ten-year validity, anchored on the clock at the time
+it was generated. Small corrections stay comfortably inside that window, so most of the time
+there is nothing to do.
+
+A big correction is different. A host that installed itself believing the year was 2010 holds
+a certificate valid 2010 to 2020, and moving the clock to the real date leaves that
+certificate expired. A clock set far into the future at install produces the mirror image: a
+certificate that is not valid yet once the date is corrected backwards.
+
+Check the window against the corrected date:
+
+```bash
+openssl x509 -in /etc/xensource/xapi-ssl.pem -noout -dates
+date -u
+```
+
+If the current date falls outside `notBefore` to `notAfter`, regenerate the certificate:
+
+```bash
+xe host-refresh-server-certificate host=<host>
+```
+
+On a host whose certificate is already rejected, and which therefore cannot be reached the
+usual way, `xe host-emergency-reset-server-certificate` runs locally on the host itself.
 :::
 
 :::tip
@@ -175,13 +220,6 @@ host is running; it cannot help a clock that loses its value when the power goes
 Hosts without Internet access cannot reach the public NTP pool. The result is the same as
 having no sources at all: `chronyc sources` lists servers that never leave the `?` state.
 
-On such networks, point `/etc/chrony.conf` to a time source that hosts can actually reach,
-such as an appliance on the same network, or a local server that is itself synchronized and
+On such networks, point the hosts at a time source they can actually reach, using `xsconsole`
+as above: an appliance on the same network, or a local server that is itself synchronized and
 acts as the reference time for the network.
-
-## 🎱 Pools {#pools}
-
-Keep every host in a pool synchronized, ideally against the same sources. A host whose clock
-differs from the pool master is not just inconvenient: clock synchronization is one of
-the requirements for joining a pool, along with the other requirements listed in
-[Pool Requirements](../../installation/requirements#pool-requirements).
