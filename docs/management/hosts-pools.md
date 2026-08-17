@@ -271,23 +271,25 @@ The pool database (all your XAPI objects: VMs, SRs, networks…) is replicated o
 
 ## Changing Dom0 screen resolution {#dom0-screen-resolution}
 
-XCP-ng doesn't touch the screen resolution by default and keep the one used
+XCP-ng doesn't touch the screen resolution by default and keeps the one used
 at boot (usually from the firmware). However, in some cases, it may be useful
-to increase the screen resolution or adjust it for specific needs or to workaround
+to increase the screen resolution or adjust it for specific needs, or to work around
 some display hardware limitations.
 
 :::warning
-Xen versions prior `4.17.6-9.5` unconditionally reconfigure the display to highest
-screen resolution regardless of `vga` parameter when booting in UEFI mode.
+In XCP-ng, Xen versions prior to `4.17.6-9.5` unconditionally reconfigured the display
+to the highest screen resolution, regardless of the `vga` parameter when booting in UEFI
+mode. An update fixing this was released in August 2026.
 :::
 
-You can add to Xen command-line a `vga` parameter in order to try changing resolutions.
+You can add to the Xen command-line a `vga` parameter in order to try changing resolutions.
 
-The parameter follows this format `vga=gfx-WxHx24` (where W is screen width and H is
-screen height, 24 being the standard 8bpp color depth), for instance,
-`vga=gfx-1920x1080x24` configures a 1920x1080 (1080p 16:9) screen resolution.
+The parameter follows the `vga=gfx-WxHx24` format (where W is screen width and H is
+the screen height, 24 being the standard color depth of 8 bits per color channel).
+For instance, `vga=gfx-1920x1080x24` configures a 1920x1080 (1080p 16:9) screen resolution.
 
-This can be configured either temporarily from GRUB (editor) or permanently using
+This can be configured either temporarily at boot time from GRUB's boot menu (press "e"),
+or permanently, using
 
 <Terminal shell title="root@xcp-ng-host — Change Dom0 screen resolution">{`
 /opt/xensource/libexec/xen-cmdline --set-xen "vga=gfx-WxHx24"
@@ -299,6 +301,6 @@ And can be reverted using
 `}</Terminal>
 
 :::note
-This parameter only works if the firmware display driver supports such resolution,
-incorrect values may lead to the parameter being ignored or loss of display output.
+This parameter only works if the firmware display driver supports the requested resolution.
+Incorrect values may cause the parameter to be ignored or result in loss of display output.
 :::
