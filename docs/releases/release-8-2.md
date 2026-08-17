@@ -18,7 +18,7 @@ SHA256 checksums, GPG signatures and net-install ISO are available [here](https:
 LTS means **Long Term Support**: more information in [this section](../#lts-releases).
 :::
 
-## ℹ️ Release information {#release-information}
+## Release information {#release-information}
 
 * Released on 2020-11-18
 * Based on Citrix Hypervisor 8.2
@@ -161,7 +161,7 @@ Plans are laid out for simpler installation and maintenance of Windows guest too
 
 Using the Windows guest tools is [documented here](/vms#windows-guest-tools).
 
-## 🆕 Update: what's new in XCP-ng 8.2.1 {#update-whats-new-in-xcp-ng-821}
+## Update: what's new in XCP-ng 8.2.1 {#update-whats-new-in-xcp-ng-821}
 
 XCP-ng 8.2.1 was released as a maintenance update for XCP-ng 8.2 LTS, which has its own version number because it also comes with updated installation images.
 

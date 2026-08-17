@@ -48,7 +48,7 @@ Notes:
 * If the guest uses the TPM for disk encryption (e.g. BitLocker), **keep your recovery keys safe**: losing the vTPM state means the guest can't unseal its keys.
 * Suspending or checkpointing (RAM snapshot) a vTPM-equipped VM is not supported.
 
-## ⏰ Time in VMs {#time-in-vms}
+## Time in VMs {#time-in-vms}
 
 Guests get their initial clock from the host, then keep time themselves. Recommendations:
 

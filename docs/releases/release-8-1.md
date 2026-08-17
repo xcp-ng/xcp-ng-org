@@ -12,7 +12,7 @@ XCP-ng 8.1 is EOL (End Of Life) since 2021. Please check the [currently supporte
 
 SHA256 checksums, GPG signatures and net-install ISO are available [here](http://mirrors.xcp-ng.org/isos/8.1/).
 
-## ℹ️ Release information {#release-information}
+## Release information {#release-information}
 
 * Released on 2020-03-31.
 * Based on Citrix Hypervisor 8.1.

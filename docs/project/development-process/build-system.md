@@ -161,7 +161,7 @@ Then, if it is an **update candidate** for an existing package:
     * What to test.
     * Is a reboot required…
 
-## 🆕 Special case: new packages {#special-case-new-packages}
+## Special case: new packages {#special-case-new-packages}
 Importing new packages requires extra steps.
 
 **TODO**

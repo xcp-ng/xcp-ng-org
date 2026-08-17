@@ -6,7 +6,7 @@ The xe CLI can be used locally on any XCP-ng host, it's installed along with it.
 The complete set of all `xe` commands is available in the [Appendix section](../../../appendix/cli_reference).
 :::
 
-## ℹ️ Getting help with xe commands {#getting-help-with-xe-commands}
+## Getting help with xe commands {#getting-help-with-xe-commands}
 
 Basic help is available for CLI commands on-host by typing the following:
 
@@ -96,7 +96,7 @@ After running this command, you no longer have to specify the remote XCP-ng serv
 
 Using the `XE_EXTRA_ARGS` environment variable also enables tab completion of xe commands when issued against a remote XCP-ng server, which is disabled by default.
 
-## 🀄 Special characters and syntax {#special-characters-and-syntax}
+## Special characters and syntax {#special-characters-and-syntax}
 
 To specify argument/value pairs on the xe command line, write: `argument=value`
 

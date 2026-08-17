@@ -98,7 +98,7 @@ The global situation (resource usage) is examined **every minute**.
 TODO: more details to come here
 :::
 
-## ↔️ VM anti-affinity {#vm-anti-affinity}
+## VM anti-affinity {#vm-anti-affinity}
 
 VM anti-affinity is a feature that prevents VMs with the same user tags from running on the same host. This functionality is available directly in the load-balancer plugin.
 This way, you can avoid having pairs of redundant VMs or similar running on the same host.

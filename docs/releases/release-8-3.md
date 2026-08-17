@@ -22,7 +22,7 @@ LTS means **Long Term Support**: more information in [this section](../#lts-rele
 * [Attention points](#attention-points) - Highly recommended read before upgrading.
 * [Known issues](#known-issues)
 
-## ℹ️ Release information {#release-information}
+## Release information {#release-information}
 
 For this release, the product lifecycle has changed:
 * A longer preview phase, enabling broad user feedback, now ended.

@@ -22,7 +22,7 @@ We maintain one or several releases in parallel:
 
 If your version is lower than `8.3`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [upgrade](../../installation/upgrade).
 
-## ℹ️ Prerequisites {#prerequisites}
+## Prerequisites {#prerequisites}
 
 ### Access to the repository
 

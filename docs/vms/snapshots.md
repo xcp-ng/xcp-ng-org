@@ -68,7 +68,7 @@ xe vm-checkpoint vm="my-vm" new-name-label="before-upgrade-with-ram"
 In Xen Orchestra you can exclude specific disks from snapshots (and backups) by naming convention: putting `[NOSNAP]` (snapshots) or `[NOBAK]` (backups and their snapshots) in the disk's name. Very useful for large scratch/data disks. On XCP-ng 8.3, disk exclusion is supported natively by the snapshot API, which XO uses.
 :::
 
-## ⏪ Revert to a snapshot {#revert-to-a-snapshot}
+## Revert to a snapshot {#revert-to-a-snapshot}
 
 Reverting replaces the VM's current state with the snapshot's state. **Everything written since the snapshot is lost.**
 

@@ -17,7 +17,7 @@ This post explains in detail the steps to create templates based on Ubuntu. The 
 
 All experiments will be conducted using the graphical virtual machine manager [Xen Orchestra](https://xen-orchestra.com), except for the last part where we will use XO-CLI (Xen Orchestra CLI) to bypass the graphical interface.
 
-## ℹ️ Prerequisites {#prerequisites}
+## Prerequisites {#prerequisites}
 
 * [XCP-NG](https://xcp-ng.org/)
 * [Xen Orchestra](https://xen-orchestra.com) from the sources or Xen Orchestra virtual Appliance (XOA)

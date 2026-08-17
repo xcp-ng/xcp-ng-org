@@ -188,7 +188,7 @@ You can also use `xsconsole` (the text console you get on the host's physical/se
 
 Lost the root password? See the [reset procedure](../troubleshooting/common-problems.md#reset-xcp-ng-root-password) in the troubleshooting section.
 
-## ⏰ Time synchronization (NTP) {#time-synchronization-ntp}
+## Time synchronization (NTP) {#time-synchronization-ntp}
 
 Correct and consistent clocks across the pool matter more than on ordinary servers: XAPI coordination, live migration, HA heartbeats, logs correlation and Windows guests (which get their initial time from the host) all rely on it. NTP servers are normally configured at [installation time](../installation/install-xcp-ng.md).
 
