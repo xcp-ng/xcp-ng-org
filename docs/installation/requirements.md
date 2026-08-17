@@ -105,6 +105,12 @@ Despite the wording, nothing has been tampered with: the firmware is refusing a 
 it has no certificate for. If Secure Boot is re-enabled later (whether after a firmware reset
 or to meet compliance requirements) the host will fail to boot until you disable it again.
 
+This is not a permanent position. Host Secure Boot is
+[in progress](../project/roadmap.md#in-progress) on the roadmap and is planned for XCP-ng 9.
+Neither the date nor the shape of that first release is settled: part of the work depends on
+review outside the project, and the initial support may require enrolling your own keys.
+Until it lands, disabling Secure Boot is the only supported configuration.
+
 ## 📋 XCP-ng Configuration Limits {#xcp-ng-configuration-limits}
 
 XCP-ng supports the following per host:
