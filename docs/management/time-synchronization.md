@@ -9,7 +9,7 @@ working normally until something needs to trust that date. When that happens, th
 failures rarely point to the clock as the cause. This page explains why the clock matters, how
 to configure NTP, and how to check and correct it.
 
-## ⏰ Why the clock must be correct {#why-the-clock-must-be-correct}
+## Why the clock must be correct {#why-the-clock-must-be-correct}
 
 - **Access to the repositories.** Updates are fetched over HTTPS, and TLS validates the
   server's certificate against the host's own date. If the host's clock is set too far in the
@@ -27,7 +27,7 @@ to configure NTP, and how to check and correct it.
   anything that runs on a schedule such as backups, depend on the hosts agreeing on what
   time it is.
 
-## 🕰️ How XCP-ng keeps time {#how-xcp-ng-keeps-time}
+## How XCP-ng keeps time {#how-xcp-ng-keeps-time}
 
 The time daemon on dom0 is `chronyd`, configured through `/etc/chrony.conf`.
 
@@ -45,7 +45,7 @@ After those three updates chronyd only slews, which for an offset of months or y
 converges. That is the case the manual correction below exists for, along with the host that
 had no time source to begin with.
 
-## 🔧 Configuring the time sources {#configuring-the-time-sources}
+## Configuring the time sources {#configuring-the-time-sources}
 
 ### During installation
 
@@ -80,7 +80,7 @@ field in the XOA deployment form does the same for the appliance being deployed.
 touches the chrony configuration of the hosts XO manages.
 :::
 
-## 🔍 Checking the time sources {#checking-the-time-sources}
+## Checking the time sources {#checking-the-time-sources}
 
 Check that the service is running, and that it actually has something to synchronize with:
 
@@ -136,7 +136,7 @@ To see the offset chrony believes it has, and whether it has settled:
 chronyc tracking
 ```
 
-## 🛠️ Correcting a wrong clock {#correcting-a-wrong-clock}
+## Correcting a wrong clock {#correcting-a-wrong-clock}
 
 A host with working time sources does not usually have a wrong clock, because chronyd steps
 it within seconds of starting. So a clock that is still wrong is telling you that something
@@ -221,7 +221,7 @@ dead and should be replaced. `rtcsync` can only keep the hardware clock in step 
 host is running; it cannot help a clock that loses its value when the power goes.
 :::
 
-## 🌐 Networks without internet access {#networks-without-internet-access}
+## Networks without internet access {#networks-without-internet-access}
 
 Hosts without Internet access cannot reach the public NTP pool. The result is the same as
 having no sources at all: `chronyc sources` lists servers that never leave the `?` state.
