@@ -39,7 +39,7 @@ xe vm-list
 5. Checking the output
 `# xe vm-param-list uuid=<VM_UUID> | grep other-config`
 
-## 🔢 Start order and delays {#start-order-and-delays}
+## Start order and delays {#start-order-and-delays}
 
 Autostart does not define a startup order. All VMs flagged for autostart are started when the
 host boots, in a single bulk call that never reads the `order` parameter, so you cannot choose
