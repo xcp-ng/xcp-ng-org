@@ -45,7 +45,7 @@ Autostart does not define a startup order. All VMs flagged for autostart are sta
 host boots, in a single bulk call that never reads the `order` parameter, so you cannot choose
 which VM starts first.
 
-They are started one after another rather than all at once, so a `start-delay` on one VM does
+VMs are started one after another rather than all at once, so a `start-delay` on one VM does
 hold up the ones behind it. That spaces a boot out, but it does not sequence it, because which
 VMs end up behind the delay is not something you control.
 
@@ -78,8 +78,8 @@ let HA restart it after a failover.
 `start-delay` has been reported to interfere with autostart: one user found a VM that would
 not start at boot until the parameter was cleared
 ([forum thread](https://xcp-ng.org/forum/topic/12388)). A delayed start does hold up the VMs
-queued behind it, which explains one coming up late, but not one that never comes up at all.
-That part is unexplained. If a VM does not appear after a host reboot, checking its
-`start-delay` value, and waiting to see whether it is merely queued behind another VM's delay,
-are both worth doing.
+queued behind it, so it explains a VM coming up late. A VM that stays down for good is a
+different matter, and that part is unexplained. If a VM does not appear after a host reboot,
+it is worth checking its `start-delay` value and waiting to see whether it is simply queued
+behind another VM's delay.
 :::
