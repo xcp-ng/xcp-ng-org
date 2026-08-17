@@ -33,6 +33,12 @@ On Windows, you can use Rufus to create the bootable USB stick.
 
 Start the host and boot on the USB media.
 
+:::warning
+If the firmware refuses to boot the media, or reports that the operating system loader failed
+signature verification, make sure [Secure Boot](../../installation/requirements#host-secure-boot)
+is disabled. XCP-ng does not support Secure Boot for the host.
+:::
+
 ### Follow instructions
 
 #### 1. UEFI vs BIOS
