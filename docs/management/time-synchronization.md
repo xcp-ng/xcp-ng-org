@@ -183,29 +183,35 @@ above rather than as the end of it.
 :::note
 **Check the host certificate after a large correction.**
 
-XAPI issues the host certificate with a ten-year validity, anchored on the clock at the time
-it was generated. Small corrections stay comfortably inside that window, so most of the time
+XAPI issues certificates with a ten-year validity, anchored on the clock at the moment they
+are generated. Small corrections stay comfortably inside that window, so most of the time
 there is nothing to do.
 
-A big correction is different. A host that installed itself believing the year was 2010 holds
-a certificate valid 2010 to 2020, and moving the clock to the real date leaves that
-certificate expired. A clock set far into the future at install produces the mirror image: a
-certificate that is not valid yet once the date is corrected backwards.
+A big correction is different. A host that generated its certificates believing the year was
+2016 holds them valid 2016 to 2026, and moving the clock to the real date can leave them
+expired. A clock set far into the future produces the mirror image: certificates not valid
+yet once the date is corrected backwards.
 
-Check the window against the corrected date:
+There are two, and they are refreshed by different commands:
+
+| Certificate | What it is | Regenerate with |
+|---|---|---|
+| `/etc/xensource/xapi-ssl.pem` | The TLS certificate clients see, including Xen Orchestra | `xe host-reset-server-certificate` |
+| `/etc/xensource/xapi-pool-tls.pem` | The internal certificate hosts use between themselves | `xe host-refresh-server-certificate host=<host>` |
+
+Check both windows against the corrected date:
 
 ```bash
 openssl x509 -in /etc/xensource/xapi-ssl.pem -noout -dates
+openssl x509 -in /etc/xensource/xapi-pool-tls.pem -noout -dates
 date -u
 ```
 
-If the current date falls outside `notBefore` to `notAfter`, regenerate the certificate:
+If the date falls outside `notBefore` to `notAfter`, regenerate the one concerned using the
+table above. Do not reach for `host-refresh-server-certificate` to fix `xapi-ssl.pem`: it
+refreshes the internal certificate, reports success, and leaves the TLS one untouched.
 
-```bash
-xe host-refresh-server-certificate host=<host>
-```
-
-On a host whose certificate is already rejected, and which therefore cannot be reached the
+On a host whose TLS certificate is already rejected, and which therefore cannot be reached the
 usual way, `xe host-emergency-reset-server-certificate` runs locally on the host itself.
 :::
 
