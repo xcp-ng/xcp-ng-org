@@ -218,9 +218,9 @@ More about this feature can be found [in XenServer's documentation](https://docs
 Accepted ciphers, keys and algorithms used to be defined in `/etc/sshd_config` and `/etc/ssh_config`. Whenever we wanted to update them, we had to choose between potentially overwriting user modifications to these files, and not updating them (actually we had a middle ground where we attempted to patch just the relevant lines, but success was not guaranteed).
 
 Now it's simpler:
-- We define the accepted ciphers, keys, and algorithms directly at OpenSSH build time.
-- As long as users do not define settings that take precedence, we use our built-in defaults. To update them, we just publish a new build.
-- Users who choose to modify their SSH configuration will need to maintain these settings themselves, as any updates provided by our Security Team through new builds will be overridden by user-defined settings.
+- Our own configuration, including the accepted ciphers, keys, and algorithms, is defined in `/etc/ssh/sshd_config`. This file is fully managed by Vates and will be overwritten on every update, to guarantee that ciphers and OpenSSH security settings remain up-to-date.
+- If you need to customize your SSH configuration, you can add your own drop-in files under `/etc/ssh/sshd_config.d/`, named with a `.conf` extension. This directory is not modified by Vates updates.
+- Any settings added there are your responsibility to maintain. Make sure they remain valid and compatible with future OpenSSH updates.
 
 ### Restricted use of port 80 [XS]
 
