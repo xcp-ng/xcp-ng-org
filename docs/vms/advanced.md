@@ -64,6 +64,12 @@ Any XAPI operation can be administratively blocked per VM (deletion, but also st
 xe vm-param-set uuid=<vm-uuid> blocked-operations:migrate_send=true
 `}</Terminal>
 
+Removing the key lifts the block, and the operation reappears in the VM's `allowed-operations`:
+
+<Terminal shell title="root@xcp-ng-host — Unblocking an operation on a VM">{`
+xe vm-param-remove uuid=<vm-uuid> param-name=blocked-operations param-key=migrate_send
+`}</Terminal>
+
 See [protecting a VM against accidental deletion](vm-lifecycle.md#protect-a-vm-against-accidental-deletion) for the most common use.
 
 ## VM memory {#vm-memory}
