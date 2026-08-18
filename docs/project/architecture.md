@@ -87,7 +87,7 @@ For each read/write in the VM disk, requests pass through an emulated driver, th
 The process described above is used for HVMs and also for PV guests (at startup, PV drivers are not loaded).
 After starting a PV guest, the emulated driver in the VM is replaced by `blkfront` (a PV driver) which allows to communicate directly with `tapdisk` using a protocol: `blkif`; `blktap` and `qemu-dm` then become useless to handle devices requests. Note that system calls are used with two drivers: `eventchn dev` and `gntdev` to map VM memory pages in the user space of the host. Thus a shared ring can be used to receive requests directly from `tapdisk` in host user space instead of using the kernel space.
 
-## ↕️ Components for VDI I/O {#components-for-vdi-io}
+## Components for VDI I/O {#components-for-vdi-io}
 
 ### XenStore
 

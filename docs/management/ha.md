@@ -186,7 +186,7 @@ If you have enough memory to put one host in maintenance (migrating all its VMs 
 - **Do NOT restart host toolstacks while high availability is enabled!** Attempting to restart the toolstack on an active host will cause the host to be immediately fenced and removed from the active liveset and pool. Always make sure that HA is disabled before restarting toolstacks.
 :::
 
-## ↔️ Behavior {#behavior}
+## Behavior {#behavior}
 
 ### Halting the VM
 

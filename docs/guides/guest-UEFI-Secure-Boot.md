@@ -4,7 +4,7 @@ How to configure UEFI Secure boot?
 
 Enabling UEFI Secure Boot for guests ensures that XCP-ng VMs will only execute trusted binaries at boot. In practice, these are the binaries released by the operating system (OS) vendor for the OS running in the VM (Microsoft Windows, Debian, RHEL, Alpine, etc.).
 
-## 🆕 Recent changes in guest Secure Boot configuration {#recent-changes-in-guest-secure-boot-configuration}
+## Recent changes in guest Secure Boot configuration {#recent-changes-in-guest-secure-boot-configuration}
 
 The default guest Secure Boot keys in XCP-ng are changing.
 
@@ -44,7 +44,7 @@ This step is also required for Secure Boot support on previously V2V-migrated VM
 **Risk of data loss:** Propagating certificates to an existing VM will change its Secure Boot vTPM measurements. If you depend on these measurements (e.g. BitLocker with TPM protector), you must carefully read the [Preparing for Secure Boot Variable Changes](#preparing-for-secure-boot-variable-changes) procedure.
 :::
 
-## ℹ️ Requirements {#requirements}
+## Requirements {#requirements}
 
 * XCP-ng >= 8.2.1.
 * UEFI Secure Boot Certificates installed on the pool (this is detailed below).
@@ -52,7 +52,7 @@ This step is also required for Secure Boot support on previously V2V-migrated VM
 
 Note: it's not necessary that the XCP-ng host boots in UEFI mode for Secure Boot to be enabled on VMs.
 
-## 🆙 8.3 with varstored >= 1.2.0-3.4 {#83-with-varstored--120-34}
+## 8.3 with varstored >= 1.2.0-3.4 {#83-with-varstored--120-34}
 
 Secure Boot is ready to use on new VMs without extra configuration. Simply activate Secure Boot on your VMs, and they will be provided with an appropriate set of default Secure Boot variables.
 

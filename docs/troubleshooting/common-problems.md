@@ -92,7 +92,7 @@ Try these steps:
 
 ---
 
-## ⏰ Server loses time on 14th gen Dell hardware {#server-loses-time-on-14th-gen-dell-hardware}
+## Server loses time on 14th gen Dell hardware {#server-loses-time-on-14th-gen-dell-hardware}
 
 ### Cause
 
@@ -309,7 +309,7 @@ To know more about certificates in XAPI, check out the [XAPI documentation](http
 
 ---
 
-## ⌨️ Installation hanging at "Select Keymap" {#installation-hanging-at-select-keymap}
+## Installation hanging at "Select Keymap" {#installation-hanging-at-select-keymap}
 
 ### Issue
 

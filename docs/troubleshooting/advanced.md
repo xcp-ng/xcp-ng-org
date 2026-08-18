@@ -65,6 +65,6 @@ When reporting such a crash (forum or support), provide the crash dump contents 
 3. You can boot the [installation ISO](installation-upgrade.md) and use its shell for repairs: your root filesystem can be mounted from there (the installer's rescue capabilities are also usable over [remote access during installation](installation-upgrade.md#getting-remote-access-to-host-during-installation)).
 4. For RAID-related boot failures, see [software RAID issues](storage/disk-failure-software-RAID.md).
 
-## 🆘 Produce a status report {#produce-a-status-report}
+## Produce a status report {#produce-a-status-report}
 
 When asking for help, generate a status report archive containing logs and configuration: see [the procedure](log-files.md#produce-a-status-report). Mention exactly what you changed last: most "impossible" host issues follow a recent change.
