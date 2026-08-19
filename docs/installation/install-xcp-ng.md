@@ -486,7 +486,7 @@ If you can neither setup PXE nor serve the answerfile from a server that will be
         module2 /install.img
     }
     ```
-4. [Extract install.img](../../project/development-process/ISO-modification#extract-an-existing-iso-image)
+4. [Extract install.img](../../project/development-process/ISO-modification#extract-installimg)
 5. Add your answerfile
     ```
     cp answerfile.xml "$WORK_DIR/install/answerfile.xml"
