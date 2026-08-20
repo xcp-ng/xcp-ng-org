@@ -250,7 +250,7 @@ This article describes how to proceed in order to convert your Citrix XenServer 
 
 ### Migration process
 
-XCP-NG installation follows roughly the same workflow as a XenServer installation. Therefore, the migration procedure will be very similar to an upgrade procedure in XenServer.
+XCP-ng installation follows roughly the same workflow as a XenServer installation. Therefore, the migration procedure will be very similar to an upgrade procedure in XenServer.
 
 * Download the XCP-ng ISO [from this XCP-ng website](https://xcp-ng.org/#easy-to-install)
 * Follow the [website instructions](https://xcp-ng.org/#easy-to-install) to put the ISO into a USB key or a CD
@@ -324,13 +324,13 @@ See [the Troubleshooting page](../../troubleshooting/after-upgrade).
 
 If you do not have access to your server or remote KVM in order to upgrade using the interactive ISO installer, you can initiate an automatic reboot and upgrade process using the following procedure:
 
-Unpack/extract the XCP-NG ISO to a folder on a webserver. Then get the UUID of your host by running the below command:
+Unpack/extract the XCP-ng ISO to a folder on a webserver. Then get the UUID of your host by running the below command:
 
 <Terminal shell title="root@xcp-ng-host — Alternate method: remote upgrade">{`
 xe host-list
 `}</Terminal>
 
-Using that host UUID, as well as the URL to the folder hosting the unpacked XCP-NG ISO, run the following command to test access:
+Using that host UUID, as well as the URL to the folder hosting the unpacked XCP-ng ISO, run the following command to test access:
 
 <Terminal shell title="root@xcp-ng-host — Alternate method: remote upgrade">{`
 xe host-call-plugin plugin=prepare_host_upgrade.py host-uuid=750d9176-6468-4a08-8647-77a64c09093e fn=testUrl args:url=http://<ip-address>/xcp-ng/unpackedexample/
@@ -344,9 +344,9 @@ Now tell the host to automatically boot to the ISO and upgrade itself on next re
 xe host-call-plugin plugin=prepare_host_upgrade.py host-uuid=750d9176-6468-4a08-8647-77a64c09093e fn=main args:url=http://<ip-address>/xcp-ng/unpackedexample/
 `}</Terminal>
 
-The output should also be true. It has created a temporary entry in the grub bootloader which will automatically load the upgrade ISO on the next boot. It then automatically runs the XCP-NG upgrade with no user intervention required. It will also backup your existing XenServer dom0 install to the secondary backup partition, just like the normal upgrade.
+The output should also be true. It has created a temporary entry in the grub bootloader which will automatically load the upgrade ISO on the next boot. It then automatically runs the XCP-ng upgrade with no user intervention required. It will also backup your existing XenServer dom0 install to the secondary backup partition, just like the normal upgrade.
 
-To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it's available, but if not, it should proceed fine and boot into upgraded XCP-NG in 10 to 20 minutes.
+To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it's available, but if not, it should proceed fine and boot into upgraded XCP-ng in 10 to 20 minutes.
 
 ## Migrate VMs from older XenServer/XCP-ng {#migrate-vms-from-older-xenserverxcp-ng}
 

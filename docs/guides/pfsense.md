@@ -56,7 +56,7 @@ That's it !
 
 ## Using CLI {#using-cli}
 
-SSH to dom0 on your XCP-NG hypervisor and run the following:
+SSH to dom0 on your XCP-ng hypervisor and run the following:
 
 First get the UUID of the VM to modify:
 
@@ -108,7 +108,7 @@ The virtual `serial` port can be chosen as the "default output" which will hide 
 
 #### Remove Parallel / Serial Ports Using CLI
 
-SSH to dom0 on your XCP-NG hypervisor and find your pfSense / OPNsense VM UUID (see steps above: 3. "Using CLI").
+SSH to dom0 on your XCP-ng hypervisor and find your pfSense / OPNsense VM UUID (see steps above: 3. "Using CLI").
 
 Configure the VM `parallel` port to `none` using the following command:
 

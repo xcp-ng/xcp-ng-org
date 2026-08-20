@@ -253,7 +253,7 @@ In specific conditions, the global template generation can fail. If you attempt 
 
 ### Solution
 
-Simply go to the console of your XCP-NG host and enter the following command:
+Simply go to the console of your XCP-ng host and enter the following command:
 
 <Terminal shell title="Solution">{`
 /usr/bin/create-guest-templates
