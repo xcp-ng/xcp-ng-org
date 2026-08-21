@@ -9,6 +9,7 @@ Upgrade here designates an upgrade using the installation ISO
   * alternate kernel
   * safe mode
 * Try to boot with the `iommu=0` xen parameter.
+* If the screen goes black and the installer hangs right after GRUB, try the `vga=normal fb=false` kernel parameters to disable the framebuffer. This is known to be necessary on some machines with integrated graphics only (such as an AMD Ryzen APU), but the full range of affected hardware is not known, so the parameters are worth trying whatever the graphics.
 
 :::tip
 **How to add or remove boot parameters from command line.**
