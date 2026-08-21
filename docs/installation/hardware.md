@@ -151,9 +151,10 @@ In BIOS:
 
 #### Emulex Fiber Channel HBA/Storage Controller
 
-On XCP-ng 8.3, the `emulex-lpfc` RPM contains two different versions of the
-`lpfc` driver that are mutually exclusive (in the sense they cannot
-be loaded at the same time), `lpfc.ko` and `lpfc14.ko`.
+On XCP-ng 8.3 and starting with version `14.4.393.31-1`, the `emulex-lpfc`
+RPM now contains two different versions of the `lpfc` driver that are
+mutually exclusive (in the sense they cannot be loaded at the same time),
+`lpfc.ko` and `lpfc14.ko`.
 
 The following table summarizes which Fibre Channel HBA is supported by
 which driver:
@@ -171,6 +172,15 @@ which driver:
 
 In practice, you don't have to worry about which driver to load because
 they are both auto-loaded in the presence of supported hardware.
+
+:::note
+When updating to 14.4.393.31-1 and later from a prior version and if you
+are using LPe36000 adapters, the newer `lpfc14` driver module will be used
+in place of the one from the 12.x branch.  As such, if you had specific
+module parameters configured for `lpfc` and want them to carry over (if
+applicable) to `lpfc14`, make sure to update the corresponding files in
+`/etc/modprobe.d/` to refer to `lpfc14`.
+:::
 
 :::note
 If your host has both an older and newer generation Fibre Channel HBA
