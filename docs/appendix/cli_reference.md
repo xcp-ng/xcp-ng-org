@@ -1,13 +1,17 @@
 # xe command reference
 
-The list of all `xe` commands.
 
-This section groups the commands by the objects that the command addresses. These objects are listed alphabetically.
+This section groups commands by the objects they apply to. The objects are listed in alphabetical order.
 
-:::tip
-This section is in construction
+:::note
+This list is not exhaustive.
 :::
 
+:::tip
+You can list all xe commands with `xe help --all`. To get help for a specific command, use xe help <command>.
+
+To return only specifics values in response of `<OBJECT>-list` commands, use the optional parameter `params=param1,param2,...` (or `params=all`).
+:::
 
 ## Appliance commands
 
@@ -2201,6 +2205,14 @@ snapshot-export-to-template filename=file_name snapshot-uuid=snapshot_uuid  [pre
 ```
 
 Export a snapshot to *file name*.
+
+### `snapshot-list`
+
+```
+snapshot-list [params=param1,param2,...] [uuid] [name-label] [name-description] [<ALL_OTHER_OBJECT_ATTRIBUTES>]
+```
+
+Lists all the snapshots, filtering on the optional arguments. To filter on map parameters, use the syntax `map-param:key=value`.
 
 ### `snapshot-reset-powerstate`
 
