@@ -149,6 +149,48 @@ In BIOS:
 
 ### Network Cards
 
+#### Emulex Fiber Channel HBA/Storage Controller
+
+On XCP-ng 8.3 and starting with version `14.4.393.31-1`, the `emulex-lpfc`
+RPM now contains two different versions of the `lpfc` driver that are
+mutually exclusive (in the sense they cannot be loaded at the same time),
+`lpfc.ko` and `lpfc14.ko`.
+
+The following table summarizes which Fibre Channel HBA is supported by
+which driver:
+
+| Adapter series |   lpfc.ko (12.x)   |  lpfc14.ko (14.x)  |
+|----------------|:------------------:|:------------------:|
+| LPe12000       | :white_check_mark: |                    |
+| LPe16000       | :white_check_mark: |                    |
+| LPe31000       |                    | :white_check_mark: |
+| LPe32000       |                    | :white_check_mark: |
+| LPe35000       |                    | :white_check_mark: |
+| LPe36000       |                    | :white_check_mark: |
+| LPe37000       |                    | :white_check_mark: |
+| LPe38000       |                    | :white_check_mark: |
+
+In practice, you don't have to worry about which driver to load because
+they are both auto-loaded in the presence of supported hardware.
+
+:::note
+When updating to 14.4.393.31-1 and later from a prior version and if you
+are using LPe36000 adapters, the newer `lpfc14` driver module will be used
+in place of the one from the 12.x branch.  As such, if you had specific
+module parameters configured for `lpfc` and want them to carry over (if
+applicable) to `lpfc14`, make sure to update the corresponding files in
+`/etc/modprobe.d/` to refer to `lpfc14`.
+:::
+
+:::note
+If your host has both an older and newer generation Fibre Channel HBA
+plugged in, only one generation will work as both drivers cannot be
+loaded at the same time.
+:::
+
+You can download the "Emulex Drivers for Linux" user guides here:
+- [Release 12.x](https://docs.broadcom.com/doc/12399036)
+- [Release 14.x](https://docs.broadcom.com/doc/elx_DRVLin-UG144-101.pdf)
 
 #### Emulex Corporation OneConnect NIC (Skyhawk) (rev 10) - 10Gbps NIC "OCe14102-NT"
 
