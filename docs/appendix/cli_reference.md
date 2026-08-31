@@ -8,7 +8,7 @@ This list is not exhaustive.
 :::
 
 :::tip
-You can list all xe commands with `xe help --all`. To get help for a specific command, use xe help <command>.
+You can list all xe commands with `xe help --all`. To get help for a specific command, use `xe help <command>`.
 
 To return only specifics values in response of `<OBJECT>-list` commands, use the optional parameter `params=param1,param2,...` (or `params=all`).
 :::
