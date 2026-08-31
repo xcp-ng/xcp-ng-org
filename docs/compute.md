@@ -176,6 +176,11 @@ xe vm-param-set other-config:pci=0/0000:04:01.0,0/0000:00:19.0 uuid=<vm uuid>
 
 :::
 
+:::Note
+Given that VMs with PCI Passthrough can't be live migrated, it may be advisable to
+[Enable Invariant TSC](#invariant-tsc) to improve performance.
+:::
+
 ### 6. Start your VM and be happy :-)
 
 <Terminal shell title="root@xcp-ng-host — 6. Start your VM and be happy :-)">{`
@@ -350,6 +355,18 @@ We understand the use cases that necessitate nested virtualization and are commi
 As coretemp is not supported in XCP-ng, you can't rely on `sensors` to get the CPU temperatures on Intel platforms.
 
 Starting with XCP-ng 8.3 (`xen-4.17.6-9.3.xcpng8.3`), the `xenpm get-core-temp` command was introduced as an alternative.
+
+## Invariant TSC {#invariant-tsc}
+
+By default, XCP-ng doesn't expose Invariant TSC to the guest due to complications related to live migrations.
+This causes the guest to rely on alternative clock sources e.g Xen PV Clock or HPET, which can significantly impact performance of some applications (especially timer-sensitive ones).
+
+If you don't intend to live migrate or suspend the guest, you can enable native TSC mode which would expose Invariant TSC in the guest.
+
+<Terminal shell title="root@xcp-ng-host — Enable Invariant TSC">{`
+xe vm-param-add uuid=[VM-UUID] param-name=platform tsc_mode=2
+xe vm-param-add uuid=[VM-UUID] param-name=platform nomigrate=true
+`}</Terminal>
 
 ## Advanced Xen {#advanced-xen}
 
