@@ -6,6 +6,10 @@ Corrupted VDIs or interrupted operations can inadvertently corrupt the `snapshot
 
 A fix for this long-standing issue is being developed for several storage backends, and a [helper script](https://github.com/xcp-ng/xcp/blob/master/scripts/snapshot-fixer.py) is provided to fix xapi databases with incongruent snapshot metadata.
 
+:::note
+The script requires XCP-ng 8.3 or newer and refuses to run on earlier releases, where it does not produce correct results. There is no equivalent for XCP-ng 8.2, which is EOL: upgrade to a supported release to use it.
+:::
+
 :::danger
 The script temporarily disables HA and stops xapi to apply the changes to the database. This means that the pool is not running operations like handling backups, migrating, starting or stopping VMs, and HA is disabled during the operation. To check for issues in the pool without stopping xapi and rewriting the database, the `dry-run` option can be used:
 
