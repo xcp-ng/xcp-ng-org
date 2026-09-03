@@ -322,3 +322,15 @@ This issue is often caused by keyboard being on **Scroll Lock** mode.
 ### Solution
 
 Disable **Scroll Lock** on your keyboard (physical or virtual). Input should resume immediately.
+
+---
+
+## VM does not boot with Secure Boot enabled {#vm-does-not-boot-with-secure-boot-enabled}
+
+### Cause
+
+A VM with Secure Boot enabled can fail to boot for several reasons: the pool or the VM is missing UEFI certificates, the guest's boot binaries were signed with a key that is not valid according to the certificates installed in the VM, or the VM is in UEFI setup mode, in which case it does boot but Secure Boot is not enforced.
+
+### Solution
+
+From XCP-ng 8.3, `xe vm-get-secureboot-readiness uuid=<vm-uuid>` reports which of these applies. Each status, its symptoms and its fix are listed in [Troubleshoot Guest Secure Boot Issues](../guides/guest-UEFI-Secure-Boot.md#troubleshoot-guest-secure-boot-issues).
