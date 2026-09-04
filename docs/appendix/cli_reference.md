@@ -2875,6 +2875,7 @@ VDIs have the following parameters:
 |`metadata-of-pool`|The uuid of the pool which created this metadata VDI|Read only|
 |`metadata-latest`|Flag indicating whether the VDI contains the latest known metadata for this pool|Read only|
 |`cbt-enabled`|Flag indicating whether changed block tracking is enabled for the VDI|Read/write|
+|`on-boot`|Behavior of a VM’s VDI when booted: `persist` (default) or `reset`|Read/write|
 
 ### `vdi-clone`
 
