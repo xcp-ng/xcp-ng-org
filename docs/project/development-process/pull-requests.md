@@ -189,9 +189,9 @@ impacts other teams because it adds new requirements, that changes the way a pro
 for users before you have talked to the maintainers (to fix a complex bug, for example), or
 that affects other people's tooling and processes...
 
-**Then it's not time yet for a pull request.**
+**Then it's probably not time yet for a pull request.**
 
-It's time to write down the requirements, if that is not done already, and to produce a design
+Instead, it's probably time to write down the requirements, if that is not done already, and to produce a design
 together with every party involved.
 
 Similarly, if you are already deep into implementing something and discover that you need
@@ -201,47 +201,12 @@ changes with that kind of impact...
 
 See [Where to discuss](#where-to-discuss).
 
-The next section details why opening a pull request is rarely the right way to start a
-discussion about impactful changes, a discussion that should usually start earlier.
-
-#### A pull request is not an RFC {#a-pull-request-is-not-an-rfc}
-
-**A pull request proposes to integrate a change. Whether the change should exist at all is a
-different conversation, and it should usually happen first.**
-
-Large architectural changes, process changes, workflow changes, significant new features,
-and unplanned changes that noticeably affect users should generally begin with discussion
-before code is written: an issue, a design document, a discussion thread, or a meeting with
-the relevant stakeholders (see [Where to discuss](#where-to-discuss)).
-
-Starting the discussion with an already implemented solution, as a pull request, shifts the
-work onto reviewers, who then have to recover the underlying need, identify missing
-constraints, supply the architectural context and weigh the alternatives, all without taking
-the change over and doing it themselves. **It also frames the discussion around your
-implementation instead of around the need**, and it can crowd out work that was already
-planned, since we ask reviewers to prioritize reviews.
-
-Initiative is good, though, and a prototype can be genuinely useful: building and testing one
-answers questions that a design document sometimes cannot, such as whether the approach works
-at all, what it costs, and what it breaks. A draft pull request is therefore an acceptable
-place to hold this discussion, as long as it remains focused on design rather than
-implementation.
-
-That means:
-
-- Saying in the description that the design is what you want discussed, and that the
-  prototype may be thrown away.
-- Explaining the need, the design, and the alternatives you considered, in words. A diff on
-  its own says nothing about the reasoning, the discussions or the experiments that led to it.
-- Accepting that the discussion may move elsewhere if the question turns out to be wider
-  than the prototype.
-
-The lighter and often better option is to [ask the maintainers first](#where-to-discuss):
-
-> I ran into this problem and prototyped something to understand the shape of it. Before I
-> open a pull request: do you agree with my view of the problem, which I documented here
-> *(provide the link)*, is this a problem we want to solve now, and is this the right
-> direction? Here's the branch with my prototype.
+:::warning
+This is not a rule about how you work (though, some maintainers can enforce it for components
+they maintain). It is a strong recommendation drawn from experience: it can spare you a long
+implementation you then have to start over, and spare the maintainers from having to tell you
+that your requirements were wrong or incomplete, or your design not the right one.
+:::
 
 #### A pull request is not a bug report {#a-pull-request-is-not-a-bug-report}
 
@@ -263,15 +228,14 @@ This is general advice, not a strict rule.
 
 Two everyday cases: the work is still in progress and you want early feedback, or it is
 finished but you would like someone to help you proofread it before you submit it to the
-maintainers. Using a draft to discuss whether a change should exist at all is the different
-matter covered above.
+maintainers.
 
 Note: not all reviewers watch draft pull requests. State explicitly that you need feedback,
 and consider asking for a real-time discussion.
 
-When taking a pull request out of draft, add the reviewers you know it needs (GitHub usually
-suggests them) and leave a comment saying that it is ready for review. The state change on its
-own is easy to miss.
+When taking a pull request out of draft, add the reviewers (GitHub usually suggests them)
+and leave a comment saying that it is ready for review. The state change on its own is
+very easy to miss.
 
 ### Preparing the change {#preparing-the-change}
 
