@@ -225,6 +225,10 @@ const config = {
             from: '/troubleshooting/storage/disk-failure-softwaire-RAID/',
             to: '/troubleshooting/storage/disk-failure-software-RAID/',
           },
+          {
+            from: '/project/roadmap/',
+            to: '/project/about/#roadmap',
+          },
         ],
       },
     ],
