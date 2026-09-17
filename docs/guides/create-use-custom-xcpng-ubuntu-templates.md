@@ -1,6 +1,6 @@
-# Create and use custom XCP-NG templates: a guide for Ubuntu
+# Create and use custom XCP-ng templates: a guide for Ubuntu
 
-How to create and use custom XCP-NG templates for Ubuntu?
+How to create and use custom XCP-ng templates for Ubuntu?
 
 [Xen Orchestra](https://xen-orchestra.com) offers free templates via the XOA Hub (for users of Xen Orchestra Virtual Appliance). However, if you don't find what you need and wish to create your own templates with support for [Cloud-init](https://cloud-init.io/), this post is for you. 
 
@@ -19,7 +19,7 @@ All experiments will be conducted using the graphical virtual machine manager [X
 
 ## Prerequisites {#prerequisites}
 
-* [XCP-NG](https://xcp-ng.org/)
+* [XCP-ng](https://xcp-ng.org/)
 * [Xen Orchestra](https://xen-orchestra.com) from the sources or Xen Orchestra virtual Appliance (XOA)
 * [XO-CLI](https://www.npmjs.com/package/xo-cli) (for the last part of this post)
 * [JQ](https://jqlang.github.io/jq/) (for the last part of this post)
@@ -36,7 +36,7 @@ At the end of this step, the result will be essentially the same, and both solut
 
 ### From a cloud image in OVA format
 
-Canonical (the Ubuntu company) provides Ubuntu images that have been configured to run on cloud systems. The [website](https://cloud-images.ubuntu.com) provides all versions of Ubuntu. XCP-NG supports the open virtual machine format OVA used by VMWare and VirtualBox systems.
+Canonical (the Ubuntu company) provides Ubuntu images that have been configured to run on cloud systems. The [website](https://cloud-images.ubuntu.com) provides all versions of Ubuntu. XCP-ng supports the open virtual machine format OVA used by VMWare and VirtualBox systems.
 
 1. Download an OVA file of [Ubuntu 22.04 version](https://cloud-images.ubuntu.com/jammy).
 
@@ -52,7 +52,7 @@ The creation of the virtual image from a cloud image in OVA format is complete. 
 
 1. Download an ISO file of Ubuntu 22.04 LTS version: [https://ubuntu.com/download/server](https://ubuntu.com/download/server)
 
-    In order to access the ISO file during the virtual machine creation step, it needs to be placed in an ISO storage repository. There are several types available (Local, NFS, or SMB). For this post, the first type will be used. Feel free to browse through this [post](https://xcp-ng.org/blog/2022/05/05/how-to-create-a-local-iso-repository-in-xcp-ng/) to learn how to create a local ISO storage repository. In the following, I assume that there is a local ISO storage repository on the XCP-NG host.
+    In order to access the ISO file during the virtual machine creation step, it needs to be placed in an ISO storage repository. There are several types available (Local, NFS, or SMB). For this post, the first type will be used. Feel free to browse through this [post](https://xcp-ng.org/blog/2022/05/05/how-to-create-a-local-iso-repository-in-xcp-ng/) to learn how to create a local ISO storage repository. In the following, I assume that there is a local ISO storage repository on the XCP-ng host.
 
 2. From the [Xen Orchestra](https://xen-orchestra.com) side menu, click on the **Import** option and choose the **Disk** sub-option.
 
@@ -81,7 +81,7 @@ The creation of the virtual image from a cloud image in OVA format is complete. 
     $ sudo apt dist-upgrade
     ```
 
-10. Install the package *xe-guest-utilities-latest* to improve communication between the XCP-NG hypervisor and the virtual machine ([Guest tools](https://docs.xcp-ng.org/vms/#guest-tools)):
+10. Install the package *xe-guest-utilities-latest* to improve communication between the XCP-ng hypervisor and the virtual machine ([Guest tools](https://docs.xcp-ng.org/vms/#guest-tools)):
 
     ```
     $ sudo apt install xe-guest-utilities

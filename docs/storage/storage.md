@@ -608,7 +608,7 @@ And then, enable the `rbdmap` service to mount automatically the image at boot.
 systemctl enable --now rbdmap
 `}</Terminal>
 
-The CEPH RBD SR is built on top of an LVM Block device (your RBD image). You need to adapt the LVM configuration in order to be able to detect the newly created LVM VG created by XCP-NG.
+The CEPH RBD SR is built on top of an LVM Block device (your RBD image). You need to adapt the LVM configuration in order to be able to detect the newly created LVM VG created by XCP-ng.
 
 You need to place this `devices` configuration for both:
 - /etc/lvm/lvmlocal.conf
@@ -624,7 +624,7 @@ devices {
 ```
 
 :::warning
-This configuration must be re-applied after each [XCP-NG Upgrade](/installation/upgrade/) / reinstall.
+This configuration must be re-applied after each [XCP-ng Upgrade](/installation/upgrade/) / reinstall.
 
 [Updates](/management/updates/) should not affect the LVM configuration.
 :::
