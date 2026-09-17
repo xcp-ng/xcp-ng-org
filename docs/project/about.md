@@ -29,3 +29,7 @@ You can also find us on many social networks:
 Here is a video recorded at FOSDEM19:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/VpGC5zuLjSs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## Roadmap {#roadmap}
+
+For an overview of planned and ongoing developments for XCP-ng, see the [Vates product roadmap](https://docs.vates.tech/product-roadmap/) on the Vates VMS documentation site.
