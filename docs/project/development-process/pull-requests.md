@@ -5,15 +5,14 @@ sidebar_position: 10.5
 # Pull Request Guidelines {#pull-request-guidelines}
 
 - [Introduction](#introduction)
-- [Core principles](#core-principles)
+- [Why we work this way](#why-we-work-this-way)
+- [A few core principles](#core-principles)
     - [Assume positive intent](#assume-positive-intent)
-    - [Don't make people guess](#dont-make-people-guess)
+    - [Make other people's job as easy as possible](#make-other-peoples-job-as-easy-as-possible)
     - [Own your work](#own-your-work)
     - [Make PRs accessible](#make-prs-accessible)
-    - [Respect everyone's time](#respect-everyones-time)
 - [Where to discuss](#where-to-discuss)
 - [Expectations from authors](#expectations-from-authors)
-    - [Is a pull request the right vehicle?](#is-a-pull-request-the-right-vehicle)
     - [Preparing the change](#preparing-the-change)
     - [Take responsibility for your PR](#take-responsibility-for-your-pr)
     - [Keeping the review moving](#keeping-the-review-moving)
@@ -48,50 +47,76 @@ this page says which way we do it here. If the mechanics themselves are new to y
 [pull request documentation](https://docs.github.com/en/pull-requests/reference/pull-requests)
 covers those.
 
-We hold high standards regarding commit messages, git history, and pull request quality,
-and those standards come from years of experience maintaining complex software projects, as
-well as practices widely adopted across successful open-source communities. None of what
-follows is meant as a hurdle. It is here to spare someone, quite possibly you, a wasted round
-of review.
-
-**Target audience.** The principles, the guidance on preparing a pull request,
-and the review etiquette apply to everyone. A few practices only make sense for members of the
-XCP-ng team and are marked where they appear.
-
-**What this document is.** These are the rules the XCP-ng team has agreed on, and they are not
-exhaustive. XCP-ng is a live project, its customs evolve, and we will strive to keep this page
-current as they do. Individual projects and teams may also have conventions of their own on
-top of what is written here, so it is worth asking if you are unsure.
-
-**If you get something wrong.** That is normal while you are still learning how we work with
-pull requests, and it is generally recoverable. A first pull request often takes a few
-rounds, and nobody is keeping score of how many. If a review comment doesn't make sense to
-you, say so and ask: that is expected of you, not held against you.
+XCP-ng is made of several sub-projects that work together, maintained by various teams. Some
+teams have their own customs. **Members of these teams should not feel constrained by the
+principles and rules described in this document.** Have we forgotten to state that there are
+several different ways to do something? Have we overstated the importance of a specific rule?
+Use your best judgment, and suggest a change if it seems useful. We do try, however, when it
+makes sense, to share principles and common rules across the whole XCP-ng team. Cross team
+interaction happens all the time.
 
 **Upstream projects may have different rules.** Many of the principles laid out here to help
-individuals work together probably still hold, but when we contribute upstream we must conform
-to the upstream project's rules.
+individuals work together probably still hold, but when we contribute to upstream projects,
+which have more stakeholders than just the XCP-ng team, we must conform to the upstream
+project's rules.
 
-## Core principles {#core-principles}
+**Target audience.** The principles, the guidance on preparing a pull request,
+and the review etiquette are written both for occasional contributors and regular team
+members. A few practices only make sense for members of the XCP-ng team and are marked where
+they appear.
+
+**What this document is.** These are the practices the XCP-ng team has agreed on, and they are
+not exhaustive. A few of them are enforced, by tooling or by maintainers who will not merge
+without them. Most are strong recommendations drawn from experience rather than obligations,
+and where the difference matters, we say so. XCP-ng is a live project, its customs evolve, and
+we will strive to keep this page current as they do. Individual projects and teams may also
+have conventions of their own on top of what is written here, so it is worth asking if you are
+unsure.
+
+**If you get something wrong.** That is normal while you are still learning how we work with
+pull requests in the XCP-ng project, and it is generally recoverable. A first pull request
+often takes a few rounds, and nobody is keeping score of how many. If a review comment doesn't
+make sense to you, say so and ask: that is expected of you, not held against you.
+
+## Why we work this way {#why-we-work-this-way}
+
+What we are here for is that the people who run XCP-ng get something that works, keeps working,
+and keeps getting better. Pull requests are one of the places where that is decided: the last
+point where a mistake is still cheap, and the point where one person's work becomes the
+project's.
+
+We hold high standards regarding commit messages, git history, and pull request quality. They
+come from years of experience maintaining complex software projects, and from practices widely
+adopted across successful open-source communities. None of it is meant as a hurdle. It is how we
+reach the quality and the reliability we aim for.
+
+What follows in this page is how we usually meet the project's needs. The needs are what matters:
+if you are in a situation where a practice does not serve them, do it differently and state it
+if useful.
+
+People run XCP-ng in production, often on critical infrastructure. Whatever form a regression
+takes, it reaches the work of everyone whose workloads depend on those machines.
+
+Not every repository carries that weight, and these guidelines do not pretend otherwise. Each
+kind of work has its own version of it: documentation is a reference that people act on, so it
+has to be accurate; a test is only worth having if it is maintainable and actually tests
+something; the tooling we write is what the rest of the team relies on to do their work. Judge
+the care a change deserves by what depends on it.
+
+Review is one of the few systematic checks we have, and what it catches depends on what it can
+see. A reviewer works from the code, from what the change says about itself, and from what the
+author chose to point out. Providing all of it is what gives an approval its meaning.
+
+As most of us don't see each other in person, we also put a strong emphasis on the importance
+of context and communication.
+
+## A few core principles {#core-principles}
 
 Reviews go well when there is shared context, clear expectations, prompt replies,
 responsibility, and a willingness to give each other the benefit of the doubt. Those matter
 more than technical brilliance, which is why the principles below are mostly not about code.
 
-For authors:
-
-> Take responsibility for what you propose, and make the reviewer's job as simple as possible.
-
-A review does not transfer responsibility. You are answerable for the change before you open
-it, and still answerable after it merges.
-
-For reviewers:
-
-> Take responsibility for what you approve, and leave the author feeling respected.
-
-Both rules open the same way on purpose: each side is answerable for what it puts its name
-to. When both sides follow these principles, reviews are faster, discussions are more
-productive, what gets merged is of high quality, and the project benefits.
+They apply to authors and to reviewers alike.
 
 ### Assume positive intent {#assume-positive-intent}
 
@@ -101,20 +126,17 @@ As an author, assume that comments are made in the interest of the project. As a
 assume that the author acted thoughtfully and with good intentions unless there is evidence
 to the contrary. Most conflicts disappear when everyone starts from this assumption.
 
-### Don't make people guess {#dont-make-people-guess}
+### Make other people's job as easy as possible {#make-other-peoples-job-as-easy-as-possible}
 
-**Be explicit. Provide context, explain your reasoning, and state your assumptions.**
-
-The reviewer should not have to reverse-engineer the author's intentions from a diff, and
-the author should not have to reverse-engineer the reviewer's concerns.
-**A few minutes spent writing context can save hours of back-and-forth discussion.**
-
-Many rules described in this document stem directly from this.
+PRs are merged faster and are of better quality when the author cares about the reviewers' needs
+and vice versa.
 
 ### Own your work {#own-your-work}
 
-**As an author**, opening a pull request means: "I believe this change is ready to be
-considered for integration as it is."
+Generally, in the XCP-ng project (there can be local exceptions in some repositories):
+
+**As an author**, opening a pull request usually means: "I believe this change is ready to
+be considered for integration as it is."
 
 **As a reviewer**, your approval means "I agree with the proposed change and I consider
 that I have enough information about its impact" (including possible regressions, tests,
@@ -141,30 +163,14 @@ image shows, not what it is. This holds in any tool that renders images, not onl
 > **Over:**
 > `![screenshot](screenshot.png)`
 
-### Respect everyone's time {#respect-everyones-time}
-
-Many rules below stem from this. Missing context makes reviewers lose time. Unnecessary
-comments make authors lose time. Delays in reviewing or in applying changes make everyone lose
-time. Premature implementations, without prior design or discussion, can make everyone lose
-time.
-
-This is usually not on purpose. We all do our best. But some practices do make others lose
-time, and that is what many of the rules in these guidelines attempt to avoid.
-
-And, often, it is by **investing** a small amount of extra time, just a little beyond what
-you'd naturally do, that everyone saves a lot of time in the end. This is based on experience,
-and we hope this document will convince you.
-
 ## Where to discuss {#where-to-discuss}
-
-**Wherever a discussion happens, the outcome must be visible to all contributors.**
 
 In several places in this document we stress that talking can overcome many obstacles. But
 where should those discussions happen?
 
 For occasional contributors, the main channels are
 [GitHub issues](https://github.com/xcp-ng/xcp/issues), the pull request's own description and
-comments ([when there is a pull request](#is-a-pull-request-the-right-vehicle)), and
+comments ([when there is a pull request](#designs-and-discussion-before-impactful-changes)), and
 [the forum](https://xcp-ng.org/forum/), which is a good place to collectively diagnose an issue
 or discuss improvements. See
 [Where discussion happens](../release-process-overview#where-discussion-happens) for the full
@@ -172,15 +178,15 @@ list of the project's channels.
 
 XCP-ng team members use these too, and have extra channels at hand: internal chat, and live
 conversation, in person or remote. Those are precious tools and the team should use them,
-especially when discussions in the PR itself seem to stall. But XCP-ng is an open project, so
-the outcome must be public: design documents, code, and the reasoning behind a decision all
-belong somewhere a contributor can read them. When a discussion that shaped a pull request
-happened out of sight, summarize it in the pull request itself. A contributor who cannot see
-why a decision was made is entitled to ask for that context.
+especially when discussions in the PR itself seem to stall. But XCP-ng is an open project,
+so the outcome must be public: design documents, code, and the reasoning behind a decision
+all belong somewhere anyone can read them. When a discussion that shaped a pull request
+happened out of sight, summarize it in the pull request itself. A contributor or a user who
+cannot see why a decision was made is entitled to ask for that context.
 
 ## Expectations from authors {#expectations-from-authors}
 
-### Is a pull request the right vehicle? {#is-a-pull-request-the-right-vehicle}
+### Preparing the change {#preparing-the-change}
 
 #### Designs and discussion before impactful changes {#designs-and-discussion-before-impactful-changes}
 
@@ -191,8 +197,8 @@ that affects other people's tooling and processes...
 
 **Then it's probably not time yet for a pull request.**
 
-Instead, it's probably time to write down the requirements, if that is not done already, and to produce a design
-together with every party involved.
+Instead, it's probably time to write down the requirements, if that is not done already, and to
+produce a design together with every party involved.
 
 Similarly, if you are already deep into implementing something and discover that you need
 changes with that kind of impact...
@@ -208,44 +214,29 @@ implementation you then have to start over, and spare the maintainers from havin
 that your requirements were wrong or incomplete, or your design not the right one.
 :::
 
-#### A pull request is not a bug report {#a-pull-request-is-not-a-bug-report}
-
-**If you discover a bug but are not familiar with the code, consider discussing it before
-investing significant effort in a fix.**
-
-A proposed fix from a newcomer may address the symptom while missing part of the problem.
-Maintainers may already be aware of the issue, have additional context, or have a preferred
-direction for addressing it. This applies equally, perhaps especially, before setting an
-AI agent to work on it.
-
-When in doubt, start by [discussing the problem](#where-to-discuss).
-
-This is general advice, not a strict rule.
-
 #### Draft pull requests {#draft-pull-requests}
 
-**Use a draft when the pull request is not ready to be merged.**
+In the general case (individual teams may work differently on some repositories), submitting a
+pull request in the XCP-ng project means "I believe this change is ready to be considered for
+integration as it is."
 
-Two everyday cases: the work is still in progress and you want early feedback, or it is
-finished but you would like someone to help you proofread it before you submit it to the
-maintainers.
+A draft pull request can be a way to ask for early feedback while making it obvious that the
+change is not ready for inclusion yet.
 
-Note: not all reviewers watch draft pull requests. State explicitly that you need feedback,
-and consider asking for a real-time discussion.
+Note: not all reviewers watch draft pull requests. We recommend stating explicitly that you
+need feedback, and considering asking for a real-time discussion if useful.
 
 When taking a pull request out of draft, add the reviewers (GitHub usually suggests them)
 and leave a comment saying that it is ready for review. The state change on its own is
 very easy to miss.
 
-### Preparing the change {#preparing-the-change}
-
 #### Choose the target repository and branch {#choose-the-target-repository-and-branch}
 
 See [Git repositories](../../gitrepo) for where the code lives, and
 [Tags and maintenance branches](../tags-maintenance-branches-in-our-code) for which branch to
-target.
+target. Individual repositories may also have their own documentation covering this.
 
-If this doesn't answer your questions, [reach out](#where-to-discuss).
+If this doesn't answer your questions, feel free to [reach out](#where-to-discuss).
 
 Regular contributors who have write access to the repositories should create their PR branches
 directly on the repository rather than in external forks. This facilitates running CI checks
@@ -260,6 +251,8 @@ Focused pull requests are easier to understand, review, test, merge, and revert 
 mixed pull request cannot be accepted or rejected as a unit: if the cleanup is fine but the
 feature needs another round, everything waits, including the cleanup.
 
+This is a general principle, not a strict rule. Feel free to adapt to the situation.
+
 #### Keep pull requests reasonably small {#keep-pull-requests-reasonably-small}
 
 **Review quality decreases as change size increases.**
@@ -269,6 +262,8 @@ A 100-line pull request is usually reviewed carefully.
 A 1,000-line pull request is often skimmed.
 
 When possible, split large changes into smaller logical steps.
+
+This is a general principle, not a strict rule. Feel free to adapt to the situation, of course.
 
 #### Keep your commit history meaningful {#keep-your-commit-history-meaningful}
 
@@ -283,18 +278,21 @@ Inside a single PR, avoid histories that:
 - introduce something only to remove it later
 - require readers to reconstruct what happened
 
+Reviewers may need to review pull requests commit by commit, in order to digest larger
+changes as smaller chunks and provide a more pertinent review. And a clean git history inside
+the PR branch is anyway beneficial to the project's git history after the merge.
+
 It is usually worth taking a few minutes to rework your history before requesting review. Doing
 so may well save a round of review.
 
 #### Write a meaningful PR title and description {#write-a-meaningful-pr-title-and-description}
 
-Remember the earlier rule: make the reviewer's job as simple as possible. Context is key to
-that.
+Context is key to empowering the reviewer.
 
 **The title must describe what changes. The description must explain why, and give the
 reviewers enough context to make their review efficient.**
 
-The description should address the following questions.
+The description should usually address the following questions.
 
 - Why are we doing this? (What problem exists or what goal are you pursuing?)
 - What does this PR change?
@@ -336,10 +334,12 @@ Review:
 - the commit history
 - the commit messages
 - the pull request description
+- the target branch
+- anything else worth checking before asking for the review
 
 Many review comments should never need to be written, because the author caught the issue
-first. Many experienced engineers review their own pull requests as if they were reviewing
-somebody else's work.
+first. With experience comes the ability to review one's own pull requests almost as if
+reviewing somebody else's work.
 
 **Minutes not spent here are not saved.** They will very likely come back as other people's
 work, another round of review, and a delayed merge.
@@ -378,6 +378,8 @@ You should understand every line you are proposing and be able to explain why it
 
 That is not an answer a reviewer who has spent time reviewing should ever have to read.
 
+There may be exceptions in particular repositories. By default, the above applies.
+
 ### Keeping the review moving {#keeping-the-review-moving}
 
 Now the pull request is open. Let's bring it to completion together with the reviewers.
@@ -400,32 +402,16 @@ second opinion.
 Do not re-request a review from a team just to notify it of what is happening on the pull
 request. Re-requesting means that we will wait for another review before merging.
 
-#### Requesting review: prefer a team over several individuals {#requesting-review-prefer-a-team-over-several-individuals}
-
-*This applies to team members: occasional contributors are not expected to know who should
-review their change.*
-
-**Do not request a review from several people in the hope that one of them will be
-available.**
-
-In our workflow, asking someone for review means that we'll be waiting for this specific person
-to review before we consider the PR approved and mergeable.
-
-Requesting a team solves this. Any member of the team can review and approve on the team's
-behalf. A reviewer who does not feel comfortable deciding alone can request another review from
-the team after their own; that is the right way to ask for a second opinion. Teams are
-organized to make sure they provide reviewers when requested; that is one of their
-responsibilities.
-
-It is also fine to request a review from specific individuals when you know that they are
-the right people to look at the change, but then remember that it's a formal request,
-not a "Hey, maybe you'll want to look at this PR".
+You can also request from individuals if you know exactly who you need and they agree with
+being asked directly for review. However, avoid adding lots of reviewers just in case one may
+have time to review. Unless that's how your team works on this repository, this is not
+wanted.
 
 #### Be responsive {#be-responsive}
 
 **Reviews only work when participants remain engaged.**
 
-Contributors involved in a review are expected to monitor review notifications and respond
+Participants involved in a review are expected to monitor review notifications and respond
 in a timely manner. Review workflows break down when participants become unreachable. Long
 delays create context switching, merge conflicts, frustration, and reduced throughput.
 
@@ -443,15 +429,20 @@ cycles are spent catching mistakes introduced while addressing previous comments
 edit, made when the work already feels finished, is the one that tends to get the least
 attention.
 
-Treat pull request updates with the same attention as the initial pull request. Resist the urge
-to rush them.
+Treat pull request updates with the same attention as the initial pull request. Resist the
+urge to rush them.
 
 And, most importantly, **when addressing review comments, test the updated code again**, and
 say so explicitly.
 
+There are, of course, exceptions to this rule. Use your best judgment. But don't
+underestimate the risk.
+
 #### Reply to comments, and request re-review explicitly {#reply-to-comments-and-request-re-review-explicitly}
 
 **Reply to the comments you addressed, and let the reviewer mark them resolved.**
+
+General XCP-ng project rule. May differ in some specific team workflows.
 
 The reviewer should generally be the one who decides whether a concern has been resolved.
 Closing your own threads removes the conversation from view before the person who raised it
@@ -487,7 +478,8 @@ back and review or wait for more changes.
 
 And the rest won't even know that you pushed an update.
 
-**Thus, always add a comment to explain what the last push was about.**
+**Thus, it is strongly recommended to always add a comment to explain what the last push
+was about.**
 
 Even when notified of the push by GitHub, a reviewer cannot tell from the notification alone
 whether you rewrote the heart of the change, fixed a typo, or simply rebased. The difference
@@ -502,23 +494,36 @@ Examples:
 
 > Force-pushed: reworked the second commit, the other three are untouched.
 
+You may choose to ignore this recommendation if you are **sure** that the reviewers will know
+what to do anyway.
+
 ## Expectations from reviewers {#expectations-from-reviewers}
 
 Reviewing can sometimes be seen as time taken away from your real work. On the contrary, it is
 some of the most important work you do on the project.
 
 Reviewing is real engineering work. It is also how somebody else gets to move forward, and it
-is where you act as a (helpful) gatekeeper: XCP-ng runs production workloads, some of them
-critical infrastructure, and nothing reaches those users without a reviewer having said yes to
-it.
+is where you act as a (helpful) gatekeeper: nothing reaches our users without a reviewer
+having said yes to it.
 
 ### Staying with the review {#staying-with-the-review}
 
 #### Review promptly {#review-promptly}
 
-Review delay is a common source of friction in software development. Prompt
-reviews reduce the same costs described under [Be responsive](#be-responsive): context
-switching, waiting time, merge conflicts, and rework.
+Reviewing someone's work is a way to help them move forward with their task. Doing so promptly
+reduces context switching and encourages the author to answer promptly in turn, in a virtuous
+circle.
+
+On the other hand, review delay is a common source of friction in software development. We
+don't want to be one of these projects where opening a pull request comes with uncertainty
+about the review delays, and where authors may give up after weeks or months of waiting.
+
+In general, most PRs should receive their first reviews within one day, unless they are
+particularly big. Even earlier, if possible.
+
+This is not just individual responsibility: many review requests are addressed to teams, and,
+collectively, these teams must ensure they tend to their reviews. Especially when they
+involve other teams.
 
 If you are directly involved in a pull request and cannot give it a proper review for a
 while, see [See the review through, or hand it over](#see-the-review-through-or-hand-it-over).
@@ -542,55 +547,27 @@ taken over by another reviewer.
 
 ### Judging the change {#judging-the-change}
 
-#### Understand before judging {#understand-before-judging}
-
-**Make sure you understand the problem being solved before you review the implementation.**
-
-Many review discussions become unproductive because the author and the reviewer are solving
-different problems, and neither of them notices for several rounds. If the intent is
-unclear, ask questions first.
-
-> Before I get into the implementation: is the goal here to make this path faster, or to
-> make it survive a disconnect? The description reads both ways to me.
-
-#### Focus on important issues {#focus-on-important-issues}
-
-**Prioritize correctness, reliability, security, maintainability, and consistency.**
-
-Do not block changes solely because you would have implemented them differently. A
-different but sound approach is not a defect, and the author has usually spent longer
-thinking about their particular context than you have.
-
-Also, avoid using review comments to "think out loud", or to comment on things outside the
-focus of the current pull request. No comment is better than a confusing comment.
-
 #### Review more than the code {#review-more-than-the-code}
 
 **The diff is only part of the change.**
 
-Review:
+Also review the pull request description, the commit history and messages, evaluate the overall
+impact, **ensure that the requirements are clear** and conform to the objectives of the project,
+consider documentation updates and testing, if appropriate...
 
-- the pull request description
-- the commit history
-- the commit messages
-- documentation impact
-- testing impact
-- user impact
-
-#### Take responsibility for your review {#take-responsibility-for-your-review}
-
-Your review usually engages your team. It is real engineering work. That a review must be
-prompt does not mean that it has to be rushed. Beware of being over-zealous about details, too:
-it is a difficult balance, but a fundamental one.
-
-#### What an approval covers {#what-an-approval-covers}
-
-**Approving means you also approve the commit messages and the pull request description.**
+**In general, approving means you also approve the commit messages and the pull request
+description.**
 
 Do not approve if they are not ready yet, or we may end up merging without ever fixing them.
 
 Instead, you can leave a comment saying that you are ready to approve as soon as the last
 details are settled.
+
+#### Take responsibility for your review {#take-responsibility-for-your-review}
+
+Your review may engage your team, or the XCP-ng project. It is real engineering work.
+That a review must be prompt does not mean that it has to be rushed.
+It is a difficult balance, but a fundamental one.
 
 ### Writing review comments {#writing-review-comments}
 
@@ -626,21 +603,6 @@ Review comments are more useful when they explain both the concern and the reaso
 it. Teach rather than command: ideally the author finishes the review able to make the same
 judgement themselves next time.
 
-#### Assume competence {#assume-competence}
-
-**Avoid language that assumes mistakes.**
-
-Instead of:
-
-> You forgot to handle this case.
-
-Prefer:
-
-> Was this case intentionally excluded?
-
-Often it was. The goal is to understand before concluding, and when it really was an
-oversight, the question costs the author nothing to answer.
-
 #### Prefer threads over pull-request-level comments {#prefer-threads-over-pull-request-level-comments}
 
 **Attach comments to code whenever you can, so that they become resolvable threads.**
@@ -649,26 +611,28 @@ On GitHub, a pull-request-level comment cannot be resolved and cannot be tracked
 away as the conversation grows, and it's harder to tell whether it was ever addressed. A
 thread has a state, open or resolved, that everyone can see.
 
-When your comment is not about a specific line, you can still start a thread by attaching
-it to a file instead of to the pull request. It is a workaround for a weakness in GitHub's
+When your comment is not about a specific line, **you can still start a thread by attaching
+it to a file instead of to the pull request**. It is a workaround for a weakness in GitHub's
 interface, and it is worth the small detour.
 
 #### Be aware of comment volume {#be-aware-of-comment-volume}
 
-**Large numbers of comments can be intimidating. Provide overall context.**
-
-Thirty comments with no summary read as "this change is a disaster", even when twenty-eight
-of them are minor. One sentence fixes that:
+Large numbers of comments can be intimidating. Provide overall context. Thirty comments with no
+summary read as "this change is a disaster", even when twenty-eight of them are minor.
+One sentence fixes that:
 
 > Overall looks good. Most comments are minor readability suggestions. Only the comments
 > regarding error handling are blocking.
+
+Also, avoid using review comments to "think out loud", or to comment on things outside the
+focus of the current pull request. No comment is better than a confusing comment.
 
 Regarding comment length: sometimes a comment needs to be long, to provide enough context and
 enough nuance. Still, consider the cost for those who will have to read it.
 
 #### Acknowledge good work {#acknowledge-good-work}
 
-**Reviews should not consist exclusively of criticism.**
+**Reviews should not always consist exclusively of criticism.**
 
 Positive feedback reinforces good practices and helps maintain a healthy review culture. It
 is also useful information: knowing which parts you found clear tells the author what to do
@@ -676,9 +640,14 @@ again.
 
 > The way you split these commits made this very easy to follow. Thanks!
 
+This is not a rule, this is a recommendation: when you honestly find something positive,
+consider stating it.
+
 ## Merging {#merging}
 
 ### Two approvals from maintainers {#two-approvals-from-maintainers}
+
+This is a general rule. Some repositories of the project may follow different rules.
 
 In the XCP-ng project, a pull request is generally mergeable once two maintainers of the target
 repository have approved it. The maintainers are usually identified as a team rather than as
@@ -687,6 +656,8 @@ individuals.
 When more than two people are involved in the review, we try to get an approval from each of
 them, or a statement that they are happy to leave the decision to the others and have no
 unaddressed blocking comment.
+
+An open nitpick is not a reason to hold a merge. An unresolved blocking comment is.
 
 A pull request should not stay blocked, however, because one reviewer commented once and never
 came back to approve. Try to reach out to them first. If they remain unresponsive, you can
@@ -699,31 +670,17 @@ If at any point anyone feels stuck with a pull request, whether as the author or
 reviewer waiting for the author to respond, the right reflex is to talk quickly (see
 [Where to discuss](#where-to-discuss)).
 
-Let's not let pull requests rot, for any reason.
-
 ### Who merges? {#who-merges}
 
-**By default, the last reviewer to have approved is the one who merges, once no requested
-review is still outstanding and nothing blocking is unresolved.**
+The general rule is: let the maintainers merge.
 
-An open nitpick is not a reason to hold a merge. An unresolved blocking comment is.
+Then, there are notable exceptions. In particular, in the whole `xcp-ng-rpms` GitHub
+organization, it is usually the author of the PR who will merge the PR and then
+immediately trigger a build in koji. Except when the author doesn't have enough
+credentials to trigger builds by themselves. Then, let the maintainers merge.
 
-Some repositories depart from that default, usually because merging is coupled to something
-else: a build, a deployment, a release process.
-
-| Repository or group | Who merges |
-|---|---|
-| RPM packaging repositories | The author, who then makes a build |
-| Source repositories managed by the Storage team | A project lead |
-| `xcp-ng/xcp-ng-org` (documentation and website) | The documentation maintainers |
-
-> **This table is not exhaustive.** It records the customs that have been written down so
-> far, not all of them. If your repository is not listed, the default above applies: ask its
-> maintainers, and then add the answer here.
-
-If you are contributing from outside the XCP-ng team, none of this is yours to do. You will
-not have merge rights, and you are not expected to produce a build. A maintainer takes the
-change from approval onwards.
+Outside this, specific repositories may also follow different rules. When in doubt, as the
+author, don't merge it yourself.
 
 ## When discussions stall {#when-discussions-stall}
 
