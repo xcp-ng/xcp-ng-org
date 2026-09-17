@@ -155,7 +155,7 @@ When you show a chart or a benchmark, give the numbers as well. The picture show
 the result; the data is what a reviewer can check.
 
 Some things really are visual, such as a UI layout or a rendering glitch. Describe what the
-image shows, not what it is. This holds in any tool that renders images, not only GitHub.
+image shows, not what it is. Consider any tool that renders images, not only GitHub.
 
 > **Prefer:**
 > `![The host list, with the second host greyed out and marked "unreachable"](screenshot.png)`
