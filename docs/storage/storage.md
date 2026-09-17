@@ -269,6 +269,11 @@ Please report any problems (performance or otherwise) you might encounter with Z
 Note: If you use ZFS, assign at least 16GB RAM to avoid swapping. ZFS (in standard configuration) uses half the Dom0 RAM as cache!
 :::
 
+:::tip
+If a ZFS SR shows as unavailable after a host reboot even though the pool
+itself is healthy, see [ZFS SR not imported after reboot](../troubleshooting/storage/zfs-sr-not-imported-on-boot.md).
+:::
+
 #### ZFS Knowledge & status
 
 Feel free to look at these links for more advanced explanations:
