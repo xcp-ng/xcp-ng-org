@@ -138,10 +138,6 @@ Guest OS may limit the amount of usable vCPUs.
 VMs with more than 32 vCPU may cause major system-wide performance degradation under very specific circumstances. Use with caution.
 :::
 
-:::note
-Windows guests are currently limited to a maximum of 64 vCPUs.
-:::
-
 #### XCP-ng 8.2 LTS
 
 :::note
