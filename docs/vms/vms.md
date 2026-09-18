@@ -372,7 +372,11 @@ To detect whether your VM has Viridian enabled, use the following command on the
 xe vm-param-get uuid=<vm-uuid> param-name=platform
 `}</Terminal>
 
-For proper operation of Windows, all of the following six Viridian parameters should be set to `true`: `viridian`, `viridian_time_ref_count`, `viridian_reference_tsc`, `viridian_apic_assist`, `viridian_crash_ctl` and `viridian_stimer`.
+For proper operation of Windows, the following six Viridian parameters should be set to `true`: `viridian`, `viridian_time_ref_count`, `viridian_reference_tsc`, `viridian_apic_assist`, `viridian_crash_ctl` and `viridian_stimer`.
+
+For Windows to support more than 64 vCPUs and and operate optimally, the following four Viridian parameters should also be set to `true`: `viridian_hcall_remote_tlb_flush`, `viridian_hcall_ipi`, `viridian_ex_processor_masks` and `viridian_no_vp_limit`.
+Note that `viridian_no_vp_limit` is automatically enabled when the maximum vCPU count is above 64, unless manually disabled with `viridian_no_vp_limit=false`.
+Similarly, `viridian_ex_processor_masks` is automatically enabled when the maximum vCPU count is above 64 and either `viridian_hcall_remote_tlb_flush` or `viridian_hcall_ipi` is enabled.
 
 If your VM is missing any of the above parameters, run the following command to enable them all:
 
@@ -384,7 +388,11 @@ xe vm-param-set \\
   platform:viridian_reference_tsc=true \\
   platform:viridian_apic_assist=true \\
   platform:viridian_crash_ctl=true \\
-  platform:viridian_stimer=true
+  platform:viridian_stimer=true \\
+  platform:viridian_hcall_remote_tlb_flush=true \\
+  platform:viridian_hcall_ipi=true \\
+  platform:viridian_ex_processor_masks=true \\
+  platform:viridian_no_vp_limit=true
 `}</Terminal>
 
 ### Manage screen resolution
