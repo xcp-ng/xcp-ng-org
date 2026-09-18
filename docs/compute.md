@@ -176,7 +176,7 @@ xe vm-param-set other-config:pci=0/0000:04:01.0,0/0000:00:19.0 uuid=<vm uuid>
 
 :::
 
-:::Note
+:::note
 Since VMs with PCI passthrough cannot be live migrated, [enabling Invariant TSC]((#invariant-tsc) may improve performance.
 [Enable Invariant TSC](#invariant-tsc) to improve performance.
 :::
