@@ -358,8 +358,8 @@ Starting with XCP-ng 8.3 (`xen-4.17.6-9.3.xcpng8.3`), the `xenpm get-core-temp` 
 
 ## Invariant TSC {#invariant-tsc}
 
-By default, XCP-ng doesn't expose Invariant TSC to the guest due to complications related to live migrations.
-This causes the guest to rely on alternative clock sources e.g Xen PV Clock or HPET, which can significantly impact performance of some applications (especially timer-sensitive ones).
+By default, XCP-ng does not expose Invariant TSC to guests because of the complications it can cause with live migration.
+This causes the guest to rely on alternative clock sources (such as Xen PV Clock or HPET), which can significantly impact the performance of some applications (especially those sensitive to timer accuracy).
 
 If you don't intend to live migrate or suspend the guest, you can enable native TSC mode, which would expose Invariant TSC in the guest.
 
