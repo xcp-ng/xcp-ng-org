@@ -9,7 +9,7 @@ All terms and acronyms used throughout this documentation, with links to the pag
 * **domU**: any unprivileged Xen domain, i.e. a regular VM (by opposition to dom0).
 * **DRBD**: replicated block device technology used by XOSTOR/LINSTOR. See [XOSTOR](../xostor/xostor.md).
 * **Guest tools**: PV drivers plus a management agent installed inside the guest OS, required for good performance and features like clean shutdown or IP reporting. See [guest tools](../vms/vms.md#guest-tools).
-* **HA** (High Availability): pool feature restarting protected VMs automatically when a host fails. See [high availability](../management/ha.md).
+* **HA** (High Availability): pool feature restarting protected VMs automatically when a host fails. See [high availability](../management/ha/index.md).
 * **HVM** (Hardware Virtual Machine): VM mode using CPU virtualization extensions; the standard mode for all guests on XCP-ng (usually with PV drivers on top, aka "PVHVM").
 * **IQN** (iSCSI Qualified Name): the identifier of an iSCSI initiator or target, e.g. `iqn.2024-01.com.example:storage1`.
 * **LINSTOR**: the software-defined storage orchestrator behind XOSTOR. See [XOSTOR](../xostor/xostor.md).
