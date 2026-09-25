@@ -76,7 +76,6 @@ Hostname, IPv4 and IPv6: mymirror.example.com, 203.0.113.23, 2001:db8::1
 Sync frequency: every 15 min
 HTTP(S) URL: https://mymirror.example.com/
 RSYNC URL: rsync://mymirror.example.com/xcp-ng/
-Workaround for Let's Encrypt certificates: applied (or "not required" if you're not using L.E.)
 Other prerequisites from https://docs.xcp-ng.org/project/mirrors checked: yes
 Main contact: John Doe <john.doe@...>
 ```
