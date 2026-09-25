@@ -13,7 +13,9 @@ But that's not the only one. If you lose the network link but not the shared sto
 We'll see how to protect your precious VM in multiple cases, and we'll illustrate that with real examples.
 
 :::info
-You can have high availability with as few as 2 hosts, but we strongly recommended to do it with 3 at the minimum, for obvious split-brain issues you might encounter.
+You can have high availability with as few as 2 hosts, but we strongly recommend doing it with 3 at the minimum, for obvious split-brain issues you might encounter.
+
+Details for 2-host pools are in [HA with two hosts](two-hosts.md).
 :::
 
 :::warning
@@ -79,7 +81,7 @@ You can check if your pool has HA enabled or not.
 * In Xen Orchestra, for each pool where HA has been enabled, go to the **Home → Pool** view and you'll see a small "cloud" icon with a green check.
 * In the **Pool → Advanced** tab, you'll see a **High Availability** switch that shows if HA is enabled or not:
 
-![Pool's advanced tab showing the heartbeat SR and the High Availability option.](../assets/img/xo-ha-enabled-disabled.png)
+![Pool's advanced tab showing the heartbeat SR and the High Availability option.](../../assets/img/xo-ha-enabled-disabled.png)
 
 To enable HA, just toggle it on, which gives you a SR selector as Heartbeat SR. 
 
@@ -131,7 +133,7 @@ This attempt will only occur after all VMs set to the "restart" mode have been s
 
 This is pretty straightforward with Xen Orchestra. Go to the **Advanced** panel of your VM page and use the **HA** dropdown menu:
 
-![The HA dropdown has the 3 HA modes previously described.](../assets/img/xo-ha-selector.png)
+![The HA dropdown has the 3 HA modes previously described.](../../assets/img/xo-ha-selector.png)
 
 You can also do that configuration with *xe CLI*:
 
@@ -215,7 +217,7 @@ If you want to restore the default behavior (i.e. HA-protected VMs restart autom
 :::
 
 :::note
-If you don't want a specific VM to reboot automatically, without changing the behavior for the whole pool, you can also temporarily disable HA protection for that VM. To do so, read the instructions at the [Troubleshooting HA section](../troubleshooting/troubleshooting-ha.md#disabling-ha).
+If you don't want a specific VM to reboot automatically, without changing the behavior for the whole pool, you can also temporarily disable HA protection for that VM. To do so, read the instructions at the [Troubleshooting HA section](../../troubleshooting/troubleshooting-ha.md#disabling-ha).
 
 Once you have disabled HA for the VM, shut the VM down. After you start the VM again, feel free to re-enable HA.
 :::

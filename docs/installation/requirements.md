@@ -245,7 +245,7 @@ VM consoles (VNC) are proxied through XAPI over port 443: no direct VNC port nee
 ### Between the hosts of a pool
 
 * **443/TCP**: pool coordination (XAPI to XAPI) and live migrations.
-* **694/UDP**: [HA](../management/ha.md) heartbeat, when high availability is enabled.
+* **694/UDP**: [HA](../management/ha/index.md) heartbeat, when high availability is enabled.
 * **[XOSTOR](../xostor/xostor.md)** pools additionally need the LINSTOR and DRBD replication ports between hosts: see the XOSTOR documentation.
 
 ### Outbound, from the hosts

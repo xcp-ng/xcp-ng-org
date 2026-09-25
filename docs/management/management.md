@@ -30,7 +30,7 @@ Whatever the client you use, the main operation guides are here:
 
 * [Hosts and pools operations](hosts-pools.md) (pool creation, maintenance mode, passwords, NTP...)
 * [Updates](updates.md)
-* [Backup](backup.md) and [High availability](ha.md)
+* [Backup](backup.md) and [High availability](ha/index.md)
 * [Monitoring and alerts](monitoring.md)
 * [Users and permissions](users-permissions.md)
 * [VM load balancing](vm-load-balancing.md)
