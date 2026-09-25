@@ -54,29 +54,9 @@ rsync -rlptv --delete-delay updates.xcp-ng.org::repo/ /local/path/to/mirror
 
 Note: if you sync from our main mirror, rsync access will be unlocked for your host after your application. See below.
 
-### Extra steps for mirrors using Let's Encrypt certificates
-
-On September 30 2021, a root certificate used by Let's Encrypt, *IdentTrust DST Root CA X3*, expired. That was planned, and of course another root certificate is now used instead by Let's Encrypt, so in most situations this is transparent.
-
-#### How it affects XCP-ng
-
-We discovered that the version of openssl that is present in our installer didn't handle the situation very well. The Let's Encrypt certificates can be validated following several different chains of trust - one of which is not valid anymore - and openssl 1.0.2 rejects the certificate if one of the chains contains an expired certificate, rather than trying another - valid - chain.
-
-Fortunately, this doesn't affect yum, so hosts can still update from mirrors that have such a certificate.
-
-But it does affect netinstalls, because the installer checks the mirrors before it would install the packages with yum, and that check fails. So users would get the following error message when our mirror manager would redirect to one such mirror: "A base installation repository was not found at that location".
-
-#### How to solve it
-
-We will release (or have released, at the time of reading) updated installer images that fix this issue (or may already have when you read this), but this won't be enough anyway: users may still use the previous installation images to do a network installation. So we need to also fix it at the mirror level.
-
-Thankfully, there is a way to workaround the issue at the mirror level:
-- Update certbot to at least 1.12.0
-- Edit the configuration file at /etc/letsencrypt/renewal/
-- Append "preferred_chain = ISRG Root X1" to the end of the [renewalparams] section.
-- Run "certbot renew --force-renewal"
-
-Unless there are valid concerns with this approach, we ask that every mirror that relies on Let's Encrypt for their certificates apply this workaround.
+:::info
+If you built a mirror in the past, you may remember that a Let’s Encrypt certificate workaround was required to allow XCP-ng 8.2.x users to perform a netinstall. Since XCP-ng 8.2.x has now reached end of life, this workaround is no longer necessary.
+:::
 
 ### Send your application
 
