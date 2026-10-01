@@ -282,8 +282,9 @@ Reviewers may need to review pull requests commit by commit, in order to digest 
 changes as smaller chunks and provide a more pertinent review. And a clean git history inside
 the PR branch is anyway beneficial to the project's git history after the merge.
 
-It is usually worth taking a few minutes to rework your history before requesting review. Doing
-so may well save a round of review.
+It is usually worth taking a few minutes to rework your history, using Git's *interactive rebase*
+capabilities through a tool of your choice, before requesting review. Doing so may well save a
+round of review.
 
 #### Write a meaningful PR title and description {#write-a-meaningful-pr-title-and-description}
 
@@ -350,8 +351,8 @@ self-review would have caught.
 
 :::tip
 An AI tool can be a useful extra pair of eyes here, especially if you ask it to be critical,
-and to look at the commit messages and the description as well as the code. It replaces neither
-your own review nor your responsibility for the result.
+and to look at the commit messages and the description as well as the code. But it replaces
+neither your own review nor your responsibility for the result.
 :::
 
 ### Take responsibility for your PR {#take-responsibility-for-your-pr}
@@ -445,8 +446,8 @@ underestimate the risk.
 General XCP-ng project rule. May differ in some specific team workflows.
 
 The reviewer should generally be the one who decides whether a concern has been resolved.
-Closing your own threads removes the conversation from view before the person who raised it
-has agreed that it is settled.
+Closing threads on your own removes the conversation from view before the person who raised
+it has agreed that it is settled.
 
 Then ask for re-review explicitly. Do not assume that pushing commits means "please come
 back and review again": reviewers cannot tell whether you are done with your changes. Ask
@@ -551,9 +552,9 @@ taken over by another reviewer.
 
 **The diff is only part of the change.**
 
-Also review the pull request description, the commit history and messages, evaluate the overall
-impact, **ensure that the requirements are clear** and conform to the objectives of the project,
-consider documentation updates and testing, if appropriate...
+Also review the pull request description, the commit history and messages, the target branch,
+evaluate the overall impact, **ensure that the requirements are clear** and conform to the
+objectives of the project, consider documentation updates and testing, if appropriate...
 
 **In general, approving means you also approve the commit messages and the pull request
 description.**
@@ -608,8 +609,10 @@ judgement themselves next time.
 **Attach comments to code whenever you can, so that they become resolvable threads.**
 
 On GitHub, a pull-request-level comment cannot be resolved and cannot be tracked. It scrolls
-away as the conversation grows, and it's harder to tell whether it was ever addressed. A
-thread has a state, open or resolved, that everyone can see.
+away as the conversation grows, and it's harder to tell whether it was ever addressed. It
+causes the PR page itself to grow without control as those comments cannot be folded out of
+sight. A thread has a state, open or resolved, that everyone can see, and resolved ones get
+folded by default to help focus on the remaining topics.
 
 When your comment is not about a specific line, **you can still start a thread by attaching
 it to a file instead of to the pull request**. It is a workaround for a weakness in GitHub's
@@ -734,13 +737,13 @@ Each package has a maintainer team, which must approve the pull request. The rel
 When the maintainer team is the OS Platform & Release team itself, two members of that team
 must approve.
 
-### If the pull request changes the release {#if-the-pull-request-changes-the-release}
+### If the pull request changes the specfiles's `Release` field {#if-the-pull-request-changes-the-specfile-s-release-field}
 
 **A build from the target branch must follow the merge.**
 
-Bumping the release is a statement that a build carrying that release exists, or is about
-to. Merging and then forgetting the build leaves the branch claiming a version that was
-never produced.
+Bumping the `Release` field is a statement that a build carrying that release will exist once
+the PR is merged. Merging and then forgetting the build leaves the branch claiming a version
+that was never produced.
 
 ### If the pull request does not change the release {#if-the-pull-request-does-not-change-the-release}
 
