@@ -344,12 +344,13 @@ This feature has been reported to not work properly with certain devices.
 
 ### Solution
 
-On XCP-ng 8.3, install xapi 26.1.19-1.1 or later.
+On XCP-ng 8.3:
 
-Then run the following command on the host, replacing `<vm-uuid>` with the UUID of the VM receiving the passed-through PCI device:
+1. Install xapi **26.1.19-1.1 or later**.
+2. Run the following command on the host, replacing `<vm-uuid>` with the UUID of the VM receiving the passed-through PCI device:
 
 <Terminal shell title="root@xcp-ng-host — Disable HVM PIRQ on a VM">{`
 xe vm-param-set uuid=<vm-uuid> platform:hvm-pirq=false
 `}</Terminal>
 
-Reboot the VM for the changes to take effect.
+3. Reboot the VM for the changes to take effect.
