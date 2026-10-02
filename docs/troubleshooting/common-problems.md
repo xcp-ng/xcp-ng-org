@@ -322,3 +322,35 @@ This issue is often caused by keyboard being on **Scroll Lock** mode.
 ### Solution
 
 Disable **Scroll Lock** on your keyboard (physical or virtual). Input should resume immediately.
+
+---
+
+## PCI passthrough error "Unsupported MSI delivery mode 7"
+
+### Issue
+
+When using PCI passthrough on some certain devices (e.g. AMD GPUs, some SSDs), you may find that the device is non-functional, buggy, or randomly hangs.
+
+`/var/log/xen/hypervisor.log` shows the following error:
+
+```
+(XEN) d<N>v0: Unsupported MSI delivery mode 7 for Dom<N>
+```
+
+### Cause
+
+The "HVM PIRQ" feature is enabled on the VM.
+This feature has been reported to not work properly with certain devices.
+
+### Solution
+
+On XCP-ng 8.3:
+
+1. Install xapi **26.1.19-1.1 or later**.
+2. Run the following command on the host, replacing `<vm-uuid>` with the UUID of the VM receiving the passed-through PCI device:
+
+<Terminal shell title="root@xcp-ng-host — Disable HVM PIRQ on a VM">{`
+xe vm-param-set uuid=<vm-uuid> platform:hvm-pirq=false
+`}</Terminal>
+
+3. Reboot the VM for the changes to take effect.
