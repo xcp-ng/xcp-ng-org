@@ -2,7 +2,7 @@
 sidebar_position: 10.5
 ---
 
-# Pull Request Guidelines {#pull-request-guidelines}
+# Pull request guidelines {#pull-request-guidelines}
 
 - [Introduction](#introduction)
 - [Why we work this way](#why-we-work-this-way)
