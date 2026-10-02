@@ -47,6 +47,12 @@ this page says which way we do it here. If the mechanics themselves are new to y
 [pull request documentation](https://docs.github.com/en/pull-requests/reference/pull-requests)
 covers those.
 
+**What this document is.** These are the practices the XCP-ng team has agreed on, and they are
+not exhaustive. A few of them are enforced, by tooling or by maintainers who will not merge
+without them. Most are strong recommendations drawn from experience rather than obligations,
+and where the difference matters, we say so. XCP-ng is a live project, its customs evolve, and
+we will strive to keep this page current as they do.
+
 XCP-ng is made of several sub-projects that work together, maintained by various teams. Some
 teams have their own customs. **Members of these teams should not feel constrained by the
 principles and rules described in this document.** Have we forgotten to state that there are
@@ -64,14 +70,6 @@ project's rules.
 and the review etiquette are written both for occasional contributors and regular team
 members. A few practices only make sense for members of the XCP-ng team and are marked where
 they appear.
-
-**What this document is.** These are the practices the XCP-ng team has agreed on, and they are
-not exhaustive. A few of them are enforced, by tooling or by maintainers who will not merge
-without them. Most are strong recommendations drawn from experience rather than obligations,
-and where the difference matters, we say so. XCP-ng is a live project, its customs evolve, and
-we will strive to keep this page current as they do. Individual projects and teams may also
-have conventions of their own on top of what is written here, so it is worth asking if you are
-unsure.
 
 **If you get something wrong.** That is normal while you are still learning how we work with
 pull requests in the XCP-ng project, and it is generally recoverable. A first pull request
