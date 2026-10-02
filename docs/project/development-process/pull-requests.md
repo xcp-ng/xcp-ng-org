@@ -78,15 +78,14 @@ make sense to you, say so and ask: that is expected of you, not held against you
 
 ## Why we work this way {#why-we-work-this-way}
 
-What we are here for is that the people who run XCP-ng get something that works, keeps working,
-and keeps getting better. Pull requests are one of the places where that is decided: the last
-point where a mistake is still cheap, and the point where one person's work becomes the
-project's.
+Our goal is that the people who run XCP-ng get software that works and keeps improving. Pull
+requests are the last step before a change becomes part of the project, and a mistake caught
+there costs much less than one found after a release.
 
 We hold high standards regarding commit messages, git history, and pull request quality. They
 come from years of experience maintaining complex software projects, and from practices widely
-adopted across successful open-source communities. None of it is meant as a hurdle. It is how we
-reach the quality and the reliability we aim for.
+adopted across successful open-source communities. They exist to keep the quality and the
+reliability of XCP-ng at the level we aim for.
 
 What follows in this page is how we usually meet the project's needs. The needs are what matters:
 if you are in a situation where a practice does not serve them, do it differently and state it
@@ -95,15 +94,14 @@ if useful.
 People run XCP-ng in production, often on critical infrastructure. Whatever form a regression
 takes, it reaches the work of everyone whose workloads depend on those machines.
 
-Not every repository carries that weight, and these guidelines do not pretend otherwise. Each
-kind of work has its own stakes: documentation is a reference that people act on, so it
-has to be accurate; a test is only worth having if it is maintainable and actually tests
-something; the tooling we write is what the rest of the team relies on to do their work. Judge
-the care a change deserves by what depends on it.
+Not every repository carries that weight. Each kind of work has its own stakes: documentation is
+a reference that people act on, so it has to be accurate; a test is only worth having if it is
+maintainable and actually tests something; the tooling we write is what the rest of the team
+relies on to do their work. Judge the care a change deserves by what depends on it.
 
-Review is one of the few systematic checks we have, and what it catches depends on what it can
-see. A reviewer works from the code, from what the change says about itself, and from what the
-author chose to point out. Providing all of it is what gives an approval its meaning.
+Review is one of the few systematic checks we have. Reviewers work from the code, the commit
+messages, the pull request description, and whatever the author points out to them, so the
+quality of a review depends a lot on what the author provides.
 
 As most of us don't see each other in person, we also put a strong emphasis on the importance
 of context and communication.
@@ -149,8 +147,7 @@ was text to begin with. A terminal session, a log excerpt, a stack trace: paste 
 fenced code block instead. Text can be read aloud, searched, quoted, and copy-pasted; a
 screenshot of a terminal is none of those things, however careful its alt text.
 
-When you show a chart or a benchmark, give the numbers as well. The picture shows the shape of
-the result; the data is what a reviewer can check.
+When you show a chart or a benchmark, give the numbers as well, so that reviewers can check them.
 
 Some things really are visual, such as a UI layout or a rendering glitch. Describe what the
 image shows, not what it is. Consider any tool that renders images, not only GitHub.
@@ -340,8 +337,8 @@ Many review comments should never need to be written, because the author caught 
 first. With experience comes the ability to review one's own pull requests almost as if
 reviewing somebody else's work.
 
-**Minutes not spent here are not saved.** They will very likely come back as other people's
-work, another round of review, and a delayed merge.
+**Skipping self-review rarely saves time.** What you miss will very likely come back as extra
+work for the reviewers, another round of review, and a delayed merge.
 
 Of course, it is fine not to be an expert, and to miss things that an expert would spot.
 That is not what this is about. It is about the mistakes that a few extra minutes of
@@ -585,8 +582,8 @@ Be explicit about it.
 > This must be fixed before merge: the error path leaves the lock held, so a failed attach
 > wedges the device until reboot.
 
-The last one has earned the word *must*, because it says what breaks and why. Reserve it
-for those cases and authors will trust it.
+The last one uses *must* because it explains what breaks and why. Keep *must* for cases like
+this one, so that authors know it really is blocking.
 
 #### Explain your reasoning {#explain-your-reasoning}
 
@@ -618,9 +615,8 @@ interface, and it is worth the small detour.
 
 #### Be aware of comment volume {#be-aware-of-comment-volume}
 
-Large numbers of comments can be intimidating. Provide overall context. Thirty comments with no
-summary read as "this change is a disaster", even when twenty-eight of them are minor.
-One sentence fixes that:
+Large numbers of comments can be intimidating. Without a summary, many comments can look like a
+rejection even when most of them are minor. A short overall comment helps:
 
 > Overall looks good. Most comments are minor readability suggestions. Only the comments
 > regarding error handling are blocking.
@@ -714,8 +710,7 @@ bandwidth (see [Where to discuss](#where-to-discuss)):
 - pair review
 - discuss synchronously
 
-Many disagreements that take hours in comments, and days or weeks in delays, disappear in
-minutes of conversation.
+Many disagreements that drag on in comments are resolved quickly in a conversation.
 
 If this is not enough to resolve the issue, escalate to a person or a team who can
 arbitrate.
