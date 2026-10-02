@@ -737,7 +737,7 @@ Each package has a maintainer team, which must approve the pull request. The rel
 When the maintainer team is the OS Platform & Release team itself, two members of that team
 must approve.
 
-### If the pull request changes the specfiles's `Release` field {#if-the-pull-request-changes-the-specfile-s-release-field}
+### If the pull request changes the specfile's `Release` field {#if-the-pull-request-changes-the-release}
 
 **A build from the target branch must follow the merge.**
 
