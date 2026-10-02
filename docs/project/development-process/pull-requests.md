@@ -463,9 +463,9 @@ Leave a comment saying what you changed:
 to the name of each reviewer who has requested changes, previously approved, or left
 comments.
 
-There is one exception. A reviewer who is still pending, meaning that they have not reviewed
-since the last time they were asked, has no re-request button, so mentioning them in a
-comment is the only way to notify them.
+There is one exception. A reviewer who is still pending, meaning that GitHub has not recorded
+a review from them since the last time they were asked, has no re-request button, so
+mentioning them in a comment is the only way to notify them.
 
 #### Explain what your push contains {#explain-what-your-push-contains}
 
@@ -643,6 +643,14 @@ again.
 
 This is not a rule, this is a recommendation: when you honestly find something positive,
 consider stating it.
+
+#### Verify your review status {#verify-your-review-status}
+
+If you only take part in threads started by other reviewers, and/or only post pull-request-level
+comments without going through the "Review changes" button, GitHub may not record you as having
+reviewed: you stay pending, and the author cannot re-request your review. Make sure your
+participation ends up as a submitted review, for example with "Review changes" and a short
+summary once you are done.
 
 ## Merging {#merging}
 
