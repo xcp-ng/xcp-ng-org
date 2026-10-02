@@ -96,7 +96,7 @@ People run XCP-ng in production, often on critical infrastructure. Whatever form
 takes, it reaches the work of everyone whose workloads depend on those machines.
 
 Not every repository carries that weight, and these guidelines do not pretend otherwise. Each
-kind of work has its own version of it: documentation is a reference that people act on, so it
+kind of work has its own stakes: documentation is a reference that people act on, so it
 has to be accurate; a test is only worth having if it is maintainable and actually tests
 something; the tooling we write is what the rest of the team relies on to do their work. Judge
 the care a change deserves by what depends on it.
