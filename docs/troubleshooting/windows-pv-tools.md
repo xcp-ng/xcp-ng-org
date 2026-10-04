@@ -255,3 +255,24 @@ xl trigger <domid> nmi
 
 - Your VM will crash and generate a dump file. The default location is `C:\Windows\MEMORY.DMP`.
 - Provide the requested memory dump to customer support. The dump can be compressed in a ZIP file to reduce its size.
+
+## Windows not detecting more than 64 vCPUs, or performs poorly with more than 64 vCPUs configured
+
+### Cause
+
+This is due to the Viridian enlightenments needed for supporting more than 64 vCPUs not being enabled.
+
+### Solution
+
+Check that all Viridian extensions are all enabled on your VM.
+See the [Enabling Viridian extensions](/vms/#enabling-viridian-extensions) guide for more details.
+
+## Windows guests with more than 64 vCPUs locking up when migrated
+
+### Cause
+
+This is due to a bug in the Xen Windows PV drivers.
+
+### Solution
+
+Update to the latest version of XCP-ng Windows Guest Tools.
