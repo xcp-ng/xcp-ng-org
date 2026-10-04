@@ -61,6 +61,8 @@ function renderLine(line: string, isCommand: boolean): React.ReactNode {
   });
 }
 
+const COMMENT = /^((?:'[^']*'|"(?:\\.|[^"\\])*"|\\.|[^'"\\])*?)(\s+#\s.*)$/;
+
 // Shell mode: every non-empty line is a command behind a root prompt; full-line
 // `#` comments and trailing ` # …` comments render dim, like a real session.
 function renderShellLine(line: string): React.ReactNode {
@@ -68,7 +70,7 @@ function renderShellLine(line: string): React.ReactNode {
   if (line.trimStart().startsWith('#')) {
     return <span className={styles.dim}>{line}</span>;
   }
-  const m = line.match(/^(.*?)(\s+#\s.*)$/);
+  const m = line.match(COMMENT);
   return (
     <>
       <span className={styles.dim}># </span>
@@ -85,7 +87,7 @@ function commandLines(lines: string[], shell: boolean): string[] {
   }
   return lines
     .filter((l) => l.trim() !== '' && !l.trimStart().startsWith('#'))
-    .map((l) => l.replace(/\s+#\s.*$/, ''));
+    .map((l) => l.replace(COMMENT, '$1'));
 }
 
 function CopyButton({text}: {text: string}): JSX.Element {
