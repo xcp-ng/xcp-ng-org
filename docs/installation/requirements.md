@@ -8,6 +8,10 @@ Understand what is needed to run XCP-ng.
 
 An XCP-ng server is dedicated entirely to running XCP-ng and hosting VMs. It is not used for other applications.
 
+:::note
+The requirements and limits on this page apply to **XCP-ng 8.3 LTS**. XCP-ng 8.2 is EOL: the values that differ for 8.2 are grouped at the [bottom of this page](#xcp-ng-82-lts-differences).
+:::
+
 :::info
 Installing third-party software directly in the XCP-ng control domain is not supported, except for software supplied in the official repositories. If you wish to add extra packages to XCP-ng, please [submit your request here](https://github.com/xcp-ng/xcp/issues/56).
 :::
@@ -26,7 +30,7 @@ The system requirements for XCP-ng are:
 
 - One or more 64-bit x86 CPUs, minimum 1.5 GHz; 2 GHz or faster multicore CPUs are recommended.
 - Hardware virtualization must be enabled (Intel VT-x or AMD-V).
-- Since XCP-ng 8.3, CPUs must support SLAT (Intel EPT or AMD RVI/NPT).
+- CPUs must support SLAT (Intel EPT or AMD RVI/NPT).
 - For stability and proper support of some features, enabling IOMMU (Intel VT-d or AMD-Vi) is recommended.
 
 :::tip
@@ -63,15 +67,10 @@ Similarly, installing XCP-ng on SD cards is highly discouraged. A basic SSD offe
 
 - Minimum 100 Mbit/s NIC. Recommended: one or more Gb or 10 Gb NICs for faster data transfers, including P2V, import/export, and VM live migrations.
 - Use multiple NICs for redundancy. Network configuration depends on your storage type: refer to vendor documentation for guidance.
+- The management network can use IPv4 or IPv6.
 
 :::danger
 XCP-ng hosts **MUST NOT** have a public IP address assigned to their management network. Management interfaces must only be accessible from trusted private networks.
-:::
-
-XCP-ng 8.2 requires an IPv4 network for management and storage traffic. Starting from XCP-ng 8.3, the management network supports IPv6.
-
-:::note
-XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
 :::
 
 :::info
@@ -86,7 +85,7 @@ XCP-ng supports the following per host:
 
 - Up to 6 TB.
 
-In XCP-ng 8.3, Xen theoretically supports up to 12 TiB with security support, and even more without security support.
+Xen theoretically supports up to 12 TiB with security support, and even more without security support.
 
 ### Physical Network Interface Cards (NICs)
 
@@ -95,22 +94,8 @@ In XCP-ng 8.3, Xen theoretically supports up to 12 TiB with security support, an
 ### Logical Processors
 
 :::note
-The maximum number of supported logical processors may vary depending on the CPU. For more information, see the [Hardware Compatibility List (HCL)](../../installation/hardware).
+The maximum number of supported logical processors may vary depending on the CPU. For more information, see the [Hardware Compatibility List (HCL)](../../installation/hardware). The theoretical, untested limit is 2,048 logical processors.
 :::
-
-#### XCP-ng 8.3 LTS
-
-:::note
-XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
-:::
-
-:::note
-The theoretical, untested limit is 2,048 logical processors.
-:::
-
-#### XCP-ng 8.2 LTS
-
-- Up to 448 logical processors (theoretical, untested: 512).
 
 ### Virtual Network Interface Cards (vNICs)
 
@@ -126,8 +111,6 @@ Below are the supported limits for virtual machines on XCP-ng.
 
 ### CPU
 
-#### XCP-ng 8.3 LTS
-
 - **Virtual CPUs (vCPUs) per VM**:
   - For untrusted VMs, the security-supported limit is **32 vCPUs**.
   - For trusted VMs, the upper limit is **128 vCPUs** in BIOS mode and UEFI mode. Developments are planned to increase these limits.
@@ -142,23 +125,11 @@ VMs with more than 32 vCPU may cause major system-wide performance degradation u
 Windows guests are currently limited to a maximum of 64 vCPUs.
 :::
 
-#### XCP-ng 8.2 LTS
-
-:::note
-XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
-:::
-
-- **Virtual CPUs (vCPUs) per VM**: Up to **32 vCPUs**.
-
-Ensure that your guest OS supports this configuration.
-
 ### GPU
 
 - **Virtual GPUs per VM**: Up to **8**.
 
 ### Memory
-
-#### XCP-ng 8.3 LTS
 
 - **Maximum RAM per VM**:
   - With memory snapshot support: **1.5 TiB**.
@@ -167,22 +138,18 @@ Ensure that your guest OS supports this configuration.
 
 Keep in mind that the actual usable memory depends on the guest OS limits. In some cases, going beyond what the OS can manage efficiently may lead to performance drops.
 
-#### XCP-ng 8.2 LTS
-
-:::note
-XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
-:::
-
-- **Maximum RAM per VM**: **1.5 TiB**.
-
 ### Storage
 
 - **Virtual Disk Images per VM (including CD-ROMs)**: Up to **241**. This is also influenced by the limits of your guest OS; refer to its documentation to ensure compatibility.
 - **Virtual CD-ROM drives per VM**: **1**.
 - **Maximum Virtual Disk Size**:
-  - **2 TiB** using storage drivers with the VHD format (`Local EXT`, `Local LVM`, `NFS`, `LVM over iSCSI`, `XOSTOR`, etc.).
+  - **16,381 GiB** (just under 16 TiB) with the QCOW2 format, supported by most storage drivers (`Local EXT`, `Local LVM`, `NFS`, `LVM over iSCSI`, `LVM over HBA`, etc.).
+  - **2 TiB** with the VHD format. QCOW2 is not supported on `XOSTOR` (`linstor`) and `SMB` SRs, so the 2 TiB limit still applies there.
   - Nearly unlimited when using the `raw` storage driver or disk pass-through to the VM (note: snapshots and live migration are not supported in these cases).
-  - New storage drivers are under active development to overcome the **2 TiB** VHD limit while retaining features like snapshots and live migration.
+
+:::info
+VHD remains the default format for new virtual disks. With the default settings, a disk larger than 2040 GiB is created in QCOW2 on SRs that support it. For details, see the [QCOW2 FAQ](../storage/qcow2_faq.md).
+:::
 
 ### Networking
 
@@ -255,3 +222,20 @@ VM consoles (VNC) are proxied through XAPI over port 443: no direct VNC port nee
 * Storage protocols towards your SRs: **2049/TCP** for NFS (plus 111 and the mountd port for NFSv3), **3260/TCP** for iSCSI, **445/TCP** for SMB.
 
 Keep the management network private: XAPI, SSH and consoles are administrative interfaces, they have no business being exposed to the internet.
+
+## XCP-ng 8.2 LTS differences {#xcp-ng-82-lts-differences}
+
+:::note
+XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
+:::
+
+Everything above applies to XCP-ng 8.3 LTS. XCP-ng 8.2 LTS differs on the following points:
+
+| Item | XCP-ng 8.2 LTS | XCP-ng 8.3 LTS |
+|---|---|---|
+| CPU SLAT (Intel EPT or AMD RVI/NPT) | Not required | Required |
+| Management network | IPv4 only (management and storage traffic) | IPv4 or IPv6 |
+| Logical processors per host | Up to 448 (theoretical, untested: 512) | Theoretical, untested: 2,048 |
+| vCPUs per VM | Up to 32 | 32 (untrusted VMs), up to 128 (trusted VMs) |
+| RAM per VM | 1.5 TiB | 1.5 TiB with memory snapshots, 8 TiB without |
+| Maximum virtual disk size | 2 TiB (VHD only, no QCOW2 support) | 16,381 GiB with QCOW2, 2 TiB with VHD |
