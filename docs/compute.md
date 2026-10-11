@@ -202,7 +202,7 @@ It will be back in the Dom0 after a reboot.
 To passthrough a complete graphics card to a VM (not virtualize it into multiple virtual vGPUs, which is different, see the vGPU section below), just follow the regular PCI passthrough instructions, no special steps are needed. Most Nvidia and AMD video cards should work without issue.  
 
 :::warning
-Passthrough of an AMD APU's integrated GPU is not currently supported. An integrated GPU keeps its option ROM in the motherboard firmware rather than on the card, so there is no ROM to expose to the VM. Support for this feature is currently under development.
+Passthrough of an AMD APU's integrated GPU is not currently supported. An integrated GPU keeps its option ROM in the motherboard firmware rather than on the card, and XCP-ng cannot provide it to the VM yet. Work on this is in progress.
 :::
 
 :::tip
@@ -214,17 +214,20 @@ Previously, Nvidia would block the use of gaming/consumer video cards for passth
 ### NVIDIA vGPU
 
 :::warning
-Due to a proprietary piece of code in XenServer, XCP-ng doesn't have (yet) support for NVIDIA vGPUs.
+XCP-ng does not support NVIDIA vGPU, because it depends on a proprietary component of XenServer that cannot be redistributed. Passing a whole NVIDIA GPU through to a VM works: see [GPU Passthrough](#gpu-passthrough).
 :::
 
 ### MxGPU (AMD vGPU)
 
-AMD MxGPU uses the industry-standard SR-IOV.  
-Version 2.0 of the mxgpu iso should work on any 8.X version of XCP-ng
+AMD MxGPU uses the industry-standard SR-IOV.
+
+:::warning
+AMD no longer maintains the MxGPU driver (supplemental pack for the FirePro S7150x2), and it has not been tested on XCP-ng 8.3. It may still work, but it is not supported.
+:::
 
 1. Enable SR-IOV in the server's BIOS
 2. Install XCP-ng
-3. Download Citrix XenServer from AMD's Drivers & Support page. (Currently version 2.0.0 for XenServer 8.1)
+3. Download the MxGPU supplemental pack for XenServer from AMD's Drivers & Support page (the last version is 2.0.0, built for XenServer 8.1)
 4. Copy the `mxgpu-2.0.0.amd.iso` to the host
 5. Install the supplemental pack:
 

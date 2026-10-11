@@ -19,7 +19,7 @@ XO Lite uses a self-signed certificate. You need to accept the certificate (foll
 :::
 
 :::note
-XO Lite is still a work in progress! However, it's meant to cover all basic actions you need to boostrap your infrastructure or just do basic operation on your VMs.
+XO Lite is embedded in XCP-ng, but it hasn't reached version 1.0 yet: some features are still missing. It's meant to cover all the basic actions you need to bootstrap your infrastructure or perform basic operations on your VMs.
 :::
 
 ## Credentials {#credentials}

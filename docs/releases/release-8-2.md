@@ -25,7 +25,7 @@ LTS means **Long Term Support**: more information in [this section](../#lts-rele
 * Base version of CentOS in dom0: 7.5
 * Xen 4.13.1 + patches
 * Kernel 4.19 + patches
-* Supported until 2025-09-16 (The initial EOL date was 2025-06-05, and we extended it to provide more time to upgrade to XCP-ng 8.3 LTS)
+* Supported until 2025-09-16 (The initial EOL date was 2025-06-25, and we extended it to provide more time to upgrade to XCP-ng 8.3 LTS)
 
 ## Install {#install}
 

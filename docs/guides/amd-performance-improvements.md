@@ -23,29 +23,16 @@ However, this fix is _not_ useful on current Intel processors. You can enable it
 
 ### How to enable the fix
 
-:::warning
-The fix is only available on XCP-ng 8.3 with `xapi` >= 25.6.0-1.11.xcpng8.3 and `xen` >= 4.17.5-15.2.xcpng8.3
+The fix is enabled by default on up-to-date XCP-ng 8.3 hosts (`xapi` >= 25.27.0-2.1.xcpng8.3): grant-tables are mapped as `writeback` instead of `uncacheable`, and no configuration is needed.
+
+* **Stop and start VMs** that were started before the update, so that they benefit from the fix during their new boot (a simple reboot is not enough).
+* Guests need their kernel to support the feature that enables the fix (see the list below). Windows and BSD guests were not affected by the performance problem solved by this change.
+
+:::tip
+The fix was first available as an opt-in setting with `xapi` 25.6.0-1.11 and `xen` 4.17.5-15.2. If you created `/etc/xenopsd.conf.d/amd-gnttab-wb.conf` at that time, it's now redundant and you can remove it.
+
+To revert to the previous behavior (should side effects occur in edge cases), create on each host a file in `/etc/xenopsd.conf.d/` containing `xen-platform-pci-bar-uc=true`, restart the toolstack, then stop and start the VMs.
 :::
-
-Xenopsd supports a new option, allowing the grant-tables to be mapped as `writeback` instead of `uncacheable`.
-
-Guests need their kernel to support the feature that enables the fix (See partial list below). Windows and BSD guests were not affected by the performance problem solved by this change.
-
-The change has to be opt-in, so that users:
-- know of the change
-- know how to revert the change (should side-effects occur in edge cases)
-
-* To enable the fix, create on each host a file named `/etc/xenopsd.conf.d/amd-gnttab-wb.conf` with the following line:
-
-```
-xen-platform-pci-bar-uc=false
-```
-
-1. Restart the toolstack on the host: `xe-toolstack-restart`
-2. Add the configuration and restart the toolstack on every other host of the pool
-3. **Stop and start VMs** to apply the configuration during the new boot (a simple reboot is not enough).
-
-This configuration will become default in a few months, with a future update to XCP-ng 8.3.
 
 There's more work to be done to improve performance on AMD EPYC servers, but it is significant progress!
 
@@ -69,7 +56,7 @@ Linux distributions with recent enough kernels or distros that apply fixes from 
 
 Older distros.
 
-Some currently-supported LTS distros don't have the patch yet. Specifically: RHEL 8 and 9 and their derivatives.
+Some currently supported LTS distros don't have the patch yet. Specifically: RHEL 8 and 9 and their derivatives.
 
 **Will never be ready:**
 
@@ -83,7 +70,7 @@ Guest kernel version determines whether the performance fix is supported or not.
   * Debian 12 "Bookworm" (6.1 -> **OK**)
 * Ubuntu:
   * 20.04 LTS "Focal Fossa" (5.4: _EOL_)
-  * 22.04 LTS "Jammy Jellyfish" (5.15: _SOON_, HWE 6.8: **OK**)
+  * 22.04 LTS "Jammy Jellyfish" (5.15.0-154+: **OK**, HWE 6.8: **OK**)
   * 24.04 LTS "Noble Numbat" (6.8 & HWE 6.14: **OK**)
 * openSUSE Leap:
   * 15.5 (5.14: _EOL_)
@@ -93,7 +80,7 @@ Guest kernel version determines whether the performance fix is supported or not.
   * SLE15 SP4/5 - LTSS (5.14: _Not upstream_)
   * SLE15 SP6+ (**OK**)
 * RHEL (+derivatives):
-  * 8 (4.19: _EOL_)
+  * 8 (4.18: _Not upstream_)
   * 9 (5.14: _Not upstream_)
   * 10 (6.12: **OK**)
 * Fedora: All supported: **OK** (37+)
@@ -102,7 +89,6 @@ Guest kernel version determines whether the performance fix is supported or not.
 
 * _EOL_ = distro is End-of-Life
 * _Not upstream_ = not covered by Linux stable project
-* _SOON_: Distro needs to update its kernel
 
 
 ## Fix 2: spurious interrupts {#fix-2-spurious-interrupts}
@@ -126,9 +112,8 @@ The fix is not specific to AMD —it can improve internal network performance on
 
 ### OS support
 
-Since the fix is very recent, no distribution includes it yet.
+The fix is upstream in the Linux kernel (v6.17) and in the LTS kernels listed below. Debian 12 and 13, Ubuntu 22.04 (kernel 5.15.0-163 or later) and Ubuntu 24.04 (kernel 6.8.0-98 or later) ship it. RHEL 8, 9 and 10 and their derivatives don't include it yet.
 
-However, the fix is upstream in the Linux kernel (v6.17) and LTS kernels are up-to-date.
 Here are the LTS kernels that have been fixed:
 * v5.10.241
 * v5.15.190
