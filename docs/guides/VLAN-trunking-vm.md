@@ -142,7 +142,9 @@ and assign a new interface with the device `xn2` and the name `trunk`.
 Edit the `trunk` interface, enable it, and set MTU to 1504.
 
 :::tip
-Ensure that **Disable hardware checksum offload** is checked
-under the menu *Interfaces → Settings*.
-It is documented in [`xnb(4)`](https://man.freebsd.org/cgi/man.cgi?query=xnb&apropos=0&sektion=4&manpath=FreeBSD+14.2-RELEASE&format=html#end) as a workaround for an interface driver bug.
+As for any pfSense or OPNsense VM, disable TX checksum offload on every VIF of the VM
+from Xen Orchestra or `xe`, including the trunk VIF:
+see [Disable TX Checksum Offload](pfsense.md#3-disable-tx-checksum-offload).
+The **Disable hardware checksum offload** option under *Interfaces → Settings*
+is checked by default in OPNsense and can stay that way.
 :::

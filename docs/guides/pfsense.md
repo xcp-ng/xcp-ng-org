@@ -44,7 +44,7 @@ Disabling checksum offloading is only necessary for virtual interfaces. When usi
 :::
 
 :::warning
-Many guides on the internet for pfSense in Xen VMs will tell you to uncheck checksum options in the pfSense web UI, or to also disable RX offload on the Xen side. These are not only unnecessary, but some of them will make performance worse.
+Many guides on the internet for pfSense in Xen VMs will tell you to change checksum options in the pfSense or OPNsense web UI, or to also disable RX offload on the Xen side. The guest-side options do not replace the TX setting on the VIFs, and disabling RX offload on the Xen side is unnecessary.
 :::
 
 ### Using Xen Orchestra {#using-xen-orchestra}

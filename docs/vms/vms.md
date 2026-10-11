@@ -128,7 +128,7 @@ It supports the following operating systems:
 - Windows 10 x64, version 1607 and later
 - Windows Server 2016 x64 and later
 
-**Download**: [https://github.com/xcp-ng/win-pv-drivers/releases](https://github.com/xcp-ng/win-pv-drivers/releases)
+**Download**: attach the guest tools ISO shipped with XCP-ng 8.3 to the VM (the installer is in its `Windows` folder), or download the latest ZIP or ISO from [GitHub](https://github.com/xcp-ng/win-pv-drivers/releases), which may be more recent than the copy on your host.
 
 :::warning
 As a reminder, operating systems that have reached their End of Life (EOL) are not supported by XCP-ng, nor by the XCP-ng guest tools.
@@ -160,9 +160,11 @@ xe vm-param-get param-name=has-vendor-device uuid={VM-UUID}
 ##### Install the XCP-ng tools
 1. Snapshot your VM before installing.
 2. Check the above prerequisite about the "Manage Citrix PV drivers via Windows Update" option.
-3. Unpack the ZIP file.
-4. Start the installation MSI.
+3. Open the `Windows` folder of the guest tools ISO, or the `package` folder of the downloaded ZIP or ISO.
+4. Run `XenTools-x64.msi`.
 5. Follow the install wizard.
+
+If you are upgrading from version 9.2.350, first install the `XenTools-fix-9.2.351.msp` hotfix shipped alongside the MSI, or the upgrade will be blocked.
 
 #### Using the Citrix XenServer VM Tools for Windows
 
@@ -214,11 +216,11 @@ More detailed information can also be found in the Advanced tab.
 
 XenClean is a utility for cleanly removing Xen PV drivers and management agents of the following products:
 
-* XCP-ng Windows Guest Tools, versions 8.2 to 9.1
+* XCP-ng Windows Guest Tools, versions 8.2 and later
 * XenServer VM Tools for Windows, versions 7.1 to 9.4
 * Other Xen drivers
 
-It is available as a standalone EXE program, and is included in the installation ISO of XCP-ng Windows Guest Tools 9.0 and above.
+It is available as a standalone EXE, and is also included in the ZIP and ISO of XCP-ng Windows Guest Tools 9.0 and later, and on the XCP-ng 8.3 guest tools ISO.
 [See the newest releases here.](https://github.com/xcp-ng/win-pv-drivers/releases)
 
 :::note

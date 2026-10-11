@@ -16,7 +16,7 @@ A given device may be supported at one of two levels:
 
 ## Hardware Compatibility List (HCL) {#hardware-compatibility-list-hcl}
 
-XCP-ng 8.3 shares a compatibility list with XenServer 8.4. Thus, devices listed on [XenServer's Hardware Compatibility List](http://hcl.xenserver.com/) are supported, with rare exceptions.
+Vates maintains the XCP-ng [Hardware Compatibility List](https://docs.vates.tech/compatible-solutions/hardware-compatibility-list/). It covers hardware validated with partners, server families running in production at customers, and hardware certified by its vendor for the Xen platform. The [XenServer HCL](https://hcl.xenserver.com/) gives further details on Xen-certified devices.
 
 Exceptions include devices which require *proprietary* software components to operate (closed source drivers, for example). Such devices do not impede the use of XCP-ng, but their features cannot be exploited.
 

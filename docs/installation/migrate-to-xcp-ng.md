@@ -36,7 +36,7 @@ Export your VM in OVA format, and use Xen Orchestra to import it. If you have an
 
 **Disk Size Limitations** 
 
-Disks larger than 2040 GiB cannot be migrated automatically. You will need to create the VM in Xen Orchestra with multiple disks and use the OS capabilities to build them into a joined disk of the required size. Then, migrate the disk content using your preferred tool (e.g., Clonezilla, Robocopy, Rsync).
+Since Xen Orchestra 5.112, disks larger than 2040 GiB are imported as QCOW2 disks. This requires XCP-ng 8.3 and a destination SR that supports QCOW2 (not XOSTOR or SMB). On other SRs, create the VM in Xen Orchestra with several smaller disks, join them in the guest OS, and copy the data with your preferred tool (e.g., Clonezilla, Robocopy, Rsync).
 
 **Warm migration prerequisites** 
 
@@ -93,16 +93,11 @@ This process is fully automated, without any human intervention after it starts 
 :::warning
 
 - **Raw disks:** Raw disks are not supported.
-- **VSAN:** 
-    - When migrating from a VSAN, make sure your remote has enough storage capacity to accommodate the largest VM you plan to import. The VM will be stopped before migration begins, and the process may be slow.
-    - In this case, the network path is: VSAN → vSphere → Host running XOA → Remote → Host running XOA → Host with target storage → Target storage
+- **ESXi versions:** ESXi 6.x hosts are not supported by current Xen Orchestra versions.
+- **Datastore types:** Xen Orchestra reads every disk directly from the ESXi host, whatever the datastore type (VMFS, NFS or vSAN), so no Xen Orchestra remote is needed.
 - **VMFS datastores:** 
     - Warm migration is reported to work in most cases with VMFS5. If it doesn't work, try migrating the VM while it is stopped.
     - In this case, the network path is: VMFS storage → ESXi → Host running XOA → Host with target storage → Target storage
-- **NFS datastores:** When migrating from NFS datastores (such as NFSDatastoreEsxi):\
-    - Create a corresponding NFS remote in Xen Orchestra named `[VmWare] NFSDatastoreEsxi`. If not, it will fall back to the VMFS process.
-    - Warm migration is reported to work in all cases.
-    - In this case, the network path is: NFS remote → Host running XOA → Host with target storage → Target storage
 :::
 
 #### From the XO UI
@@ -193,35 +188,25 @@ For VMFS 6, **the VM needs to be shut down**. Follow these steps:
 
 ##### vSAN
 
-For VMs residing on a vSAN:
-
-:::tip
-
-Snapshots are not used, so it doesn't matter if there are any.
-
-:::
+Earlier Xen Orchestra versions exported vSAN VMs to an XOA remote first. This is no longer needed: current versions read vSAN disks directly from the ESXi host, without any remote.
 
 1. Uninstall VMware Tools before starting the migration.
 2. Make sure that no ISO files are mounted to the VM.
-3. The VM **must** be powered off.
-4. Connect directly to vSphere via its IP address.
-5. If the V2V tool successfully detects that the VM is on a vSAN store, it should prompt you to select an XOA remote (see **Settings → Remotes**) to store a temporary VMDK export.
-6. If it does not prompt you to select an XOA remote before import, it has not detected your vSAN properly. 
-\
-In that case, please open a support ticket with details of the issue.
+3. Power off the VM.
 
 ##### NFS Datastore
 
 For VMs residing on an NFS datastore, **you can perform a warm migration** (the VM doesn't need to be shut down before migration). 
 
+Earlier Xen Orchestra versions needed an NFS remote named after the datastore. This is no longer needed: current versions read the disks directly from the ESXi host.
+
 Here's what you need to check:
 
-1. Set up an NFS backup remote in XOA under **Settings → Remotes** that connects to the NFS datastore. Name it `[VMWARE]datastorename`, where `datastorename` is the exact name of the datastore on the VMware side.
-2. Uninstall VMware tools before migration.
-3. Make sure no ISO files are mounted to the VM.
-4. Remove any unnecessary snapshots before migration, as they take lots of resources to handle.
-5. You must have at least one snapshot to perform a warm migration. Take a new snapshot and check the toggle **stop VM** option. This will stop the VM before migrating the last snapshot.
-6. If you don't check the **stop the VM** option on a running VM, it will only migrate data up to the point of the last snapshot.\
+1. Uninstall VMware tools before migration.
+2. Make sure no ISO files are mounted to the VM.
+3. Remove any unnecessary snapshots before migration, as they take lots of resources to handle.
+4. You must have at least one snapshot to perform a warm migration. Take a new snapshot and check the toggle **stop VM** option. This will stop the VM before migrating the last snapshot.
+5. If you don't check the **stop the VM** option on a running VM, it will only migrate data up to the point of the last snapshot.\
 Nothing will be migrated if there is no snapshot.
 
 ### OVA

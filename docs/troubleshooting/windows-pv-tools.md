@@ -46,7 +46,7 @@ Below is a procedure for using XenBootFix to recover a non-booting VM:
       * If your Windows partition does not have a drive letter, type `sel vol N` where `N` is the volume number shown in Diskpart, then type `assign letter=W`. Your Windows partition will be assigned the drive letter `W:`.
       * Finally, at the `DISKPART>` prompt, type `exit` to exit Diskpart.
 5. Obtain XenBootFix.
-   * The easiest way is to download and use the [latest release ISO](https://github.com/xcp-ng/win-pv-drivers/releases) of XCP-ng Windows Guest Tools, which includes a copy of XenBootFix at `package\XenBootFix\XenBootFix.exe`.
+   * The easiest way is to download and use the [latest release ISO](https://github.com/xcp-ng/win-pv-drivers/releases) of XCP-ng Windows Guest Tools, which includes a copy of XenBootFix at `package\XenBootFix\XenBootFix.exe`. It is also on the XCP-ng 8.3 guest tools ISO, at `Windows\XenBootFix\XenBootFix.exe`.
    * If you're using XCP-ng Windows Guest Tools 9.0 or later, it is also located at `W:\Program Files\XCP-ng\Windows PV Drivers\XenBootFix\XenBootFix.exe` where `W:` is your Windows drive letter.
    * **Note**: If using Windows PE, do not remove its CD image when it's running. You may encounter unexpected errors otherwise.
 6. Run the command `<path to XenBootFix.exe> W:\Windows` where `W:` is your Windows drive letter.
