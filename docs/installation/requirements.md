@@ -18,7 +18,7 @@ Installing third-party software directly in the XCP-ng control domain is not sup
 
 ## XCP-ng System Requirements {#xcp-ng-system-requirements}
 
-XCP-ng is generally deployed on server-class hardware, but it also supports many workstation and laptop models. For more information, refer to the [Hardware Compatibility List (HCL)](../../installation/hardware).
+XCP-ng is generally deployed on server-class hardware, but it also supports many workstation and laptop models. For more information, refer to the [Hardware Compatibility List (HCL)](hardware.md).
 
 The following outlines the recommended XCP-ng hardware specifications.
 
@@ -47,7 +47,7 @@ Depending on your BIOS, hardware virtualization may be disabled by default, so m
 - Local storage (PATA, SATA, SCSI, NVMe) with a minimum of 46 GB. Recommended: 70 GB or more.
 - SAN access via HBA (not software) when installing with multipath boot from SAN.
 
-For more details, refer to the [Hardware Compatibility List (HCL)](../../installation/hardware).
+For more details, refer to the [Hardware Compatibility List (HCL)](hardware.md).
 
 #### Installation on USB Drives
 
@@ -93,8 +93,10 @@ Xen theoretically supports up to 12 TiB with security support, and even more wit
 
 ### Logical Processors
 
+- Up to 960 logical processors.
+
 :::note
-The maximum number of supported logical processors may vary depending on the CPU. For more information, see the [Hardware Compatibility List (HCL)](../../installation/hardware). The theoretical, untested limit is 2,048 logical processors.
+The maximum number of supported logical processors may vary depending on the CPU. For more information, see the [Hardware Compatibility List (HCL)](hardware.md). The theoretical, untested limit is 2,048 logical processors.
 :::
 
 ### Virtual Network Interface Cards (vNICs)
@@ -144,11 +146,11 @@ Keep in mind that the actual usable memory depends on the guest OS limits. In so
 - **Virtual CD-ROM drives per VM**: **1**.
 - **Maximum Virtual Disk Size**:
   - **16,381 GiB** (just under 16 TiB) with the QCOW2 format, supported by most storage drivers (`Local EXT`, `Local LVM`, `NFS`, `LVM over iSCSI`, `LVM over HBA`, etc.).
-  - **2 TiB** with the VHD format. QCOW2 is not supported on `XOSTOR` (`linstor`) and `SMB` SRs, so the 2 TiB limit still applies there.
+  - **2040 GiB** (just under 2 TiB) with the VHD format. QCOW2 is not supported on `XOSTOR` (`linstor`) and `SMB` SRs, so the VHD limit still applies there.
   - Nearly unlimited when using the `raw` storage driver or disk pass-through to the VM (note: snapshots and live migration are not supported in these cases).
 
 :::info
-VHD remains the default format for new virtual disks. With the default settings, a disk larger than 2040 GiB is created in QCOW2 on SRs that support it. For details, see the [QCOW2 FAQ](../storage/qcow2_faq.md).
+VHD remains the default format for new virtual disks. With the default settings, a disk larger than 2040 GiB is created in QCOW2 on SRs that support it. A VHD disk cannot be resized above 2040 GiB and is not converted to QCOW2 automatically. For details, see the [QCOW2 FAQ](../storage/qcow2_faq.md).
 :::
 
 ### Networking
@@ -203,7 +205,7 @@ What needs to be reachable, if you have firewalls between your management networ
 | Port | Protocol | Used for |
 |---|---|---|
 | 443 | TCP | XAPI (HTTPS): all management clients (Xen Orchestra, XO Lite, `xe`), VM consoles, migrations |
-| 80 | TCP | Legacy HTTP access to XAPI. Restricted by default on XCP-ng 8.3 |
+| 80 | TCP | Legacy HTTP access to XAPI. Restricted by default |
 | 22 | TCP | SSH access to dom0 |
 | 10809 | TCP | NBD, used by Xen Orchestra's NBD-enabled backups |
 
@@ -229,13 +231,13 @@ Keep the management network private: XAPI, SSH and consoles are administrative i
 XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist with the transition from 8.2 to a supported release.
 :::
 
-Everything above applies to XCP-ng 8.3 LTS. XCP-ng 8.2 LTS differs on the following points:
+XCP-ng 8.2 LTS differs on the following points:
 
 | Item | XCP-ng 8.2 LTS | XCP-ng 8.3 LTS |
 |---|---|---|
 | CPU SLAT (Intel EPT or AMD RVI/NPT) | Not required | Required |
 | Management network | IPv4 only (management and storage traffic) | IPv4 or IPv6 |
-| Logical processors per host | Up to 448 (theoretical, untested: 512) | Theoretical, untested: 2,048 |
+| Logical processors per host | Up to 448 (theoretical, untested: 512) | Up to 960 (theoretical, untested: 2,048) |
 | vCPUs per VM | Up to 32 | 32 (untrusted VMs), up to 128 (trusted VMs) |
 | RAM per VM | 1.5 TiB | 1.5 TiB with memory snapshots, 8 TiB without |
-| Maximum virtual disk size | 2 TiB (VHD only, no QCOW2 support) | 16,381 GiB with QCOW2, 2 TiB with VHD |
+| Maximum virtual disk size | 2040 GiB (VHD only, no QCOW2 support) | 16,381 GiB with QCOW2, 2040 GiB with VHD |
