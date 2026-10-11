@@ -3,6 +3,7 @@
 
 const lightCodeTheme = require('prism-react-renderer').themes.github;
 const darkCodeTheme = require('prism-react-renderer').themes.dracula;
+const glossaryPlugin = require('docusaurus-plugin-glossary');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -72,6 +73,28 @@ const config = {
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/xcp-ng/xcp-ng-org/edit/master/',
+          // Add the remark plugin to enable auto-linking in docs
+          remarkPlugins: [
+            glossaryPlugin.getRemarkPlugin(
+              {
+                glossaryPath: 'glossary/glossary.json',
+                routePath: '/glossary',
+              },
+              { siteDir: __dirname }
+            ),
+          ],
+        },
+        pages: {
+          // Add the remark plugin to enable auto-linking in pages
+          remarkPlugins: [
+            glossaryPlugin.getRemarkPlugin(
+              {
+                glossaryPath: 'glossary/glossary.json',
+                routePath: '/glossary',
+              },
+              { siteDir: __dirname }
+            ),
+          ],
         },
         blog: false,
         theme: {
@@ -113,9 +136,14 @@ const config = {
           src: 'img/xcpcrop128.png',
         },
         items: [
-          {href: 'https://docs.vates.tech/', label: 'Vates VMS', position: 'right'},
-          {href: '/', label: 'XCP-ng', position: 'right'},
-          {to: 'https://docs.xen-orchestra.com/', label: 'Xen Orchestra', position: 'right', target: '_self'},
+          {href: 'https://xcp-ng.org', label: 'Home', position: 'right'},
+          {href: 'https://xcp-ng.org/blog', label: 'Blog', position: 'right'},
+          {href: 'https://vates.tech', label: 'Pro Support', position: 'right'},
+          {
+            href: 'https://github.com/xcp-ng',
+            label: 'GitHub',
+            position: 'right',
+          },
         ],
       },
       footer: {
@@ -215,6 +243,13 @@ const config = {
     // generates search-doc.json, which the federated search indexer
     // consumes (src/theme/SearchBar picks the Typesense bar).
     require.resolve('docusaurus-lunr-search'),
+    [
+      'docusaurus-plugin-glossary',
+      {
+        glossaryPath: 'glossary/glossary.json',
+        routePath: '/glossary',
+      },
+    ],
     [
       '@docusaurus/plugin-client-redirects',
       {
