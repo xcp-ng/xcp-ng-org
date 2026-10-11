@@ -243,6 +243,8 @@ By default, XCP-ng 8.3 leaves TCP port 80 open (`https-only=false`): HTTP reques
 xe pool-param-set uuid=<pool-uuid> https-only=true
 `}</Terminal>
 
+This only closes port 80 for IPv4: the IPv6 firewall still accepts HTTP on port 80.
+
 Enable it unless something in your tooling still requires port 80.
 
 ### Certificate verification

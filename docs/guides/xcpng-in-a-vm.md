@@ -19,7 +19,7 @@ Here is the list of hypervisors on which you can try XCP-ng :
 
 ## Nested XCP-ng using XCP-ng {#nested-xcp-ng-using-xcp-ng}
 
-* create a new VM from CentOS 7 template with minimum 2 vCPU and 4GB RAM
+* create a new VM from the `Generic Linux BIOS` template, with at least 2 vCPUs and 4 GiB of RAM (you can also use `Generic Linux UEFI`, with Secure Boot disabled)
 * change disk size to 100GB
 * enable nested virtualization with the special command on CLI: `xe vm-param-set uuid=<UUID> platform:exp-nested-hvm=true`
 * default NIC type of Realtek may create stability issue for nested XCP-ng, change it to Intel e1000 : `xe vm-param-set uuid=<UUID> platform:nic_type="e1000"`

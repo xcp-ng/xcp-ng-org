@@ -149,7 +149,7 @@ In an XCP-ng context, we use a single storage pool (xcp-sr-linstor_group_thin_de
 - xcp-ha-linstor_group_thin_device
 - xcp-sr-linstor_group_thin_device
 
- The first group is used both as the heartbeat volume required by the HA and as the drbd1000 volume which contains the LINSTOR database. This database contains the information displayed via the `linstor` command. As these volumes are vital for the SR's survival, the replication is forced to 3.
+ The first group holds the volumes the SR itself depends on: the HA heartbeat volume and the `xcp-persistent-database` volume (drbd1000), which contains the LINSTOR database. This database contains the information displayed via the `linstor` command. They get as many diskful copies as the SR's replication count. Every other host gets a diskless resource for the database, so any host can open it.
  The second group is used for all volumes created by a user and the replication count is configurable from 1 to 3.
 
 #### Resource, Volume & Definitions
@@ -246,6 +246,8 @@ Examples of resources and volumes:
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
+Here the database is `UpToDate` on one host and `Diskless` on the other two. This is expected when the SR uses a replication count of 1, or on hosts beyond the replication count: diskless resources give those hosts network access to the volume.
+
 ### DRBD/LINSTOR Resource State
 
 A DRBD/LINSTOR resource can be in several states, the main ones are:
@@ -284,7 +286,7 @@ Environment=LS_KEEP_RES=^xcp-persistent.*
 After=drbd.service
 ```
 
-As noted in the [Resource Group](#resource-group) section, the controller uses a DRBD volume containing the LINSTOR database instead of a simple local folder on a host. This database must be accessible after a reboot, meaning that `/dev/drbd/by-res/xcp-persistent-database/0` must be accessible on at least one machine (normally 3, since this volume is always replicated 3 times). A path like that is generated using a DRBD resource config file. These configurations are automatically created by LINSTOR itself and they are not persistent: they are recreated each time the controller is started after a pool reboot. The only way to keep a DRBD config file at boot is to use the `LS_KEEP_RES` environment variable to indicate it to LINSTOR.
+As noted in the [Resource Group](#resource-group) section, the controller uses a DRBD volume containing the LINSTOR database instead of a simple local folder on a host. This database must be accessible after a reboot, meaning that `/dev/drbd/by-res/xcp-persistent-database/0` must be accessible on at least one machine. The volume has one diskful copy per replica (the SR's replication count), and the other hosts reach it through a diskless resource. A path like that is generated using a DRBD resource config file. These configurations are automatically created by LINSTOR itself and they are not persistent: they are recreated each time the controller is started after a pool reboot. The only way to keep a DRBD config file at boot is to use the `LS_KEEP_RES` environment variable to indicate it to LINSTOR.
 
 - A `drbd-reactor` configuration that uses the linbit promoter plugin:
 ```

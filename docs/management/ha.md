@@ -457,7 +457,7 @@ We must change our architecture because, basically, a DRBD volume can only be op
 </svg>
 </Schema>
 
-To support the fact that only one DRBD volume can be PRIMARY, and to avoid making significant changes to the xha/XHAPI modules, we had to be a bit creative. Instead of writing to or reading directly from the heartbeat volume on all hosts, we use an `NBD HTTP server` daemon. It's a process that listens through an NBD device, which is seen as the heartbeat volume by the XHA daemon.
+To work with the fact that only one host can have a DRBD volume as primary, without heavy changes to the HA daemon (`xhad`, from the `xha` package) or to XAPI's HA code, we had to be a bit creative. Instead of writing to or reading directly from the heartbeat volume on all hosts, we use an `NBD HTTP server` daemon. It's a process that listens through an NBD device, which is seen as the heartbeat volume by the XHA daemon.
 
 As a result, each read and write request from the XHA daemon goes through an NBD device. It is then transmitted via the HTTP protocol to another daemon called `HTTP disk server`, which is responsible for writing to the DRBD heartbeat volume.
 This whole new path acts as a proxy, hiding direct access to the actual heartbeat volume of the SR.

@@ -2969,8 +2969,11 @@ Export a VDI to the specified file name. You can export a VDI in one of the foll
 
 - `raw`
 - `vhd`
+- `qcow2`
 
-The VHD format can be *sparse*. If there are unallocated blocks within the VDI, these blocks might be omitted from the VHD file, therefore making the VHD file smaller. You can export to VHD format from all supported VHD-based storage types (EXT, NFS).
+Any VDI can be exported in any of these formats, whatever its image format on the SR, but the `vhd` format is limited to 2040 GiB, so export larger disks as `raw` or `qcow2`.
+
+The `vhd` and `qcow2` formats can be *sparse*: unallocated blocks of a VHD or QCOW2 VDI are left out of the file, which makes it smaller.
 
 If you specify the `base` parameter, this command exports only those blocks that have changed between the exported VDI and the base VDI.
 
@@ -2992,6 +2995,9 @@ Import a VDI. You can import a VDI from one of the following formats:
 
 - `raw`
 - `vhd`
+- `qcow2`
+
+For `vhd` and `qcow2`, the target VDI given by `uuid` must already exist and be at least as large as the disk being imported.
 
 ### `vdi-introduce`
 

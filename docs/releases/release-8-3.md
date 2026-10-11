@@ -497,21 +497,21 @@ See [Active Directory in XCP-ng](#active-directory-in-xcp-ng).
 
 ### IPv6-related issues
 
-With all the IPv4-only assumptions embedded in the code of various components, adding IPv6 support was a challenging task, but we managed to make it work. However, there are still some rough edges. We already have internal fixes for several of these issues, and they'll be released shortly.
+With all the IPv4-only assumptions embedded in the code of various components, adding IPv6 support was a challenging task. Several issues present at release were fixed in later updates (noted below), and some rough edges remain.
 
 - Using IPv4 and IPv6 simultaneously ("dual stack") remains experimental and will be further stabilized through future updates.
-- When both IPv6 and a VLAN are configured for the management interface, the IP configuration may be lost after a reboot. A fix will be released shortly after the initial release.
-- Disabling port 80 doesn't work with IPv6 configurations on the management interface, as it currently only blocks IPv4 traffic. A fix will follow soon after the release.
-- Performing an emergency network restart reverts the configuration to IPv4 + DHCP instead of retaining IPv6 settings. This will also be fixed shortly after the release.
-- Ejecting a host from a pool causes it to fall back to IPv4 + DHCP, instead of maintaining its IPv6 configuration. A fix is coming soon.
+- When both IPv6 and a VLAN were configured for the management interface, the IP configuration could be lost after a reboot. Fixed in the January 2025 update.
+- Disabling port 80 (`https-only`) only blocks IPv4 traffic: port 80 stays open over IPv6.
+- An emergency network reset used to revert the configuration to IPv4 + DHCP. Fixed in the January 2025 update (XAPI) and the September 2025 update (xsconsole).
+- Ejecting a host from a pool used to make it fall back to IPv4 + DHCP. Fixed in the January 2025 update.
 - DHCPv6 support is still incomplete.
 - Manually configured DNS settings can be overwritten by autoconf.
 
-### Pool metadata backup temporarily unavailable from console
+### Pool metadata backup from the console (restored) {#pool-metadata-backup-temporarily-unavailable-from-console}
 
-The metadata backup and restore feature, previously available from the host console, was removed due to a vulnerability and could not be restored before the initial release of XCP-ng 8.3. It will be (or has been, depending on when you read this) added back in a future update.
+The metadata backup and restore feature of the host console was removed before the initial release because of a vulnerability. It was added back with the xsconsole update in the May 2025 maintenance update.
 
-Meanwhile, the feature is still available through Xen Orchestra.
+The feature is also available through Xen Orchestra.
 
 ### Known issues from XenServer 8
 

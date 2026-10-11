@@ -99,7 +99,7 @@ This is a valid concern: maybe you are downloading from a mirror whose owner you
 
 Since XCP-ng 7.6, we use [GPG](https://gnupg.org/) to sign:
 * SHA256 sums for installation ISOs
-* SHA256 sums for repository configuration files (`xcp-ng-X.Y.repo`, downloaded as part of the [upgrade process](../../installation/upgrade) if you choose to use `yum` to upgrade)
+* SHA256 sums for the repository configuration files used for `yum`-style [upgrades](../../installation/upgrade) (`xcp-ng-8.1.repo`, `xcp-ng-8.2.repo`). There is none for XCP-ng 8.3, which can only be reached by upgrading from the ISO. On 8.3, `/etc/yum.repos.d/xcp-ng.repo` comes from the signed `xcp-ng-release` RPM.
 * Every RPM package. They are automatically checked by `rpm` on an installed XCP-ng.
 * Repository metadata. They are automatically checked by `yum` on an installed XCP-ng.
 
@@ -189,7 +189,7 @@ This is exactly the same as for the `.iso` file above: we provided a `SHA256SUMS
 
 First: import the GPG key if not done already. You can follow the steps above, but if you are on an XCP-ng 7.6 or newer, you can take a shortcut because the key file is already on your system: `gpg --import /etc/pki/rpm-gpg/RPM-GPG-KEY-xcpng`
 
-Example with `xcp-ng-8.2.repo`:
+Example with `xcp-ng-8.2.repo`, the most recent repository file published this way:
 
 <Terminal shell title="Check a repository (.repo) file">{`
 wget https://updates.xcp-ng.org/8/xcp-ng-8.2.repo -O xcp-ng-8.2.repo

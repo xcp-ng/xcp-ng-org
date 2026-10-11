@@ -241,7 +241,7 @@ We do NOT recommend installing updates to individual hosts. Obviously except if 
 
 ## When to reboot? {#when-to-reboot}
 
-Xen Orchestra shows which hosts require a reboot (see [Pool updates](#pool-updates)). Otherwise, there is currently no way for XCP-ng to automatically tell you if a reboot is required.
+When you install updates from Xen Orchestra (see [Pool updates](#pool-updates)), it flags the updated hosts as requiring a reboot until they are restarted. XO does this by comparing the host boot time with the time of the last update it installed, so updates installed manually with `yum` are not tracked. XCP-ng itself does not report whether a reboot is needed: the XAPI `pending-guidances` fields are only filled by XenServer's update mechanism and stay empty on XCP-ng.
 
 The safest way is to reboot every time an update is installed (*pool master* **first**).
 
