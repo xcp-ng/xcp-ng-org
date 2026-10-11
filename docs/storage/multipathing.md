@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Multipathing
 
-How to properly setup a new SR with multipathing on Xen Orchestra and XCP-ng.
+How to properly set up a new SR with multipathing on Xen Orchestra and XCP-ng.
 
 Multipathing uses several independent network or SAN paths between each host and the storage unit. It is the recommended setup for iSCSI and Fibre Channel SRs: a path failure (NIC, cable, switch, controller) doesn't interrupt storage traffic, and total throughput can be higher.
 
@@ -150,7 +150,7 @@ Make sure that multipathing is enabled on the pool. To do this, go to the advanc
 
 If this is not the case:
 1. Make sure there are **no VMs running** on an iSCSI and/or HBA SR in the pool.
-2. Activate "Enable multipathing for all XCP-ng hosts.
+2. Activate "Enable multipathing for all XCP-ng hosts".
 
 #### 3. Configure the SR
 Proceed with the iSCSI SR configuration as indicated in the [storage documentation](../../storage/#iscsi).
@@ -225,6 +225,7 @@ Make sure not to mix Fibre Channel speeds.
   </g>
 </svg>
 </Schema>
+
 ### Operating procedure
 
 #### 1. Prepare XCP-ng hosts
@@ -274,7 +275,7 @@ Make sure that multipathing is enabled on the pool. To do this, go to the advanc
 
 If this is not the case:
 1. Make sure there are **no VMs running** on an iSCSI and/or HBA SR in the pool.
-2. Activate "Enable multipathing for all XCP-ng hosts.
+2. Activate "Enable multipathing for all XCP-ng hosts".
 
 #### 3. Configure the SR
 Proceed with the HBA SR configuration as indicated in the [storage documentation](../../storage/#hba).

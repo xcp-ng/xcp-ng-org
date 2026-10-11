@@ -180,7 +180,7 @@ xe vdi-resize uuid=<vdi-uuid> disk-size=100GiB
 Afterwards, enlarge the partition and filesystem *inside* the guest: the VM only sees a bigger disk, not a bigger filesystem.
 
 :::info
-Maximum VDI size is 2 TiB with the VHD format. Starting with XCP-ng 8.3 and the QCOW2 format, much larger disks are possible: see the [QCOW2 FAQ](qcow2_faq.md).
+Maximum VDI size is 2040 GiB with the VHD format, and a VHD disk cannot be grown above that (it is not converted automatically). On XCP-ng 8.3, QCOW2 allows disks up to 16,381 GiB on most SR types (not XOSTOR or SMB): see the [QCOW2 FAQ](qcow2_faq.md).
 :::
 
 ### Move a disk to another SR

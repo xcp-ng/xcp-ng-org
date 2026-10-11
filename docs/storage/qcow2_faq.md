@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## What’s QCOW2? {#whats-qcow2}
 
-QCOW2 is the name of a virtual disk image format coming from the open source QEMU project. Contrarily to the VHD disk image format, historically used by XCP-ng, QCOW2 is not limited to 2 TiB per disk.
+QCOW2 is the name of a virtual disk image format coming from the open source QEMU project. Unlike the VHD disk image format, historically used by XCP-ng, QCOW2 is not limited to 2 TiB per disk.
 
 ## Quick summary {#quick-summary}
 
@@ -53,11 +53,11 @@ xe sr-create name-label="test-lvmsr" type=lvm device-config:device=/dev/nvme1n1 
 
 As said above, by default, an existing SR has `vhd,qcow2` as its preferred image formats. This is our recommended default at the moment.
 
-To tell an existing SR that it must prefer the `qcow2` image format for new disks, it is necessary to unplug, destroy, recreate and re-plug its PBD with the added parameter in the device-config: https://docs.xcp-ng.org/storage/#how-to-modify-an-existing-sr-connection
+To tell an existing SR that it must prefer the `qcow2` image format for new disks, it is necessary to unplug, destroy, recreate and re-plug its PBD with the added parameter in the device-config: see [How to modify an existing SR connection](storage.md#how-to-modify-an-existing-sr-connection).
 
 In order to unplug the PBD, any VMs with a VDI on the SR will have to be stopped, or the VDI moved temporarily to another SR.
 
-This operation will not affect the contents of the SR. The PDB object represents the connection to the SR, not its contents.
+This operation will not affect the contents of the SR. The PBD object represents the connection to the SR, not its contents.
 
 
 ## FAQ {#faq}
@@ -82,7 +82,7 @@ Not necessarily. Existing SRs whose type supports QCOW2 can manage both VHD and 
 
 ### What’s the maximum disk size for a VDI?
 
-The current limit is set to 16,381 GiB. It's currently the maximum that can fit on a EXT SR, and we set this limit for all SR types to allow migration between SRs. We will raise it progressively in the future.
+The current limit is set to 16,381 GiB. It's currently the maximum that can fit on an EXT SR, and we set this limit for all SR types to allow migration between SRs. We will raise it progressively in the future.
 
 It's also the maximum disk size that we test routinely before releasing updates.
 
@@ -141,7 +141,7 @@ Here's also a command line example:
 xe sr-create name-label="test-lvmsr" type=lvm device-config:device=/dev/nvme1n1 device-config:preferred-image-formats=qcow2
 `}</Terminal>
 
-### Can I create QCOW2 disks smaller than 2 TiB?
+### Can I create QCOW2 disks smaller than 2040 GiB? {#can-i-create-qcow2-disks-smaller-than-2-tib}
 
 By default, a SR will create VHD for such disks, unless:
 - either you configure the SR so that it only manages QCOW2 disks;
@@ -151,9 +151,9 @@ By default, a SR will create VHD for such disks, unless:
 
 We kept VHD as the default format in order to limit the impact on production. In the future, QCOW2 will become the default image format for new disks, and VHD will be progressively deprecated.
 
-### Can I resize my VHD VDI above 2 TiB?
+### Can I resize my VHD VDI above 2040 GiB? {#can-i-resize-my-vhd-vdi-above-2-tib}
 
-A disk in VHD format can’t be resized above 2 TiB. No automatic format change is implemented.
+A disk in VHD format can’t be resized above 2040 GiB. No automatic format change is implemented.
 
 You first need to convert the VDI to QCOW2.
 
@@ -163,26 +163,26 @@ The most straightforward way at the moment is to migrate the VDI towards a SR wh
 
 ### What happens in storage migration scenarios?
 
-During a storage migration from a SR to another SR, the destination format is chosen by the destination SR, following the same rules as for the creation of a new disk (this can be used to convert from one format to another). That is, the value of `preferred-image-formats` on the PBD of the SR (read on the master host in case of a shared SR) the master of a SR decides the destination format. The size of the VDI also plays a role: if the first preferred format is VHD but the disk is too big, then QCOW2 will be selected.
+During a storage migration from a SR to another SR, the destination format is chosen by the destination SR, following the same rules as for the creation of a new disk (this can be used to convert from one format to another). That is, the value of `preferred-image-formats` on the SR's PBD (on the master host for a shared SR) decides the destination format. The size of the VDI also plays a role: if the first preferred format is VHD but the disk is too big, then QCOW2 will be selected.
 
 | source          | preferred-image-formats vhd | preferred-image-formats qcow2 | preferred-image-formats vhd,qcow2 | preferred-image-formats qcow2,vhd | None (will depend on system default) currently: vhd,qcow2 |
 | :---            | :---                        | :---                          | :---                              | :---                              | :---                                                                                   |
-| VDI \>2TiB      | X                           | qcow2                         | qcow2                             | qcow2                             | qcow2                                                                                  |
-| VDI \<2TiB      | vhd                         | qcow2                         | vhd                               | qcow2                             | vhd                                                                                    |
+| VDI \>2040 GiB  | X                           | qcow2                         | qcow2                             | qcow2                             | qcow2                                                                                  |
+| VDI ≤2040 GiB   | vhd                         | qcow2                         | vhd                               | qcow2                             | vhd                                                                                    |
 
 ### Can you convert an existing SR so that it only manages QCOW2 disks? If so, and it had VHDs, what happens to them?
 
 You can modify a SR to make it exclusively manage QCOW2 VDIs by modifying the `preferred-image-formats` parameter of the PBD’s `device-config`.
 
-Modifying the PBD necessitates to delete it and recreate it with the new parameter. This implies stopping access to all VDIs of the SR on the master (you can for shared SR migrate all VMs with VDIs on other hosts in the pool and temporarily stop the PBD of the master to recreate it, the parameter only need to be set on the PBD of the master).
+Modifying the PBD requires deleting it and recreate it with the new parameter. This implies stopping access to all VDIs of the SR on the master (you can for shared SR migrate all VMs with VDIs on other hosts in the pool and temporarily stop the PBD of the master to recreate it, the parameter only needs to be set on the PBD of the master).
 
-If the SR had VHDs, they will continue to exist and be usable but won’t be automatically transformed in QCOW2.
+If the SR had VHDs, they will continue to exist and be usable but won’t be automatically converted to QCOW2.
 
 ### What available storage space do I need on my SR for large QCOW2 disks to support snapshots?
 
 Depending on a thin or thick allocated SR type, the answer is the same as VHD.
 
-A thin allocated is almost free, just a bit of data for the metadata of a few new VDI.
+On a thin-allocated SR, it is almost free, just a bit of data for the metadata of a few new VDI.
 
 For thick allocated disks, you need the space for the base copy, the snapshot and the active disk.
 
@@ -196,7 +196,7 @@ qemu-img create -f qcow2 -o cluster_size=2M $(uuidgen).qcow2 10G
 xe sr-scan uuid=<SR UUID> # to introduce it in the XAPI
 `}</Terminal>
 
-The `qemu-img` command will print the name, the VDI is `<VDI UUI>.qcow2` from the output.
+The `qemu-img` command prints the file name: the new VDI's UUID is the `<VDI UUID>` part of `<VDI UUID>.qcow2`.
 
 We have not exposed the cluster size in any API call, which would allow you to create these VDIs more easily.
 
