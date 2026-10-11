@@ -35,7 +35,7 @@ The change has to be opt-in, so that users:
 - know of the change
 - know how to revert the change (should side-effects occur in edge cases)
 
-* To enable the fix pool-wide, create a file named `/etc/xenopsd.conf.d/amd-gnttab-wb.conf` with the following line:
+* To enable the fix, create on each host a file named `/etc/xenopsd.conf.d/amd-gnttab-wb.conf` with the following line:
 
 ```
 xen-platform-pci-bar-uc=false
@@ -92,7 +92,7 @@ Guest kernel version determines whether the performance fix is supported or not.
   * SLE15 SP3 - LTSS (5.3: _Not upstream_)
   * SLE15 SP4/5 - LTSS (5.14: _Not upstream_)
   * SLE15 SP6+ (**OK**)
-* RHEL (+derivates):
+* RHEL (+derivatives):
   * 8 (4.19: _EOL_)
   * 9 (5.14: _Not upstream_)
   * 10 (6.12: **OK**)

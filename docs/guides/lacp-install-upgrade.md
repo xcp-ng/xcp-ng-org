@@ -11,14 +11,14 @@
 
 Our installer does not support LACP. This guide explains how to bypass this limitation, but please read all the instructions carefully before proceeding, as there are important caveats.
 When using LACP, your switch needs to be configured for it. If you cannot or prefer not to reconfigure your switch, you won’t be able to use the single-interface option provided by the installer.
-For other bonding methods (active-backup, balance-lsb), the switch does not need to be aware of the bond, and you can simply use one of the interfaces that will be part of the bond.
+For other bonding methods (active-backup, balance-slb), the switch does not need to be aware of the bond, and you can simply use one of the interfaces that will be part of the bond.
 
 ## When does the installer need network? {#when-does-the-installer-need-network}
 
 A working network configuration is only necessary in the following scenarios:
 
 - New installation from net install ISO.
-- Upgrading supporting hosts, even from a full ISO, as they need to contact the master host during the ugprade.
+- Upgrading supporting hosts, even from a full ISO, as they need to contact the master host during the upgrade.
 - Upgrading all hosts from net install ISO.
 
 Network access is not required for:
@@ -93,7 +93,7 @@ During a network installation, you’ll encounter 2 steps related to network con
 
 1. During the first step, you can pick the **Use existing configuration** option, so the installer can reach the repository and move on to the next steps.
 
-![Networking configuration with "Use existing configuratio" option that will allow the installer to reach the repository for netinstall.](../assets/img/netinstall-repo-network.png)
+![Networking configuration with "Use existing configuration" option that will allow the installer to reach the repository for netinstall.](../assets/img/netinstall-repo-network.png)
 
 2. During the second step, the **Use existing configuration** option won’t be available. Instead, you’ll need to select one of the interfaces provided by the installer. While you can still configure the hostname and other basic network settings, you won’t be able to set up your bond at this stage.
 

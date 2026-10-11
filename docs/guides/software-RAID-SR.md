@@ -112,7 +112,7 @@ Now we create a new storage repository on the new RAID array like this:
 2acc2807-1c44-a757-0b79-3834dbcf1a79
 ```
 
-What we have now is a second storage repository named "RAID storage" using thin-provisioned EXT filesystem storage. It will show up and can be used within Xen Orchestra or XCP-ng Center and should behave like any other storage repository.
+What we have now is a second storage repository named "RAID storage" using thin-provisioned EXT filesystem storage. It will show up and can be used within Xen Orchestra and should behave like any other storage repository.
 
 At this point, we'd expect that the system could just be used as is, virtual machines stored in the new RAID storage repository and that we can normally shut down and restart the system and expect things to work smoothly.
 
@@ -170,7 +170,7 @@ And then edit the file to change the format of the array names from `/dev/md/0` 
 
 So what do these lines do? The first line instructs the system to allow or attempt automatic assembly for all arrays defined in the file. The second specifies to report errors in the system by email to the root user. The third is a list of all drives in the system participating in RAID arrays. Not all drives need to be specified on a single DEVICE line. Drives can be split among multiple lines and we could even have one DEVICE line for each drive. The last two are descriptions of each array in the system.
 
-This file gives the system a description of what arrays are configured in the system and what drives are used to create them but doesn't specify what to do with them. The system should be able to use this information at boot for automatic assembly of the arrays. Booting with the `mdadm.conf` file in place is more reliable but still runs into same problems as before.
+This file gives the system a description of what arrays are configured in the system and what drives are used to create them but doesn't specify what to do with them. The system should be able to use this information at boot for automatic assembly of the arrays. Booting with the `mdadm.conf` file in place is more reliable but still runs into the same problems as before.
 
 ## Stabilizing the RAID Boot Configuration: The initrd Configuration {#stabilizing-the-raid-boot-configuration-the-initrd-configuration}
 
@@ -217,7 +217,7 @@ dracut --force -M /boot/initrd-$(uname -r).img $(uname -r)
 
 This creates a new initrd file with the correct name matching the name of the Linux kernel and prints a list of modules included in the initrd file. Printing the list isn't necessary but is handy to see that `dracut` is making progress as it runs.
 
-When the system returns to the command line, it's time to test. We'll reboot the system from the console or from within Xen Orchestra or XCP-ng Center. If all goes well, the system should boot normally and correctly find and mount all 5 drives into the two RAID arrays. The easiest way to tell that is looking at the `/proc/mdstat` file.
+When the system returns to the command line, it's time to test. We'll reboot the system from the console or from within Xen Orchestra. If all goes well, the system should boot normally and correctly find and mount all 5 drives into the two RAID arrays. The easiest way to tell that is looking at the `/proc/mdstat` file.
 
 ```
 [14:36 XCP-ng ~]# cat /proc/mdstat
@@ -233,13 +233,13 @@ md0 : active raid5 sdc[0] sde[2] sdd[1]
 unused devices: <none>
 ```
 
-We can see that both arrays are active and healthy with all drives accounted for. Examining the storage repositories using Xen Orchestra, XCP-ng, or `xe` commands shows that both the Local storage and RAID storage repositories are available.
+We can see that both arrays are active and healthy with all drives accounted for. Examining the storage repositories using Xen Orchestra or `xe` commands shows that both the Local storage and RAID storage repositories are available.
 
 ## Troubleshooting {#troubleshooting}
 
 The most common problems in this process stem from one of a few things.
 
-One common cause of problems is using the wrong type of drives. Just like when using drives for installation of XCP-ng, it is important to use drives that either have or emulate 512 byte disk sectors. Drives that use 4K byte disk blocks will not work unless they are 512e disks which emulate having 512 byte sectors. It is generally not a good idea to mix types of drives such as one 512n (native 512 byte sectors) and two 512e drives but should be possible to do in an emergency.
+One common cause of problems is using the wrong type of drives. Just like when using drives for installation of XCP-ng, it is important to use drives that either have or emulate 512 byte disk sectors. Drives that use 4K byte disk blocks will not work unless they are 512e disks which emulate having 512 byte sectors (for 4Kn disks, see the [LargeBlock SR](../storage/storage.md#largeblock-sr) driver instead). It is generally not a good idea to mix types of drives such as one 512n (native 512 byte sectors) and two 512e drives but should be possible to do in an emergency.
 
 The second is that the drives were not empty before including them into the system. If there are any traces of RAID configuration or file systems on the drives, we could have problems with interference between those and the new configurations we're creating on the drives when creating the RAID array or the EXT filesystem (or LVM if you use that for the storage array).
 
@@ -275,7 +275,7 @@ The best thing to do in this case is to check over the contents of the `mdadm.co
 
 In an extreme case, it should even be possible to delete and re-create those files using the normal instructions and rebuild the initrd file again. It should also be possible but slightly more risky to remove the files and re-create the initrd file then reboot and attempt to re-create the files and initrd again after rebooting.
 
-Another possible but rare problem is caused by drives that shift their identifications from one system boot to the next. A drive that has one name such as `sdf` on one boot might be different such as `sdc` on a different boot. This is usually due to problems with the system BIOS or drivers and can also be caused by some hardware problems such as a drive taking wildly different amounts of time to start up from one boot to the next. It it also more common with some types of storage such as NVMe storage.
+Another possible but rare problem is caused by drives that shift their identifications from one system boot to the next. A drive that has one name such as `sdf` on one boot might be different such as `sdc` on a different boot. This is usually due to problems with the system BIOS or drivers and can also be caused by some hardware problems such as a drive taking wildly different amounts of time to start up from one boot to the next. It is also more common with some types of storage such as NVMe storage.
 
 This type of problem is very difficult to diagnose and correct. It may be possible to resolve it using different BIOS or setup configurations in the host system or by updating BIOS or controller firmware.
 
@@ -312,7 +312,7 @@ When installing the upgrade, no differences from a normal upgrade process are ne
 
 After the upgrade has finished and the host system reboots, there may be problems with recognizing one or both of the RAID arrays. It is very unlikely that there will be a problem with the `md127` RAID 1 boot array with the most likely problem being the array operating with only one drive. Problems with the RAID 5 storage array are more likely but not common with the most likely problems being drives missing from the array or the array failing to activate. 
 
-Once the host system has rebooted, check whether the `mdadm.conf` and `dracut_mdraid.conf` files are still in the correct locations and have the correct contents. It is possible that one or both of the files have been retained; in a test upgrade from XCP-ng version 8.2 to version 8.2 itself on the example system, the `mdadm.conf` file was preserved as part of the upgrade while the `dracut_mdraid.conf` file was not.
+Once the host system has rebooted, check whether the `mdadm.conf` and `dracut_mdraid.conf` files are still in the correct locations and have the correct contents. It is possible that one or both of the files have been retained; in a test reinstall-upgrade of XCP-ng 8.2 over itself on the example system, the `mdadm.conf` file was preserved as part of the upgrade while the `dracut_mdraid.conf` file was not.
 
 Missing files can be copied from the previous system by mounting the partition containing the saved copy. If not using a software RAID 1 system drive we would need to mount the second partition of the disk used as the system drive, most likely `/dev/sda2`.
 
@@ -363,7 +363,7 @@ Generally, the best way to mitigate the problem is by avoiding it. Use good qual
 
 If that is not enough, there are other methods to avoid the write hole by making it possible for the RAID system to recover after a crash while working around the write hole problem.
 
-For RAID 5 systems, one way to do this is using feature known as PPL or partial parity log which changes the way that data is written and recovery is performed on a RAID 5 array. Using this method comes at a cost of as much as a 30 or 40 percent lower RAID write performance. To enable it while building the RAID, substitute `--consistency-policy=ppl` for `--bitmap=internal` when creating the array. It is also possible to change an existing RAID 5 array to use this with the command `mdadm --grow --bitmap=none --consistency-policy=ppl /dev/md0` (assuming the `md0` array created in our example system). It is also possible to change the array back with the command `mdadm --grow --bitmap=internal /dev/md0`.
+For RAID 5 systems, one way to do this is using a feature known as PPL or partial parity log which changes the way that data is written and recovery is performed on a RAID 5 array. Using this method comes at a cost of as much as a 30 or 40 percent lower RAID write performance. To enable it while building the RAID, substitute `--consistency-policy=ppl` for `--bitmap=internal` when creating the array. It is also possible to change an existing RAID 5 array to use this with the command `mdadm --grow --bitmap=none --consistency-policy=ppl /dev/md0` (assuming the `md0` array created in our example system). It is also possible to change the array back with the command `mdadm --grow --bitmap=internal /dev/md0`.
 
 For RAID 6 systems, something different needs to be done. The way to close the write hole for a RAID 6 is to use a separate device which acts as a combination disk write log or journal and write cache. For best performance the device should be a disk with better write performance than the drives used in the array, preferably a fast SSD with good longevity. Going back to our example system and assuming that there is an additional device `sdf`, we would substitute `--write-journal=/dev/sdf` instead of `--bitmap=internal` when creating the array. To avoid the journal drive becoming a single point of failure, a good practice might be to create a RAID 1 device from the fast drives or SSDs then using that RAID device as a journal device. A write journal device may also be used for RAID 5 arrays.
 

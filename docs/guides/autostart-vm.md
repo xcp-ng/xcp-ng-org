@@ -17,16 +17,17 @@ In Xen Orchestra we can just enable a toggle in VM "Advanced" view, called **Aut
 
 <Terminal title="root@xcp-ng-host — With the CLI">{`
 xe pool-list
-uuid ( RO) : <VM_UUID>
+uuid ( RO) : <POOL_UUID>
 `}</Terminal>
 
 2. Allow autostart of virtual machines at the pool level with the found UUID command:
-`# xe pool-param-set uuid=<VM_UUID> other-config:auto_poweron=true`
+`# xe pool-param-set uuid=<POOL_UUID> other-config:auto_poweron=true`
 
 Now we enable autostart at the virtual machine level.
+
 3. Execute the command to get the UUID of the virtual machine:
 
-<Terminal title="root@xcp-ng-host — xe pool-list">{`
+<Terminal title="root@xcp-ng-host — xe vm-list">{`
 xe vm-list
     uuid ( RO)           : <VM_UUID>
     name-label ( RW)     : VM

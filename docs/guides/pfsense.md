@@ -2,7 +2,7 @@
 
 A guide to run pfSense in a VM.
 
-Despite pfSense and OPNsense do work great in a VM, there are a few extra steps that need to be taken first.
+Although pfSense and OPNsense work great in a VM, there are a few extra steps that need to be taken first.
 
 ## 1. Create VM as normal. {#1-create-vm-as-normal}
 
@@ -47,14 +47,14 @@ Disabling checksum offloading is only necessary for virtual interfaces. When usi
 Many guides on the internet for pfSense in Xen VMs will tell you to uncheck checksum options in the pfSense web UI, or to also disable RX offload on the Xen side. These are not only unnecessary, but some of them will make performance worse.
 :::
 
-## Using Xen Orchestra {#using-xen-orchestra}
+### Using Xen Orchestra {#using-xen-orchestra}
 
 - Head to the "Network" tab of your VM : in the advanced settings (click the blue gear icon) for each adapter, disable TX checksumming.
 - Restart the VM.
 
 That's it !
 
-## Using CLI {#using-cli}
+### Using CLI {#using-cli}
 
 SSH to dom0 on your XCP-ng hypervisor and run the following:
 
@@ -98,7 +98,7 @@ That's it! For this to take effect you need to fully shut down the VM then power
 If you ever add more virtual NICs to your VM, you will need to go back and do the same steps for these interfaces as well.
 :::
 
-### 4. Optimize VM Boot Process (Optional)
+## 4. Optimize VM Boot Process (Optional)
 
 During the boot process, pfSense will detect and try to use the virtual `parallel` and `serial` ports.
 
@@ -106,7 +106,7 @@ The virtual `parallel` port will be scanned during the boot process which lasts 
 
 The virtual `serial` port can be chosen as the "default output" which will hide the boot output between `Hypervisor: Origin = "Microsoft Hv"` and `Bootup complete`.
 
-#### Remove Parallel / Serial Ports Using CLI
+### Remove Parallel / Serial Ports Using CLI
 
 SSH to dom0 on your XCP-ng hypervisor and find your pfSense / OPNsense VM UUID (see steps above: 3. "Using CLI").
 
@@ -123,5 +123,5 @@ xe vm-param-set platform:hvm_serial=none uuid=57a27650-6dab-268e-1200-83ee17ee3a
 `}</Terminal>
 
 :::tip
-If your pfSense VM is experiencing long delays during the boot process, it may be due to the [VM communicating with the disks using the emulated IDE controller instead of the SCSI controller](https://blog.3mdeb.com/2019/2019-12-13-pfsense-boot-under-xen/#debug-xen). If this is the case, the pre-boot process can take a few minutes before the pfSense "Starting Device Manager (devd)" step which normally takes ~1 minute or less, then the boot process continues at the "normal" speed. This issue has been observed when the VM is using the `BIOS` boot mode (default for `Other install media` in XCP-ng Center) with recent pfSense > 2.4 versions. This problem only delays the boot process (booted VM performance is "normal") and is not observed when using the `UEFI` boot mode (as recommended in step 1).
+If your pfSense VM is experiencing long delays during the boot process, it may be due to the [VM communicating with the disks using the emulated IDE controller instead of the SCSI controller](https://blog.3mdeb.com/2019/2019-12-13-pfsense-boot-under-xen/#debug-xen). If this is the case, the pre-boot process can take a few minutes before the pfSense "Starting Device Manager (devd)" step which normally takes ~1 minute or less, then the boot process continues at the "normal" speed. This issue has been observed when the VM is using the `BIOS` boot mode (default for `Other install media` in Xen Orchestra) with recent pfSense > 2.4 versions. This problem only delays the boot process (booted VM performance is "normal") and is not observed when using the `UEFI` boot mode (as recommended in step 1).
 :::

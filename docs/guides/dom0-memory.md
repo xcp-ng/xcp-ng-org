@@ -6,7 +6,7 @@ Dom0 memory management.
 Dom0 is another word to talk about the *privileged domain*, also known as the *Control Domain*.
 :::
 
-Issues can arise when the control domain is lacking memory, that's why we advise to be generous with it whenever possible. Default values from the installer may be too low for your setup. In general it depends on the amount of VM's and their workload. If constraints do not allow you to follow the advice below, you can try to set lower values.
+Issues can arise when the control domain is lacking memory, that's why we advise to be generous with it whenever possible. Default values from the installer may be too low for your setup. In general it depends on the number of VMs and their workload. If constraints do not allow you to follow the advice below, you can try to set lower values.
 
 In any case:
 * monitor RAM usage in the control domain
@@ -16,10 +16,10 @@ In any case:
 
 * we advise to give at least 2GiB of RAM for Dom0. Below that your XCP-ng may experience performance issues or other weird errors.
 * up to 64GiB RAM on your machine, at least 4GiB RAM for Dom0
-* an host with 128GiB or more should use 8GiB RAM for Dom0
+* a host with 128GiB or more should use 8GiB RAM for Dom0
 
 :::warning
-Note: If you use ZFS, assign at least 16GB RAM to avoid swapping. ZFS (in standard configuration) uses half the Dom0 RAM as cache!
+Note: If you use ZFS, assign at least 16GiB RAM to avoid swapping. ZFS (in standard configuration) uses half the Dom0 RAM as cache!
 :::
 
 ## Current RAM usage {#current-ram-usage}
@@ -34,6 +34,6 @@ Example with 4 GiB:
 /opt/xensource/libexec/xen-cmdline --set-xen dom0_mem=4096M,max:4096M
 `}</Terminal>
 
-Do not mess the units and make sure to set the same value as base value and as max value.
+Do not mix up the units and make sure to set the same value as base value and as max value.
 
 Reboot to apply.

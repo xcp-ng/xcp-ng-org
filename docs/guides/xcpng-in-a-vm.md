@@ -5,7 +5,7 @@ How to run XCP-ng in a VM?
 This page details how to install XCP-ng as a guest VM inside different hypervisors to test the solution before a bare-metal installation.
 
 :::warning
-This practice is not recommended for production, nested virtualization has only tests/labs purpose.
+This practice is not recommended for production, nested virtualization is only meant for tests/labs.
 :::
 
 Here is the list of hypervisors on which you can try XCP-ng :
@@ -14,13 +14,14 @@ Here is the list of hypervisors on which you can try XCP-ng :
 * [VMware ESXi & Workstation](#nested-xcp-ng-using-vmware-esxi-and-workstation)
 * [Hyper-V 2016](#nested-xcp-ng-using-microsoft-hyper-v-windows-10---windows-server-2016)
 * [QEMU/KVM](#nested-xcp-ng-using-qemukvm)
-* [Virtualbox](https://www.virtualbox.org) (Nested Virtualisation implemented only in v6.1.x and above - [https://www.virtualbox.org/ticket/4032](https://www.virtualbox.org/ticket/4032))
+* [Xen](#nested-xcp-ng-using-xen)
+* [VirtualBox](https://www.virtualbox.org) (Nested virtualization implemented only in v6.1.x and above - [https://www.virtualbox.org/ticket/4032](https://www.virtualbox.org/ticket/4032))
 
 ## Nested XCP-ng using XCP-ng {#nested-xcp-ng-using-xcp-ng}
 
 * create a new VM from CentOS 7 template with minimum 2 vCPU and 4GB RAM
 * change disk size to 100GB
-* enable nested virtualisation with the special command on CLI: `xe vm-param-set uuid=<UUID> platform:exp-nested-hvm=true`
+* enable nested virtualization with the special command on CLI: `xe vm-param-set uuid=<UUID> platform:exp-nested-hvm=true`
 * default NIC type of Realtek may create stability issue for nested XCP-ng, change it to Intel e1000 : `xe vm-param-set uuid=<UUID> platform:nic_type="e1000"`
 * install/use it like normal :-)
 
@@ -37,7 +38,7 @@ pae=1
 acpi=1
 apic=1
 vif = [ 'mac=xx:xx:xx:xx:xx:xx,type=ioemu,bridge=virbr0' ]
-disk = [ 'file:/foo/bar/xcp-ng.img,hdc,w', 'file:/foo/bar/xcp-ng/xcp-ng-8.1.0-2.iso,hdb:cdrom,r' ]
+disk = [ 'file:/foo/bar/xcp-ng.img,hdc,w', 'file:/foo/bar/xcp-ng/xcp-ng-8.3.0.iso,hdb:cdrom,r' ]
 boot='dc'
 vnc=1
 serial='pty'
@@ -68,16 +69,16 @@ The first step, and without a doubt the most important step, will be to modify t
 
    * Start by going to the network settings of your ESXi host.
    * Then select the **port group** on which your XCP-ng virtual machine will be connected. By default, this concerns the
-     vSwitch0 and the '**VM Network**' group port.
+     vSwitch0 and the '**VM Network**' port group.
 
      Click on the "Edit Settings" button to edit the parameters of this port group.
 
    * Click on the **Accept** checkbox for Promiscuous mode.
-   * Save this settings by using the Save button at the bottom of the window.
+   * Save these settings by using the Save button at the bottom of the window.
 
    A little explanation from the VMware documentation website : [Promiscuous mode under VMware ESXi](https://docs.vmware.com/en/VMware-vSphere/6.0/com.vmware.vsphere.security.doc/GUID-92F3AB1F-B4C5-4F25-A010-8820D7250350.html)
 
-   **These settings can be done at the vSwitch itself (same configuration menu). By default, the group port inherits the vSwitch settings on which it is configured. It all depends on the network configuration you want to accomplish on your host.**
+   **These settings can be done at the vSwitch itself (same configuration menu). By default, the port group inherits the vSwitch settings on which it is configured. It all depends on the network configuration you want to accomplish on your host.**
 
 
 ### XCP-ng virtual machine settings
@@ -92,19 +93,19 @@ Once your host's network is set up, we'll look at configuring the XCP-ng virtual
 
    * For the other virtual machine settings, some explanations :
      * Dual CPU sockets for improving vCPU performance.
-     * **The virtual disk must be at least 60 GB in size to install XCP-ng !**
-     * **LSI Logic SAS** controller is chosen to maximize at possible the compatibility and the performance. vNVMe
+     * **The virtual disk must be at least 46 GB in size to install XCP-ng (70 GB recommended)!**
+     * **LSI Logic SAS** controller is chosen to maximize compatibility and performance as much as possible. vNVMe
        controller works too, it can reduce CPU overhead and latency. **PVSCSI controller won't work**.
      * **Unlike the PVSCSI controller, the VMXNET3 controller works with XCP-ng**. It will be useful if heavy network
        loads are planned between different XCP-ng virtual machines (XOSTOR)
 
    * Finally, install XCP-ng as usual, everything should work as expected. After installation, your XCP-ng virtual machine
-     is manageable from XCP-ng Center or Xen Orchestra.
+     is manageable from Xen Orchestra or XO Lite.
    * You can then create a virtual machine and test how it works (network especially).
 
 ### Configuration under VMware Workstation Pro 14/15
 
-   * Create a XCP-ng virtual machine like in ESXi.
+   * Create an XCP-ng virtual machine like in ESXi.
    * Check the following CPU setting : **Virtualize Intel VT-x/EPT or AMD-V/RVI**
    * An additional option is to be added to the virtual machine's .vmx file. You will also add the option to enable
      promiscuous mode for the virtual machine.
@@ -119,7 +120,7 @@ Once your host's network is set up, we'll look at configuring the XCP-ng virtual
 
      Replace _**ethernet0.virtualDev = "e1000"**_ by _**ethernet0.virtualDev = "vmxnet3"**_
 
-   * Check if the virtual machine correctly works by trying to connect using XCP-ng Center and by creating a virtual machine on your nested XCP-ng.
+   * Check if the virtual machine correctly works by trying to connect using Xen Orchestra or XO Lite and by creating a virtual machine on your nested XCP-ng.
 
 
 ## Nested XCP-ng using Microsoft Hyper-V (Windows 10 - Windows Server 2016) {#nested-xcp-ng-using-microsoft-hyper-v-windows-10---windows-server-2016}
@@ -127,7 +128,7 @@ Once your host's network is set up, we'll look at configuring the XCP-ng virtual
 
 _The following steps can be performed with Hyper-V on Windows 10 (version 1607 minimum) and Windows Server 2016 (Hyper-V Server also). The settings will remain the same for both OS._
 
-**This feature is not available with Windows 8 and Windows Server 2012/2012 R2 AND an Intel CPU is required (AMD not supported yet).**
+**This feature is not available with Windows 8 and Windows Server 2012/2012 R2 AND an Intel CPU is required (AMD CPUs are supported only from Windows 11 and Windows Server 2022).**
 
 Unlike VMware, you must first create the virtual machine to configure nested virtualization. Indeed, under Hyper-V, the configuration of the nested virtualization is a parameter to be applied to the virtual machine, it is not a global configuration of the hypervisor.
 
@@ -152,9 +153,9 @@ The VM settings :
 
     `Get-VMNetworkAdapter -VMName <Your XCP-ng VM name> | Set-VMNetworkAdapter -MacAddressSpoofing On`
 
-    **Important : This settings has to be applied even if you use the NAT Default Switch (since Windows 10 1709)**
+    **Important : This setting has to be applied even if you use the NAT Default Switch (since Windows 10 1709)**
 
-* After these configurations, you should be able to manage this XCP-ng host from XCP-ng Center or from a Xen Orchestra instance.
+* After these configurations, you should be able to manage this XCP-ng host from a Xen Orchestra instance or XO Lite.
 
 ![Windows Server on XCP-ng under Hyper-V](http://image.noelshack.com/fichiers/2018/39/5/1538145459-2.png)
 
@@ -166,7 +167,7 @@ Like VMware, you must first enable the nested virtualization feature on your hos
 
 ### Configure KVM nested virtualization (Intel)
 
-* Check if your CPU support virtualization and EPT (Intel)
+* Check if your CPU supports virtualization and EPT (Intel)
 
    On most Linux distributions :
 
@@ -206,7 +207,7 @@ The VM settings :
 * **Boot loader**: use BIOS rather than UEFI. The installation may complete successfully but it may not boot up.
 * **Memory** : 4GB minimum / 8GB recommended
 * **Disk Controller** : LSI Logic SCSI
-* **Disk**: at least 50GiB
+* **Disk**: at least 46 GB (70 GB recommended)
 * **Network** : E1000
 
 Finally, install/use XCP-ng !
