@@ -249,13 +249,13 @@ curl \
 
 By default, actions are asynchronous: they return `202 Accepted` with a body like `{"taskId":"0m7kl0j9l"}` and a `Location` header pointing to `/rest/v0/tasks/<id>`. Fetch that URL to follow the task: add `?wait=true` to block until it finishes, or watch all tasks with `GET /rest/v0/tasks?ndjson=true&watch=true`. To abort a task, use `POST /rest/v0/tasks/<id>/actions/abort`. See the [Xen Orchestra REST API documentation](https://docs.xen-orchestra.com/automation/restapi) for details.
 
-The `sync=true` flag can be used to run the action synchronously, without task monitoring. The result of the action will be returned encoded as JSON:
+The `sync=true` flag can be used to run the action synchronously, without task monitoring. The result of the action (here, the UUID of the new snapshot) is returned encoded as JSON:
 
 ```console
 $ curl \
   -X POST \
   -b authenticationToken=KQxQdm2vMiv7jBIK0hgkmgxKzemd8wSJ7ugFGKFkTbs \
-  'https://xo.example.org/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237cac/actions/clean_reboot?sync=true'
+  'https://xo.example.org/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237cac/actions/snapshot?sync=true'
 "2b0266aa-c753-6fbc-e4dd-c79be7782052"
 ```
 

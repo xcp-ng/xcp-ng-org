@@ -97,9 +97,9 @@ but it's crucial that these patches ultimately be awaiting upstream acceptance.
 
 #### How to manage patches?
 
-- Create a new `UPSTREAMVERSION-XCPNGVERSION` branch (example: `24.39.1-8.3`).
+- Create a new `vUPSTREAMVERSION-XCPNGVERSION` branch (example: `v26.1.12-8.3`). Unlike other repositories, xapi maintenance branches keep the `v` prefix of the upstream tag.
 - To update either the upstream version or the xcpng version, rebase or cherry-pick your commits
-from the current maintenance branch for the previous release (e.g, `24.19.2-8.3`), and
+from the current maintenance branch for the previous release (e.g, `v26.1.11-8.3`), and
 resolve conflicts carefully. Reorganize commits as needed to maintain a consistent history.
 Of course, drop any patches that have already been merged upstream.
 - For example, if the upstream version changes:

@@ -8,7 +8,7 @@ This file is an XML, here is an example:
 
 ```xml
 <?xml version="1.0"?>
-    <installation srtype="ext">
+    <installation sr-type="ext">
         <primary-disk>sda</primary-disk>
         <guest-disks>
             <guest-disk>sdb</guest-disk>
@@ -25,7 +25,7 @@ This file is an XML, here is an example:
 ```
 
 :::tip
-In order to use thin-provisioned local disks, you need to set the `srtype` attribute to `ext` (the installer accepts both `srtype` and `sr-type`). Without this, it will create a local LVM SR by default.
+Since XCP-ng 8.3, the local SR is `ext` (thin-provisioned) by default. Set `sr-type="lvm"` to get a thick-provisioned LVM SR instead.
 :::
 
 ## Answer file values
@@ -297,7 +297,7 @@ Specifies the console keymap. Default: `us`.
 
 #### SR type
 
-Local SR type. Default: `lvm`. The installer also accepts the `srtype` spelling, as used in the example above.
+Local SR type. Default: `ext` (XCP-ng 8.3; `lvm` on earlier releases). If the local SR disks have 4K logical blocks, the large-block SR type is used instead. The older `srtype` spelling is deprecated but still works.
 
 ```xml
   <installation sr-type="lvm|ext"?>

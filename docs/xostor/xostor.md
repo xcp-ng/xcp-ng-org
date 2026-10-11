@@ -246,7 +246,7 @@ Examples of resources and volumes:
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
-Here the database is `UpToDate` on one host and `Diskless` on the other two. This is expected when the SR uses a replication count of 1, or on hosts beyond the replication count: diskless resources give those hosts network access to the volume.
+This sample comes from an older XOSTOR version. Current versions create the database volume with as many diskful copies as the SR's replication count, and a diskless resource on the other hosts.
 
 ### DRBD/LINSTOR Resource State
 

@@ -112,7 +112,7 @@ The fix is not specific to AMD —it can improve internal network performance on
 
 ### OS support
 
-The fix is upstream in the Linux kernel (v6.17) and in the LTS kernels listed below. Debian 12 and 13, Ubuntu 22.04 (kernel 5.15.0-163 or later) and Ubuntu 24.04 (kernel 6.8.0-98 or later) ship it. RHEL 8, 9 and 10 and their derivatives don't include it yet.
+The fix is upstream in the Linux kernel (v6.17) and in the LTS kernels listed below. Debian 12 and 13, Ubuntu 22.04 (kernel 5.15.0-163 or later) and Ubuntu 24.04 (kernel 6.8.0-98 or later) ship it. As of October 2026, RHEL 8, 9 and 10 and their derivatives don't include it yet.
 
 Here are the LTS kernels that have been fixed:
 * v5.10.241

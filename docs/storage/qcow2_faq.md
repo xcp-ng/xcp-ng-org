@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## What’s QCOW2? {#whats-qcow2}
 
-QCOW2 is the name of a virtual disk image format coming from the open source QEMU project. Unlike the VHD disk image format, historically used by XCP-ng, QCOW2 is not limited to 2 TiB per disk.
+QCOW2 is the name of a virtual disk image format coming from the open source QEMU project. Unlike the VHD disk image format, historically used by XCP-ng, QCOW2 is not limited to 2040 GiB (just under 2 TiB) per disk.
 
 ## Quick summary {#quick-summary}
 
@@ -174,7 +174,7 @@ During a storage migration from a SR to another SR, the destination format is ch
 
 You can modify a SR to make it exclusively manage QCOW2 VDIs by modifying the `preferred-image-formats` parameter of the PBD’s `device-config`.
 
-Modifying the PBD requires deleting it and recreate it with the new parameter. This implies stopping access to all VDIs of the SR on the master (you can for shared SR migrate all VMs with VDIs on other hosts in the pool and temporarily stop the PBD of the master to recreate it, the parameter only needs to be set on the PBD of the master).
+Modifying the PBD requires deleting it and recreating it with the new parameter. This implies stopping access to all VDIs of the SR on the master (you can for shared SR migrate all VMs with VDIs on other hosts in the pool and temporarily stop the PBD of the master to recreate it, the parameter only needs to be set on the PBD of the master).
 
 If the SR had VHDs, they will continue to exist and be usable but won’t be automatically converted to QCOW2.
 

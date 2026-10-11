@@ -16,7 +16,7 @@ A given device may be supported at one of two levels:
 
 ## Hardware Compatibility List (HCL) {#hardware-compatibility-list-hcl}
 
-Vates maintains the XCP-ng [Hardware Compatibility List](https://docs.vates.tech/compatible-solutions/hardware-compatibility-list/). It covers hardware validated with partners, server families running in production at customers, and hardware certified by its vendor for the Xen platform. The [XenServer HCL](https://hcl.xenserver.com/) gives further details on Xen-certified devices.
+Vates maintains the XCP-ng [Hardware Compatibility List](https://docs.vates.tech/compatible-solutions/hardware-compatibility-list/). It covers hardware validated with partners, server families running in production at customers, and hardware certified by its vendor for the Xen platform. The [XenServer HCL](https://hcl.xenserver.com/) gives further details on Xen-certified devices. Devices listed on the HCL are supported, with rare exceptions.
 
 Exceptions include devices which require *proprietary* software components to operate (closed source drivers, for example). Such devices do not impede the use of XCP-ng, but their features cannot be exploited.
 

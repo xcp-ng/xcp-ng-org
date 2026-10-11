@@ -764,14 +764,14 @@ While the `xe host-backup` command works if executed on the local host (that is,
 ### `host-bugreport-upload`
 
 ```
-host-bugreport-upload [host-selector=host_selector_value...] [url=destination_url http-proxy=http_proxy_name]
+host-bugreport-upload [host-selector=host_selector_value...] [url=destination_url http_proxy=http_proxy_name]
 ```
 
 Generate a fresh bug report (using `xen-bugtool`, with all optional files included) and upload it to the specified location.
 
 The hosts on which this operation should be performed are selected using the standard selection mechanism (see [host selectors](#host-selectors) above). Optional arguments can be any number of the [host parameters](#host-parameters) listed at the beginning of this section.
 
-Optional parameters are `http-proxy`: use specified HTTP proxy, and `url`: upload to this destination URL. If `http-proxy` is not used, no proxy server is identified. Specify the destination with `url`.
+Optional parameters are `http_proxy`: use specified HTTP proxy, and `url`: upload to this destination URL. If `http_proxy` is not used, no proxy server is identified. Specify the destination with `url`.
 
 ### `host-call-plugin`
 
@@ -816,10 +816,10 @@ Delete a host crashdump specified by its UUID from the XCP-ng server.
 ### `host-crashdump-upload`
 
 ```
-host-crashdump-upload uuid=crashdump_uuid [url=destination_url] [http-proxy=http_proxy_name]
+host-crashdump-upload uuid=crashdump_uuid [url=destination_url] [http_proxy=http_proxy_name]
 ```
 
-Upload a crashdump to the specified location. If `http-proxy` is not used, no proxy server is identified. Specify the destination with `url`. Optional parameters are `http-proxy`: use specified HTTP proxy, and `url`: upload to this destination URL.
+Upload a crashdump to the specified location. If `http_proxy` is not used, no proxy server is identified. Specify the destination with `url`. Optional parameters are `http_proxy`: use specified HTTP proxy, and `url`: upload to this destination URL.
 
 ### `host-declare-dead`
 
@@ -2997,7 +2997,7 @@ Import a VDI. You can import a VDI from one of the following formats:
 - `vhd`
 - `qcow2`
 
-For `vhd` and `qcow2`, the target VDI given by `uuid` must already exist and be at least as large as the disk being imported.
+With `xe`, the target VDI given by `uuid` must always already exist and be at least as large as the disk being imported.
 
 ### `vdi-introduce`
 
@@ -3276,7 +3276,7 @@ A VM with a weight of 512 gets twice as much CPU as a domain with a weight of 25
 
 - `VCPUs-max` (read/write) maximum number of virtual CPUs.
 - `VCPUs-at-startup` (read/write) boot number of virtual CPUs
-- `actions-after-crash` (read/write) action to take if the VM crashes. Valid values are:
+- `actions-after-crash` (read/write) action to take if the VM crashes. Valid values are below. The `coredump_and_restart` and `coredump_and_destroy` values only work for PV guests: XAPI rejects them for HVM and PVH VMs.
   - `preserve` (for analysis only)
   - `coredump_and_restart` (record a coredump and reboot VM)
   - `coredump_and_destroy` (record a coredump and leave VM halted)
@@ -3705,7 +3705,7 @@ Wait for a running VM to reach its current memory target.
 ### `vm-migrate`
 
 ```
-vm-migrate [copy=true|false] [host-uuid=destination_host_uuid] [host=name_or_ uuid_of_destination_host] [force=true|false] [live=true|false] [vm-selector=vm_selector_value...] [remote-master=destination_pool_master_uuid] [remote-username=destination_pool_username] [remote-password=destination_pool_password] [remote-network=destination_pool_network_uuid ][vif:=vif_uuid] [vdi=vdi_uuid]
+vm-migrate [copy=true|false] [host-uuid=destination_host_uuid] [host=name_or_ uuid_of_destination_host] [force=true|false] [live=true|false] [vm-selector=vm_selector_value...] [remote-master=destination_pool_master_uuid] [remote-username=destination_pool_username] [remote-password=destination_pool_password] [remote-network=destination_pool_network_uuid] [vif:vif_uuid=network_uuid] [vdi:vdi_uuid=sr_uuid]
 ```
 
 This command migrates the specified VMs between physical hosts. The `host` parameter can be either the name or the UUID of the XCP-ng server. For example, to migrate the VM to another host in the pool, where the VM disks are on storage shared by both hosts:
@@ -3723,19 +3723,19 @@ xe vm-migrate uuid=vm_uuid host-uuid=destination_host_uuid vdi:vdi_uuid=destinat
 You can choose the SR where each VDI gets stored:
 
 ```
-xe vm-migrate uuid=vm_uuid host-uuid=destination_host_uuid vdi1:vdi_1_uuid=destination_sr_uuid vdi2:vdi_2_uuid=destination_sr2_uuid vdi3:vdi_3_uuid=destination_sr3_uuid
+xe vm-migrate uuid=vm_uuid host-uuid=destination_host_uuid vdi:vdi_1_uuid=destination_sr_uuid vdi:vdi_2_uuid=destination_sr2_uuid vdi:vdi_3_uuid=destination_sr3_uuid
 ```
 
 Additionally, you can choose which network to attach the VM after migration:
 
 ```
-xe vm-migrate uuid=vm_uuid vdi1:vdi_1_uuid=destination_sr_uuid vdi2:vdi_2_uuid=destination_sr2_uuid vdi3:vdi_3_uuid=destination_sr3_uuid vif:vif_uuid=network_uuid
+xe vm-migrate uuid=vm_uuid vdi:vdi_1_uuid=destination_sr_uuid vdi:vdi_2_uuid=destination_sr2_uuid vdi:vdi_3_uuid=destination_sr3_uuid vif:vif_uuid=network_uuid
 ```
 
 For cross-pool migration:
 
 ```
-xe vm-migrate uuid=vm_uuid remote-master=12.34.56.78 remote-username=username remote-password=password host-uuid=destination_host_uuid vdi=vdi_uuid
+xe vm-migrate uuid=vm_uuid remote-master=12.34.56.78 remote-username=username remote-password=password host-uuid=destination_host_uuid vdi:vdi_uuid=destination_sr_uuid
 ```
 
 By default, the VM is suspended, migrated, and resumed on the other host. The `live` parameter selects live migration. Live migration keeps the VM running while performing the migration, keeping VM downtime to a few seconds. In some circumstances, such as extremely memory-heavy workloads in the VM, live migration falls back into default mode and suspends the VM for a short time before completing the memory transfer.

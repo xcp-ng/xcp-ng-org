@@ -509,7 +509,7 @@ With all the IPv4-only assumptions embedded in the code of various components, a
 
 ### Pool metadata backup from the console (restored) {#pool-metadata-backup-temporarily-unavailable-from-console}
 
-The metadata backup and restore feature of the host console was removed before the initial release because of a vulnerability. It was added back with the xsconsole update in the May 2025 maintenance update.
+The metadata backup and restore feature of the host console was removed before the initial release because of a vulnerability. It was added back in 2025 with xsconsole 11.0.8-1.1.
 
 The feature is also available through Xen Orchestra.
 

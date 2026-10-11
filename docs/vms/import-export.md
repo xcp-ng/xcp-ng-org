@@ -58,7 +58,7 @@ From Xen Orchestra: VM → **Export** and choose the OVA format. Use it only whe
 
 ### Single disks
 
-From Xen Orchestra, each disk in the VM's Disks tab has an export button that lets you choose QCOW2, VHD (the default), VMDK or raw, whatever format the disk uses on its SR. Pick QCOW2 or raw for disks larger than 2040 GiB. See also [exporting VDIs with xe](../storage/manage-srs.md#export--import-a-single-disk).
+From Xen Orchestra, each disk in the VM's Disks tab has an export button that lets you choose QCOW2, VHD (the default), VMDK or raw, regardless of the format the disk uses on its SR. Pick QCOW2 or raw for disks larger than 2040 GiB. See also [exporting VDIs with xe](../storage/manage-srs.md#export--import-a-single-disk).
 
 ## Not what you're looking for? {#not-what-youre-looking-for}
 

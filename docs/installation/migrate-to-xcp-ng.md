@@ -155,13 +155,13 @@ If you were not using the `latest` channel previously:
 2. Update XOA.
 
 :::tip
-- **Backup method:** The migration will use the default backup network. Check if the XOA VM can access it.
+- **Backup network:** The migration will use the default backup network. Check if the XOA VM can access it.
 - **Task timeout:** Note that XAPI tasks are limited to 24 hours by default. To increase that limitation, refer to the **24h task timeout** section of [this page](/management/manage-locally/api#24h-task-timeout).
 :::
 
 From this point onward, the process varies depending on the type of datastore you're using.
 
-##### VMFS 5 (Mostly up to VMware 6.5)
+##### VMFS 5 {#vmfs-5-mostly-up-to-vmware-65}
 
 For VMFS 5, **you can perform a warm migration** (the VM doesn't need to be shut down before migration). 
 
@@ -175,7 +175,7 @@ Here's what you need to check:
     - If you don't check the toggle **stop the VM** on a running VM, it will only migrate data before the last snapshot.
     - Without any snapshots, nothing will be migrated.
 
-##### VMFS 6 (6.7 and newer)
+##### VMFS 6 {#vmfs-6-67-and-newer}
 
 For VMFS 6, **the VM needs to be shut down**. Follow these steps:
 

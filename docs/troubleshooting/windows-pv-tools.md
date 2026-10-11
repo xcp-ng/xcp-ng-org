@@ -177,7 +177,7 @@ If either of the non-vendor devices ("**0001**" or "**0002**") is active then yo
 You will see only one of "0001" or "0002", not both.
 :::
 
-![Device Manager showing the active XCP-ng vendor device C000.](../assets/img/winpv-correct-device.png)
+![Device Manager showing the active vendor device XenServer PV Bus (C000).](../assets/img/winpv-correct-device.png)
 
 If the vendor device ("**C000**" in this example) is active then you don't have this problem.
 You should check your Windows Update settings instead.

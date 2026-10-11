@@ -52,7 +52,6 @@ Here's a tree that represents the structure:
 
 `testing` is disabled by default. It contains:
 * bugfix or security update candidates, being tested,
-* experimental RPMs that we are not ready to move to `updates` yet,
 * any additional build dependency we had to add to build the above RPMs.
 
 `updates` is enabled by default. It contains:
@@ -61,7 +60,7 @@ Here's a tree that represents the structure:
 * any optional extra RPMs provided by XCP-ng's packagers *after the release*,
 * any additional build dependency we had to add to build the above RPMs.
 
-`candidates`, `ci`, `incoming` and `lab` are disabled by default too. The first three hold builds at earlier stages of their way to `updates`: `incoming` receives new builds, and `candidates` holds the update candidates closest to release. `lab` contains experimental packages. See [Build system](../build-system) for how builds move from one repository to the next.
+Like `testing`, `candidates`, `ci`, `incoming` and `lab` are disabled by default. The first three hold builds at earlier stages of their way to `updates`: `incoming` receives new builds, and `candidates` holds the update candidates closest to release. `lab` contains experimental builds that are not meant to be delivered as updates. See [Build system](../build-system) for how builds move from one repository to the next.
 
 Note that having lots of additional packages in `base` and `updates` does not mean that they will get installed to your system when you update. They only get installed:
 * if you voluntarily install them (`yum install ...`),

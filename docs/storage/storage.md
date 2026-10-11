@@ -719,7 +719,7 @@ Don't forget to rescan your SR after adding, changing, or deleting ISO files. Re
 
 ## Storage API {#storage-api}
 
-Current storage stack on XCP-ng is called `SMAPIv1`. VHD is the default disk format, with a maximum size of 2040 GiB per disk. Since 2026-05-05, XCP-ng 8.3 also supports the QCOW2 format on this same stack, with disks up to 16,381 GiB on most SR types (except XOSTOR and SMB). Disks larger than 2040 GiB are created as QCOW2 automatically. See the [QCOW2 FAQ](qcow2_faq.md) for details.
+Current storage stack on XCP-ng is called `SMAPIv1`. VHD is the default disk format, with a maximum size of 2040 GiB per disk. Since 2026-05-05, XCP-ng 8.3 also supports the QCOW2 format on this same stack, with disks up to 16,381 GiB on most SR types (except XOSTOR and SMB). On SRs that support QCOW2 (with the default preferred image formats), disks larger than 2040 GiB are created as QCOW2 automatically. See the [QCOW2 FAQ](qcow2_faq.md) for details.
 
 ### Why use VHD format?
 

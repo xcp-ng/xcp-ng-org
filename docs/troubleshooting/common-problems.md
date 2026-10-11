@@ -88,7 +88,7 @@ Try these steps:
 
 1. Turn off C-States and Intel SpeedStep in the BIOS.
 2. Flash any update(s) to the BIOS firmware.
-3. Append `reboot=pci` to kernel boot parameters. Use `/opt/xensource/libexec/xen-cmdline --set-dom0 "reboot=pci"`, then reboot.
+3. Append `reboot=pci` to the Xen boot parameters. Use `/opt/xensource/libexec/xen-cmdline --set-xen "reboot=pci"`, then reboot.
 
 ---
 

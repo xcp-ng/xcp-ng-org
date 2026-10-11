@@ -22,7 +22,7 @@ A base installation of XCP-ng comes with:
 Through our RPM repositories (configured by default on the hosts for `yum` to install from them), we may also provide:
 * **official updates** for **supported modules**
 * **alternate modules**, which are alternate versions of the officially supported modules. The supported modules can either be built-in kernel modules or modules provided through supported separate RPMs such as the `qlogic-netxtreme2` RPM. Their name is usually the same as the package they override, with an added `-alt` suffix (example: `broadcom-bnxt-en-alt`). Alternate versions can be installed for better support of recent hardware or in the hope that bugs in the supported drivers have been fixed in newer versions. They won't remove the supported drivers from the system, but the kernel will load the alternate ones instead. **Warning**: *they receive less testing than the supported modules*.
-* **additional (or "extra") modules** for **additional features** (can be experimental). Example: `kmod-zfs-4.19.0+1` for ZFS support in the `4.19.0+1` kernel, or `ceph-module` for CephFS support. To know whether such a module is experimental or is fully supported, read its description or search this documentation.
+* **additional (or "extra") modules** for **additional features** (can be experimental). Example: `kmod-zfs-4.19.0+1` for ZFS support in the `4.19.0+1` kernel, or `igc-module` for an updated Intel I225/I226 network driver. To know whether such a module is experimental or is fully supported, read its description or search this documentation.
 
 ## Module Updates {#module-updates}
 
@@ -62,7 +62,7 @@ If the RPM contains several modules (to be avoided), then find an unambiguous na
 
 #### Exceptions: `kmod` packages
 
-When we import third-party RPMs that build kernel modules, we may choose to keep the original names in order to minimize spec file changes. Examples that fall in that category: `kmod-zfs-{kernel_version}` and `kmod-spl-{kernel_version}`. Their name depends on the version of the kernel. In XCP-ng 8.3, they are named `kmod-zfs-4.19.0+1` and `kmod-spl-4.19.0+1`.
+When we import third-party RPMs that build kernel modules, we may choose to keep the original names in order to minimize spec file changes. Examples that fall in that category: `kmod-zfs-{kernel_version}` and `kmod-spl-{kernel_version}`. Their name depends on the version of the kernel. In XCP-ng 8.3, the ZFS module package is named `kmod-zfs-4.19.0+1` (SPL is merged into ZFS, so there is no `kmod-spl` package).
 
 ### Alternate modules
 

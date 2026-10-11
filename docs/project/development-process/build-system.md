@@ -94,7 +94,7 @@ A few other 8.3 tags branch off this chain:
 * `v8.3-fasttrack` inherits `v8.3-candidates`. As the name suggests, it is meant for builds that must not wait behind the content of `v8.3-testing`, `v8.3-ci` and `v8.3-incoming`.
 * `v8.3-lab` inherits `v8.3-updates`. It is exported to the `lab` RPM repository, for experimental packages.
 * `v8.3-v-*` tags (for example `v8.3-v-linstor` or `v8.3-v-qcow2`) hold builds for a specific feature or component, developed in parallel to the main chain.
-* `v8.3-u-*` tags (for example `v8.3-u-brs1`) are personal tags for developers. They inherit `v8.3-incoming`, and each is exported to a user RPM repository. You can find the list of these repositories in [https://koji.xcp-ng.org/repos/user/8/8.3/xcpng-users.repo](https://koji.xcp-ng.org/repos/user/8/8.3/xcpng-users.repo).
+* `v8.3-u-*` tags (for example `v8.3-u-brs1`) are user tags: mostly personal tags for developers, plus a few shared pre-build tags such as `v8.3-u-prebuild`. They inherit `v8.3-incoming`, and each is exported to a user RPM repository. You can find the list of these repositories in [https://koji.xcp-ng.org/repos/user/8/8.3/xcpng-users.repo](https://koji.xcp-ng.org/repos/user/8/8.3/xcpng-users.repo).
 
 ### Build targets
 When you ask Koji to start a build, you **must** specify a build target.
@@ -145,7 +145,7 @@ In order not to overload this section with information, the instructions are ava
 * Use Koji's `--scratch` option to build the RPMs without tagging them or pushing them to any RPM repository.
   * `koji build --scratch {BUILD_TARGET} git+https://github.com/xcp-ng-rpms/{PACKAGE_NAME}?#{COMMIT_HASH}`
     * For a useful history, `{COMMIT_HASH}` must be a commit hash, not a branch name. Commit hashes are stable, branches are moving targets.
-* Developers who have a user target (`v8.3-u-*`) can build there instead of using `--scratch`: the result is published to their user RPM repository, which makes it easy to install on test hosts. The [`koji_build.py`](https://github.com/xcp-ng/xcp/blob/master/scripts/koji/koji_build.py) helper script from the `xcp-ng/xcp` repository only accepts builds to user targets as test builds (its `--test-build` or `--pre-build` options), which add a suffix to the release so that the build never conflicts with an official one.
+* Developers who have a user target (`v8.3-u-*`) can build there instead of using `--scratch`: the result is published to their user RPM repository, which makes it easy to install on test hosts. The [`koji_build.py`](https://github.com/xcp-ng/xcp/blob/master/scripts/koji/koji_build.py) helper script from the `xcp-ng/xcp` repository refuses to build to a user target unless you pass `--test-build` or `--pre-build`. Both add a suffix to the release so that the build never conflicts with an official one.
 * If it fails, consult the build logs in [Koji's web interface](https://koji.xcp-ng.org/).
 * Ask for help if the build error is something that you can't act upon.
 * Once you got a successful build, test it in your test environment (for example a nested XCP-ng VM or better yet a test pool). Look at the list of built RPMs, identify those that are updates to RPMs on the system, and install them. If additional RPMs produced by the build deserve testing, test them too.
@@ -195,6 +195,8 @@ Once a day, we run a job that makes sure every *build* in our Koji instance is t
 * `built-by-xs`: RPMs built by XenServer's internal build system. This one is meant to disappear progressively as we rebuild more and more of those packages.
 * `built-by-centos`: imported unmodified from CentOS.
 * `built-by-epel`: imported unmodified from EPEL.
+* `built-by-almalinux`: imported unmodified from AlmaLinux.
+* `built-by-linbit`: RPMs built by LINBIT (LINSTOR and DRBD).
 
 In addition to this, when we import RPMs from CentOS or EPEL we tag their *builds* with tags that contain the version of CentOS they come from, or the date they've been imported from EPEL:
 * `centos-{VERSION}`, for example `centos-7.5`.

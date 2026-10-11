@@ -160,11 +160,11 @@ xe vm-param-get param-name=has-vendor-device uuid={VM-UUID}
 ##### Install the XCP-ng tools
 1. Snapshot your VM before installing.
 2. Check the above prerequisite about the "Manage Citrix PV drivers via Windows Update" option.
-3. Open the `Windows` folder of the guest tools ISO, or the `package` folder of the downloaded ZIP or ISO.
+3. Open the `Windows` folder of the guest tools ISO, or extract the downloaded ZIP (or mount the downloaded ISO) and open its `package` folder.
 4. Run `XenTools-x64.msi`.
 5. Follow the install wizard.
 
-If you are upgrading from version 9.2.350, first install the `XenTools-fix-9.2.351.msp` hotfix shipped alongside the MSI, or the upgrade will be blocked.
+If you are upgrading from version 9.2.350, first install the `XenTools-fix-9.2.351.msp` hotfix (in the `Windows` folder of the XCP-ng 8.3 guest tools ISO, or as a separate download on the [GitHub release page](https://github.com/xcp-ng/win-pv-drivers/releases)), or the upgrade will be blocked.
 
 #### Using the Citrix XenServer VM Tools for Windows
 
