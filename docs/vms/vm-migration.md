@@ -23,19 +23,19 @@ Moving VMs between hosts, SRs and pools, live when possible.
 
 ## Live migration performance {#live-migration-performance}
 
-When live migrating a VM, its state is transferred to the destination host and loaded into a new VM. In order to resume the destination VM in the same state as the source VM, Xen's approach is to not allow the state to change while the transfer is finalized and the new VM is activated. The result is a few seconds of downtime or more depending on the VM and hosts activity during migration. Steps done during this phase include:
+When live migrating a VM, its state is transferred to the destination host and loaded into a new VM. In order to resume the destination VM in the same state as the source VM, Xen's approach is to not allow the state to change while the transfer is finalized and the new VM is activated. The result is a few seconds of downtime or more depending on the VM and hosts' activity during migration. Steps done during this phase include:
 
 * Sending the VM memory modified during the last transfer iteration to the destination host
 * Saving, transferring and restoring the VM devices state
 * Plugging and activating virtual disks and network interfaces to the destination VM
 
-The VM state itself is a data stream written to a file and transferred over the network. The stream encryption/decryption and optional compression/decompression currently involve separate processes in the source and destination hosts. This stresses their CPUs and I/O data paths, which can slow down the migration. Busy VMs push the hosts CPUs harder which can elongate the time spent in each of these steps.
+The VM state itself is a data stream written to a file and transferred over the network. The stream encryption/decryption and optional compression/decompression currently involve separate processes in the source and destination hosts. This stresses their CPUs and I/O data paths, which can slow down the migration. Busy VMs push the hosts' CPUs harder, which can lengthen the time spent in each of these steps.
 
 ### Best practices
 
-While a few seconds of VM downtime at the end of a live migration is expected behaviour and cannot be worked around, here are recommendations to keep it as low as possible:
+While a few seconds of VM downtime at the end of a live migration is expected behavior and cannot be worked around, here are recommendations to keep it as low as possible:
 
-* **Work with performance factors**: migrating during lower periods of VM RAM and I/O usage should be the priority. Limiting the number of virtual disks attached to the VM will help reduce both the downtime and overall migration time.
+* **Work with performance factors**: migrating during periods of lower VM RAM and I/O usage should be the priority. Limiting the number of virtual disks attached to the VM will help reduce both the downtime and overall migration time.
 * **Enable migration compression** (when applicable): the downtime during the final VM memory transfer iteration can increase significantly with VM RAM usage. Migration networks with a throughput of 10Gb/s or less can benefit from [migration compression](../management/hosts-pools.md#migration-compression).
 
 :::tip
