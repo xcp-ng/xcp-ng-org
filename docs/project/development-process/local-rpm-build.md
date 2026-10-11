@@ -18,7 +18,7 @@ With some prior knowledge about development and RPM packaging, the documentation
 
 * Docker. There are plenty of guides on the internet for your specific OS, so we won't cover this part here.
 * A local clone of [https://github.com/xcp-ng/xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env).
-* Container images built using its `build.sh` script. One per XCP-ng release. Example: `./build.sh 8.2` if your target is XCP-ng 8.2.
+* Container images built using its `build.sh` script. One per XCP-ng release. Example: `./build.sh 8.3` if your target is XCP-ng 8.3.
 * [git-lfs](https://git-lfs.github.com/). It is required to be able to fetch the RPM sources from our repositories at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/).
 
 ### Get the sources for the RPM
@@ -28,7 +28,7 @@ Every RPM built by us has its sources located in a repository at [https://github
 Example: [https://github.com/xcp-ng-rpms/xen](https://github.com/xcp-ng-rpms/xen).
 
 * After double-checking that you have installed `git-lfs`, locally clone the repository you want to work on.
-* Checkout the branch that corresponds to your target. For XCP-ng 8.2, select the `8.2` branch.
+* Checkout the branch that corresponds to your target. For XCP-ng 8.3, select the `8.3` branch.
 
 ### Build the RPM
 
@@ -37,7 +37,7 @@ You probably want to bring modifications to the RPM definitions before you rebui
 * Start the container. We use the `/path/to/xcp-ng-build-env/run.py` script for that.
   * Check the supported options with `/path/to/xcp-ng-build-env/run.py --help`
   * We'll want the following options:
-    * `--branch` (`-b`): this selects the target. Example: `--branch 8.2` for XCP-ng 8.2. The corresponding container image must have been built before you can use it.
+    * `--branch` (`-b`): this selects the target. Example: `--branch 8.3` for XCP-ng 8.3. The corresponding container image must have been built before you can use it.
     * `--volume` (`-v`): we need to 'mount' your working directory into the container using this option. Else the container won't have access to any persistent data. Example: `-v ~/workdir:/data` will make your local `~/workdir` directory available to the container under the local `/data` path.
     * `--rm`: destroy the running container when exited. Can save disk space because you won't have to remember to clean up old containers manually.
 * From within the container:
@@ -69,6 +69,6 @@ We can't cover every situation here, so we will address a simple case: add patch
 Then follow the same steps as before to build the RPM.
 
 ## An XCP-ng host as a build environment {#an-xcp-ng-host-as-a-build-environment}
-You can also turn any XCP-ng host (preferrably installed in a VM. Don't sacrifice a physical host for that) into a build environment: all the tools and build dependencies are available from the default RPM repositories for XCP-ng, or from CentOS and EPEL repositories.
+You can also turn any XCP-ng host (preferably installed in a VM. Don't sacrifice a physical host for that) into a build environment: all the tools and build dependencies are available from the default RPM repositories for XCP-ng, or from CentOS and EPEL repositories.
 
 You won't benefit from the convenience scripts from [xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env) though.

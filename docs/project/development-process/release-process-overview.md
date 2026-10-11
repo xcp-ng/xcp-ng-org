@@ -45,7 +45,7 @@ Here's a tree that represents the structure:
     └── ...
 ```
 `base` is enabled by default. It contains:
-* the RPMs as they were in the installation ISO for XCP-ng 8.0,
+* the RPMs as they were in the installation ISO for that XCP-ng release,
 * any optional extra RPMs provided by XCP-ng's packagers,
 * all the build dependencies needed to build all of the above.
 

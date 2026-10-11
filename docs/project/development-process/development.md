@@ -6,7 +6,7 @@ sidebar_position: 3
 
 How XCP-ng is developed.
 
-Development in the context of the XCP-ng project means either to contribute to existing upstream projects, such as the Xen API ([XAPI](https://github.com/xapi-project/xen-api/), the [Xen project](https://xenproject.org/) and many other components of XCP-ng, or to develop new software specifically for the XCP-ng project.
+Development in the context of the XCP-ng project means either to contribute to existing upstream projects, such as the Xen API ([XAPI](https://github.com/xapi-project/xen-api/)), the [Xen project](https://xenproject.org/) and many other components of XCP-ng, or to develop new software specifically for the XCP-ng project.
 
 ## Contribution to upstream projects {#contribution-to-upstream-projects}
 Development (as in "write code") in XCP-ng project is mostly made of contributions to upstream projects such as [https://github.com/xapi-project/](https://github.com/xapi-project/), [https://wiki.xenproject.org/wiki/Submitting_Xen_Project_Patches](https://wiki.xenproject.org/wiki/Submitting_Xen_Project_Patches) or [https://github.com/xenserver/](https://github.com/xenserver/).

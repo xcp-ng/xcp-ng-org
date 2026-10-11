@@ -80,8 +80,8 @@ V8.2 (packages)
     v8.2-updates (builds)
       v8.2-testing (builds)
 ```
-* `V8.2` is associated to all the packages used in XCP-ng 8.2, either as installed packages on servers or as build dependencies in Koji. Notice the capslock V which is a convention we follow to identify tags that are specifically associated with *packages*, not *builds*.
-* `v8.2-base` inherits `V8.2` so we were able to associate it to all the builds in base XCP-ng 8.x. The `base` RPM repository for 8.2 is exported from this tag.
+* `V8.2` is associated to all the packages used in XCP-ng 8.2, either as installed packages on servers or as build dependencies in Koji. Notice the capital V which is a convention we follow to identify tags that are specifically associated with *packages*, not *builds*.
+* `v8.2-base` inherits `V8.2` so we were able to associate it to all the builds in base XCP-ng 8.2. The `base` RPM repository for 8.2 is exported from this tag.
 * `v8.2-updates` inherits `v8.2-base` which means it contains all builds from `v8.2-base` plus builds specifically tagged `v8.2-updates`. Those are exported to the `updates` RPM repository for 8.2.
 * `v8.2-testing` inherits `v8.2-updates` so it contains all builds from `v8.2-base`, all builds from `v8.2-updates` and builds specifically tagged `v8.2-testing`. Why? So that any new build targeted at `v8.2-testing` can pull its build dependencies from released updates rather than just from the older packages in the base repository. Builds specifically tagged `v8.2-testing` are exported to the `testing` RPM repository for 8.2.
 
@@ -110,7 +110,7 @@ Another (fictitious) example:
 This is just to show that build tag and destination tag **can** be different. Build dependencies will be pulled from `v8.x-testing` and the result will be put in `v8.x-sandbox`. This means that builds to the sandbox will never use packages that are already in the sandbox as build dependencies. Why would we do that? To guarantee that builds made in the sandbox are never influenced by other builds made there, possibly by other users. This is a fictitious situation, just to illustrate the concepts of build tag and destination tag.
 
 ## Build and release process {#build-and-release-process}
-Here's how to update a package in XCP-ng, step by step. This process requires writing rights on the git repository corresponding to the package at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/) and submit rights in Koji. Others are invited to fork one the repositories at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/), [build RPMs locally in our build container](../local-rpm-build), and then create pull requests. Reading the steps below will still be useful to you to help make appropriate changes.
+Here's how to update a package in XCP-ng, step by step. This process requires writing rights on the git repository corresponding to the package at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/) and submit rights in Koji. Others are invited to fork one of the repositories at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/), [build RPMs locally in our build container](../local-rpm-build), and then create pull requests. Reading the steps below will still be useful to you to help make appropriate changes.
 
 This applies only to packages that we build in Koji. There are also packages that are not built in Koji. Most packages from CentOS, for example, are imported directly from CentOS into our Koji instance.
 

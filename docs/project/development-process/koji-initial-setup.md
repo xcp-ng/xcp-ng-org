@@ -26,7 +26,7 @@ You may also receive a browser certificate for the connection to Koji's web inte
 You need to import it into your web browser's certificate store and then use it when you log in to [https://koji.xcp-ng.org/](https://koji.xcp-ng.org/)
 
 ## Installing koji {#installing-koji}
-The preferred, distro-independent way is to install it from PyPi with `pip`, `uv` or your preferred tool. Alternatively, your distro might provide the `koji` client as a package you can install from its repositories. You could also run it from a Fedora container, but that's mostly a last resort option if anything else fails for some reason.
+The preferred, distro-independent way is to install it from PyPI with `pip`, `uv` or your preferred tool. Alternatively, your distro might provide the `koji` client as a package you can install from its repositories. You could also run it from a Fedora container, but that's mostly a last resort option if anything else fails for some reason.
 
 Example on Ubuntu 24.04+:
 ```bash
@@ -69,7 +69,7 @@ authtype = ssl
 In some cases (with older versions of koji), we've found that the `cert` directive in `~/.koji/config ` was not used if there was no such directive in `/etc/koji.conf`. Workaround: add a `cert = ~/.koji/client.crt` to `/etc/koji.conf`, or possibly even `cp ~/.koji/config /etc/koji.conf`.
 
 ## Test your connection {#test-your-connection}
-`koji moshimoshi`. If it greats you (in any language), then your connection to the server works.
+`koji moshimoshi`. If it greets you (in any language), then your connection to the server works.
 
 ## Get more permissions {#get-more-permissions}
 After your first connection, your user gets added by koji to its database. Now you need permissions to be able to tag builds. Ask an administrator for the `build` permission.
@@ -83,7 +83,7 @@ koji list-permissions --user=$USER # Adapt $USER if needed
 
 ## Koji in Docker container {#koji-in-docker-container}
 
-This used to be useful when our koji server was a bit too old for recent crypto, but now **installing from `PyPi` is probably the best choice**.
+This used to be useful when our koji server was a bit too old for recent crypto, but now **installing from `PyPI` is probably the best choice**.
 
 However, if you really want to run the `koji` client from a container, here's a small guide.
 

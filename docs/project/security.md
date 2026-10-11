@@ -2,13 +2,13 @@
 
 Security is a central concern in the whole XCP-ng project.
 
-We are using Xen as our core hypervisor engine, which is a huge collaboration project with security as core value. On top of that, we are closely monitoring all security releases from Citrix Hypervisor to be able to provide critical patches very fast too.
+We are using Xen as our core hypervisor engine, which is a huge collaboration project with security as core value. On top of that, we are closely monitoring all security releases from XenServer to be able to provide critical patches very fast too.
 
-Because XCP-ng is made of a lot of various components, we are relying on multiple sources to improve the security and fixing flaws.
+Because XCP-ng is made of a lot of various components, we are relying on multiple sources to improve security and fix flaws.
 
 ## Xen Project security {#xen-project-security}
 
-XCP-ng project is member of the Xen Predisclosure list since 2018, which is including a lot of huge cloud players, but also companies working in critical IT security, industries and so on. The whole list is public and [available here](https://xenproject.org/developers/security-policy/#organizations-on-the-pre-disclosure-list), where you can see our name.
+The XCP-ng project has been a member of the Xen pre-disclosure list since 2018, which includes a lot of huge cloud players, but also companies working in critical IT security, industries and so on. The whole list is public and [available here](https://xenproject.org/developers/security-policy/#organizations-on-the-pre-disclosure-list), where you can see our name.
 
 <div style={{textAlign: 'center'}}>
 ![Xen Project Logo.](../../assets/img/xen_logo.png)
@@ -38,9 +38,9 @@ XSAs are "Xen Security Advisory". They are -in general- linked to a CVE. You can
 
 ## Platform security {#platform-security}
 
-XCP-ng code base is close to Citrix Hypervisor, and for that reason, we are integrating Citrix security patches very quickly into XCP-ng. We are also posting very often updates and explanation on each security patches available. You can see this list at this place: [https://xcp-ng.org/blog/tag/security/](https://xcp-ng.org/blog/tag/security/)
+XCP-ng code base is close to XenServer, and for that reason, we are integrating XenServer security patches very quickly into XCP-ng. We are also often posting updates and explanations for each security patch available. You can see this list at this place: [https://xcp-ng.org/blog/tag/security/](https://xcp-ng.org/blog/tag/security/)
 
-However, it's more and more plausible that flaws might be discovered first on XCP-ng instead of Citrix Hypervisor. In that case, please see below.
+However, it's more and more plausible that flaws might be discovered first on XCP-ng instead of XenServer. In that case, please see below.
 
 ## Report a security flaw {#report-a-security-flaw}
 

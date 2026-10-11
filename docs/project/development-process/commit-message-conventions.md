@@ -48,7 +48,7 @@ Here's a challenge: it must remain really short (50 characters is the convention
 * What component is modified, if this information is relevant (*scope*)?
 * What changed? If contains a verb (recommended), must be in the imperative form (*short change description*).
 
-Why must it be short? So that it fits well in the various tools that display just the first commit history: `git log --oneline`, `gitk`, GitHub, GitLab, etc.
+Why must it be short? So that it fits well in the various tools that display just the first line of the commit history: `git log --oneline`, `gitk`, GitHub, GitLab, etc.
 
 And for the same reason it must be descriptive enough, because there are many situations where only the first line of each commit message is displayed, when browsing the history.
 
@@ -107,7 +107,7 @@ Whenever possible, reference public issues or forum threads. No specific wording
 * (`Closes: ...`)
 * Etc.
 
-Be careful with "Fixes" or "Closes", because they can automatically close issues when the commit is merged. But what if we want the issues to be closed only when the fix or feature has been fully tested, or publically released? Check the project's processes.
+Be careful with "Fixes" or "Closes", because they can automatically close issues when the commit is merged. But what if we want the issues to be closed only when the fix or feature has been fully tested, or publicly released? Check the project's processes.
 
 ### Developer Certificate of Origin (DCO)
 

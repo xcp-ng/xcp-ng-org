@@ -119,6 +119,7 @@ From the `iso/` directory
 <Terminal shell title="Build a new install.img with your changes">{`
 cd install/
 find . | cpio -o -H newc | bzip2 > ../install.img # as root!
+cd ..
 rm install/ -rf # as root too. Or move it somewhere else. We don't want it in the final ISO.
 `}</Terminal>
 

@@ -25,7 +25,7 @@ More about RPM:
 ## Where to find our source RPMs {#where-to-find-our-source-rpms}
 Two places.
 
-1. As SRPM files (`.src.rpm`), they are all available in our RPM repositories at [https://updates.xcp-ng.org/](https://updates.xcp-ng.org/). Example: [https://updates.xcp-ng.org/8/8.2/base/Source/SPackages/](https://updates.xcp-ng.org/8/8.2/base/Source/SPackages/).
+1. As SRPM files (`.src.rpm`), they are all available in our RPM repositories at [https://updates.xcp-ng.org/](https://updates.xcp-ng.org/). Example: [https://updates.xcp-ng.org/8/8.3/base/Source/SPackages/](https://updates.xcp-ng.org/8/8.3/base/Source/SPackages/).
 
 2. All RPMs built by us have been built from one of the git repositories at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/), containing the spec file and sources. The name of the repository matches that of the source package. `git-lfs` is required for cloning from and committing to them, because we use it to store the source tarballs.
 
