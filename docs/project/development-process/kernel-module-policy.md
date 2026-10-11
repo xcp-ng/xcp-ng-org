@@ -22,11 +22,11 @@ A base installation of XCP-ng comes with:
 Through our RPM repositories (configured by default on the hosts for `yum` to install from them), we may also provide:
 * **official updates** for **supported modules**
 * **alternate modules**, which are alternate versions of the officially supported modules. The supported modules can either be built-in kernel modules or modules provided through supported separate RPMs such as the `qlogic-netxtreme2` RPM. Their name is usually the same as the package they override, with an added `-alt` suffix (example: `broadcom-bnxt-en-alt`). Alternate versions can be installed for better support of recent hardware or in the hope that bugs in the supported drivers have been fixed in newer versions. They won't remove the supported drivers from the system, but the kernel will load the alternate ones instead. **Warning**: *they receive less testing than the supported modules*.
-* **additional (or "extra") modules** for **additional features** (can be experimental). Example: `kmod-zfs-4.4.0+10` for ZFS support in the `4.4.0+10` kernel, or `ceph-module` for CephFS support. To know whether such a module is experimental or is fully supported, read its description or search the wiki.
+* **additional (or "extra") modules** for **additional features** (can be experimental). Example: `kmod-zfs-4.19.0+1` for ZFS support in the `4.19.0+1` kernel, or `igc-module` for an updated Intel I225/I226 network driver. To know whether such a module is experimental or is fully supported, read its description or search this documentation.
 
 ## Module Updates {#module-updates}
 
-This section discusses the kind of updates kernel modules can receive during the maintenance cycle of a given release of XCP-ng (e.g. XCP-ng 8.2). For information about the general update process, see [Updates Howto](../../../management/updates).
+This section discusses the kind of updates kernel modules can receive during the maintenance cycle of a given release of XCP-ng (e.g. XCP-ng 8.3). For information about the general update process, see [Updates Howto](../../../management/updates).
 
 Updates for *supported modules* are offered automatically when one updates their host. In order to avoid risks of regression, they are usually only updated if there's an important bug to fix, or a security issue with them... Until the next upgrade of XCP-ng.
 
@@ -62,7 +62,7 @@ If the RPM contains several modules (to be avoided), then find an unambiguous na
 
 #### Exceptions: `kmod` packages
 
-When we import third-party RPMs that build kernel modules, we may choose to keep the original names in order to minimize spec file changes. Examples that fall in that category: `kmod-zfs-{kernel_version}` and `kmod-spl-{kernel_version}`. Their name depends on the version of the kernel. In XCP-ng 8.2, they are named `kmod-zfs-4.19.0+1` and `kmod-spl-4.19.0+1`.
+When we import third-party RPMs that build kernel modules, we may choose to keep the original names in order to minimize spec file changes. Examples that fall in that category: `kmod-zfs-{kernel_version}` and `kmod-spl-{kernel_version}`. Their name depends on the version of the kernel. In XCP-ng 8.3, the ZFS module package is named `kmod-zfs-4.19.0+1` (SPL is merged into ZFS, so there is no `kmod-spl` package).
 
 ### Alternate modules
 
@@ -88,9 +88,9 @@ Example: `broadcom-bnxt-en-alt-1.9.2-5.xcpng.x86_64.rpm` is the `bnxt_en` module
 
 Another case is when we backport a module from a newer kernel but the module itself has no version. In this case, then we'll use the version of the kernel it is coming from as the module version.
 
-Example `ceph-module-4.4.176` is a version of the `ceph` module extracted from kernel 4.4.176 and provided as an additional module for the currently supported kernel (4.4.0+10 at the time of writing).
+Example: `igc-module-5.10.200` is a version of the `igc` module extracted from kernel 5.10.200 and provided as an additional module for the currently supported kernel (4.19.0+1 at the time of writing).
 
-Exceptions: the abovementioned `kmod`-packages such as `kmod-zfs-4.4.0+10-0.7.11-1.el7.centos.x86_64.rpm` include the kernel version in the name. In this example the kernel version is `4.4.0+10` and the module version is `0.7.11`.
+Exceptions: the abovementioned `kmod`-packages such as `kmod-zfs-4.19.0+1-2.1.15-1.xcpng8.3.x86_64.rpm` include the kernel version in the name. In this example the kernel version is `4.19.0+1` and the module version is `2.1.15`.
 
 ## Where the modules are installed on the system {#where-the-modules-are-installed-on-the-system}
 
@@ -104,12 +104,12 @@ Kernel modules can be present in several places. In XCP-ng, we use the following
 * additional modules are installed in `/lib/modules/{kernel_version}/extra`
 * alternate optional versions of the default modules are installed in `/lib/modules/{kernel_version}/override`. This is not a standard directory for modules, so we alter the configuration of `depmod` to give the priority to modules in this directory. See "`depmod` configuration for alternate modules" below.
 
-We can have up to three versions of the same module on the system, one from the kernel, one from XCP-ng's set of supported or additional modules, and one alternate modules that overrides both:
+We can have up to three versions of the same module on the system, one from the kernel, one from XCP-ng's set of supported or additional modules, and one alternate module that overrides both:
 
 <Terminal shell title="Where the modules are installed on the system">{`
-/usr/lib/modules/4.4.0+10/kernel/drivers/net/ethernet/broadcom/bnxt/bnxt_en.ko
-/usr/lib/modules/4.4.0+10/updates/bnxt_en.ko
-/usr/lib/modules/4.4.0+10/override/bnxt_en.ko
+/usr/lib/modules/4.19.0+1/kernel/drivers/net/ethernet/broadcom/bnxt/bnxt_en.ko
+/usr/lib/modules/4.19.0+1/updates/bnxt_en.ko
+/usr/lib/modules/4.19.0+1/override/bnxt_en.ko
 `}</Terminal>
 
 ### `depmod` configuration for alternate modules
@@ -146,7 +146,7 @@ yum list available | grep -e '-alt.x86_64'
 `}</Terminal>
 
 #### List available additional modules
-You can list the available RPMs for alternate modules with the command below, that will search for packages whose name ends in `-module`, or begins with `kmod-` and contains the current kernel version. Only packages that are not currently installed or have an available update will be listed.
+You can list the available RPMs for additional modules with the command below, that will search for packages whose name ends in `-module`, or begins with `kmod-` and contains the current kernel version. Only packages that are not currently installed or have an available update will be listed.
 
 <Terminal shell title="root@xcp-ng-host — List available additional modules">{`
 yum list available | grep -e '-module.x86_64' -e '^kmod-.*-'$(uname -r)
@@ -172,7 +172,7 @@ Check that the new module has been taken into account by `depmod`: `modinfo {mod
 
 Example output:
 ```
-filename:       /lib/modules/4.4.0+10/override/bnxt_en.ko
+filename:       /lib/modules/4.19.0+1/override/bnxt_en.ko
 version:        1.9.2-214.0.150.0
 description:    Broadcom BCM573xx network driver
 license:        GPL
@@ -183,7 +183,7 @@ If the module is expected to be loaded automatically at boot, **reboot** to chec
 
 ### How to load the new module without a reboot
 
-As we said, if the module is expected to load at boot, we advise to reboot ultimately. However, you may want to test the driver before rebooting. Or maybe it's a driver that is not supposed to be loaded manually.
+As we said, if the module is expected to load at boot, we advise to reboot ultimately. However, you may want to test the driver before rebooting. Or maybe it's a driver that is not supposed to be loaded automatically.
 
 **Unload the running module if there's one**
 

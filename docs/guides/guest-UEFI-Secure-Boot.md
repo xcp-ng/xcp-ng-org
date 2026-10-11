@@ -12,7 +12,7 @@ Previously, XCP-ng only shipped with the PK included by default; Secure Boot var
 New versions of XCP-ng's `varstored` (from version 1.2.0-3.4 and newer) now come with a complete set of Secure Boot variables (PK/KEK/db/dbx) by default, meaning that guest Secure Boot will now work for new VMs without needing further pool configuration.
 
 The previous Secure Boot settings only included the 2011 Microsoft KEK and db certificates.
-Our defaults now include the 2023 Microsoft certificates, ensuring Secure Boot updates beyond 2026 (which is when the previous 2011 certificates expire), while ensuring compatibility with VMs migrated from VMware using XO V2V.
+Our defaults now include the 2023 Microsoft certificates, ensuring Secure Boot updates beyond 2026 (the year the previous 2011 certificates expire), while ensuring compatibility with VMs migrated from VMware using XO V2V.
 These defaults will be automatically kept up-to-date as XCP-ng is updated.
 
 Existing Secure Boot installations will not be automatically updated.
@@ -47,7 +47,7 @@ This step is also required for Secure Boot support on previously V2V-migrated VM
 ## Requirements {#requirements}
 
 * XCP-ng >= 8.2.1.
-* UEFI Secure Boot Certificates installed on the pool (this is detailed below).
+* UEFI Secure Boot Certificates installed on the pool (this is detailed below). Only needed with `varstored` older than 1.2.0-3.4: newer versions ship default certificates.
 * A UEFI guest VM.
 
 Note: it's not necessary that the XCP-ng host boots in UEFI mode for Secure Boot to be enabled on VMs.
@@ -111,7 +111,7 @@ The certificates are stored at several levels:
 * host **disk** (it basically mirrors the certificates in the XAPI database),
 * **VM** level (in the VM's UEFI variable store).
 
-To install or modify the certificates on the **pool**, use the `secureboot-certs` command line utility. See [Configure the Pool](#configure-the-pool). Once `secureboot-certs` is called, the XAPI DB entry for the pool is populated with a base64-encoded tarball of the UEFI certificates. Note: on XCP-ng 8.2.x, at this stage, *the certificates are still not installed on disk*: they only exist in the XAPI DB*. See "Host disk certificates synchronisation" below.
+To install or modify the certificates on the **pool**, use the `secureboot-certs` command line utility. See [Configure the Pool](#configure-the-pool). Once `secureboot-certs` is called, the XAPI DB entry for the pool is populated with a base64-encoded tarball of the UEFI certificates. Note: on XCP-ng 8.2.x, at this stage, *the certificates are still not installed on disk*: they only exist in the XAPI DB. See "Host disk certificate synchronization" below.
 
 Host disk certificate synchronization:
 - On XCP-ng 8.2.x, the certificates are updated on the host's **disk** (in `/var/lib/uefistored/`) each time a UEFI VM starts on the host, if needed.
@@ -185,7 +185,7 @@ secureboot-certs clear
 
 If `secureboot-certs` fails to download the certificates from Microsoft due to microsoft.com deciding to forbid downloads from the user agent declared by the script, you may try to download with a different user agent (for example your current browser's user agent):
 
-<Terminal shell title="root@xcp-ng-host — Go back to XCP-ng-managed…">{`
+<Terminal shell title="root@xcp-ng-host — Install with a custom user agent">{`
 secureboot-certs install --user-agent="Mozilla/5.0 My custom user agent"
 `}</Terminal>
 
@@ -244,7 +244,7 @@ This is the most compatible option for old installation media that may not inclu
 Once installed, the guest can still update the dbx variable on its own to revoke vulnerable bootloaders as long as the default KEK is included.
 Omitting the dbx variable can be done using the following command:
 
-<Terminal shell title="root@xcp-ng-host — Enroll a custom PK along with…">{`
+<Terminal shell title="root@xcp-ng-host — Install without dbx">{`
 # Install default PK/KEK/db variables, omit the dbx
 secureboot-certs install default default default none
 `}</Terminal>
@@ -309,15 +309,15 @@ Windows VMs do not require extra installation packages because the Windows Loade
 
 :::warning
 If your VMs have any unsigned drivers, they will fail to load after enabling Secure Boot.
-Be sure to use the latest XCP-ng or Citrix tools package.
+Be sure to use the latest XCP-ng or XenServer tools package.
 :::
 
 ### Setup Secure Boot for Linux VMs
 
-**In theory** (read why it's in theory in the *Boothole and fallouts* box below), the installers for mainstream Linux distributions (debian, RHEL, etc.) should install properly signed bootloaders and binaries, and should be installable in SB mode directly. Some other Linux distributions may require special packages for Secure Boot to function. Check that the distribution does support Secure Boot and follow the distribution's documentation to install any required Secure Boot software (e.g., shim) *before* enabling Secure Boot for the VM in XCP-ng.
+**In theory** (read why it's in theory in the *Boothole and fallouts* box below), the installers for mainstream Linux distributions (Debian, RHEL, etc.) should install properly signed bootloaders and binaries, and should be installable in SB mode directly. Some other Linux distributions may require special packages for Secure Boot to function. Check that the distribution does support Secure Boot and follow the distribution's documentation to install any required Secure Boot software (e.g., shim) *before* enabling Secure Boot for the VM in XCP-ng.
 
 :::warning
-If the VM has any unsigned kernel modules, they will fail to load after enabling Secure Boot. Furthermore, the distribution will likely restrict other kernel features that are seen as loop holes in Secure Boot (kexec, /dev/mem, etc…). Please read the Secure Boot documentation from the distribution.
+If the VM has any unsigned kernel modules, they will fail to load after enabling Secure Boot. Furthermore, the distribution will likely restrict other kernel features that are seen as loopholes in Secure Boot (kexec, /dev/mem, etc…). Please read the Secure Boot documentation from the distribution.
 :::
 
 :::tip Boothole and fallouts
@@ -393,7 +393,7 @@ You might encounter issues related to this in one of the following situations:
 Despite this, we still recommend that you always install the latest revocation database (`dbx`) on your pools. Not doing so lowers the security of Secure Boot, as any malicious binary signed with a revoked certificate would pass Secure Boot checks.
 
 ***If you can't boot an installation media***:
-* Check whether their exists an updated installer signed with a valid certificate. If yes, use it.
+* Check whether there is an updated installer signed with a valid certificate. If yes, use it.
 * Else go to "It still can't boot" below.
 
 ***If you can't boot an existing VM***:
@@ -460,7 +460,7 @@ A VM will usually have its own copy of the UEFI certificates (unless it never bo
 varstore-ls <vm-uuid>
 `}</Terminal>
 
-If the relevant certs are installed, their names will be in the output (i.e., `PK`, `KEK`, `db`, or `dbx`).
+If the relevant certs are installed, their names will be in the output (e.g., `PK`, `KEK`, `db`, or `dbx`).
 
 #### Preparing for Secure Boot Variable Changes
 
@@ -543,7 +543,7 @@ To update an individual certificate in the VM's NVRAM store:
 
 ### Secure Boot and the UEFI Firmware Menu in the Guest
 
-Disabling *and* enabling Secure Boot from the UEFI firmware menu inside the guest VM is explicitly disallowed on XCP-ng so as to ensure that guest users can not tamper with the Secure Boot policy set by the host administrator. This differs from enabling Secure Boot on physical hardware because that is typically done through the UEFI menu. On XCP-ng, instead, that privilege is given only to host administrators through the `uefistored` daemon and `varstored-tools` package.
+Disabling *and* enabling Secure Boot from the UEFI firmware menu inside the guest VM is explicitly disallowed on XCP-ng so as to ensure that guest users can not tamper with the Secure Boot policy set by the host administrator. This differs from enabling Secure Boot on physical hardware because that is typically done through the UEFI menu. On XCP-ng, instead, that privilege is given only to host administrators through the `varstored` daemon and `varstored-tools` package.
 
 Changes to the UEFI secure boot state in the UEFI menu will be ignored in favor of the host administrator's configuration. For example, deselecting **Attempt Secure Boot** will not disable Secure Boot on the next boot, although it would do so on a physical platform.
 
@@ -695,5 +695,5 @@ A VM without a `PK` is in UEFI Setup Mode. In this mode, defined in the UEFI spe
 We don't know why someone would want to use Setup Mode in their VMs, but if for any reason you need it, you can switch a VM to Setup Mode with:
 
 <Terminal shell title="UEFI Setup Mode">{`
-varstore-sb-state
+varstore-sb-state <vm-uuid> setup
 `}</Terminal>

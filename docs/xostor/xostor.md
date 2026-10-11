@@ -11,7 +11,7 @@
 
 LINSTOR is made of two main components:
 - A controller, declared on a machine of the XCP-ng pool. There is only one per pool and it can run on a master or a slave. The controller is a daemon that receives commands across the pool's network to manipulate the volumes, network, configuration...
-- Satellites which are the other machines of the pool. They send commands to the controller and the controller's state to the host.
+- Satellites, which run on every host of the pool: they receive commands from the controller and apply them locally (create/delete volumes, configure DRBD).
 
 Communication between the satellites and the controller is done via the TCP/IP protocol. A newly created LINSTOR SR will use the XAPI management interface by default.
 
@@ -32,7 +32,7 @@ A Python API is available to communicate with LINSTOR and is used in the driver.
 Earlier, we have described what constituted an XCP-ng pool with LINSTOR: a controller and its satellites. Now, let's explain what the volumes are based on.
 Each volume created via a LINSTOR command appears as a `DRBD` (Distributed Replicated Block Device). Like LINSTOR, this tool is also developed by LINBIT and is officially available in the Linux kernel.
 
-DRBD is a solution to share a resource across multiple machines, using a replication parameter. In XCP-ng, it's a `/dev/drbdXXX` volume accessible on several hosts where `XXXX` is the `device minor number`. For each XCP-ng VDI (Virtual Disk Image), there is a DRBD volume.
+DRBD is a solution to share a resource across multiple machines, using a replication parameter. In XCP-ng, it's a `/dev/drbdXXXX` volume accessible on several hosts where `XXXX` is the `device minor number`. For each XCP-ng VDI (Virtual Disk Image), there is a DRBD volume.
 
 #### Resources & Volumes
 
@@ -62,7 +62,7 @@ TLDR, when a volume is primary, it's like a lock: other instances of this same v
 
 #### Diskless and Diskful
 
-Usually, when a resource is replicated through DRBD, we assume that it only exists in 1, 2 or 3 copies. In other words, in a pool that has at least 4 hosts, a host may not have a copy of a resource locally. In this case scenario, it is however possible to access a resource's data using a device like `/dev/drbdXXXX`. When data is written or read, network requests are sent to the hosts that have a replication of this volume. This volume type is called `diskless` and a DRBD which has local data is called `diskful`.
+Usually, when a resource is replicated through DRBD, we assume that it only exists in 1, 2 or 3 copies. In other words, in a pool that has at least 4 hosts, a host may not have a copy of a resource locally. In this scenario, it is however possible to access a resource's data using a device like `/dev/drbdXXXX`. When data is written or read, network requests are sent to the hosts that have a replication of this volume. This volume type is called `diskless` and a DRBD which has local data is called `diskful`.
 
 Like a diskful, when a diskless is opened, it takes the primary lock.
 
@@ -72,7 +72,7 @@ The data is stored in a lower-level storage located in a layer below the DRBDs.
 In the driver, an `LVM group` is built on one or more physical disks. Each machine in a pool doesn't need a physical disk to be able to use LINSTOR/DRBD.
 
 :::tip
-We recommend using the same types of drives (processor, disk) on every machine that has them.
+We recommend using the same types of hardware (processor, disk) on every machine that has them.
 :::
 
 ### Concepts of LINSTOR
@@ -125,7 +125,7 @@ In this example, the name of the storage pool used on each node is: `xcp-sr-lins
 
 A resource group is another LINSTOR object and it can be seen as a container of resources. The managed resources are influenced by the group's properties. The most important property is the `PlaceCount` which defines for each resource, the number of copies that must be present in the pool.
 
-A change in a property has a direct impact on the existing resources. For example, increasing a place count will create new duplications on other hosts.
+A change in a property has a direct impact on the existing resources. For example, increasing a place count will create new duplications on other hosts (not supported for XOSTOR SRs, see [Prerequisites](#prerequisites)).
 
 CLI example:
 ```
@@ -149,7 +149,7 @@ In an XCP-ng context, we use a single storage pool (xcp-sr-linstor_group_thin_de
 - xcp-ha-linstor_group_thin_device
 - xcp-sr-linstor_group_thin_device
 
- The first group is used both as the heartbeat volume required by the HA and as the drbd1000 volume which contains the LINSTOR database. This database contains the information displayed via the `linstor` command. As these volumes are vital for the SR's survival, the replication is forced to 3.
+ The first group holds the volumes the SR itself depends on: the HA heartbeat volume and the `xcp-persistent-database` volume (drbd1000), which contains the LINSTOR database. This database contains the information displayed via the `linstor` command. They get as many diskful copies as the SR's replication count. Every other host gets a diskless resource for the database, so any host can open it.
  The second group is used for all volumes created by a user and the replication count is configurable from 1 to 3.
 
 #### Resource, Volume & Definitions
@@ -246,6 +246,8 @@ Examples of resources and volumes:
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
+This sample comes from an older XOSTOR version. Current versions create the database volume with as many diskful copies as the SR's replication count, and a diskless resource on the other hosts.
+
 ### DRBD/LINSTOR Resource State
 
 A DRBD/LINSTOR resource can be in several states, the main ones are:
@@ -284,7 +286,7 @@ Environment=LS_KEEP_RES=^xcp-persistent.*
 After=drbd.service
 ```
 
-As noted in the shared database section, the controller uses a DRBD volume containing the LINSTOR database instead of a simple local folder on a host. This database must be accessible after a reboot, meaning that `/dev/drbd/by-res/xcp-persistent-database/0` must be accessible on at least one machine (normally 3, since this volume is always replicated 3 times). A path like that is generated using a DRBD resource config file. These configurations are automatically created by LINSTOR itself and they are not persistent: they are recreated each time the controller is started after a pool reboot. The only way to keep a DRBD config file at boot is to use the `LS_KEEP_RES` environment variable to indicate it to LINSTOR.
+As noted in the [Resource Group](#resource-group) section, the controller uses a DRBD volume containing the LINSTOR database instead of a simple local folder on a host. This database must be accessible after a reboot, meaning that `/dev/drbd/by-res/xcp-persistent-database/0` must be accessible on at least one machine. The volume has one diskful copy per replica (the SR's replication count), and the other hosts reach it through a diskless resource. A path like that is generated using a DRBD resource config file. These configurations are automatically created by LINSTOR itself and they are not persistent: they are recreated each time the controller is started after a pool reboot. The only way to keep a DRBD config file at boot is to use the `LS_KEEP_RES` environment variable to indicate it to LINSTOR.
 
 - A `drbd-reactor` configuration that uses the linbit promoter plugin:
 ```
@@ -310,8 +312,6 @@ ExecStop=/opt/xensource/libexec/safe-umount /var/lib/linstor
 RemainAfterExit=true
 ```
 
-## Howto and Questions {#howto-and-questions}
-
 ## Installation {#installation}
 
 ### Prerequisites
@@ -321,13 +321,13 @@ RemainAfterExit=true
 - A dedicated 10G or higher network interface for DRBD. It's possible to use the same interface used for host management (XAPI) but it's recommended to use a dedicated interface.
 - At least 1 disk on any machine of the pool (case without replication). Otherwise, any number of disks can be used on a machine. However, to be consistent, we recommend using the same model and number for each machine that has disks.
 - The replication/place count must be equal to 1, 2 or 3.
-- 
+
 :::warning
 Changing the replication factor after creating XOSTOR is not possible, as it can lead to significant issues and is therefore not supported.
 :::
 
 :::warning
-- LINSTOR services like satellites and controller can use a lot of memory resources. It is therefore more than necessary to have sufficient RAM allocated to the Dom-0, 16 GiB can be enough for average pools with around a hundred volumes. But it may be essential to increase the dedicated memory for more intensive use. So make sure to monitor the memory usage of your pool to prevent the OOM Killer from being triggered.
+- LINSTOR services like satellites and controller can use a lot of memory resources. It is therefore more than necessary to have sufficient RAM allocated to dom0, 16 GiB can be enough for average pools with around a hundred volumes. But it may be essential to increase the dedicated memory for more intensive use. So make sure to monitor the memory usage of your pool to prevent the OOM Killer from being triggered.
 :::
 
 :::important
@@ -464,7 +464,6 @@ Example on a pool with 3 machines:
 linstor --controllers=172.16.210.84,172.16.210.85,172.16.210.86 r list
 `}</Terminal>
 
-:::
 Important: the `--controllers` parameter should always be just after the command name and before the action.
 :::
 
@@ -630,6 +629,8 @@ If you cannot create a VDI due to an error of it being too large, even though it
 
 Exception: if the replication count is equal to the number of hosts, the SR capacity is equal to the max VDI size, i.e. the capacity of the smallest disk in the pool.
 
+In any case, XOSTOR does not support QCOW2: its VDIs use the VHD format and are limited to 2040 GiB each (see the [QCOW2 FAQ](../storage/qcow2_faq.md#no-large-disks-on-xostor)).
+
 This formula can be used to compute the SR capacity:
 ```
 sr_capacity = smallest_host_disk_capacity * host_count / replication_count
@@ -768,8 +769,8 @@ linstor storage-pool create lvm <NODE_NAME> <SP_NAME> <VG_NAME>
 
 In our example:
 
-<Terminal shell title="root@xcp-ng-host — For thick:">{`
-linstor storage-pool create lvm hpmc17 xcp-sr-linstor_group_thin_device linstor_group/thin_device
+<Terminal shell title="root@xcp-ng-host — For thin:">{`
+linstor storage-pool create lvmthin hpmc17 xcp-sr-linstor_group_thin_device linstor_group/thin_device
 `}</Terminal>
 
 ### How to use a specific network for DRBD requests?
@@ -845,7 +846,7 @@ systemctl stop linstor-controller
 systemctl restart linstor-satellite
 `}</Terminal>
 
-5. Make sure that the resources of the deleted node have been replicated on the remaining host and verify with `linstor r list` that all resources are up to date. Then, delete the node and create a storage pool for the new node:
+5. Make sure that the resources of the deleted node have been replicated on the remaining hosts and verify with `linstor r list` that all resources are up to date. Then, delete the node and create a storage pool for the new node:
 
 <Terminal shell title="root@xcp-ng-host — On all hosts">{`
 linstor node delete <OLD_NAME>
@@ -853,7 +854,7 @@ linstor node delete <OLD_NAME>
 
 <Terminal shell title="root@xcp-ng-host — On all hosts">{`
 # For thin:
-linstor storage-pool create lvmthin <NODE_NAME> <SP_NAME> <VG_NAME>
+linstor storage-pool create lvmthin <NODE_NAME> <SP_NAME> <VG_NAME>/<LV_THIN_VOLUME>
 
 # For thick:
 linstor storage-pool create lvm <NODE_NAME> <SP_NAME> <VG_NAME>
@@ -884,7 +885,7 @@ Jun 22 10:50:13 r620-s3 SM: [23871] ['/usr/bin/vhd-util', 'query', '--debug', '-
 Jun 22 10:50:13 r620-s3 SM: [23871] FAILED in util.pread: (rc 22) stdout: 'error opening /dev/drbd/by-res/xcp-volume-83da35c4-dd18-47fb-9d2b-68bd5b92fcaa/0: -22
 ```
 
-The problem with this error is that it's generic and can occur in other situations. If you're not sure what you're doing, contact us on [support](https://vates.tech) or the [forum](https://xcp-ng.org/forum). Alternatively you can confirm that a resource is indeed unusable, execute this command by connecting to a host where the volume is marked `InUse`:
+The problem with this error is that it's generic and can occur in other situations. If you're not sure what you're doing, contact us on [support](https://vates.tech) or the [forum](https://xcp-ng.org/forum). To confirm that a resource is indeed unusable, execute this command by connecting to a host where the volume is marked `InUse`:
 
 <Terminal shell title="How can I delete an unreadable or unusable resource?">{`
 vhd-util check -n <DRBD_PATH>
@@ -939,7 +940,7 @@ Example result by replacing `<RES_UUID>` with `83da35c4-dd18-47fb-9d2b-68bd5b92f
 
 <Terminal title="How can I delete an unreadable or unusable resource?">{`
 linstor-kv-tool --dump-volumes -g xcp-sr-linstor_group_thin_device | grep volume-name | grep 83da35c4-dd18-47fb-9d2b-68bd5b92fcaa
-  "xcp/volume/6b9046a2-8ef9-47ef-baa9-a4c533ca848a/volume-name": "83da35c4-dd18-47fb-9d2b-68bd5b92fcaa",
+  "xcp/volume/6b9046a2-8ef9-47ef-baa9-a4c533ca848a/volume-name": "xcp-volume-83da35c4-dd18-47fb-9d2b-68bd5b92fcaa",
 `}</Terminal>
 
 Here, the XAPI UUID of the VDI to delete is `6b9046a2-8ef9-47ef-baa9-a4c533ca848a`.
@@ -1097,15 +1098,15 @@ cp /var/lib/linstor/linstordb.mv.db /root/linstor-db/linstordb.mv.db.backup
 cp /root/linstor-db/linstordb.mv.db.backup /root/linstor-db/linstordb.mv.db
 `}</Terminal>
 
-Connect to the DB backup using:
+Connect to the DB copy using:
 ```
-java -cp /usr/share/linstor-server/lib/h2*.jar org.h2.tools.Shell -url jdbc:h2:/root/db/linstordb -user linstor -password linstor
+java -cp /usr/share/linstor-server/lib/h2*.jar org.h2.tools.Shell -url jdbc:h2:/root/linstor-db/linstordb -user linstor -password linstor
 # Note: you can also use a web interface with:
 # java -jar /usr/share/linstor-server/lib/h2-1.4.197.jar -web -webAllowOthers -tcp -tcpAllowOthers
 # But the server must be reachable without the support tunnel or using additional bind commands, so easier to use the CLI...
 ```
 
-##### 4. Modify node properties
+#### 4. Modify node properties
 
 Now we can execute a few commands to verify the database state. Check the node properties first:
 ```
@@ -1167,7 +1168,7 @@ DELETE FROM LINSTOR.PROPS_CONTAINERS
 WHERE PROPS_INSTANCE = '/NODES/R620-S4';
 ```
 
-##### 5. Modify interface IPs
+#### 5. Modify interface IPs
 
 The default config should now be set for each node.
 The last thing to do is to verify the IP addresses of the default interfaces.
@@ -1206,7 +1207,7 @@ Then, you can override the LINSTOR database:
 cp /root/linstor-db/linstordb.mv.db /var/lib/linstor/linstordb.mv.db
 `}</Terminal>
 
-Finally, you can stop the controller on the host currently running.
+Finally, you can stop the controller on the host where it is currently running.
 `drbd-reactor` will restart it and you should have a valid database again.
 
 Check using:
@@ -1218,7 +1219,7 @@ linstor r list
 
 ### What to do when a node is in an EVICTED state?
 
-A controller can mark a node as EVICTED if the LINSTOR default configuration is used and a satellite offline for 60 minutes. The DRBD resources are then replicated on the remaining nodes as a protection against data loss. The following command is usually enough to re-import the evicted machine:
+A controller can mark a node as EVICTED if the LINSTOR default configuration is used and a satellite is offline for 60 minutes. The DRBD resources are then replicated on the remaining nodes as a protection against data loss. The following command is usually enough to re-import the evicted machine:
 
 <Terminal shell title="root@xcp-ng-host — What to do when a node is in an…">{`
 linstor node restore <NODE_NAME>
@@ -1261,7 +1262,7 @@ linstor storage-pool create lvm <NODE_NAME> linstor_group_cache linstor_group_ca
 
 Then you can enable the cache with a few commands using the linstor controller.
 
-Verify the group to modify, it must start with "xcp-sr-" (generally `linstor_group_thin_device` for thin):
+Verify the group to modify, it must start with "xcp-sr-" (generally `xcp-sr-linstor_group_thin_device` for thin):
 
 <Terminal shell title="root@xcp-ng-host — How to enable dm-cache (Device…">{`
 linstor storage-pool list
@@ -1311,7 +1312,7 @@ You can change this value globally or on a particular resource definition with:
 linstor rd set-property <VOLUME_NAME> Cache/Cachesize <PERCENTAGE>
 `}</Terminal>
 
-It's totally arbitrary. You can go up to 20-30% for for VMS with a high write rate. This should be enough to support a significant number of requests. 10% for solicited VMs. Between 1-5% for VMs with a few requests. You can use 100% if you want, for example for a database on a small VDI with a lot of queries.
+It's totally arbitrary. You can go up to 20-30% for VMs with a high write rate. This should be enough to support a significant number of requests. 10% for solicited VMs. Between 1-5% for VMs with a few requests. You can use 100% if you want, for example for a database on a small VDI with a lot of queries.
 
 :::warning
 Due to too-long VHD chains, snapshots can consume more memory than necessary. It's advisable to limit their use to backup processes via XOA.
@@ -1374,7 +1375,7 @@ mountpoint /var/lib/linstor
 /var/lib/linstor is a mountpoint
 `}</Terminal>
 
-Copy these files from the database folder: `linstordb.mv.db` and `linstordb.trace.db` ​​into another folder:
+Copy these files from the database folder: `linstordb.mv.db` and `linstordb.trace.db` into another folder:
 
 <Terminal shell title="How to fix a LINSTOR database corruption?">{`
 mkdir linstor.bak

@@ -33,7 +33,7 @@ All terms and acronyms used throughout this documentation, with links to the pag
 * **vApp** (VM appliance): a group of VMs started and recovered together, with a defined boot order.
 * **VBD** (Virtual Block Device): the XAPI object connecting a VDI to a VM.
 * **VDI** (Virtual Disk Image): one virtual disk, stored in an SR.
-* **VHD**: the historical copy-on-write virtual disk format of XCP-ng (2 TiB limit per disk).
+* **VHD**: the historical copy-on-write virtual disk format of XCP-ng (2040 GiB maximum per disk, just under 2 TiB; use QCOW2 for larger disks).
 * **VIF** (Virtual InterFace): a VM's virtual network card, connected to a network.
 * **VLAN**: layer-2 network segmentation (802.1Q tags); XCP-ng networks can sit on any VLAN. See [VLANs](../networking/networking.md#vlans).
 * **VM** (Virtual Machine): you probably know this one.

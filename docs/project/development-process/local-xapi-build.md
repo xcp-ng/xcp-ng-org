@@ -13,8 +13,8 @@ Here are the steps:
     - Run `opam init`.
     - Run `opam switch create toolstack 4.08.1`, this sets up an opam `switch` which is a virtual ocaml env.
     - Run `opam repo add xs-opam https://github.com/xapi-project/xs-opam.git`, this adds the [`xs-opam` repo](https://github.com/xapi-project/xs-opam.git) to your env.
-    - Run `opam repo remove default`, this removes the the default repo from your env as we only want the `xs-opam` one.
-    - Run `opam depext -vv -y xs-toolstack`, this installs the dependency needed to build `xs-toolstack`
+    - Run `opam repo remove default`, this removes the default repo from your env as we only want the `xs-opam` one.
+    - Run `opam depext -vv -y xs-toolstack`, this installs the dependencies needed to build `xs-toolstack`
     - Run `opam install xs-toolstack -y`, this installs the toolstack to build the xapi in your env.
 
 - Build the XAPI:

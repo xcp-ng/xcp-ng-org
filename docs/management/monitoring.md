@@ -66,7 +66,7 @@ yum install net-snmp
 systemctl enable --now snmpd
 `}</Terminal>
 
-  Then open UDP port 161 in the dom0 firewall (add the rule to `/etc/sysconfig/iptables` and restart `iptables`, so it survives reboots). Keep the community/users **read-only**.
+Then open UDP port 161 in the dom0 firewall (add the rule to `/etc/sysconfig/iptables` and restart `iptables`, so it survives reboots). Keep the community/users **read-only**.
 * **NRPE**: XCP-ng doesn't ship a Nagios NRPE integration. For Nagios-family systems, use SNMP (above), or netdata's collectors.
 * **Dedicated agents** (Zabbix agent...) can be installed in dom0 as additional packages, with the usual caution about keeping dom0 minimal.
 

@@ -8,9 +8,11 @@ This file is an XML, here is an example:
 
 ```xml
 <?xml version="1.0"?>
-    <installation srtype="ext">
+    <installation sr-type="ext">
         <primary-disk>sda</primary-disk>
-        <guest-disk>sdb</guest-disk>
+        <guest-disks>
+            <guest-disk>sdb</guest-disk>
+        </guest-disks>
         <keymap>us</keymap>
         <root-password>myrootpassword</root-password>
         <source type="url">http://pxe.example.org/xcp-ng/</source>
@@ -23,7 +25,7 @@ This file is an XML, here is an example:
 ```
 
 :::tip
-In order to use thin provisionned local disks, you need to add an `srtype` attribute to `ext`. Without this, it will create a local LVM SR by default.
+Since XCP-ng 8.3, the local SR is `ext` (thin-provisioned) by default. Set `sr-type="lvm"` to get a thick-provisioned LVM SR instead.
 :::
 
 ## Answer file values
@@ -91,7 +93,7 @@ Where type is one of:
 
 `source` defines the location of the installation repository or a Supplemental Pack. There may be multiple 'source' elements.
 
-`driver-source` defines the source of a Supplemental Pack containing device drivers to be loaded by  the installer and included after installation of the main repository. It can be 
+`driver-source` defines the source of a Supplemental Pack containing device drivers to be loaded by the installer and included after installation of the main repository.
 
 Repository formats:
 
@@ -173,7 +175,7 @@ Create primary partitions before installation. Used by XenRT to test preservatio
 
 #### Software RAID
 
-Specifies the target disks and md device for creating a software RAID 1 array. The md device can then be used in `<primary-disk>` below. Nnew in xcp-ng 7.5.0-2 and 7.6.
+Specifies the target disks and md device for creating a software RAID 1 array. The md device can then be used in `<primary-disk>` below. New in XCP-ng 7.5.0-2 and 7.6.
 
 ```xml
   <raid device="dev">
@@ -295,7 +297,7 @@ Specifies the console keymap. Default: `us`.
 
 #### SR type
 
-Local SR type. Default: `lvm`.
+Local SR type. Default: `ext` (XCP-ng 8.3; `lvm` on earlier releases). If the local SR disks have 4K logical blocks, the large-block SR type is used instead. The older `srtype` spelling is deprecated but still works.
 
 ```xml
   <installation sr-type="lvm|ext"?>
@@ -336,4 +338,4 @@ Your answer file can also be used to upgrade your machines. Here is an example:
 </installation>
 ```
 
-As you can see, `mode` is set on `upgrade`. Be sure to target the right disk to search for previous existing installations (here `sda`). Do NOT specify `primary-disk` and `guest-disk`!
+As you can see, `mode` is set to `upgrade`. Be sure to target the right disk to search for previous existing installations (here `sda`). Do NOT specify `primary-disk` and `guest-disk`!

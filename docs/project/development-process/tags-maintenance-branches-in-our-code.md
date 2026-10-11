@@ -43,7 +43,7 @@ Special case: if VERSION and XCPNGVERSION are always the same (example: `xcp-ng-
 
 ## 2. We are downstream {#2-we-are-downstream}
 
-We do not decide how and when new versions and released, and how they are numbered. So we need to somewhat mix the upstream versioning with our own branch names and versioning. For maintenance branches and tags related to an XCP-ng release, notably.
+We do not decide how and when new versions are released, and how they are numbered. So we need to somewhat mix the upstream versioning with our own branch names and versioning. For maintenance branches and tags related to an XCP-ng release, notably.
 
 Examples: `sm`…
 
@@ -58,7 +58,7 @@ Common case:
   * If we really need to diverge a little from upstream, on a temporary dev branch `dev-NEXTXCPNGVERSION` (e.g. `dev-8.3`), based either on the current maintenance branch, or on a branch that is likely to be the one used in the next release (we don't always know!)
   * Next maintenance branch directly (e.g. `1.45.0-8.3`) once the upstream SRPMs have been released
 
-If for any reason we decide to release a newer version of the software as a maintenance update, then we'd create new tag and a new maintenance branch that match `UPSTREAMVERSION` (that changes) and `XCPNGVERSIONFULL` (that doesn't change)
+If for any reason we decide to release a newer version of the software as a maintenance update, then we'd create a new tag and a new maintenance branch that match `UPSTREAMVERSION` (that changes) and `XCPNGVERSIONFULL` (that doesn't change)
 
 Special case: if the upstream version and the XCP-ng version are always the same, then:
   * Tags: `vXCPNGVERSIONFULL` (`v8.2.0`)
@@ -97,9 +97,9 @@ but it's crucial that these patches ultimately be awaiting upstream acceptance.
 
 #### How to manage patches?
 
-- Create a new `UPSTREAMVERSION-XCPNGVERSION` branch (example: `v24.39.1-8.3`).
+- Create a new `vUPSTREAMVERSION-XCPNGVERSION` branch (example: `v26.1.12-8.3`). Unlike other repositories, xapi maintenance branches keep the `v` prefix of the upstream tag.
 - To update either the upstream version or the xcpng version, rebase or cherry-pick your commits
-from the current maintenance branch for the previous release (e.g, `v24.19.2-8.3`), and
+from the current maintenance branch for the previous release (e.g, `v26.1.11-8.3`), and
 resolve conflicts carefully. Reorganize commits as needed to maintain a consistent history.
 Of course, drop any patches that have already been merged upstream.
 - For example, if the upstream version changes:
@@ -156,7 +156,7 @@ A way to achieve that is through `git rebase -i -r` (aka `--interactive --rebase
 Care should be taken to:
 * getting each topic branch merged only once (in the case where new commits were piled on a topic during the previous version's lifetime), and get the relevant piled commits squashed when applicable
 * review the `rebase` instruction sheet to avoid unwanted rebasing of each topic branch -- whether we want to change a given topic branch's base depends on the status of the matching pull-request
-* pushing those topic branches we did want to rebase, so the uptream PR gets our new version
+* pushing those topic branches we did want to rebase, so the upstream PR gets our new version
 
 #### Tagging
 

@@ -16,10 +16,10 @@ Keywords are:
 * VDI: a virtual disk
 * ISO SR: special SR only for ISO files (in read only)
 
-Please take into consideration, that Xen API (XAPI) via their storage module (`SMAPI`) is doing all the heavy lifting on your storage. **You don't need to format drives manually**.
+Note that XAPI, via its storage module (`SMAPI`), is doing all the heavy lifting on your storage. **You don't need to format drives manually**.
 
 :::tip
-We encourage people to use file based SR (local ext, NFS, XOSTOR…) because it's easier to deal with. If you want to know more, read the rest.
+We encourage people to use file based SR (local ext, NFS…) because it's easier to deal with. If you want to know more, read the rest.
 :::
 
 ## Storage types {#storage-types}
@@ -43,7 +43,7 @@ There are storage types that are officially supported, and others that are provi
     <th>Officially Supported</th>
   </tr>
   <tr>
-    <td rowspan="10">file based</td>
+    <td rowspan="9">file based</td>
     <td>Local EXT</td>
     <td>X</td>
     <td></td>
@@ -66,12 +66,6 @@ There are storage types that are officially supported, and others that are provi
     <td>X</td>
     <td></td>
     <td>X (use with caution)</td>
-  </tr>
-  <tr>
-    <td>XOSTOR</td>
-    <td>X</td>
-    <td>X</td>
-    <td>X</td>
   </tr>
   <tr>
     <td>ZFS</td>
@@ -104,7 +98,7 @@ There are storage types that are officially supported, and others that are provi
     <td>**No. Provided as-is**</td>
   </tr>
   <tr>
-    <td rowspan="6">block based</td>
+    <td rowspan="7">block based</td>
     <td>Local LVM</td>
     <td></td>
     <td></td>
@@ -119,6 +113,12 @@ There are storage types that are officially supported, and others that are provi
   <tr>
     <td>HBA</td>
     <td></td>
+    <td>X</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>XOSTOR</td>
+    <td>X</td>
     <td>X</td>
     <td>X</td>
   </tr>
@@ -148,7 +148,7 @@ Cost of thick provisioning is relatively high when you do snapshots (used for ba
 
 ### Local
 
-A local SR is using a disk or a partition of your local disk, to create a space for your VM disks. Local LVM will use logical volumes, whereas Local EXT will create an `ext4` filesystem and put `.vhd` files in it.
+A local SR is using a disk or a partition of your local disk, to create a space for your VM disks. Local LVM will use logical volumes, whereas Local EXT will create an `ext4` filesystem and put `.vhd` (or `.qcow2`) files in it.
 
 :::tip
 The concept is simple: tell XCP-ng which disk or partition you want to use, and it will do everything for you! Don't do anything yourself (no need to create a logical volume or a filesystem).
@@ -158,7 +158,7 @@ The concept is simple: tell XCP-ng which disk or partition you want to use, and 
 As XCP-ng will handle everything for you, be aware that the device or partition will be formatted.
 
 * Don't create a SR over a device or partition that contains important data.
-* If you want to attach an existing SR to your pool, don't create a new local SR over it, else your virtual disks will be deleted. Instead, use the `xe sr-introduce` command. Further explanation can be found in the official XenServer documentation: https://support.citrix.com/external/article?articleUrl=CTX121896-how-to-introduce-a-local-storage-repository-in-xenserver
+* If you want to attach an existing SR to your pool, don't create a new local SR over it, else your virtual disks will be deleted. Instead, use the `xe sr-introduce` command, as explained in [Reattach a forgotten SR](manage-srs.md#reattach-a-forgotten-sr).
 :::
 
 In [Xen Orchestra](../management#manage-at-scale):
@@ -227,7 +227,7 @@ For requirements and step-by-step installation instructions, see [Fibre Channel 
 
 Shared, thin-provisioned storage.
 
-XOSTOR is an hyperconvergence solution. In short, your local storage are combined into a big shared storage.
+XOSTOR is a hyperconverged storage solution. In short, your hosts' local storage is combined into a big shared storage.
 
 The detailed documentation is available on [this dedicated page](../xostor/xostor.md).
 
@@ -238,7 +238,7 @@ The detailed documentation is available on [this dedicated page](../xostor/xosto
 **ZFS storage integration is offered as-is** and does not come with official support.
 :::
 
-Local, thin-provisioned. Available since XCP-ng 8.2.
+Local, thin-provisioned.
 
 :::tip
 [Additional package](../management/additional-packages) required and available in our repositories: `zfs`.
@@ -335,12 +335,12 @@ Via `xe` CLI for a local XFS SR (where `sdaX` is a partition, but it can be the 
 xe sr-create host-uuid=<host UUID> type=xfs content-type=user name-label="Local XFS" device-config:device=/dev/sdaX
 `}</Terminal>
 
-### Glusterfs
+### GlusterFS
 
-Shared, thin-provisioned storage. Available since XCP-ng 8.2.
+Shared, thin-provisioned storage.
 
 :::warning
-**Glusterfs storage integration is offered as-is** and does not come with official support.
+**GlusterFS storage integration is offered as-is** and does not come with official support.
 :::
 
 :::tip
@@ -349,13 +349,13 @@ Shared, thin-provisioned storage. Available since XCP-ng 8.2.
 
 You can use this driver to connect to an existing [Gluster storage](https://docs.gluster.org/en/latest/) volume and configure it as a shared SR for all your hosts in the pool. For example, a Gluster storage with 3 nodes (`192.168.1.11`, `192.168.1.12` and `192.168.1.13`) and a volume name called `glustervolume` will be thin provisioned with the command:
 
-<Terminal shell title="root@xcp-ng-host — Glusterfs">{`
+<Terminal shell title="root@xcp-ng-host — GlusterFS">{`
 xe sr-create content-type=user type=glusterfs name-label=GlusterSharedStorage shared=true device-config:server=192.168.1.11:/glustervolume device-config:backupservers=192.168.1.12:192.168.1.13
 `}</Terminal>
 
 ### CephFS
 
-Shared, thin-provisioned storage. Available since XCP-ng 8.2.
+Shared, thin-provisioned storage.
 
 :::warning
 - **CephFS storage integration is offered as-is** and does not come with official support.
@@ -368,7 +368,7 @@ Error code: SR_BACKEND_FAILURE_47
 Error parameters: , The SR is not available [opterr=ceph is not installed],
 ```
 
-Since most of the Centos repositories have been deprecated, you need to add the Vault repository before installing.
+Since most of the CentOS repositories have been deprecated, you need to add the Vault repository before installing.
 
 <Terminal title="CephFS">{`
 nano /etc/yum.repos.d/CentOS-Vault.repo
@@ -411,14 +411,14 @@ yum install ceph-common --enablerepo=centos-ceph-nautilus,Vault-base
 
 Create `/etc/ceph/admin.secret` with your access secret for CephFS.
 
-<Terminal title="install">{`
+<Terminal title="/etc/ceph/admin.secret">{`
 cat /etc/ceph/admin.secret
 AQBX21dfVMJtBhAA2qthmLyp7Wxz+T5YgoxzeQ==
 `}</Terminal>
 
 Now you can create the SR where `server` is your mon ip.
 
-<Terminal shell title="root@xcp-ng-host — cat /etc/ceph/admin.secret">{`
+<Terminal shell title="root@xcp-ng-host — CephFS">{`
 xe sr-create type=cephfs name-label=ceph device-config:server=172.16.10.10 device-config:serverpath=/xcpsr device-config:options=name=admin,secretfile=/etc/ceph/admin.secret
 `}</Terminal>
 
@@ -430,7 +430,7 @@ xe sr-create type=cephfs name-label=ceph device-config:server=172.16.10.10 devic
 
 ### MooseFS
 
-Shared, thin-provisioned storage. Available since XCP-ng 8.2.
+Shared, thin-provisioned storage.
 
 MooseFS is a fault-tolerant, highly available, highly performing, scaling-out, network distributed file system.  It is POSIX compliant and acts like any other Unix-like file system.
 SR driver was contributed directly by MooseFS Development Team.
@@ -521,7 +521,7 @@ You can use this to connect to an existing Ceph storage over RBD, and configure 
 
 Known issue: this SR is not allowed to be used for HA state metadata due to LVM backend restrictions within XAPI drivers, so if you want to use HA, you will need to create another type of storage for HA metadata
 
-Since most of the Centos repositories have been deprecated, you need to add the Vault repository before installing.
+Since most of the CentOS repositories have been deprecated, you need to add the Vault repository before installing.
 
 <Terminal title="Ceph RBD">{`
 nano /etc/yum.repos.d/CentOS-Vault.repo
@@ -564,7 +564,7 @@ yum install ceph-common --enablerepo=centos-ceph-nautilus,Vault-base
 
 Create `/etc/ceph/keyring` with your access secret for Ceph.
 
-<Terminal title="install">{`
+<Terminal title="/etc/ceph/keyring">{`
 cat /etc/ceph/keyring
 [client.admin]
 key = YOUR-SECRET-KEY
@@ -572,7 +572,7 @@ key = YOUR-SECRET-KEY
 
 Create `/etc/ceph/ceph.conf` as your matching setup.
 
-<Terminal title="cat /etc/ceph/keyring">{`
+<Terminal title="/etc/ceph/ceph.conf">{`
 cat /etc/ceph/ceph.conf
 [global]
 mon_host = mon-ip-1:6789,mon-ip-2:6789,mon-ip-3:6789
@@ -583,7 +583,7 @@ keyring = /etc/ceph/keyring
 
 Create the RBD image.
 
-<Terminal shell title="install">{`
+<Terminal shell title="Create the RBD image">{`
 rbd create --size 300G --image-feature layering pool/xen1
 `}</Terminal>
 
@@ -596,7 +596,7 @@ rbd map pool/xen1
 
 To automatically mount the RBD image, you can configure the `/etc/rbdmap` ( see [RBDMap documentation ](https://docs.ceph.com/en/reef/man/8/rbdmap/) ) as follows:
 
-<Terminal title="Map it to all xen hosts in your pool">{`
+<Terminal title="/etc/ceph/rbdmap">{`
 cat /etc/ceph/rbdmap
 # RbdDevice		Parameters
 pool/xen1
@@ -604,7 +604,7 @@ pool/xen1
 
 And then, enable the `rbdmap` service to mount automatically the image at boot.
 
-<Terminal shell title="RbdDevice		Parameters">{`
+<Terminal shell title="Enable rbdmap">{`
 systemctl enable --now rbdmap
 `}</Terminal>
 
@@ -631,7 +631,7 @@ This configuration must be re-applied after each [XCP-ng Upgrade](/installation/
 
 Create the CephRBD SR.
 
-<Terminal shell title="root@xcp-ng-host — RbdDevice		Parameters">{`
+<Terminal shell title="root@xcp-ng-host — Create the CephRBD SR">{`
 # create a shared LVM
 xe sr-create name-label='CEPH' shared=true device-config:device=/dev/rbd/rbd/xen1 type=lvm content-type=user
 `}</Terminal>
@@ -650,13 +650,13 @@ For the full discussion about Ceph in XCP-ng, see this forum thread: [https://xc
 Largeblock SR is a workaround for 4KiB disks not working on VDI creation with normal SR types.
 :::
 
-To create a LargeBlock SR, the same parameters needed for a EXT SR are needed with the SR type changed to `largeblock`.
+To create a LargeBlock SR, the same parameters needed for an EXT SR are needed with the SR type changed to `largeblock`.
 
 <Terminal shell title="root@xcp-ng-host — LargeBlock SR">{`
 xe sr-create host-uuid=<host UUID> type=largeblock content-type=user name-label="Local largeblock" device-config:device=/dev/sdaX
 `}</Terminal>
 
-The largeblock SR creates a translation layer to align the device on 512 sector size using a loop device and creates a EXT SR on this emulated device.
+The largeblock SR creates a translation layer to align the device on 512 sector size using a loop device and creates an EXT SR on this emulated device.
 It's needed to work around an issue with VHD alignment that creates an error on VHD creation on the native 4KiB device.
 
 ## ISO SR {#iso-sr}
@@ -669,7 +669,7 @@ You might be wondering how to upload an ISO. Unlike other solutions, you need to
 
 First, you need to create the NFS or SMB Share. There are plenty of options: from dedicated NAS hardware solutions and dedicated software solutions such as TrueNAS, to manual administration on any Linux/unix or Windows system.
 
-You can find some tutorials on the internet to create an NFS Server, for exemple here [https://wiki.linux-nfs.org/wiki/index.php/NFS_Howto](https://wiki.linux-nfs.org/wiki/index.php/NFS_Howto) or here [https://wiki.archlinux.org/title/NFS](https://wiki.archlinux.org/title/NFS)
+You can find some tutorials on the internet to create an NFS Server, for example here [https://wiki.linux-nfs.org/wiki/index.php/NFS_Howto](https://wiki.linux-nfs.org/wiki/index.php/NFS_Howto) or here [https://wiki.archlinux.org/title/NFS](https://wiki.archlinux.org/title/NFS)
 
 Then, in Xen Orchestra go into "New/Storage" and select "ISO SR":
 
@@ -679,7 +679,7 @@ Then, in Xen Orchestra go into "New/Storage" and select "ISO SR":
 
 From the CLI:
 
-1. Create a directory on the local filesystem to storage your ISOs
+1. Create a directory on the local filesystem to store your ISOs
 2. Copy/move ISOs to this new location
 3. Create the ISO SR using xe sr-create
 4. You can add or update ISOs later by placing them into the directory you created in step 1
@@ -708,7 +708,7 @@ On Xen Orchestra, go into "New/Storage" and select "ISO SR"
 ![Adding a local ISO SR to a host via XO.](https://xcp-ng.org/assets/img/screenshots/createLocalSRISO.png)
 
 :::warning
-A local ISO SR will only be available on the host where it was created. Also, the dom0 filesystem is small with only about 15gb of space free for extra storage!
+A local ISO SR will only be available on the host where it was created. Also, the dom0 filesystem is small with only about 15 GB of space free for extra storage!
 :::
 
 That's it!
@@ -719,7 +719,7 @@ Don't forget to rescan your SR after adding, changing, or deleting ISO files. Re
 
 ## Storage API {#storage-api}
 
-Current storage stack on XCP-ng is called `SMAPIv1`. The VHD format is used, which has a maximum file size limitation of 2TiB. This means that when using this format your VM disk can't be larger than 2TiB.
+Current storage stack on XCP-ng is called `SMAPIv1`. VHD is the default disk format, with a maximum size of 2040 GiB per disk. Since 2026-05-05, XCP-ng 8.3 also supports the QCOW2 format on this same stack, with disks up to 16,381 GiB on most SR types (except XOSTOR and SMB). On SRs that support QCOW2 (with the default preferred image formats), disks larger than 2040 GiB are created as QCOW2 automatically. See the [QCOW2 FAQ](qcow2_faq.md) for details.
 
 ### Why use VHD format?
 
@@ -732,7 +732,11 @@ Mostly for historical reasons. When standardization on [VHD](https://en.wikipedi
 
 ### Using RAW format
 
-Alternatively, you can decide to use a disk without 2TiB limitation, thanks to RAW format. However, the price to pay is to lose all VHD features.
+:::tip
+To get disks larger than 2040 GiB while keeping snapshots, delta backup and live storage migration, use [QCOW2](qcow2_faq.md). RAW remains an option for special cases.
+:::
+
+Alternatively, you can use a disk without the VHD size limit, thanks to RAW format. However, the price to pay is to lose all VHD features.
 
 To create a large VDI on a file based SR, it's trivial, for example:
 
@@ -752,13 +756,13 @@ You won't be able to live migrate storage on this disk or snapshot it anymore. O
 
 ### SMAPIv3: the future
 
-`SMAPIv1` is the historical storage interface, and now a big spaghetti monster. That's why Citrix decided to create a new one, called `SMAPIv3`: it's far more flexible, and also support (partially) the `qcow2` format. This format has the same concepts as VHD, but without its limitations.
+`SMAPIv1` is the historical storage interface, and its code base has become hard to maintain. `SMAPIv3` is a newer storage interface: far more flexible and storage agnostic.
 
-Also, the storage API is far more agnostic and the code is better. So what's the catch? Problem is there's no Open Source implementation of `SMAPIv3`, also the current API state isn't really complete (doesn't support a lot of features). However, XCP-ng team is working on it too, because it's clearly the future!
+QCOW2 support does not depend on it: QCOW2 runs on the current `SMAPIv1` stack. The XCP-ng team is working on `SMAPIv3`, and a future iteration of XOSTOR built on it will bring large disks to XOSTOR (see [No large disks on XOSTOR?](qcow2_faq.md#no-large-disks-on-xostor)).
 
 ## Coalesce {#coalesce}
 
-Coalesce process is an operation happening in your hosts as soon a snapshot is removed.
+Coalesce process is an operation happening in your hosts as soon as a snapshot is removed.
 
 When you make a snapshot, a "base copy" is created (in read only), the "active" disk will live its own life, same for the freshly created snapshot. Example here: A is the parent, B the current/active disk and C is the snapshot:
 
@@ -776,9 +780,9 @@ When you make XO backup on regular basis, old/unused snapshots will be removed a
 
 ![On the left (before coalesce), C has been removed, an arrow in the middle indicates the change happening through coalesce, and on the right (after coalesce), parent becomes A+B with active (D) and snapshot (E) points to it.](https://xen-orchestra.com/blog/content/images/2017/05/parent.png)
 
-This process will take some time to finish (especially if you VM stays up and worst if you have a lot of writes on its disks).
+This process will take some time to finish (especially if your VM stays up, and worse if you have a lot of writes on its disks).
 
-**What about creating snapshot (ie call backup jobs) faster than XCP-ng can coalesce?** Well, the chain will continue to grow. And more you have disks to merge, longer it will take.
+**What about creating snapshot (ie call backup jobs) faster than XCP-ng can coalesce?** Well, the chain will continue to grow. And the more disks you have to merge, the longer it takes.
 
 You will hit a wall, 2 options here:
 
@@ -807,4 +811,4 @@ If you want to change how an SR is accessed (for example, if your NFS SR changed
 4. Now you need to edit this `device-config` field with the new values. In our example, I will change my `device-config` from `serverpath: /mnt/xen; server: 192.168.1.2` to `serverpath: /mnt/xen; server: 192.168.1.5` to reflect the new NFS IP. Have this text ready for the next commands.
 5. Remove each of these old PBDs with `xe pbd-destroy uuid=<PBD UUID>`.
 6. Recreate each of them using your new `device-config`, for example here: `xe pbd-create host-uuid=<HOST UUID> sr-uuid=<SR UUID> device-config:server=192.168.1.5 device-config:serverpath=/mnt/xen`. Note the new IP address entered vs the previous PBD configuration.
-7. When you're done and all PBDs are recreated, you can reconnect (in XO, SR view, "reconnect to all hosts" or do a `xe pbd-plug uuid=<PBD UUID` for each of them). Once reconnected, you can start your VMs as if nothing happened.
+7. When you're done and all PBDs are recreated, you can reconnect (in XO, SR view, "reconnect to all hosts" or do a `xe pbd-plug uuid=<PBD UUID>` for each of them). Once reconnected, you can start your VMs as if nothing happened.

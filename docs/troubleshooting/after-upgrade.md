@@ -6,7 +6,7 @@
 * You enabled the maintenance mode and forgot about it.
     * No big deal, just exit maintenance mode :-)
 * The server is still booting.
-    * Take your time and let him boot up :-) this takes sometimes some time, but typically not longer than some minutes.
+    * Take your time and let it boot up :-) this sometimes takes a while, but typically not longer than some minutes.
 * A Storage Repository (SR) could not be attached.
     * Check the corresponding disk(s), network(s) and setting(s). Follow the [3-Step-Guide](../#the-3-step-guide).
 * There is a serious problem.
@@ -54,6 +54,6 @@ To access the backup (with all your tools and modifications) just mount the back
     * update network card firmware
     * update RAID controller / HBA firmware
     * update system firmware
-* Maybe we (or upstream Citrix XenServer) removed/updated something.
+* Maybe we (or upstream XenServer) removed/updated something.
     * Please check our [Hardware Compatibility List (HCL)](../../installation/hardware).
     * Follow the [3-Step-Guide](../#the-3-step-guide).

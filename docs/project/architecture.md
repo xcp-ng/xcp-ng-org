@@ -71,16 +71,16 @@ This page contains advanced info regarding XCP-ng architecture.
   <g fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)">
     <rect x="470" y="56" width="100" height="30" rx="12"/>
   </g>
-  <text x="520" y="75" fontSize="12.5" fill="#c6d2e1" textAnchor="middle">VHD data</text>
+  <text x="520" y="75" fontSize="12.5" fill="#c6d2e1" textAnchor="middle">disk data</text>
   <text x="531" y="104" fontSize="11.5" fill="#7a8699">physical storage</text>
 </svg>
 </Schema>
 
 #### `qemu-dm` and `tapdisk` at startup
 
-When a VM starts, whether it is a HVM or a PV guest, it is always started as a HVM. So during the boot process, the device of the VM is emulated. The process for mapping a virtual device from a host to a guest is called `qemu-dm`. There is one instance per disk like `tapdisk`, another process used to read/write in a VHD file the disk data. `qemu-dm` reads and writes to a `/dev/blktap/blktapX` host device, which is created by tapdisk and is managed by a driver in Dom 0: `blktap`.
+When a VM starts, whether it is a HVM or a PV guest, it is always started as a HVM. So during the boot process, the device of the VM is emulated. The process for mapping a virtual device from a host to a guest is called `qemu-dm`. There is one instance per disk like `tapdisk`, another process used to read/write the disk data in the VHD (or QCOW2) file. `qemu-dm` reads and writes to a `/dev/blktap/blktapX` host device, which is created by tapdisk and is managed by a driver in Dom 0: `blktap`.
 
-For each read/write in the VM disk, requests pass through an emulated driver, then `qemu-dm` and finally they are sent to `blktap`; since `tapdisk` is the creator/manager of the `blktap` device, it handles requests by reading them through a shared ring. The requests are consumed by reading or writing in the VHD file representing the disk of the VM, the `libaio` is used to access/modify the physical blocks. Finally `tapdisk` responds to `qemu-dm` by writing responses in the same ring.
+For each read/write in the VM disk, requests pass through an emulated driver, then `qemu-dm` and finally they are sent to `blktap`; since `tapdisk` is the creator/manager of the `blktap` device, it handles requests by reading them through a shared ring. The requests are consumed by reading or writing in the VHD (or QCOW2) file representing the disk of the VM, the `libaio` is used to access/modify the physical blocks. Finally `tapdisk` responds to `qemu-dm` by writing responses in the same ring.
 
 #### tapdisk & PV guests
 
@@ -107,7 +107,7 @@ XenBus is a kernel API allowing PV drivers to communicate between domains. It's 
 
 For implementation, you can take a look at: `drivers/xen/xenbus/xenbus_xs.c` and `drivers/xen/xenbus/xenbus_client.c`.
 
-Generally the communication is made between a `front` and `back` driver. The front driver is in the `DomU`, and the back in `Dom0`. For example it exists a `xen-blkfront.c` driver in the PV guest and a `blkback.c` driver in the host to support disk devices. This concept is called `split-driver model`. It's used for the network layer too.
+Generally the communication is made between a `front` and `back` driver. The front driver is in the `DomU`, and the back in `Dom0`. For example, there is a `xen-blkfront.c` driver in the PV guest and a `blkback.c` driver in the host to support disk devices. This concept is called `split-driver model`. It's used for the network layer too.
 
 Note: Like said in the top section, it's not always the case but we can avoid usage of a back driver, we can use a process in the host user space. In the case of XCP-ng, `tapdisk`/`tapback` are used instead of `blkback` to talk with `blkfront`.
 
@@ -247,7 +247,7 @@ The starting point of the initialization is in `xenopsd`:
 let add_device ~xs device backend_list frontend_list private_list
       xenserver_list =
     Mutex.execute device_serialise_m (fun () ->
-        (* ... Get backend end frontend paths... *)
+        (* ... Get backend and frontend paths... *)
         Xs.transaction xs (fun t ->
             ( try
                 ignore (t.Xst.read frontend_ro_path) ;
@@ -272,7 +272,7 @@ let add_device ~xs device backend_list frontend_list private_list
           (* ... *)
 ```
 
-One of the role of `xenopsd` here is to create VIFs and VBDs to boot correctly a VM. This is the output given when a new device must be added:
+One of the roles of `xenopsd` here is to create VIFs and VBDs to boot correctly a VM. This is the output given when a new device must be added:
 
 ```
 /var/log/xensource.log:36728:Nov 24 16:40:24 xcp-ng-lab-1 xenopsd-xc: [debug||14 |Parallel:task=5.atoms=1.(VBD.plug RW vm=6f25b64e-9887-7017-02cc-34e79bfae93d)|xenops] adding device  B0[/local/domain/0/backend/vbd3/1/768]  F1[/local/domain/1/device/vbd/768]  H[/xapi/6f25b64e-9887-7017-02cc-34e79bfae93d/hotplug/1/vbd3/768]
@@ -290,7 +290,7 @@ After that the real connection can start, it's the goal of `static inline int re
 
 1. A watch is added on `<Frontend path>/state` by the backend to be notified when the state is updated. Same idea in the frontend code, a watch is added on `<Backend path>/state`.
 
-2. `tapback` is waiting for the hotplug scripts completion of the guest. After that it can switch to `XenbusStateInitWait` state. The frontend can then read the parameters like `"max-ring-page-order"` and responds using the store. `blkfront` creates a shared ring buffer using `xenbus_grant_ring`, so under the hood memory pages are shared between the `DomU` and `Dom0` to use this ring. Also an event channel is created by the frontend via `xenbus_alloc_evtchn` to be notified when data is written in the ring. Finally `blkfront` can update its state to: `XenbusStateInitialised`.
+2. `tapback` is waiting for the hotplug scripts completion of the guest. After that it can switch to `XenbusStateInitWait` state. The frontend can then read the parameters like `"max-ring-page-order"` and respond using the store. `blkfront` creates a shared ring buffer using `xenbus_grant_ring`, so under the hood memory pages are shared between the `DomU` and `Dom0` to use this ring. Also an event channel is created by the frontend via `xenbus_alloc_evtchn` to be notified when data is written in the ring. Finally `blkfront` can update its state to: `XenbusStateInitialised`.
 
 3. After the last state update, `tapback` can finalize the bus connection in `xenbus_connect`: the grant references of the shared ring and event channel port are fetched then it opens a `blkif` connection using the details given by the frontend.
 
@@ -302,9 +302,9 @@ References and interesting links:
 
 ### Xen Grant table
 
-The grant table is a mechanism to share memory between domains: it's essentially used in this part to share data between a PV driver of a `DomU` and the `Dom0`. Each domain has its own grant table and it can give an access to its memory pages to  another domain using Write/Read permissions. Each entry of the table are identified by a `grant reference`, it's a simple integer which indexes into the grant table.
+The grant table is a mechanism to share memory between domains: it's essentially used in this part to share data between a PV driver of a `DomU` and the `Dom0`. Each domain has its own grant table and it can give an access to its memory pages to  another domain using Write/Read permissions. Each entry of the table is identified by a `grant reference`, it's a simple integer which indexes into the grant table.
 
-Normally the grant table is used in the kernel space, but it exists a `/dev/xen/gntdev` device used to map granted pages in user space. It's useful to implement Xen backends in userspace for qemu and tapdisk: we can write and read in the blkif ring with this helper.
+Normally the grant table is used in the kernel space, but there is a `/dev/xen/gntdev` device used to map granted pages in user space. It's useful to implement Xen backends in userspace for qemu and tapdisk: we can write and read in the blkif ring with this helper.
 
 :::tip
 Xen documentation:
@@ -315,7 +315,7 @@ Xen documentation:
 
 #### Shared memory details
 
-Like said in the previous part, when the frontend and backend are connected using `XenBus`, a `blkif` connection is created. We know the ring is used in the `tapdisk` case to read and write requests on a VHD file. It is created directly in `blkfront` using a `__get_free_pages` call to allocate a memory pointer, after that, this memory area is shared with `Dom0` using this call:
+Like said in the previous part, when the frontend and backend are connected using `XenBus`, a `blkif` connection is created. We know the ring is used in the `tapdisk` case to read and write requests on a VHD (or QCOW2) file. It is created directly in `blkfront` using a `__get_free_pages` call to allocate a memory pointer, after that, this memory area is shared with `Dom0` using this call:
 
 ```C
 // Note: For more details concerning the ring initialization, you can
@@ -422,7 +422,7 @@ For more information concerning event channels: [https://xenbits.xenproject.org/
 
 #### Steps during write from guest to host
 
-1. A user process in the guest execute a write call on the virtual device.
+1. A user process in the guest executes a write call on the virtual device.
 
 2. The request is sent to the `blkfront` driver. At this moment the driver must associate a grant reference to the guest buffer address using this function (more precisely gfn to which the address belongs):
 
@@ -465,11 +465,11 @@ The persistent grants are not used in `tapdisk`.
 
 3. The grant reference is then added to the ring, and the backend is notified.
 
-4. In tapdisk when the event channel is notified, the request is read and the guest segments are copied into a local buffer using `ioctl` with a `IOCTL_GNTDEV_GRANT_COPY` request. So before writing to the VHD file we must **make a copy** of the data. Another possible solution is to use the `IOCTL_GNTDEV_MAP_GRANT_REF` + a `mmap` call to avoid a copy, but **it is not necessarily faster**.
+4. In tapdisk when the event channel is notified, the request is read and the guest segments are copied into a local buffer using `ioctl` with a `IOCTL_GNTDEV_GRANT_COPY` request. So before writing to the VHD (or QCOW2) file we must **make a copy** of the data. Another possible solution is to use the `IOCTL_GNTDEV_MAP_GRANT_REF` + a `mmap` call to avoid a copy, but **it is not necessarily faster**.
 
 5. Finally we can write the request and notify the frontend.
 
-The read steps are similar, the main difference is that we must copy from the `Dom0` VHD file to the `guest` buffer.
+The read steps are similar, the main difference is that we must copy from the `Dom0` VHD (or QCOW2) file to the `guest` buffer.
 
 ## API {#api}
 
@@ -507,7 +507,7 @@ XAPI is a toolstack split in two parts: `xenopsd` and XAPI itself (see the diagr
   <g fontSize="10" fill="#c6d2e1" textAnchor="middle">
     <text x="85" y="76">xe (CLI)</text>
     <text x="195" y="76">Xen Orchestra</text>
-    <text x="85" y="108">XCP-ng Center</text>
+    <text x="85" y="108">XO Lite</text>
     <text x="195" y="108">CloudStack</text>
     <text x="341" y="76">virsh</text>
     <text x="443" y="76">OpenStack</text>
@@ -576,7 +576,7 @@ XCP-ng is meant to use XAPI. Don't use it with `xl` or anything else!
   </g>
   <g fontSize="10" fill="#c6d2e1" textAnchor="middle">
     <text x="185" y="62">Xen Orchestra</text>
-    <text x="335" y="62">XCP-ng Center</text>
+    <text x="335" y="62">XO Lite</text>
     <text x="485" y="62">OpenStack</text>
     <text x="635" y="62">CloudStack</text>
     <text x="765" y="62">xe CLI</text>
@@ -1011,7 +1011,7 @@ In XCP-ng, all networking is managed by OVS:
 - `ovsdb-server` stores and applies OVS configuration.
 - `ovs-vswitchd` is the main OVS daemon, managing each bridge’s backend and flow table.
 
-The bonds and bridges are all OVS ones. XCP-ng does not use linux bridges or bonds. For example, a `bond0` device won't appear in `ip link` as it only exists as a port of an OVS bridge. To have an ip used for it, it will have to be set on the matching bridge interface.
+The bonds and bridges are all OVS ones. XCP-ng does not use Linux bridges or bonds. For example, a `bond0` device won't appear in `ip link` as it only exists as a port of an OVS bridge. To assign an IP to it, it will have to be set on the matching bridge interface.
 
 Almost all configuration is handled through XAPI, ensuring pool-wide consistency. Only Xen Orchestra’s SDN Controller plugin interacts directly with `ovsdb-server`, `ovs-vswitchd` for Global private network and traffic rules respectively. These exceptions are detailed in later sections.
 
@@ -1020,7 +1020,7 @@ Almost all configuration is handled through XAPI, ensuring pool-wide consistency
 The core concepts are introduced on the [Networking](../../networking) page. Here, we explain their operation and underlying mechanisms. XAPI stores the configuration and relationships for these objects, then configures OVS on each host in the pool.
 
 :::tip
-Configuration is stored on the master’s XAPI, which then propagates it to pool members.
+Configuration is stored on the pool coordinator’s XAPI, which then propagates it to pool members.
 :::
 
 #### Networks
@@ -1083,6 +1083,7 @@ Networking in XCP-ng centers on “networks”, each backed by an OVS bridge on 
 Two key points:
 - If no VM on a host uses a network, its bridge is not created, and the PIF appears “Disconnected” in Xen Orchestra.
 - The PIF is not forcibly disconnected if no more VMs use it.
+
 This is expected and does not cause any issue.
 :::
 
@@ -1158,7 +1159,7 @@ Additionally, `ovs-vsctl show` does not display it as a separate bridge, but ins
 
 Although its ports are added to `xenbr0` it does have a list of its own ports:
 
-<Terminal title="ovs-ofctl dump-flows xapi0">{`
+<Terminal title="ovs-vsctl list-ports xapi9">{`
 ovs-vsctl list-ports xapi9
 vif20.1
 `}</Terminal>
@@ -1256,23 +1257,23 @@ sequenceDiagram
 XAPI flow:
 ```mermaid
 sequenceDiagram
-   participant xapi master
+   participant xapi coordinator
    participant xapi supporter
    participant xapi-db
    participant message-switch
    participant xcp-networkd
 
-   Note left of xapi master: API call received
-   xapi master->>message-switch: request to create network
+   Note left of xapi coordinator: API call received
+   xapi coordinator->>message-switch: request to create network
    message-switch->>xcp-networkd: forward request
    Note right of xcp-networkd: OVS commands
    xcp-networkd->>message-switch: network created
-   message-switch->>xapi master: network created
-   xapi master->>xapi-db: store network information
-   xapi master->>xapi supporter: replicate network
+   message-switch->>xapi coordinator: network created
+   xapi coordinator->>xapi-db: store network information
+   xapi coordinator->>xapi supporter: replicate network
    Note right of xapi supporter: local msg-switch&networkd
-   xapi supporter->>xapi master: network created
-   xapi master->>xapi-db: store information
+   xapi supporter->>xapi coordinator: network created
+   xapi coordinator->>xapi-db: store information
    
 ```
 
@@ -1294,8 +1295,8 @@ sequenceDiagram
 
 To simplify the diagram, names have been shortened:
 - XO SDN refers to XO and its SDN Controller plugin.
-- XAPI center is the master XAPI on the central host.
-- XAPIs are the master XAPI instances on other pools.
+- XAPI center is the pool coordinator XAPI on the central host.
+- XAPIs are the pool coordinator XAPI instances on other pools.
 - OVS refers to OVS on each host.
 
 ```mermaid

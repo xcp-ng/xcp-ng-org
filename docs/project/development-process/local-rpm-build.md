@@ -6,20 +6,49 @@ sidebar_position: 7
 
 How to build RPMs locally.
 
-Koji, the build system, is used only for official builds or update candidates. For daily development or community builds, we provide a simpler build environment using docker.
+Koji, the build system, is used only for official builds or update candidates. For daily development or community builds, we provide a simpler build environment based on containers.
 
 ## `xcp-ng-build-env` {#xcp-ng-build-env}
-We provide a build environment that can run locally on your computer: [https://github.com/xcp-ng/xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env). It revolves around docker containers and a few convenience scripts. This is what we use for development, before we send the actual changes to our official build system, `koji`.
+We provide a build environment that can run locally on your computer: [https://github.com/xcp-ng/xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env). It consists of container images (one per XCP-ng release) and a command line tool, `xcp-ng-dev`, that starts a container with the right options. This is what we use for development, before we send the actual changes to our official build system, `koji`.
+
+The container images reproduce the build environment of an XCP-ng release: the CentOS base, the XCP-ng RPM repositories for that release, and the usual RPM build tools. Prebuilt images are published on the GitHub container registry as `ghcr.io/xcp-ng/xcp-ng-build-env:<version>`. Use `ghcr.io/xcp-ng/xcp-ng-build-env:8.3` for XCP-ng 8.3.
 
 ## Guide to local RPM rebuild {#guide-to-local-rpm-rebuild}
-With some prior knowledge about development and RPM packaging, the documentation of [https://github.com/xcp-ng/xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env) should be enough to get you started. However, in what follows, we provide a step by step guide for anyone to become accustomed to the process.
+With some prior knowledge about development and RPM packaging, the documentation of [https://github.com/xcp-ng/xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env) should be enough to get you started. The following steps walk you through the whole process for XCP-ng 8.3.
 
 ### Requirements
 
-* Docker. There are plenty of guides on the internet for your specific OS, so we won't cover this part here.
-* A local clone of [https://github.com/xcp-ng/xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env).
-* Container images built using its `build.sh` script. One per XCP-ng release. Example: `./build.sh 8.2` if your target is XCP-ng 8.2.
-* [git-lfs](https://git-lfs.github.com/). It is required to be able to fetch the RPM sources from our repositories at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/).
+* Docker or Podman. If both are installed, `xcp-ng-dev` uses Docker. To force one of them, set the `XCPNG_OCI_RUNNER` environment variable to `docker` or `podman`.
+* [git-lfs](https://git-lfs.com/). It is required to fetch the source tarballs from our repositories at [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/). Without it, the build can't find the sources.
+* The `xcp-ng-dev` tool, installed with [uv](https://docs.astral.sh/uv/) or [pipx](https://pipx.pypa.io/):
+
+  ```sh
+  uv tool install --from git+https://github.com/xcp-ng/xcp-ng-build-env xcp-ng-dev
+  # or
+  pipx install git+https://github.com/xcp-ng/xcp-ng-build-env
+  ```
+
+  To update it later, run the same `uv` command again, or the `pipx` command with `--force`.
+
+### Get the container image {#get-the-container-image}
+
+`xcp-ng-dev` pulls the image from `ghcr.io` automatically the first time you use it, so there is nothing to do in most cases. To fetch the latest version of the image explicitly:
+
+```sh
+docker pull ghcr.io/xcp-ng/xcp-ng-build-env:8.3
+# or
+podman pull ghcr.io/xcp-ng/xcp-ng-build-env:8.3
+```
+
+You only need to build the image yourself if you work on the build environment itself. Clone the repository, then run its build script with the target XCP-ng version:
+
+```sh
+git clone https://github.com/xcp-ng/xcp-ng-build-env
+cd xcp-ng-build-env
+./container/build.sh 8.3
+```
+
+The script tags the result as `ghcr.io/xcp-ng/xcp-ng-build-env:8.3`, and `xcp-ng-dev` uses that local image instead of pulling one. Docker and Podman store images separately, so build the image with the runner you will use.
 
 ### Get the sources for the RPM
 
@@ -28,28 +57,38 @@ Every RPM built by us has its sources located in a repository at [https://github
 Example: [https://github.com/xcp-ng-rpms/xen](https://github.com/xcp-ng-rpms/xen).
 
 * After double-checking that you have installed `git-lfs`, locally clone the repository you want to work on.
-* Checkout the branch that corresponds to your target. For XCP-ng 8.2, select the `8.2` branch.
+* Checkout the branch that corresponds to your target. For XCP-ng 8.3, select the `8.3` branch.
+
+```sh
+git clone https://github.com/xcp-ng-rpms/xen.git
+cd xen
+git checkout 8.3
+```
 
 ### Build the RPM
 
 You probably want to bring modifications to the RPM definitions before you rebuild it, but let's first focus on getting a successful build. Then we'll allow ourselves to do modifications.
 
-* Start the container. We use the `/path/to/xcp-ng-build-env/run.py` script for that.
-  * Check the supported options with `/path/to/xcp-ng-build-env/run.py --help`
-  * We'll want the following options:
-    * `--branch` (`-b`): this selects the target. Example: `--branch 8.2` for XCP-ng 8.2. The corresponding container image must have been built before you can use it.
-    * `--volume` (`-v`): we need to 'mount' your working directory into the container using this option. Else the container won't have access to any persistent data. Example: `-v ~/workdir:/data` will make your local `~/workdir` directory available to the container under the local `/data` path.
-    * `--rm`: destroy the running container when exited. Can save disk space because you won't have to remember to clean up old containers manually.
-* From within the container:
-  * Enter the directory containing the sources for the RPM you had cloned earlier from [https://github.com/xcp-ng-rpms/](https://github.com/xcp-ng-rpms/). Example: `cd /data/git/xen`.
-  * Install the build dependencies in the container: `sudo yum-builddep SPECS/*.spec -y`.
-  * Build the RPM: `rpmbuild -ba SPECS/*.spec --define "_topdir $(pwd)"`. This `_topdir` strange thing is necessary to make rpmbuild accept to work in the current directory rather than in its default working directory, `~/rpmbuild`.
-* When the build completes, new directories are created: `RPMS/` and `SRPMS/`, that contain the build results. In a container started with the appropriate `-v` switch, the build results will be instantly available outside the container too.
+From the directory that contains the local clone (outside any container), run:
+
+```sh
+xcp-ng-dev container build 8.3 xen/
+```
+
+`8.3` selects the container image, and `xen/` is the directory that contains `SPECS/` and `SOURCES/` (it defaults to the current directory). The tool mounts that directory in the container, installs the build dependencies of the spec file, and runs `rpmbuild`. When the build completes, the results are in the `RPMS/` and `SRPMS/` subdirectories of your clone. Any previous `BUILD`, `BUILDROOT`, `RPMS` or `SRPMS` directories there are removed first.
+
+Useful options (see `xcp-ng-dev container build --help` for the full list):
+* `-n` (`--no-exit`): drop into a shell in the container when the build finishes, instead of exiting. Handy to debug a failed build: the build dependencies are already installed.
+* `-o` (`--output-dir`): copy the RPMs and SRPMs to another directory.
+* `-a` (`--enablerepo`): enable additional XCP-ng repositories before installing build dependencies, for example `--enablerepo=xcp-ng-incoming`.
+* `--define`: pass a macro definition to `rpmbuild`.
+* `-v` (`--volume`): mount additional directories, with the same syntax as `docker run -v`.
+* `--no-rm`: keep the container after it exits (by default, it is destroyed).
+
+To work manually in the build environment, start a shell instead: `xcp-ng-dev container shell 8.3`. Combine it with `-v` to make your working directories available inside the container, for example `-v ~/workdir:/data`.
 
 :::tip
-**The handy `--local` option**: it is a convenience parameter for `run.py` that automates most of the above. From the directory containing the local clone (on your local system, outside the container), simply run: `/path/to/xcp-ng-build-env/run.py -b X.Y --local . --rm -n` and it will automatically download the build dependencies and build the package.
-
-The additional `-n` switch means "don't exit when finished", which will let you use the initialized container (with all the build dependencies already installed) without having to restart from scratch. The local directory is mounted in the container at `~/rpmbuild/`.
+`xcp-ng-dev` can also build with `mock`, the tool Koji uses, instead of a container: `xcp-ng-dev mock build v8.3-incoming xen/`. Here the argument is a Koji tag rather than an image version. This requires `mock` and a configured `koji` client on your machine (see [Koji initial setup](../koji-initial-setup)).
 :::
 
 ### Modify the RPM
@@ -69,6 +108,6 @@ We can't cover every situation here, so we will address a simple case: add patch
 Then follow the same steps as before to build the RPM.
 
 ## An XCP-ng host as a build environment {#an-xcp-ng-host-as-a-build-environment}
-You can also turn any XCP-ng host (preferrably installed in a VM. Don't sacrifice a physical host for that) into a build environment: all the tools and build dependencies are available from the default RPM repositories for XCP-ng, or from CentOS and EPEL repositories.
+You can also turn any XCP-ng host (preferably installed in a VM: don't sacrifice a physical host for that) into a build environment: all the tools and build dependencies are available from the default RPM repositories for XCP-ng, or from CentOS and EPEL repositories.
 
-You won't benefit from the convenience scripts from [xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env) though.
+You won't benefit from the convenience of [xcp-ng-build-env](https://github.com/xcp-ng/xcp-ng-build-env) though.

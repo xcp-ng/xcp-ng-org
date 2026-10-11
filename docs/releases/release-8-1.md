@@ -58,7 +58,7 @@ Other changes:
 * Dynamic Memory Control (DMC) is deprecated and will be removed in the future.
 * VSS and quiesced snapshots support is removed, because it never worked correctly and caused more harm than good. Note that Windows guest tools version 9 (the default for recent versions of Windows if you install Citrix drivers) already removed VSS support, even for older versions of CH / XCP-ng
 * For new local storage repositories using the EXT filesystem, it now defaults to `ext4`.
-  * Applies only to new SRs. Existing local EXT3 storage repositories remains as EXT3.
+  * Applies only to new SRs. Existing local EXT3 storage repositories remain as EXT3.
   * The transition from our experimental `ext4` storage driver is not automatic.
   * Instructions for transitioning written in a specific section below.
   * Our `sm-additional-drivers` package updated to refuse to create new experimental `ext4` SRs since ext4 is already the default with the `ext` driver.
@@ -71,7 +71,7 @@ XCP-ng 8.1 embeds the XAPI (XenServer/XCP-ng API) modification required to suppo
 
 In short, you are now able to backup and restore a VM, with its context, the whole RAM. It's like an hibernation: during the backup, VM is paused to save its RAM to a special disk (larger the RAM, longer the pause). Then, the content is sent to the backup repository.
 
-You can restore it anytime later on another host, and resume it as if nothing happened. From the VM perspective, its uptime will be kept. Combined with Xen Orchestra Continuous Replication, you can also send your VM data and memory every XX hours to another XCP-ng host or pool, and resume it as soon you need it.
+You can restore it anytime later on another host, and resume it as if nothing happened. From the VM perspective, its uptime will be kept. Combined with Xen Orchestra Continuous Replication, you can also send your VM data and memory every XX hours to another XCP-ng host or pool, and resume it as soon as you need it.
 
 For more information and use cases, you can check [this Devblog](https://xen-orchestra.com/blog/devblog-6-backup-ram/) written by our developer Benjamin.
 
@@ -79,7 +79,7 @@ For more information and use cases, you can check [this Devblog](https://xen-orc
 
 Our installer now offers two new installation options. In legacy boot mode, access them with F2 when offered the choice. In UEFI mode, see the added boot menu entries.
 * First new option: boot the installer with a 2G RAM limit instead of the 8G default. This is a workaround for installation issues on hardware with Ryzen CPUs. Though those are Desktop-class CPUs and not supported officially in the HCL, we tried to make it easier to workaround the infamous "installer crashes on Ryzen" issue.
-* Second new option: boot the installer with our [alternate kernel](../../installation/hardware#alternate-kernel) (kernel-alt). That kernel, built and maintained by @r1 for the team, is based on the main kernel, with all upstream kernel.org patches from the LTS 4.19 branch applied.It should be very stable by construction **but it receives less testing**. That option is there for cases when the main kernel and drivers have issues, so that you can quickly test if kernel.org patches have fixed it already. It will also install the alternate kernel in addition to the main kernel as a convenience. **If kernel-alt fixes issues for you, the most important thing to do is to tell us so that we may fix the main kernel!**
+* Second new option: boot the installer with our [alternate kernel](../../installation/hardware#alternate-kernel) (kernel-alt). That kernel, built and maintained by @r1 for the team, is based on the main kernel, with all upstream kernel.org patches from the LTS 4.19 branch applied. It should be very stable by construction **but it receives less testing**. That option is there for cases when the main kernel and drivers have issues, so that you can quickly test if kernel.org patches have fixed it already. It will also install the alternate kernel in addition to the main kernel as a convenience. **If kernel-alt fixes issues for you, the most important thing to do is to tell us so that we may fix the main kernel!**
 
 ### New leaf coalesce logic with dynamic limits
 
@@ -115,7 +115,7 @@ It is now deprecated in 8.1. For a good reason: in XCP-ng 8.1 and above, followi
 
 There is no easy way to convert an existing SR created with our driver, so those using it will need to move the VDIs out (to another SR or to export them), destroy the SR and create an EXT SR instead. Make sure to do this on XCP-ng 8.1. See instructions below.
 
-The sm-additional-drivers package remains available in XCP-ng 8.1 in order to ease the transition. However We've broken the sr-create command on purpose. Any attempt to create a SR of type ext4 will result in an error with a message that explains that you need to use the ext type instead.
+The sm-additional-drivers package remains available in XCP-ng 8.1 in order to ease the transition. However, we've broken the sr-create command on purpose. Any attempt to create an SR of type ext4 will result in an error with a message that explains that you need to use the ext type instead.
 
 Our experimental driver will be completely removed in a later release, possibly XCP-ng 8.2.
 
@@ -255,7 +255,7 @@ In general, issues inherited from Citrix Hypervisor and already described in the
 See [Citrix Hypervisor's known issues](https://docs.citrix.com/en-us/citrix-hypervisor/whats-new/known-issues.html) (link only valid for the latest release of Citrix Hypervisor). Most apply to XCP-ng.
 
 Some exceptions to those CH 8.1 known issues:
-* The errors due to to `xapi-wait-init-complete.service` not being enabled were already fixed during XCP-ng 8.1's beta phase.
+* The errors due to `xapi-wait-init-complete.service` not being enabled were already fixed during XCP-ng 8.1's beta phase.
 * Issues related to Citrix-specific things like licenses or GFS2 do not apply to XCP-ng.
 * Though not mentioned yet in their known issues (as of 2020-03-30), an update of CH 8.0 to CH 8.1 using the update ISO fails at enabling the `chronyd` service. In XCP-ng 8.1, updated from 8.0 using `yum`, we fixed that issue before the release.
 
@@ -283,13 +283,13 @@ Reference: [https://github.com/xcp-ng/xcp/issues/149](https://github.com/xcp-ng/
 
 #### Installation on software RAID may fail on previously used disks
 
-Sometimes the presence of old `mdadm` metadata on the disks cause the installer to fail creating the software RAID. Zeroing the disks fixes it.
+Sometimes the presence of old `mdadm` metadata on the disks causes the installer to fail creating the software RAID. Zeroing the disks fixes it.
 
 Reference: [https://github.com/xcp-ng/xcp/issues/107](https://github.com/xcp-ng/xcp/issues/107)
 
 #### Installer crashes on some hardware with AMD Ryzen APUs
 
-The installer gives an error on some hardware. Reducing the maximum amount of memory allocated to the installer workarounds it.
+The installer gives an error on some hardware. Reducing the maximum amount of memory allocated to the installer works around it.
 The installer offers extra options to boot with only 2 G of RAM (usually solves the issue) or using an alternate kernel.
 
 Reference: [https://github.com/xcp-ng/xcp/issues/206](https://github.com/xcp-ng/xcp/issues/206)

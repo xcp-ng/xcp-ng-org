@@ -40,7 +40,7 @@ Key details:
 
 ## Install {#install}
 
-See [Installation](../../../installation/install-xcp-ng).
+See [Installation](../../installation/install-xcp-ng).
 
 ## Upgrade from previous releases {#upgrade-from-previous-releases}
 
@@ -56,7 +56,7 @@ To upgrade from earlier releases, it is necessary to first upgrade the pool to X
 * Please carefully read these release notes, especially the [Deprecations and Removals](#deprecations-and-removals), [Attention Points](#attention-points), and [Known Issues](#known-issues) sections before performing the upgrade.
 :::
 
-Refer to the [Upgrade How-to](../../../installation/upgrade) for the exact upgrade process.
+Refer to the [Upgrade How-to](../../installation/upgrade) for the exact upgrade process.
 
 :::note
 Users who installed a prerelease of XCP-ng 8.3 must upgrade to the final 8.3.0 version using the installation ISO image. The only exception is for users who installed XCP-ng 8.3 RC2 or have already upgraded to RC2 using the installation ISO image. These users can simply [update their system](../../management/updates) without needing the ISO image.
@@ -110,7 +110,7 @@ Its feature set is currently limited, but we are improving it regularly, and it 
 
 ### Windows 11 and vTPM support [XS]
 
-As Windows 11 requires a TPM (Trusted Platform Module), developers at XenServer have put a lot of work into using virtualized TPMs (vTPMs), reused or wrote open-source components for vTPM support (virtual TPM), and integrated this support into the Xen API (XAPI). XCP-ng users also benefit from this open-source work.
+As Windows 11 requires a TPM (Trusted Platform Module), developers at XenServer have put a lot of work into using virtualized TPMs (vTPMs), reused or written open-source components for vTPM support (virtual TPM), and integrated this support into the Xen API (XAPI). XCP-ng users also benefit from this open-source work.
 
 A vTPM can be created for any UEFI VM in XCP-ng, but since the most common use case is likely running Windows 11, creating a VM using the Windows 11 template automatically triggers the provisioning of a vTPM module for the VM.
 
@@ -149,6 +149,10 @@ We ensured all mirrors hosting updates for XCP-ng support both IPv4 and IPv6. A 
 VM limits:
 - Virtual CPUs per VM: raised to 64, when the guest OS supports it. At the time of writing, RHEL 8 and derivatives do not support more than 32.
 
+:::note
+The current limits are 32 vCPUs (security-supported) for untrusted VMs and up to 128 vCPUs for trusted VMs, with Windows guests limited to 64 vCPUs. See [Virtual Machine Configuration Limits](../../installation/requirements#virtual-machine-configuration-limits).
+:::
+
 XCP-ng host limits:
 - Logical processors per host: raised to 960, depending on CPU support.
 
@@ -178,7 +182,7 @@ In XCP-ng 8.2.1, we introduced Secure Boot support for VMs, based on a reimpleme
 
 XenServer has since open-sourced `varstored`, and we decided to switch to it to avoid duplicating efforts (it was a tough decision given the work put into `uefistored`).
 
-Later, XenServer implemented changes in XAPI related to how UEFI certificates were stored and updated at the pool level, which would have caused regressions for XCP-ng users (despite the fact that they had attempted to take our needs into account, and consulted with us, which we appreciated). So we proposed and then implemented changes which retained the behaviour wanted by XenServer, while at the same time enabling us to offer a bigger flexibility to our users.
+Later, XenServer implemented changes in XAPI related to how UEFI certificates were stored and updated at the pool level, which would have caused regressions for XCP-ng users (despite the fact that they had attempted to take our needs into account, and consulted with us, which we appreciated). So we proposed and then implemented changes which retained the behavior wanted by XenServer, while at the same time enabling us to offer a bigger flexibility to our users.
 
 As a result, Guest UEFI Secure Boot is handled slightly differently in XCP-ng 8.3 compared to XCP-ng 8.2.1, and is ready to use on new pools without further preparation.
 
@@ -315,7 +319,7 @@ For environments with slow network connections between hosts, you can now enable
 
 When you put a host into "maintenance mode" in Xen Orchestra (or during a Rolling Pool Update), it triggers the `host.evacuate` XAPI method in XCP-ng. This initiates the live migration of all VMs from the host to other available hosts in the pool, migrating up to 10 VMs at once to expedite the process.
 
-However, if your storage or host is already under heavy load, this can impact the "freeze" time of a VM during the migration. In particularly crowded or noisy environments, a VM may be paused for as long as 30 seconds, which is significantly longer than the usual few hundred milliseconds in normal conditions. There is a workaround that involves modifying XAPI's configuration to reduce the number of concurrent migrations, but this requires changes on all hosts and isn't a permanent solution. We wanted something more integrated!
+However, if your storage or host is already under heavy load, this can impact the "freeze" time of a VM during the migration. In particularly crowded or noisy environments, a VM may be paused for as long as 30 seconds, which is significantly longer than the usual few seconds in normal conditions. There is a workaround that involves modifying XAPI's configuration to reduce the number of concurrent migrations, but this requires changes on all hosts and isn't a permanent solution. We wanted something more integrated!
 
 To address this, we enhanced the XAPI method with an optional "batch size" parameter:
 
@@ -408,7 +412,7 @@ Former notes, from the initial 8.3 release:
 
 > Upgrading Xen from version 4.13 to version 4.17 had a lot of benefits, but it came with one potential drawback: nested virtualization, which had always been experimental, unsupported and insecure (risks for the host), but was at least somewhat working in some useful situations (such as testing XCP-ng inside XCP-ng), is now entirely non-functional due to fundamental changes in the codebase.
 >
-> What needs to be done in the codebase for proper nested virtualization support was explained to the Xen developer community during XenSummit by Georges Dunlap ([part 1](https://youtu.be/8jKGYY1Bi_o) and [part 2](https://youtu.be/3MxWvVTmY1s) on Youtube), but it's not a small task, so we don't know at the moment when nested virtualization will be fully implemented. We'll keep you posted on our blog. If you really need it in its previous incomplete state and still want to use it despite its unsupported status and the security implications, stay on XCP-ng 8.2 for now.
+> What needs to be done in the codebase for proper nested virtualization support was explained to the Xen developer community during XenSummit by George Dunlap ([part 1](https://youtu.be/8jKGYY1Bi_o) and [part 2](https://youtu.be/3MxWvVTmY1s) on YouTube), but it's not a small task, so we don't know at the moment when nested virtualization will be fully implemented. We'll keep you posted on our blog. If you really need it in its previous incomplete state and still want to use it despite its unsupported status and the security implications, stay on XCP-ng 8.2 for now.
 
 ### AMD MxGPU driver
 
@@ -444,7 +448,7 @@ Important changes or adjustments that may affect how you use the product. Be sur
 
 ### Host certificate key too small prevents upgrade
 
-Hosts initially installed with a version of XenServer or XCP-ng less than 8.0, by default, have a host TLS certificate whose key length is only 1024. In XCP-ng 8.3, the `stunnel` services, which handle TLS protocols, require a key length of at least 2048 bit. A key that's too small causes communication failures, making it impossible for the host to communicate with other hosts in the pool or external clients such as Xen Orchestra or XO Lite.
+Hosts initially installed with a version of XenServer or XCP-ng less than 8.0, by default, have a host TLS certificate whose key length is only 1024 bits. In XCP-ng 8.3, the `stunnel` services, which handle TLS protocols, require a key length of at least 2048 bits. A key that's too small causes communication failures, making it impossible for the host to communicate with other hosts in the pool or external clients such as Xen Orchestra or XO Lite.
 
 To prevent this situation after an upgrade:
 1. We added this warning.
@@ -493,21 +497,21 @@ See [Active Directory in XCP-ng](#active-directory-in-xcp-ng).
 
 ### IPv6-related issues
 
-With all the IPv4-only assumptions embedded in the code of various components, adding IPv6 support was a challenging task, but we managed to make it work. However, there are still some rough edges. We already have internal fixes for several of these issues, and they'll be released shortly.
+With all the IPv4-only assumptions embedded in the code of various components, adding IPv6 support was a challenging task. Several issues present at release were fixed in later updates (noted below), and some rough edges remain.
 
 - Using IPv4 and IPv6 simultaneously ("dual stack") remains experimental and will be further stabilized through future updates.
-- When both IPv6 and a VLAN are configured for the management interface, the IP configuration may be lost after a reboot. A fix will be released shortly after the initial release.
-- Disabling port 80 doesn't work with IPv6 configurations on the management interface, as it currently only blocks IPv4 traffic. A fix will follow soon after the release.
-- Performing an emergency network restart reverts the configuration to IPv4 + DHCP instead of retaining IPv6 settings. This will also be fixed shortly after the release.
-- Ejecting a host from a pool causes it to fall back to IPv4 + DHCP, instead of maintaining its IPv6 configuration. A fix is coming soon.
+- When both IPv6 and a VLAN were configured for the management interface, the IP configuration could be lost after a reboot. Fixed in the January 2025 update.
+- Disabling port 80 (`https-only`) only blocks IPv4 traffic: port 80 stays open over IPv6.
+- An emergency network reset used to revert the configuration to IPv4 + DHCP. Fixed in the January 2025 update (XAPI) and the September 2025 update (xsconsole).
+- Ejecting a host from a pool used to make it fall back to IPv4 + DHCP. Fixed in the January 2025 update.
 - DHCPv6 support is still incomplete.
 - Manually configured DNS settings can be overwritten by autoconf.
 
-### Pool metadata backup temporarily unavailable from console
+### Pool metadata backup from the console (restored) {#pool-metadata-backup-temporarily-unavailable-from-console}
 
-The metadata backup and restore feature, previously available from the host console, was removed due to a vulnerability and could not be restored before the initial release of XCP-ng 8.3. It will be (or has been, depending on when you read this) added back in a future update.
+The metadata backup and restore feature of the host console was removed before the initial release because of a vulnerability. It was added back in 2025 with xsconsole 11.0.8-1.1.
 
-Meanwhile, the feature is still available through Xen Orchestra.
+The feature is also available through Xen Orchestra.
 
 ### Known issues from XenServer 8
 
@@ -519,4 +523,4 @@ Live migrating a VM from an older XenServer version can sometimes result in erro
 * The VM may reboot.
 * The VM may get duplicated, meaning the same VM UUID (and usually its VDIs too) will appear both on the sender and receiver host. In such a case, you'll need to remove the duplicate from the receiver host.
 
-It would require a hotfix to the old XenServer, but since those versions are no longer supported, XenServer won't be developing one. If you need to migrate from such old host, you should rely on [Xen Orchestra warm migration feature](https://xen-orchestra.com/blog/warm-migration-with-xen-orchestra/).
+It would require a hotfix to the old XenServer, but since those versions are no longer supported, XenServer won't be developing one. If you need to migrate from such an old host, you should rely on [Xen Orchestra warm migration feature](https://xen-orchestra.com/blog/warm-migration-with-xen-orchestra/).

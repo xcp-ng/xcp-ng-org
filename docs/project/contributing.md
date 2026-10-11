@@ -6,7 +6,7 @@ How to contribute to XCP-ng? There are many ways of contributing:
 
 ## Help others {#help-others}
 
-You don't have to be a programmer/IT-nerd to help at this project. Just ask or offer your help:
+You don't have to be a programmer/IT-nerd to help with this project. Just ask or offer your help:
 
 * Forum: [https://xcp-ng.org/forum](https://xcp-ng.org/forum)
 * IRC: [irc://irc.oftc.net/#xcp-ng](irc://irc.oftc.net/#xcp-ng)
@@ -24,11 +24,11 @@ Contribute to our documentation with pull requests modifying the files in this v
 
 ## Test {#test}
 
-It's important to test XCP-ng on many different platforms and devices. You have gear laying around or access to some special devices? -> be a tester and test all the features of XCP-ng 🚀
+It's important to test XCP-ng on many different platforms and devices. You have gear lying around or access to some special devices? -> be a tester and test all the features of XCP-ng 🚀
 
 Your results are very welcome in our [Hardware Compatibility List (HCL)](../../installation/hardware)!
 
-It's also important to test Operating Systems on XCP-ng. You have fun to install different Operating Systems? -> great! Test them all on XCP-ng!
+It's also important to test Operating Systems on XCP-ng. Do you enjoy installing different operating systems? -> great! Test them all on XCP-ng!
 
 Most community testing is organized on the forum, on dedicated threads.
 * Watch the [thread dedicated to update candidates on stable releases](https://xcp-ng.org/forum/topic/9964/xcp-ng-8-3-updates-announcements-and-testing) (and make sure you enable mail notifications in your forum settings).

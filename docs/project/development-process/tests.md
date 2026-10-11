@@ -26,10 +26,10 @@ Give priority to tests on actual hardware, but if you don't have any hardware av
 - verify creation of a new Linux VM (install guest tools)
 - verify creation of a new Windows VM (install guest tools)
 - verify basic VM functionality (start, reboot, suspend, shutdown)
-- verify migration of a VM from an host to another
+- verify migration of a VM from a host to another
 - verify migration of a VM from an old host to (this) release one
-- verify migration of a VM from a newest host to the old one (this test should be fail)
-- verify change of the pool master from an host to another
+- verify migration of a VM from a newer host to the old one (this test should fail)
+- verify change of the pool coordinator from a host to another
 - [check your logs](../../troubleshooting/log-files.md) for uncommon info or warnings.
 - (add more here...)
 
@@ -185,7 +185,7 @@ echo $?
 
 Switch back EPT superpages to fast mode, if needed
 
-<Terminal shell title="root@xcp-ng-host — check return code. Should be '3'…">{`
+<Terminal shell title="root@xcp-ng-host — Switch back EPT superpages">{`
 xl set-parameters ept=exec-sp
 `}</Terminal>
 

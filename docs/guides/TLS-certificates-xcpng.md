@@ -2,11 +2,11 @@
 
 How to add a TLS certificate?
 
-After installing XCP-ng, access to xapi via XCP-ng Center or Xen Orchestra is protected by TLS with a [self-signed certificate](https://en.wikipedia.org/wiki/Self-signed_certificate): this means that you have to either verify the certificate signature before allowing the connection (comparing against signature shown on the console of the server), either work on trust-on-first-use basis (i.e. assume that the first time you connect to the server, nobody is tampering with the connection).
+After installing XCP-ng, access to xapi via Xen Orchestra or XO Lite is protected by TLS with a [self-signed certificate](https://en.wikipedia.org/wiki/Self-signed_certificate): this means that you have to either verify the certificate signature before allowing the connection (comparing against signature shown on the console of the server), or work on a trust-on-first-use basis (i.e. assume that the first time you connect to the server, nobody is tampering with the connection).
 
 If you would like to replace this certificate by a valid one, either from an internal Certificate Authority or from a public one, you'll find here some indications on how to do that.
 
-Note that if you use an non-public certificate authority and XenOrchestra, you have [additional configuration to specify on Xen Orchestra side](https://xen-orchestra.com/docs/configuration.html#custom-certificate-authority).
+Note that if you use a non-public certificate authority and Xen Orchestra, you have [additional configuration to specify on Xen Orchestra side](https://xen-orchestra.com/docs/configuration.html#custom-certificate-authority).
 
 ## Generate certificate signing request {#generate-certificate-signing-request}
 
@@ -37,7 +37,7 @@ Done! Visit your XCP-ng host ip using a browser and validate the certificate is 
 This information about deprecated releases is retained solely to assist with the transition to a supported release.
 :::
 
-The certificate, intermediate certificates (if needed), certificate authority and private key are stored in `/etc/xensource/xapi-ssl.pem`, in that order. You have to replace all lines before `-----BEGIN RSA PRIVATE KEY----` with the certificate and the chain you got from your provider, using your favorite editor (`nano` is present on XCP-ng by default).
+The certificate, intermediate certificates (if needed), certificate authority and private key are stored in `/etc/xensource/xapi-ssl.pem`, in that order. You have to replace all lines before `-----BEGIN RSA PRIVATE KEY-----` with the certificate and the chain you got from your provider, using your favorite editor (`nano` is present on XCP-ng by default).
 
 Then, you have to restart xapi :
 

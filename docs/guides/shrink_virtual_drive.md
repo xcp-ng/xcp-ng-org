@@ -18,7 +18,7 @@ There are two options to do this. The most reliable is the Clonezilla method, bu
 1. Detach both disks, then reattach the new disk so that it is in position 1.
 1. Start the VM.
 
-### CloneZilla
+### Clonezilla
 
 :::tip
 Use the i686 version of Clonezilla to avoid boot issues on the ISO while using a Windows template.
@@ -27,7 +27,7 @@ Use the i686 version of Clonezilla to avoid boot issues on the ISO while using a
 #### Pre-requisites
 
 :::warning
-It seems that doing a `dism /Online /Set-ReservedStorageState /State:Disabled` first (before anything else) is required on Windows to get a succesful partition shrink and avoiding any data loss.
+It seems that doing a `dism /Online /Set-ReservedStorageState /State:Disabled` first (before anything else) is required on Windows to get a successful partition shrink and to avoid any data loss.
 :::
 
 1. Identify the partition you want to move to the new disk and then shut down the VM.
@@ -39,8 +39,8 @@ It seems that doing a `dism /Online /Set-ReservedStorageState /State:Disabled` f
 #### Steps
 
 1. Boot the VM.
-1. Select "Start CloneZilla."
-1. Choose "device-device," meaning CloneZilla will copy from one disk to another, which is our goal.
+1. Select "Start Clonezilla."
+1. Choose "device-device," meaning Clonezilla will copy from one disk to another, which is our goal.
 1. Select "Expert Mode."
 1. Choose "Disk to local disk" mode.
 1. Select the origin disk (the bigger one).

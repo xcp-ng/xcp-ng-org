@@ -10,14 +10,14 @@ XCP-ng uses [mirrorbits](https://github.com/etix/mirrorbits) to redirect downloa
 
 `mirrors.xcp-ng.org` is the base for all download links, either downloads of installation ISO images, or RPM repositories used by `yum` to download updates.
 
-Previous versions of XCP-ng used to download files directly from `https://updates.xcp-ng.org`, which since then has becomes one mirror among others (and a fallback in case of files missing from other mirrors).
+Previous versions of XCP-ng used to download files directly from `https://updates.xcp-ng.org`, which since then has become one mirror among others (and a fallback in case of files missing from other mirrors).
 
 ## List of mirrors {#list-of-mirrors}
 
 You can check our live list of mirrors at this URL: [https://mirrors.xcp-ng.org/?mirrorstats](https://mirrors.xcp-ng.org/?mirrorstats)
 
 :::tip
-If loading this page fails due to too many redirections, just go to [https://xcp-ng.org](https://xcp-ng.org) once, then try again)
+If loading this page fails due to too many redirections, just go to [https://xcp-ng.org](https://xcp-ng.org) once, then try again.
 :::
 
 ## Add your mirror {#add-your-mirror}
@@ -26,10 +26,9 @@ Anyone or any entity can submit a mirror to our approval so that we add it to th
 
 ### Prerequisites
 
-In order to guarantee the quality of the mirrors offered to our users, there a some prerequisites:
+In order to guarantee the quality of the mirrors offered to our users, there are some prerequisites:
 * Offer HTTPS
   * You need a valid certificate and must renew it in time to avoid downtime.
-  * **If your certificate is provided by Let's Encrypt**, please read the dedicated section below.
   * If you already provided a mirror but are unsure if we added it as an HTTP or HTTPS mirror, check http://mirrors.xcp-ng.org/README.txt?mirrorlist&https=1, which selects HTTPS mirrors and lists the others in an "Excluded Mirrors" section.
 * Offer read-only `rsync`. Two reasons:
   * Mirrorbits needs this to regularly check the state of the mirror and automatically disable outdated or broken mirrors.
@@ -40,7 +39,7 @@ In order to guarantee the quality of the mirrors offered to our users, there a s
 * Provision enough disk space for future growth, and monitor available space to avoid sync failures.
 * Minimum bandwidth: 100 Mbit/s. Preferably 1 Gbit/s or more. At some point, we may refuse applications that offer only 100 Mbit/s in areas with already enough quicker mirrors available.
 * Up 24/24.
-* Monitor your mirror to detect and fix any failures. We don't require 99.99% uptime, but broken mirrors cause extra work that we glady avoid if we can. We prefer no mirror rather than an unstable mirror.
+* Monitor your mirror to detect and fix any failures. We don't require 99.99% uptime, but broken mirrors cause extra work that we gladly avoid if we can. We prefer no mirror rather than an unstable mirror.
 
 If one of those prerequisites is causing an issue to you as a mirror provider, tell us.
 
@@ -80,7 +79,7 @@ Other prerequisites from https://docs.xcp-ng.org/project/mirrors checked: yes
 Main contact: John Doe <john.doe@...>
 ```
 
-"Source mirror" is the mirror you will sync from. At this stage, we suggest that the source always be `updates.xcp-ng.org` which is the main, most up to date, mirror. Rsync is restricted by default on this mirror, so we need you to provide either a hostname or an IP address access that will be allowed to sync from it (Hence the "Host or IP to authorize:..." line above). You may sync from another mirror if you prefer: [choose one close to you that updates quickly](https://mirrors.xcp-ng.org/?mirrorstats) and review your choice from time to time.
+"Source mirror" is the mirror you will sync from. At this stage, we suggest that the source always be `updates.xcp-ng.org` which is the main, most up to date, mirror. Rsync is restricted by default on this mirror, so we need you to provide either a hostname or an IP address access that will be allowed to sync from it (Hence the "Hostname, IPv4 and IPv6:..." line above). You may sync from another mirror if you prefer: [choose one close to you that updates quickly](https://mirrors.xcp-ng.org/?mirrorstats) and review your choice from time to time.
 
 Feel free to ask any question in your application message.
 
@@ -100,7 +99,7 @@ This is a valid concern: maybe you are downloading from a mirror whose owner you
 
 Since XCP-ng 7.6, we use [GPG](https://gnupg.org/) to sign:
 * SHA256 sums for installation ISOs
-* SHA256 sums for repository configuration files (`xcp-ng-X.Y.repo`, downloaded as part of the [upgrade process](../../installation/upgrade) if you choose to use `yum` to upgrade)
+* SHA256 sums for the repository configuration files used for `yum`-style [upgrades](../../installation/upgrade) (`xcp-ng-8.1.repo`, `xcp-ng-8.2.repo`). There is none for XCP-ng 8.3, which can only be reached by upgrading from the ISO. On 8.3, `/etc/yum.repos.d/xcp-ng.repo` comes from the signed `xcp-ng-release` RPM.
 * Every RPM package. They are automatically checked by `rpm` on an installed XCP-ng.
 * Repository metadata. They are automatically checked by `yum` on an installed XCP-ng.
 
@@ -160,10 +159,10 @@ gpg --verify somefile.asc somefile
 # Primary key fingerprint: 34AC 2EB6 8248 FED6 D076  838A CD75 783A 3FD3 AC9E
 `}</Terminal>
 
-Only the date should change depending on the date of signature. **`Good Signature`** is what tells us that the verification is successful. The warning is also expected because the signing key itself is not signed and we've not setup a list of trusted sources on the computer, so there's no way for gpg to tell if the key is to be trusted or not.
+Only the date should change depending on the date of signature. **`Good signature`** is what tells us that the verification is successful. The warning is also expected because the signing key itself is not signed and we've not setup a list of trusted sources on the computer, so there's no way for gpg to tell if the key is to be trusted or not.
 
 #### Check an ISO image
-In this example we will first check the authenticity of the SHA256SUMS file, then use it to check the integrity of the ISO image. We'll download `xcp-ng-7.6.0.iso`, `SHA256SUMS` and `SHA256SUMS.asc` from [https://updates.xcp-ng.org/isos/7.6/](https://updates.xcp-ng.org/isos/7.6/) but you can transpose those steps to a newer ISO.
+In this example we will first check the authenticity of the SHA256SUMS file, then use it to check the integrity of the ISO image. We'll download `xcp-ng-8.3.0-20260806.iso`, `SHA256SUMS` and `SHA256SUMS.asc` from [https://updates.xcp-ng.org/isos/8.3/](https://updates.xcp-ng.org/isos/8.3/) but you can transpose those steps to a newer ISO.
 
 First: import the GPG key if not done already (see above).
 
@@ -181,7 +180,7 @@ LC_ALL=C sha256sum -c SHA256SUMS 2>&1 | grep OK
 
 It should display:
 ```
-xcp-ng-7.6.0.iso: OK
+xcp-ng-8.3.0-20260806.iso: OK
 ```
 
 
@@ -190,12 +189,12 @@ This is exactly the same as for the `.iso` file above: we provided a `SHA256SUMS
 
 First: import the GPG key if not done already. You can follow the steps above, but if you are on an XCP-ng 7.6 or newer, you can take a shortcut because the key file is already on your system: `gpg --import /etc/pki/rpm-gpg/RPM-GPG-KEY-xcpng`
 
-Example with `xcp-ng-7.6.repo`:
+Example with `xcp-ng-8.2.repo`, the most recent repository file published this way:
 
 <Terminal shell title="Check a repository (.repo) file">{`
-wget https://updates.xcp-ng.org/7/xcp-ng-7.6.repo -O xcp-ng-7.6.repo
-wget https://updates.xcp-ng.org/7/SHA256SUMS -O SHA256SUMS
-wget https://updates.xcp-ng.org/7/SHA256SUMS.asc -O SHA256SUMS.asc
+wget https://updates.xcp-ng.org/8/xcp-ng-8.2.repo -O xcp-ng-8.2.repo
+wget https://updates.xcp-ng.org/8/SHA256SUMS -O SHA256SUMS
+wget https://updates.xcp-ng.org/8/SHA256SUMS.asc -O SHA256SUMS.asc
 `}</Terminal>
 
 Verify the authenticity of the `SHA256SUMS` file.
@@ -212,7 +211,7 @@ LC_ALL=C sha256sum -c SHA256SUMS 2>&1 | grep OK
 
 It should display:
 ```
-xcp-ng-7.6.repo: OK
+xcp-ng-8.2.repo: OK
 ```
 
 ### About repository metadata and RPMs

@@ -40,7 +40,7 @@ Stricter memory map verification rules introduced in modern Xen/Dom0 kernels cla
 
 You can reach a shell with ALT+F2 (or ALT+RIGHT) and a logs console with ALT+F3 (or ALT+RIGHT twice).
 
-Full installation log are populated in real time in `/tmp/install-log`. They can be read with `view /tmp/install-log`.
+Full installation logs are populated in real time in `/tmp/install-log`. They can be read with `view /tmp/install-log`.
 
 When asking for help about installation errors, providing this file increases your chances of getting precise answers.
 
@@ -69,7 +69,7 @@ network_config=static:"ip=IP;netmask=NETMASK[;gateway=GW][;dns=DNS1[,DNS2]][;dom
 ```
 
 :::note
-You can specify an interface name such as `eth1` instead of `all` if necessary, which can be useful when you need to setup a static IP address.
+You can specify an interface name such as `eth1` instead of `all` if necessary, which can be useful when you need to set up a static IP address.
 :::
 
 The ssh server will be available once the network is up. If you are unsure which DHCP address was obtained, you can use the shell console as described above to look it up using `ip a`. You can then connect as `root` using the password you provided on the commandline.
@@ -157,7 +157,7 @@ Cannot upgrade nvme0n1, expected file missing: var/lib/misc/ran-storage-init (in
 Cannot upgrade nvme0n1, expected file missing: var/lib/misc/ran-network-init (installation never booted?)
 ```
 
-If you only see the "storage-init" line, error line, check the logs of `storage-init.service` in `/var/log/daemon.log` on the host (after rebooting into the original XCP-ng version you’re upgrading from).
+If you only see the "storage-init" error line, check the logs of `storage-init.service` in `/var/log/daemon.log` on the host (after rebooting into the original XCP-ng version you’re upgrading from).
 
 If upgrading from an older release, you may instead get logs showing:
 
@@ -173,7 +173,7 @@ The "Missing state" line indicates which required first-boot service failed to c
 
 In other cases, the installer may fail to detect an existing installation, and only offer to do a fresh install. Some causes are listed below.
 
-#### Disk partitionning not recognized
+#### Disk partitioning not recognized {#disk-partitionning-not-recognized}
 
 XCP-ng is quite strict about the partition table layout, partition labels, partition types. If anything has modified it, it can prevent proper identification of the previous install.
 

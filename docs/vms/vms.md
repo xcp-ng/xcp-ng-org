@@ -41,9 +41,9 @@ FreeBSD, OpenBSD and some appliances based on them: see [*BSD Guest Tools](#bsd-
 
 ### Dynamic Memory
 
-Using Dynamic Memory Control (DMC) can be a good way to reduce your memory consumption, but you have to be careful: during live migration of a VM, XCP-ng will automatically reduce the VM memory to it's minimal settings and this can cause VM crash if it's not ready to function with this smaller amount of RAM.
+Using Dynamic Memory Control (DMC) can be a good way to reduce your memory consumption, but you have to be careful: during live migration of a VM, XCP-ng will automatically reduce the VM memory to its minimal settings and this can cause VM crash if it's not ready to function with this smaller amount of RAM.
 
-We recommand you check your VM settings to verify if dynamic memory has been enabled.
+We recommend you check your VM settings to verify if dynamic memory has been enabled.
 In Xen Orchestra, the *Advanced* tab of your VM will display the memory limits, in the "VM limits" section:
 
 ![XO's memory limits with Static set to 2GiB/16GiB and Dynamic set to 16GiB/16GiB.](../../assets/img/screenshots/Dynamic_mem.png)
@@ -57,7 +57,7 @@ How Secure Boot can be enabled in VMs is described in a [dedicated guide](../gui
 
 ### Use a VNC client
 
-1. Connect to a XCP-ng server using SSH, then execute this command with the VM UUID to join:
+1. Connect to an XCP-ng server using SSH, then execute this command with the VM UUID to join:
 
 <Terminal shell title="root@xcp-ng-host — Use a VNC client">{`
 xe vm-list params=dom-id,resident-on uuid=<VM_UUID>
@@ -128,7 +128,7 @@ It supports the following operating systems:
 - Windows 10 x64, version 1607 and later
 - Windows Server 2016 x64 and later
 
-**Download**: [https://github.com/xcp-ng/win-pv-drivers/releases](https://github.com/xcp-ng/win-pv-drivers/releases)
+**Download**: attach the guest tools ISO shipped with XCP-ng 8.3 to the VM (the installer is in its `Windows` folder), or download the latest ZIP or ISO from [GitHub](https://github.com/xcp-ng/win-pv-drivers/releases), which may be more recent than the copy on your host.
 
 :::warning
 As a reminder, operating systems that have reached their End of Life (EOL) are not supported by XCP-ng, nor by the XCP-ng guest tools.
@@ -141,8 +141,8 @@ The first step before installing XCP-ng Windows Guest Tools — before the VM cr
 This behaviour is governed by the **Manage Citrix PV drivers via Windows Update** parameter in a VM's Advanced view. Make sure it is off, or installation of the XCP-ng Windows Guest Tools will be blocked.
 
 Before creating the VM:
-* Make sure you are not creating it from a custom template than has the "Manage Citrix PV drivers via Windows Update" option enabled.
-* :warning: Do not create it from XCP-ng Center. XCP-ng Center automatically enables that option when the license allows it (and in XCP-ng the license always allows it...). This behaviour may be modified in the future.
+* Make sure you are not creating it from a custom template that has the "Manage Citrix PV drivers via Windows Update" option enabled.
+* :warning: Do not create it from XCP-ng Center. XCP-ng Center automatically enables that option when the license allows it (and in XCP-ng the license always allows it...).
 
 Before starting the VM:
 * Check the value of "Manage Citrix PV drivers via Windows Update" in the Advanced tab of your VM in Xen Orchestra. Must be off.
@@ -160,9 +160,11 @@ xe vm-param-get param-name=has-vendor-device uuid={VM-UUID}
 ##### Install the XCP-ng tools
 1. Snapshot your VM before installing.
 2. Check the above prerequisite about the "Manage Citrix PV drivers via Windows Update" option.
-3. Unpack the ZIP file.
-4. Start the installation MSI.
+3. Open the `Windows` folder of the guest tools ISO, or extract the downloaded ZIP (or mount the downloaded ISO) and open its `package` folder.
+4. Run `XenTools-x64.msi`.
 5. Follow the install wizard.
+
+If you are upgrading from version 9.2.350, first install the `XenTools-fix-9.2.351.msp` hotfix (in the `Windows` folder of the XCP-ng 8.3 guest tools ISO, or as a separate download on the [GitHub release page](https://github.com/xcp-ng/win-pv-drivers/releases)), or the upgrade will be blocked.
 
 #### Using the Citrix XenServer VM Tools for Windows
 
@@ -182,7 +184,7 @@ In Xen Orchestra, Go to the **Advanced** tab of the VM view to switch on the par
 This will install the device drivers automatically at next reboot.
 
 :::warning
-This procedure will **not** install the management agent. You will need to install them using the XenServer tools installer.
+This procedure will **not** install the management agent. You will need to install it using the XenServer tools installer.
 :::
 
 The **Manage Citrix PV drivers via Windows Update** option is therefore not a complete solution if you need the guest metrics from the management agent. However, it may be a convenient way to get future driver updates if you wish so.
@@ -212,19 +214,19 @@ More detailed information can also be found in the Advanced tab.
 
 #### Fully removing Xen PV drivers with XenClean
 
-XenClean is an utility for cleanly removing Xen PV drivers and management agents of the following products:
+XenClean is a utility for cleanly removing Xen PV drivers and management agents of the following products:
 
-* XCP-ng Windows Guest Tools, versions 8.2 to 9.1
+* XCP-ng Windows Guest Tools, versions 8.2 and later
 * XenServer VM Tools for Windows, versions 7.1 to 9.4
 * Other Xen drivers
 
-It is available as a standalone EXE program, and is included in the installation ISO of XCP-ng Windows Guest Tools 9.0 and above.
+It is available as a standalone EXE, and is also included in the ZIP and ISO of XCP-ng Windows Guest Tools 9.0 and later, and on the XCP-ng 8.3 guest tools ISO.
 [See the newest releases here.](https://github.com/xcp-ng/win-pv-drivers/releases)
 
 :::note
 Before running XenClean:
 
-* Take a snapshot of your VM..
+* Take a snapshot of your VM.
 * You should always use the latest version of XenClean regardless of your Windows PV driver version. The same applies to XenBootFix.
 * You should disable the "Manage Citrix PV drivers via Windows Update" option on your VM. Otherwise, Windows may reinstall PV drivers from Windows Update after rebooting.
 * There is no need to uninstall the tools manually, as XenClean will also take care of that.
@@ -244,7 +246,7 @@ This section serves as a persistent and updated reference for known guest tools 
 Original announcement: https://xcp-ng.org/blog/2025/05/27/xsa-468-windows-pv-driver-vulnerabilities
 
 ##### Summary
-Multiple vulnerabilities have been discovered in all existing Xen PV drivers for Windows from all vendors (XCP-ng, XenServer, etc.) published prior to the disclosure, on May 2025.
+Multiple vulnerabilities have been discovered in all existing Xen PV drivers for Windows from all vendors (XCP-ng, XenServer, etc.) published prior to the disclosure in May 2025.
 
 These vulnerabilities allow unprivileged users to gain system privileges inside Windows guests.
 
@@ -273,7 +275,6 @@ The following drivers are affected:
 You can check for this vulnerability from within the Windows VMs themselves (most precise, recommended) but also from outside the VMs, using tools we built for this purpose.
 
 :::note
-If you are reading this article shortly after its publication, it's likely that **all of your Windows VMs are vulnerable**.
 Once patched, follow these instructions to verify that your VMs are no longer vulnerable.
 :::
 
@@ -389,9 +390,9 @@ xe vm-param-set \\
 
 ### Manage screen resolution
 
-#### Bios VM
+#### BIOS VM
 
-For a Bios VM, screen resolution can be managed directly through the OS:
+For a BIOS VM, screen resolution can be managed directly through the OS:
 - Right click on the desktop
 - Display settings
 - Choose resolution
@@ -442,7 +443,7 @@ Those guest tools can be installed:
 
 #### Install from the distro's online repositories
 
-Distros may provide guest tools for XCP-ng and Citrix Hypervisor in their own repositories. When they don't, or when the packages are outdated, we enjoin you to contact them to ask for new packages. Upstream sources are available at https://github.com/xenserver/xe-guest-utilities.
+Distros may provide guest tools for XCP-ng and XenServer in their own repositories. When they don't, or when the packages are outdated, we enjoin you to contact them to ask for new packages. Upstream sources are available at https://github.com/xenserver/xe-guest-utilities.
 
 Distros often have policies that forbid enabling new services by default, so most of the time the steps are:
 * enable the appropriate repository
@@ -495,7 +496,7 @@ For distros that are supported by the `install.sh` script (Debian, CentOS, RHEL,
 * Attach the guest tools ISO to the guest from Xen Orchestra or using `xe`.
 * Then inside the VM, as root:
 
-<Terminal shell title="Supported' Linux distributions">{`
+<Terminal shell title="'Supported' Linux distributions">{`
 mount /dev/cdrom /mnt
 bash /mnt/Linux/install.sh
 umount /dev/cdrom
@@ -533,10 +534,10 @@ For the remaining Linux distributions, mount the guest tools ISO as described ab
 For the xe-daemon to start it is necessary that insserv is installed on the system. To make sure that is the case run
 
 <Terminal shell title="openSUSE Leap 15.2 with transactional-update">{`
-sudo transactional-uptdate pkg install insserv-compat
+sudo transactional-update pkg install insserv-compat
 `}</Terminal>
 
-and as good measure reboot if they weren't already installed.
+and as good measure reboot if it wasn't already installed.
 
 To install the guest tools open up the chroot environment with
 
@@ -565,7 +566,7 @@ systemctl start xe-linux-distribution.service
 
 #### Update the guest tools
 
-It's a good habit, and may be even required in some cases (that would then be described in the [Release Notes](../releases#xcp-ng-release-history), to update the guest tools to their latest version when your XCP-ng hosts are updated.
+It's a good habit, and may be even required in some cases (that would then be described in the [Release Notes](../releases#xcp-ng-release-history)), to update the guest tools to their latest version when your XCP-ng hosts are updated.
 
 Depending on the situation, just update from your distribution's online repositories, or follow the above installation process again.
 
@@ -591,7 +592,7 @@ We have split this section into several, see below.
 
 ### FreeBSD Guest Tools
 
-FreeBSD is a 30+ year-old operating system. It is widely used to run all sorts of systems and has served as the basis for multiple OSes, such as: MacOS, pfSense/OPNsense and FreeNAS → TrueNAS → zVault (see appliances further below). The Xen kernel modules are built and distributed in the GENERIC kernel, so if you haven't customised or recompiled your kernel, the drivers will be present.
+FreeBSD is a 30+ year-old operating system. It is widely used to run all sorts of systems and has served as the basis for multiple OSes, such as: macOS, pfSense/OPNsense and FreeNAS → TrueNAS → zVault (see appliances further below). The Xen kernel modules are built and distributed in the GENERIC kernel, so if you haven't customised or recompiled your kernel, the drivers will be present.
 
 To communicate with the hypervisor, you need to install two [ports](https://www.freebsd.org/ports/):
 * [sysutils/xe-guest-utilities](https://www.freshports.org/sysutils/xe-guest-utilities/)
@@ -626,9 +627,9 @@ See [this section](../guides/pfsense/#2-install-guest-utilities) in the dedicate
 
 #### FreeNAS/TrueNAS Guest Tools
 
-Note: iXsystems' TrueNAS Legacy 13.3 is the [final release](https://www.truenas.com/docs/core/13.3/gettingstarted/corereleasenotes/#133-u12-changelog) of their FreeBSD based line. It is in (some) [maintenance](https://www.truenas.com/blog/truenas-core-13-3-plans/)-only mode, but limited by EoL of FreeBSD 13.x on [April 30, 2026](https://www.freebsd.org/security/#sup). Please don't confuse with TrueNAS CORE Enterprise, which has a [different EoL](https://www.truenas.com/docs/core/13.0/gettingstarted/corereleasenotes/), but since it is tied to hardware, it is irrelevant to virtualization.
+Note: iXsystems' TrueNAS Legacy 13.3 is the [final release](https://www.truenas.com/docs/core/13.3/gettingstarted/corereleasenotes/#133-u12-changelog) of their FreeBSD based line. It was in (some) [maintenance](https://www.truenas.com/blog/truenas-core-13-3-plans/)-only mode, but FreeBSD 13.x reached EoL on [April 30, 2026](https://www.freebsd.org/security/#sup). Please don't confuse with TrueNAS CORE Enterprise, which has a [different EoL](https://www.truenas.com/docs/core/13.0/gettingstarted/corereleasenotes/), but since it is tied to hardware, it is irrelevant to virtualization.
 
-Since versions 12.0-U1 of this OS, the package is preinstalled by default (see this [comment](https://github.com/xcp-ng/xcp/issues/446#issuecomment-720632737)). In more recent releases, the necessary daemon starts automatically when the system boots, so everything works out of the box. In case of older (but since 12.0-U1) releases, just create the rc.conf item `xenguest_enable` and set it to YES (see the [TrueNAS documentation](https://www.truenas.com/docs/core/13.3/coretutorials/systemconfiguration/configuringtunables/)) - then reboot or, if you do not plan to reboot the VM now, you can start the daemon manually by running the command `/usr/local/sbin/xe-daemon -p /var/run/xe-daemon.pid &`). After, you'll see a FreeBSD icon in your VM list on Xen Orchestra. Then, you can properly restart or shut down the VM from the XO (Lite) Web UI, among other actions.
+Since version 12.0-U1 of this OS, the package is preinstalled by default (see this [comment](https://github.com/xcp-ng/xcp/issues/446#issuecomment-720632737)). In more recent releases, the necessary daemon starts automatically when the system boots, so everything works out of the box. In case of older (but since 12.0-U1) releases, just create the rc.conf item `xenguest_enable` and set it to YES (see the [TrueNAS documentation](https://www.truenas.com/docs/core/13.3/coretutorials/systemconfiguration/configuringtunables/)) - then reboot or, if you do not plan to reboot the VM now, you can start the daemon manually by running the command `/usr/local/sbin/xe-daemon -p /var/run/xe-daemon.pid &`). After, you'll see a FreeBSD icon in your VM list on Xen Orchestra. Then, you can properly restart or shut down the VM from the XO (Lite) Web UI, among other actions.
 
 For older releases, you will find more insights and options in [this issue](https://github.com/xcp-ng/xcp/issues/172#issuecomment-548181589) or [this issue](https://github.com/xcp-ng/xcp/issues/446).
 

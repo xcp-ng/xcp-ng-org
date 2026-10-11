@@ -53,7 +53,7 @@ Notes:
 Guests get their initial clock from the host, then keep time themselves. Recommendations:
 
 * Keep the **hosts** correctly synchronized first: see [NTP configuration](../management/hosts-pools.md#time-synchronization-ntp).
-* Run an NTP client **in each guest** (chrony, systemd-timesyncd, Windows Time). Time drifts after live migrations, suspend/resume or snapshots revert are then corrected automatically.
+* Run an NTP client **in each guest** (chrony, systemd-timesyncd, Windows Time). Time drifts after live migrations, suspend/resume or snapshot reverts are then corrected automatically.
 * **Windows** stores local time in the RTC by default. XCP-ng exposes a UTC clock, so either keep Windows' own time service active (default, recommended) or make Windows use UTC. If a Windows VM shows a fixed offset after boot, check the timezone settings in the guest.
 
 ## Blocking operations on a VM {#blocking-operations-on-a-vm}

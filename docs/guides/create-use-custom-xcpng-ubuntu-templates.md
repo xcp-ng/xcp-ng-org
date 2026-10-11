@@ -23,7 +23,7 @@ All experiments will be conducted using the graphical virtual machine manager [X
 * [Xen Orchestra](https://xen-orchestra.com) from the sources or Xen Orchestra virtual Appliance (XOA)
 * [XO-CLI](https://www.npmjs.com/package/xo-cli) (for the last part of this post)
 * [JQ](https://jqlang.github.io/jq/) (for the last part of this post)
-* Ubuntu 22.04.04 Server LTS under ISO and OVA formats
+* Ubuntu 22.04.4 Server LTS under ISO and OVA formats
 
 ## Create a new Virtual Machine {#create-a-new-virtual-machine}
 
@@ -36,7 +36,7 @@ At the end of this step, the result will be essentially the same, and both solut
 
 ### From a cloud image in OVA format
 
-Canonical (the Ubuntu company) provides Ubuntu images that have been configured to run on cloud systems. The [website](https://cloud-images.ubuntu.com) provides all versions of Ubuntu. XCP-ng supports the open virtual machine format OVA used by VMWare and VirtualBox systems.
+Canonical (the Ubuntu company) provides Ubuntu images that have been configured to run on cloud systems. The [website](https://cloud-images.ubuntu.com) provides all versions of Ubuntu. XCP-ng supports the open virtual machine format OVA used by VMware and VirtualBox systems.
 
 1. Download an OVA file of [Ubuntu 22.04 version](https://cloud-images.ubuntu.com/jammy).
 
@@ -81,7 +81,7 @@ The creation of the virtual image from a cloud image in OVA format is complete. 
     $ sudo apt dist-upgrade
     ```
 
-10. Install the package *xe-guest-utilities-latest* to improve communication between the XCP-ng hypervisor and the virtual machine ([Guest tools](https://docs.xcp-ng.org/vms/#guest-tools)):
+10. Install the package *xe-guest-utilities* to improve communication between the XCP-ng hypervisor and the virtual machine ([Guest tools](https://docs.xcp-ng.org/vms/#guest-tools)):
 
     ```
     $ sudo apt install xe-guest-utilities
@@ -168,8 +168,8 @@ The creation of the virtual image from a cloud image in OVA format is complete. 
     ```
 
 20. Clean up the APT cache. It's useful for two reasons:
-- Saving some storage space
-- Prevent future problems in installing packages, due to the cache growing stale
+    - Saving some storage space
+    - Prevent future problems in installing packages, due to the cache growing stale
 
     To clean up the APT cache, run the following command:
 
@@ -177,7 +177,7 @@ The creation of the virtual image from a cloud image in OVA format is complete. 
     apt-get clean
     ```
     
-21. Remove SSH host keys, so they can be regenerated when first booting a of newly provisioned VM.
+21. Remove SSH host keys, so they can be regenerated when first booting a newly provisioned VM.
 
     To do this, run this command:
 
@@ -187,7 +187,7 @@ The creation of the virtual image from a cloud image in OVA format is complete. 
 
     :::warning
 
-    Not removing the SSH host keys will cause all your VMs to have same the host keys, which could be considered a security issue.
+    Not removing the SSH host keys will cause all your VMs to have the same host keys, which could be considered a security issue.
 
     :::
 
@@ -201,7 +201,7 @@ The creation of the virtual image *custom-ubuntu22.04* from an ISO file is compl
 
 :::tip
 
-* For Ubuntu 24.04, you will need to delete the */etc/cloud/cloud-init.disabled* file, which disables Cloud-Init by default, and the */etc/netplan/50-cloud-init.yaml* file for network configuration.
+* For Ubuntu 24.04, you will need to delete the */etc/cloud/cloud-init.disabled* file, which disables Cloud-init by default, and the */etc/netplan/50-cloud-init.yaml* file for network configuration.
 * For your network configuration YAML:
     * Use the following format:
 

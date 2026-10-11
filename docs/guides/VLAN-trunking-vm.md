@@ -18,7 +18,7 @@ The guide will document how to:
 
 The configuration needs at least 2 different physical interfaces on XCP-ng.
 One for the management network, and a second for traffic network.
-This is because the VLAN trunk needs its interface MTU to 1504,
+This is because the VLAN trunk needs its interface MTU set to 1504,
 and XCP-ng requires MTU 1500 on the management network for Xen to operate properly.
 
 For this scenario, we are assuming a configuration of 3 physical interfaces:
@@ -35,20 +35,20 @@ As the VLAN header adds 4-byte overhead, a standard 1500 ethernet MTU should be 
 To change this setting, consult the documentation of your switch.
 
 2. Apply the same setting on XCP-ng **PIF** for this interface.
-You can achieve the same result using Xen-Orchestra, or directly on the XCP-ng host (via `xe` utility).
+You can achieve the same result using Xen Orchestra, or directly on the XCP-ng host (via `xe` utility).
 
-With Xen-Orchestra:
+With Xen Orchestra:
 - Select the right *Pool*
 - Go to *Network* panel
 - Modify the MTU of the **Pool-wide network associated with eth2**:
-    - Associated PIF is `eth2`, which is the LAN side used for VLAN trunking in your example.
+    - Associated PIF is `eth2`, which is the LAN side used for VLAN trunking in our example.
     - The VLAN property is `None`: if it is `0` or another number,
       it isn't the right network and this network couldn't be used for VLAN trunking
       (802.1Q tagged packets would be dropped).
     - Finally, you can click on the MTU to modify it to `1504` (it will disconnect and reconnect the PIF on the host).
 - On the *Host* configuration, check that the *eth2* network is properly reconnected,
   or do it if it isn't the case
-  (it could happens if some host on the pool aren't fully up).
+  (it could happen if some hosts in the pool aren't fully up).
 
 As an alternative to using XO,
 you can see the network list using `xe network-list`,
@@ -142,7 +142,9 @@ and assign a new interface with the device `xn2` and the name `trunk`.
 Edit the `trunk` interface, enable it, and set MTU to 1504.
 
 :::tip
-Ensure that **Disable hardware checksum offload** is checked
-under the menu *Interfaces → Settings*.
-It is documented in [`xnb(4)`](https://man.freebsd.org/cgi/man.cgi?query=xnb&apropos=0&sektion=4&manpath=FreeBSD+14.2-RELEASE&format=html#end) as workaround for interface driver bug.
+As for any pfSense or OPNsense VM, disable TX checksum offload on every VIF of the VM
+from Xen Orchestra or `xe`, including the trunk VIF:
+see [Disable TX Checksum Offload](pfsense.md#3-disable-tx-checksum-offload).
+The **Disable hardware checksum offload** option under *Interfaces → Settings*
+is checked by default in OPNsense and can stay that way.
 :::

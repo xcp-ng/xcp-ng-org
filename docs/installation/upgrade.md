@@ -27,7 +27,7 @@ Read the [Release Notes and Known Issues](../../releases#xcp-ng-release-history)
 
 :::warning
 * Always upgrade and reboot the pool master **FIRST**
-* DON'T use the `Maintenance Mode` in XCP-ng Center. It moves the pool master to another host, which has to be avoided in the upgrade procedure.
+* DON'T use a `Maintenance Mode` feature that moves the pool master to another host: this has to be avoided in the upgrade procedure.
 * If HA (High Availability) is enabled, disable it before upgrading.
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`.
 * Read [Handling alternate drivers or kernel](#handling-alternate-drivers-or-kernel) if your host depends on them.
@@ -41,7 +41,7 @@ Read the [Release Notes and Known Issues](../../releases#xcp-ng-release-history)
 
 ## Upgrade via installation ISO (recommended) {#upgrade-via-installation-iso-recommended}
 
-This is the standard XCP-ng way. With this method, note that you can often skip intermediate release (e.g. from 7.5 to 8.2 directly) without needing intermediate upgrade, but there are exceptions, so check the [release notes](../../releases#xcp-ng-release-history)! For example, we strongly advise to upgrade to XCP-ng 8.2.1 first before jumping to XCP-ng 8.3.
+This is the standard XCP-ng way. With this method, note that you can often skip intermediate releases (e.g. from 7.5 to 8.2 directly) without needing intermediate upgrade, but there are exceptions, so check the [release notes](../../releases#xcp-ng-release-history)! For example, we strongly advise to upgrade to XCP-ng 8.2.1 first before jumping to XCP-ng 8.3.
 
 It will backup your system to the backup partition and reinstall the system from scratch on the system partition. Your XCP-ng configuration (VMs, storage repositories and so on) is retained.
 
@@ -93,7 +93,7 @@ If you do not have access to your server or remote KVM in order to upgrade using
   ```
   xe host-call-plugin plugin=prepare_host_upgrade.py host-uuid=750d9176-6468-4a08-8647-77a64c09093e fn=main args:url=http://<ip-address>/xcp-ng/unpackedexample/
   ```
-  The output should also be true. It has created a temporary entry in the grub bootloader which will automatically load the upgrade ISO on the next boot. It then automatically runs the XCP-ng upgrade with no user intervention required. It will also backup your existing XenServer dom0 install to the secondary backup partition, just like the normal upgrade.
+  The output should also be true. It has created a temporary entry in the grub bootloader which will automatically load the upgrade ISO on the next boot. It then automatically runs the XCP-ng upgrade with no user intervention required. It will also back up your existing XCP-ng dom0 installation to the secondary backup partition, just like the normal upgrade.
 * To start the process, just tell the host to reboot. It is best to watch the progress by using KVM if it's available, but if not, it should proceed fine and boot into the upgraded XCP-ng in 10 to 20 minutes.
 
 Note: it has been brought to our attention that [a DHCP server may be necessary during the upgrade](https://xcp-ng.org/forum/topic/2480/unattended-upgrade-requires-dhcp).
@@ -197,9 +197,10 @@ yum update
 
 #### 3. Check the configuration files
 
-When `rpm` needs to update configuration files that you had modified previously, there's a conflict of changes. There exists two strategies:
+When `rpm` needs to update configuration files that you had modified previously, there's a conflict of changes. There are two strategies:
 * either keep your file and write the new configuration file as `yourfile.rpmnew`.
 * or overwrite your file with the new one and save it as `yourfile.rpmsave`.
+
 For a given configuration file, only one of those can be created, depending on whether the RPM defines that it's more important to keep the user configuration or to put the new configuration in place. If you haven't made any change to the configuration file or the RPM does not bring any change during the update, then neither will be created.
 
 So, after an upgrade using `yum`, you need to look for `.rpmnew` and `.rpmsave` files, update the related configuration files accordingly if needed, and delete those `.rpmnew` and `.rpmsave` files in order to keep things clean for when you will need to do this again after the next upgrade.
@@ -216,7 +217,7 @@ find /etc \( -name "*.rpmnew" -or -name "*.rpmsave" ! -name "logrotate.cron.rpms
 
 ## Upgrade from XenServer {#upgrade-from-xenserver}
 
-This article describes how to proceed in order to convert your Citrix XenServer infrastructure into a XCP-ng infrastructure.
+This article describes how to proceed in order to convert your Citrix XenServer infrastructure into an XCP-ng infrastructure.
 
 **This is exactly the same thing for any Citrix Hypervisor version**.
 
@@ -226,7 +227,7 @@ This article describes how to proceed in order to convert your Citrix XenServer 
 
 :::warning
 * Always upgrade and reboot the pool master **FIRST**
-* DON'T use the `Maintenance Mode` in XCP-ng Center. It moves the pool master to another host, which has to be avoided in the upgrading procedure.
+* DON'T use a `Maintenance Mode` feature that moves the pool master to another host: this has to be avoided in the upgrading procedure.
 * If HA (High Availability) is enabled, disable it before upgrading
 * Eject CDs from your VMs before upgrading [to avoid issues](https://xcp-ng.org/forum/topic/174/upgrade-from-xenserver-7-1-did-not-work): `xe vm-cd-eject --multiple`
 * **It is very important to make sure clustering is not enabled on your pool**. It's a functionality that relies on proprietary software and that is not available in XCP-ng, and having it enabled before the upgrade will lead to XAPI being unable to start due to unexpected data in the database. If it is enabled or you already upgraded, see [this comment](https://github.com/xcp-ng/xcp/issues/94#issuecomment-437838544).
@@ -246,7 +247,7 @@ This article describes how to proceed in order to convert your Citrix XenServer 
 ### Before you start
 
 * Please re-read carefully all the previous warnings
-* Need a tool to [manage your XCP-ng hosts](../../management)? We strongly suggest that you use [Xen Orchestra](https://xen-orchestra.com), the web UI for XCP-ng. Alternatively, you can use `xe` CLI or XCP-ng Center.
+* Need a tool to [manage your XCP-ng hosts](../../management)? We strongly suggest that you use [Xen Orchestra](https://xen-orchestra.com), the web UI for XCP-ng. Alternatively, you can use `xe` CLI or XO Lite.
 
 ### Migration process
 
@@ -273,7 +274,7 @@ The installer will ask you to confirm the installation of XCP-ng over XenServer 
 
 Once the installation process is complete, reboot your host:
 
-![Final installation screen, installation is complete and suggest to remove any local media before rebooting.](https://xcp-ng.org/assets/img/screenshots/install22.png)
+![Final installation screen, installation is complete and suggests removing any local media before rebooting.](https://xcp-ng.org/assets/img/screenshots/install22.png)
 
 Boot on your new XCP-ng and [install the updates](../../management/updates).
 
@@ -304,11 +305,11 @@ In order to migrate using the new partition scheme, you need to run this command
 
 > Check that you are using GPT partitioning and not MBR and double check that you don't have any VDI attached to your local SR. Any remaining VDI will be removed.
 
-Then, you can follow the standard migration procedure describe above.
+Then, you can follow the standard migration procedure described above.
 
-### Migrating your XenServer Pool to XCP-ng without downtime
+### Migrating your XenServer Pool to XCP-ng with minimal downtime {#migrating-your-xenserver-pool-to-xcp-ng-without-downtime}
 
-Here is how to proceed in order to migrate without having downtime in your infrastructure:
+Here is how to proceed in order to migrate with minimal downtime in your infrastructure:
 
 1. Live migrate your VMs from the pool master to other hosts
 2. Upgrade your pool master
@@ -356,7 +357,7 @@ Live migration **should work** from any older XenServer/XCP-ng toward the latest
 
 ### Warm migration
 
-If a live migration doesn't work, Xen Orchestra is able to do a warm migration for you. It's safer and still have a reasonable downtime. [Read this dedicated article](https://xen-orchestra.com/blog/warm-migration-with-xen-orchestra/) to learn more about it.
+If a live migration doesn't work, Xen Orchestra is able to do a warm migration for you. It's safer and still has a reasonable downtime. [Read this dedicated article](https://xen-orchestra.com/blog/warm-migration-with-xen-orchestra/) to learn more about it.
 
 ## Handling alternate drivers or kernel {#handling-alternate-drivers-or-kernel}
 

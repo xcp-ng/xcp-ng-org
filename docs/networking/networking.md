@@ -3,7 +3,7 @@
 XCP-ng is using Open vSwitch as its core, and supports various features from it.
 
 :::tip
-Even if one NIC can be enough for your host, having a dedicated NIC for storage will be really important to get consistent performances (especially if you use shared storage like iSCSI or NFS).
+Even if one NIC can be enough for your host, having a dedicated NIC for storage will be really important to get consistent performance (especially if you use shared storage like iSCSI or NFS).
 :::
 
 :::danger
@@ -22,7 +22,7 @@ Typically, you add a network to create a new external network (bridge), set up a
 
 You can configure four different types of networks in XCP-ng:
 
-* Default Networks have an association with a physical network interface. Those are also called "External networks" provide a bridge between a virtual machine and the physical network interface connected to the network. External networks enable a virtual machine to connect to resources available through the server’s physical NIC.
+* Default Networks have an association with a physical network interface. Also called "External networks", they provide a bridge between a virtual machine and the physical network interface connected to the network. External networks enable a virtual machine to connect to resources available through the server’s physical NIC.
 * Bonded networks create a bond between two or more NICs to create a single, high-performing channel between the virtual machine and the network.
 * Private networks are used to connect VMs internally, without sending traffic outside the host
 * Global Private Networks extend the single server private network concept to allow VMs on different pools and/or hosts to communicate with each other by using the XOA SDN controller.
@@ -32,22 +32,23 @@ You can configure four different types of networks in XCP-ng:
 This section uses three types of server-side software objects to represent networking entities. These objects are:
 
 * A PIF, which is a way to connect outside of a host. PIF objects have:
-    -  * a name
-    -  * a description
-    -  * a UUID
-    -  * the parameters of the NIC they represent
-    -  * the network and server they are connected to. 
-PIFs can represent:
-  * A physical NIC
-  * A VLAN on top of a physical NIC
-  * A bond of multiple NICs
-  * A tunnel interface (GRE/VXLAN)
+    * a name
+    * a description
+    * a UUID
+    * the parameters of the NIC they represent
+    * the network and server they are connected to
+
+  PIFs can represent:
+    * A physical NIC
+    * A VLAN on top of a physical NIC
+    * A bond of multiple NICs
+    * A tunnel interface (GRE/VXLAN)
 * A VIF, which represents a virtual NIC on a virtual machine. VIF objects have a name and description, a UUID, and the network and VM they are connected to. They can be:
   * A PV driver backed device
   * An emulated device
 * A network, which is a virtual Ethernet switch on a host. Network objects have a name and description, a UUID, and the collection of VIFs and PIFs connected to them.
 
-`xe` CLI, Xen Orchestra or XCP-ng center allow you to configure networking options. You can control the NIC used for management operations, and create advanced networking features such as VLANs and NIC bonds.
+`xe` CLI, Xen Orchestra or XO Lite allow you to configure networking options. You can control the NIC used for management operations, and create advanced networking features such as VLANs and NIC bonds.
 
 ### Networks
 
@@ -108,7 +109,7 @@ Finally, click on "Create network":
 That's it!
 
 :::warning
-When creating a VLAN-enabled network, setting its MTU higher than the underlying physical Network can cause packets to be dropped by the OVS bridge. See [MTU and VLAN interaction](#mtu-and-vlan-interaction) below for details.
+When creating a VLAN-enabled network, setting its MTU higher than the underlying physical network can cause packets to be dropped by the OVS bridge. See [MTU and VLAN interaction](#mtu-and-vlan-interaction) below for details.
 :::
 
 ### Trunk link for VMs
@@ -117,7 +118,7 @@ It is also possible to directly expose the trunk link to the VM.
 The VIF should be configured to use the raw network (named by default "Pool-wide network associated with ethN").
 It will get all the 802.1Q packets on the wire, and be able to send tagged packets for any VLAN.
 
-In Xen-Orchestra, such networks have their VLAN property set to `None` (as opposed to `0` for untagged ports and `1` to `4095` for tagged ports, where  802.1Q tagged packets are dropped).
+In Xen Orchestra, such networks have their VLAN property set to `None` (as opposed to `0` for untagged ports and `1` to `4094` for tagged ports, where  802.1Q tagged packets are dropped).
 
 :::warning
 Be careful with the link's [MTU](https://en.wikipedia.org/wiki/Maximum_transmission_unit), since VLAN tagging adds a small overhead (4 bytes).
@@ -278,7 +279,7 @@ Once a NIC is physically installed, in Xen Orchestra, go to your host's networki
 
 ![XO's Network tab with the refresh button highlighted.](../../assets/img/screenshots/PIFs-refresh.png)
 
-This can also be done on the command line. After physically installing a new NIC, you'll need to run a `xe pif-scan` command on the host to get this NIC added as an available PIF.
+This can also be done on the command line. After physically installing a new NIC, you'll need to run an `xe pif-scan` command on the host to get this NIC added as an available PIF.
 
 <Terminal shell title="root@xcp-ng-host — Add a new NIC">{`
 xe pif-scan host-uuid=<HOST UUID>
@@ -363,19 +364,19 @@ xe pif-introduce device=eth4 host-uuid=<host uuid> mac=<mac>
 xe pif-introduce device=eth8 host-uuid=<host uuid> mac=<mac>
 `}</Terminal>
 
-By renaming/updating interfaces like this, you can assure all your hosts have the same interface order.
+By renaming/updating interfaces like this, you can ensure all your hosts have the same interface order.
 
 
 ### Remove a physical NIC
 
-Before removing a physical NIC, ensure that no VMs are using the interface. Shutdown the host, physically remove the NIC and boot.
+Before removing a physical NIC, ensure that no VMs are using the interface. Shut down the host, physically remove the NIC and boot.
 After boot, the PIF will need to be removed. You can do it this way:
 
 <Terminal shell title="root@xcp-ng-host — Remove a physical NIC">{`
 xe pif-forget uuid=<PIF UUID>
 `}</Terminal>
 
-The `<PIF UUID>` can be obtained with either `xe pif-list` or with Xen Orchestra. This command only needs to be ran once on the pool. 
+The `<PIF UUID>` can be obtained with either `xe pif-list` or with Xen Orchestra. This command only needs to be run once on the pool. 
 
 ## SDN controller {#sdn-controller}
 
@@ -383,7 +384,7 @@ An SDN controller is provided by a [Xen Orchestra](../management#manage-at-scale
 
 ### GRE/VXLAN tunnels
 
-Private network (using tunnels) are very handy when you want to access resources in a secure manner, that are not in the same physical network.
+Private networks (using tunnels) are very handy when you want to access resources in a secure manner, that are not in the same physical network.
 
 So we want a network that is:
 - reachable by all the hosts in a pool or **even between different pools!**
@@ -392,7 +393,7 @@ So we want a network that is:
 
 That's exactly what you can have thanks to XO SDN controller (here via GRE tunnels):
 
-![Diagram of SDN Controller and it's interactions with the hosts of a pool. It talks to the master using XAPI, to each hosts including master through OVSDB protocol, and the GRE tunnels connects hosts together.](https://xen-orchestra.com/blog/content/images/2019/06/sdn-controller-1.png)
+![Diagram of SDN Controller and its interactions with the hosts of a pool. It talks to the master using XAPI, to each host including master through OVSDB protocol, and the GRE tunnels connect hosts together.](https://xen-orchestra.com/blog/content/images/2019/06/sdn-controller-1.png)
 
 To create a private network, go in Xen Orchestra, New/Network and select "Private Network":
 
@@ -402,7 +403,7 @@ To create a private network, go in Xen Orchestra, New/Network and select "Privat
 
 To be able to encrypt the networks, `openvswitch-ipsec` package must be installed on all the hosts:
 
-* `yum install openvswitch-ipsec --enablerepo=xcp-ng-testing`
+* `yum install openvswitch-ipsec`
 * `systemctl enable ipsec`
 * `systemctl enable openvswitch-ipsec`
 * `systemctl start ipsec`
@@ -419,7 +420,7 @@ This section describes the new implementation (currently available in BETA). For
 - `xcp-ng-xapi-plugins` >= 0.15.0 is required. To check the version, run  `yum info xcp-ng-xapi-plugins`.
 :::
 
-Using Open vSwitch OpenFlow rules, you can setup traffic rules limiting some network accesses directly at the hypervisor vswitch level. No need for an additional layer of firewalling or filtering setup or equipment.
+Using Open vSwitch OpenFlow rules, you can set up traffic rules limiting some network accesses directly at the hypervisor vswitch level. No need for an additional layer of firewalling or filtering setup or equipment.
 
 There are 2 ways to configure OpenFlow rules:
 - Through [Xen Orchestra](https://docs.xen-orchestra.com/sdn_controller#openflow-rules)'s web UI (currently only available for per VIF rules)
@@ -447,9 +448,9 @@ The issue should be fixed.
 
 Sometimes you need to add extra routes to an XCP-ng host. It can be done manually with an `ip route add 10.88.0.0/14 via 10.88.113.193` (for example). But it won't persist after a reboot.
 
-To properly create persistent static routes, first create your xen network interface as usual. If you already have this network created previously, just get its UUID with an `xe network-list`. You're looking for the interface you have a management IP on typically, something like `xapi0` or `xapi1` for example. If you're not sure which one it is, you can run `ifconfig` and find the interface name that has the IP address this static route traffic will be exiting. Then get that interfaces UUID using the previous `xe network-list` command.
+To properly create persistent static routes, first create your xen network interface as usual. If you already have this network created previously, just get its UUID with an `xe network-list`. You're looking for the interface you have a management IP on typically, something like `xapi0` or `xapi1` for example. If you're not sure which one it is, you can run `ifconfig` and find the interface name that has the IP address this static route traffic will be exiting. Then get that interface's UUID using the previous `xe network-list` command.
 
-Now insert the UUID in the below example command. Also change the IPs to what you need, using the following format: `<network>/<netmask>/gateway IP>`. For example, our previous `ip route add 10.88.0.0/14 via 10.88.113.193` will be translated into:
+Now insert the UUID in the below example command. Also change the IPs to what you need, using the following format: `<network>/<netmask>/<gateway IP>`. For example, our previous `ip route add 10.88.0.0/14 via 10.88.113.193` will be translated into:
 
 <Terminal shell title="root@xcp-ng-host — Static routes">{`
 xe network-param-set uuid=<network UUID> other-config:static-routes=10.88.0.0/14/10.88.113.193
@@ -490,7 +491,7 @@ Example with 3 nodes that each has 3 NIC, 1 is for WAN connection and 2 are used
 ![Meshed network example.](https://petr.insw.cz/mesh.png)
 
 :::warning
-Right now only known-to-work option is to use bridge network backend, but hopefully in future it should be possible to setup meshed network using Open vSwitch as well (should you know how, please update this wiki)
+Right now only known-to-work option is to use bridge network backend, but hopefully in future it should be possible to setup meshed network using Open vSwitch as well (contributions welcome)
 :::
 
 ### Using bridge backend
@@ -511,7 +512,7 @@ reboot
 
 #### Create a bond on all nodes
 
-In XCP-ng Center go to NICs tab and create a bond, selecting eth1 and eth2 as bond devices, leave all options as default
+Create a bond from Xen Orchestra or with `xe bond-create` (see [Create a bond](#create-a-bond)), selecting eth1 and eth2 as bond devices, leave all options as default
 
 #### Reconfigure the bond device to broadcast mode
 
@@ -551,9 +552,9 @@ xe pif-param-set uuid=65380308-0c53-3d96-f564-06a724a792be other-config:bond-mod
 reboot
 ```
 
-#### Configure the interface in XCP-ng center
+#### Configure the interface {#configure-the-interface-in-xcp-ng-center}
 
-Go to tab Networking, rename bond1+2 device to something more memorable such as "MeshLAN", then add IP to all dom0 VMs to test it out, click "Configure" in IP configuration, add IP address and insert following addresses (you can use different addresses and range if you prefer to):
+Rename the bond network to something more memorable such as "MeshLAN" (from Xen Orchestra, or with `xe network-param-set name-label=MeshLAN uuid=<network-uuid>`), then add an IP to each dom0 on the bond PIF to test it out (from Xen Orchestra, or with `xe pif-reconfigure-ip uuid=<bond-pif-uuid> mode=static IP=<ip> netmask=255.255.255.0`), using the following addresses (you can use different addresses and range if you prefer to):
 
 On each node respectively
 * 192.168.10.1
@@ -563,7 +564,7 @@ On each node respectively
 Netmask: 255.255.255.0
 Gateway: leave empty
 
-Now SSH to each dom0 and try if you can ping all 3 IP addresses. If you can, you successfully created a meshed network. This network is going to provide interconnection between all 3 nodes and even if some node die, connectivity between remaining 2 nodes will remain operational.
+Now SSH to each dom0 and try if you can ping all 3 IP addresses. If you can, you successfully created a meshed network. This network is going to provide interconnection between all 3 nodes and even if a node dies, connectivity between remaining 2 nodes will remain operational.
 
 This setup will save you costs of 2 network switches you would otherwise have to purchase and use instead to achieve HA connectivity.
 
@@ -630,9 +631,7 @@ The Emergency network reset feature is available from the CLI using the `xe-rese
 
 Incorrect settings that cause a loss of network connectivity include renaming network interfaces, creating bonds or VLANs, or mistakes when changing the management interface. For example, typing the wrong IP address. You may also want to run this utility in the following scenarios:
 
-:::warning
-If a Pool master or host in a resource pool is unable to contact with other hosts.
-:::
+* If a Pool master or host in a resource pool is unable to contact other hosts.
 
 Use the `xe-reset-networking` utility only in an emergency because it deletes the configuration for all PIFs, bonds, VLANs, and tunnels associated with the host. Guest Networks and VIFs are preserved. As part of this utility, VMs are shut down forcefully. Before running this command, cleanly shut down the VMs where possible. Before you apply a reset, you can change the management interface and specify which IP configuration, DHCP, or Static can be used.
 
@@ -645,11 +644,11 @@ If the pool master requires a network reset, reset the network on the pool maste
 
 #### Verifying the network reset
 
-After you specify the configuration mode to be used after the network reset, xsconsole and the CLI display settings that will be applied after host reboot. It is a final chance to modify before applying the emergency network reset command. After restart, the new network configuration can be verified in Xen Orchestra and xsconsole. In Xen Orchestra, with the host selected, select the Networking tab to see the new network configuration. The Network and Management Interface section in xsconsole display this information.
+After you specify the configuration mode to be used after the network reset, xsconsole and the CLI display settings that will be applied after host reboot. It is a final chance to modify before applying the emergency network reset command. After restart, the new network configuration can be verified in Xen Orchestra and xsconsole. In Xen Orchestra, with the host selected, select the Networking tab to see the new network configuration. The Network and Management Interface section in xsconsole displays this information.
 
 ### SR-IOV
 
-TO have SR-IOV enabled, you need:
+To have SR-IOV enabled, you need:
 
 * SR-IOV / ASPM compatible mainboard
 * SR-IOV compatible CPU
@@ -663,7 +662,7 @@ You can't live migrate a VM with SR-IOV enabled. Use it only if you really need 
 #### Setup
 
 * enable SR-IOV in your BIOS
-* enable ASPM (seem to be needed acording to https://www.juniper.net/documentation/en_US/contrail3.1/topics/concept/sriov-with-vrouter-vnc.html and https://www.supermicro.com/support/faqs/faq.cfm?faq=26448)
+* enable ASPM (seems to be needed according to https://www.juniper.net/documentation/en_US/contrail3.1/topics/concept/sriov-with-vrouter-vnc.html and https://www.supermicro.com/support/faqs/faq.cfm?faq=26448)
 * enable SR-IOV in your network card firmware
 
 Then, you can enable and configure it with `xe` CLI:
@@ -688,13 +687,9 @@ If you want to disable it:
 xe network-sriov-destroy uuid=<network_sriov_uuid>
 `}</Terminal>
 
-:::tip
-You can read a Citrix guide here: [https://support.citrix.com/article/CTX235044](https://support.citrix.com/article/CTX235044)
-:::
-
 ### Intel i218/i219 slow speed
 
-With kernel version 4.15 a fix in the e1000e driver [has been introduced](https://github.com/torvalds/linux/commit/b10effb92e272051dd1ec0d7be56bf9ca85ab927). However, this fix slightly slows down DMA access times to prevent the NIC to hang up on heavy UDP traffic. This impacts the TCP performance. A workaround to regain full transfer speeds, you can turn off TCP segmentation offloading via the following command:
+With kernel version 4.15 a fix in the e1000e driver [has been introduced](https://github.com/torvalds/linux/commit/b10effb92e272051dd1ec0d7be56bf9ca85ab927). However, this fix slightly slows down DMA access times to prevent the NIC from hanging on heavy UDP traffic. This impacts the TCP performance. As a workaround to regain full transfer speeds, you can turn off TCP segmentation offloading via the following command:
 
 <Terminal shell title="Intel i218/i219 slow speed">{`
 ethtool -K <interface> tso off gso off
