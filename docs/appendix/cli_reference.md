@@ -10,7 +10,7 @@ This list is not exhaustive.
 :::tip
 You can list all xe commands with `xe help --all`. To get help for a specific command, use `xe help <command>`.
 
-To return only specifics values in response of `<OBJECT>-list` commands, use the optional parameter `params=param1,param2,...` (or `params=all`).
+To return only specific values in response of `<OBJECT>-list` commands, use the optional parameter `params=param1,param2,...` (or `params=all`).
 :::
 
 ## Appliance commands
@@ -69,7 +69,7 @@ xe appliance-destroy uuid=appliance-uuid
 ### `appliance-recover`
 
 ```
-appliance-recover uuid=appliance-uuid database:vdi-uuid=vdi-uuid [paused=true|false]
+appliance-recover uuid=appliance-uuid database:vdi-uuid=vdi-uuid [force=true|false]
 ```
 
 Recover a VM appliance/vApp from the database contained in the supplied VDI.
@@ -119,8 +119,6 @@ audit-log-get [since=timestamp] filename=filename
 
 For example, to obtain audit records of the pool since a precise millisecond timestamp, run the following command:
 
-Run the following command:
-
 ```
 xe audit-log-get since=2009-09-24T17:56:20.530Z filename=/tmp/auditlog-pool-actions.out
 ```
@@ -131,7 +129,7 @@ Commands for working with network bonds, for resilience with physical interface 
 
 The bond object is a reference object which glues together *master* and *member* PIFs. The master PIF is the bonding interface which must be used as the overall PIF to refer to the bond. The member PIFs are a set of two or more physical interfaces that have been combined into the high-level bonded interface.
 
-## Bond parameters
+### Bond parameters
 
 Bonds have the following parameters:
 
@@ -174,7 +172,7 @@ Change the bond mode.
 
 Commands for working with physical CD/DVD drives on XCP-ng servers.
 
-## CD parameters
+### CD parameters
 
 CDs have the following parameters:
 
@@ -222,7 +220,7 @@ Optional arguments can be any number of the [CD parameters](#cd-parameters) list
 ## Cluster commands
 
 :::warning
-Cluster doesn't work with XCP-ng, but only with Citrix Hypervisor Please do NOT use it!
+Cluster doesn't work with XCP-ng, but only with Citrix Hypervisor. Please do NOT use it!
 :::
 
 ## Console commands
@@ -231,7 +229,7 @@ Commands for working with consoles.
 
 The console objects can be listed with the standard object listing command (`xe console-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#low-level-parameter-commands).
 
-## Console parameters
+### Console parameters
 
 Consoles have the following parameters:
 
@@ -370,7 +368,7 @@ Tests whether storage is available to recover this VM.
 appliance-assert-can-be-recovered uuid=appliance-uuid database:vdi-uuid=vdi-uuid
 ```
 
-Checks whether the storage (containing the appliance’s/vAPP disk) is visible.
+Checks whether the storage (containing the appliance’s/vApp disk) is visible.
 
 ### `appliance-recover`
 
@@ -378,7 +376,7 @@ Checks whether the storage (containing the appliance’s/vAPP disk) is visible.
 appliance-recover uuid=appliance-uuid database:vdi-uuid=vdi-uuid [force=true|false]
 ```
 
-Recover an appliance/vAPP from the database contained in the supplied VDI.
+Recover an appliance/vApp from the database contained in the supplied VDI.
 
 ### `vm-recover`
 
@@ -411,7 +409,7 @@ The example below shows the DR CLI commands in context:
 On the primary site, enable database replication:
 
 ```
-xe sr-database-replication uuid=sr=uuid
+xe sr-enable-database-replication uuid=sr_uuid
 ```
 
 After a disaster, on the secondary site, connect to the SR. The `device-config` command has the same fields as `sr-probe`.
@@ -499,7 +497,7 @@ The GPU objects can be listed with the standard object listing commands: `xe pgp
 
 ### Physical GPU parameters
 
-Physical GPUS (pGPUs) have the following parameters:
+Physical GPUs (pGPUs) have the following parameters:
 
 |Parameter Name|Description|Type|
 |:-------------|:----------|:---|
@@ -547,7 +545,7 @@ GPU groups have the following parameters:
 |`other-config`|A list of key/value pairs that specify extra configuration parameters for the GPU group|Read/write map parameter|
 |`supported-VGPU-types`|Union of all virtual GPU types supported by the underlying hardware|Read only|
 |`enabled-VGPU-types`|Union of all virtual GPU types which have been enabled on the underlying pGPUs|Read only|
-|`allocation-algorithm`|Depth-first/Breadth-first setting for allocation virtual GPUs on pGPUs within the group|Read/write enum parameter|
+|`allocation-algorithm`|Depth-first/Breadth-first setting for allocating virtual GPUs on pGPUs within the group|Read/write enum parameter|
 
 ### GPU group operations
 
@@ -611,7 +609,7 @@ Virtual GPUs have the following parameters:
 
 ### Virtual GPU type parameters
 
-:::tip>
+:::tip
 GPU Passthrough and virtual GPUs are not compatible with live migration, storage live migration, or VM Suspend unless supported software and graphics cards from GPU vendors are present. VMs without this support cannot be migrated to avoid downtime.
 :::
 
@@ -622,13 +620,13 @@ Virtual GPU Types have the following parameters:
 |`uuid`|The unique identifier/object reference for the virtual GPU type|Read only|
 |`vendor-name`|Name of virtual GPU vendor|Read only|
 |`model-name`|Model name associated with the virtual GPU type|Read only|
-|`freeze-frame`|Frame buffer size of the virtual GPU type, in bytes|Read only|
+|`framebuffer-size`|Frame buffer size of the virtual GPU type, in bytes|Read only|
 |`max-heads`|Maximum number of displays supported by the virtual GPU type|Read only|
 |`supported-on-PGPUs`|List of pGPUs that support this virtual GPU type|Read only|
 |`enabled-on-PGPUs`|List of pGPUs that have this virtual GPU type enabled|Read only|
 |`VGPU-uuids`|List of virtual GPUs of this type|Read only|
 
-## Virtual GPU operations
+### Virtual GPU operations
 
 #### `vgpu-create`
 
@@ -649,7 +647,7 @@ Destroy the specified virtual GPU.
 ### Disabling VNC for VMs with virtual GPU
 
 ```
-xe vm-param-add uuid=uuid_of_vmparam-name=platform vgpu_vnc_enabled=true|false
+xe vm-param-add uuid=uuid_of_vm param-name=platform vgpu_vnc_enabled=true|false
 ```
 
 Using `false` disables the VNC console for a VM as it passes `disablevnc=1` through to the display emulator. By default, VNC is enabled.
@@ -660,7 +658,7 @@ Commands for interacting with XCP-ng server.
 
 XCP-ng servers are the physical servers running XCP-ng software. They have VMs running on them under the control of a special privileged Virtual Machine, known as the control domain or domain 0.
 
-The XCP-ng server objects can be listed with the standard object listing commands: `xe host-list`, `xe host-cpu-list`, and `xe host-crashdump-list`). The parameters can be manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#low-level-parameter-commands).
+The XCP-ng server objects can be listed with the standard object listing commands: `xe host-list`, `xe host-cpu-list`, and `xe host-crashdump-list`. The parameters can be manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#low-level-parameter-commands).
 
 ### Host selectors
 
@@ -720,7 +718,7 @@ CPUs on XCP-ng servers have the following parameters:
 |`stepping`|The CPU revision number|Read only|
 |`flags`|The flags of the physical CPU (a decoded version of the features field)|Read only|
 |`Utilisation`|The current CPU utilization|Read only|
-|`host-uuid`|The UUID if the host the CPU is in|Read only|
+|`host-uuid`|The UUID of the host the CPU is in|Read only|
 |`model`|The model number of the physical CPU|Read only|
 |`family`|The physical CPU family number|Read only|
 
@@ -769,11 +767,11 @@ While the `xe host-backup` command works if executed on the local host (that is,
 host-bugreport-upload [host-selector=host_selector_value...] [url=destination_url http-proxy=http_proxy_name]
 ```
 
-Generate a fresh bug report (using `xen-bugtool`, with all optional files included) and upload to the Support FTP site or some other location.
+Generate a fresh bug report (using `xen-bugtool`, with all optional files included) and upload it to the specified location.
 
 The hosts on which this operation should be performed are selected using the standard selection mechanism (see [host selectors](#host-selectors) above). Optional arguments can be any number of the [host parameters](#host-parameters) listed at the beginning of this section.
 
-Optional parameters are `http-proxy`: use specified HTTP proxy, and `url`: upload to this destination URL. If optional parameters are not used, no proxy server is identified and the destination is the default Support FTP site.
+Optional parameters are `http-proxy`: use specified HTTP proxy, and `url`: upload to this destination URL. If `http-proxy` is not used, no proxy server is identified. Specify the destination with `url`.
 
 ### `host-call-plugin`
 
@@ -821,7 +819,7 @@ Delete a host crashdump specified by its UUID from the XCP-ng server.
 host-crashdump-upload uuid=crashdump_uuid [url=destination_url] [http-proxy=http_proxy_name]
 ```
 
-Upload a crashdump to the Support FTP site or other location. If optional parameters are not used, no proxy server is identified and the destination is the default Support FTP site. Optional parameters are `http-proxy`: use specified HTTP proxy, and `url`: upload to this destination URL.
+Upload a crashdump to the specified location. If `http-proxy` is not used, no proxy server is identified. Specify the destination with `url`. Optional parameters are `http-proxy`: use specified HTTP proxy, and `url`: upload to this destination URL.
 
 ### `host-declare-dead`
 
@@ -829,7 +827,7 @@ Upload a crashdump to the Support FTP site or other location. If optional parame
 host-declare-dead uuid=host_uuid
 ```
 
-Declare that the the host is dead without contacting it explicitly.
+Declare that the host is dead without contacting it explicitly.
 
 :::warning
 This call is dangerous and can cause data loss if the host is not actually dead.
@@ -983,7 +981,7 @@ The hosts on which this operation should be performed are selected using the sta
 host-get-system-status-capabilities [host-selector=host_selector_value...]
 ```
 
-Get system status capabilities for the specified hosts. The capabilities are returned as an XML fragment that similar to the following example:
+Get system status capabilities for the specified hosts. The capabilities are returned as an XML fragment that is similar to the following example:
 
 ```
 <?xml version="1.0" ?>
@@ -1036,7 +1034,7 @@ Return a list of VMs which prevent the evacuation of a specific host and display
 host-is-in-emergency-mode
 ```
 
-Returns `true` if the host the CLI is talking to is in emergency mode, `false` otherwise. This CLI command works directly on slave hosts even with no master host present.
+Returns `true` if the host the CLI is talking to is in emergency mode, `false` otherwise. This CLI command works directly on member hosts even with no master host present.
 
 ### `host-license-add`
 
@@ -1044,7 +1042,11 @@ Returns `true` if the host the CLI is talking to is in emergency mode, `false` o
 host-license-add [license-file=path/license_filename] [host-uuid=host_uuid]
 ```
 
-For XCP-ng (free edition), use to parse a local license file and add it to the specified XCP-ng server.
+:::warning
+XCP-ng doesn't use any license file of any kind. Ignore this command.
+:::
+
+Parse a local license file and add it to the specified server.
 
 ### `host-license-remove`
 
@@ -1082,7 +1084,7 @@ While the `xe host-logs-download` command works if executed on the local host (t
 host-management-disable
 ```
 
-Disables the host agent listening on an external management network interface and disconnects all connected API clients (such as the XenCenter). This command operates directly on the XCP-ng server the CLI is connected to. The command is not forwarded to the pool master when applied to a member XCP-ng server.
+Disables the host agent listening on an external management network interface and disconnects all connected API clients (such as Xen Orchestra or XO Lite). This command operates directly on the XCP-ng server the CLI is connected to. The command is not forwarded to the pool master when applied to a member XCP-ng server.
 
 :::warning
 Be careful when using this CLI command off-host. After this command is run, you cannot connect to the control domain remotely over the network to re-enable the host agent.
@@ -1094,14 +1096,14 @@ Be careful when using this CLI command off-host. After this command is run, you 
 host-management-reconfigure [interface=device] [pif-uuid=uuid]
 ```
 
-Reconfigures the XCP-ng server to use the specified network interface as its management interface, which is the interface that is used to connect to the XenCenter. The command rewrites the MANAGEMENT\_INTERFACE key in `/etc/xensource-inventory`.
+Reconfigures the XCP-ng server to use the specified network interface as its management interface, which is the interface that is used to connect to Xen Orchestra or XO Lite. The command rewrites the MANAGEMENT\_INTERFACE key in `/etc/xensource-inventory`.
 
 If the device name of an interface (which must have an IP address) is specified, the XCP-ng server immediately rebinds. This command works both in normal and emergency mode.
 
 If the UUID of a PIF object is specified, the XCP-ng server determines which IP address to rebind to itself. It must not be in emergency mode when this command is executed.
 
 :::warning
-Be careful when using this CLI command off-host and ensure that you have network connectivity on the new interface. Use `xe pif-reconfigure` to set one up first. Otherwise, subsequent CLI commands are unable to reach the XCP-ng server.
+Be careful when using this CLI command off-host and ensure that you have network connectivity on the new interface. Use `xe pif-reconfigure-ip` to set one up first. Otherwise, subsequent CLI commands are unable to reach the XCP-ng server.
 :::
 
 ### `host-power-on`
@@ -1110,7 +1112,7 @@ Be careful when using this CLI command off-host and ensure that you have network
 host-power-on [host=host_uuid]
 ```
 
-Turns on power on XCP-ng servers with the *Host Power On* function enabled. Before using this command, enable `host-set-power-on` on the host.
+Turns on power on XCP-ng servers with the *Host Power On* function enabled. Before using this command, enable `host-set-power-on-mode` on the host.
 
 ### `host-reboot`
 
@@ -1122,12 +1124,12 @@ Reboot the specified XCP-ng servers. The specified hosts must be disabled first 
 
 The hosts on which this operation should be performed are selected using the standard selection mechanism (see [host selectors](#host-selectors) above). Optional arguments can be any number of the [host parameters](#host-parameters) listed at the beginning of this section.
 
-If the specified XCP-ng servers are members of a pool, the loss of connectivity on shutdown is handled and the pool recovers when the XCP-ng servers returns. The other members and the master continue to function.
+If the specified XCP-ng servers are members of a pool, the loss of connectivity on shutdown is handled and the pool recovers when the XCP-ng servers return. The other members and the master continue to function.
 
 If you shut down the master, the pool is out of action until one of the following actions occurs:
 
 - You make one of the members into the master
-- The original master is rebooted and back on line.
+- The original master is rebooted and back online.
 
 When the master is back online, the members reconnect and synchronize with the master.
 
@@ -1163,7 +1165,7 @@ Change the host name of the XCP-ng server specified by `host-uuid`. This command
 host-set-power-on-mode host=host_uuid power-on-mode={"" | "wake-on-lan" | "iLO" | "DRAC" | "custom"} [ power-on-config:power_on_ip=ip-address power-on-config:power_on_user=user power-on-config:power_on_password_secret=secret-uuid ]
 ```
 
-Use to enable the *Host Power On* function on XCP-ng hosts that are compatible with remote power solutions. When using the `host-set-power-on` command, you must specify the type of power management solution on the host (that is, the power-on-mode). Then specify configuration options using the power-on-config argument and its associated key-value pairs.
+Use to enable the *Host Power On* function on XCP-ng hosts that are compatible with remote power solutions. When using the `host-set-power-on-mode` command, you must specify the type of power management solution on the host (that is, the power-on-mode). Then specify configuration options using the power-on-config argument and its associated key-value pairs.
 
 To use the secrets feature to store your password, specify the key `"power_on_password_secret"`. For more information, see [Secrets](../../management/manage-locally/cli#secrets).
 
@@ -1177,12 +1179,12 @@ Shut down the specified XCP-ng servers. The specified XCP-ng servers must be dis
 
 The hosts on which this operation should be performed are selected using the standard selection mechanism (see [host selectors](#host-selectors) above). Optional arguments can be any number of the [host parameters](#host-parameters) listed at the beginning of this section.
 
-If the specified XCP-ng servers are members of a pool, the loss of connectivity on shutdown is handled and the pool recovers when the XCP-ng servers returns. The other members and the master continue to function.
+If the specified XCP-ng servers are members of a pool, the loss of connectivity on shutdown is handled and the pool recovers when the XCP-ng servers return. The other members and the master continue to function.
 
 If you shut down the master, the pool is out of action until one of the following actions occurs:
 
 - You make one of the members into the master
-- The original master is rebooted and back on line.
+- The original master is rebooted and back online.
 
 When the master is back online, the members reconnect and synchronize with the master.
 
@@ -1302,7 +1304,7 @@ Set all loggers to the specified output (nil, stderr, string, file:*file name*, 
 
 ## Message commands
 
-Commands for working with messages. Messages are created to notify users of significant events, and are displayed in XenCenter as alerts.
+Commands for working with messages. Messages are created to notify users of significant events, and are displayed in Xen Orchestra as alerts.
 
 The message objects can be listed with the standard object listing command (`xe message-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#low-level-parameter-commands)
 
@@ -1361,8 +1363,8 @@ Networks have the following parameters:
 |`bridge`|Name of the bridge corresponding to this network on the local XCP-ng server|Read only|
 |`default-locking-mode`|A network object used with VIF objects for ARP filtering. Set to `unlocked` to remove all the filtering rules associated with the VIF. Set to `disabled` so the VIF drops all traffic.|Read/write|
 |`purpose`|Set of purposes for which the XCP-ng server uses this network. Set to `nbd` to use the network to make NBD connections.|Read/write|
-|`other-config:staticroutes`|Comma-separated list of *subnet*/*netmask*/*gateway* formatted entries specifying the gateway address through which to route subnets. For example, setting `other-config:static-routes` to 172.16.0.0/15/192.168.0.3,172.18.0.0/16/192.168.0.4 causes traffic on 172.16.0.0/15 to be routed over 192.168.0.3 and traffic on 172.18.0.0/16 to be routed over 192.168.0.4.|Read/write|
-|`other-config:ethtoolautoneg`|Set to no to disable autonegotiation of the physical interface or bridge. Default is yes.|Read/write|
+|`other-config:static-routes`|Comma-separated list of *subnet*/*netmask*/*gateway* formatted entries specifying the gateway address through which to route subnets. For example, setting `other-config:static-routes` to 172.16.0.0/15/192.168.0.3,172.18.0.0/16/192.168.0.4 causes traffic on 172.16.0.0/15 to be routed over 192.168.0.3 and traffic on 172.18.0.0/16 to be routed over 192.168.0.4.|Read/write|
+|`other-config:ethtool-autoneg`|Set to no to disable autonegotiation of the physical interface or bridge. Default is yes.|Read/write|
 |`other-config:ethtool-rx`|Set to on to enable receive checksum, off to disable|Read/write|
 |`other-config:ethtool-tx`|Set to on to enable transmit checksum, off to disable|Read/write|
 |`other-config:ethtool-sg`|Set to on to enable scatter gather, off to disable|Read/write|
@@ -1420,7 +1422,7 @@ network-sriov-destroy uuid=network_sriov_uuid
 
 Removes a network SR-IOV object and disables SR-IOV on its physical PIF.
 
-## Assign an SR-IOV VF
+### Assign an SR-IOV VF
 
 ```
 xe vif-create device=device_index mac=vf_mac_address network-uuid=sriov_network vm-uuid=vm_uuid
@@ -1435,21 +1437,20 @@ Commands for working with the SDN controller.
 ### `sdn-controller-forget`
 
 ```
-sdn-controller-introduce [address=address] [protocol=protocol] [tcp-port=tcp_port]
-```
-
-Introduce an SDN controller.
-
-### `sdn-controller-introduce`
-
-```
 sdn-controller-forget uuid=uuid
 ```
 
 Remove an SDN controller.
 
+### `sdn-controller-introduce`
+
+```
+sdn-controller-introduce [address=address] [protocol=protocol] [tcp-port=tcp_port]
+```
+
+Introduce an SDN controller.
+
 ## Tunnel commands
------------------------------------
 
 Commands for working with tunnels.
 
@@ -1472,7 +1473,7 @@ Destroy a tunnel.
 ## Patch commands
 
 :::warning
-XCP-ng doesn't use Citrix Hypervisor patch system. Do NOT use these commands!
+XCP-ng doesn't use the Citrix Hypervisor patch system. Do NOT use these commands!
 :::
 
 Commands for working with patches.
@@ -1602,7 +1603,7 @@ PIFs have the following parameters:
 |Parameter Name|Description|Type|
 |:-------------|:----------|:---|
 |`uuid`|The unique identifier/object reference for the PIF|Read only|
-|`device machine-readable`|Name of the interface (for example, eth0)|Read only|
+|`device`|Machine-readable name of the interface (for example, eth0)|Read only|
 |`MAC`|The MAC address of the PIF|Read only|
 |`other-config`|Extra PIF configuration `name:value` pairs.|Read/write map parameter|
 |`physical`|If true, the PIF points to an actual physical network interface|Read only|
@@ -1610,7 +1611,7 @@ PIFs have the following parameters:
 |`MTU`|Maximum Transmission Unit of the PIF in bytes.|Read only|
 |`VLAN`|VLAN tag for all traffic passing through this interface. -1 indicates that no VLAN tag is assigned|Read only|
 |`bond-master-of`|The UUID of the bond this PIF is the master of (if any)|Read only|
-|`bond-slave-of`|The UUID of the bond this PIF is the slave of (if any)|Read only|
+|`bond-slave-of`|The UUID of the bond this PIF is a member of (if any)|Read only|
 |`management`|Is this PIF designated to be a management interface for the control domain|Read only|
 |`network-uuid`|The unique identifier/object reference of the virtual network to which this PIF is connected|Read only|
 |`network-name-label`|The name of the virtual network to which this PIF is connected|Read only|
@@ -1631,9 +1632,9 @@ PIFs have the following parameters:
 |`speed`|Data transfer rate of the NIC|Read only|
 |`duplex`|Duplexing mode of the NIC; full or half|Read only|
 |`pci-bus-path`|PCI bus path address|Read only|
-|`other-config:ethtoolspeed`|Sets the speed of connection in Mbps|Read/write|
-|`other-config:ethtoolautoneg`|Set to no to disable autonegotiation of the physical interface or bridge. Default is yes.|Read/write|
-|`other-config:ethtoolduplex`|Sets duplexing capability of the PIF, either full or half.|Read/write|
+|`other-config:ethtool-speed`|Sets the speed of connection in Mbps|Read/write|
+|`other-config:ethtool-autoneg`|Set to no to disable autonegotiation of the physical interface or bridge. Default is yes.|Read/write|
+|`other-config:ethtool-duplex`|Sets duplexing capability of the PIF, either full or half.|Read/write|
 |`other-config:ethtool-rx`|Set to on to enable receive checksum, off to disable|Read/write|
 |`other-config:ethtool-tx`|Set to on to enable transmit checksum, off to disable|Read/write|
 |`other-config:ethtool-sg`|Set to on to enable scatter gather, off to disable|Read/write|
@@ -1641,13 +1642,13 @@ PIFs have the following parameters:
 |`other-config:ethtool-ufo`|Set to on to enable UDP fragment offload, off to disable|Read/write|
 |`other-config:ethtool-gso`|Set to on to enable generic segmentation offload, off to disable|Read/write|
 |`other-config:domain`|Comma-separated list used to set the DNS search path|Read/write|
-|`other-config:bondmiimon`|Interval between link liveness checks, in milliseconds|Read/write|
-|`other-config:bonddowndelay`|Number of milliseconds to wait after link is lost before really considering the link to have gone. This parameter allows for transient link loss|Read/write|
-|`other-config:bondupdelay`|Number of milliseconds to wait after the link comes up before really considering it up. Allows for links flapping up. Default is `31s` to allow for time for switches to begin forwarding traffic.|Read/write|
+|`other-config:bond-miimon`|Interval between link liveness checks, in milliseconds|Read/write|
+|`other-config:bond-downdelay`|Number of milliseconds to wait after link is lost before really considering the link to have gone. This parameter allows for transient link loss|Read/write|
+|`other-config:bond-updelay`|Number of milliseconds to wait after the link comes up before really considering it up. Allows for links flapping up. Default is `31s` to allow for time for switches to begin forwarding traffic.|Read/write|
 |`disallow-unplug`|True if this PIF is a dedicated storage NIC, false otherwise|Read/write|
 
 :::tip
-Changes made to the `other-config` fields of a PIF will only take effect after a reboot. Alternately, use the `xe pif-unplug` and `xe pif-plug` commands to cause the PIF configuration to be rewritten.
+Changes made to the `other-config` fields of a PIF will only take effect after a reboot. Alternatively, use the `xe pif-unplug` and `xe pif-plug` commands to cause the PIF configuration to be rewritten.
 :::
 
 ### `pif-forget`
@@ -1721,7 +1722,7 @@ Attempt to bring down the specified physical interface.
 
 ## Pool commands
 
-Commands for working with pools. A *pool* is an aggregate of one or more XCP-ng servers. A pool uses one or more shared storage repositories so that the VMs running on one host in the pool can be migrated in near-real time to another host in the pool. This migration happens while the VM is still running, without it needing to be shut down and brought back up. Each XCP-ng server is really a pool consisting of a single member by default. When your XCP-ng server is joined to a pool, it is designated as a member, and the pool it has joined becomes the master for the pool.
+Commands for working with pools. A *pool* is an aggregate of one or more XCP-ng servers. A pool uses one or more shared storage repositories so that the VMs running on one host in the pool can be migrated in near-real time to another host in the pool. This migration happens while the VM is still running, without it needing to be shut down and brought back up. Each XCP-ng server is really a pool consisting of a single member by default. When your XCP-ng server is joined to a pool, it is designated as a member, and the existing pool master remains the master for the pool.
 
 The singleton pool object can be listed with the standard object listing command (`xe pool-list`). Its parameters can be manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#low-level-parameter-commands)
 
@@ -1782,7 +1783,7 @@ List all installed SSL certificates.
 pool-certificate-sync
 ```
 
-Sync SSL certificates and certificate revocation lists from master to slaves.
+Sync SSL certificates and certificate revocation lists from master to members.
 
 ### `pool-certificate-uninstall`
 
@@ -1902,7 +1903,7 @@ Enable the redo log on the given SR if in use, unless HA is enabled.
 pool-enable-ssl-legacy [uuid=uuid]
 ```
 
-Set ssl-legacy to True on each host."
+Set ssl-legacy to True on each host.
 
 ### `pool-eject`
 
@@ -1918,7 +1919,7 @@ Instruct the specified XCP-ng server to leave an existing pool.
 pool-emergency-reset-master master-address=address_of_pool_master
 ```
 
-Instruct a slave member XCP-ng server to reset its master address to the new value and attempt to connect to it. Do not run this command on master hosts.
+Instruct a member XCP-ng server to reset its master address to the new value and attempt to connect to it. Do not run this command on master hosts.
 
 ### `pool-emergency-transition-to-master`
 
@@ -1928,7 +1929,7 @@ pool-emergency-transition-to-master
 
 Instruct a member XCP-ng server to become the pool master. The XCP-ng server accepts this command only after the host has transitioned to emergency mode. Emergency mode means it is a member of a pool whose master has disappeared from the network and cannot be contacted after some number of retries.
 
-If the host password has been modified since the host joined the pool, this command can cause the password of the host to reset. For more information, see ([User commands](#user-commands)).
+If the host password has been modified since the host joined the pool, this command can cause the password of the host to reset. For more information, see [User commands](#user-commands).
 
 ### `pool-ha-enable`
 
@@ -1948,15 +1949,19 @@ Disables the high availability feature on the resource pool.
 
 ### `pool-ha-compute-hypothetical-max-host-failures-to-tolerate`
 
-Compute the maximum number of host failures to tolerate under the current pool configuration.
-
-### `pool-ha-compute-max-host-failures-to-tolerate`
-
 ```
 pool-ha-compute-hypothetical-max-host-failures-to-tolerate [vm-uuid=vm_uuid] [restart-priority=restart_priority]
 ```
 
 Compute the maximum number of host failures to tolerate with the supplied, proposed protected VMs.
+
+### `pool-ha-compute-max-host-failures-to-tolerate`
+
+```
+pool-ha-compute-max-host-failures-to-tolerate
+```
+
+Compute the maximum number of host failures to tolerate under the current pool configuration.
 
 ### `pool-initialize-wlb`
 
@@ -1980,14 +1985,14 @@ Instruct your XCP-ng server to join an existing pool.
 pool-management-reconfigure [network-uuid=network-uuid]
 ```
 
-Reconfigures the management interface of all the hosts in the pool to use the specified network interface, which is the interface that is used to connect to the XenCenter. The command rewrites the MANAGEMENT\_INTERFACE key in `/etc/xensource-inventory` for all the hosts in the pool.
+Reconfigures the management interface of all the hosts in the pool to use the specified network interface, which is the interface that is used to connect to Xen Orchestra or XO Lite. The command rewrites the MANAGEMENT\_INTERFACE key in `/etc/xensource-inventory` for all the hosts in the pool.
 
 If the device name of an interface (which must have an IP address) is specified, the XCP-ng master host immediately rebinds. This command works both in normal and emergency mode.
 
 From the network UUID specified, UUID of the PIF object is identified and mapped to the XCP-ng server, which determines which IP address to rebind to itself. It must not be in emergency mode when this command is executed.
 
 :::warning
-Be careful when using this CLI command off-host and ensure that you have network connectivity on the new interface. Use `xe pif-reconfigure` to set one up first. Otherwise, subsequent CLI commands are unable to reach the XCP-ng server.
+Be careful when using this CLI command off-host and ensure that you have network connectivity on the new interface. Use `xe pif-reconfigure-ip` to set one up first. Otherwise, subsequent CLI commands are unable to reach the XCP-ng server.
 :::
 ### `pool-recover-slaves`
 
@@ -2005,7 +2010,7 @@ pool-restore-database file-name=filename_to_restore_from_on_client [dry-run=true
 
 Upload a database backup (created with `pool-dump-database`) to a pool. On receiving the upload, the master restarts itself with the new database.
 
-There is also a *dry run* option, which allows you to check that the pool database can be restored without actually perform the operation. By default, `dry-run` is set to false.
+There is also a *dry run* option, which allows you to check that the pool database can be restored without actually performing the operation. By default, `dry-run` is set to false.
 
 ### `pool-retrieve-wlb-configuration`
 
@@ -2063,13 +2068,13 @@ pool-sync-database
 
 Force the pool database to be synchronized across all hosts in the resource pool. This command is not necessary in normal operation since the database is regularly automatically replicated. However, the command can be useful for ensuring changes are rapidly replicated after performing a significant set of CLI operations.
 
-## Set pool `igmp-snooping`
+### Set pool `igmp-snooping`
 
 ```
 pool-param-set [uuid=pool-uuid] [igmp-snooping-enabled=true|false]
 ```
 
-Enables or disables IGMP snooping on a XCP-ng pool.
+Enables or disables IGMP snooping on an XCP-ng pool.
 
 ## PVS Accelerator commands
 
@@ -2118,7 +2123,7 @@ Forget a PVS server.
 ### `pvs-server-introduce`
 
 ```
-pvs-server-introduce addresses=adresses first-port=first_port last-port=last_port pvs-site-uuid=pvs_site_uuid
+pvs-server-introduce addresses=addresses first-port=first_port last-port=last_port pvs-site-uuid=pvs_site_uuid
 ```
 
 Introduce new PVS server.
@@ -2145,7 +2150,7 @@ Commands for controlling Storage Manager plug-ins.
 
 The storage manager objects can be listed with the standard object listing command (`xe sm-list`). The parameters can be manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#low-level-parameter-commands)
 
-## SM parameters
+### SM parameters
 
 SMs have the following parameters:
 
@@ -2180,7 +2185,7 @@ Create a new template by cloning an existing snapshot, using storage-level fast 
 snapshot-copy new-name-label=name_label [uuid=uuid] [new-name-description=name_description] [sr-uuid=sr_uuid]
 ```
 
-Create a new template by copying an existing VM, but without using storage-level fast disk clone operation (even if this is available). The disk images of the copied VM are guaranteed to be ‘full images’ - i.e. not part of a CoW chain.
+Create a new template by copying an existing snapshot, but without using storage-level fast disk clone operation (even if this is available). The disk images of the copied VM are guaranteed to be ‘full images’ - i.e. not part of a CoW chain.
 
 ### `snapshot-destroy`
 
@@ -2244,7 +2249,7 @@ Commands for controlling SRs (storage repositories).
 
 The SR objects can be listed with the standard object listing command (`xe sr-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#low-level-parameter-commands)
 
-## SR parameters
+### SR parameters
 
 SRs have the following parameters:
 
@@ -2285,15 +2290,15 @@ The exact `device-config` parameters differ depending on the device `type`. For 
 sr-data-source-forget data-source=data_source
 ```
 
-Stop recording the specified data source for a SR, and forget all of the recorded data.
+Stop recording the specified data source for an SR, and forget all of the recorded data.
 
 ### `sr-data-source-list`
 
 ```
-sr-data-source-list"
+sr-data-source-list
 ```
 
-List the data sources that can be recorded for a SR.
+List the data sources that can be recorded for an SR.
 
 ### `sr-data-source-query`
 
@@ -2301,7 +2306,7 @@ List the data sources that can be recorded for a SR.
 sr-data-source-query data-source=data_source
 ```
 
-Query the last value read from a SR data source.
+Query the last value read from an SR data source.
 
 ### `sr-data-source-record`
 
@@ -2309,7 +2314,7 @@ Query the last value read from a SR data source.
 sr-data-source-record  data-source=data_source
 ```
 
-Record the specified data source for a SR.
+Record the specified data source for an SR.
 
 ### `sr-destroy`
 
@@ -2372,7 +2377,7 @@ The exact `device-config` parameters differ depending on the device `type`. For 
 ### `sr-probe-ext`
 
 ```
-sr-probe-ext type=type [host-uuid=host_uuid] [device-config:=config] [sm-config:-sm_config]
+sr-probe-ext type=type [host-uuid=host_uuid] [device-config:=config] [sm-config:=sm_config]
 ```
 
 Perform a storage probe. The device-config parameters can be specified by for example device-config:devs=/dev/sdb1. Unlike sr-probe, this command returns results in the same human-readable format for every SR type.
@@ -2545,17 +2550,18 @@ Templates have the following parameters:
 You can tune a vCPU’s pinning with:
 
 ```
-xe template-param-set uuid=<template_uuid> vCPUs-params:mask=1,2,3
+xe template-param-set uuid=<template_uuid> VCPUs-params:mask=1,2,3
 ```
 
-A VM created from this template run on physical CPUs 1, 2, and 3 only.
-You can also tune the vCPU priority (xen scheduling) with the cap and weight parameters. For example:
+A VM created from this template runs on physical CPUs 1, 2, and 3 only.
+You can also tune the vCPU priority (Xen scheduling) with the cap and weight parameters. For example:
 
 ```
-xe template-param-set uuid=<template_uuid> VCPUs-params:weight=512 xe template-param-set uuid=<template_uuid> VCPUs-params:cap=100
+xe template-param-set uuid=<template_uuid> VCPUs-params:weight=512
+xe template-param-set uuid=<template_uuid> VCPUs-params:cap=100
 ```
 
-A VM based on this template with a weight of 512 get twice as much CPU as a domain with a weight of 256 on a contended host. Legal weights range from 1 to 65535 and the default is 256.
+A VM based on this template with a weight of 512 gets twice as much CPU as a domain with a weight of 256 on a contended host. Legal weights range from 1 to 65535 and the default is 256.
 
 The cap optionally fixes the maximum amount of CPU a VM based on this template can consume, even if the XCP-ng server has idle CPU cycles. The cap is expressed in percentage of one physical CPU: 100 is 1 physical CPU, 50 is half a CPU, 400 is 4 CPUs, and so on. The default, 0, means that there is no upper cap.
 
@@ -2604,7 +2610,8 @@ xe vm-param-set uuid=<vm_uuid> platform:usb_tablet=false
 - `install-time` (read only) timestamp of the date and time that the metrics for a VM based on this template were read, in the form `yyyymmddThh:mm:ss z`, where z is the single-letter military timezone indicator, for example, Z for UTC (GMT). Set to `1 Jan 1970 Z` (beginning of Unix/POSIX epoch) for a template
 - `memory-actual` (read only) the actual memory being used by a VM based on this template; 0 for a template
 - `VCPUs-number` (read only) the number of virtual CPUs assigned to a VM based on this template; 0 for a template
-- `VCPUs-Utilization` (read only map parameter) list of virtual CPUs and their weight read only map parameter os-version the version of the operating system for a VM based on this template. Appears as `not in database` for a template
+- `VCPUs-Utilization` (read only map parameter) list of virtual CPUs and their weight
+- `os-version` (read only map parameter) the version of the operating system for a VM based on this template. Appears as `not in database` for a template
 - `PV-drivers-version` (read only map parameter) the versions of the paravirtualized drivers for a VM based on this template. Appears as `not in database` for a template
 - `PV-drivers-detected` (read only) flag for latest version of the paravirtualized drivers for a VM based on this template. Appears as `not in database` for a template
 - `memory` (read only map parameter) memory metrics reported by the agent on a VM based on this template. Appears as `not in database` for a template
@@ -2626,8 +2633,9 @@ xe vm-param-set uuid=<vm_uuid> platform:usb_tablet=false
 - `memory-target` (read only) the target amount of memory set for this template
 - `blocked-operations` (read/write map parameter) lists the operations that cannot be performed on this template
 - `last-boot-record` (read only) record of the last boot parameters for this template, in XML format
-- `ha-always-run` (read/write) True if an instance of this template is always restarted on another host if there is a failure of the host it is resident on. This parameter is now deprecated. Use the `ha-restartpriority` parameter instead.
-- `ha-restart-priority` (read only) restart or best-effort read/write blobs binary data store
+- `ha-always-run` (read/write) True if an instance of this template is always restarted on another host if there is a failure of the host it is resident on. This parameter is now deprecated. Use the `ha-restart-priority` parameter instead.
+- `ha-restart-priority` (read/write) restart or best-effort
+- `blobs` (read only) binary data store
 - `live` (read only) relevant only to a running VM.
 
 ### `template-export`
@@ -2654,7 +2662,7 @@ Update mechanism in XCP-ng is using `yum`, not this CLI. Please do NOT use it an
 
 The update objects can be listed with the standard object listing command (`xe update-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#low-level-parameter-commands)
 
-## Update parameters
+### Update parameters
 
 XCP-ng server updates have the following parameters:
 
@@ -2883,7 +2891,7 @@ VDIs have the following parameters:
 vdi-clone uuid=uuid_of_the_vdi [driver-params:key=value]
 ```
 
-Create a new, writable copy of the specified VDI that can be used directly. It is a variant of `vdi-copy` that is can expose high-speed image clone facilities where they exist.
+Create a new, writable copy of the specified VDI that can be used directly. It is a variant of `vdi-copy` that can expose high-speed image clone facilities where they exist.
 
 Use the optional `driver-params` map parameter to pass extra vendor-specific configuration information to the back-end storage driver that the VDI is based on. For more information, see the storage vendor driver documentation.
 
@@ -2950,10 +2958,6 @@ vdi-enable-cbt uuid=uuid_of_vdi
 ```
 
 Enable changed block tracking for the VDI.
-
-:::tip
-You can enable changed block tracking only on licensed instances of XCP-ng Premium Edition.
-:::
 
 ### `vdi-export`
 
@@ -3055,7 +3059,7 @@ Commands for working with VIFs (Virtual network interfaces).
 
 The VIF objects can be listed with the standard object listing command (`xe vif-list`), and the parameters manipulated with the standard parameter commands. For more information, see [Low-level parameter commands](../../management/manage-locally/cli#low-level-parameter-commands)
 
-## VIF parameters
+### VIF parameters
 
 VIFs have the following parameters:
 
@@ -3080,25 +3084,25 @@ xe vif-param-set uuid=<vif_uuid> other-config:mtu=9000
 - `qos_supported_algorithms` (read only set parameter) supported QoS algorithms for this VIF
 - `MAC-autogenerated` (read only) True if the MAC address of the VIF was automatically generated
 - `other-config` (read/write map parameter) extra configuration `key:value` pairs
-- `other-config:ethtoolrx` (read/write) set to on to enable receive checksum, off to disable
-- `other-config:ethtooltx` (read/write) set to on to enable transmit checksum, off to disable
-- `other-config:ethtoolsg` (read/write) set to on to enable scatter gather, off to disable
-- `other-config:ethtooltso` (read/write) set to on to enable TCP segmentation offload, off to disable
-- `other-config:ethtoolufo` (read/write) set to on to enable UDP fragment offload, off to disable
-- `other-config:ethtoolgso` (read/write) set to on to enable generic segmentation offload, off to disable
-- `other-config:promiscuous` (read/write) true to a VIF to be promiscuous on the bridge, so that it sees all traffic over the bridge. Useful for running an Intrusion Detection System (IDS) or similar in a VM.
+- `other-config:ethtool-rx` (read/write) set to on to enable receive checksum, off to disable
+- `other-config:ethtool-tx` (read/write) set to on to enable transmit checksum, off to disable
+- `other-config:ethtool-sg` (read/write) set to on to enable scatter gather, off to disable
+- `other-config:ethtool-tso` (read/write) set to on to enable TCP segmentation offload, off to disable
+- `other-config:ethtool-ufo` (read/write) set to on to enable UDP fragment offload, off to disable
+- `other-config:ethtool-gso` (read/write) set to on to enable generic segmentation offload, off to disable
+- `other-config:promiscuous` (read/write) true to allow a VIF to be promiscuous on the bridge, so that it sees all traffic over the bridge. Useful for running an Intrusion Detection System (IDS) or similar in a VM.
 - `network-uuid` (read only) the unique identifier/object reference of the virtual network to which this VIF is connected
 - `network-name-label` (read only) the descriptive name of the virtual network to which this VIF is connected
 - `io_read_kbs` (read only) average read rate in kB/s for this VIF
 - `io_write_kbs` (read only) average write rate in kB/s for this VIF
-- `locking_mode` (read/write) Affects the VIFs ability to filter traffic to/from a list of MAC and IP addresses. Requires extra parameters.
+- `locking_mode` (read/write) Affects the VIF's ability to filter traffic to/from a list of MAC and IP addresses. Requires extra parameters.
 - `locking_mode:default` (read/write) Varies according to the default locking mode for the VIF network.
 
 If the default-locking-mode is set to `disabled`, XCP-ng applies a filtering rule so that the VIF cannot send or receive traffic. If the default-locking-mode is set to `unlocked`, XCP-ng removes all the filtering rules associated with the VIF. For more information, see [Network Commands](#network-commands).
 
 - `locking_mode:locked` (read/write) Only traffic sent to or sent from the specified MAC and IP addresses is allowed on the VIF. If no IP addresses are specified, no traffic is allowed.
 - `locking_mode:unlocked` (read/write) No filters are applied to any traffic going to or from the VIF.
-- `locking_mode:disabled` (read/write) XCP-ng applies a filtering rule is applied so that the VIF drops all traffic.
+- `locking_mode:disabled` (read/write) XCP-ng applies a filtering rule so that the VIF drops all traffic.
 
 ### `vif-create`
 
@@ -3155,7 +3159,7 @@ vif-configure-ipv4 uuid=uuid_of_vif mode=static address=CIDR_address gateway=gat
 For example:
 
 ```
-VIF.configure_ipv4(vifObject,"static", " 192.168.1.10/24", " 192.168.1.1")
+xe vif-configure-ipv4 uuid=<vif_uuid> mode=static address=192.168.1.10/24 gateway=192.168.1.1
 ```
 
 Clean IPv4 settings as below:
@@ -3175,7 +3179,7 @@ vif-configure-ipv6 uuid=uuid_of_vif mode=static address=IP_address gateway=gatew
 For example:
 
 ```
-VIF.configure_ipv6(vifObject,"static", "fd06:7768:b9e5:8b00::5001/64", "fd06:7768:b9e5:8b00::1")
+xe vif-configure-ipv6 uuid=<vif_uuid> mode=static address=fd06:7768:b9e5:8b00::5001/64 gateway=fd06:7768:b9e5:8b00::1
 ```
 
 Clean IPv6 settings as below:
@@ -3202,7 +3206,7 @@ Create a VLAN on your XCP-ng server.
 pool-vlan-create pif-uuid=uuid_of_pif vlan=vlan_number network-uuid=uuid_of_network
 ```
 
-Create a VLAN on all hosts on a pool, by determining which interface (for example, `eth0`) the specified network is on (on each host) and creating and plugging a new PIF object one each host accordingly.
+Create a VLAN on all hosts on a pool, by determining which interface (for example, `eth0`) the specified network is on (on each host) and creating and plugging a new PIF object on each host accordingly.
 
 ### `vlan-destroy`
 
@@ -3234,10 +3238,10 @@ All writable VM parameter values can be changed while the VM is running, but new
 - `uuid` (read only) the unique identifier/object reference for the VM
 - `name-label` (read/write) the name of the VM
 - `name-description` (read/write) the description string of the VM
-- `order start order` (read/write) for vApp startup/shutdown and for startup after HA failover
+- `order` (read/write) start order for vApp startup/shutdown and for startup after HA failover
 - `version` (read only) the number of times this VM has been recovered. If you want to overwrite a new VM with an older version, call `vm-recover`
 - `user-version` (read/write) string for creators of VMs and templates to put version information
-- `is-a-template` (read/write) False unless this VM is a template. Template VMs can never be started, they are used only for cloning other VMs After this value has been set to true it cannot be reset to false. Template VMs cannot be converted into VMs using this parameter.
+- `is-a-template` (read/write) False unless this VM is a template. Template VMs can never be started, they are used only for cloning other VMs. After this value has been set to true it cannot be reset to false. Template VMs cannot be converted into VMs using this parameter.
 - `is-control-domain` (read only) True if this is a control domain (domain 0 or a driver domain)
 - `power-state` (read only) current power state
 - `start-delay` (read/write) the delay to wait before a call to start up the VM returns
@@ -3255,24 +3259,25 @@ You can tune a vCPU’s pinning with
 xe vm-param-set uuid=<vm_uuid> VCPUs-params:mask=1,2,3
 ```
 
-The selected VM then runs on physical CPUs 1, 2, and 3 only. You can also tune the vCPU priority (xen scheduling) with the cap and weight parameters. For example:
+The selected VM then runs on physical CPUs 1, 2, and 3 only. You can also tune the vCPU priority (Xen scheduling) with the cap and weight parameters. For example:
 
 ```
-xe vm-param-set uuid=<vm_uuid> VCPUs-params:weight=512 xe vm-param-set uuid=<vm_uuid> VCPUs-params:cap=100
+xe vm-param-set uuid=<vm_uuid> VCPUs-params:weight=512
+xe vm-param-set uuid=<vm_uuid> VCPUs-params:cap=100
 ```
 
-A VM with a weight of 512 get twice as much CPU as a domain with a weight of 256 on a contended XCP-ng server. Legal weights range from 1 to 65535 and the default is 256. The cap optionally fixes the maximum amount of CPU a VM will be able to consume, even if the XCP-ng server has idle CPU cycles. The cap is expressed in percentage of one physical CPU: 100 is 1 physical CPU, 50 is half a CPU, 400 is 4 CPUs, and so on The default, 0, means that there is no upper cap.
+A VM with a weight of 512 gets twice as much CPU as a domain with a weight of 256 on a contended XCP-ng server. Legal weights range from 1 to 65535 and the default is 256. The cap optionally fixes the maximum amount of CPU a VM will be able to consume, even if the XCP-ng server has idle CPU cycles. The cap is expressed in percentage of one physical CPU: 100 is 1 physical CPU, 50 is half a CPU, 400 is 4 CPUs, and so on. The default, 0, means that there is no upper cap.
 
 - `VCPUs-max` (read/write) maximum number of virtual CPUs.
 - `VCPUs-at-startup` (read/write) boot number of virtual CPUs
-- `actions-after-crash` (read/write) action to take if the VM crashes. For PV guests, valid parameters are:
+- `actions-after-crash` (read/write) action to take if the VM crashes. Valid values are:
   - `preserve` (for analysis only)
   - `coredump_and_restart` (record a coredump and reboot VM)
   - `coredump_and_destroy` (record a coredump and leave VM halted)
   - `restart` (no coredump and restart VM)
   - `destroy` (no coredump and leave VM halted)
-  - `console-uuids` (read only set parameter) virtual console devices
-  - `platform` (read/write map parameter) platform-specific configuration
+- `console-uuids` (read only set parameter) virtual console devices
+- `platform` (read/write map parameter) platform-specific configuration
 
 To disable VDA to switch Windows 10 into Tablet mode:
 
@@ -3312,7 +3317,7 @@ xe vm-param-get uuid=<vm_uuid> param-name=platform param-key=acpi_laptop_slate
 - `start-time` (read only) timestamp of the date and time that the metrics for the VM were read. This timestamp is in the form `yyyymmddThh:mm:ss z`, where z is the single letter military timezone indicator, for example, Z for UTC (GMT)
 - `install-time` (read only) timestamp of the date and time that the metrics for the VM were read. This timestamp is in the form `yyyymmddThh:mm:ss z`, where z is the single letter military timezone indicator, for example, Z for UTC (GMT)
 - `memory-actual` (read only) the actual memory being used by a VM
-- `VCPUs-number` (read only) the number of virtual CPUs assigned to the VM for a Linux VM. This number can differ from `VCPUS-max` and can be changed without rebooting the VM using the `vm-vcpu-hotplug` command. For more information, see [`vm-vcpu-hotplug`](#vm-vcpu-hotplug). Windows VMs always run with the number of vCPUs set to `VCPUs-max` and must be rebooted to change this value. Performance drops sharply when you set `VCPUs-number` to a value greater than the number of physical CPUs on the XCP-ng server.
+- `VCPUs-number` (read only) the number of virtual CPUs assigned to the VM for a Linux VM. This number can differ from `VCPUs-max` and can be changed without rebooting the VM using the `vm-vcpu-hotplug` command. For more information, see [`vm-vcpu-hotplug`](#vm-vcpu-hotplug). Windows VMs always run with the number of vCPUs set to `VCPUs-max` and must be rebooted to change this value. Performance drops sharply when you set `VCPUs-number` to a value greater than the number of physical CPUs on the XCP-ng server.
 - `VCPUs-Utilization` (read only map parameter) a list of virtual CPUs and their weight
 - `os-version` (read only map parameter) the version of the operating system for the VM
 - `PV-drivers-version` (read only map parameter) the versions of the paravirtualized drivers for the VM
@@ -3321,7 +3326,7 @@ xe vm-param-get uuid=<vm_uuid> param-name=platform param-key=acpi_laptop_slate
 - `disks` (read only map parameter) disk metrics reported by the agent on the VM
 - `networks` (read only map parameter) network metrics reported by the agent on the VM
 - `other` (read only map parameter) other metrics reported by the agent on the VM
-- `guest-metrics-lastupdated` (read only) timestamp when the in-guest agent performed the last write to these fields. The timestamp is in the form `yyyymmddThh:mm:ss z`, where z is the single letter military timezone indicator, for example, Z for UTC (GMT)
+- `guest-metrics-last-updated` (read only) timestamp when the in-guest agent performed the last write to these fields. The timestamp is in the form `yyyymmddThh:mm:ss z`, where z is the single letter military timezone indicator, for example, Z for UTC (GMT)
 - `actions-after-shutdown` (read/write) action to take after the VM has shutdown
 - `actions-after-reboot` (read/write) action to take after the VM has rebooted
 - `possible-hosts` potential hosts of this VM read only
@@ -3338,12 +3343,12 @@ xe vm-param-get uuid=<vm_uuid> param-name=platform param-key=acpi_laptop_slate
 - `ha-always-run` (read/write) True if this VM is always restarted on another host if there is a failure of the host it is resident on. This parameter is now deprecated. Use the `ha-restart-priority` parameter instead.
 - `ha-restart-priority` (read/write) restart or best-effort
 - `blobs` (read only) binary data store
-- `live` (read only) True if the VM is running. False if HA suspects that the VM is not be running.
+- `live` (read only) True if the VM is running. False if HA suspects that the VM is not running.
 
 ### `vm-assert-can-be-recovered`
 
 ```
-vm-assert-can-be-recovered uuid [database] vdi-uuid
+vm-assert-can-be-recovered uuid=vm-uuid database:vdi-uuid=vdi-uuid
 ```
 
 Tests whether storage is available to recover this VM.
@@ -3494,9 +3499,9 @@ vm-data-source-list [vm-selector=vm selector value...]
 
 List the data sources that can be recorded for a VM.
 
-Select the VMs on which to perform this operation by using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section. If no parameters to select hosts are given, the operation is performed on all VMs.
+Select the VMs on which to perform this operation by using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section. If no parameters to select VMs are given, the operation is performed on all VMs.
 
-Data sources have two parameters – `standard` and `enabled` – which you can seen in the output of this command. If a data source has `enabled` set to `true`, the metrics are currently being recorded to the performance database. If a data source has `standard` set to `true`, the metrics are recorded to the performance database by default (and `enabled` is also set to `true` for this data source). If a data source has `standard` set to `false`, the metrics are *not* recorded to the performance database by default (and `enabled` is also set to `false` for this data source).
+Data sources have two parameters – `standard` and `enabled` – which you can see in the output of this command. If a data source has `enabled` set to `true`, the metrics are currently being recorded to the performance database. If a data source has `standard` set to `true`, the metrics are recorded to the performance database by default (and `enabled` is also set to `true` for this data source). If a data source has `standard` set to `false`, the metrics are *not* recorded to the performance database by default (and `enabled` is also set to `false` for this data source).
 
 To start recording data source metrics to the performance database, run the `vm-data-source-record` command. This command sets `enabled` to `true`. To stop, run the `vm-data-source-forget`. This command sets `enabled` to `false`.
 
@@ -3510,7 +3515,7 @@ Record the specified data source for a VM.
 
 This operation writes the information from the data source to the persistent performance metrics database of the specified VMs. For performance reasons, this database is distinct from the normal agent database.
 
-Select the VMs on which to perform this operation by using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section. If no parameters to select hosts are given, the operation is performed on all VMs.
+Select the VMs on which to perform this operation by using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section. If no parameters to select VMs are given, the operation is performed on all VMs.
 
 ### `vm-data-source-forget`
 
@@ -3520,7 +3525,7 @@ vm-data-source-forget data-source=name_description_of_data-source [vm-selector=v
 
 Stop recording the specified data source for a VM and forget all of the recorded data.
 
-Select the VMs on which to perform this operation by using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section. If no parameters to select hosts are given, the operation is performed on all VMs.
+Select the VMs on which to perform this operation by using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section. If no parameters to select VMs are given, the operation is performed on all VMs.
 
 ### `vm-data-source-query`
 
@@ -3530,7 +3535,7 @@ vm-data-source-query data-source=name_description_of_data-source [vm-selector=vm
 
 Display the specified data source for a VM.
 
-Select the VMs on which to perform this operation by using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section. If no parameters to select hosts are given, the operation is performed on all VMs.
+Select the VMs on which to perform this operation by using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section. If no parameters to select VMs are given, the operation is performed on all VMs.
 
 ### `vm-destroy`
 
@@ -3543,7 +3548,7 @@ Destroy the specified VM. This leaves the storage associated with the VM intact.
 ### `vm-disk-add`
 
 ```
-vm-disk-add disk-size=size_of_disk_to_add device=uuid_of_device [vm-selector=vm_selector_value...]
+vm-disk-add disk-size=size_of_disk_to_add device=integer_value_of_an_available_vbd [vm-selector=vm_selector_value...]
 ```
 
 Add a disk to the specified VMs. Select the `device` parameter from the value of the `allowed-VBD-devices` parameter of the VMs.
@@ -3595,7 +3600,7 @@ Import a VM from a previously exported file. If `preserve` is set to `true`, the
 If the `metadata` is `true`, you can import a previously exported set of metadata without their associated disk blocks. Metadata-only import fails if any VDIs cannot be found (named by SR and `VDI.location`) unless the `--force` option is specified, in which case the import proceeds regardless. If disks can be mirrored or moved out-of-band, metadata import/export is a fast way of moving VMs between disjoint pools. For example, as part of a disaster recovery plan.
 
 :::tip
-Multiple VM imports are performed faster in serial that in parallel.
+Multiple VM imports are performed faster in serial than in parallel.
 :::
 
 ### `vm-install`
@@ -3706,7 +3711,7 @@ xe vm-migrate uuid=vm_uuid host-uuid=host_uuid
 To move VMs between hosts in the same pool, which do not share storage (storage live migration):
 
 ```
-xe vm-migrate uuid=vm_uuid remote-master=12.34.56.78 remote-username=username remote-password=password host-uuid=desination_host_uuid vdi=vdi_uuid
+xe vm-migrate uuid=vm_uuid host-uuid=destination_host_uuid vdi:vdi_uuid=destination_sr_uuid
 ```
 
 You can choose the SR where each VDI gets stored:
@@ -3724,10 +3729,10 @@ xe vm-migrate uuid=vm_uuid vdi1:vdi_1_uuid=destination_sr_uuid vdi2:vdi_2_uuid=d
 For cross-pool migration:
 
 ```
-xe vm-migrate uuid=vm_uuid remote-master=12.34.56.78 remote-username=username remote-password=password host-uuid=desination_host_uuid vdi=vdi_uuid
+xe vm-migrate uuid=vm_uuid remote-master=12.34.56.78 remote-username=username remote-password=password host-uuid=destination_host_uuid vdi=vdi_uuid
 ```
 
-By default, the VM is suspended, migrated, and resumed on the other host. The `live` parameter selects live migration. Live migration keeps the VM running while performing the migration, thus minimizing VM downtime to less than a second. In some circumstances, such as extremely memory-heavy workloads in the VM, live migration falls back into default mode and suspends the VM for a short time before completing the memory transfer.
+By default, the VM is suspended, migrated, and resumed on the other host. The `live` parameter selects live migration. Live migration keeps the VM running while performing the migration, keeping VM downtime to a few seconds. In some circumstances, such as extremely memory-heavy workloads in the VM, live migration falls back into default mode and suspends the VM for a short time before completing the memory transfer.
 
 The VM or VMs on which this operation is performed are selected using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section.
 
@@ -3757,12 +3762,12 @@ Reboot the specified VMs.
 
 The VM or VMs on which this operation is performed are selected using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section.
 
-Use the `force` argument to cause an ungraceful reboot. Where the shutdown is akin to pulling the plug on a physical server.
+Use the `force` argument to cause an ungraceful reboot, akin to pulling the plug on a physical server.
 
 ### `vm-recover`
 
 ```
-vm-recover vm-uuid [database] [vdi-uuid] [force]
+vm-recover uuid=vm-uuid database:vdi-uuid=vdi-uuid [force=true|false]
 ```
 
 Recovers a VM from the database contained in the supplied VDI.
@@ -3809,12 +3814,12 @@ The VM or VMs on which this operation is performed are selected using the standa
 
 Use the `force` argument to cause an ungraceful shutdown, similar to pulling the plug on a physical server.
 
-An HVM mode VM requires `force=true` to be shutdown, unless [Guest Tools](../../vms#guest-tools) have been installed.
+An HVM mode VM requires `force=true` to be shut down, unless [Guest Tools](../../vms#guest-tools) have been installed.
 
 ### `vm-snapshot`
 
 ```
-vm-snapshot new-name-label=name_label [new-name-description+name_description]
+vm-snapshot new-name-label=name_label [new-name-description=name_description]
 ```
 
 Snapshot an existing VM, using storage-level fast disk snapshot operation where available.
@@ -3870,7 +3875,7 @@ Dynamically adjust the number of vCPUs available to a running Linux VM. The numb
 The Linux VM or VMs on which this operation is performed are selected using the standard selection mechanism. For more information, see [VM selectors](#vm-selectors). Optional arguments can be any number of the [VM parameters](#vm-parameters) listed at the beginning of this section.
 
 :::tip
-When running Linux VMs without XCP-ng VM Tools installed, run the following command on the VM as `root` to ensure the newly hot plugged vCPUs are used: `# for i in /sys/devices/system/cpu/cpu[1-9]*/online; do if [ "$(cat $i)" = 0 ]; then echo 1 > $i; fi; done`
+When running Linux VMs without the guest tools installed, run the following command on the VM as `root` to ensure the newly hot plugged vCPUs are used: `# for i in /sys/devices/system/cpu/cpu[1-9]*/online; do if [ "$(cat $i)" = 0 ]; then echo 1 > $i; fi; done`
 :::
 
 ### `vm-vif-list`
@@ -3886,7 +3891,7 @@ The VM or VMs on which this operation is performed are selected using the standa
 ## Scheduled snapshots
 
 :::warning
-We advise to use Xen Orchestra instead of this method. See [Xen Orchestra rolling snapshots](https://xen-orchestra.com/docs/rolling_snapshots.html).
+We advise to use Xen Orchestra instead of this method. See [Xen Orchestra rolling snapshots](https://docs.xen-orchestra.com/rolling_snapshots).
 :::
 
 Commands for controlling VM scheduled snapshots and their attributes.
@@ -3916,7 +3921,7 @@ Snapshot schedules have the following parameters:
 |`type`|Disk snapshot or memory snapshot.|Read/write|
 |`frequency`|Hourly; Daily; Weekly|Read/write|
 |`retained-snapshots`|Snapshots to be retained. Range: 1-10.|Read/write|
-|`schedule`|`schedule:days` (Monday to Sunday), `schedule:hours` (0 to 23), `schedule:minutes` (0, 15, 30, 45)|Read/write|
+|`schedule`|`schedule:days` (Monday to Sunday), `schedule:hour` (0 to 23), `schedule:min` (0, 15, 30, 45)|Read/write|
 
 ### `vmss-destroy`
 
@@ -3928,7 +3933,7 @@ Destroys a snapshot schedule in the pool.
 
 ## USB passthrough
 
-## USB passthrough enable/disable
+### USB passthrough enable/disable
 
 ```
 pusb-param-set uuid=pusb_uuid passthrough-enabled=true/false
