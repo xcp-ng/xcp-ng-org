@@ -75,10 +75,6 @@ Alternatively, if you have two identical disks, you can use Software RAID (`mdad
 
 ![Software RAID configuration screen, showing the 2 NVMEs selected.](https://xcp-ng.org/assets/img/screenshots/install6.png)
 
-:::tip
-If only one disk is deemed suitable for the installation, this step is skipped. The name of the device will be displayed [in the "Confirm Installation" step, later in the process](#12-installation).
-:::
-
 #### 6. VM storage selection
 
 This is the place where your VM disks will be stored. It's called a **Storage Repository** (SR). It can use the same disk you installed the system on. It will automatically use the free space after system partitions.
@@ -91,7 +87,7 @@ EXT instead of LVM? We advise to use EXT to benefit from thin provisioning!
 :::
 
 :::warning
-When the installer skips [step 5](#5-disk-selection), users sometimes mistake this step with the selection of the system disk.
+Don't confuse this step with [step 5](#5-disk-selection): here you choose where VM disks are stored, not where the system is installed.
 :::
 
 #### 7. Installation source
@@ -146,7 +142,7 @@ After this step, data will be written on the disk(s)! Check the listed device(s)
 
 #### 13. Supplemental packs and end of install
 
-Not relevant in almost all cases. Skip it:
+If you loaded a driver disk earlier in the installation, the installer asks whether you want to install supplemental packs. Otherwise this dialog isn't shown. Skip it unless you know you need it:
 
 ![Supplemental packs: Asks for installation of supplemental packs, yes/no choice.](https://xcp-ng.org/assets/img/screenshots/install20.png)
 

@@ -403,7 +403,7 @@ To create a private network, go in Xen Orchestra, New/Network and select "Privat
 
 To be able to encrypt the networks, `openvswitch-ipsec` package must be installed on all the hosts:
 
-* `yum install openvswitch-ipsec --enablerepo=xcp-ng-testing`
+* `yum install openvswitch-ipsec`
 * `systemctl enable ipsec`
 * `systemctl enable openvswitch-ipsec`
 * `systemctl start ipsec`

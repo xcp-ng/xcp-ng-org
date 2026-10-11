@@ -182,7 +182,7 @@ In addition to the hardware prerequisites identified previously, there are some 
 - It cannot have a bonded management interface. Reconfigure the management interface and move it to a physical NIC before adding the server to the pool. Once the server has joined the pool, you can reconfigure the management interface again.
 - It must be running the same version of XCP-ng, at the same update level, as servers already in the pool.
 
-Resource pools can have hosts with varying physical network interfaces and local storage capacities. In practice, it is often difficult to obtain multiple servers with the exact same CPUs, and so minor variations are permitted. If you want your environment to have hosts with varying CPUs in the same resource pool, you can force join a pool together using the CLI. To know more on forced joining operation, see [Hosts and pools operations](../management/hosts-pools.md#heterogeneous-pools).
+Resource pools can have hosts with varying physical network interfaces and local storage capacities. In practice, it is often difficult to obtain multiple servers with the exact same CPUs, and so minor variations are permitted. Hosts with different CPUs from the same vendor can join a pool without any extra option: XAPI automatically masks the CPU features to the subset common to all hosts. Mixing CPU vendors (Intel and AMD) requires a forced join and prevents live migration between them. See [Hosts and pools operations](../management/hosts-pools.md#heterogeneous-pools).
 
 > **Note**: Servers providing shared NFS or iSCSI storage must have static or DNS-addressable IPs.
 
@@ -205,7 +205,7 @@ What needs to be reachable, if you have firewalls between your management networ
 | Port | Protocol | Used for |
 |---|---|---|
 | 443 | TCP | XAPI (HTTPS): all management clients (Xen Orchestra, XO Lite, `xe`), VM consoles, migrations |
-| 80 | TCP | Legacy HTTP access to XAPI. Restricted by default |
+| 80 | TCP | Legacy HTTP access to XAPI. Open by default, can be closed with `https-only=true` (see [Restrict port 80](../management/hosts-pools.md#restrict-port-80-https-only)) |
 | 22 | TCP | SSH access to dom0 |
 | 10809 | TCP | NBD, used by Xen Orchestra's NBD-enabled backups |
 

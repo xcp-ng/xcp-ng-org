@@ -100,9 +100,9 @@ The joining host must be "clean": no running or suspended VMs, and its version m
 
 ### Heterogeneous pools
 
-Hosts with different CPUs (same vendor!) can be pooled: XAPI automatically levels the CPU feature set exposed to VMs down to the common denominator, so live migration stays safe across all members. Mixing Intel and AMD hosts in the same pool is not possible.
+A host whose CPU is from the same vendor as the pool can join without any extra option: XAPI automatically masks the pool's CPU features down to the subset common to all hosts, so live migration stays safe across all members. VMs that are already running keep their feature set until they are restarted.
 
-If the hosts differ in a way that blocks a regular join, you can force it, and take responsibility for the consequences:
+Joining a host with a CPU from a different vendor (Intel and AMD) is refused unless you force it, and live migration between hosts of different vendors is never possible. Only force a join if you understand and accept the consequences:
 
 <Terminal shell title="root@xcp-ng-host — Heterogeneous pools">{`
 xe pool-join master-address=<coordinator> master-username=root master-password=<password> force=true
@@ -237,13 +237,13 @@ xe pool-param-set uuid=<pool-uuid> igmp-snooping-enabled=true
 
 ### Restrict port 80 (HTTPS only)
 
-Starting with XCP-ng 8.3, plain HTTP on port 80 is restricted by default. You can control it explicitly:
+By default, XCP-ng 8.3 leaves TCP port 80 open (`https-only=false`): HTTP requests to the host's web page are redirected to HTTPS. To close port 80 in the firewall of every host in the pool, so that clients must use HTTPS on port 443:
 
 <Terminal shell title="root@xcp-ng-host — Restrict port 80 (HTTPS only)">{`
 xe pool-param-set uuid=<pool-uuid> https-only=true
 `}</Terminal>
 
-Leave it to `true` unless something in your tooling still requires port 80.
+Enable it unless something in your tooling still requires port 80.
 
 ### Certificate verification
 

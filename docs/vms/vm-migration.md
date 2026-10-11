@@ -19,7 +19,7 @@ Moving VMs between hosts, SRs and pools, live when possible.
 * **Memory**: the destination host needs enough free RAM for the VM.
 * **Attached hardware**: VMs using [PCI passthrough, physical GPUs/vGPU or USB passthrough](../compute.md) cannot live migrate: the physical device can't follow. Detach first, or migrate cold.
 * **Guest tools**: strongly recommended (and required for a healthy storage motion): see [guest tools](vms.md#guest-tools).
-* For storage motion, the destination SR needs space for the **full** disk size, and the disk chain gets flattened on arrival (snapshots don't follow the VM).
+* For storage motion, the VM's snapshots are migrated along with it. Each disk and snapshot is copied to the destination SR, reusing similar data already present there where possible, so the destination SR needs enough free space for the disks and all their snapshots.
 
 ## Live migration performance {#live-migration-performance}
 
