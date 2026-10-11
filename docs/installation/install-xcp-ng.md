@@ -57,7 +57,7 @@ NEVER switch from UEFI to BIOS (or vice-versa) **after** you installed XCP-ng. S
 
 #### 3. Welcome
 
-![Welcome screen, reminding to have backed up any data, and showing F9 can be used to load device drivers or F10 for avanced storage classes.](https://xcp-ng.org/assets/img/screenshots/install3.png)
+![Welcome screen, reminding to have backed up any data, and showing F9 can be used to load device drivers or F10 for advanced storage classes.](https://xcp-ng.org/assets/img/screenshots/install3.png)
 
 #### 4. EULA/license
 
@@ -108,11 +108,11 @@ Then, you can verify your media or not:
 
 This will be the **root** password, used to connect to the host with SSH and XAPI.
 
-![Dialog to set the host password with a confiramtion field.](https://xcp-ng.org/assets/img/screenshots/install11.png)
+![Dialog to set the host password with a confirmation field.](https://xcp-ng.org/assets/img/screenshots/install11.png)
 
 #### 9. Networking
 
-Here you can select between DHCP and static network, even using a VLAN:
+Here you can choose the IP mode (IPv4 only, IPv6 only, or IPv4+IPv6, still experimental), which can't be changed after installation, and select between DHCP and static network, even using a VLAN:
 
 ![Network configuration: DHCP, static with IP, netmask and gateway, and the ability to add a VLAN.](https://xcp-ng.org/assets/img/screenshots/install12.png)
 
@@ -125,7 +125,7 @@ Configure the hostname of your server and the DNS resolvers.
 #### 11. Timezone and time
 
 :::warning
-ALWAYS use a NTP server. It's a critical component to manage your host(s). If you don't know any NTP server, you can use `pool.ntp.org`.
+ALWAYS use an NTP server. It's a critical component to manage your host(s). If you don't know any NTP server, you can use `pool.ntp.org`.
 :::
 
 ![Timezone selection: showing region selection, will enter a finer list inside that region if any.](https://xcp-ng.org/assets/img/screenshots/install14.png)
@@ -191,7 +191,7 @@ To get XCP-ng installed from PXE, you need:
 * A PXE-boot compatible network card on your host
 
 :::tip
-PXE boot doesn't support tagged VLAN networks! Be sure to boot on a untagged network!
+PXE boot doesn't support tagged VLAN networks! Be sure to boot on an untagged network!
 :::
 
 ### TFTP server configuration
@@ -215,7 +215,7 @@ label xcp-ng
     append xcp-ng/xen.gz dom0_max_vcpus=2 dom0_mem=2048M,max:2048M com1=115200,8n1 console=com1,vga --- xcp-ng/vmlinuz xencons=hvc console=hvc0 console=tty0 --- xcp-ng/install.img
 ```
 
-How TFTP folder looks like when configured
+What the TFTP folder looks like when configured
 
 <Terminal title="TFTP server configuration - BIOS boot">{`
 tree -L 1 /srv/tftp/
@@ -248,7 +248,7 @@ If you want to make an installation in UEFI mode, you need to have a slightly di
 4. Copy this `grub.cfg` file to the `EFI/xenserver` folder on the TFTP server
 5. Copy the following files from the XCP-ng ISO: `grubx64.efi`, `install.img` (from the root directory), `vmlinuz`, and `xen.gz` (from the /boot directory) to the new `EFI/xcp-ng` directory on the TFTP server.
 
-How TFTP folder looks like when configured
+What the TFTP folder looks like when configured
 
 <Terminal title="TFTP server configuration - UEFI boot">{`
 tree -L 1 /srv/tftp/
@@ -373,7 +373,7 @@ Check [the full answerfile reference](../../appendix/answerfile).
 
 ### Via PXE
 
-Follow the [previous section on Network boot (PXE)](#pxe-boot-install) and add options to that will fetch and use an answer file.
+Follow the [previous section on Network boot (PXE)](#pxe-boot-install) and add options that will fetch and use an answer file.
 
 #### PXE unattended install - BIOS boot
 
@@ -558,7 +558,7 @@ The XCP-ng installer can be further parameterized to support advanced installati
 
 #### "scriptlocation"
 
-An URL pointing at a script. All URLs except for file:// trigger initialization of networking during the installer execution.
+A URL pointing at a script. All URLs except for file:// trigger initialization of networking during the installer execution.
 
 * file:/// - file inside the filesystem of the installer environment (i.e. ```install.img```)
 * ftp:// - file on an FTP server, fetched with urllib2
@@ -594,7 +594,7 @@ Read the NIC firmware's iBFT to determine the iSCSI boot configuration, for soft
 Action to perform when the installer is finished.
 
 * poweroff - power off the system
-* **reboot** (default) - reboot the sytem
+* **reboot** (default) - reboot the system
 * shell - drop to shell **after** running the installer. NB: The installation target is already unmounted.
 
 #### bash-shell
@@ -622,7 +622,7 @@ If networking is required (e.g. to fetch an answerfile or access a repository) t
 
 configure interface using DHCP optionally using a VLAN.
 
-* vlan="id" - create a virtual interface tagging with vlan id backed by the underlying interfance.
+* vlan="id" - create a virtual interface tagging with vlan id backed by the underlying interface.
 
 #### network_config=static:"network configuration"
 
@@ -630,7 +630,7 @@ configure interface with provided static information. The configuration is a ; s
 
 * **ip** (mandatory)="IP address"
 * **netmask** (mandatory)="netmask"
-* vlan="id" - create a virtual interface tagging with vlan id backed by the underlying interfance.
+* vlan="id" - create a virtual interface tagging with vlan id backed by the underlying interface.
 * gateway="gateway address" - use specified address as default route
 * dns="DNS resolver address"[,"additional DNS resolver address"] -- use specified address(es) as resolvers 
 * domain="domain name" - use specified domain name as search domain
@@ -663,7 +663,7 @@ See ```network_device=```.
 
 ## Troubleshooting {#troubleshooting}
 
-See [the Troubleshooting page](../../troubleshooting/after-upgrade).
+See [the Troubleshooting page](../../troubleshooting/installation-upgrade).
 
 ## Misc {#misc}
 
@@ -671,7 +671,7 @@ See [the Troubleshooting page](../../troubleshooting/after-upgrade).
 
 :::danger
 We **strongly discourage** the installation of XCP-ng on USB drives. The frequent writing actions required by XCP-ng can rapidly degrade a USB drive due to:
-* XAPI: This is the XenServer API database, which undergoes constant changes. This results in significant write operations, which are detrimental to the longevity of USB drives. Note: The XAPI database maintains the state of all XCP-ng operations and is replicated across each host (from the slave).
+* XAPI: This is the XAPI database, which undergoes constant changes. This results in significant write operations, which are detrimental to the longevity of USB drives. Note: The XAPI database maintains the state of all XCP-ng operations and is replicated from the pool coordinator to all hosts.
 * Logs: XCP-ng generates a substantial amount of debug logs. A possible solution is to use a remote syslog.
 :::
 

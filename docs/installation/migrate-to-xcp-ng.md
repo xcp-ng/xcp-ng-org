@@ -6,7 +6,7 @@ sidebar_position: 3
 
 How to migrate from VMware, KVM, etc. to XCP-ng.
 
-This documentation will help you to make a migration to XCP-ng, from any most common other virtualization platform (VMware, KVM, etc.)
+This documentation will help you to make a migration to XCP-ng, from the most common other virtualization platforms (VMware, KVM, etc.)
 
 :::note
 OVA import method will miss the information if the VM is running BIOS or UEFI mode. Double check your settings on your original system, and then enable (or not) UEFI on XCP-ng side for the destination VM. You can do so in VM advanced tab in Xen Orchestra.
@@ -26,7 +26,7 @@ If you are running Xen on your usual distro (Debian, Ubuntu…), you are using `
 
 Check [the README](https://github.com/xcp-ng/xen2xcp/blob/master/README.md) for usage instructions.
 
-## From Virtualbox {#from-virtualbox}
+## From VirtualBox {#from-virtualbox}
 
 Export your VM in OVA format, and use Xen Orchestra to import it. If you have an issue on VM boot, check the [VMware](#from-vmware) section.
 
@@ -36,7 +36,7 @@ Export your VM in OVA format, and use Xen Orchestra to import it. If you have an
 
 **Disk Size Limitations** 
 
-Disks larger than 2TB - 8MB cannot be migrated automatically. You will need to create the VM in Xen Orchestra with multiple disks and use the OS capabilities to build them into a joined disk of the required size. Then, migrate the disk content using your preferred tool (e.g., Clonezilla, Robocopy, Rsync).
+Disks larger than 2040 GiB cannot be migrated automatically. You will need to create the VM in Xen Orchestra with multiple disks and use the OS capabilities to build them into a joined disk of the required size. Then, migrate the disk content using your preferred tool (e.g., Clonezilla, Robocopy, Rsync).
 
 **Warm migration prerequisites** 
 
@@ -46,7 +46,7 @@ Warm migration (as explained below in the [XO V2V](#xo-v2v) section) involves mi
 
 Migrating from VMware to XCP-ng is not just a technical operation on one VM, it's a process. How long the migration takes depends on various factors, such as:
 
-- **Number of VMs:**  Make sure to know the size of your infrastructure before starting a migration. To migrate hundreds or thousands of VMs, you may want automate the export/import steps with a script.
+- **Number of VMs:**  Make sure to know the size of your infrastructure before starting a migration. To migrate hundreds or thousands of VMs, you may want to automate the export/import steps with a script.
 - **Hardware performance and compatibility:** It's important to take into account the performance of your hardware. SSD or HDD? Network hardware performance? RAM and CPU availability? All these elements will have an impact on your migration.
 - **Network:** The network used to write data onto XCP-ng is the "default backup network", if configured.
 :::
@@ -79,7 +79,7 @@ The initial sync: the empty VM is created on XCP-ng, and after a snapshot, the c
 
 ![Now the ESXi Host has a snapshot of the running VM, an arrow runs from it, through V2V and to a VM disk on XCP-ng Host. That disk is linked to a stopped VM on XCP-ng.](../../assets/img/xoa-v2v-2.png)
 
-After the initial sync, the original VM is shutdown, another snapshot is done and only the diff is sent to the VM on XCP-ng side. Since it's a small amount of data, the downtime will be minimal:
+After the initial sync, the original VM is shut down, another snapshot is done and only the diff is sent to the VM on XCP-ng side. Since it's a small amount of data, the downtime will be minimal:
 
 ![VM on ESXi is stopped, a second snapshot is created, the diff is sent by V2V to the VM disk on XCP-ng.](../../assets/img/xoa-v2v-3.png)
 
@@ -99,7 +99,7 @@ This process is fully automated, without any human intervention after it starts 
 - **VMFS datastores:** 
     - Warm migration is reported to work in most cases with VMFS5. If it doesn't work, try migrating the VM while it is stopped.
     - In this case, the network path is: VMFS storage → ESXi → Host running XOA → Host with target storage → Target storage
-- **NFS datastores:** When migrating from NFSdatastores (such as NFSDatastoreEsxi):\
+- **NFS datastores:** When migrating from NFS datastores (such as NFSDatastoreEsxi):\
     - Create a corresponding NFS remote in Xen Orchestra named `[VmWare] NFSDatastoreEsxi`. If not, it will fall back to the VMFS process.
     - Warm migration is reported to work in all cases.
     - In this case, the network path is: NFS remote → Host running XOA → Host with target storage → Target storage
@@ -127,16 +127,16 @@ To do this:
     - IP
     - Credentials
     - SSL check or not
-    - The ID of the VM and the ID of the VM
+    - The ID of the VM
 2. On the XCP-ng side, provide the following information:
     - SR
     - Network
 
 3. Run this command with `xo-cli`:
 
-`xo-cli vm.importFromEsxi host=<VSPHERE_IP> user=<VSPHERE_USER> password=<VSHPERE_PWD> sslVerify=<true|false> vm=<VSPHERE_VM_ID> sr=<SR_UUID> network=<NETWORK_UUID> template=<TEMPLATE_UUID>`
+`xo-cli vm.importFromEsxi host=<VSPHERE_IP> user=<VSPHERE_USER> password=<VSPHERE_PWD> sslVerify=<true|false> vm=<VSPHERE_VM_ID> sr=<SR_UUID> network=<NETWORK_UUID> template=<TEMPLATE_UUID>`
 
-Now, you can see the transfer progress in the **Task** view of the Xen Orchestra UI. As soon it's done, you can boot the VM directly!
+Now, you can see the transfer progress in the **Task** view of the Xen Orchestra UI. As soon as it's done, you can boot the VM directly!
 
 #### Troubleshooting
 
@@ -150,16 +150,17 @@ Here is a comprehensive checklist of steps to take when encountering issues duri
 
 ![Selecting XOA in the sidebar, and  Updates in the submenu.](../../assets/img/check-update-xoa.png)
 
-2. Check your version of XOA. You should be usng the `latest` channel:
+2. Check your version of XOA. You should be using the `latest` channel:
 
 ![Release channel selected to "latest".](../../assets/img/check-xoa-version.png)
 
 If you were not using the `latest` channel previously:
-    1. Switch to that channel.
-    2. Update your VM.
+
+1. Switch to that channel.
+2. Update XOA.
 
 :::tip
-- **Backup method:** The migration will use the default backup migration. Check if the XOA VM can access it.
+- **Backup method:** The migration will use the default backup network. Check if the XOA VM can access it.
 - **Task timeout:** Note that XAPI tasks are limited to 24 hours by default. To increase that limitation, refer to the **24h task timeout** section of [this page](/management/manage-locally/api#24h-task-timeout).
 :::
 
@@ -173,7 +174,7 @@ Here's what you need to check:
 
 1. Uninstall VMware tools before migration.
 2. Make sure no ISO files are mounted to the VM.
-3. Remove any unnecessary snapshots before migration, as they are take lots of resources to handle.
+3. Remove any unnecessary snapshots before migration, as they take lots of resources to handle.
 4. You must have at least one snapshot to perform a warm migration.
     - Take a new snapshot and check the **stop VM** option. This will stop the VM before migrating the last snapshot.
     - If you don't check the toggle **stop the VM** on a running VM, it will only migrate data before the last snapshot.
@@ -218,7 +219,7 @@ Here's what you need to check:
 1. Set up an NFS backup remote in XOA under **Settings → Remotes** that connects to the NFS datastore. Name it `[VMWARE]datastorename`, where `datastorename` is the exact name of the datastore on the VMware side.
 2. Uninstall VMware tools before migration.
 3. Make sure no ISO files are mounted to the VM.
-4. Remove any unnecessary snapshots before migration, as they are take lots of resources to handle.
+4. Remove any unnecessary snapshots before migration, as they take lots of resources to handle.
 5. You must have at least one snapshot to perform a warm migration. Take a new snapshot and check the toggle **stop VM** option. This will stop the VM before migrating the last snapshot.
 6. If you don't check the **stop the VM** option on a running VM, it will only migrate data up to the point of the last snapshot.\
 Nothing will be migrated if there is no snapshot.
@@ -289,7 +290,7 @@ An alternative to using OVA.
 
 2. From the VM console, you can tell the source VM running CloneZilla to send all the blocks to the destination VM, also running CloneZilla. 
 
-3. As soon it's done, you can safely shut down the original VM and boot the copy on destination!
+3. As soon as it's done, you can safely shut down the original VM and boot the copy on destination!
 
 :::warning
 - **Downtime**: Even if the downtime will be reduced compared to using OVA, you still need to run the export/import process while the VM is off.
@@ -309,7 +310,7 @@ This method is helpful if you just install XCP-ng on an extra/dedicated drive on
 In this case, you'll mount your local VMware storage into XCP-ng and use `qemu-img` to convert the VMDK files to VHDs directly in your own XCP-ng Storage Repository (SR). If you go from local storage to local storage, it's a very fast way to migrate even large disks.
 
 :::warning
-This method use external packages to install in XCP-ng directly (the Dom0), and you should remove them just after you did the migration. Those commands must be executed on the Dom0 itself.
+This method uses external packages to install in XCP-ng directly (the Dom0), and you should remove them just after you did the migration. Those commands must be executed on the Dom0 itself.
 :::
 
 #### Install Qemu-img and vmfs tools
@@ -335,11 +336,11 @@ qemu-img convert -f vmdk -O vpc myVMwaredisk.vmdk /run/sr-mount/<SR UUID>/\`uuid
 
 #### Rescan the SR
 
-You need to rescan the SR where you new VHD file is, so it can be detected. It will appear in the disk list, without a name or description though. Attach it to any VM you created before (eg without booting it first), and boot.
+You need to rescan the SR where your new VHD file is, so it can be detected. It will appear in the disk list, without a name or description though. Attach it to any VM you created before (eg without booting it first), and boot.
 
 ## From Hyper-V {#from-hyper-v}
 
-There's two options, both requiring to export your Hyper-V VM disk in VHD format.
+There are two options, both requiring to export your Hyper-V VM disk in VHD format.
 
 ### Export the VM disk
 
@@ -379,10 +380,10 @@ In the left menu, go for "Import" then "Disk". Select the destination SR, and th
 
 When the disk is imported, you can:
 
-4. Create a VM with the appropriate template, **without any disk in it**
-5. Attach the previously imported disk (VM/Disk/Attach an existing disk)
-6. Boot the VM
-7. Install the tools
+1. Create a VM with the appropriate template, **without any disk in it**
+2. Attach the previously imported disk (VM/Disk/Attach an existing disk)
+3. Boot the VM
+4. Install the tools
 
 ### Alternative: direct VHD copy
 
@@ -405,7 +406,7 @@ The **ONLY** working format is `<UUID>.vhd`, eg `e4e573d8-6272-43ae-b969-255717e
 3. Scan the SR
 
 :::note
-As soon you did scan the SR, the new disk is visible in the SR/disk view. Don't forget to add a name and a description to be able to identify it in the future. Indeed, any disk imported this way won't have any metadata, so it's up to you to fill it.
+As soon as you scan the SR, the new disk is visible in the SR/disk view. Don't forget to add a name and a description to be able to identify it in the future. Indeed, any disk imported this way won't have any metadata, so it's up to you to fill it.
 :::
 
 4. Create a VM with the appropriate template, **without any disk in it**
@@ -414,14 +415,14 @@ As soon you did scan the SR, the new disk is visible in the SR/disk view. Don't 
 7. Install the tools
 
 :::note
-If you lost ability to extend migrated volume (opening journal failed: -2) You need to move disk to another storage, VM should be ON during moving process. This issue can occur when vhd files was directly copied to storage folder.
+If you lose the ability to extend migrated volume (opening journal failed: -2) You need to move disk to another storage, VM should be ON during moving process. This issue can occur when VHD files were directly copied to storage folder.
 :::
 
 ## From KVM (Libvirt) {#from-kvm-libvirt}
 
 Related forum thread: [https://xcp-ng.org/forum/topic/1465/migrating-from-kvm-to-xcp-ng](https://xcp-ng.org/forum/topic/1465/migrating-from-kvm-to-xcp-ng)
 
-_Due the fact I have only server here, I have setup a "buffer" machine on my desktop to backup and convert the VM image file._
+_Because I have only one server here, I set up a "buffer" machine on my desktop to backup and convert the VM image file._
 
 * Install the dracut packages : yum install dracut-config-generic dracut-network
 
@@ -435,7 +436,7 @@ _Due the fact I have only server here, I have setup a "buffer" machine on my des
 
   `dracut --regenerate-all -f && grub2-mkconfig -o /boot/efi/EFI/<your distribution>/grub.cfg`
 
-* Shutdown the VM
+* Shut down the VM
 
 * Use rsync to copy VM files to the "buffer" machine using `--sparse` flag.
 
@@ -445,7 +446,7 @@ _Due the fact I have only server here, I have setup a "buffer" machine on my des
 
 * Use rsync to copy the converted files (VHD) to your XCP-ng host.
 
-* After the rsync operation, the VHD are not valid for the XAPI, so repair them :
+* After the rsync operation, the VHDs are not valid for the XAPI, so repair them :
 
    `vhd-util repair -n myvm.vhd`
 
@@ -457,14 +458,14 @@ _Due the fact I have only server here, I have setup a "buffer" machine on my des
 
   `xe vdi-import filename=myvm.vhd format=vhd --progress uuid=<VDI UUID>`
 
-* Once the import is done, create a virtual machine using XO or XCP-ng Center, delete the VM disk that has been created and attach your newly created VDI to the VM. Don't forget to set the VM boot mode to UEFI if your VMs was in UEFI mode.
+* Once the import is done, create a virtual machine using Xen Orchestra or XO Lite, delete the VM disk that has been created and attach your newly created VDI to the VM. Don't forget to set the VM boot mode to UEFI if your VMs were in UEFI mode.
 
 * Boot the VM and find a way to enter in the virtual UEFI of the VM. Here, I type the Escape and F9,F10,F11,F12 keys like crazy. Select Boot Manager, you should see this window :
 
 ![The virtual UEFI boot manager showing the QEMU HARDDISK selected.](../../assets/img/migrate-to-xcp-ng_bootloader.png)
 
-* Select `UEFI QEMU HARDDISK`, the screen should be black for seconds and you should see the GRUB. Let the machine worked for minutes and you should see the prompt finally 👍
+* Select `UEFI QEMU HARDDISK`, the screen should be black for seconds and you should see the GRUB. Let the machine work for a few minutes and you should see the prompt finally 👍
 
-* Install Guest Tools and reboot. The reboot shouldn't take long, you don't have to redo step 13, the OS seems to have repair the boot sequence by itself.
+* Install Guest Tools and reboot. The reboot shouldn't take long, you don't have to redo the UEFI boot manager step, the OS seems to have repaired the boot sequence by itself.
 
 Done !

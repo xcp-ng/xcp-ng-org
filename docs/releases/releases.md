@@ -43,13 +43,13 @@ XCP-ng's LTS releases are typically supported for up to five years. However, XCP
 gantt
     dateFormat  YYYY-MM-DD
     tickInterval 12month
-    XCP-ng 8.3 LTS         :2025-05-31, 3.5y
-    XCP-ng 8.2 LTS         :2024-08-30, 1y
+    XCP-ng 8.3 LTS         :2025-06-16, 2028-11-30
+    XCP-ng 8.2 LTS         :2024-09-16, 2025-09-16
 ```
 
 ## Standard Release {#standard-release}
 
-*Latest: [XCP-ng 8.3](release-8-3.md) (somehow)*
+*There is currently no standard release: [XCP-ng 8.3](release-8-3.md) became an LTS release, and the next release will be XCP-ng 9.0.*
 
 Using the standard release is recommended if:
 
@@ -62,7 +62,7 @@ Standard releases are supported until the next release, plus a few additional mo
 If you prefer a more conservative approach, consider choosing our [LTS release](#lts-releases).
 
 :::note
-XCP-ng 8.3 is special, as it started as a standard release, then became as announced a LTS release in June 2025.
+XCP-ng 8.3 is special, as it started as a standard release, then, as announced, became an LTS release in June 2025.
 
 XCP-ng 9.0 might follow the same path.
 :::

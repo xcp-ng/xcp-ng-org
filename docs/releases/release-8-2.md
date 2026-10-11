@@ -7,7 +7,7 @@ sidebar_class_name: hidden
 :::danger
 XCP-ng 8.2 is EOL (End Of Life) since September 16th, 2025. Please check the [currently supported release(s)](releases.md).
 
-XCP-ng 8.2.1 is EOL too. It's the same release: XCP-ng 8.2 LTS was first released as 8.2.0, then the version number was updated to 8.2.1 in 2022 when we released a signficant maintenance update, but it's all XCP-ng 8.2 LTS in the end.
+XCP-ng 8.2.1 is EOL too. It's the same release: XCP-ng 8.2 LTS was first released as 8.2.0, then the version number was updated to 8.2.1 in 2022 when we released a significant maintenance update, but it's all XCP-ng 8.2 LTS in the end.
 :::
 
 XCP-ng 8.2 is an [LTS Release](../#xcp-ng-release-history). [Download the installation ISO](https://mirrors.xcp-ng.org/isos/8.2/xcp-ng-8.2.1-20231130.iso?https=1).
@@ -29,7 +29,7 @@ LTS means **Long Term Support**: more information in [this section](../#lts-rele
 
 ## Install {#install}
 
-See [Installation](../../../installation/install-xcp-ng).
+See [Installation](../../installation/install-xcp-ng).
 
 ## Upgrade from previous releases {#upgrade-from-previous-releases}
 
@@ -37,7 +37,7 @@ Despite being an LTS, you can upgrade from previous releases. Both upgrade metho
 * From the installation ISO
 * From command line using `yum` (**from XCP-ng 8.0 or 8.1 only!**)
 
-Refer to the [Upgrade Howto](../../../installation/upgrade).
+Refer to the [Upgrade Howto](../../installation/upgrade).
 
 ## What changed since 8.1 {#what-changed-since-81}
 
@@ -70,13 +70,13 @@ We automated the configuration needed by the user to allow communication with th
 
 Learn more about the VIFs network traffic control in Xen Orchestra in [this dedicated devblog](https://xen-orchestra.com/blog/vms-vif-network-traffic-control/).
 
-We also backported this feature to XCP-ng 8.1 as this improvements was already supported by older XCP-ng version.
+We also backported this feature to XCP-ng 8.1 as this improvement was already supported by older XCP-ng version.
 
 ### Core scheduling (experimental)
 
 As you probably know, Hyper Threading defeats all mitigations of CPU vulnerabilities related to side-channel attacks (as Spectre, Meltdown, Fallout...). That's why it was required to disable it as part of the mitigations. The reason is that with Hyper Threading enabled you can't protect a VM's vCPUs from attacks originating from other VMs that have workloads scheduled on the same physical core.
 
-With Core Scheduling, you now have another solution: you can choose to leave Hyper Threading enabled and ask the scheduler to always group vCPUs of a given VM together on the same physical core(s). This will remove the vulnerability to a class of attacks from other VMs, but will leave the VM processes vulnerables to attacks from malevolent processes from within itself. To be usedonly with entirely trusted workloads.
+With Core Scheduling, you now have another solution: you can choose to leave Hyper Threading enabled and ask the scheduler to always group vCPUs of a given VM together on the same physical core(s). This will remove the vulnerability to a class of attacks from other VMs, but will leave the VM processes vulnerable to attacks from malevolent processes from within itself. To be used only with entirely trusted workloads.
 
 A new XAPI method allowing you to choose the frequency of the core scheduler was written. You will have the option to select different granularity: CPU, core or socket, depending on the performance/security ratio you are looking for.
 
@@ -92,20 +92,20 @@ So we developed a dedicated `zfs` SR driver that checks whether `zfs` is present
 
 See [Transition to the new ZFS SR driver](#transition-to-the-new-zfs-sr-driver) if you were already using ZFS in XCP-ng before the 8.2 release.
 
-=> [ZFS SR Documentation](../../../storage#zfs)
+=> [ZFS SR Documentation](../../storage#zfs)
 
 #### `glusterfs`
 Use this driver to connect to an existing Gluster storage as a shared SR.
 
-=> [GlusterFS SR Documentation](../../../storage#glusterfs)
+=> [GlusterFS SR Documentation](../../storage#glusterfs)
 
 #### `cephfs`
 Use this driver to connect to an existing Ceph storage through the CephFS storage interface.
 
-=> [CephFS SR Documentation](../../../storage#cephfs)
+=> [CephFS SR Documentation](../../storage#cephfs)
 
 ### Guest tools ISO
-Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 8.2: they dropped the guest tools ISO, replaced by downloads from their website. We chose to retain the feature and still provide a guest tools ISO that you can mount to your VMs. Many thanks go to the [XAPI](https://github.com/xapi-project/xen-api/) developers who have accepted to keep the related source code in the XAPI project for us to keep using, rather than deleteing it.
+Not really a change from XCP-ng 8.1, but rather a change from Citrix Hypervisor 8.2: they dropped the guest tools ISO, replaced by downloads from their website. We chose to retain the feature and still provide a guest tools ISO that you can mount to your VMs. Many thanks go to the [XAPI](https://github.com/xapi-project/xen-api/) developers who have accepted to keep the related source code in the XAPI project for us to keep using, rather than deleting it.
 
 ### Other changes
 
@@ -152,7 +152,7 @@ There exists no easy way to convert an existing storage repository from a given 
     * Note the associated location (e.g. `/zfs/vol0`).
   * Unplug the PBD: `xe pbd-unplug uuid={PBD-UUID}`
   * Destroy the SR: `xe sr-destroy uuid={SR-UUID}`
-  * [Create the ZFS SR](../../../storage#zfs)
+  * [Create the ZFS SR](../../storage#zfs)
   * Move or import the VMs back to the new SR
 
 #### Status of Windows guest tools
@@ -244,13 +244,13 @@ Reference: [https://github.com/xcp-ng/xcp/issues/149](https://github.com/xcp-ng/
 
 #### Installation on software RAID may fail on previously used disks
 
-Sometimes the presence of old `mdadm` metadata on the disks cause the installer to fail creating the software RAID. Zeroing the disks fixes it.
+Sometimes the presence of old `mdadm` metadata on the disks causes the installer to fail creating the software RAID. Zeroing the disks fixes it.
 
 Reference: [https://github.com/xcp-ng/xcp/issues/107](https://github.com/xcp-ng/xcp/issues/107)
 
 #### Installer crashes on some hardware with AMD Ryzen APUs
 
-The installer gives an error on some hardware. Reducing the maximum amount of memory allocated to the installer workarounds it.
+The installer gives an error on some hardware. Reducing the maximum amount of memory allocated to the installer works around it.
 The installer offers extra options to boot with only 2 G of RAM (usually solves the issue) or using an alternate kernel.
 
 Reference: [https://github.com/xcp-ng/xcp/issues/206](https://github.com/xcp-ng/xcp/issues/206)

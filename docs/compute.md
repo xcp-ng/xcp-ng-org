@@ -14,7 +14,7 @@ This section is dedicated to compute related things, like GPU/vGPU or PCI passth
 Ensure VT-d/AMD-Vi Is Enabled
 :::
 
-In order to use PCI passthrough your host system must have IOMMU functionality enabled. This should be more commonly enabled by default on enterprise hardware than on consumer hardware. It can be enabled in the BIOS/UEFI of systems with CPUs and chipsets which support it. For Intel platforms the feature is typically referred to as VT-d (Intel Virtualization Technology for Directed I/O); on AMD platforms it is typically listed as IOMMU or AMD-Vi. Please note that this is not the same as VT-x/AMD-v virtualisation support, and so these options are often listed separately.
+In order to use PCI passthrough your host system must have IOMMU functionality enabled. This should be more commonly enabled by default on enterprise hardware than on consumer hardware. It can be enabled in the BIOS/UEFI of systems with CPUs and chipsets which support it. For Intel platforms the feature is typically referred to as VT-d (Intel Virtualization Technology for Directed I/O); on AMD platforms it is typically listed as IOMMU or AMD-Vi. Please note that this is not the same as VT-x/AMD-V virtualization support, and so these options are often listed separately.
 
 Consult your system or motherboard manual for instructions on where to find the setting in your BIOS/UEFI. In addition, system BIOS updates may reset the feature to its default state, which may require you to re-enable it.
 
@@ -59,7 +59,7 @@ lspci
 
 **Method 2: List System Device Classes with `find`**
 
-_This method works best for finding the device ID by class. The example below the class is `net` and shows how to find the device ID of a specific network interface._
+_This method works best for finding the device ID by class. In the example below, the class is `net`: it shows how to find the device ID of a specific network interface._
 
 <Terminal title="1. Find your devices ID (B/D/F) on the PCI bus…">{`
 find /sys/class/net -exec readlink {} +
@@ -115,10 +115,6 @@ Run the following XAPI command:
 xe pci-enable-dom0-access uuid=<pci uuid>
 `}</Terminal>
 
-:::warning
-This kernel parameter is not retained when you upgrade an XCP-ng host [using the installation ISO](../installation/upgrade#upgrade-via-installation-iso-recommended). Remember to re-do this step after the upgrade.
-:::
-
 ##### XCP-ng 8.2
 
 :::note
@@ -132,7 +128,7 @@ XCP-ng 8.2 is EOL. This 8.2-specific information is retained solely to assist wi
 
 :::tip
 ### NVMe storage devices on Linux
-For NVMe storage devices, the Linux driver will try to allocate too many PCI MSI-X vectors, exceeding the number of extra IRQs allocated by Xen for a guest. Failing MSI-X setup might lead to very low performances on some buggy hardware if the driver cannot manage to fallback to legacy IRQs handling.
+For NVMe storage devices, the Linux driver will try to allocate too many PCI MSI-X vectors, exceeding the number of extra IRQs allocated by Xen for a guest. Failing MSI-X setup might lead to very low performance on some buggy hardware if the driver cannot manage to fall back to legacy IRQs handling.
 
 The default number of extra guest IRQs (which is 64) needs to be increased with Xen's `extra_guest_irqs` boot parameter:
 
@@ -194,7 +190,7 @@ xe vm-param-remove param-name=other-config param-key=pci uuid=<vm uuid>
 
 Then, when booting the VM, it won't be attached anymore.
 
-If you want to get the PCI device accessible again in the Dom0, you also need to removing it from the command line:
+If you want to get the PCI device accessible again in the Dom0, you also need to give it back. On XCP-ng 8.3, run `xe pci-enable-dom0-access uuid=<pci uuid>`. On XCP-ng 8.2, remove it from the command line:
 
 <Terminal shell title="root@xcp-ng-host — Detaching a PCI device">{`
 /opt/xensource/libexec/xen-cmdline --delete-dom0 xen-pciback.hide
@@ -223,7 +219,7 @@ Due to a proprietary piece of code in XenServer, XCP-ng doesn't have (yet) suppo
 
 ### MxGPU (AMD vGPU)
 
-AMD GPU are trivial using industry standard.  
+AMD MxGPU uses the industry-standard SR-IOV.  
 Version 2.0 of the mxgpu iso should work on any 8.X version of XCP-ng
 
 1. Enable SR-IOV in the server's BIOS
@@ -238,13 +234,14 @@ Version 2.0 of the mxgpu iso should work on any 8.X version of XCP-ng
 xe-install-supplemental-pack mxgpu-2.0.0.amd.iso
 `}</Terminal>
 
-6. Reboot the XCP-ng
+6. Reboot the XCP-ng host
 7. Assign an MxGPU to the VM from the VM properties page.  Go to the GPU section.  From the Drop down choose how big of a slice of the GPU you want on the VM and click OK
 
 Start the VM and log into the guest OS and load the appropriate guest driver from AMD's Drivers & Support page.
 
 > Known working cards:
-* S7150x2
+>
+> * S7150x2
 
 ## USB Passthrough {#usb-passthrough}
 
@@ -314,7 +311,7 @@ xe vusb-destroy uuid=<vusb_uuid>
 `}</Terminal>
 
 ### Passing through Keyboards and Mice
-xcp-ng host uses usb-policy.conf at `/etc/xensource/usb-policy.conf` with ALLOW and DENY rules for different classes of usb devices.
+The XCP-ng host uses `usb-policy.conf` at `/etc/xensource/usb-policy.conf` with ALLOW and DENY rules for different classes of USB devices.
 The default file contains Mice and Keyboards with DENY rules. You can edit this file to allow these devices (and any other ones similarly).
 
 Once edited, run the following command to refresh:
@@ -339,7 +336,7 @@ Unfortunately, Xen currently does not support nested virtualization. It is a des
 
 Historically, partial nested virtualization was implemented in Xen. However, it was experimental and insecure (with risks such as host crashes or worse) and, therefore, is not officially supported.
 
-XCP-ng allows to enable this partial nested virtualization support. It can be useful for testing and troubleshooting purposes, **but must not be relied on for any mission-critical workload** in its current state.
+XCP-ng allows enabling this partial, unsupported nested virtualization support. It can be useful for testing and troubleshooting purposes, **but must not be relied on for any mission-critical workload** in its current state.
 
 **But I really need it!**
 
@@ -361,7 +358,7 @@ On multi-socket and MCM systems, the NUMA affinity may benefit memory-bound appl
 
 The Xen scheduler implements two types of affinity: `soft` and `hard`. By default, it uses `soft`, a best effort algorithm which tries to achieve the memory locality. Since there's no guarantee, if the sysadmin wants to make sure that a VM will only run on a certain node they will need to configure the hard affinity through the `VCPUs-params:mask` VM attribute.
 
-Taking a **8C/16T** dual socket as example, the topology would be:
+Taking an **8C/16T** dual socket as example, the topology would be:
 
 ```
 node0: 0-7
@@ -394,7 +391,7 @@ xenpm get-cpu-topology
 xl info --numa
 `}</Terminal>
 
-Other ways control the vCPUs placement, using the `xl` CLI:
+Other ways to control vCPU placement, using the `xl` CLI:
 
 <Terminal shell title="root@xcp-ng-host — NUMA affinity">{`
 xl vcpu-pin <Domain> <vcpu id> <cpu id>
@@ -411,7 +408,7 @@ xl cpupool-migrate <VM> <Pool> # Will migrate a VM to the given pool
 `}</Terminal>
 
 :::warning
-Be careful, the changes done using `xl` only affect vCPU at the moment, the memory of the VM will not be moved between node nor the pinning stay after a reboot. You need to use `xe` for it to be taken into account at the VM startup.
+Be careful, the changes done using `xl` only affect vCPU at the moment, the memory of the VM will not be moved between nodes, and the pinning will not persist after a reboot. You need to use `xe` for it to be taken into account at the VM startup.
 :::
 
 You can see the current memory scheme of the VM using the `debug-key` interface with the `u` key. e.g. `xl debug-key u; xl dmesg`.

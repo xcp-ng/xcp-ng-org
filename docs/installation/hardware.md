@@ -22,13 +22,13 @@ Exceptions include devices which require *proprietary* software components to op
 
 ## Supported hardware outside the HCL {#supported-hardware-outside-the-hcl}
 
-Many devices outside the HCL actually work perfectly with XCP-ng. Contrarily to some hypervisors, XCP-ng does not demand the use of servers from a curated short list. Most of the hardware support depends on the Linux kernel drivers plus vendor drivers covering a very large range of devices.
+Many devices outside the HCL actually work perfectly with XCP-ng. Contrary to some hypervisors, XCP-ng does not demand the use of servers from a curated short list. Most of the hardware support depends on the Linux kernel drivers plus vendor drivers covering a very large range of devices.
 
 What being absent from the HCL actually means is that we do not perform systematic tests on it, so we cannot offer the same level of guarantee as that offered for devices in the HCL. However, our large user community runs XCP-ng on a hardware range far beyond that of the official HCL, and we support them.
 
-Concretely, if your hardware is not on the HCL, there's still a very high chance that you can use XCP-ng and benefit from professionnal support from Vates. And even if your testing uncovers an issue, don't give up immediately: we're willing to fix them, HCL or not.
+Concretely, if your hardware is not on the HCL, there's still a very high chance that you can use XCP-ng and benefit from professional support from Vates. And even if your testing uncovers an issue, don't give up immediately: we're willing to fix them, HCL or not.
 
-Let's mention one particular kind of exceptions to support, though. **Security on older hardware having hardware vulnerabilities.** Older hardware, while usually still running very well - and we're all for using existing hardware while it lasts rather than buying new machines - may not receive hardware-related security updates from their very vendor. In particular those related to side-channel attacks (Spectre, Meltdown, and everything that ensued). In this case, you can use XCP-ng, but without expecting protection against this kind of vulnerablity, because it simply doesn't depend on XCP-ng (or any other hypervisor): it depends on the hardware vendor.
+Let's mention one particular kind of exception to support, though. **Security on older hardware having hardware vulnerabilities.** Older hardware, while usually still running very well - and we're all for using existing hardware while it lasts rather than buying new machines - may not receive hardware-related security updates from their very vendor. In particular those related to side-channel attacks (Spectre, Meltdown, and everything that ensued). In this case, you can use XCP-ng, but without expecting protection against this kind of vulnerability, because it simply doesn't depend on XCP-ng (or any other hypervisor): it depends on the hardware vendor.
 
 ## Alternate drivers {#alternate-drivers}
 
@@ -81,7 +81,7 @@ Upgrades **using the `yum` method** will retain the alternate driver package, un
 
 A list is maintained at [https://github.com/xcp-ng/xcp/wiki/Drivers](https://github.com/xcp-ng/xcp/wiki/Drivers)
 
-Check the "XCP-ng X.Y alternate driver" column, which provides packages names and versions for every available alternate driver.
+Check the "XCP-ng X.Y alternate driver" column, which provides package names and versions for every available alternate driver.
 
 
 ## Additional kernel modules {#additional-kernel-modules}
@@ -170,7 +170,7 @@ you must reboot the system after each firmware update." (from Release Notes)
 Known Issues (with old firmware; also on XenServer 7.2 with current firmware)
 
 * Card Lockup
-    * pulling the network cable puts the card in a locked state, LED's keeps flashing; putting the cable back does nothing; network connection stays lost
+    * pulling the network cable puts the card in a locked state, LEDs keep flashing; putting the cable back does nothing; network connection stays lost
     * Solutions
         * Short Term: power off the host and pull power cords (the card needs to be completely powerless!, just switching the host OFF is not enough)
         * Mid Term: Upgrade Firmware to match XCP-ng Driver version (for XCP-ng 7.5 -> 11.2.XXXXX)
@@ -194,7 +194,7 @@ There are several USB 5Gbps NICs based on this chipset available on the market. 
 
 The kernel module is just a repackage for XCP-ng of [the AQC111U drivers available for Linux Kernel 3.10 on the Marvell website](https://www.marvell.com/support/downloads.html).
 
-To install the driver follow the instructions provided in the [**Alternate drivers** section below](#alternate-drivers) and use `aqc111u-module` as `package-name` _(`module-name` would be `aqc111u`)_.
+To install the driver follow the instructions provided in the [**Alternate drivers** section above](#alternate-drivers) and use `aqc111u-module` as `package-name` _(`module-name` would be `aqc111u`)_.
 
 Known compatible NICs are [^1]:
 
@@ -208,4 +208,4 @@ Known compatible NICs are [^1]:
 | StarTech | US5GC30    |                    |
 | Trendnet | TUC-ET5G   |                    |
 
-Despite the AQC111U-based adapters support the IEEE 802.3bz standard _(AKA 5BASE-T)_ and will correctly negotiate with compatible peripherals the communication at 5Gbps, the actual bandwidth will not exceed 3.5Gbps due to the overhead of the incapsulation of the ethernet protocol over the 5Gbps connection via USB 3.0 _(AKA USB 3.1 Gen 1)_.
+Although the AQC111U-based adapters support the IEEE 802.3bz standard _(AKA 5BASE-T)_ and will correctly negotiate with compatible peripherals the communication at 5Gbps, the actual bandwidth will not exceed 3.5Gbps due to the overhead of the encapsulation of the ethernet protocol over the 5Gbps connection via USB 3.0 _(AKA USB 3.1 Gen 1)_.
