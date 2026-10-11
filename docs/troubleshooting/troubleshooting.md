@@ -1,11 +1,11 @@
 # Troubleshooting
 
-If you have a problem or a question on XCP-ng, there's 2 options: community support (mostly on [XCP-ng Forum](https://xcp-ng.org/forum)) or [pro support](https://xcp-ng.com).
+If you have a problem or a question on XCP-ng, there are two options: community support (mostly on [XCP-ng Forum](https://xcp-ng.org/forum)) or [pro support](https://xcp-ng.com).
 
 ## The 3-Step-Guide {#the-3-step-guide}
 Here is our handy **3-Step-Guide**:
 
-1. Check the [logs](log-files). Check your settings. Check all the articlesbelow here. If you already did, proceed to Step 2.
+1. Check the [logs](log-files). Check your settings. Check all the articles below. If you already did, proceed to Step 2.
 2. Get help at our [Forum](https://xcp-ng.org/forum) or get help [on Discord](https://discord.gg/Hr98F6wRvx) or [on IRC](irc://irc.oftc.net/#xcp-ng) and provide as much information as you can:
     * ☑️ What did you **exactly** do to expose the bug?
     * 🚀 XCP-ng Version

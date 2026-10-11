@@ -1,6 +1,6 @@
 # Log files
 
-On a XCP-ng host, like in most Linux/UNIX systems, the logs are located in `/var/log`. XCP-ng does not use `journald` for logs, so everything is in `/var/log` directly.
+On an XCP-ng host, like in most Linux/UNIX systems, the logs are located in `/var/log`. XCP-ng does not use `journald` for logs, so everything is in `/var/log` directly.
 
 ## General log {#general-log}
 

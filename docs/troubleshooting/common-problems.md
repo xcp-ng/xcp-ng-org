@@ -38,7 +38,7 @@ Blacklist the problematic driver ([source](https://xcp-ng.org/forum/post/1707)):
 
 After an update, XCP-ng won't boot and file `/boot/initrd-4.19.0+1.img` is missing.
 
-Can be a `yum` update process interrupted while rebuilding the `initrd`, such as a manual reboot of the host before the post-install scriplets have finished executing.
+Can be a `yum` update process interrupted while rebuilding the `initrd`, such as a manual reboot of the host before the post-install scriptlets have finished executing.
 
 ### Solution
 
@@ -47,7 +47,7 @@ Can be a `yum` update process interrupted while rebuilding the `initrd`, such as
 3. Reboot on the latest kernel, it works!
 
 :::tip
-Here is an example of `dracut` command on a 8.3 host: `dracut -f /boot/initrd-4.19.0+1.img 4.19.0+1`
+Here is an example of `dracut` command on an 8.3 host: `dracut -f /boot/initrd-4.19.0+1.img 4.19.0+1`
 :::
 
 ---
@@ -80,7 +80,7 @@ To solve this, simply get your pool "coherent" and do not mix products. Ensure a
 
 ### Cause
 
-Hard to tell why, possibly related to the kernel, or BIOS. This has been known to occur on a Dell Poweredge T20.
+Hard to tell why, possibly related to the kernel, or BIOS. This has been known to occur on a Dell PowerEdge T20.
 
 ### Solution
 
@@ -88,7 +88,7 @@ Try these steps:
 
 1. Turn off C-States and Intel SpeedStep in the BIOS.
 2. Flash any update(s) to the BIOS firmware.
-3. Append `reboot=pci` to kernel boot parameters. This can be done in `/etc/grub.cfg` or `/etc/grub-efi.cfg`.
+3. Append `reboot=pci` to kernel boot parameters. Use `/opt/xensource/libexec/xen-cmdline --set-dom0 "reboot=pci"`, then reboot.
 
 ---
 
@@ -130,7 +130,7 @@ This symptom can be caused by a variety of issues including RAID degradation, ag
 1. Begin by unplugging any external USB hubs, hard drives, and USBs.
 2. Run a command such as starting a VM to see if the issue remains.
 3. If the command still hangs, physically check to see if your HDDs/SSDs are all functioning normally and any RAID arrays you are using are in a clean non-degraded state.
-4. If these measures fail, login to your host and run `cat /var/log/kern.log | grep hung`. If this returns `"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.` your lvm layer may be hanging during storage scans. This could be caused by a drive that is starting to fail but has not hard failed yet.
+4. If these measures fail, log in to your host and run `cat /var/log/kern.log | grep hung`. If this returns `"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.` your lvm layer may be hanging during storage scans. This could be caused by a drive that is starting to fail but has not hard failed yet.
 5. If all these measures fail, collect the logs and make your way to the forum for help.
 
 ---
@@ -144,7 +144,7 @@ Example: `# tcpdump -i eth0 -v -nn |grep incorrect`
 
 ### Solution
 
-**NOTE**: These changes does not guarantee improved network performance, please use iperf3 to check before and after the change.
+**NOTE**: These changes do not guarantee improved network performance, please use iperf3 to check before and after the change.
 
 - If you see transmit TCP offload checksum errors like this:
 
@@ -172,7 +172,7 @@ The PIF UUID can be found by executing:
 
 ### Cause
 
-In some cases, at least observed on XCP-ng 8.2.1 with Intel I219-V NICs, having TCP Segmentation Offload, divides performances by almost 2.
+In some cases, at least observed on XCP-ng 8.2.1 with Intel I219-V NICs, having TCP Segmentation Offload enabled almost halves performance.
 
 ### Solution
 
@@ -183,7 +183,7 @@ In some cases, at least observed on XCP-ng 8.2.1 with Intel I219-V NICs, having 
 - Either unplug/plug the PIF for the change to be taken into account, or reboot your host
 
 :::warning
-If running the unplug/plug commands through ssh, make sure you're not doing so over the network that will be unplugged. Ideally it is recommended to do such changes through your machine IPMI interface or on via physical access
+If running the unplug/plug commands through ssh, make sure you're not doing so over the network that will be unplugged. Ideally it is recommended to do such changes through your machine's IPMI interface or via physical access
 :::
 
 <Terminal shell title="root@xcp-ng-host — Solution">{`
@@ -235,7 +235,7 @@ Some versions of Ubuntu 18.04 might fail to boot, due to a Xorg bug affecting GD
 
 ### Solution
 
-The solution is to use `vga=normal fb=false` on Grub boot kernel to overcome this. You can add those into ` /etc/default/grub`, for the `GRUB_CMDLINE_LINUX_DEFAULT` variable. Then, a simple `sudo update-grub` will provide the fix forever.
+The solution is to use `vga=normal fb=false` on Grub boot kernel to overcome this. You can add those into `/etc/default/grub`, for the `GRUB_CMDLINE_LINUX_DEFAULT` variable. Then, a simple `sudo update-grub` will provide the fix forever.
 
 You can also remove the `hwe` kernel and use the `generic` one: this way, the problem won't occur at all.
 
@@ -267,7 +267,7 @@ This should recreate all the templates.
 
 ### Cause
 
-The message `The updater plugin is busy (current operation: check_update)` means that the plugin crashed will doing an update. The lock was then active, and it was left that way. You can probably see that by doing:
+The message `The updater plugin is busy (current operation: check_update)` means that the plugin crashed while doing an update. The lock was then active, and it was left that way. You can probably see that by doing:
 
 <Terminal shell title="Cause">{`
 cat /var/lib/xcp-ng-xapi-plugins/updater.py.lock
@@ -329,7 +329,7 @@ Disable **Scroll Lock** on your keyboard (physical or virtual). Input should res
 
 ### Issue
 
-When using PCI passthrough on some certain devices (e.g. AMD GPUs, some SSDs), you may find that the device is non-functional, buggy, or randomly hangs.
+When using PCI passthrough on certain devices (e.g. AMD GPUs, some SSDs), you may find that the device is non-functional, buggy, or randomly hangs.
 
 `/var/log/xen/hypervisor.log` shows the following error:
 

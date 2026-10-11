@@ -48,15 +48,15 @@ iscsiadm -m node -p <IP_address> --rescan
 
 ## iSCSI in storage-cluster environment {#iscsi-in-storage-cluster-environment}
 
-This apply to setup using DRBD/Corosync/Pacemaker.
+This applies to setups using DRBD/Corosync/Pacemaker.
 
 ### iSCSI reconnect after reboot fails permanently (Unsupported SCSI Opcode)
 
-The problem is that in a storage-cluster environment every time the node changes or pacemaker start /stop /restart iSCSI resources the "iSCSI SN" for a lun are new generated and differs from that before.
+The problem is that in a storage-cluster environment every time the node changes or pacemaker start /stop /restart iSCSI resources the "iSCSI SN" for a LUN is newly generated and differs from the previous one.
 Xen uses the "iSCSI SN" as an identifier, so you have to ensure that "iSCSI SN" is the same on all cluster nodes.
 You can read more about it [here](https://smcleod.net/2015/12/iscsi-scsi-id-/-serial-persistence/).
 
-* error message xen orchestra
+* error message in Xen Orchestra
 
 ```
 SR_BACKEND_FAILURE_47(, The SR is not available [opterr=Error reporting error, unknown key Device not appeared yet], )
@@ -74,7 +74,7 @@ kernel: [11219.642772] iSCSI/iqn.2018-12.com.example.server:33init: Unsupported 
 
 #### Solution
 
-The trick is to extend the Lio iSCSI lun configuration in pacemaker with a hard coded iscsi_sn (scsi_sn=d27dab3f-c8bf-4385-8f7e-a4772673939d) and `lio_iblock`, so that every node uses the same.
+The trick is to extend the LIO iSCSI LUN configuration in pacemaker with a hard coded iscsi_sn (scsi_sn=d27dab3f-c8bf-4385-8f7e-a4772673939d) and `lio_iblock`, so that every node uses the same.
 
 * while pacemaker iscsi resource is running you can get the actual iSCSI_SN:
 `cat /sys/kernel/config/target/core/iblock_0/lun_name/wwn/vpd_unit_serial`
@@ -87,6 +87,6 @@ primitive p_iscsi_lun_1 iSCSILogicalUnit \
         scsi_sn=d27dab3f-c8bf-4385-8f7e-a4772673939d lio_iblock=0 \
         op start timeout=20 interval=0 \
         op stop timeout=20 interval=0 \
-        op monitor interval=20 timout=40
+        op monitor interval=20 timeout=40
 
 ```

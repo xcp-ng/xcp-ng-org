@@ -4,7 +4,7 @@ title: 'Software RAID issues'
 
 # Software RAID issues
 
-This page regroups the common issues you might deal with regarding software RAID.
+This page gathers the common issues you might deal with regarding software RAID.
 
 ## Disk replacement with software RAID {#disk-replacement-with-software-raid}
 
@@ -26,7 +26,7 @@ This will return a similar output:
 ```
 Personalities : [raid1]
 md127 : active raid1 nvme0n2[3] nvme0n1[2]
-      62914432 blocks super 1.0 [2/2] [U_]
+      62914432 blocks super 1.0 [2/1] [U_]
 
 unused devices: <none>
 ```
@@ -66,7 +66,7 @@ The disk is successfully removed.
 
 ### Add a new/replacement disk to the RAID
 
-Now we can add a replacement disk. Shutdown your host, install the disk on your system, then boot it to your XCP-ng install or the installer ISO once more. Now add the disk to the RAID:
+Now we can add a replacement disk. Shut down your host, install the disk on your system, then boot it to your XCP-ng install or the installer ISO once more. Now add the disk to the RAID:
 
 <Terminal shell title="Add a new/replacement disk to the RAID">{`
 mdadm --manage /dev/md127 --add /dev/nvme0n1
@@ -92,8 +92,8 @@ unused devices: <none>
 
 ### If the system is still unbootable
 
-This might happen for various reasons. If you haven't backed-up the contents of the disks yet, you really should now, in case data was corrupted on more than one disk. Clonezilla is a good open source live ISO to do this with if you don't already have a favorite tool. It can back up to another disk, or to a network share.
+This might happen for various reasons. If you haven't backed up the contents of the disks yet, you really should now, in case data was corrupted on more than one disk. Clonezilla is a good open source live ISO to do this with if you don't already have a favorite tool. It can back up to another disk, or to a network share.
 
 It has been reported to us that some non-enterprise motherboards may have limited UEFI firmware that does not cope well with disk changes.
 
-In most cases, you should be able to restore the bootloader by upgrading your host to the same version it is already running (e.g upgrade 8.3 to 8.3 using the 8.3 install ISO). Check [the upgrade docs](../../installation/upgrade.md) for the usual instructions and warnings. Another, custom solution is to run the appropriate `efibootmgr` commands from the installer's shell. Refer to [its documentation](https://linux.die.net/man/8/efibootmgr).
+In most cases, you should be able to restore the bootloader by upgrading your host to the same version it is already running (e.g. upgrade 8.3 to 8.3 using the 8.3 install ISO). Check [the upgrade docs](../../installation/upgrade.md) for the usual instructions and warnings. Another, custom solution is to run the appropriate `efibootmgr` commands from the installer's shell. Refer to [its documentation](https://linux.die.net/man/8/efibootmgr).

@@ -30,7 +30,7 @@ xe host-emergency-ha-disable force=true
 xe-toolstack-restart
 `}</Terminal>
 
-Your host will reboot with high availability disabled. This will let you:
+The toolstack restarts with high availability disabled. This will let you:
 
 - Verify the overall stability of your environment
 - Investigate further what caused your issue with HA

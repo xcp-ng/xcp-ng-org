@@ -23,7 +23,7 @@ INFO:root:The VDI 38dd4f0e-6d0e-46e1-bb1a-980ec3d3efd2 has OpaqueRef:3664c45a-29
 
 The script needs to be run on the master host of the affected pool:
 
-<Terminal title="/snapshot-fixer.py dry-run">{`
+<Terminal title="./snapshot-fixer.py rewrite">{`
 ./snapshot-fixer.py rewrite
 INFO:root:Check HA...
 INFO:root:Shutting down xapi...
@@ -33,4 +33,4 @@ INFO:root:Writing database to /var/lib/xcp/state.db
 INFO:root:Starting up xapi...
 `}</Terminal>
 
-In unlikely case the script corrupts the database, the script provides the `restore-backup` option to restore the database from the backup (which is automatically generated on every script invocation).
+In the unlikely case the script corrupts the database, the script provides the `restore-backup` option to restore the database from the backup (which is automatically generated on every script invocation).

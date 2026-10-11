@@ -34,25 +34,25 @@ Below is a procedure for using XenBootFix to recover a non-booting VM:
 1. Take a snapshot of your VM in case uninstallation fails.
 2. Disable the "Manage Citrix PV drivers via Windows Update" option on your VM if it's enabled.
 3. Boot into Windows PE or Windows RE in command line-only mode. There are a few ways to accomplish this:
-  * If your Windows installation BSODs on boot multiple times, it will automatically boot into Windows RE. Choose **Troubleshoot** - **Command Prompt**.
-  * When running Windows Server, press **F8** before Windows starts, then choose **Repair Your Computer**. Choose **Troubleshoot** - **Command Prompt**.
-  * Boot your VM using a Windows Setup or Windows PE CD image. If you don't see a command line, press **Shift+F10**.
+   * If your Windows installation BSODs on boot multiple times, it will automatically boot into Windows RE. Choose **Troubleshoot** - **Command Prompt**.
+   * When running Windows Server, press **F8** before Windows starts, then choose **Repair Your Computer**. Choose **Troubleshoot** - **Command Prompt**.
+   * Boot your VM using a Windows Setup or Windows PE CD image. If you don't see a command line, press **Shift+F10**.
 4. Identify your Windows installation drive letter.
-  * Use the `dir` command to list files in a given drive letter. For example: `dir C:\` (the backslash is required)
-  * In some cases, your Windows partition should already be mounted. Try the first few letters (`C:`, `D:`, `E:`).
-  * If you cannot find your Windows drive letter, you may need to assign a new drive letter with Diskpart.
-    * Type `diskpart` at the command line. The command prompt should change to `DISKPART>`
-    * Type `list vol` then make a note of your Windows partition and its drive letter (if any).
-    * If your Windows partition does not have a drive letter, type `sel vol N` where `N` is the volume number shown in Diskpart, then type `assign letter=W`. Your Windows partition will be assigned the drive letter `W:`.
-    * Finally, at the `DISKPART>` prompt, type `exit` to exit Diskpart.
+   * Use the `dir` command to list files in a given drive letter. For example: `dir C:\` (the backslash is required)
+   * In some cases, your Windows partition should already be mounted. Try the first few letters (`C:`, `D:`, `E:`).
+   * If you cannot find your Windows drive letter, you may need to assign a new drive letter with Diskpart.
+      * Type `diskpart` at the command line. The command prompt should change to `DISKPART>`
+      * Type `list vol` then make a note of your Windows partition and its drive letter (if any).
+      * If your Windows partition does not have a drive letter, type `sel vol N` where `N` is the volume number shown in Diskpart, then type `assign letter=W`. Your Windows partition will be assigned the drive letter `W:`.
+      * Finally, at the `DISKPART>` prompt, type `exit` to exit Diskpart.
 5. Obtain XenBootFix.
-  * The easiest way is to download and use the [latest release ISO](https://github.com/xcp-ng/win-pv-drivers/releases) of XCP-ng Windows Guest Tools, which includes a copy of XenBootFix at `package\XenBootFix\XenBootFix.exe`.
-  * If you're using XCP-ng Windows Guest Tools 9.0 or later, it is also located at `W:\Program Files\XCP-ng\Windows PV Drivers\XenBootFix\XenBootFix.exe` where `W:` is your Windows drive letter.
-  * **Note**: If using Windows PE, do not remove its CD image when it's running. You may encounter unexpected errors otherwise.
+   * The easiest way is to download and use the [latest release ISO](https://github.com/xcp-ng/win-pv-drivers/releases) of XCP-ng Windows Guest Tools, which includes a copy of XenBootFix at `package\XenBootFix\XenBootFix.exe`.
+   * If you're using XCP-ng Windows Guest Tools 9.0 or later, it is also located at `W:\Program Files\XCP-ng\Windows PV Drivers\XenBootFix\XenBootFix.exe` where `W:` is your Windows drive letter.
+   * **Note**: If using Windows PE, do not remove its CD image when it's running. You may encounter unexpected errors otherwise.
 6. Run the command `<path to XenBootFix.exe> W:\Windows` where `W:` is your Windows drive letter.
-  * **Note**: Make sure the drive letter belongs to your actual Windows installation and not Windows PE/RE. By default, Windows PE/RE use the drive letter **X:**.
+   * **Note**: Make sure the drive letter belongs to your actual Windows installation and not Windows PE/RE. By default, Windows PE/RE use the drive letter **X:**.
 7. Type `exit` to close Command Prompt. If using Windows RE, choose **Continue** to boot into Windows. Windows should now start normally.
-8. **You must immediately run XenClean from within Windows to remove the remaining Xen drivers**. See instructions above.
+8. **You must immediately run XenClean from within Windows to remove the remaining Xen drivers**. See [XenClean instructions](/vms/#fully-removing-xen-pv-drivers-with-xenclean).
 
 ## Connecting to guests using serial console {#connecting-to-guests-using-serial-console}
 
@@ -177,7 +177,7 @@ If either of the non-vendor devices ("**0001**" or "**0002**") is active then yo
 You will see only one of "0001" or "0002", not both.
 :::
 
-![Device Manager both 0001 and 0002.](../assets/img/winpv-correct-device.png)
+![Device Manager showing the active XCP-ng vendor device C000.](../assets/img/winpv-correct-device.png)
 
 If the vendor device ("**C000**" in this example) is active then you don't have this problem.
 You should check your Windows Update settings instead.
@@ -221,7 +221,7 @@ This can be due to the Viridian synthetic timer feature being disabled on the gu
 
 ### Solution
 
-First, check that all Viridian extensions are all enabled on your VM.
+First, check that all Viridian extensions are enabled on your VM.
 See the [Enabling Viridian extensions](/vms/#enabling-viridian-extensions) guide for more details.
 
 If you've set boot parameters to disable the synthetic timer, they need to be reverted:
