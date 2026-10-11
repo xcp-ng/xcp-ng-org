@@ -78,14 +78,14 @@ After changing the configuration, restart the toolstack with `xe-toolstack-resta
 Example with one command to enable HSTS and restart XAPI (example sets 1 year = 31536000):
 
 <Terminal shell title="Set HSTS retained for 1y">{`
-echo "hsts_max_age = 31536000" > /etc/xapi.conf.d/hsts.conf' && sudo xe-toolstack-restart
+echo "hsts_max_age = 31536000" > /etc/xapi.conf.d/hsts.conf && xe-toolstack-restart
 `}</Terminal>
 
 :::note
 You can then type `xapi-wait-init-complete 30` to ensure that XAPI has fully started.
 :::
 
-### Verify HSTS header and max-age
+#### Verify HSTS header and max-age
 
 This checks whether the response from https://localhost/ contains a Strict-Transport-Security header with a positive max-age and prints "HSTS: OK" or "HSTS: KO".
 
@@ -97,7 +97,6 @@ curl -sI https://localhost/ \
 ```
 
 :::note
-- The regex was tightened to match any positive integer (not just a single digit).
 - max-age=0 means HSTS is disabled.
 :::
 

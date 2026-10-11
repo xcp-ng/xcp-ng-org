@@ -46,7 +46,7 @@ xe <command> <argument>=value <argument>=value
 
 Each specific command contains its own set of arguments that are of the form `argument=value`. Some commands have required arguments, and most have some set of optional arguments. Typically a command assumes default values for some of the optional arguments when invoked without them.
 
-For example, adding a bootable ISO image as a mounted CD-Rom to a VM can be done with the following command:
+For example, adding a bootable ISO image as a mounted CD-ROM to a VM can be done with the following command:
 
 <Terminal shell title="root@xcp-ng-host — Basic xe syntax">{`
 xe vm-cd-add uuid=679c70cb-b358-00e1-72c0-819e8f74f00c cd-name=ubuntu-20.04.2-live-server-amd64.iso device=1
@@ -278,10 +278,10 @@ a85d6717-7264-d00e-069b-3b1d19d56ad9,aaa3eec5-9499-bcf3-4c03-af10baea96b7, 42c04
 
 ## Secrets {#secrets}
 
-XCP-ng provides a secrets mechanism to avoid passwords being stored in plaintext in command-line history or on API objects. XenCenter uses this feature automatically and it can also be used from the xe CLI for any command that requires a password.
+XCP-ng provides a secrets mechanism to avoid passwords being stored in plaintext in command-line history or on API objects. It can be used from the xe CLI for any command that requires a password.
 
 :::info
-Password secrets cannot be used to authenticate with a XCP-ng host from a remote instance of the xe CLI.
+Password secrets cannot be used to authenticate with an XCP-ng host from a remote instance of the xe CLI.
 :::
 
 To create a secret object, run the following command on your XCP-ng host.

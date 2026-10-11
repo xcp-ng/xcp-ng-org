@@ -18,7 +18,7 @@ Each update is covered by a dedicated blog post. Browse all update posts at http
 
 We maintain one or several releases in parallel:
 * LTS releases (currently `8.3`).
-* Non-LTS releases, which receive rolling updates (currently none, as `8.3` is now a LTS).
+* Non-LTS releases, which receive rolling updates (currently none, as `8.3` is now an LTS).
 
 If your version is lower than `8.3`, it will not receive updates anymore. To keep benefiting from bugfixes and security fixes you need to [upgrade](../../installation/upgrade).
 
@@ -47,7 +47,7 @@ export https_proxy=<proxy_url>
 `}</Terminal>
 
 :::warning
-These changes will be remain intact through standard updates, but they will be lost if you upgrade to a new major version.
+These changes will remain intact through standard updates, but they will be lost if you upgrade to a new major version.
 :::
 
 ### Be cautious with third party repositories and packages
@@ -99,12 +99,12 @@ If you update any other host before the pool master, **it will lose the ability 
 
 * Disable HA during the whole update process to avoid accidental fencing (automatically handled by [Xen Orchestra RPU](updates.md#from-xen-orchestra))
 * Avoid applying updates while XAPI tasks are running (`xe task-list`).
-* Some updates may probe SCSI devices. If your devices are sensitive to that kind of thing, plug them off before updating (see [this unfortunate story](https://github.com/xcp-ng/xcp/issues/232) of dead tape robots).
+* Some updates may probe SCSI devices. If your devices are sensitive to that kind of thing, unplug them before updating (see [this unfortunate story](https://github.com/xcp-ng/xcp/issues/232) of dead tape robots).
 * As a precaution, it may be a good idea to disconnect passed-through devices before applying the update.
-* If a reboot is required and you want to avoid downtime, you will probably move your VMs from host to host. One common mistake (favoured by the default values in some VM templates) is to give a VM a very low dynamic minimum RAM value. XCP-ng will reduce the VMs total RAM to that dynamic minimum during the live migration. If the limit is too low, this may lead to killed processes or even a crashed system inside the VM due to the memory pressure, thus requiring a reboot of the VM.
+* If a reboot is required and you want to keep your VMs running, you will probably move your VMs from host to host. One common mistake (favoured by the default values in some VM templates) is to give a VM a very low dynamic minimum RAM value. XCP-ng will reduce the VM's total RAM to that dynamic minimum during the live migration. If the limit is too low, this may lead to killed processes or even a crashed system inside the VM due to the memory pressure, thus requiring a reboot of the VM.
 * If among the to-be-updated packages you see `xcp-ng-pv-tools`, make sure to unmount the guest tools ISO from all running VMs before the update (it is done automatically during the update for VMs that are turned off). If the guest tools are still mounted at the time of the update, the VDI will point at a non-existing ISO image after the update. The VMs that have that VDI mounted will then fail to migrate or restart due to the missing VDI.
-*Some people systematically run `xe vm-cd-eject --multiple` to eject all virtual CDs/DVDs from the VMs before updating and/or migrating.*
-* Do not update from an interactive shell that was directly started from the XCP-ng console (`xsconsole`), nor from the host's remote console that is available through the VNC protocol in Xen Orchestra or XCP-ng Center. The update process may restart those, kill the current shell and thus kill the update process which would leave the system in an unclean state (duplicate RPMs).
+  *Some people systematically run `xe vm-cd-eject --multiple` to eject all virtual CDs/DVDs from the VMs before updating and/or migrating.*
+* Do not update from an interactive shell that was directly started from the XCP-ng console (`xsconsole`), nor from the host's remote console that is available through the VNC protocol in Xen Orchestra or XO Lite. The update process may restart those, kill the current shell and thus kill the update process which would leave the system in an unclean state (duplicate RPMs).
 
 ## How to apply the updates {#how-to-apply-the-updates}
 
@@ -175,12 +175,12 @@ If you are using a pool with at least 2 hosts and a shared storage, you can rely
 
 #### Rolling Pool Update (RPU)
 
-Also known as RPU, **this is the advised way to update your pool**. By just clicking on one button, Xen Orchestra will automatically move VMs around, apply updates and reboot the hosts, without any service interruption. The following button is available in the Pool view, on "Patches" tab:
+Also known as RPU, **this is the advised way to update your pool**. By just clicking on one button, Xen Orchestra will automatically move VMs around, apply updates and reboot the hosts, without stopping your VMs (live migration only causes a few seconds of downtime per VM). The following button is available in the Pool view, on "Patches" tab:
 
-![XO's Rolling Pull Update button.](../../assets/img/rpubutton.png)
+![XO's Rolling Pool Update button.](../../assets/img/rpubutton.png)
 
 :::info
-This powerful and fully automated mechanism requires some prerequisites: all your VMs disks must be on a one (or more) shared storage. Also, high-availability will be automatically disabled, as the XO load balancer plugin and backup jobs. Everything will be enabled back when it's done!
+This powerful and fully automated mechanism requires some prerequisites: all your VMs disks must be on one (or more) shared storage. Also, high availability will be automatically disabled, as will the XO load balancer plugin and backup jobs. Everything will be enabled back when it's done!
 :::
 
 ##### XOSTOR support
@@ -223,25 +223,25 @@ Then you can follow the instructions in the documentation to manually update the
 
 If you can't use RPU (Rolling Pool Updates), you can still use "Install pool patches" button. This will simply install updates on all hosts on your pool and restart the toolstack, **without doing any host reboot**:
 
-![XO's Install pool patches buton.](../../assets/img/updatebutton.png)
+![XO's Install pool patches button.](../../assets/img/updatebutton.png)
 
 :::info
 Restarting the toolstack won't have any impact on your running VMs. However, **most updates will require a reboot** to be applied, that you should execute during a scheduled maintenance.
 :::
 
-You can see hosts that will require a reboot via a small blue triangle:
+You can see hosts that will require a reboot via an exclamation mark icon:
 
 ![Hosts list, some with an exclamation mark icon, mouse over one of them showing the popup "Reboot to apply updates".](../../assets/img/xo5patching.png)
 
 #### Host updates
 
 :::warning
-We do NOT recommend to install updates to individual hosts. Obviously except if they are alone in their own pool. Running hosts in the same pool with different level of updates should be avoided as possible. We leave that option in case you have a specific need, but again, we discourage that usage as possible. Note that even a host alone in its pool can be updated via the "Pool update" button!
+We do NOT recommend installing updates to individual hosts. Obviously except if they are alone in their own pool. Running hosts in the same pool with different level of updates should be avoided as much as possible. We leave that option in case you have a specific need, but again, we discourage that usage as much as possible. Note that even a host alone in its pool can be updated via the "Install pool patches" button!
 :::
 
 ## When to reboot? {#when-to-reboot}
 
-There is currently no way for XCP-ng to automatically tell you if a reboot is required.
+Xen Orchestra shows which hosts require a reboot (see [Pool updates](#pool-updates)). Otherwise, there is currently no way for XCP-ng to automatically tell you if a reboot is required.
 
 The safest way is to reboot every time an update is installed (*pool master* **first**).
 

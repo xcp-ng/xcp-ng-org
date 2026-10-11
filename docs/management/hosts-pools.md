@@ -199,7 +199,7 @@ systemctl restart chronyd
 chronyc sources
 `}</Terminal>
 
-On XCP-ng 8.2, the NTP daemon is `ntpd`: edit `/etc/ntp.conf`, then `systemctl restart ntpd` and check with `ntpq -p`. In both cases, `xsconsole` also offers an NTP configuration menu under **Network and Management Interface**.
+On XCP-ng 8.2 (now EOL), the NTP daemon is `ntpd`: edit `/etc/ntp.conf`, then `systemctl restart ntpd` and check with `ntpq -p`. In both cases, `xsconsole` also offers an NTP configuration menu under **Network and Management Interface**.
 
 ## Remote host power-on {#remote-host-power-on}
 
@@ -269,7 +269,7 @@ The setting applies pool-wide to subsequent migrations; Xen Orchestra also expos
 
 The pool database (all your XAPI objects: VMs, SRs, networks…) is replicated on every member, and can also be exported and restored: see the [backup page](backup.md) for pool metadata backup and restore procedures.
 
-## Changing Dom0 screen resolution {#dom0-screen-resolution}
+## Changing dom0 screen resolution {#dom0-screen-resolution}
 
 XCP-ng doesn't touch the screen resolution by default and keeps the one used
 at boot (usually from the firmware). However, in some cases, it may be useful
@@ -291,12 +291,12 @@ For instance, `vga=gfx-1920x1080x24` configures a 1920x1080 (1080p 16:9) screen 
 This can be configured either temporarily at boot time from GRUB's boot menu (press "e"),
 or permanently, using
 
-<Terminal shell title="root@xcp-ng-host — Change Dom0 screen resolution">{`
+<Terminal shell title="root@xcp-ng-host — Change dom0 screen resolution">{`
 /opt/xensource/libexec/xen-cmdline --set-xen "vga=gfx-WxHx24"
 `}</Terminal>
 
 And can be reverted using
-<Terminal shell title="root@xcp-ng-host — Change Dom0 screen resolution">{`
+<Terminal shell title="root@xcp-ng-host — Change dom0 screen resolution">{`
 /opt/xensource/libexec/xen-cmdline --delete-xen vga
 `}</Terminal>
 

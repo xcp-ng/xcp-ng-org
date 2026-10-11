@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Xen Orchestra Web UI
 
-If you see for a central console to manage all your hosts at a single point, Xen Orchestra (XO) is the right tool for that mission.
+If you are looking for a central console to manage all your hosts at a single point, Xen Orchestra (XO) is the right tool for that mission.
 
 Xen Orchestra is the **officially supported client for XCP-ng**. It's currently developed by the same team as the XCP-ng project ([Vates](https://vates.tech)).
 
@@ -17,7 +17,7 @@ It's also far more than just a client: because it runs 24/7 in a daemon, a lot o
 * VM load balancing
 * SDN controller
 * Backup
-* Delta backup
+* Incremental backup
 * Disaster Recovery
 * Continuous Replication
 * Backup with RAM
@@ -32,7 +32,7 @@ Xen Orchestra is fully Open Source, and it comes in 2 "flavors":
 2. manual install from GitHub ([documentation](https://docs.xen-orchestra.com/installation#from-the-sources)), no QA nor stable version, community supported only
 
 :::info
-We advise to start using XOA by deploying it really easily in [few clicks on this page](https://vates.tech/deploy/). You can always decide later to build it yourself from GitHub.
+We advise starting with XOA, deployed in [a few clicks on this page](https://vates.tech/deploy/). You can always decide later to build it yourself from GitHub.
 :::
 
 ## Deploy Xen Orchestra virtual Appliance {#deploy-xen-orchestra-virtual-appliance}
@@ -70,6 +70,6 @@ You have access to all XCP-ng possibilities (and more!) from a web UI:
 
 ![Zoomed in view of the VMs list in XO.](https://xen-orchestra.com/assets/main_view.jpg)
 
-![Stats view of the Network througput in XO.](https://xen-orchestra.com/assets/stats.png)
+![Stats view of the Network throughput in XO.](https://xen-orchestra.com/assets/stats.png)
 
-Please report to [XO official documentation](https://xen-orchestra.com/docs) for more!
+Please refer to [XO official documentation](https://xen-orchestra.com/docs) for more!

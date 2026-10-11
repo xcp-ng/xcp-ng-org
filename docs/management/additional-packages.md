@@ -4,9 +4,9 @@ sidebar_position: 4
 
 # Additional packages
 
-The controller domain (dom0) is a privileged Linux VM, part of which is compatible with RHEL/CentOS packages.
+The control domain (dom0) is a privileged Linux VM, part of which is compatible with RHEL/CentOS packages.
 
-It may be useful to add more packages to it, with precaution. The XCP-ng project offers some in its repositories, and other packages can be installed from CentOS, EPEL, or even third party repositories, but at the user's own risks.
+It may be useful to add more packages to it, with precaution. The XCP-ng project offers some in its repositories, and other packages can be installed from CentOS, EPEL, or even third party repositories, but at the user's own risk.
 
 :::note
 Best effort support is provided for additional packages provided by the XCP-ng project. No support is provided for other additional packages, even if installed from our repositories, as they contain build dependencies not supposed to be installed in production.
@@ -31,7 +31,7 @@ To disable a repository, edit `/etc/yum.repos.d/name_of_repo.repo` and set `enab
 
 ### 2. Prefer additional packages from XCP-ng's own repositories
 
-We offer a number of additional packages ranging from ZFS support, [newer drivers](../../installation/hardware#alternate-drivers) or [newer kernel](../../installation/hardware#alternate-kernel), to small utilities such as `vim`, `joe`, `iperf`, `mc`, etc.).
+We offer a number of additional packages ranging from ZFS support, [newer drivers](../../installation/hardware#alternate-drivers) or [newer kernel](../../installation/hardware#alternate-kernel), to small utilities such as `vim`, `joe`, `iperf`, `mc`, etc.
 
 A regularly updated list of such utilities is available at [http://reports.xcp-ng.org/8.3/extra_installable.txt](http://reports.xcp-ng.org/8.3/extra_installable.txt) for XCP-ng 8.3.
 
@@ -51,17 +51,17 @@ Some third party repositories - including CentOS repositories and EPEL - contain
 
 ### 4. Keep your dom0 minimal
 
-The controller domain is not an all-purpose Linux system. It must remain minimal to do what it is meant to do efficiently, and also to ensure that every component installed receives relevant security fixes.
+The control domain is not an all-purpose Linux system. It must remain minimal to do what it is meant to do efficiently, and also to ensure that every component installed receives relevant security fixes.
 * Avoid bloat (do not attempt to transform it into a Linux workstation. Use a VM instead.)
 * Avoid CPU or RAM-intensive programs
 * Avoid software that pulls in many dependencies
-* Avoid any software that may interfere with the existing
+* Avoid any software that may interfere with the existing system
 * Avoid software that widens the attack surface on your hosts
 
 ### 5. Known Security Risks in additional packages
 
 :::tip
-Additional packages are not meant to be in the base installation. They are only present for convenience. Unless considered truly critical, the security updates on these packages is best effort.
+Additional packages are not meant to be in the base installation. They are only present for convenience. Unless considered truly critical, the security updates on these packages are best effort.
 :::
 
 #### wpa_supplicant
@@ -69,7 +69,7 @@ Additional packages are not meant to be in the base installation. They are only 
 The `wpa_supplicant` package is provided for homelab and testing purposes only. Wi-Fi is not supported for production environments, therefore vulnerabilities in `wpa_supplicant` are not treated as critical. If you are using Wi-Fi anyway, be aware of these known, unpatched vulnerabilities:
 
 - [CVE-2023-52160](https://www.cvedetails.com/cve/CVE-2023-52160): A configuration that does not verify the TLS certificate when using PEAP can allow authentication bypass.
-- [CVE-2019-9494](https://www.cvedetails.com/cve/CVE-2019-9494),[CVE-2019-9495](https://www.cvedetails.com/cve/CVE-2019-9495), [CVE-2022-23303](https://www.cvedetails.com/cve/CVE-2022-23303), [CVE-2022-23304](https://www.cvedetails.com/cve/CVE-2022-23304): SAE and EAP-PWD are vulnerable to side channel attacks as a result of cache access patterns leakage.
+- [CVE-2019-9494](https://www.cvedetails.com/cve/CVE-2019-9494), [CVE-2019-9495](https://www.cvedetails.com/cve/CVE-2019-9495), [CVE-2022-23303](https://www.cvedetails.com/cve/CVE-2022-23303), [CVE-2022-23304](https://www.cvedetails.com/cve/CVE-2022-23304): SAE and EAP-PWD are vulnerable to side channel attacks as a result of cache access patterns leakage.
 - [CVE-2021-27803](https://www.cvedetails.com/cve/CVE-2021-27803): Improper handling of P2P provision discovery requests may lead to security issues, including Denial of Service, and possibly arbitrary code execution.
 - [CVE-2019-16275](https://www.cvedetails.com/cve/CVE-2019-16275): An attacker can send specially crafted 802.11 frames to trigger a Denial of Service (DoS) condition.
 - [CVE-2019-11555](https://www.cvedetails.com/cve/CVE-2019-11555): Improper validation of EAP-PWD fragmentation reassembly could lead to a Denial of Service.

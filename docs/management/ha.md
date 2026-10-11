@@ -13,7 +13,7 @@ But that's not the only one. If you lose the network link but not the shared sto
 We'll see how to protect your precious VM in multiple cases, and we'll illustrate that with real examples.
 
 :::info
-You can have high availability with as few as 2 hosts, but we strongly recommended to do it with 3 at the minimum, for obvious split-brain issues you might encounter.
+You can have high availability with as few as 2 hosts, but we strongly recommend doing it with 3 at the minimum, for obvious split-brain issues you might encounter.
 :::
 
 :::warning
@@ -31,12 +31,12 @@ The pool concept allows hosts to exchange their data and status:
 
 To be sure a host is really unreachable, HA in XCP-ng uses multiple heartbeat mechanisms. As you saw in the introduction, it's not enough to check the network: what about storage? That's why there is also a specific heartbeat for shared storage between hosts in a pool. In fact, each host regularly writes some blocks in a dedicated VDI. That's the principle of the [Dead man's switch](http://en.wikipedia.org/wiki/Dead_man%27s_switch). 
 
-This concept is important, and it explains why you need to **configure high availability with a shared storage** (iSCSI, Fiber Channel or NFS) to avoid simultaneous writing in a VM disk.
+This concept is important, and it explains why you need to **configure high availability with a shared storage** (iSCSI, Fibre Channel, NFS or XOSTOR) to avoid simultaneous writing in a VM disk.
 
 Here are the possible cases and how they are dealt with:
 
 * **Lost both network and storage heartbeat**: the host is considered unreachable and the HA plan is started
-* **Lost storage but not network**: if the host can contact a majority of pool members, it can stay alive. Indeed, in this scenario, there is no harm for the data (can't write to the VM disks). If the host is alone (i.e can't contact any other host or less than the majority), it goes for a reboot procedure.
+* **Lost storage but not network**: if the host can contact a majority of pool members, it can stay alive. Indeed, in this scenario, there is no harm for the data (can't write to the VM disks). If the host is alone (i.e. can't contact any other host or less than the majority), it goes for a reboot procedure.
 * **Lost network but not storage (worst case!)**: the host considers itself as problematic and starts a reboot procedure (hard power off and restart). This fencing procedure guarantees the sanity of your data.
 
 ## Requirements {#requirements}
@@ -45,7 +45,7 @@ Enabling HA in XCP-ng requires thorough planning and validation of several prere
 
 - **Pool-Level HA only**: HA can only be configured at the pool level, not across different pools.
 - **Minimum of 3 hosts recommended**: While HA can function with just 2 XCP-ng servers in a pool, we recommend using **at least 3** to prevent issues such as a split-brain scenario. With only 2 hosts, they risk getting fenced if the connection between them is lost.
-- **Shared storage requirements**: You must have shared storage available, including at least one iSCSI, NFS, XOSTOR or Fiber Channel LUN with a minimum size of **4 GiB for the heartbeat Storage Repository (SR)**. The HA mechanism creates two volumes on this SR:
+- **Shared storage requirements**: You must have shared storage available, including at least one iSCSI, NFS, XOSTOR or Fibre Channel LUN with a minimum size of **4 GiB for the heartbeat Storage Repository (SR)**. The HA mechanism creates two volumes on this SR:
     - A **4 MB heartbeat volume** for monitoring host status.
     - A **256 MB metadata volume** to store pool master information for master failover situations.
 - **Dedicated heartbeat SR optional**: While it's not necessary to dedicate a separate SR for the heartbeat, you can choose to do so. Alternatively, you can use the same SR that hosts your VMs.
@@ -53,7 +53,7 @@ Enabling HA in XCP-ng requires thorough planning and validation of several prere
 - **Static IP addresses**: Make sure that all hosts have static IP addresses to avoid disruptions from DHCP servers potentially reassigning IPs.
 - **Dedicated bonded interface recommended**: For optimal reliability, we recommend using a dedicated bonded interface for the HA management network.
 - **VM agility for HA protection**: For a VM to be protected by HA, it must meet certain agility requirements:
-    - The VM’s virtual disks must **reside on shared storage**, such as iSCSI, NFS, or Fibre Channel LUN, which is also necessary for the storage heartbeat.
+    - The VM’s virtual disks must **reside on shared storage**, such as iSCSI, NFS, XOSTOR, or Fibre Channel LUN, which is also necessary for the storage heartbeat.
     - The VM must **support live migration**.
     - The VM should **not have a local DVD drive connection configured**.
     - The VM’s network interfaces should be on **pool-wide networks**.
@@ -106,7 +106,7 @@ xe pool-ha-compute-max-host-failures-to-tolerate
 1
 `}</Terminal>
 
-But it could be also **0**. Because, even if you lose 1 host, is there not enough RAM to boot the HA VM on the last one? If not, you can't ensure their survival. 
+But it could be also **0**. Because, even if you lose 1 host, is there enough RAM to boot the HA VMs on the remaining host? If not, you can't ensure their survival. 
 
 If you want to set the number yourself, you can do it with this command:
 
@@ -192,7 +192,7 @@ If you have enough memory to put one host in maintenance (migrating all its VMs 
 
 If you shut the VM down with `Xen Orchestra` or `xe`, the VM will be stopped normally, because XCP-ng knows that's what you want.
 
-However, if you halt the VM directly in the guest OS (via the console or in SSH), XCP-ng is NOT aware of what's going on. The system will think the VM is down and will consider that an anomaly. As a result, the VM will be **started automatically!**. This behavior prevents an operator from shutting down the system and leaving the VM unavailable for a long time.
+However, if you halt the VM directly in the guest OS (via the console or in SSH), XCP-ng is NOT aware of what's going on. The system will think the VM is down and will consider that an anomaly. As a result, the VM will be **started automatically!** This behavior prevents an operator from shutting down the system and leaving the VM unavailable for a long time.
 
 #### Configure VM shutdown behavior
 
@@ -232,11 +232,11 @@ We'll see 3 different scenarios for the host, with an example on 2 hosts, **lab1
 
 Let's stay in our example of 2 hosts in a single pool. We configured the VM **Minion 1** for HA, and this VM is running on the host **lab1**.
 
-After each test, **Minion 1** go back to **lab1** to start in the exact same conditions.
+After each test, **Minion 1** goes back to **lab1** to start in the exact same conditions.
 
 #### Pull the power plug
 
-Now, we will decide to pull the plug for my host **lab1**: this is exactly where my VM currently runs. After some time (when XAPI detects and reports that the host is lost, which usually takes 2 minutes), we can see that **lab1** is reported as **Halted**. In the same time, the VM **Minion 1** is booted on the other running host - **lab 2**:
+Now, we will decide to pull the plug for my host **lab1**: this is exactly where my VM currently runs. After some time (when XAPI detects and reports that the host is lost, which usually takes 2 minutes), we can see that **lab1** is reported as **Halted**. At the same time, the VM **Minion 1** is booted on the other running host, **lab2**.
 
 If you decide to re-plug the **lab1** host, it will be back online, without any VM on it, which is normal.
 
@@ -250,7 +250,7 @@ So? **Minion 1** lost access to its disks and after some time, **lab1** saw it c
 The host could not join the liveset because the HA daemon could not access the heartbeat disk.
 ```
 
-Immediatly after fencing, **Minion 1** will be booted on the other host.
+Immediately after fencing, **Minion 1** will be booted on the other host.
 
 :::info
 **lab1** is not physically halted, you can access it through SSH. But from the XAPI point of view, it's dead. Now, let's try to re-plug the ethernet cable... and just wait! Everything will be back to normal!
@@ -321,12 +321,12 @@ The diagram below shows how HA is managed on a pool.
 </svg>
 </Schema>
 
-As you can see, a `XHA daemon` is running on each host and two main paths are used: one for the network, another for storage.
+As you can see, an `XHA daemon` is running on each host.
 For HA to operate properly, two communication paths are used: one over the network and another reserved for storage.
 There are two paths because this is the solution chosen to distinguish a network problem between hosts and a storage issue.
 In both cases, data is constantly transmitted through these paths to ensure proper HA operation:
 - UDP packets are exchanged over the network management interface so that each server can indicate it is alive.
-- Disk data is written to and read by the hosts through a volume called `ha-statefile`. In this example, the volume resides on an NFS SR, which is shared and accessible by the entire pool. It’s a standard SR containing VHD files used by VMs.
+- Disk data is written to and read by the hosts through a volume called `ha-statefile`. In this example, the volume resides on an NFS SR, which is shared and accessible by the entire pool. It’s a standard SR containing VHD (or QCOW2) files used by VMs.
 The only difference is that `ha-statefile` is a raw volume in which data is written directly.
 
 Regarding the structure of this SR heartbeat volume:
@@ -380,7 +380,7 @@ Regarding the structure of this SR heartbeat volume:
 
 ### XOSTOR
 
-For DRBD/LINSTOR experts, and with the general architecture explanation, you can understand what happens when we replace the NFS hearbeat volume by a DRBD device.
+For DRBD/LINSTOR experts, and with the general architecture explanation, you can understand what happens when we replace the NFS heartbeat volume by a DRBD device.
 
 We must change our architecture because, basically, a DRBD volume can only be opened in one place at a time. We cannot easily write in each volume at the same time, because we would have to open or close the heartbeat volume several times per second. Or, we would have to set up a mechanism in the xha daemon so that each one writes in turn. Since this is complex to set up, we chose another approach.
 

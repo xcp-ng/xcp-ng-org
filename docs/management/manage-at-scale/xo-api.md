@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Xen Orchestra API
 
-There's two different APIs to manage XCP-ng at scale via Xen Orchestra:
+There are two different APIs to manage XCP-ng at scale via Xen Orchestra:
 * a REST API, simple to use to read content
 * a JSON-RPC over websocket API, more complex but coming with all features
 
@@ -127,8 +127,8 @@ Cookie: authenticationToken=TN2YBOMYtXB_hHtf4wTzm9p5tTuqq2i15yeuhcz2xXM
 HTTP/1.1 200 OK
 Content-Type: application/x-ndjson
 
-{"name_label":"Debian 10 Cloudinit","power_state":"Running","url":"/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237cac"}
-{"name_label":"Debian 10 Cloudinit self-service","power_state":"Halted","url":"/rest/v0/vms/5019156b-f40d-bc57-835b-4a259b177be1"}
+{"name_label":"Debian 10 Cloudinit","power_state":"Running","href":"/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237cac"}
+{"name_label":"Debian 10 Cloudinit self-service","power_state":"Halted","href":"/rest/v0/vms/5019156b-f40d-bc57-835b-4a259b177be1"}
 ```
 
 ### Properties update
@@ -198,7 +198,7 @@ curl \
   | cat
 ```
 
-> Note: the final `| cat` ensures cURL's standard output is not a TTY, which is necessary for upload stats to be dislayed.
+> Note: the final `| cat` ensures cURL's standard output is not a TTY, which is necessary for upload stats to be displayed.
 
 This request returns the UUID of the created VDI.
 
@@ -257,7 +257,7 @@ The `?sync` flag can be used to run the action synchronously without requiring t
 $ curl \
   -X POST \
   -b authenticationToken=KQxQdm2vMiv7jBIK0hgkmgxKzemd8wSJ7ugFGKFkTbs \
-  'https://xo.example.org/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237cac/actions/clean_reboot'
+  'https://xo.example.org/rest/v0/vms/770aa52a-fd42-8faf-f167-8c5c4a237cac/actions/clean_reboot?sync'
 "2b0266aa-c753-6fbc-e4dd-c79be7782052"
 ```
 

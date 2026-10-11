@@ -1,6 +1,6 @@
 # Cloud features
 
-Cloud features refer to the capability of delegating resources outside the platform administrators perimeters, like developers or customers.
+Cloud features refer to the capability of delegating resources outside the platform administrators' perimeter, like developers or customers.
 
 You have multiple choices:
 
@@ -9,7 +9,7 @@ You have multiple choices:
 
 ## Xen Orchestra {#xen-orchestra}
 
-Some interesting "cloud-like" features are available in Xen Orchestra : ACLs and Self-service.
+Some interesting "cloud-like" features are available in Xen Orchestra: ACLs and Self-service.
 
 ### Cloud-init
 
@@ -39,7 +39,7 @@ ACLs can be used to allow some XO users to only see some resources. See more abo
 The self-service feature allows users to create new VMs within a **limited amount of resources** (quotas). This is different from delegating existing resources (VMs) to them, and it leads to a lot of possibilities. [Read XO official doc on it](https://xen-orchestra.com/docs/users.html#self-service-portal) to know more.
 
 <div style={{textAlign: 'center'}}>
-![XO dashboard of the available ressources to the devs group, with vCPUs, Memory and Storage, showing their usage and total available ressources.](../../static/img/xoself.png)
+![XO dashboard of the available resources to the devs group, with vCPUs, Memory and Storage, showing their usage and total available resources.](../../static/img/xoself.png)
 </div>
 
 ## CloudStack {#cloudstack}
@@ -57,7 +57,7 @@ See the [dedicated documentation](https://docs.cloudstack.apache.org/en/4.17.2.0
 ## OpenStack {#openstack}
 
 :::warning
-Unlike Cloudstack, we do not know the level of compatibility with OpenStack. Take time to ask OpenStack community about their support for XAPI-based hosts
+Unlike CloudStack, we do not know the level of compatibility with OpenStack. Take time to ask OpenStack community about their support for XAPI-based hosts.
 :::
 
 Documentation can be found [on this page](https://wiki.openstack.org/wiki/XenServer/XenAndXenServer).

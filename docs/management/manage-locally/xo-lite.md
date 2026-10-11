@@ -4,14 +4,14 @@ sidebar_position: 2
 
 # XO Lite
 
-Xen Orchestra Lite is a lightweight version of the Xen Orchestra meant for single-pool administration, running directly from your browser without having to deploy anything, hosted on XCP-ng directly.
+Xen Orchestra Lite is a lightweight version of Xen Orchestra meant for single-pool administration, running directly from your browser without having to deploy anything, hosted on XCP-ng directly.
 You can access it directly on the default https port, by following this URL pattern: https://[XCP-NGHOSTNAME]OR[XCP-NGIP ADDRESS].
 For example:
-- If my XCP-ng machine has the DNS hostname `mycloud.local`, I will access XO-lite at https://mycloud.local.
-- If my XCP-ng machine has the IP `192.168.0.1`, I will access XO-lite at https://192.168.0.1.
+- If my XCP-ng machine has the DNS hostname `mycloud.local`, I will access XO Lite at https://mycloud.local.
+- If my XCP-ng machine has the IP `192.168.0.1`, I will access XO Lite at https://192.168.0.1.
 
 :::warning
-XO Lite is bundled by default in XCP-ng 8.3. If you want to use it on an older release, you can do so by using this URL in your browser: `https://lite.xen-orchestra.com/#/?master=<IP_of_your_XCP-ng_master>`. Don't forget to visit the page of your XCP-ng master first to accept the self-signed certificate!
+XO Lite is bundled by default in XCP-ng 8.3. On XCP-ng 8.2 (EOL), you can use it by opening this URL in your browser: `https://lite.xen-orchestra.com/#/?master=<IP_of_your_XCP-ng_master>`. Don't forget to visit the page of your XCP-ng master first to accept the self-signed certificate!
 :::
 
 :::warning
@@ -24,13 +24,13 @@ XO Lite is still a work in progress! However, it's meant to cover all basic acti
 
 ## Credentials {#credentials}
 
-XO Lite credentials are the same than the host (SSH credentials), usually `root` as user and the password chosen during the installation process.
+XO Lite credentials are the same as the host (SSH credentials), usually `root` as user and the password chosen during the installation process.
 
 ![The XO Lite login page.](../../../static/img/xolitelogin.png)
 
 ## Dashboard {#dashboard}
 
-Once logged, you can see the dashboard:
+Once logged in, you can see the dashboard:
 
 ![The XO Lite dashboard.](../../../assets/img/xolite.jpg)
 

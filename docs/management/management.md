@@ -4,7 +4,7 @@ You have multiple ways to manage your hosts and your pool: all of those are call
 
 ## Local management {#local-management}
 
-If you have one host or small pool (a cluster), you can use those following tools:
+If you have one host or a small pool (a cluster), you can use the following tools:
 
 * [`xe` CLI](manage-locally/cli) (talking to a host [XAPI](manage-locally/api.md) directly)
 * [XO Lite](manage-locally/xo-lite) (embedded lightweight web client)
@@ -13,7 +13,7 @@ If you have one host or small pool (a cluster), you can use those following tool
 
 ## Manage at scale {#manage-at-scale}
 
-As soon you start to management multiple hosts and/or pools, you might need a single/central orchestrator. That's the point of Xen Orchestra, which can be used via a web UI, a CLI or its API:
+As soon as you start managing multiple hosts and/or pools, you might need a single/central orchestrator. That's the point of Xen Orchestra, which can be used via a web UI, a CLI or its API:
 
 
 * [Xen Orchestra web UI](manage-at-scale/xo-web-ui) (web interface)
