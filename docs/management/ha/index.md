@@ -13,7 +13,9 @@ But that's not the only one. If you lose the network link but not the shared sto
 We'll see how to protect your precious VM in multiple cases, and we'll illustrate that with real examples.
 
 :::info
-You can have high availability with as few as 2 hosts, but we strongly recommended to do it with 3 at the minimum, for obvious split-brain issues you might encounter.
+You can have high availability with as few as 2 hosts, but we strongly recommend doing it with 3 at the minimum, for obvious split-brain issues you might encounter.
+
+Details for 2-host pools are in [HA with two hosts](two-hosts.md).
 :::
 
 :::warning
@@ -79,7 +81,7 @@ You can check if your pool has HA enabled or not.
 * In Xen Orchestra, for each pool where HA has been enabled, go to the **Home → Pool** view and you'll see a small "cloud" icon with a green check.
 * In the **Pool → Advanced** tab, you'll see a **High Availability** switch that shows if HA is enabled or not:
 
-![Pool's advanced tab showing the heartbeat SR and the High Availability option.](../assets/img/xo-ha-enabled-disabled.png)
+![Pool's advanced tab showing the heartbeat SR and the High Availability option.](../../assets/img/xo-ha-enabled-disabled.png)
 
 To enable HA, just toggle it on, which gives you a SR selector as Heartbeat SR. 
 
@@ -131,7 +133,7 @@ This attempt will only occur after all VMs set to the "restart" mode have been s
 
 This is pretty straightforward with Xen Orchestra. Go to the **Advanced** panel of your VM page and use the **HA** dropdown menu:
 
-![The HA dropdown has the 3 HA modes previously described.](../assets/img/xo-ha-selector.png)
+![The HA dropdown has the 3 HA modes previously described.](../../assets/img/xo-ha-selector.png)
 
 You can also do that configuration with *xe CLI*:
 
@@ -175,6 +177,43 @@ The **default timeout is 60 seconds**, but you can adjust this value using the f
 xe pool-param-set uuid=<pool UUID> other-config:default_ha_timeout=<timeout in seconds>
 `}</Terminal>
 
+### Disable HA {#disable-ha}
+
+Disable HA only when **every host of the pool is up, enabled and live**.
+
+While HA is enabled, each host keeps the HA statefile and metadata VDIs attached, and attaches them again at every boot. `xe pool-ha-disable` releases them, but only on the hosts that are up at that moment. A host that is down keeps them attached, even after it boots again. Those leftover attachments keep the heartbeat SR busy, and once the VDIs are deleted, they make the next `xe pool-ha-disable` fail.
+
+To disable HA cleanly:
+
+1. Check that every host is up, enabled and live (`enabled: true` and `host-metrics-live: true`):
+
+<Terminal shell title="root@xcp-ng-host — Check the hosts">{`
+xe host-list params=name-label,enabled,host-metrics-live
+`}</Terminal>
+
+2. If a host failed, bring it back first, with HA still enabled. See [Bring a failed host back](#bring-back), and wait until it shows as enabled and live again.
+3. On the pool master, disable HA:
+
+<Terminal shell title="root@xcp-ng-host — Disable HA">{`
+xe pool-ha-disable
+`}</Terminal>
+
+4. On each host, check that nothing is left attached. This should print nothing:
+
+<Terminal shell title="root@xcp-ng-host — Check for leftover HA VDIs">{`
+ls /etc/xensource/static-vdis/
+`}</Terminal>
+
+5. Only then, if you need to, destroy the "Statefile for HA" and "Metadata for HA" VDIs, or the heartbeat SR. `xe pool-ha-disable` leaves those two VDIs on the SR.
+
+:::warning
+- Don't disable HA while a host is down, unless you have no other choice. When it comes back, that host keeps its HA VDIs attached.
+- Avoid `xe host-emergency-ha-disable`: unlike `xe pool-ha-disable`, it leaves the HA VDIs attached.
+- Never destroy the HA VDIs while a host still has them attached (step 4 printed something). `xe vdi-destroy` does not prevent it.
+
+If one of these already happened, see [I can't disable HA or destroy the heartbeat SR](../../troubleshooting/troubleshooting-ha.md#cant-disable-ha-or-destroy-heartbeat-sr).
+:::
+
 ## Updates/maintenance {#updatesmaintenance}
 
 Before any update or host maintenance, planned reboot and so on, **ALWAYS** put your host in maintenance mode. If you don't do that, XAPI will think it's an unplanned failure, and will act accordingly.
@@ -215,7 +254,7 @@ If you want to restore the default behavior (i.e. HA-protected VMs restart autom
 :::
 
 :::note
-If you don't want a specific VM to reboot automatically, without changing the behavior for the whole pool, you can also temporarily disable HA protection for that VM. To do so, read the instructions at the [Troubleshooting HA section](../troubleshooting/troubleshooting-ha.md#disabling-ha).
+If you don't want a specific VM to reboot automatically, without changing the behavior for the whole pool, you can also temporarily disable HA protection for that VM. To do so, read the instructions at the [Troubleshooting HA section](../../troubleshooting/troubleshooting-ha.md#disabling-ha).
 
 Once you have disabled HA for the VM, shut the VM down. After you start the VM again, feel free to re-enable HA.
 :::
@@ -259,6 +298,12 @@ Immediatly after fencing, **Minion 1** will be booted on the other host.
 #### Pull the network cable
 
 Finally, the worst case: keep the storage operational, but "cut" the (management) network interface. Same procedure: unplug the cable physically and wait... Because **lab1** cannot contact any other host in the pool (in this case, **lab2**), it starts the fencing procedure. The result is exactly the same as the previous test. It's gone for the pool master, displayed as **Halted** until we re-plug the cable.
+
+#### Bring a failed host back {#bring-back}
+
+Fix the cause first (power, storage path, network cable), then let the host boot and rejoin the pool **while HA is still enabled**. It joins the liveset again and comes back as an enabled slave, even if it was the pool master before.
+
+Only then disable HA, if you need to, following [Disable HA](#disable-ha). Disabling HA while the host is still down leaves its HA VDIs attached.
 
 ## Architecture {#architecture}
 

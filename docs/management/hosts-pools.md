@@ -19,7 +19,7 @@ Why create a pool rather than managing standalone hosts?
 * **Live migration** of VMs between hosts of the pool.
 * **Shared storage**: an SR created on the pool is visible to all members, so VMs can start anywhere.
 * **Single point of management**: one connection, one inventory, pool-wide networks and settings.
-* **[High availability](ha.md)** and [VM load balancing](vm-load-balancing.md) both operate at the pool level.
+* **[High availability](ha/index.md)** and [VM load balancing](vm-load-balancing.md) both operate at the pool level.
 
 <Schema label="A resource pool · one XAPI endpoint, a replicated database, shared storage" legend={[["#8e83fe", "XAPI"], ["#56c288", "replicated pool DB"]]} maxWidth="720px">
 <svg viewBox="0 0 640 312" role="img" aria-label="Clients talk to the pool coordinator's XAPI endpoint; the coordinator and two members each hold a copy of the pool database and all hosts reach the same shared SR">
@@ -140,7 +140,7 @@ xe pool-designate-new-master host-uuid=<new-coordinator-uuid>
 
 ### Coordinator is down
 
-If the coordinator is lost and you don't use [HA](ha.md) (which handles this automatically), promote a surviving member. Run these **on that member**:
+If the coordinator is lost and you don't use [HA](ha/index.md) (which handles this automatically), promote a surviving member. Run these **on that member**:
 
 <Terminal shell title="root@xcp-ng-host — Coordinator is down">{`
 xe pool-emergency-transition-to-master
