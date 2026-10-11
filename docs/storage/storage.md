@@ -193,11 +193,38 @@ We do not provide support for issues resulting from the choice of software RAID 
 
 Shared, thin-provisioned storage. Efficient, recommended for ease of maintenance and space savings.
 
-In Xen Orchestra, go in the "New" menu entry, then Storage, and select NFS. Follow instructions from there.  
+
+
+First, you need to create the NFS share.
+
+Pay close attention to the NFS user mapping: to ensure correct access rights, refers to your NFS documentation.
+
+For a NFS VDI SR, the share must be read-write. On the server side, check the export options, particularly those related to NFS user mapping.
+
+XO uses the root user to mount the share.
+
 
 :::tip
-Your host will mount the top-level NFS share you provide initially (example: /share/xen), then create folder(s) inside of that, then mount those directly instead (example: /share/xen/515982ab-476e-17b7-0e61-e68fef8d7d31). This means your NFS server or appliance must be set to allow sub-directory mounts, or adding the SR will fail. In FreeNAS or TrueNAS, this checkbox is called "All dirs" in the NFS share properties.
+First, your host will mount the top-level NFS share you provide (for example, `/share/xen`). Then, XCP-ng will automatically create and mount a dedicated subdirectory for the SR (for example, `/share/xen/515982ab-476e-17b7-0e61-e68fef8d7d31`).
+
+Make sure your NFS server or appliance is set to allow sub-directory mounts, or adding the SR will fail. In FreeNAS or TrueNAS, this checkbox is called **All dirs** in the NFS share properties.
 :::
+
+#### In Xen Orchestra
+
+Go to the **New** menu entry, then **Storage**, and select **NFS**. Follow instructions from there.  
+
+#### In CLI
+
+Example:
+
+<Terminal shell title="root@xcp-ng-host — NFS">{`
+xe sr-create type=nfs name-label=<SR_DESCRIPTION> shared=true device-config:server=<NFS_SERVER_IP> device-config:serverpath=</PATH/TO/SHARE>
+`}</Terminal>
+
+You will get the SR UUID in response.
+
+See [`sr-create` docs](../appendix/cli_reference.md#sr-create) for more details.
 
 ### File
 
@@ -211,7 +238,7 @@ Example:
 xe sr-create host-uuid=<host UUID> type=file content-type=user name-label="Local File SR" device-config:location=/path/to/storage
 `}</Terminal>
 
-Avoid using it with mountpoints for remote storage: if for some reason the filesystem is not mounted when the SR is scanned for virtual disks, the `file` driver will believe that the SR is empty and drop all VDI metadata for that storage.
+Avoid using it with mount points for remote storage: if for some reason the filesystem is not mounted when the SR is scanned for virtual disks, the `file` driver will believe that the SR is empty and drop all VDI metadata for that storage.
 
 ### Fibre Channel
 
@@ -667,9 +694,11 @@ You might be wondering how to upload an ISO. Unlike other solutions, you need to
 
 ### Create a Shared ISO SR
 
-First, you need to create the NFS or SMB Share. There are plenty of options: from dedicated NAS hardware solutions and dedicated software solutions such as TrueNAS, to manual administration on any Linux/unix or Windows system.
+:::tip
+Be aware of NFS _user mapping_: to ensure correct access rights, read the provider's documentation.
+:::
 
-You can find some tutorials on the internet to create an NFS Server, for exemple here [https://wiki.linux-nfs.org/wiki/index.php/NFS_Howto](https://wiki.linux-nfs.org/wiki/index.php/NFS_Howto) or here [https://wiki.archlinux.org/title/NFS](https://wiki.archlinux.org/title/NFS)
+For an _ISO SR_, the share just needs _read-only_ access.
 
 Then, in Xen Orchestra go into "New/Storage" and select "ISO SR":
 
