@@ -181,6 +181,33 @@ Notes:
 * The bond takes the MAC address of its first member; you can override it with `mac=` at creation.
 * The failover reactivity is controlled by the bond's up delay (31000 ms by default, to avoid flapping): `xe pif-param-set uuid=<bond-pif-uuid> other-config:bond-updelay=<ms>` then replug the PIF.
 
+### LACP bonds {#lacp-bonds}
+
+Before creating an LACP bond on a pool, cable every host and configure its switch ports as an LACP LAG: Xen Orchestra creates the bond on all the hosts of the pool at once, and any host whose switch side isn't ready ends up without a working bond.
+
+**LACP rate.** The host sends LACP PDUs every 30 seconds by default (`slow`). To send them every second, set the rate to `fast` and reboot the host:
+
+<Terminal shell title="root@xcp-ng-host — LACP rate">{`
+xe bond-list
+xe bond-param-set uuid=<bond-uuid> properties:lacp-time=fast
+`}</Terminal>
+
+The rate only sets how often the host sends PDUs. It is not a link speed, and it doesn't need to match the switch setting: each side replies immediately to every PDU it receives.
+
+**Failover.** When a link physically goes down (unplugged cable, failed port or NIC), LACP moves the traffic to the remaining links within milliseconds, whatever the rate. The rate only matters for failures where both ends keep their link up but traffic no longer flows, for example a fiber cut between two media converters: the link is declared dead after three missed PDUs, so 3 seconds with `fast` and 90 seconds with `slow`. If your hosts connect directly to the switches, the default rate is fine. For the fastest failover, set both the host and the switch to `fast`.
+
+**Monitoring.** From the host:
+
+<Terminal shell title="root@xcp-ng-host — Check an LACP bond">{`
+ovs-appctl lacp/show      # LACP negotiation, actor and partner state of each member
+ovs-appctl bond/show      # bond mode, active members and load per hash (works for every bond mode)
+ovs-vsctl list port bond0 # bond settings as applied in Open vSwitch
+`}</Terminal>
+
+A healthy LACP bond shows `lacp_status: negotiated`, and each member is `collecting` and `distributing`.
+
+The blog post [Network bonds in XCP-ng](https://xcp-ng.org/blog/2022/09/13/network-bonds-in-xcp-ng/) walks through a complete LACP setup with example outputs.
+
 ### Remove a bond
 
 <Terminal shell title="root@xcp-ng-host — Remove a bond">{`
@@ -216,6 +243,18 @@ xe host-management-reconfigure pif-uuid=<new-pif-uuid>
 `}</Terminal>
 
 Do this from a console that won't be cut (physical, serial, or the current management NIC if it stays connected): your management sessions will reconnect to the new address.
+
+### Put it on a bond
+
+For redundancy, the management interface can sit on a [bond](#bonds) like any other network. The simplest way is to include the current management NIC in the bond: XAPI moves the management interface onto the bond automatically when it forms. With [LACP](#lacp-bonds), make sure the switch ports are configured first, otherwise the host loses its management connection, and read the [LACP install guide](../guides/lacp-install-upgrade.md) before any reinstall or upgrade.
+
+If the host is unreachable after the bond is created, connect to its physical or serial console and move the management interface to the bond by hand. The bond PIF is the one with device `bond0` and VLAN `-1`:
+
+<Terminal shell title="root@xcp-ng-host — Management on a bond">{`
+xe pif-list host-name-label=<host> device=bond0 VLAN=-1
+xe pif-reconfigure-ip uuid=<bond-pif-uuid> mode=static IP=<ip> netmask=<mask> gateway=<gw> DNS=<dns>
+xe host-management-reconfigure pif-uuid=<bond-pif-uuid>
+`}</Terminal>
 
 ### Change its IP configuration
 
