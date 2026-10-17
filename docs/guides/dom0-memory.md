@@ -12,14 +12,24 @@ In any case:
 * monitor RAM usage in the control domain
 * if issues arise (failed live migration for example), [look at the logs](../../troubleshooting/log-files) for messages related to lack of memory
 
+## Installer default {#installer-default}
+
+At installation, XCP-ng gives Dom0 **1 GiB plus 5% of the host's RAM, capped at 8 GiB** (the same formula as XenServer). The cap is reached on hosts with about 144 GiB of RAM: past that point, the default no longer grows with the host, and you need to raise it yourself on large hosts.
+
 ## Recommended values {#recommended-values}
 
-* we advise to give at least 2GiB of RAM for Dom0. Below that your XCP-ng may experience performance issues or other weird errors.
-* up to 64GiB RAM on your machine, at least 4GiB RAM for Dom0
-* a host with 128GiB or more should use 8GiB RAM for Dom0
+| Host RAM | Dom0 RAM |
+| --- | --- |
+| Any host | 2 GiB minimum. Below that, expect performance issues or odd errors |
+| Up to 64 GiB | 4 GiB |
+| 64 to 128 GiB | 8 GiB |
+| More than 128 GiB | 16 GiB |
+| 1 TiB and more | 32 GiB |
+
+Dom0 memory needs grow with the number of VMs on the host and with the I/O they generate: every virtual disk and network interface is served by a backend running in Dom0. On a host that runs many VMs, or that handles heavy backup or migration traffic (backup exports, [NBD](../networking/networking.md#nbd-backup-network) transfers, live migrations), move up one row in the table above.
 
 :::warning
-Note: If you use ZFS, assign at least 16GiB RAM to avoid swapping. ZFS (in standard configuration) uses half the Dom0 RAM as cache!
+If you use [ZFS](../storage/storage.md) (offered as-is, without official support), assign at least 16 GiB to Dom0 to avoid swapping: in its standard configuration, ZFS uses half of the Dom0 RAM as cache.
 :::
 
 ## Current RAM usage {#current-ram-usage}
