@@ -349,3 +349,13 @@ On XCP-ng 8.3:
 1. Install xapi **26.1.21-1.1 or later**. This update automatically disables the "HVM PIRQ" feature by default on all VMs in the pool.
 
 2. Reboot the VM for the changes to take effect.
+
+### Issues with the fix
+
+If some functionality in the VM used to work with "HVM PIRQ" enabled but doesn't after it got disabled, please let the support know so we could explore additional fixes.
+
+In the meantime, HVM PIRQ can be turned back on with the following command:
+
+<Terminal shell title="root@xcp-ng-host — Enable HVM PIRQ on a VM">{`
+xe vm-param-set uuid=<vm-uuid> platform:hvm-pirq=true
+`}</Terminal>
