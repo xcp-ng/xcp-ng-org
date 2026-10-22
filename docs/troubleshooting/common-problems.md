@@ -199,17 +199,37 @@ If working on a pool, you can set this for all the PIFs of the pool from a singl
 
 ### Cause
 
-The root credentials of a pool are believed to be compromised and need to be changed.
+Either the root credentials of a pool are believed to be compromised and need to be changed, or the root password was lost.
 
 ### Solution
 
-To change the password of all hosts in a pool, SSH into the coordinator host and create a file. Write the password as its contents, then run:
+#### Change a compromised password {#change-compromised-root-password}
+
+If you still know the password, you can change it on all hosts of a pool at once. SSH into the coordinator host and create a file. Write the password as its contents, then run:
 
 <Terminal shell title="root@xcp-ng-host — Solution">{`
 xe user-password-change new="$(< /path/to/password_file)"
 `}</Terminal>
 
 After the password has been set, please place a copy somewhere safe and delete the password file.
+
+#### Reset a lost password {#reset-lost-root-password}
+
+Without the password, you cannot log in over SSH, nor use the `xe` client from outside the host, as this requires the password, so the method above is not available. Instead, reset it from the boot loader. This needs access to the host's console (physical, or remote through IPMI, iDRAC, iLO...).
+
+In a pool, do this on the coordinator. A password reset on a member does not last: when XAPI starts on a member, it copies the coordinator's root password over its own.
+
+1. Reboot the host into the Grub boot menu.
+2. Select the XCP-ng boot menu entry and press <kbd>e</kbd> to edit its boot options.
+3. Locate the read-only parameter `ro` and replace it with `rw init=/sysroot/bin/sh`.
+4. Press <kbd>Ctrl</kbd> + <kbd>X</kbd> to boot into single-user mode.
+5. From the Emergency Mode prompt, run `chroot /sysroot`.
+6. Run `passwd` to set a new root password.
+7. Reboot the host with <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Del</kbd>.
+
+You can now log in with the new password, over SSH and from XAPI clients (Xen Orchestra, XO Lite, `xe`...).
+
+In a pool, the other members still accept only the old password over SSH. To bring them in line, SSH into the coordinator with the new password and set it again with [`xe user-password-change`](#change-compromised-root-password). Any pool members that are down will get it when they next start.
 
 ---
 
