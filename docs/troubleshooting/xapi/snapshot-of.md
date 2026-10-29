@@ -4,6 +4,8 @@ title: 'VDI.snapshot_of issues'
 
 A race condition during VM.revert could inadvertently corrupt the `snapshot_of` field of other VDI objects. XAPI received a fix for this issue in the version `xapi-26.1.21-1.1`, but the fallout from previously corrupted database entries can lead to issues, since some API users can then interpret the non-snapshot VDI as if it was a snapshot VDI. A [helper script](https://github.com/xcp-ng/xcp/blob/master/scripts/snapshot-fixer.py) is provided to fix xapi databases with incongruent snapshot metadata.
 
+You can check if you were affected by this issue by running the helper script with the `dry-run` option. If it does not list any VDIs with wrong metadata, then you likely were not affected.
+
 :::note
 If you are still experiencing new wrong modifications of the `VDI.snapshot_of` field after the above update and after fixing any remaining corrupted database entries, please let our support know so that we can explore additional fixes.
 :::
