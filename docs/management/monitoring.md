@@ -79,7 +79,7 @@ Whatever you install, never let a monitoring agent modify dom0's configuration o
 A reasonable minimal set of alerts for an XCP-ng infrastructure:
 
 * **SR free space**: a full SR stops VMs from writing. Watch thin-provisioned SRs closely, snapshots and [coalesce](../storage/storage.md#coalesce) can consume space quickly.
-* **Host memory**: pool capacity to absorb a host failure ([HA](ha.md) needs headroom).
+* **Host memory**: pool capacity to absorb a host failure ([HA](ha/index.md) needs headroom).
 * **dom0 CPU and memory**: an overloaded control domain slows every VM.
 * **Backup job results**: a backup that silently stopped working is only discovered when you need it.
 * **Hardware**: use your server vendor's out-of-band management (iDRAC, iLO...) for disks, PSUs and fans; XCP-ng won't see everything the BMC sees.
