@@ -213,10 +213,20 @@ Specifies additional devices to be included in the local SR.
 
 Specifies the initial management interface.
 
+Select an existing NIC by its interface name (`name`) or MAC address (`hwaddr`). For example, to use `eth0` with DHCP:
+
 ```xml
-  <admin-interface name="eth"/> | <admin-interface hwaddr="mac"/>
+<admin-interface name="eth0" proto="dhcp" />
 ```
-    
+
+To select the management NIC by MAC address instead, regardless of its current interface name:
+
+```xml
+<admin-interface hwaddr="00:11:22:33:44:55" proto="dhcp" />
+```
+
+Replace the example MAC address with the address of the physical NIC you want to use. Specify either `name` or `hwaddr`. Selecting a NIC this way does not rename it or change its MAC address. To assign names such as `eth0` and `eth1` to specific NICs, see [Assigning interface names by MAC address](#assigning-interface-names-by-mac-address).
+
 Mandatory attributes:
 * `proto`="static|dhcp|none"
 
@@ -238,6 +248,28 @@ If `protov6` is static then the following elements must be present:
       <ipv6>ipv6/prefix_length</ipv6>
       <gatewayv6>gw</gatewayv6>
 ```
+
+#### Assigning interface names by MAC address
+
+To make a particular physical NIC become `eth0` or `eth1`, use the installer boot parameter `map_netdev`. Add it to the installer's `vmlinuz` command line in your boot menu or PXE configuration. It is not an answer file XML element.
+
+For example, these parameters assign two NICs by MAC address:
+
+```text
+map_netdev=eth0:s:00:11:22:33:44:55 map_netdev=eth1:s:00:11:22:33:44:66
+```
+
+Here, `s` selects a static naming rule. The first NIC becomes `eth0` and the second becomes `eth1`; these rules are also saved on the installed host. Replace both MAC addresses with those of your NICs.
+
+You can then select the mapped `eth0` as the management interface in your answer file:
+
+```xml
+<admin-interface name="eth0" proto="dhcp" />
+```
+
+The NIC used to download a remote answer file is selected separately, before the XML is read. For example, add `network_device=00:11:22:33:44:55` to the installer command line to fetch it through that NIC.
+
+See the [interface mapping boot parameter reference](../../installation/install-xcp-ng#map-netdev) for a combined example.
 
 #### Root password
 
