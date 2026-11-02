@@ -639,6 +639,30 @@ Bring up networking on the given interface(s) to allow installer to fetch networ
 * "mac"-  the MAC address of a network interface
 * **all** (default) - all network interfaces available to the installer's kernel environment 
 
+#### map_netdev {#map-netdev}
+
+Assign an interface name to a physical NIC during installation. To map a NIC by MAC address using a static naming rule, use `map_netdev=ethN:s:MAC`. Repeat the parameter for each NIC you want to name:
+
+```text
+map_netdev=eth0:s:00:11:22:33:44:55 map_netdev=eth1:s:00:11:22:33:44:66
+```
+
+This assigns `eth0` to the first MAC address and `eth1` to the second. The `s` field selects a static naming rule, which is saved on the installed host. Replace the example MAC addresses with those of your NICs, and use a distinct interface name for each NIC.
+
+Add these parameters to the installer's `vmlinuz` command line, alongside `answerfile=` and `install` for an automated installation. For example, a UEFI PXE configuration can contain:
+
+```text
+module2 /EFI/xcp-ng/vmlinuz console=hvc0 console=tty0 map_netdev=eth0:s:00:11:22:33:44:55 map_netdev=eth1:s:00:11:22:33:44:66 network_device=eth0 answerfile=http://pxe.example.org/answerfile.xml install
+```
+
+Adapt the kernel path to your PXE layout. In this example, `network_device=eth0` selects the newly mapped `eth0` to download the answer file. The answer file separately selects the host's management interface:
+
+```xml
+<admin-interface name="eth0" proto="dhcp" />
+```
+
+If you only need to select the management NIC by MAC address, use [`<admin-interface hwaddr="…">`](../../appendix/answerfile#admin-interface) in the answer file. Interface renaming is optional; `map_netdev` belongs on the installer command line, not in the XML.
+
 ### Automation
 
 #### answerfile="scriptlocation"
