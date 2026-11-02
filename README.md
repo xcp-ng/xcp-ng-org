@@ -35,3 +35,28 @@ This command generates static content into the `build` directory and can be serv
 ### Autogeneration
 
 This documentation is automatically rebuilt after each push event on `master` branch.
+
+### Feedback follow-up
+
+The page feedback widget accepts an optional email address after a negative vote.
+It sends the address as `data.email` in the same Formbricks response as the comment,
+only when the visitor selects **Send**. An empty address is omitted; **Skip** saves
+only the vote. Email addresses are not included in Matomo events.
+
+Before deploying this widget, add an optional **Open Text** question to the
+Formbricks survey configured in `customFields.formbricks`:
+
+- Question ID: `email` (the API key, not just the displayed label).
+- Input type: `email`.
+- Required: off.
+- Label: `Want a follow-up? (optional)`.
+- Description: `We'll only use this to ask about your feedback or let you know when it's addressed.`
+
+Keep the existing question IDs and reason choices unchanged. Apply the same field
+to the XCP-ng, Xen Orchestra, and Product docs surveys before deploying their
+respective widgets. Verify that a response with an email is visible in Formbricks
+and that anonymous feedback still works.
+
+Follow-ups are manual. Use the address only to clarify the report or reply once
+the correction is live, and record the reply in a private triage note. Do not copy
+the address into public issues or pull requests.
