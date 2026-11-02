@@ -1,4 +1,4 @@
-import React, {useEffect, useId, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useLocation} from '@docusaurus/router';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './styles.module.css';
@@ -27,120 +27,71 @@ export default function PageFeedback() {
   const formbricks = siteConfig.customFields?.formbricks;
   const {pathname} = useLocation();
 
-  if (!formbricks?.environmentId) {
-    return null;
-  }
-
-  return <FeedbackForm key={pathname} formbricks={formbricks} pathname={pathname} />;
-}
-
-function FeedbackForm({formbricks, pathname}) {
   const [step, setStep] = useState('vote');
   const [reasons, setReasons] = useState([]);
   const [details, setDetails] = useState('');
-  const [email, setEmail] = useState('');
   const [sending, setSending] = useState(false);
-  const [error, setError] = useState(false);
-  const emailId = useId();
-  const active = useRef(true);
   const responseId = useRef(null);
   const votePending = useRef(null);
-  const request = useRef(null);
-  const trackedVote = useRef(null);
 
-  // Each page gets its own form and response. Abort any request when leaving it.
+  // A client-side navigation lands on a new page: reset the widget.
   useEffect(() => {
-    active.current = true;
-    return () => {
-      active.current = false;
-      request.current?.abort();
-    };
-  }, []);
+    setStep('vote');
+    setReasons([]);
+    setDetails('');
+    responseId.current = null;
+    votePending.current = null;
+  }, [pathname]);
 
-  const send = async (value, finished, includeDetails = false) => {
+  const responseData = (vote) => ({
+    vote,
+    page: pathname,
+    ...(reasons.length > 0 ? {reason: reasons} : {}),
+    ...(details.trim() ? {details: details.trim()} : {}),
+  });
+
+  const send = async (method, vote, finished) => {
     const base = `${formbricks.apiHost}/api/v1/client/${formbricks.environmentId}/responses`;
-    const id = responseId.current;
-    const controller = new AbortController();
-    request.current = controller;
-    const timeout = setTimeout(() => controller.abort(), 15000);
+    const url = method === 'PUT' ? `${base}/${responseId.current}` : base;
     try {
-      const res = await fetch(id ? `${base}/${id}` : base, {
-        method: id ? 'PUT' : 'POST',
-        signal: controller.signal,
+      const res = await fetch(url, {
+        method,
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-          ...(!id
+          ...(method === 'POST'
             ? {surveyId: formbricks.surveyId, meta: {url: window.location.href}}
             : {}),
           finished,
-          data: {
-            vote: value,
-            page: pathname,
-            ...(includeDetails ? {
-              ...(reasons.length > 0 ? {reason: reasons} : {}),
-              ...(details.trim() ? {details: details.trim()} : {}),
-              ...(email.trim() ? {email: email.trim()} : {}),
-            } : {}),
-          },
+          data: responseData(vote),
         }),
       });
-      if (!res.ok) return false;
-      if (!id) {
+      if (method === 'POST' && res.ok) {
         const json = await res.json();
-        if (!json?.data?.id) return false;
-        responseId.current = json.data.id;
+        responseId.current = json?.data?.id ?? null;
       }
-      return true;
     } catch {
-      return false;
-    } finally {
-      clearTimeout(timeout);
+      // Feedback must never break the docs. Votes lost to network
+      // errors or blockers are acceptable.
     }
   };
 
-  const vote = async (value) => {
-    setError(false);
-    if (trackedVote.current !== value) {
-      trackFeedbackEvent(value === 'Yes' ? 'up' : 'down', pathname);
-      trackedVote.current = value;
-    }
-    // Save the vote even if the visitor leaves without completing the follow-up.
-    votePending.current = send(value, value === 'Yes');
-    if (value === 'No') {
-      setStep('why');
-      return;
-    }
-    setSending(true);
-    const saved = await votePending.current;
-    if (!active.current) return;
-    setSending(false);
-    if (saved) setStep('done');
-    else setError(true);
+  const vote = (value) => {
+    setStep(value === 'Yes' ? 'done' : 'why');
+    trackFeedbackEvent(value === 'Yes' ? 'up' : 'down', pathname);
+    // Record the vote right away so it is kept even if the visitor
+    // leaves without answering the follow-up.
+    votePending.current = send('POST', value, value === 'Yes');
   };
 
-  const finish = async (includeDetails) => {
+  const submitWhy = async () => {
     setSending(true);
-    setError(false);
-    // Wait for the vote so that follow-up details update the same response.
+    reasons.forEach((reason) => trackFeedbackEvent(`reason:${reason}`, pathname));
+    // Wait for the initial vote POST so we update its response instead
+    // of creating a duplicate when the visitor answers quickly.
     await votePending.current;
-    if (!active.current) return;
-    const saved = await send('No', true, includeDetails);
-    if (!active.current) return;
+    await send(responseId.current ? 'PUT' : 'POST', 'No', true);
     setSending(false);
-    if (saved) {
-      if (includeDetails) {
-        reasons.forEach((reason) => trackFeedbackEvent(`reason:${reason}`, pathname));
-      }
-      setEmail('');
-      setStep('done');
-    } else {
-      setError(true);
-    }
-  };
-
-  const submitWhy = (event) => {
-    event.preventDefault();
-    void finish(true);
+    setStep('done');
   };
 
   const toggleReason = (reason) =>
@@ -150,6 +101,10 @@ function FeedbackForm({formbricks, pathname}) {
         : [...prev, reason],
     );
 
+  if (!formbricks?.environmentId) {
+    return null;
+  }
+
   return (
     <div className={styles.feedback}>
       {step === 'vote' && (
@@ -158,14 +113,12 @@ function FeedbackForm({formbricks, pathname}) {
           <button
             type="button"
             className={styles.voteButton}
-            disabled={sending}
             onClick={() => vote('Yes')}>
             <ThumbIcon /> Yes
           </button>
           <button
             type="button"
             className={styles.voteButton}
-            disabled={sending}
             onClick={() => vote('No')}>
             <ThumbIcon down /> No
           </button>
@@ -173,7 +126,7 @@ function FeedbackForm({formbricks, pathname}) {
       )}
 
       {step === 'why' && (
-        <form className={styles.why} onSubmit={submitWhy}>
+        <div className={styles.why}>
           <span className={styles.question}>
             Sorry about that. What was the problem?
           </span>
@@ -184,7 +137,6 @@ function FeedbackForm({formbricks, pathname}) {
                 type="button"
                 className={styles.reason}
                 aria-pressed={reasons.includes(reason)}
-                disabled={sending}
                 onClick={() => toggleReason(reason)}>
                 {reason}
               </button>
@@ -192,55 +144,28 @@ function FeedbackForm({formbricks, pathname}) {
           </div>
           <textarea
             className={styles.details}
-            disabled={sending}
             aria-label="Additional details"
             rows={3}
             placeholder="Tell us what's wrong or missing... (optional)"
             value={details}
             onChange={(e) => setDetails(e.target.value)}
           />
-          <div className={styles.followUp}>
-            <label htmlFor={emailId}>Want a follow-up? (optional)</label>
-            <input
-              id={emailId}
-              className={styles.email}
-              type="email"
-              name="email"
-              autoComplete="email"
-              aria-describedby={`${emailId}-help`}
-              placeholder="Email address"
-              maxLength={254}
-              value={email}
-              disabled={sending}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <small id={`${emailId}-help`}>
-              We&apos;ll only use this to ask about your feedback or let you know when
-              it&apos;s addressed.
-            </small>
-          </div>
           <div className={styles.actions}>
             <button
-              type="submit"
+              type="button"
               className={styles.submit}
-              disabled={sending}>
-              {sending ? 'Sending...' : 'Send'}
+              disabled={sending}
+              onClick={submitWhy}>
+              Send
             </button>
             <button
               type="button"
               className={styles.skip}
-              disabled={sending}
-              onClick={() => void finish(false)}>
+              onClick={() => setStep('done')}>
               Skip
             </button>
           </div>
-        </form>
-      )}
-
-      {error && (
-        <p className={styles.error} role="alert">
-          We couldn&apos;t send your feedback. Please try again.
-        </p>
+        </div>
       )}
 
       {step === 'done' && (
