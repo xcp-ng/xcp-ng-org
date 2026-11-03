@@ -52,7 +52,7 @@ Don't use an installation ISO that is older than the updates already installed o
 
 The upgrade keeps the XAPI database of your host. If that database was written by a more recent XAPI than the one installed by the ISO, the older XAPI may not be able to load it, and may not start after the upgrade. See [XAPI doesn't start after an upgrade with an older ISO](../../troubleshooting/after-upgrade#xapi-doesnt-start-after-an-upgrade-with-an-older-iso).
 
-With the standard installer, you can check this before the upgrade: compare the `xapi-core` version on your host (`rpm -q xapi-core`) with the `xapi-core-*.rpm` file in the `Packages/` directory of the ISO. If the version on your host is more recent, don't use this ISO. The network installer doesn't contain this directory, so this check isn't possible with it.
+With the standard installer, you can check this before the upgrade: compare the `xapi-core` version on your host (`rpm -q xapi-core`) with the `xapi-core-*.rpm` file in the `Packages/` directory of the ISO. If the version on your host is more recent, don't use this ISO. The network installer doesn't contain this directory: it downloads the packages during the installation. For XCP-ng 8.3, check the `xapi-core-*.rpm` file in [the `Packages/` directory of the network installation repository](https://updates.xcp-ng.org/netinstall/8.3/Packages/) instead.
 :::
 
 Steps:

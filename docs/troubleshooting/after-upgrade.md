@@ -54,7 +54,13 @@ reboot
 
 The updated XAPI knows the fields in the database, and starts normally. See [the updates section](../../management/updates) for more details about updates.
 
-If you can't update the host, you can restore the system as it was before the upgrade: boot the installation ISO, and choose to restore the backup of your previous installation. The ISO upgrade saves this backup on the backup partition of the host.
+If you can't update the host, you can restore the system as it was before the upgrade. The ISO upgrade saves a backup of the previous system on the backup partition of the host:
+
+1. Boot the installation ISO in the same firmware mode as the installed system: UEFI or BIOS. Otherwise, the installer doesn't find the backup.
+2. Choose **Restore XCP-ng 8.3 from backup to …**. The version and the disk in this entry depend on your host.
+3. When the restore is complete, remove the installation media and reboot.
+
+The restored system has the XAPI version, VMs and configuration it had before the upgrade.
 
 To avoid this issue, read the warning about the ISO version in [the upgrade procedure](../../installation/upgrade#upgrade-via-installation-iso-recommended) before an upgrade.
 
