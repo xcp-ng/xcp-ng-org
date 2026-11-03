@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # SR and VDI management
 
-Everyday operations on storage repositories (SRs) and virtual disks (VDIs): renaming, detaching, reattaching, growing, moving disks between SRs and reclaiming space.
+Everyday operations on storage repositories (SRs) and virtual disks (VDIs): renaming, detaching, reattaching, growing, moving and deleting disks, and reclaiming space.
 
 :::tip
 All of these operations are available from [Xen Orchestra](../management/manage-at-scale/xo-web-ui.md) with a few clicks (SR view and VM → Disks tab). The `xe` commands are given for scripting, troubleshooting, or when you work directly on a host.
@@ -210,6 +210,39 @@ xe vdi-import uuid=<destination-vdi-uuid> filename=disk.vhd format=vhd
 `}</Terminal>
 
 (For `vdi-import`, create the destination VDI first, at least as big as the source.)
+
+### Delete a disk
+
+From Xen Orchestra: VM → **Disks** → delete the disk. With `xe`:
+
+<Terminal shell title="root@xcp-ng-host — Delete a disk">{`
+xe vbd-unplug uuid=<vbd-uuid>            # if attached to a running VM
+xe vdi-destroy uuid=<vdi-uuid>
+`}</Terminal>
+
+:::warning
+Always delete disks from Xen Orchestra or with `xe vdi-destroy`. **Never** remove a disk's data directly on the storage: XCP-ng keeps the disk's metadata, and the next SR scan only flags the disk as [missing](#missing-disks) instead of removing it.
+:::
+
+### Missing disks {#missing-disks}
+
+When an SR scan no longer finds a disk's data on the storage, the disk is not removed: it is flagged `missing`, and its metadata (name, description, snapshot links, VM attachment) is kept. If the data comes back, for example when the file is restored, the next scan clears the flag and the disk is usable again.
+
+A VM using a missing disk fails to start, with an `SR_BACKEND_FAILURE_46` error ("The VDI is not available").
+
+To list the missing disks of an SR:
+
+<Terminal shell title="root@xcp-ng-host — List missing disks">{`
+xe vdi-list sr-uuid=<sr-uuid> missing=true params=uuid,name-label
+`}</Terminal>
+
+If the data is really gone, remove the disk's metadata:
+
+<Terminal shell title="root@xcp-ng-host — Remove a missing disk">{`
+xe vdi-destroy uuid=<vdi-uuid>
+`}</Terminal>
+
+`xe vdi-forget` also removes the disk, but leaves its VBDs (the links to VMs).
 
 ## Reclaim space {#reclaim-space}
 
