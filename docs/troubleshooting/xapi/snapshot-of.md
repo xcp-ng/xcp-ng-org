@@ -2,9 +2,13 @@
 title: 'VDI.snapshot_of issues'
 ---
 
-Corrupted VDIs or interrupted operations can inadvertently corrupt the `snapshot_of` field of other VDI objects. This can lead to issues, since some API users can then interpret the non-snapshot VDI as if it was a snapshot VDI.
+A race condition during VM.revert could inadvertently corrupt the `snapshot_of` field of other VDI objects. XAPI received a fix for this issue in the version `xapi-26.1.21-1.1`, but the fallout from previously corrupted database entries can lead to issues, since some API users can then interpret the non-snapshot VDI as if it was a snapshot VDI. A [helper script](https://github.com/xcp-ng/xcp/blob/master/scripts/snapshot-fixer.py) is provided to fix xapi databases with incongruent snapshot metadata.
 
-XAPI has received a fix for this long-standing issue, and so have LVM-based SRs (in `sm-3.2.12-25.1`), so keep your hosts up to date. However, corrupted `snapshot_of` values are still reported on NFS SRs ([xcp-ng/xcp#844](https://github.com/xcp-ng/xcp/issues/844)). A [helper script](https://github.com/xcp-ng/xcp/blob/master/scripts/snapshot-fixer.py) is provided to fix xapi databases with incongruent snapshot metadata.
+You can check if you were affected by this issue by running the helper script with the `dry-run` option. If it does not list any VDIs with wrong metadata, then you likely were not affected.
+
+:::note
+If you are still experiencing new wrong modifications of the `VDI.snapshot_of` field after the above update and after fixing any remaining corrupted database entries, please let our support know so that we can explore additional fixes.
+:::
 
 :::note
 The script requires XCP-ng 8.3 or later. It refuses to run on earlier versions because they do not produce correct results. There is no equivalent for XCP-ng 8.2, which has reached end of life. Upgrade to a supported release to use this script.
