@@ -261,12 +261,13 @@ Now you can create the SR on top of it:
 xe sr-create host-uuid=<HOST_UUID> type=zfs content-type=user name-label=LocalZFS device-config:location=/mnt/zfs/zfssr
 `}</Terminal>
 
-:::tip
-Please report any problems (performance or otherwise) you might encounter with ZFS. [Our forum](https://xcp-ng.org/forum) is here for that!
-:::
-
 :::warning
 Note: If you use ZFS, assign at least 16GB RAM to avoid swapping. ZFS (in standard configuration) uses half the Dom0 RAM as cache!
+:::
+
+:::tip
+* Please report any problems (performance or otherwise) you might encounter with ZFS. [Our forum](https://xcp-ng.org/forum) is here for that!
+* If a ZFS SR shows as unavailable after a host reboot, even though the pool itself is healthy, see [ZFS SR not imported after reboot](../troubleshooting/storage/zfs-sr-not-imported-on-boot.md).
 :::
 
 #### ZFS Knowledge & status
