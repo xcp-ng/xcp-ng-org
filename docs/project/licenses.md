@@ -8,6 +8,6 @@ A file compiling the texts of the licenses is available at [https://github.com/x
 
 It is also present in the installer ISO image.
 
-All features are available for free. Pro support is available from [https://vates.tech/](https://vates.tech/)
+All features are available for free. Professional support is available with a subscription: see [Support & Subscription](../support-and-subscription.md).
 
 XCP-ng's documentation itself is published under the [Creative Commons BY SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/) license.

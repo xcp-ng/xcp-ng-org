@@ -1,6 +1,6 @@
 # Troubleshooting
 
-If you have a problem or a question on XCP-ng, there are two options: community support (mostly on [XCP-ng Forum](https://xcp-ng.org/forum)) or [pro support](https://xcp-ng.com).
+If you have a problem or a question on XCP-ng, there are two options: community support (mostly on [XCP-ng Forum](https://xcp-ng.org/forum)) or [pro support](../support-and-subscription.md).
 
 ## The 3-Step-Guide {#the-3-step-guide}
 Here is our handy **3-Step-Guide**:
@@ -17,7 +17,7 @@ Here is our handy **3-Step-Guide**:
 3. Share your solution on the [forum](https://xcp-ng.org/forum), others can benefit from your experience.
 
 :::tip
-**Pro Support**: if you have subscribed to [Pro support](https://xcp-ng.com/), well, don't hesitate to use it! We are also here to assist you BEFORE you have any problem
+**Pro Support**: if you have a [Vates VMS subscription](../support-and-subscription.md), well, don't hesitate to use it! We are also here to assist you BEFORE you have any problem
 :::
 
 import DocCardList from '@theme/DocCardList';
