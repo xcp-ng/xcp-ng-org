@@ -103,6 +103,8 @@ Since XCP-ng 7.6, we use [GPG](https://gnupg.org/) to sign:
 * Every RPM package. They are automatically checked by `rpm` on an installed XCP-ng.
 * Repository metadata. They are automatically checked by `yum` on an installed XCP-ng.
 
+XCP-ng 9 signs its RPM packages and repository metadata with a separate key, the XCP-ng 9 Key: see [Import the XCP-ng 9 public key](#xcp-ng-9-key).
+
 #### Import the public key
 
 Before you can use our public key to verify the authenticity of a downloaded file, you need to import it.
@@ -138,13 +140,40 @@ sub   rsa2048 2018-10-03 [E]
 
 Note: if you fear that someone altered this document as part of a sophisticated attack,
 you can also check that the fingerprint stored in our GitHub repository is the same:
-[https://github.com/xcp-ng/xcp-ng-release/blob/master/RPM-GPG-KEY-xcpng-info.txt](https://github.com/xcp-ng/xcp-ng-release/blob/master/RPM-GPG-KEY-xcpng-info.txt)
+[https://github.com/xcp-ng/xcp-ng-release/blob/8.3/RPM-GPG-KEY-xcpng-info.txt](https://github.com/xcp-ng/xcp-ng-release/blob/8.3/RPM-GPG-KEY-xcpng-info.txt)
 (and in case you think someone might have altered the above link, check that the repository does actually belong to the XCP-ng project).
 
 Now import the key with `gpg`:
 
 <Terminal shell title="Import the public key">{`
 gpg --import RPM-GPG-KEY-xcpng
+`}</Terminal>
+
+#### Import the XCP-ng 9 public key {#xcp-ng-9-key}
+
+The steps are the same with the XCP-ng 9 Key. Download it:
+
+<Terminal shell title="Import the XCP-ng 9 public key">{`
+wget https://xcp-ng.org/RPM-GPG-KEY-xcpng9
+`}</Terminal>
+
+Check its fingerprint:
+
+<Terminal shell title="Import the XCP-ng 9 public key">{`
+gpg --import --import-options show-only RPM-GPG-KEY-xcpng9
+`}</Terminal>
+
+with expected output:
+```
+pub   rsa4096 2026-11-06 [SC]
+      23ACFB8E249DA55F1B9F1465E5F613B9B50196FC
+uid                      XCP-ng 9 Key (XCP-ng 9 Official Signing Key) <security@xcp-ng.org>
+```
+
+Then import the key:
+
+<Terminal shell title="Import the XCP-ng 9 public key">{`
+gpg --import RPM-GPG-KEY-xcpng9
 `}</Terminal>
 
 #### Check a downloaded file
@@ -160,6 +189,8 @@ gpg --verify somefile.asc somefile
 `}</Terminal>
 
 Only the date should change depending on the date of signature. **`Good signature`** is what tells us that the verification is successful. The warning is also expected because the signing key itself is not signed and we've not setup a list of trusted sources on the computer, so there's no way for gpg to tell if the key is to be trusted or not.
+
+For a file signed with the XCP-ng 9 Key, gpg names that key and its fingerprint instead.
 
 #### Check an ISO image
 In this example we will first check the authenticity of the SHA256SUMS file, then use it to check the integrity of the ISO image. We'll download `xcp-ng-8.3.0-20260806.iso`, `SHA256SUMS` and `SHA256SUMS.asc` from [https://updates.xcp-ng.org/isos/8.3/](https://updates.xcp-ng.org/isos/8.3/) but you can transpose those steps to a newer ISO.
