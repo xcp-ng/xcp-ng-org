@@ -19,13 +19,13 @@ HA always uses 2 heartbeat paths:
 * **Network**: hosts tell each other they are alive (`xhad` over the management network)
 * **Storage**: each host writes into the shared `ha-statefile` on the heartbeat SR
 
-On 3+ hosts, a server that loses storage but can still talk to a majority of the pool can often stay up. On 2 hosts, "majority" does not help in the same way: you only have 1 peer. Losing access to the HA statefile on one side means that host fences.
+Whatever the pool size, a host that loses access to the HA statefile fences as soon as another host it can still reach on the network has access to it. A majority of hosts only matters on a network partition, and with 2 hosts there is no majority: the lowest host UUID breaks the tie.
 
 | | 2 hosts | 3+ hosts |
 |---|---------|----------|
-| Quorum | HA statefile on external storage is the tie-breaker | Peer majority can keep a host alive if storage is lost but network remains |
+| Quorum | HA statefile on external storage is the tie-breaker | Peer majority decides on a network partition; the HA statefile decides on storage loss |
 | How many hosts you can lose | 1, if the survivor has enough free RAM to restart the protected VMs. After that, no more HA capacity | More than 1, if the remaining hosts have enough free RAM to restart the protected VMs (see [Maximum host failure number](index.md#maximum-host-failure-number)) |
-| HA statefile access lost on 1 host | That host self-fences | May stay up if it still has majority contact |
+| HA statefile access lost on 1 host | That host self-fences | That host self-fences |
 | HA statefile access lost on all hosts | No safe failover; VMs stay where they are | Still no clean takeover for everyone |
 | Management network cut | Equal partition: the host with the lowest UUID survives, the other fences | Majority side can survive; minority often fences |
 | Pool master dies | Survivor becomes master, then restarts protected VMs | Same, with more candidates |
@@ -52,19 +52,23 @@ If the failed host was the pool master, it comes back as a slave of the new mast
 
 Neither host can use the statefile (they may still see each other on the network). No host fences and no VM moves. If the VM disks are on the same SR as the statefile, the VMs are frozen until the storage is reachable again.
 
+This state is fragile: while it lasts, any further failure (a host crash or a network cut between the hosts) fences both hosts. Restore storage access as soon as possible, or disable HA.
+
 ### Management network lost on 1 host {#network-lost}
 
 [Pull the network cable](index.md#pull-the-network-cable) between the two hosts: both keep access to the HA statefile, so you get an equal-sized partition. The side with the **lowest host UUID** survives; the other self-fences. Which side of the link you break does not change that: only the UUID order decides who stays up. The survivor can restart protected VMs that lived on the fenced host.
 
 ### `xapi` dies, `xhad` stays up {#xapi-crash}
 
-`xhad` tries to restart the toolstack. If that works: no fence, no failover, VMs stay put. If restart keeps failing, the host may eventually self-fence.
+If `xapi` crashes, systemd restarts it: no fence, no failover, VMs stay put. If `xhad`'s own health check of `xapi` fails, it restarts `xapi` once; if that fails, or if `xapi` fails again within 24 hours, the host fences.
 
 A recovered `xapi` crash alone is not an HA failover. Do not restart toolstacks while HA is enabled. See [Updates/maintenance](index.md#updatesmaintenance).
 
 ### `xhad` dies {#xhad-dies}
 
-From the other host, heartbeats and statefile updates stop. It looks like the peer disappeared: liveset update, possible new master, VM restart. The host whose `xhad` died is fenced by the watchdog: it reboots.
+From the other host, heartbeats and statefile updates stop. It looks like the peer disappeared: liveset update, possible new master, VM restart. If `xhad` crashes or is killed with `SIGKILL`, the watchdog fences the host: it reboots.
+
+Never stop `xhad` by hand: a plain `kill` (`SIGTERM`) shuts it down cleanly without rebooting the host, so the other host sees it as gone and may restart its protected VMs while they are still running there.
 
 ## Bring a failed host back {#bring-back}
 
