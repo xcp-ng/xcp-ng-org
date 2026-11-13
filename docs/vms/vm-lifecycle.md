@@ -98,7 +98,7 @@ xe vm-param-remove uuid=<vm-uuid> param-name=blocked-operations param-key=destro
 
 ## VM groups with a start order (vApps) {#vapps}
 
-XAPI can group VMs into an *appliance* (also called vApp): a set of VMs started together, in a defined order, with delays between them. Typical use: bring a database up before the application servers. The group is also what [HA](../management/ha.md) and DR tooling can recover as a unit.
+XAPI can group VMs into an *appliance* (also called vApp): a set of VMs started together, in a defined order, with delays between them. Typical use: bring a database up before the application servers. The group is also what [HA](../management/ha/index.md) and DR tooling can recover as a unit.
 
 <Terminal shell title="root@xcp-ng-host — VM groups with a start order…">{`
 xe appliance-create name-label="my-app"
