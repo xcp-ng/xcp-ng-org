@@ -20,7 +20,7 @@ Coming from VMware, Hyper-V, KVM or another hypervisor? There's a dedicated page
 
 ### XVA
 
-From Xen Orchestra: **New** → **Import**, pick the file. With `xe`:
+From Xen Orchestra: **Import** → **VM**, pick the file. With `xe`:
 
 <Terminal shell title="root@xcp-ng-host — XVA">{`
 xe vm-import filename=my-vm.xva sr-uuid=<destination-sr-uuid>
@@ -30,11 +30,11 @@ Add `preserve=true` to keep the original MAC addresses (beware of duplicates if 
 
 ### OVA
 
-From Xen Orchestra: **New** → **Import** accepts `.ova` files directly, shows the parsed hardware description and lets you adjust it before creating the VM. After import, install the [guest tools](vms.md#guest-tools) and check boot mode, NICs and disks.
+From Xen Orchestra: **Import** → **VM** accepts `.ova` files directly, shows the parsed hardware description and lets you adjust it before creating the VM. After import, install the [guest tools](vms.md#guest-tools) and check boot mode, NICs and disks.
 
 ### Single disks
 
-From Xen Orchestra: **New** → **Import** → **Disk** imports a QCOW2, VHD, VMDK or raw file into an SR of your choice; then attach it to a VM ([how](../storage/manage-srs.md#create-and-attach-a-new-disk-to-a-vm)). With `xe`, see [vdi-import](../storage/manage-srs.md#export--import-a-single-disk).
+From Xen Orchestra: **Import** → **Disk** imports a QCOW2, VHD, VMDK or raw file into an SR of your choice; then attach it to a VM ([how](../storage/manage-srs.md#create-and-attach-a-new-disk-to-a-vm)). With `xe`, see [vdi-import](../storage/manage-srs.md#export--import-a-single-disk).
 
 ## Export {#export}
 
