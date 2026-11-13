@@ -37,5 +37,5 @@ xe vm-list
 4. Enable autostart for each virtual machine with the UUID found:
 `# xe vm-param-set uuid=<VM_UUID> other-config:auto_poweron=true`
 
-5. Checking the output
-`# xe vm-param-list uuid=<VM_UUID> | grep other-config`
+5. Checking the output for each virtual machine (this is much cleaner than grepping the complete param list)
+`# xe vm-param-get uuid=<VM_UUID> param-name=other-config`
