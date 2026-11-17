@@ -488,7 +488,7 @@ Some older versions of Ubuntu, now EOL, may not have this package available in t
 
 *Feel free to add other distros to the above list if they provide the tools in their repositories.*
 
-#### Install from the guest tools ISO
+#### Depricated: Install from the guest tools ISO
 
 ##### "Supported" Linux distributions
 
@@ -504,6 +504,15 @@ umount /dev/cdrom
 
 * No need to reboot the VM even if the script asks to. That's an old message from back when it was needed to install a kernel module in addition to the management agent. We'll get rid of it at some point.
 * Eject the guest tools ISO
+
+##### New way (since 8.3 LTS):
+Since ISOs are not longer supplied with XCP-ng, guest tools for Debian-based Distributions (.deb) and .rpm-based ones can be installed as follows:
+Go to https://github.com/xenserver/xe-guest-utilities/releases and find the last (or desired) version and copy the weblink to your selected package.
+
+<Terminal shell title="'Example-Download form XenServer">{`
+wget https://github.com/xenserver/xe-guest-utilities/releases/download/v10.0.0/xe-guest-utilities_10.0.0-1_amd64.deb
+dpgk -i xe-guest-utilities_10.0.0-1_amd64.deb
+`}</Terminal>
 
 ##### Derived Linux distributions
 
