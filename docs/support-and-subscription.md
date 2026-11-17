@@ -9,7 +9,7 @@ XCP-ng is fully open source: **all its features are available for free**, with o
 
 ## Community support
 
-Community support happens on the channels listed in [Community](project/about.md#community), with no guarantee of a solution or a response time. To get the best answers, follow the [3-Step-Guide](troubleshooting/troubleshooting.md#the-3-step-guide).
+Community support happens on the channels listed in [Community](project/about.md#community), with no guarantee of a solution or a response time. To get useful answers, describe exactly what you did and what happened, and include your XCP-ng version, hardware, relevant logs and error messages.
 
 ## Professional support
 
