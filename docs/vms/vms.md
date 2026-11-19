@@ -488,7 +488,7 @@ Some older versions of Ubuntu, now EOL, may not have this package available in t
 
 *Feel free to add other distros to the above list if they provide the tools in their repositories.*
 
-#### Depricated: Install from the guest tools ISO
+#### Deprecated: Install from the guest tools ISO
 
 ##### "Supported" Linux distributions
 
