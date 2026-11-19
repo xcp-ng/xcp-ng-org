@@ -506,7 +506,7 @@ umount /dev/cdrom
 * Eject the guest tools ISO
 
 ##### New way (since 8.3 LTS):
-Since ISOs are not longer supplied with XCP-ng, guest tools for Debian-based Distributions (.deb) and .rpm-based ones can be installed as follows:
+Since ISOs are no longer supplied with XCP-ng, guest tools for Debian-based Distributions (.deb) and .rpm-based ones can be installed as follows:
 Go to https://github.com/xenserver/xe-guest-utilities/releases and find the last (or desired) version and copy the weblink to your selected package.
 
 <Terminal shell title="'Example-Download form XenServer">{`
