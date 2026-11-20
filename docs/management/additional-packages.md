@@ -82,7 +82,7 @@ The `wpa_supplicant` package is provided for homelab and testing purposes only. 
 
 ### 6. Ask before
 
-If you have [pro support](https://xcp-ng.com), ask there. As part of the support, additional supported packages - such as new drivers - may be provided. Else ask the community on the [forum](https://xcp-ng.org/forum/).
+If you have [pro support](../support-and-subscription.md), ask there. As part of the support, additional supported packages - such as new drivers - may be provided. Else ask the community on the [forum](https://xcp-ng.org/forum/).
 
 ## How to install {#how-to-install}
 
