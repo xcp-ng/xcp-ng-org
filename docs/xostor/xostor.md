@@ -334,6 +334,30 @@ Changing the replication factor after creating XOSTOR is not possible, as it can
 The maximum number of machines per pool is 7.
 :::
 
+## Limitations {#limitations}
+
+### Changed Block Tracking (CBT) {#changed-block-tracking-cbt}
+
+:::warning
+Changed Block Tracking (CBT) is not recommended on XOSTOR today. Keep CBT disabled on VDIs stored on a LINSTOR SR.
+:::
+
+CBT is the feature that delta backups and replication can use to find the blocks that changed between two snapshots without reading the whole disk. With XOSTOR, known issues include:
+
+- LVM operations (`lvchange`) can fail on volumes that have CBT enabled, which blocks operations on the VDI.
+- Migrating VDIs that have CBT enabled to or from a LINSTOR SR can fail.
+
+These issues come from the current storage stack (`SMAPIv1`). They won't be fixed until XOSTOR moves to `SMAPIv3` (see [SMAPIv3: the future](../storage/storage.md#smapiv3-the-future)).
+
+What this means in practice:
+
+- In Xen Orchestra backup and replication jobs that include VMs whose disks are on XOSTOR, don't enable **Purge snapshot data when using CBT** (in the job's Advanced settings): this option enables CBT on all the disks of the VM. **Use NBD to transfer disk if available** is fine on its own: Xen Orchestra only uses CBT when it is already enabled on the disk, and transfers without it otherwise.
+- If CBT is already enabled on a VDI stored on XOSTOR, disable it with [`xe vdi-disable-cbt`](../appendix/cli_reference.md#vdi-disable-cbt):
+
+<Terminal shell title="root@xcp-ng-host — Changed Block Tracking (CBT)">{`
+xe vdi-disable-cbt uuid=<VDI_UUID>
+`}</Terminal>
+
 ## Update {#update}
 
 See this documentation: [RPU](/management/updates/#rolling-pool-update-rpu).
