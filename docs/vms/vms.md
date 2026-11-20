@@ -90,6 +90,10 @@ What have we done? We exposed a UNIX domain socket (which allows us to connect t
 
 4. Fine, now open a new shell, and on your local machine create an SSH tunnel with a free TCP port:
 
+:::warning
+Since OpenSSH 9.9p1 on XCP-ng 8.3, port forwarding is restricted to the host itself. Keep `localhost` (or `127.0.0.1`, `[::1]`) as the destination of the tunnel: forwards to other addresses, including the host's own IP address, are refused. See [Forwarding](../guides/openssh.md#forwarding) for details.
+:::
+
 <Terminal shell title="Use a VNC client">{`
 ssh -L <LOCAL_PORT>:localhost:<REMOTE_PORT> root@<HOST_IP>
 `}</Terminal>
