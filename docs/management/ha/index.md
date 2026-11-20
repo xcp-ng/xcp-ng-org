@@ -13,7 +13,7 @@ But that's not the only one. If you lose the network link but not the shared sto
 We'll see how to protect your precious VM in multiple cases, and we'll illustrate that with real examples.
 
 :::info
-You can have high availability with as few as 2 hosts, but we strongly recommend doing it with 3 at the minimum, for obvious split-brain issues you might encounter.
+You can have high availability with as few as 2 hosts, but we strongly recommend doing it with 3 at the minimum.
 
 Details for 2-host pools are in [HA with two hosts](two-hosts.md).
 :::
@@ -38,15 +38,15 @@ This concept is important, and it explains why you need to **configure high avai
 Here are the possible cases and how they are dealt with:
 
 * **Lost both network and storage heartbeat**: the host is considered unreachable and the HA plan is started
-* **Lost storage but not network**: if the host can contact a majority of pool members, it can stay alive. Indeed, in this scenario, there is no harm for the data (can't write to the VM disks). If the host is alone (i.e. can't contact any other host or less than the majority), it goes for a reboot procedure.
-* **Lost network but not storage (worst case!)**: the host considers itself as problematic and starts a reboot procedure (hard power off and restart). This fencing procedure guarantees the sanity of your data.
+* **Lost storage, network still up**: the host fences if at least one other host still has access to the heartbeat SR, whatever the pool size. The host stays alive only if every other host has lost access to the heartbeat SR too.
+* **Lost network, storage still reachable (worst case!)**: on 3+ hosts, the isolated host is in the minority and starts a reboot procedure (hard power off and restart). This fencing procedure guarantees the sanity of your data. On 2 hosts, the host with the lowest UUID survives, even if it is the one that lost its network: see [HA with two hosts](two-hosts.md#network-lost).
 
 ## Requirements {#requirements}
 
 Enabling HA in XCP-ng requires thorough planning and validation of several prerequisites:
 
 - **Pool-Level HA only**: HA can only be configured at the pool level, not across different pools.
-- **Minimum of 3 hosts recommended**: While HA can function with just 2 XCP-ng servers in a pool, we recommend using **at least 3** to prevent issues such as a split-brain scenario. With only 2 hosts, they risk getting fenced if the connection between them is lost.
+- **Minimum of 3 hosts recommended**: While HA can function with just 2 XCP-ng servers in a pool, we recommend using **at least 3**. See [HA with two hosts](two-hosts.md) for the limits of a 2-host pool.
 - **Shared storage requirements**: You must have shared storage available, including at least one iSCSI, NFS, XOSTOR or Fibre Channel LUN with a minimum size of **4 GiB for the heartbeat Storage Repository (SR)**. The HA mechanism creates two volumes on this SR:
     - A **4 MB heartbeat volume** for monitoring host status.
     - A **256 MB metadata volume** to store pool master information for master failover situations.
@@ -297,7 +297,7 @@ Immediately after fencing, **Minion 1** will be booted on the other host.
 
 #### Pull the network cable
 
-Finally, the worst case: keep the storage operational, but "cut" the (management) network interface. Same procedure: unplug the cable physically and wait... Because **lab1** cannot contact any other host in the pool (in this case, **lab2**), it starts the fencing procedure. The result is exactly the same as the previous test. It's gone for the pool master, displayed as **Halted** until we re-plug the cable.
+Finally, the worst case: keep the storage operational, but "cut" the (management) network interface. Same procedure: unplug the cable physically and wait... Because **lab1** cannot contact any other host in the pool (in this case, **lab2**), it starts the fencing procedure. Here, **lab1** has the higher host UUID: with 2 hosts, the host with the lowest UUID survives a network cut (see [HA with two hosts](two-hosts.md#network-lost)). The result is exactly the same as the previous test. It's gone for the pool master, displayed as **Halted** until we re-plug the cable.
 
 #### Bring a failed host back {#bring-back}
 
