@@ -14,9 +14,15 @@
 
 ***
 
-## XAPI doesn't start after an upgrade with an older ISO {#xapi-doesnt-start-after-an-upgrade-with-an-older-iso}
+## XAPI doesn't start after an upgrade to the same release with an older ISO {#xapi-doesnt-start-after-an-upgrade-to-the-same-release-with-an-older-iso}
+
+This issue can happen when you use the installation ISO to upgrade a host to the release it already runs, for example to reinstall an 8.3 host with an 8.3 ISO, and the host has updates that are more recent than the ISO. An upgrade to a newer release, for example from 8.2 to 8.3, doesn't cause it.
+
+A similar issue can happen when you migrate from XenServer 8.4 and its XAPI version is more recent than the one provided by XCP-ng. See [Upgrade from XenServer](../../installation/upgrade#upgrade-from-xenserver).
 
 ### Symptoms
+
+On the first boot after upgrading the host to the release it already ran:
 
 * `xsconsole` reports that XAPI isn't running, and shows "No interfaces present", although the network of the host works: `ip a` lists the network cards, and the management bridge (`xenbr0` for example) has its IP address.
 * Xen Orchestra, XO Lite and `xe` can't connect to the host.
@@ -37,7 +43,7 @@ xapi: [error||0 |Xapi.watchdog|backtrace] server_init D:34e3d0d1f096 failed with
 
 ### Cause
 
-The installation ISO used for the upgrade is older than the updates that were installed on the host before the upgrade.
+The host was upgraded to the release it already ran, with an installation ISO that is older than the updates installed on the host before the upgrade.
 
 The upgrade keeps the XAPI database of the host, but reinstalls the XAPI version of the ISO. The database was written by a more recent XAPI. When that XAPI changed the database format, for example by adding a field, the older XAPI can't load the database, and stops.
 
