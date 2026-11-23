@@ -68,7 +68,14 @@ If you can't update the host, you can restore the system as it was before the up
 
 The restored system has the XAPI version, VMs and configuration it had before the upgrade.
 
-To avoid this issue, read the warning about the ISO version in [the upgrade procedure](../../installation/upgrade#upgrade-via-installation-iso-recommended) before an upgrade.
+### Prevention
+
+Before you upgrade a host to the release it already runs, compare the `xapi-core` version on the host (`rpm -q xapi-core`) with the one the installer will install:
+
+* With the standard installer, check the `xapi-core-*.rpm` file in the `Packages/` directory of the ISO.
+* The network installer doesn't contain this directory: it downloads the packages during the installation. For XCP-ng 8.3, check the `xapi-core-*.rpm` file in [the `Packages/` directory of the network installation repository](https://updates.xcp-ng.org/netinstall/8.3/Packages/).
+
+If the version on the host is more recent, don't upgrade the host with this installer.
 
 ***
 
