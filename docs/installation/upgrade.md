@@ -47,6 +47,8 @@ It will backup your system to the backup partition and reinstall the system from
 
 **Any additional changes made by you to the system will be lost, so remember to make them again after the upgrade. Including: kernel or Xen boot parameters, changes to `/etc`, additional users created and their homes, local ISO SRs, [additional packages](../../management/additional-packages)...** Some boot parameters and configuration files are saved, but it's a short list.
 
+If you upgrade a host to the release it already runs, for example to reinstall an 8.3 host with an 8.3 ISO, an ISO older than the updates installed on the host can prevent XAPI from starting: see [XAPI doesn't start after an upgrade to the same release with an older ISO](../../troubleshooting/after-upgrade#xapi-doesnt-start-after-an-upgrade-to-the-same-release-with-an-older-iso).
+
 Steps:
 1. Download an installation ISO from the [download page](https://xcp-ng.org/download/). Choose either the standard installer or the network installer.
 2. [Check the authenticity and the integrity of the downloaded ISO](../../project/mirrors#check-an-iso-image).
