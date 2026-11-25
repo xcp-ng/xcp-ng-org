@@ -49,7 +49,7 @@ High dom0 load, or dom0 running out of memory, degrades every VM on the host: se
 
 ## Netdata {#netdata}
 
-For detailed real-time dashboards on a host, XCP-ng provides `netdata` packages, and Xen Orchestra Premium can install and integrate them in one click (host view, *Advanced* tab). Netdata gives you per-second metrics with a modern web UI, and can stream to a central Netdata parent if you have one.
+For detailed real-time dashboards on a host, XCP-ng provides `netdata` packages, and Xen Orchestra can install and integrate them in one click (host view, *Advanced* tab; on XOA, this requires a Vates VMS subscription that includes it, see [Support & Subscription](../support-and-subscription.md)). Netdata gives you per-second metrics with a modern web UI, and can stream to a central Netdata parent if you have one.
 
 You can also install it manually as an [additional package](additional-packages.md), keeping in mind the general rule: dom0 is not a regular Linux box, keep extra software minimal.
 

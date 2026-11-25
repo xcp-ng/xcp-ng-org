@@ -2,7 +2,7 @@
 
 How to contribute to XCP-ng? There are many ways of contributing:
 * by giving some of your time to work on the project. Code isn't the only way! Community support, translation, documentation, testing…
-* with money, by subscribing to [Pro Support](https://vates.tech), which funds further developments.
+* with money, through a [Vates VMS subscription](../support-and-subscription.md), which funds further developments.
 
 ## Help others {#help-others}
 

@@ -155,6 +155,10 @@ const config = {
             title: 'Pro Support',
             items: [
               {
+                label: 'Support & Subscription',
+                to: '/support-and-subscription',
+              },
+              {
                 label: 'Vates Stack',
                 href: 'https://vates.tech',
               },
